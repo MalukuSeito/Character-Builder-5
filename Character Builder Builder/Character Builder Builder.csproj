@@ -1,0 +1,716 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6F8C899-E13C-448C-AEEA-5CA962AF659C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Character_Builder_Builder</RootNamespace>
+    <AssemblyName>Character Builder Builder</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackgroundForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BackgroundForm.Designer.cs">
+      <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScrollInfo.cs" />
+    <Compile Include="KeywordForms\SaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeywordForms\SaveForm.Designer.cs">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewlineFormatter.cs" />
+    <Compile Include="SpellForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpellForm.Designer.cs">
+      <DependentUpon>SpellForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\ShieldForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\ShieldForm.Designer.cs">
+      <DependentUpon>ShieldForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\ArmorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\ArmorForm.Designer.cs">
+      <DependentUpon>ArmorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\PackForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\PackForm.Designer.cs">
+      <DependentUpon>PackForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\WeaponForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\WeaponForm.Designer.cs">
+      <DependentUpon>WeaponForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\ToolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\ToolForm.Designer.cs">
+      <DependentUpon>ToolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\ItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ItemForms\ItemForm.Designer.cs">
+      <DependentUpon>ItemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ItemForms\BasicItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemForms\BasicItem.Designer.cs">
+      <DependentUpon>BasicItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeywordForms\VersatileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeywordForms\VersatileForm.Designer.cs">
+      <DependentUpon>VersatileForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeywordForms\RangeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeywordForms\RangeForm.Designer.cs">
+      <DependentUpon>RangeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConditionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConditionForm.Designer.cs">
+      <DependentUpon>ConditionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SkillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillForm.Designer.cs">
+      <DependentUpon>SkillForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MagicForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MagicForm.Designer.cs">
+      <DependentUpon>MagicForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubClassForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubClassForm.Designer.cs">
+      <DependentUpon>SubClassForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Decriptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Decriptions.Designer.cs">
+      <DependentUpon>Decriptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DescriptionForms\DescriptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DescriptionForms\DescriptionForm.Designer.cs">
+      <DependentUpon>DescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DescriptionForms\ListDescriptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DescriptionForms\ListDescriptionForm.Designer.cs">
+      <DependentUpon>ListDescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DescriptionForms\NamesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DescriptionForms\NamesForm.Designer.cs">
+      <DependentUpon>NamesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DescriptionForms\TableDescriptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DescriptionForms\TableDescriptionForm.Designer.cs">
+      <DependentUpon>TableDescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\AbilityScoreFeatFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\AbilityScoreFeatFeatureForm.Designer.cs">
+      <DependentUpon>AbilityScoreFeatFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\AbilityScoreFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\AbilityScoreFeatureForm.Designer.cs">
+      <DependentUpon>AbilityScoreFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ACFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ACFeatureForm.Designer.cs">
+      <DependentUpon>ACFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\BasicFeature.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\BasicFeature.Designer.cs">
+      <DependentUpon>BasicFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\VisionFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\VisionFeatureForm.Designer.cs">
+      <DependentUpon>VisionFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ToolProficiencyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ToolProficiencyFeatureForm.Designer.cs">
+      <DependentUpon>ToolProficiencyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ToolProficiencyChoiceConditionFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ToolProficiencyChoiceConditionFeatureForm.Designer.cs">
+      <DependentUpon>ToolProficiencyChoiceConditionFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ToolKWProficiencyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ToolKWProficiencyFeatureForm.Designer.cs">
+      <DependentUpon>ToolKWProficiencyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SubRaceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SubRaceFeatureForm.Designer.cs">
+      <DependentUpon>SubRaceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SubClassFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SubClassFeatureForm.Designer.cs">
+      <DependentUpon>SubClassFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SpellSlotsFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SpellSlotsFeatureForm.Designer.cs">
+      <DependentUpon>SpellSlotsFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SpellModifyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SpellModifyFeatureForm.Designer.cs">
+      <DependentUpon>SpellModifyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\MultiFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\MultiFeatureForm.Designer.cs">
+      <DependentUpon>MultiFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ModifySpellChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ModifySpellChoiceFeatureForm.Designer.cs">
+      <DependentUpon>ModifySpellChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SpeedFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SpeedFeatureForm.Designer.cs">
+      <DependentUpon>SpeedFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SkillProficiencyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SkillProficiencyFeatureForm.Designer.cs">
+      <DependentUpon>SkillProficiencyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SkillProficiencyChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SkillProficiencyChoiceFeatureForm.Designer.cs">
+      <DependentUpon>SkillProficiencyChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\BonusFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\BonusFeatureForm.Designer.cs">
+      <DependentUpon>BonusFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SaveProficiencyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SaveProficiencyFeatureForm.Designer.cs">
+      <DependentUpon>SaveProficiencyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ResourceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ResourceFeatureForm.Designer.cs">
+      <DependentUpon>ResourceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellPrepareFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellPrepareFeatureForm.Designer.cs">
+      <DependentUpon>BonusSpellPrepareFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellKeywordChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellKeywordChoiceFeatureForm.Designer.cs">
+      <DependentUpon>BonusSpellKeywordChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\BonusSpellFeatureForm.Designer.cs">
+      <DependentUpon>BonusSpellFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ChoiceFeatureForm.Designer.cs">
+      <DependentUpon>ChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\LanguageProficiencyFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\LanguageProficiencyFeatureForm.Designer.cs">
+      <DependentUpon>LanguageProficiencyFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\LanguageChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\LanguageChoiceFeatureForm.Designer.cs">
+      <DependentUpon>LanguageChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ItemChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ItemChoiceFeatureForm.Designer.cs">
+      <DependentUpon>ItemChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ItemChoiceConditionFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ItemChoiceConditionFeatureForm.Designer.cs">
+      <DependentUpon>ItemChoiceConditionFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\CollectionChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\CollectionChoiceFeatureForm.Designer.cs">
+      <DependentUpon>CollectionChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\IncreaseSpellChoiceAmountFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\IncreaseSpellChoiceAmountFeatureForm.Designer.cs">
+      <DependentUpon>IncreaseSpellChoiceAmountFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\ExtraAttackFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\ExtraAttackFeatureForm.Designer.cs">
+      <DependentUpon>ExtraAttackFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\FeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\FeatureForm.Designer.cs">
+      <DependentUpon>FeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\FreeItemAndGoldFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\FreeItemAndGoldFeatureForm.Designer.cs">
+      <DependentUpon>FreeItemAndGoldFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\HitPointsFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\HitPointsFeatureForm.Designer.cs">
+      <DependentUpon>HitPointsFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SpellcastingFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SpellcastingFeatureForm.Designer.cs">
+      <DependentUpon>SpellcastingFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\SpellChoiceFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\SpellChoiceFeatureForm.Designer.cs">
+      <DependentUpon>SpellChoiceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Features.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Features.Designer.cs">
+      <DependentUpon>Features.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IEditor.cs" />
+    <Compile Include="IHistoryManager.cs" />
+    <Compile Include="IMainEditor.cs" />
+    <Compile Include="KeywordControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeywordControl.Designer.cs">
+      <DependentUpon>KeywordControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeywordForms\MaterialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeywordForms\MaterialForm.Designer.cs">
+      <DependentUpon>MaterialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainTab.Designer.cs">
+      <DependentUpon>MainTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FeatureContainerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureContainerForm.Designer.cs">
+      <DependentUpon>FeatureContainerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClassForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClassForm.Designer.cs">
+      <DependentUpon>ClassForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LanguageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LanguageForm.Designer.cs">
+      <DependentUpon>LanguageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubRaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubRaceForm.Designer.cs">
+      <DependentUpon>SubRaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RaceForm.Designer.cs">
+      <DependentUpon>RaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IntList.Designer.cs">
+      <DependentUpon>IntList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StringList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StringList.Designer.cs">
+      <DependentUpon>StringList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="BackgroundForm.resx">
+      <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeywordForms\SaveForm.resx">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellForm.resx">
+      <DependentUpon>SpellForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\ShieldForm.resx">
+      <DependentUpon>ShieldForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\ArmorForm.resx">
+      <DependentUpon>ArmorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\PackForm.resx">
+      <DependentUpon>PackForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\WeaponForm.resx">
+      <DependentUpon>WeaponForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\ToolForm.resx">
+      <DependentUpon>ToolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\ItemForm.resx">
+      <DependentUpon>ItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemForms\BasicItem.resx">
+      <DependentUpon>BasicItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeywordForms\VersatileForm.resx">
+      <DependentUpon>VersatileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeywordForms\RangeForm.resx">
+      <DependentUpon>RangeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConditionForm.resx">
+      <DependentUpon>ConditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillForm.resx">
+      <DependentUpon>SkillForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MagicForm.resx">
+      <DependentUpon>MagicForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubClassForm.resx">
+      <DependentUpon>SubClassForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Decriptions.resx">
+      <DependentUpon>Decriptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DescriptionForms\DescriptionForm.resx">
+      <DependentUpon>DescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DescriptionForms\ListDescriptionForm.resx">
+      <DependentUpon>ListDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DescriptionForms\NamesForm.resx">
+      <DependentUpon>NamesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DescriptionForms\TableDescriptionForm.resx">
+      <DependentUpon>TableDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\AbilityScoreFeatFeatureForm.resx">
+      <DependentUpon>AbilityScoreFeatFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\AbilityScoreFeatureForm.resx">
+      <DependentUpon>AbilityScoreFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ACFeatureForm.resx">
+      <DependentUpon>ACFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\BasicFeature.resx">
+      <DependentUpon>BasicFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\VisionFeatureForm.resx">
+      <DependentUpon>VisionFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ToolProficiencyFeatureForm.resx">
+      <DependentUpon>ToolProficiencyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ToolProficiencyChoiceConditionFeatureForm.resx">
+      <DependentUpon>ToolProficiencyChoiceConditionFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ToolKWProficiencyFeatureForm.resx">
+      <DependentUpon>ToolKWProficiencyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SubRaceFeatureForm.resx">
+      <DependentUpon>SubRaceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SubClassFeatureForm.resx">
+      <DependentUpon>SubClassFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SpellSlotsFeatureForm.resx">
+      <DependentUpon>SpellSlotsFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SpellModifyFeatureForm.resx">
+      <DependentUpon>SpellModifyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\MultiFeatureForm.resx">
+      <DependentUpon>MultiFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ModifySpellChoiceFeatureForm.resx">
+      <DependentUpon>ModifySpellChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SpeedFeatureForm.resx">
+      <DependentUpon>SpeedFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SkillProficiencyFeatureForm.resx">
+      <DependentUpon>SkillProficiencyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SkillProficiencyChoiceFeatureForm.resx">
+      <DependentUpon>SkillProficiencyChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\BonusFeatureForm.resx">
+      <DependentUpon>BonusFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SaveProficiencyFeatureForm.resx">
+      <DependentUpon>SaveProficiencyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ResourceFeatureForm.resx">
+      <DependentUpon>ResourceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\BonusSpellPrepareFeatureForm.resx">
+      <DependentUpon>BonusSpellPrepareFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\BonusSpellKeywordChoiceFeatureForm.resx">
+      <DependentUpon>BonusSpellKeywordChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\BonusSpellFeatureForm.resx">
+      <DependentUpon>BonusSpellFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ChoiceFeatureForm.resx">
+      <DependentUpon>ChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\LanguageProficiencyFeatureForm.resx">
+      <DependentUpon>LanguageProficiencyFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\LanguageChoiceFeatureForm.resx">
+      <DependentUpon>LanguageChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ItemChoiceFeatureForm.resx">
+      <DependentUpon>ItemChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ItemChoiceConditionFeatureForm.resx">
+      <DependentUpon>ItemChoiceConditionFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\CollectionChoiceFeatureForm.resx">
+      <DependentUpon>CollectionChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\IncreaseSpellChoiceAmountFeatureForm.resx">
+      <DependentUpon>IncreaseSpellChoiceAmountFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\ExtraAttackFeatureForm.resx">
+      <DependentUpon>ExtraAttackFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\FeatureForm.resx">
+      <DependentUpon>FeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\FreeItemAndGoldFeatureForm.resx">
+      <DependentUpon>FreeItemAndGoldFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\HitPointsFeatureForm.resx">
+      <DependentUpon>HitPointsFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SpellcastingFeatureForm.resx">
+      <DependentUpon>SpellcastingFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\SpellChoiceFeatureForm.resx">
+      <DependentUpon>SpellChoiceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Features.resx">
+      <DependentUpon>Features.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeywordControl.resx">
+      <DependentUpon>KeywordControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeywordForms\MaterialForm.resx">
+      <DependentUpon>MaterialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainTab.resx">
+      <DependentUpon>MainTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="FeatureContainerForm.resx">
+      <DependentUpon>FeatureContainerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClassForm.resx">
+      <DependentUpon>ClassForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LanguageForm.resx">
+      <DependentUpon>LanguageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubRaceForm.resx">
+      <DependentUpon>SubRaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RaceForm.resx">
+      <DependentUpon>RaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntList.resx">
+      <DependentUpon>IntList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StringList.resx">
+      <DependentUpon>StringList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\oglelements\OGL Elements.csproj">
+      <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
+      <Name>OGL Elements</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
