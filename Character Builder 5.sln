@@ -4,10 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder 5", "Character Builder 5\Character Builder 5.csproj", "{D13C103F-53AA-4A9B-89B6-69BFC4DEC0E7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGL Elements", "oglelements\OGL Elements.csproj", "{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Builder", "Character Builder Builder\Character Builder Builder.csproj", "{D6F8C899-E13C-448C-AEEA-5CA962AF659C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCalc", "XCalc\XCalc.csproj", "{5F014003-50D8-49E0-8AFE-91D38DCCC97C}"
 EndProject

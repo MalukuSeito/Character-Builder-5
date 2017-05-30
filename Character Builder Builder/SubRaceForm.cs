@@ -30,7 +30,7 @@ namespace Character_Builder_Builder
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             Race.ImportAll();
-            foreach (string s in Race.races.Keys)
+            foreach (string s in Race.simple.Keys)
             {
                 ParentRace.AutoCompleteCustomSource.Add(s);
                 ParentRace.Items.Add(s);

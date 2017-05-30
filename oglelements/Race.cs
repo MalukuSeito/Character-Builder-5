@@ -29,7 +29,7 @@ namespace Character_Builder_5
         [XmlIgnore]
         static public Dictionary<String, Race> races = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         string filename;
         public void register(string file)

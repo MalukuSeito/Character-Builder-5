@@ -8,7 +8,6 @@ using System.Xml.Xsl;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
-using XCalc;
 
 namespace Character_Builder_5
 {
