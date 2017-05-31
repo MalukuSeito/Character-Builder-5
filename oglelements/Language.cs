@@ -22,7 +22,7 @@ namespace Character_Builder_5
         [XmlIgnore]
         static public Dictionary<String, Language> languages = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, Language> simple = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, Language> simple = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
         public String Name { get; set; }
         public String Description { get; set; }
         public String Skript { get; set; }

@@ -40,7 +40,7 @@ namespace Character_Builder_Builder.FeatureForms
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
             Character_Builder_5.Skill.ImportAll();
-            SkillList.Suggestions = Character_Builder_5.Skill.skills.Keys;
+            SkillList.Suggestions = Character_Builder_5.Skill.simple.Keys;
             Character_Builder_5.Item.ImportAll();
             proficiencyOptions.Suggestions = from it in Item.simple.Values where it is Weapon select it.Name;
             basicFeature1.Feature = f;

@@ -20,7 +20,7 @@ namespace Character_Builder_5
         [XmlIgnore]
         static public Dictionary<String, Skill> skills = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, Skill> simple = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, Skill> simple = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         string filename;
         public String Name { get; set; }

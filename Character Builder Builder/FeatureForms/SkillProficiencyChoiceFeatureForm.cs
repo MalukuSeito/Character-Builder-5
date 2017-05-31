@@ -23,7 +23,7 @@ namespace Character_Builder_Builder.FeatureForms
             Restrict.DataBindings.Add("Checked", f, "OnlyAlreadyKnownSkills", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             Skill.ImportAll();
-            SkillList.Suggestions = Skill.skills.Keys;
+            SkillList.Suggestions = Skill.simple.Keys;
             basicFeature1.Feature = f;
         }
 

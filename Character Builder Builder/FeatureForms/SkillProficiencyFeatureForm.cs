@@ -21,7 +21,7 @@ namespace Character_Builder_Builder.FeatureForms
             ProfMultiplier.DataBindings.Add("Value", f, "ProficiencyMultiplier", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             Skill.ImportAll();
-            SkillList.Suggestions = Skill.skills.Keys;
+            SkillList.Suggestions = Skill.simple.Keys;
             basicFeature1.Feature = f;
         }
 
