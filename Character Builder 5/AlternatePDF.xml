@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Fields>
+   <PDFField Name="CharacterName" Field="CharacterName" />
+    <PDFField Name="ClassLevel" Field="ClassLevel" />
+    <PDFField Name="Background" Field="Background" />
+    <PDFField Name="PlayerName" Field="PlayerName" />
+    <PDFField Name="Race" Field="Race " />
+    <PDFField Name="Alignment" Field="Alignment" />
+    <PDFField Name="XP" Field="XP" />
+    
+    <PDFField Name="Inspiration" Field="Inspiration" />
+    <PDFField Name="ProficiencyBonus" Field="ProfBonus" />
+    <PDFField Name="AC" Field="AC" />
+    <PDFField Name="Initiative" Field="Initiative" />
+    <PDFField Name="Speed" Field="Speed" />
+
+    <PDFField Name="PersonalityTrait" Field="PersonalityTraits " />
+    <PDFField Name="Ideal" Field="Ideals" />
+    <PDFField Name="Bond" Field="Bonds" />
+    <PDFField Name="Flaw" Field="Flaws" />
+
+
+    <PDFField Name="MaxHP" Field="HPMax" />
+    <PDFField Name="CurrentHP" Field="HPCurrent" />
+    <PDFField Name="TempHP" Field="HPTemp" />
+    <PDFField Name="HitDieTotal" Field="HDTotal" />
+    <PDFField Name="HitDie" Field="HD" />
+
+    <PDFField Name="DeathSaveSuccess1" Field="Check Box 12" />
+    <PDFField Name="DeathSaveSuccess2" Field="Check Box 13" />
+    <PDFField Name="DeathSaveSuccess3" Field="Check Box 14" />
+    <PDFField Name="DeathSaveFail1" Field="Check Box 15" />
+    <PDFField Name="DeathSaveFail2" Field="Check Box 16" />
+    <PDFField Name="DeathSaveFail3" Field="Check Box 17" />
+
+    <PDFField Name="Strength" Field="STR" />
+    <PDFField Name="Dexterity" Field="DEX" />
+    <PDFField Name="Constitution" Field="CON" />
+    <PDFField Name="Intelligence" Field="INT" />
+    <PDFField Name="Wisdom" Field="WIS" />
+    <PDFField Name="Charisma" Field="CHA" />
+    
+    <PDFField Name="StrengthModifier" Field="STRmod" />
+    <PDFField Name="DexterityModifier" Field="DEXmod " />
+    <PDFField Name="ConstitutionModifier" Field="CONmod" />
+    <PDFField Name="IntelligenceModifier" Field="INTmod" />
+    <PDFField Name="WisdomModifier" Field="WISmod" />
+    <PDFField Name="CharismaModifier" Field="CHamod" />
+    
+    <PDFField Name="StrengthSave" Field="SavingThrows" />
+    <PDFField Name="DexteritySave" Field="SavingThrows2" />
+    <PDFField Name="ConstitutionSave" Field="SavingThrows3" />
+    <PDFField Name="IntelligenceSave" Field="SavingThrows4" />
+    <PDFField Name="WisdomSave" Field="SavingThrows5" />
+    <PDFField Name="CharismaSave" Field="SavingThrows6" />
+    
+    <PDFField Name="StrengthSaveProficiency" Field="ST Strength" />
+    <PDFField Name="DexteritySaveProficiency" Field="ST Dexterity" />
+    <PDFField Name="ConstitutionSaveProficiency" Field="ST Constitution" />
+    <PDFField Name="IntelligenceSaveProficiency" Field="ST Intelligence" />
+    <PDFField Name="WisdomSaveProficiency" Field="ST Wisdom" />
+    <PDFField Name="CharismaSaveProficiency" Field="ST Charisma" />
+    
+    <PDFField Name="Acrobatics" Field="Acrobatics" />
+    <PDFField Name="Animal Handling" Field="Animal Handling" />
+    <PDFField Name="Athletics" Field="Athletics" />
+    <PDFField Name="Arcana" Field="Arcana" />
+    <PDFField Name="Deception" Field="Deception" />
+    <PDFField Name="History" Field="History" />
+    <PDFField Name="Insight" Field="Insight" />
+    <PDFField Name="Intimidation" Field="Intimidation" />
+    <PDFField Name="Investigation" Field="Investigation" />
+    <PDFField Name="Medicine" Field="Medicine" />
+    <PDFField Name="Nature" Field="Nature" />
+    <PDFField Name="Perception" Field="Perception" />
+    <PDFField Name="Performance" Field="Performance" />
+    <PDFField Name="Persuasion" Field="Persuasion" />
+    <PDFField Name="Religion" Field="Religion" />
+    <PDFField Name="Sleight of Hand" Field="SleightofHand" />
+    <PDFField Name="Stealth" Field="Stealth" />
+    <PDFField Name="Survival" Field="Survival" />
+
+    <PDFField Name="AcrobaticsProficiency" Field="ChBx Acrobatics" />
+    <PDFField Name="Animal HandlingProficiency" Field="ChBx Animal" />
+    <PDFField Name="ArcanaProficiency" Field="ChBx Arcana" />
+    <PDFField Name="AthleticsProficiency" Field="ChBx Athletics" />
+    <PDFField Name="DeceptionProficiency" Field="ChBx Deception" />
+    <PDFField Name="HistoryProficiency" Field="ChBx History" />
+    <PDFField Name="InsightProficiency" Field="ChBx Insight" />
+    <PDFField Name="IntimidationProficiency" Field="ChBx Intimidation" />
+    <PDFField Name="InvestigationProficiency" Field="ChBx Investigation" />
+    <PDFField Name="MedicineProficiency" Field="Check Box 18" />
+    <PDFField Name="NatureProficiency" Field="ChBx Nature" />
+    <PDFField Name="PerceptionProficiency" Field="ChBx Perception" />
+    <PDFField Name="PerformanceProficiency" Field="ChBx Performance" />
+    <PDFField Name="PersuasionProficiency" Field="ChBx Persuasion" />
+    <PDFField Name="ReligionProficiency" Field="ChBx Religion" />
+    <PDFField Name="Sleight of HandProficiency" Field="ChBx Sleight" />
+    <PDFField Name="StealthProficiency" Field="ChBx Stealth" />
+    <PDFField Name="SurvivalProficiency" Field="ChBx Survival" />
+    
+    <PDFField Name="PassivePerception" Field="Passive" />
+
+    <PDFField Name="Weapon1Name" Field="Wpn Name" />
+    <PDFField Name="Weapon1Attack" Field="Wpn1 AtkBonus" />
+    <PDFField Name="Weapon1Damage" Field="Wpn1 Damage" />
+    <PDFField Name="Weapon2Name" Field="Wpn Name 2" />
+    <PDFField Name="Weapon2Attack" Field="Wpn2 AtkBonus " />
+    <PDFField Name="Weapon2Damage" Field="Wpn2 Damage " />
+    <PDFField Name="Weapon3Name" Field="Wpn Name 3" />
+    <PDFField Name="Weapon3Attack" Field="Wpn3 AtkBonus  " />
+    <PDFField Name="Weapon3Damage" Field="Wpn3 Damage " />
+
+    <PDFField Name="Attacks" Field="AttacksSpellcasting" />
+    <PDFField Name="Proficiencies" Field="ProficienciesLang" />
+    <PDFField Name="Equipment" Field="Equipment" />
+    <PDFField Name="Features" Field="Features and Traits" />
+
+    <!--    <PDFField Name="CP" Field="CP" />
+    <PDFField Name="SP" Field="SP" />
+    <PDFField Name="EP" Field="EP" />
+    <PDFField Name="GP" Field="GP" />
+    <PDFField Name="PP" Field="PP" />-->
+
+    <PDFField Name="CharacterName2" Field="CharacterName 2" />
+    <PDFField Name="Age" Field="Age" />
+    <PDFField Name="Height" Field="Height" />
+    <PDFField Name="Weight" Field="Weight" />
+    <PDFField Name="Eyes" Field="Eyes" />
+    <PDFField Name="Skin" Field="Skin" />
+    <PDFField Name="Hair" Field="Hair" />
+    <PDFField Name="Portrait" Field="CHARACTER IMAGE" />
+    <PDFField Name="FactionPortrait" Field="Faction Symbol Image" />
+    <PDFField Name="Allies" Field="Allies" />
+    <PDFField Name="FactionName" Field="FactionName" />
+    <PDFField Name="Backstory" Field="Backstory" />
+    <PDFField Name="RaceBackgroundFeatures" Field="Feat+Traits" />
+    <PDFField Name="Treasure" Field="Treasure" />
+</Fields>
+<SpellFields>
+    <PDFField Name="SpellcastingClass" Field="Spellcasting Class 2" />
+    <PDFField Name="SpellcastingAbility 2" Field="SpellcastingAbility 2" />
+    <PDFField Name="SpellSaveDC  2" Field="SpellSaveDC  2" />
+    <PDFField Name="SpellAtkBonus 2" Field="SpellAtkBonus 2" />
+    <PDFField Name="SlotsTotal 19" Field="SlotsTotal 19" />
+    <PDFField Name="SlotsRemaining 19" Field="SlotsRemaining 19" />
+    <PDFField Name="Spells 1014" Field="Spells 1014" />
+    <PDFField Name="Spells 1015" Field="Spells 1015" />
+    <PDFField Name="Spells 1016" Field="Spells 1016" />
+    <PDFField Name="Spells 1017" Field="Spells 1017" />
+    <PDFField Name="Spells 1018" Field="Spells 1018" />
+    <PDFField Name="Spells 1019" Field="Spells 1019" />
+    <PDFField Name="Spells 1020" Field="Spells 1020" />
+    <PDFField Name="Spells 1021" Field="Spells 1021" />
+    <PDFField Name="Spells 1022" Field="Spells 1022" />
+    <PDFField Name="Check Box 314" Field="Check Box 314" />
+    <PDFField Name="Check Box 3031" Field="Check Box 3031" />
+    <PDFField Name="Check Box 3032" Field="Check Box 3032" />
+    <PDFField Name="Check Box 3033" Field="Check Box 3033" />
+    <PDFField Name="Check Box 3034" Field="Check Box 3034" />
+    <PDFField Name="Check Box 3035" Field="Check Box 3035" />
+    <PDFField Name="Check Box 3036" Field="Check Box 3036" />
+    <PDFField Name="Check Box 3037" Field="Check Box 3037" />
+    <PDFField Name="Check Box 3038" Field="Check Box 3038" />
+    <PDFField Name="Check Box 3039" Field="Check Box 3039" />
+    <PDFField Name="Check Box 3040" Field="Check Box 3040" />
+    <PDFField Name="Check Box 321" Field="Check Box 321" />
+    <PDFField Name="Check Box 320" Field="Check Box 320" />
+    <PDFField Name="Check Box 3060" Field="Check Box 3060" />
+    <PDFField Name="Check Box 3061" Field="Check Box 3061" />
+    <PDFField Name="Check Box 3062" Field="Check Box 3062" />
+    <PDFField Name="Check Box 3063" Field="Check Box 3063" />
+    <PDFField Name="Check Box 3064" Field="Check Box 3064" />
+    <PDFField Name="Check Box 3065" Field="Check Box 3065" />
+    <PDFField Name="Check Box 3066" Field="Check Box 3066" />
+    <PDFField Name="Check Box 315" Field="Check Box 315" />
+    <PDFField Name="Check Box 3041" Field="Check Box 3041" />
+    <PDFField Name="Spells 1023" Field="Spells 1023" />
+    <PDFField Name="Check Box 251" Field="Check Box 251" />
+    <PDFField Name="Check Box 309" Field="Check Box 309" />
+    <PDFField Name="Check Box 3010" Field="Check Box 3010" />
+    <PDFField Name="Check Box 3011" Field="Check Box 3011" />
+    <PDFField Name="Check Box 3012" Field="Check Box 3012" />
+    <PDFField Name="Check Box 3013" Field="Check Box 3013" />
+    <PDFField Name="Check Box 3014" Field="Check Box 3014" />
+    <PDFField Name="Check Box 3015" Field="Check Box 3015" />
+    <PDFField Name="Check Box 3016" Field="Check Box 3016" />
+    <PDFField Name="Check Box 3017" Field="Check Box 3017" />
+    <PDFField Name="Check Box 3018" Field="Check Box 3018" />
+    <PDFField Name="Check Box 3019" Field="Check Box 3019" />
+    <PDFField Name="Spells 1024" Field="Spells 1024" />
+    <PDFField Name="Spells 1025" Field="Spells 1025" />
+    <PDFField Name="Spells 1026" Field="Spells 1026" />
+    <PDFField Name="Spells 1027" Field="Spells 1027" />
+    <PDFField Name="Spells 1028" Field="Spells 1028" />
+    <PDFField Name="Spells 1029" Field="Spells 1029" />
+    <PDFField Name="Spells 1030" Field="Spells 1030" />
+    <PDFField Name="Spells 1031" Field="Spells 1031" />
+    <PDFField Name="Spells 1032" Field="Spells 1032" />
+    <PDFField Name="Spells 1033" Field="Spells 1033" />
+    <PDFField Name="SlotsTotal 20" Field="SlotsTotal 20" />
+    <PDFField Name="SlotsRemaining 20" Field="SlotsRemaining 20" />
+    <PDFField Name="Spells 1034" Field="Spells 1034" />
+    <PDFField Name="Spells 1035" Field="Spells 1035" />
+    <PDFField Name="Spells 1036" Field="Spells 1036" />
+    <PDFField Name="Spells 1037" Field="Spells 1037" />
+    <PDFField Name="Spells 1038" Field="Spells 1038" />
+    <PDFField Name="Spells 1039" Field="Spells 1039" />
+    <PDFField Name="Spells 1040" Field="Spells 1040" />
+    <PDFField Name="Spells 1041" Field="Spells 1041" />
+    <PDFField Name="Spells 1042" Field="Spells 1042" />
+    <PDFField Name="Spells 1043" Field="Spells 1043" />
+    <PDFField Name="Spells 1044" Field="Spells 1044" />
+    <PDFField Name="Spells 1045" Field="Spells 1045" />
+    <PDFField Name="Spells 1046" Field="Spells 1046" />
+    <PDFField Name="SlotsTotal 21" Field="SlotsTotal 21" />
+    <PDFField Name="SlotsRemaining 21" Field="SlotsRemaining 21" />
+    <PDFField Name="Spells 1047" Field="Spells 1047" />
+    <PDFField Name="Spells 1048" Field="Spells 1048" />
+    <PDFField Name="Spells 1049" Field="Spells 1049" />
+    <PDFField Name="Spells 1050" Field="Spells 1050" />
+    <PDFField Name="Spells 1051" Field="Spells 1051" />
+    <PDFField Name="Spells 1052" Field="Spells 1052" />
+    <PDFField Name="Spells 1053" Field="Spells 1053" />
+    <PDFField Name="Spells 1054" Field="Spells 1054" />
+    <PDFField Name="Spells 1055" Field="Spells 1055" />
+    <PDFField Name="Spells 1056" Field="Spells 1056" />
+    <PDFField Name="Spells 1057" Field="Spells 1057" />
+    <PDFField Name="Spells 1058" Field="Spells 1058" />
+    <PDFField Name="Spells 1059" Field="Spells 1059" />
+    <PDFField Name="SlotsTotal 22" Field="SlotsTotal 22" />
+    <PDFField Name="SlotsRemaining 22" Field="SlotsRemaining 22" />
+    <PDFField Name="Spells 1060" Field="Spells 1060" />
+    <PDFField Name="Spells 1061" Field="Spells 1061" />
+    <PDFField Name="Spells 1062" Field="Spells 1062" />
+    <PDFField Name="Spells 1063" Field="Spells 1063" />
+    <PDFField Name="Spells 1064" Field="Spells 1064" />
+    <PDFField Name="Check Box 323" Field="Check Box 323" />
+    <PDFField Name="Check Box 322" Field="Check Box 322" />
+    <PDFField Name="Check Box 3067" Field="Check Box 3067" />
+    <PDFField Name="Check Box 3068" Field="Check Box 3068" />
+    <PDFField Name="Check Box 3069" Field="Check Box 3069" />
+    <PDFField Name="Check Box 3070" Field="Check Box 3070" />
+    <PDFField Name="Check Box 3071" Field="Check Box 3071" />
+    <PDFField Name="Check Box 3072" Field="Check Box 3072" />
+    <PDFField Name="Check Box 3073" Field="Check Box 3073" />
+    <PDFField Name="Spells 1065" Field="Spells 1065" />
+    <PDFField Name="Spells 1066" Field="Spells 1066" />
+    <PDFField Name="Spells 1067" Field="Spells 1067" />
+    <PDFField Name="Spells 1068" Field="Spells 1068" />
+    <PDFField Name="Spells 1069" Field="Spells 1069" />
+    <PDFField Name="Spells 1070" Field="Spells 1070" />
+    <PDFField Name="Spells 1071" Field="Spells 1071" />
+    <PDFField Name="Check Box 317" Field="Check Box 317" />
+    <PDFField Name="Spells 1072" Field="Spells 1072" />
+    <PDFField Name="SlotsTotal 23" Field="SlotsTotal 23" />
+    <PDFField Name="SlotsRemaining 23" Field="SlotsRemaining 23" />
+    <PDFField Name="Spells 1073" Field="Spells 1073" />
+    <PDFField Name="Spells 1074" Field="Spells 1074" />
+    <PDFField Name="Spells 1075" Field="Spells 1075" />
+    <PDFField Name="Spells 1076" Field="Spells 1076" />
+    <PDFField Name="Spells 1077" Field="Spells 1077" />
+    <PDFField Name="Spells 1078" Field="Spells 1078" />
+    <PDFField Name="Spells 1079" Field="Spells 1079" />
+    <PDFField Name="Spells 1080" Field="Spells 1080" />
+    <PDFField Name="Spells 1081" Field="Spells 1081" />
+    <PDFField Name="SlotsTotal 24" Field="SlotsTotal 24" />
+    <PDFField Name="SlotsRemaining 24" Field="SlotsRemaining 24" />
+    <PDFField Name="Spells 1082" Field="Spells 1082" />
+    <PDFField Name="Spells 1083" Field="Spells 1083" />
+    <PDFField Name="Spells 1084" Field="Spells 1084" />
+    <PDFField Name="Spells 1085" Field="Spells 1085" />
+    <PDFField Name="Spells 1086" Field="Spells 1086" />
+    <PDFField Name="Spells 1087" Field="Spells 1087" />
+    <PDFField Name="Spells 1088" Field="Spells 1088" />
+    <PDFField Name="Spells 1089" Field="Spells 1089" />
+    <PDFField Name="Spells 1090" Field="Spells 1090" />
+    <PDFField Name="SlotsTotal 25" Field="SlotsTotal 25" />
+    <PDFField Name="SlotsRemaining 25" Field="SlotsRemaining 25" />
+    <PDFField Name="Spells 1091" Field="Spells 1091" />
+    <PDFField Name="Spells 1092" Field="Spells 1092" />
+    <PDFField Name="Spells 1093" Field="Spells 1093" />
+    <PDFField Name="Spells 1094" Field="Spells 1094" />
+    <PDFField Name="Spells 1095" Field="Spells 1095" />
+    <PDFField Name="Spells 1096" Field="Spells 1096" />
+    <PDFField Name="Spells 1097" Field="Spells 1097" />
+    <PDFField Name="Spells 1098" Field="Spells 1098" />
+    <PDFField Name="Spells 1099" Field="Spells 1099" />
+    <PDFField Name="SlotsTotal 26" Field="SlotsTotal 26" />
+    <PDFField Name="SlotsRemaining 26" Field="SlotsRemaining 26" />
+    <PDFField Name="Spells 10100" Field="Spells 10100" />
+    <PDFField Name="Spells 10101" Field="Spells 10101" />
+    <PDFField Name="Spells 10102" Field="Spells 10102" />
+    <PDFField Name="Spells 10103" Field="Spells 10103" />
+    <PDFField Name="Check Box 316" Field="Check Box 316" />
+    <PDFField Name="Check Box 3042" Field="Check Box 3042" />
+    <PDFField Name="Check Box 3043" Field="Check Box 3043" />
+    <PDFField Name="Check Box 3044" Field="Check Box 3044" />
+    <PDFField Name="Check Box 3045" Field="Check Box 3045" />
+    <PDFField Name="Check Box 3046" Field="Check Box 3046" />
+    <PDFField Name="Check Box 3047" Field="Check Box 3047" />
+    <PDFField Name="Check Box 3048" Field="Check Box 3048" />
+    <PDFField Name="Check Box 3049" Field="Check Box 3049" />
+    <PDFField Name="Check Box 3050" Field="Check Box 3050" />
+    <PDFField Name="Check Box 3051" Field="Check Box 3051" />
+    <PDFField Name="Check Box 3052" Field="Check Box 3052" />
+    <PDFField Name="Spells 10104" Field="Spells 10104" />
+    <PDFField Name="Check Box 325" Field="Check Box 325" />
+    <PDFField Name="Check Box 324" Field="Check Box 324" />
+    <PDFField Name="Check Box 3074" Field="Check Box 3074" />
+    <PDFField Name="Check Box 3075" Field="Check Box 3075" />
+    <PDFField Name="Check Box 3076" Field="Check Box 3076" />
+    <PDFField Name="Check Box 3077" Field="Check Box 3077" />
+    <PDFField Name="Spells 10105" Field="Spells 10105" />
+    <PDFField Name="Spells 10106" Field="Spells 10106" />
+    <PDFField Name="Check Box 3078" Field="Check Box 3078" />
+    <PDFField Name="SlotsTotal 27" Field="SlotsTotal 27" />
+    <PDFField Name="SlotsRemaining 27" Field="SlotsRemaining 27" />
+    <PDFField Name="Check Box 313" Field="Check Box 313" />
+    <PDFField Name="Check Box 310" Field="Check Box 310" />
+    <PDFField Name="Check Box 3020" Field="Check Box 3020" />
+    <PDFField Name="Check Box 3021" Field="Check Box 3021" />
+    <PDFField Name="Check Box 3022" Field="Check Box 3022" />
+    <PDFField Name="Check Box 3023" Field="Check Box 3023" />
+    <PDFField Name="Check Box 3024" Field="Check Box 3024" />
+    <PDFField Name="Check Box 3025" Field="Check Box 3025" />
+    <PDFField Name="Check Box 3026" Field="Check Box 3026" />
+    <PDFField Name="Check Box 3027" Field="Check Box 3027" />
+    <PDFField Name="Check Box 3028" Field="Check Box 3028" />
+    <PDFField Name="Check Box 3029" Field="Check Box 3029" />
+    <PDFField Name="Check Box 3030" Field="Check Box 3030" />
+    <PDFField Name="Spells 10107" Field="Spells 10107" />
+    <PDFField Name="Spells 10108" Field="Spells 10108" />
+    <PDFField Name="Spells 10109" Field="Spells 10109" />
+    <PDFField Name="Spells 101010" Field="Spells 101010" />
+    <PDFField Name="Spells 101011" Field="Spells 101011" />
+    <PDFField Name="Spells 101012" Field="Spells 101012" />
+    <PDFField Name="Check Box 319" Field="Check Box 319" />
+    <PDFField Name="Check Box 318" Field="Check Box 318" />
+    <PDFField Name="Check Box 3053" Field="Check Box 3053" />
+    <PDFField Name="Check Box 3054" Field="Check Box 3054" />
+    <PDFField Name="Check Box 3055" Field="Check Box 3055" />
+    <PDFField Name="Check Box 3056" Field="Check Box 3056" />
+    <PDFField Name="Check Box 3057" Field="Check Box 3057" />
+    <PDFField Name="Check Box 3058" Field="Check Box 3058" />
+    <PDFField Name="Check Box 3059" Field="Check Box 3059" />
+    <PDFField Name="Check Box 327" Field="Check Box 327" />
+    <PDFField Name="Check Box 326" Field="Check Box 326" />
+    <PDFField Name="Check Box 3079" Field="Check Box 3079" />
+    <PDFField Name="Check Box 3080" Field="Check Box 3080" />
+    <PDFField Name="Check Box 3081" Field="Check Box 3081" />
+    <PDFField Name="Check Box 3082" Field="Check Box 3082" />
+    <PDFField Name="Spells 101013" Field="Spells 101013" />
+    <PDFField Name="Check Box 3083" Field="Check Box 3083" />
+  </SpellFields>
+  <Name>Alternate Sheet</Name>
+  <File>Alternate-PlayerSheet.pdf</File>
+  <SpellFile>Default-Spellsheet.pdf</SpellFile>
+</PDF>

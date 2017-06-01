@@ -172,6 +172,7 @@ namespace Character_Builder_5
                 using (MemoryStream mem = new MemoryStream())
                 {
                     serializer.Serialize(mem, new DisplayPossession(this));
+                    ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     using (TextWriter writer = new StringWriter())
                     {

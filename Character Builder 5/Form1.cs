@@ -3580,5 +3580,10 @@ namespace Character_Builder_5
                 displayElement.Refresh();
             }
         }
+
+        private void showDescriptionToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            ConfigManager.Description = showDescriptionToolStripMenuItem.Checked;
+        }
     }
 }

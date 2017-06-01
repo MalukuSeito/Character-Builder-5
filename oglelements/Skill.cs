@@ -96,6 +96,7 @@ namespace Character_Builder_5
                 using (MemoryStream mem = new MemoryStream())
                 {
                     serializer.Serialize(mem, this);
+                    ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
                     using (StringWriter textWriter = new StringWriter())

@@ -5,11 +5,15 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Xsl;
 
 namespace Character_Builder_5
 {
     public class ConfigManager
     {
+        [XmlIgnore]
+        private static XslCompiledTransform transform = new XslCompiledTransform();
         private static XmlSerializer serializer = new XmlSerializer(typeof(ConfigManager));
         public static StringComparer SourceInvariantComparer = new SourceInvariantComparer();
         public static string Directory_Items = "Items";
@@ -39,11 +43,12 @@ namespace Character_Builder_5
         public static FileInfo Transform_Possession = new FileInfo("Possession.xsl");
         public static FileInfo Transform_Description = new FileInfo("Descriptions.xsl");
         public static FileInfo Transform_Scroll = new FileInfo("Scroll.xsl");
+        public static FileInfo Transform_RemoveDescription = new FileInfo("NoDescription.xsl");
         public static Boolean AlwaysShowSource = false;
 
         public static char SourceSeperator = '\u2014';
         public static char[] InvalidChars = (new string(Path.GetInvalidFileNameChars()) + SourceSeperator).ToCharArray();
-
+        public static bool Description = true;
         public static int MultiClassTarget
         {
             get
@@ -67,7 +72,26 @@ namespace Character_Builder_5
                 loaded.Source = value;
             }
         }
-        
+
+
+
+        public static void RemoveDescription(MemoryStream mem)
+        {
+            if (Description) return;
+            if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_RemoveDescription.FullName);
+            using (MemoryStream mem2 = new MemoryStream())
+            {
+                mem.Seek(0, SeekOrigin.Begin);
+                XmlReader xr = XmlReader.Create(mem);
+                using (XmlWriter xw = XmlWriter.Create(mem2))
+                {
+                    transform.Transform(xr, xw);
+                    mem.SetLength(0);
+                    mem2.Seek(0, SeekOrigin.Begin);
+                    mem2.CopyTo(mem);
+                }
+            }
+        }
 
         public ConfigManager()
         {
@@ -104,6 +128,7 @@ namespace Character_Builder_5
         public string Conditions_Directory = "Conditions/";
         public string Conditions_Transform = "Conditions.xsl";
         public string Possessions_Transform = "Possession.xsl";
+        public string RemoveDescription_Transform = "NoDescription.xsl";
         public List<string> PDF = new List<string>() {};
         public List<string> Slots = new List<string>() { };
         public string Levels = "Levels.xml";
@@ -144,6 +169,7 @@ namespace Character_Builder_5
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> FeaturesForAll = new List<Feature>();
+
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -240,6 +266,7 @@ namespace Character_Builder_5
             Directory_Conditions = makeRelative(loaded.Conditions_Directory);
             Transform_Conditions = new FileInfo(Fullpath(path, loaded.Conditions_Transform));
             Transform_Possession = new FileInfo(Fullpath(path, loaded.Possessions_Transform));
+            Transform_RemoveDescription = new FileInfo(Fullpath(path, loaded.RemoveDescription_Transform));
             PDFExporters = new List<string>();
             foreach (string s in loaded.PDF) PDFExporters.Add(Fullpath(path, s));
             //for (int i = 0; i < loaded.PDF.Count; i++)

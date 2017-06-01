@@ -357,6 +357,7 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -532,7 +533,7 @@
             this.newToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Repopulating_Dungeon;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -541,7 +542,7 @@
             this.openToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Chest_of_Potatoes;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -550,7 +551,7 @@
             this.saveToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Scroll_of_Saving;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -558,7 +559,7 @@
             // 
             this.saveAsToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Improved_Scroll_of_Saving;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.saveAsToolStripMenuItem.Text = "Save &as";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -567,7 +568,7 @@
             this.exportPDFToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Boat_of_Export;
             this.exportPDFToolStripMenuItem.Name = "exportPDFToolStripMenuItem";
             this.exportPDFToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.exportPDFToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exportPDFToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.exportPDFToolStripMenuItem.Text = "Export &PDF";
             this.exportPDFToolStripMenuItem.Click += new System.EventHandler(this.exportPDFToolStripMenuItem_Click);
             // 
@@ -575,7 +576,7 @@
             // 
             this.quitToolStripMenuItem.Image = global::Character_Builder_5.Properties.Resources.Quitter;
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.quitToolStripMenuItem.Text = "&Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
@@ -593,7 +594,7 @@
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.undoToolStripMenuItem.Text = "&Undo";
             this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
@@ -602,7 +603,7 @@
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.redoToolStripMenuItem.Text = "&Redo";
             this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
@@ -613,7 +614,8 @@
             this.pDFExporterToolStripMenuItem,
             this.includeResourcesInSheetToolStripMenuItem,
             this.preservePDFFormsToolStripMenuItem,
-            this.makeDefaultEditorForcb5FilesToolStripMenuItem});
+            this.makeDefaultEditorForcb5FilesToolStripMenuItem,
+            this.showDescriptionToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -4484,6 +4486,16 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
+            // showDescriptionToolStripMenuItem
+            // 
+            this.showDescriptionToolStripMenuItem.Checked = true;
+            this.showDescriptionToolStripMenuItem.CheckOnClick = true;
+            this.showDescriptionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showDescriptionToolStripMenuItem.Name = "showDescriptionToolStripMenuItem";
+            this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showDescriptionToolStripMenuItem.Text = "&Show Description";
+            this.showDescriptionToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showDescriptionToolStripMenuItem_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5004,6 +5016,7 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown journalXP;
         private System.Windows.Forms.TextBox journalText;
+        private System.Windows.Forms.ToolStripMenuItem showDescriptionToolStripMenuItem;
     }
 }
 

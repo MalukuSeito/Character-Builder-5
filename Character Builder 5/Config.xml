@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ConfigManager xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <MultiClassingAbilityScoreRequirement>13</MultiClassingAbilityScoreRequirement>
+  <Items_Directory>Items/</Items_Directory>
+  <Items_Transform>Items.xsl</Items_Transform>
+  <Skills_Directory>Skills/</Skills_Directory>
+  <Skills_Transform>Skills.xsl</Skills_Transform>
+  <Languages_Directory>Languages/</Languages_Directory>
+  <Languages_Transform>Languages.xsl</Languages_Transform>
+  <Features_Directory>Feats/</Features_Directory>
+  <Features_Transform>Features.xsl</Features_Transform>
+  <Backgrounds_Directory>Backgrounds/</Backgrounds_Directory>
+  <Backgrounds_Transform>Backgrounds.xsl</Backgrounds_Transform>
+  <Classes_Directory>Classes/</Classes_Directory>
+  <Classes_Transform>Classes.xsl</Classes_Transform>
+  <SubClasses_Directory>SubClasses/</SubClasses_Directory>
+  <SubClasses_Transform>SubClasses.xsl</SubClasses_Transform>
+  <Races_Directory>Races/</Races_Directory>
+  <Races_Transform>Races.xsl</Races_Transform>
+  <SubRaces_Directory>SubRaces/</SubRaces_Directory>
+  <SubRaces_Transform>SubRaces.xsl</SubRaces_Transform>
+  <Spells_Directory>Spells/</Spells_Directory>
+  <Spells_Transform>Spells.xsl</Spells_Transform>
+  <Magic_Directory>Magic/</Magic_Directory>
+  <Magic_Transform>Magic.xsl</Magic_Transform>
+  <Conditions_Directory>Conditions/</Conditions_Directory>
+  <Conditions_Transform>Conditions.xsl</Conditions_Transform>
+  <Possessions_Transform>Possession.xsl</Possessions_Transform>
+  <PDF>
+    <string>DefaultPDF.xml</string>
+    <string>AlternatePDF.xml</string>
+  </PDF>
+  <Slots>
+    <string>MainHand</string>
+    <string>OffHand</string>
+    <string>Armor</string>
+    <string>Ammunition</string>
+  </Slots>
+  <Levels>Levels.xml</Levels>
+  <AbilityScores>AbilityScores.xml</AbilityScores>
+  <FeaturesForAll>
+    <ACFeature>
+      <Keywords />
+      <Name>Normal AC Calculation</Name>
+      <Text>Wearing Armor</Text>
+      <Level>1</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Expression>if(Armor,if(Light,BaseAC+DexMod,if(Medium, BaseAC+Min(DexMod,2),BaseAC)),10+DexMod)+ShieldBonus</Expression>
+    </ACFeature>
+    <FreeItemAndGoldFeature>
+      <Keywords />
+      <Name>Unarmed Strike</Name>
+      <Text>You have hands</Text>
+      <Level>1</Level>
+      <Hidden>true</Hidden>
+      <Items>
+        <string>Unarmed strike</string>
+      </Items>
+      <CP>0</CP>
+      <SP>0</SP>
+      <GP>0</GP>
+    </FreeItemAndGoldFeature>
+    <ToolProficiencyFeature>
+      <Keywords />
+      <Name>Unarmed Strike</Name>
+      <Text>You can use your hands</Text>
+      <Level>1</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Tools>
+        <string>Unarmed strike</string>
+      </Tools>
+    </ToolProficiencyFeature>
+  </FeaturesForAll>
+  <FeaturesForMulticlassing>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 2</Text>
+      <Level>1</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>2</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 3</Text>
+      <Level>2</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>3</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 2</Text>
+      <Level>3</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>2</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3</Text>
+      <Level>4</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 2</Text>
+      <Level>5</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>2</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3</Text>
+      <Level>6</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 1</Text>
+      <Level>7</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>1</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 2</Text>
+      <Level>8</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 1</Text>
+      <Level>9</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>1</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 2</Text>
+      <Level>10</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 2, 6th: 1</Text>
+      <Level>11</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>1</int>
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 2, 6th: 1, 7th: 1</Text>
+      <Level>13</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>1</int>
+        <int>1</int>
+        <int>0</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 2, 6th: 1, 7th: 1, 8th: 1</Text>
+      <Level>15</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+        <int>0</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 2, 6th: 1, 7th: 1, 8th: 1, 9th: 1</Text>
+      <Level>17</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 3, 6th: 1, 7th: 1, 8th: 1, 9th: 1</Text>
+      <Level>18</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 3, 6th: 2, 7th: 1, 8th: 1, 9th: 1</Text>
+      <Level>19</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>1</int>
+        <int>1</int>
+        <int>1</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellSlotsFeature>
+      <Keywords />
+      <Name>Spell slots</Name>
+      <Text>1st: 4, 2nd: 3, 3rd: 3, 4th: 3, 5th: 3, 6th: 2, 7th: 2, 8th: 1, 9th: 1</Text>
+      <Level>20</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Slots>
+        <int>4</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>3</int>
+        <int>2</int>
+        <int>2</int>
+        <int>1</int>
+        <int>1</int>
+      </Slots>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+    </SpellSlotsFeature>
+    <SpellcastingFeature>
+      <Keywords />
+      <Name>Multiclassing</Name>
+      <Text>Your capacity for spellcasting depends partly on your combined levels in all your spellcasting classes and partly on your individual levels in those classes. Once you have the Spellcasting feature from more than one class, use the rules below. If you multiclass but have the Spellcasting feature from only one class, you follow the rules as described in that class.
+
+Spells Known and Prepared.
+You determine what sp ells you know and can prepare for each class individually, as if you were a single-classed member of that class. If you are a ranger 4/wizard 3, for example, you know three 1st-level ranger spells based on your levels in the ranger class. As 3rd-level wizard, you know three wizard cantrips, and your spellbook contains ten wizard spells, two of which (the two you gained when you reached 3rd level as a wizard) can be 2nd-level spells. If your Intelligence is 16, you can prepare six wizard spells from your spellbook.
+Each spell you know and prepare is associated with one of your classes, and you use the spellcasting ability of that class when you cast the spell. Similarly, a spellcasting focus, such as a holy symbol, can be used only for the spells from the class associated with that focus.
+
+Spell Slots.
+You determine your available spell slots by adding together all your levels in the bard, cleric, druid, sorcerer, and wizard classes, and half your levels (rounded down) in the paladin and ranger classes. Use this total to determine your spell slots by consulting the Multiclass Spellcaster table.
+If you have more than one spellcasting class, this table might give you spell slots of a level that is higher than the spells you know or can prepare. You can use tho se slots, but only to cast your lower-level spells. If a lower-level spell that you cast, like burning hands, has an enhanced effect when cast using a higher-level slot, you can use the enhanced effect, even though you don’t have any spells of that higher level. For example, if you are the aforementioned ranger 4/wizard 3, you count as a 5t-level character when determining your spell slots: you have four 1st-level slots, three 2nd-level slots, and two 3rd-level slots. However, you don’t know any 3rd-level spells, nor do you know any 2nd-level ranger spells. You can use the spell slots of those levels to cast the spells you do know - and potentially enhance their effects.
+
+Pact Magic.
+If you have both the Spellcasting class feature and the Pact Magic class feature from the warlock class, you can use the spell slots you gain from the Pact Magic feature to cast spells you know or have prepared from classes with the Spellcasting class feature, and you can use the spell slots you gain from the Spellcasting class feature to cast warlock spells you know.</Text>
+      <Level>1</Level>
+      <Hidden>true</Hidden>
+      <Prerequisite />
+      <Preparation>LearnSpells</Preparation>
+      <SpellcastingID>MULTICLASS</SpellcastingID>
+      <OverwrittenByMulticlassing>false</OverwrittenByMulticlassing>
+      <IgnoreMulticlassing>true</IgnoreMulticlassing>
+      <DisplayName>Multiclass</DisplayName>
+      <PrepareCountAdditionalModifier>None</PrepareCountAdditionalModifier>
+      <SpellcastingAbility>None</SpellcastingAbility>
+      <PrepareCountPerClassLevel>0</PrepareCountPerClassLevel>
+      <PrepareCountAdditional>0</PrepareCountAdditional>
+      <PreparationChange>Unmodified</PreparationChange>
+    </SpellcastingFeature>
+  </FeaturesForMulticlassing>
+  <Source>Systems Reference Document v5.1</Source>
+  <WeightOfACoin>0.02</WeightOfACoin>
+</ConfigManager>
