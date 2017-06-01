@@ -175,6 +175,10 @@
       <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
       <Name>OGL Elements</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XCalc\XCalc.csproj">
+      <Project>{5F014003-50D8-49E0-8AFE-91D38DCCC97C}</Project>
+      <Name>XCalc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

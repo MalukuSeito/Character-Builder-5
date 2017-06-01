@@ -45,6 +45,22 @@ namespace Character_Builder_5
         private static Dictionary<Description, List<System.Windows.Forms.Label>> desclabels = new Dictionary<Description, List<System.Windows.Forms.Label>>(new RefComp());
         private static List<Language> langs = null;
 
+        public static void AddClassControls(Player player, List<System.Windows.Forms.Control> control, int level)
+        {
+            foreach (PlayerClass p in player.Classes)
+            {
+                int l = p.getClassLevelUpToLevel(level);
+                if (l > 0) AddControls(p, control, level, player);
+            }
+        }
+
+        public static void AddControls(PlayerClass p, List<System.Windows.Forms.Control> control, int level, Player player)
+        {
+            AddControls(p.Class, control, level);
+            int classlevel = p.getClassLevelUpToLevel(level);
+            foreach (Feature f in p.getFeatures(level, player).OrderBy(a => a.Level)) AddControl(control, classlevel, f);
+        }
+
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, Feature f)
         {
             if (f is BonusSpellKeywordChoiceFeature)

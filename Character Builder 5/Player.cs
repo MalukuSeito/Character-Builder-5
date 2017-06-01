@@ -594,14 +594,7 @@ namespace Character_Builder_5
             }
             return classlevels;
         }
-        public virtual void AddClassControls(List<System.Windows.Forms.Control> control, int level)
-        {
-            foreach (PlayerClass p in Classes)
-            {
-                int l = p.getClassLevelUpToLevel(level);
-                if (l > 0) p.AddControls(control, level, this);
-            }
-        }
+        
         public bool AddClass(ClassDefinition classdefinition, int atLevel)
         {
             if (classdefinition == null) return false;

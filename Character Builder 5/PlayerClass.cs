@@ -139,11 +139,6 @@ namespace Character_Builder_5
             return 0;
         }
 
-        public void AddControls(List<System.Windows.Forms.Control> control, int level, Player player)
-        {
-            ControlAdder.AddControls(Class, control, level);
-            int classlevel=getClassLevelUpToLevel(level);
-            foreach (Feature f in getFeatures(level, player).OrderBy(a=>a.Level)) ControlAdder.AddControl(control, classlevel, f);
-        }
+        
     }
 }

@@ -1297,7 +1297,7 @@ namespace Character_Builder_5
             }
         }*/
                 int level = Player.current.getLevel();
-                Player.current.AddClassControls(classt, level);
+                ControlAdder.AddClassControls(Player.current, classt, level);
                 foreach (Feature f in Player.current.getCommonFeaturesAndFeats())
                 {
                     ControlAdder.AddControl(classt, level, f);
