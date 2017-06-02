@@ -1149,7 +1149,7 @@ namespace Character_Builder_5
                 if (f is ToolKWProficiencyFeature) kwpf.Add(((ToolKWProficiencyFeature)f));
             }
             tools.Sort();
-            tools.RemoveAll(t=>kwpf.Find(p=>Utils.matches(p, t))!=null);
+            tools.RemoveAll(t=>kwpf.Find(p=>Utils.matches(p, t, 0))!=null);
             return tools.Distinct<Tool>();
         }
         public IEnumerable<ModifiedSpell> getBonusSpells(bool filterAtWill=false)
@@ -1233,7 +1233,7 @@ namespace Character_Builder_5
                 Feature f = fc.feature;
                 if (((SpeedFeature)f).Condition != null && ((SpeedFeature)f).Condition.Length > 0)
                 {
-                    if (!Utils.matches(armor, ((SpeedFeature)f).Condition, additionalKW, asa)) continue;
+                    if (!Utils.matches(armor, ((SpeedFeature)f).Condition, fc.classlevel, additionalKW, asa)) continue;
                 }
                 extraspeed += Utils.evaluate(((SpeedFeature)f).ExtraSpeed, asa, additionalKW, fc.classlevel, 0, armor);
                 if (basespeed < ((SpeedFeature)f).BaseSpeed) basespeed = ((SpeedFeature)f).BaseSpeed;
@@ -1650,7 +1650,7 @@ namespace Character_Builder_5
                         else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
                     }
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, additionalKW, asa, true))
+                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 { 
                     if (((BonusFeature)f).Skills.Count == 0) generalBonus+= Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                     foreach (string s in ((BonusFeature)f).Skills) res[Skill.Get(s, f.Source)]+= Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
@@ -1699,7 +1699,7 @@ namespace Character_Builder_5
                     if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
                     else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive  && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, additionalKW, asa, true))
+                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive  && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 {
                     if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
@@ -1738,7 +1738,7 @@ namespace Character_Builder_5
                     if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
                     else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
                 }
-                else if (f is BonusFeature && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, additionalKW, asa, true))
+                else if (f is BonusFeature && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 {
                     if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
@@ -1823,25 +1823,25 @@ namespace Character_Builder_5
             if (offHand == null && !(mainHand is Weapon && mainHand.Keywords.Exists(t=>t.Name=="two-handed"))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
-            List<ACFeature> ways=new List<ACFeature>();
+            Dictionary<ACFeature, int> ways = new Dictionary<ACFeature, int>(new ObjectIdentityEqualityComparer());
             
             int bonus=0;
             foreach (FeatureClass fc in fa) {
                 Feature f = fc.feature;
-                if (f is ACFeature) ways.Add((ACFeature)f);
+                if (f is ACFeature) ways.Add((ACFeature)f, fc.classlevel);
                 if (f is BonusFeature && ((BonusFeature)f).ACBonus != null && ((BonusFeature)f).ACBonus.Trim() != "" && ((BonusFeature)f).ACBonus.Trim() != "0")
                 {
                     BonusFeature b = (BonusFeature)f;
-                    if (Utils.matches(b, armor, additionalKW, asa)) bonus+=Utils.evaluate(b.ACBonus, asa, additionalKW, fc.classlevel, level, armor);
+                    if (Utils.matches(b, armor, fc.classlevel, additionalKW, asa)) bonus+=Utils.evaluate(b.ACBonus, asa, additionalKW, fc.classlevel, level, armor);
                 }
             }
             int AC = 0;
             int shieldbonus = 0;
             if (mainHand is Shield) shieldbonus = ((Shield)offHand).ACBonus;
             if (offHand is Shield && shieldbonus < ((Shield)offHand).ACBonus) shieldbonus = ((Shield)offHand).ACBonus;
-            foreach (ACFeature acf in ways)
+            foreach (KeyValuePair<ACFeature, int> acf in ways)
             {
-                int tac = Utils.CalcAC(acf,armor,shieldbonus,additionalKW, asa, bonus);
+                int tac = Utils.CalcAC(acf.Key,armor,shieldbonus,additionalKW, asa, bonus, acf.Value);
                 if (AC < tac) AC = tac;
             }
             return AC + bonus;
@@ -1882,7 +1882,7 @@ namespace Character_Builder_5
                 {
                     BonusFeature b = (BonusFeature)f;
                     if ((b.BaseItemChange != null && b.BaseItemChange.Trim() != "")) {
-                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", additionalKW))
+                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW))
                         {
                             try
                             {
@@ -1895,7 +1895,7 @@ namespace Character_Builder_5
                     }
                     if ((b.ProficiencyOptions != null && b.ProficiencyOptions.Count > 0))
                     {
-                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", additionalKW))
+                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW))
                         {
                             foreach (String i in b.ProficiencyOptions) {
                                 try
@@ -1942,7 +1942,7 @@ namespace Character_Builder_5
                     BonusFeature b = (BonusFeature)f;
                     if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0"))
                     {
-                        if (Utils.matches(b, weapon, additionalKW, asa) || Utils.matches(b, baseAbility, "Weapon","Weapon", additionalKW))
+                        if (Utils.matches(b, weapon, fc.classlevel, additionalKW, asa) || Utils.matches(b, baseAbility, "Weapon","Weapon", fc.classlevel, additionalKW))
                         {
                             attackbonus += Utils.evaluate(b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
                             damagebonus += Utils.evaluate(b, asa, additionalKW, fc.classlevel, level, weapon);
@@ -1970,7 +1970,7 @@ namespace Character_Builder_5
                 {
                     foreach (Weapon w in countsAs)
                     {
-                        if (Utils.matches(((ToolKWProficiencyFeature)f), w)) profbonus = true;
+                        if (Utils.matches(((ToolKWProficiencyFeature)f), w, fc.classlevel)) profbonus = true;
                     }
                 }
             }
@@ -2012,7 +2012,7 @@ namespace Character_Builder_5
                     BonusFeature b = (BonusFeature)f;
                     if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0") || (b.SaveDCBonus != null && b.SaveDCBonus.Trim() != "" && b.SaveDCBonus.Trim() != "0"))
                     {
-                        if (Utils.matches(b, s, additionalKW) || Utils.matches(b, spellcastingModifier, "Spell", "Spell", additionalKW))
+                        if (Utils.matches(b, s, fc.classlevel, additionalKW) || Utils.matches(b, spellcastingModifier, "Spell", "Spell", fc.classlevel, additionalKW))
                         {
                             attackbonus += Utils.evaluate(s, b.AttackBonus, asa, additionalKW, fc.classlevel, level);
                             damagebonus += Utils.evaluate(s, b, asa, additionalKW, fc.classlevel, level);
@@ -2045,7 +2045,7 @@ namespace Character_Builder_5
             if (offHand is Shield) additionalKW.Add("shield");
             Ability baseAbility = Ability.Dexterity;
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).InitiativeBonus != null && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "" && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).InitiativeBonus, asa, null, fc.classlevel, level);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).InitiativeBonus != null && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "" && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).InitiativeBonus, asa, null, fc.classlevel, level);
             return asa.ApplyMod(baseAbility) + bonus;
         }
         public int getLevel()
@@ -2068,7 +2068,7 @@ namespace Character_Builder_5
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).ProficiencyBonus != null && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "" && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).ProficiencyBonus, asa, null, fc.classlevel, level);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).ProficiencyBonus != null && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "" && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).ProficiencyBonus, asa, null, fc.classlevel, level);
             return prof + bonus;
         }
         public int getSpellSaveDC(string SpellcastingID, Ability baseAbility) {
@@ -2085,7 +2085,7 @@ namespace Character_Builder_5
             if (offHand is Shield) additionalKW.Add("shield");
             additionalKW.Add("Spell");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SaveDCBonus != null && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "" && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell")) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).SaveDCBonus, asa, additionalKW, fc.classlevel);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SaveDCBonus != null && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "" && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).SaveDCBonus, asa, additionalKW, fc.classlevel);
             return 8+getProficiency()+  asa.ApplyMod(baseAbility) + bonus;
         }
         public int getSpellAttack(string SpellcastingID, Ability baseAbility)
@@ -2103,7 +2103,7 @@ namespace Character_Builder_5
             if (offHand is Shield) additionalKW.Add("shield");
             additionalKW.Add("Spell");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).AttackBonus != null && ((BonusFeature)fc.feature).AttackBonus.Trim() != "" && ((BonusFeature)fc.feature).AttackBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", additionalKW)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).AttackBonus, asa, additionalKW, fc.classlevel);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).AttackBonus != null && ((BonusFeature)fc.feature).AttackBonus.Trim() != "" && ((BonusFeature)fc.feature).AttackBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel, additionalKW)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).AttackBonus, asa, additionalKW, fc.classlevel);
             return getProficiency() + asa.ApplyMod(baseAbility) + bonus;
         }
 

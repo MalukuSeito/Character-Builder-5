@@ -331,7 +331,7 @@ namespace Character_Builder_5
             }
         }
 
-        public static int CalcAC(ACFeature acf, Item armor, int shieldbonus, List<string> additionalKeywords, AbilityScoreArray asa, int otherbonus, bool ignoreItemClass = false)
+        public static int CalcAC(ACFeature acf, Item armor, int shieldbonus, List<string> additionalKeywords, AbilityScoreArray asa, int otherbonus, int classlevel, bool ignoreItemClass = false)
         {
             try
             {
@@ -380,26 +380,29 @@ namespace Character_Builder_5
             }
             return -1;
         }
-        public static bool matches(BonusFeature bf, Item w, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
+        public static bool matches(BonusFeature bf, Item w, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
         {
-            return matches(w, bf.Condition, additionalKeywords, asa, ignoreItemClass);
+            if (bf == null) return false;
+            return matches(w, bf.Condition, classlevel, additionalKeywords, asa, ignoreItemClass);
             /*            List<Keyword> kws = new List<Keyword>(Keywords);
                         kws.RemoveAll(k=>k.Name=="weapon"); //If it doesn't contain the weapon or the spell kw, it will match both spell attacks and weapon attacks
                         foreach (Keyword kw in kws) if (!w.Keywords.Contains(kw)) return false;
                         return true;*/
 
         }
-        public static bool matches(BonusFeature bf, Spell s, List<string> additionalKeywords = null)
+        public static bool matches(BonusFeature bf, Spell s, int classlevel, List<string> additionalKeywords = null)
         {
-            return matches(s, bf.Condition, null, additionalKeywords);
+            if (bf == null) return false;
+            return matches(s, bf.Condition, null, additionalKeywords, classlevel);
             /*           List<Keyword> kws = new List<Keyword>(Keywords);
                        kws.RemoveAll(k => k.Name == "spell");
                        foreach (Keyword kw in kws) if (!s.Keywords.Contains(kw)) return false;
                        return true;*/
         }
 
-        public static bool matches(BonusFeature bf, Ability baseAbility, string SpellcastingID, string kw, List<string> additionalKeywords = null)
+        public static bool matches(BonusFeature bf, Ability baseAbility, string SpellcastingID, string kw, int classlevel, List<string> additionalKeywords = null)
         {
+
             if (additionalKeywords == null) additionalKeywords = new List<string>();
             Expression ex = new Expression(ConfigManager.fixQuotes(bf.Condition));
             ex.EvaluateParameter += delegate (string name, ParameterArgs args)
@@ -407,9 +410,10 @@ namespace Character_Builder_5
                 name = name.ToLowerInvariant();
                 if (name == "name") args.Result = "";
                 else if (name == "category") args.Result = "";
-                else if (name == "level") args.Result = -1;
-                else if (name == "classlevel") args.Result = -1;
-                else if (name == "classspelllevel") args.Result = -1;
+                else if (name == "level") args.Result = Player.current.getLevel();
+                else if (name == "playerlevel") args.Result = Player.current.getLevel();
+                else if (name == "classlevel") args.Result = classlevel;
+                else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
                 else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
                 else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
                 else if (name == "str" || name == "strength") args.Result = baseAbility.HasFlag(Ability.Strength);
@@ -455,19 +459,19 @@ namespace Character_Builder_5
             return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public static bool matches(Item i, string expression, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
+        public static bool matches(Item i, string expression, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
         {
             if (asa == null) asa = new AbilityScoreArray(10, 10, 10, 10, 10, 10);
             if (additionalKeywords == null) additionalKeywords = new List<string>();
-            if (i.Matches == null) i.Matches = new Dictionary<string, bool>();
-            if (i.Matches.ContainsKey(expression + additionalKeywords.ToString())) return i.Matches[expression + additionalKeywords.ToString()];
+            if (i != null && i.Matches == null) i.Matches = new Dictionary<string, bool>();
+            if (i != null && i.Matches.ContainsKey(expression + additionalKeywords.ToString())) return i.Matches[expression + additionalKeywords.ToString()];
             try
             {
                 Expression ex = new Expression(ConfigManager.fixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
-                    if (name == "category") args.Result = i.Category.Path;
+                    if (name == "category") args.Result = i != null ? i.Category.Path : "";
                     else if (name == "weapon") args.Result = (!ignoreItemClass && i is Weapon);
                     else if (name == "armor") args.Result = (!ignoreItemClass && i is Armor);
                     else if (name == "shield") args.Result = (!ignoreItemClass && i is Shield);
@@ -488,26 +492,26 @@ namespace Character_Builder_5
                     else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
                     else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
                     else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "autogenerated") args.Result = i.autogenerated;
-                    else if (name == "name") args.Result = i.Name.ToLowerInvariant();
+                    else if (name == "autogenerated" && i is Item) args.Result = i.autogenerated;
+                    else if (name == "name") args.Result = i != null ? i.Name.ToLowerInvariant() : "";
                     else if (name == "playerlevel") args.Result = Player.current.getLevel();
                     else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
                     else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
-                    else if (name == "classlevel") args.Result = Player.current.getLevel();
+                    else if (name == "classlevel") args.Result = classlevel;
                     else if (additionalKeywords.Exists(s => matchesKW(name, s))) args.Result = true;
-                    else if (i.Keywords != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (i != null && i.Keywords != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
                 object o = ex.Evaluate();
                 if (o is Boolean && (Boolean)o)
                 {
-                    i.Matches[expression + additionalKeywords.ToString()] = true;
+                    if (i != null) i.Matches[expression + additionalKeywords.ToString()] = true;
                     return true;
                 }
-                else i.Matches[expression + additionalKeywords.ToString()] = false;
+                else if (i != null) i.Matches[expression + additionalKeywords.ToString()] = false;
                 return false;
-
+                 
             }
             catch (Exception e)
             {
@@ -554,11 +558,11 @@ namespace Character_Builder_5
         }
         public static bool fits(MagicProperty mp, Item item)
         {
-            return matches(item, mp.Base);
+            return matches(item, mp.Base, 0);
         }
-        public static bool matches(ToolKWProficiencyFeature f, Item tool)
+        public static bool matches(ToolKWProficiencyFeature f, Item tool, int classlevel)
         {
-            return matches(tool, f.Condition);
+            return matches(tool, f.Condition, classlevel);
         }
         public static List<Spell> filterSpell(string expression, String SpellcastingID, int classlevel = 0)
         {
