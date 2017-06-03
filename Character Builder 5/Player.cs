@@ -1622,6 +1622,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             Dictionary<Skill, double> ProfModifier = new Dictionary<Skill, double>();
             Dictionary<Skill, int> res = new Dictionary<Skill, int>();
             foreach (Skill s in Skill.skills.Values) res.Add(s, 0);
@@ -1681,6 +1682,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             double modifier = 0;
             int bonus = 0;
             if (ability == Ability.None) ability = s.Base;
@@ -1721,6 +1723,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             double modifier = 0;
             int bonus = 0;
             foreach (FeatureClass fc in fa)
@@ -1762,6 +1765,8 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
+
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
                 {
                     res.AddBonus(Utils.evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
@@ -1785,6 +1790,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
                 {
                     bonus.AddBonus(Utils.evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
@@ -1822,6 +1828,7 @@ namespace Character_Builder_5
             }
             if (offHand == null && !(mainHand is Weapon && mainHand.Keywords.Exists(t=>t.Name=="two-handed"))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
+            if (mainHand is Weapon) additionalKW.Add("mainhand");
             if (offHand is Shield) additionalKW.Add("shield");
             Dictionary<ACFeature, int> ways = new Dictionary<ACFeature, int>(new ObjectIdentityEqualityComparer());
             
@@ -1869,10 +1876,12 @@ namespace Character_Builder_5
             List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature||t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature,level,p.CollectOnUse(level, this));
             Item armor = getArmor();
             Item offHand = getOffHand();
+            Item mainHand = getMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (mainHand is Weapon) additionalKW.Add("mainhand");
             List<Weapon> countsAs = new List<Weapon>();
             Weapon weapon = null;
             foreach (FeatureClass fc in fa)
@@ -1997,6 +2006,7 @@ namespace Character_Builder_5
             if (offHand == null) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (getMainHand() is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int attackbonus = asa.ApplyMod(spellcastingModifier);
             attackbonus += getProficiency(level);
@@ -2043,6 +2053,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             Ability baseAbility = Ability.Dexterity;
             int bonus = 0;
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).InitiativeBonus != null && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "" && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).InitiativeBonus, asa, null, fc.classlevel, level);
@@ -2067,6 +2078,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             int bonus = 0;
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).ProficiencyBonus != null && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "" && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).ProficiencyBonus, asa, null, fc.classlevel, level);
             return prof + bonus;
@@ -2083,6 +2095,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int bonus = 0;
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SaveDCBonus != null && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "" && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).SaveDCBonus, asa, additionalKW, fc.classlevel);
@@ -2101,6 +2114,7 @@ namespace Character_Builder_5
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int bonus = 0;
             foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).AttackBonus != null && ((BonusFeature)fc.feature).AttackBonus.Trim() != "" && ((BonusFeature)fc.feature).AttackBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel, additionalKW)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).AttackBonus, asa, additionalKW, fc.classlevel);
