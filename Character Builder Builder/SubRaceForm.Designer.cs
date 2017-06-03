@@ -33,8 +33,6 @@
             this.abort = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.flavour = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.ParentRace = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,6 +47,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.features1 = new Character_Builder_Builder.Features();
             this.userControl11 = new Character_Builder_Builder.UserControl1();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.flavour = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -64,6 +66,10 @@
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -126,8 +132,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.flavour);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
             this.splitContainer2.Panel1.Controls.Add(this.ParentRace);
             this.splitContainer2.Panel1.Controls.Add(this.label5);
             this.splitContainer2.Panel1.Controls.Add(this.label3);
@@ -141,27 +146,6 @@
             this.splitContainer2.Size = new System.Drawing.Size(283, 443);
             this.splitContainer2.SplitterDistance = 196;
             this.splitContainer2.TabIndex = 0;
-            // 
-            // flavour
-            // 
-            this.flavour.AcceptsReturn = true;
-            this.flavour.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flavour.Location = new System.Drawing.Point(0, 80);
-            this.flavour.Multiline = true;
-            this.flavour.Name = "flavour";
-            this.flavour.Size = new System.Drawing.Size(283, 83);
-            this.flavour.TabIndex = 11;
-            this.flavour.Enter += new System.EventHandler(this.showPreview);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Flavour Text:";
             // 
             // ParentRace
             // 
@@ -322,6 +306,56 @@
             this.userControl11.Size = new System.Drawing.Size(1025, 24);
             this.userControl11.TabIndex = 9;
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 67);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.flavour);
+            this.splitContainer4.Panel1.Controls.Add(this.label2);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.imageChooser1);
+            this.splitContainer4.Size = new System.Drawing.Size(283, 96);
+            this.splitContainer4.SplitterDistance = 160;
+            this.splitContainer4.TabIndex = 10;
+            // 
+            // flavour
+            // 
+            this.flavour.AcceptsReturn = true;
+            this.flavour.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flavour.Location = new System.Drawing.Point(0, 13);
+            this.flavour.Multiline = true;
+            this.flavour.Name = "flavour";
+            this.flavour.Size = new System.Drawing.Size(160, 83);
+            this.flavour.TabIndex = 13;
+            this.flavour.TextChanged += new System.EventHandler(this.flavour_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(69, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Flavour Text:";
+            // 
+            // imageChooser1
+            // 
+            this.imageChooser1.AllowDrop = true;
+            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageChooser1.History = null;
+            this.imageChooser1.Image = null;
+            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
+            this.imageChooser1.Name = "imageChooser1";
+            this.imageChooser1.Size = new System.Drawing.Size(119, 96);
+            this.imageChooser1.TabIndex = 0;
+            // 
             // SubRaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,6 +389,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -378,9 +417,11 @@
         private System.Windows.Forms.WebBrowser preview;
         private System.Windows.Forms.GroupBox groupBox1;
         private Features features1;
-        private System.Windows.Forms.TextBox flavour;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox ParentRace;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.TextBox flavour;
+        private System.Windows.Forms.Label label2;
+        private ImageChooser imageChooser1;
     }
 }

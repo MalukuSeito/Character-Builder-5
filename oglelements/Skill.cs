@@ -8,6 +8,8 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Xsl;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Character_Builder_5
 {

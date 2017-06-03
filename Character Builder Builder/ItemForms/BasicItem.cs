@@ -11,7 +11,7 @@ using Character_Builder_5;
 
 namespace Character_Builder_Builder.ItemForms
 {
-    public partial class BasicItem : UserControl
+    public partial class BasicItem : UserControl, IImageEditor
     {
         private Item item = null;
         public Item Item {
@@ -54,6 +54,7 @@ namespace Character_Builder_Builder.ItemForms
                     EP.DataBindings.Add("Value", item.Price, "ep", true, DataSourceUpdateMode.OnPropertyChanged);
                     SP.DataBindings.Add("Value", item.Price, "sp", true, DataSourceUpdateMode.OnPropertyChanged);
                     CP.DataBindings.Add("Value", item.Price, "cp", true, DataSourceUpdateMode.OnPropertyChanged);
+                    ImageChanged?.Invoke(this, item.Image);
                 }
                 else
                 {
@@ -62,14 +63,18 @@ namespace Character_Builder_Builder.ItemForms
             }
         }
         private IMainEditor history;
+
+        public event ImageChanged ImageChanged;
+
         public IMainEditor HistoryManager
         {
             get { return history; }
-            set { history = value; KeywordControl.HistoryManager = history; }
+            set { history = value; KeywordControl.HistoryManager = history; imageChooser1.History = history; }
         }
         public BasicItem()
         {
             InitializeComponent();
+            imageChooser1.Image = this;
         }
 
         private void showPreview(object sender, EventArgs e)
@@ -80,6 +85,21 @@ namespace Character_Builder_Builder.ItemForms
         private void ItemName_TextChanged(object sender, EventArgs e)
         {
             history?.MakeHistory(sender.ToString());
+        }
+
+        private void Description_TextChanged(object sender, EventArgs e)
+        {
+            history?.MakeHistory(sender.ToString());
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            if (item != null)
+            {
+                item.Image = Image;
+                ImageChanged?.Invoke(this, Image);
+                history?.ShowPreview();
+            }
         }
     }
 }

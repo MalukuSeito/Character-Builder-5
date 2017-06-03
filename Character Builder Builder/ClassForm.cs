@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class ClassForm : Form, IMainEditor
+    public partial class ClassForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<ClassDefinition> UndoBuffer = new LinkedList<ClassDefinition>();
         public LinkedList<ClassDefinition> RedoBuffer = new LinkedList<ClassDefinition>();
@@ -38,7 +38,9 @@ namespace Character_Builder_Builder
                 else cls.MulticlassingCondition = "true";
             }
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
+            imageChooser1.History = this;
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             MulticlassSpellLevels.HistoryManager = this;
@@ -81,6 +83,7 @@ namespace Character_Builder_Builder
             featuresMultiClass.features = cls.MulticlassingFeatures;
             classFeats.Items = cls.FeaturesToAddClassKeywordTo;
             classSpells.Items = cls.SpellsToAddClassKeywordTo;
+            ImageChanged?.Invoke(this, cls.Image);
             decriptions1.descriptions = cls.Descriptions;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
@@ -167,6 +170,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -250,6 +255,13 @@ namespace Character_Builder_Builder
         private void HD_ValueChanged(object sender, EventArgs e)
         {
             MakeHistory("HPAverage");
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            cls.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

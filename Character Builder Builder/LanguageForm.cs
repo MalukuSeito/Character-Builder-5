@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class LanguageForm : Form, IMainEditor
+    public partial class LanguageForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<Language> UndoBuffer = new LinkedList<Language>();
         public LinkedList<Language> RedoBuffer = new LinkedList<Language>();
@@ -26,7 +26,9 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.lang = race;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
+            imageChooser1.History = this;
         }
 
         private void refresh()
@@ -43,6 +45,7 @@ namespace Character_Builder_Builder
             source.DataBindings.Add("Text", lang, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
             description.DataBindings.Clear();
             NewlineFormatter.Add(description.DataBindings, "Text", lang, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
+            ImageChanged?.Invoke(this, lang.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(lang.toHTML());
@@ -126,6 +129,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -198,6 +203,13 @@ namespace Character_Builder_Builder
         private void Script_TextChanged(object sender, EventArgs e)
         {
             MakeHistory("Script");
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            lang.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

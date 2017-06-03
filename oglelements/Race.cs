@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Character_Builder_5
 {
@@ -32,6 +34,34 @@ namespace Character_Builder_5
         static public Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         string filename;
+        [XmlIgnore]
+        public Bitmap Image {
+            set
+            { // serialize
+                if (value == null) ImageData = null;
+                else using (MemoryStream ms = new MemoryStream())
+                {
+                    value.Save(ms, ImageFormat.Png);
+                    ImageData = ms.ToArray();
+                }
+            }
+            get
+            { // deserialize
+                if (ImageData == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    using (MemoryStream ms = new MemoryStream(ImageData))
+                    {
+                        return new Bitmap(ms);
+                    }
+                }
+            }
+        }
+
+        public byte[] ImageData { get; set; }
         public void register(string file)
         {
             filename = file;
@@ -44,6 +74,7 @@ namespace Character_Builder_5
                 ShowSource = true;
             }
             else simple.Add(Name, this);
+
         }
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),

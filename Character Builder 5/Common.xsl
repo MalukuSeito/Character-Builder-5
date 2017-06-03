@@ -4,7 +4,7 @@
 	<div class="Header"><xsl:apply-templates select="Name" /> </div><xsl:call-template name="newline-to-paragraph">
 				<xsl:with-param name="input"><xsl:copy-of select="Text" /></xsl:with-param>
 			</xsl:call-template>
-	<table cellspacing="0" cellborder="0" width="100%"><tr><th> </th><th><xsl:apply-templates select="TableName" /></th></tr><xsl:apply-templates select="Entries/TableEntry" /></table>
+	<table cellspacing="0" cellborder="0" width="100%"><tr><th><xsl:comment></xsl:comment></th><th><xsl:comment></xsl:comment><xsl:apply-templates select="TableName" /></th></tr><xsl:apply-templates select="Entries/TableEntry" /></table>
 </xsl:template>
 <xsl:template match="Descriptions/Description">
 	<div class="Header"><xsl:apply-templates select="Name" /> </div><xsl:call-template name="newline-to-paragraph">
@@ -25,7 +25,7 @@
 
 
 
-<xsl:template match="TableEntry"><tr><th valign="top"><xsl:value-of select="MinRoll"/><xsl:if test="not(MinRoll = MaxRoll)">-<xsl:value-of select="MaxRoll"/></xsl:if></th><td><xsl:if test="boolean(Title/node())"><span class="Header"><xsl:apply-templates select="Title" />: </span></xsl:if><xsl:apply-templates select="Text" /></td></tr></xsl:template>
+<xsl:template match="TableEntry"><tr><th valign="top"><xsl:comment></xsl:comment><xsl:value-of select="MinRoll"/><xsl:if test="not(MinRoll = MaxRoll)">-<xsl:value-of select="MaxRoll"/></xsl:if></th><td><xsl:comment></xsl:comment><xsl:if test="boolean(Title/node())"><span class="Header"><xsl:apply-templates select="Title" />: </span></xsl:if><xsl:apply-templates select="Text" /></td></tr></xsl:template>
 <xsl:template match="text()" name="insertBreaks">
    <xsl:param name="pText" select="."/>
    <xsl:choose>
@@ -261,7 +261,22 @@ p.morelines {
 .Names {
 	margin-top:10px;
 }	
+img {
+  display:block;
+  width:90%;
+  height:auto
+}
 </xsl:template>
+
+  <xsl:template match="ImageData">
+    <center style="margin-bottom:20px">
+    <xsl:element name="img">
+      <xsl:attribute name ="src">
+        data:image/png;base64,<xsl:apply-templates/>
+      </xsl:attribute>
+    </xsl:element>
+    </center>
+  </xsl:template>
 
 </xsl:stylesheet>
 

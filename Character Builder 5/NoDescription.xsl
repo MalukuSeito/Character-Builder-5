@@ -10,4 +10,5 @@
   <xsl:template match="Descriptions"/>
   <xsl:template match="Description"/>
   <xsl:template match="Flavour"/>
+  <xsl:template match="ImageData"/>
 </xsl:stylesheet>

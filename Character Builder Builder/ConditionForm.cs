@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class ConditionForm : Form, IMainEditor
+    public partial class ConditionForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<Condition> UndoBuffer = new LinkedList<Condition>();
         public LinkedList<Condition> RedoBuffer = new LinkedList<Condition>();
@@ -26,7 +26,9 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.lang = race;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
+            imageChooser1.History = this;
         }
 
         private void refresh()
@@ -39,6 +41,7 @@ namespace Character_Builder_Builder
             source.DataBindings.Add("Text", lang, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
             description.DataBindings.Clear();
             NewlineFormatter.Add(description.DataBindings, "Text", lang, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
+            ImageChanged?.Invoke(this, lang.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(lang.toHTML());
@@ -122,6 +125,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -185,6 +190,13 @@ namespace Character_Builder_Builder
         private void RaceForm_Shown(object sender, EventArgs e)
         {
             doHistory = true;
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            lang.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

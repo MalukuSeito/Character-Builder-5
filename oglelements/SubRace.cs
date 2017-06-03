@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Character_Builder_5
 {
@@ -65,6 +67,35 @@ namespace Character_Builder_5
         public String Description { get; set; }
         [XmlElement(ElementName = "ParentRace")]
         public String RaceName { get; set; }
+        [XmlIgnore]
+        public Bitmap Image
+        {
+            set
+            { // serialize
+                if (value == null) ImageData = null;
+                else using (MemoryStream ms = new MemoryStream())
+                {
+                    value.Save(ms, ImageFormat.Png);
+                    ImageData = ms.ToArray();
+                }
+            }
+            get
+            { // deserialize
+                if (ImageData == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    using (MemoryStream ms = new MemoryStream(ImageData))
+                    {
+                        return new Bitmap(ms);
+                    }
+                }
+            }
+        }
+
+        public byte[] ImageData { get; set; }
         [XmlIgnore]
         public Race ParentRace
         {

@@ -11,6 +11,7 @@ using Microsoft.VisualBasic;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Character_Builder_5
 {
@@ -3208,6 +3209,14 @@ namespace Character_Builder_5
             {
                 e.Effect = DragDropEffects.Copy;
             }
+            else if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                String s = (String)e.Data.GetData(DataFormats.StringFormat);
+                if (s.StartsWith("data:"))
+                {
+                    e.Effect = DragDropEffects.Copy;
+                }
+            }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -3227,6 +3236,27 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 Player.current.Portrait = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 UpdatePersonal();
+            }
+            else if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                String s = (String)e.Data.GetData(DataFormats.StringFormat);
+                Match m = Regex.Match(s, @"data:\s*;\s*base64\s*,\s*(?<data>.+)");
+                if (m.Success)
+                {
+                    try
+                    {
+                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
+                        {
+                            Player.MakeHistory("");
+                            Player.current.Portrait = new Bitmap(ms);
+                            UpdatePersonal();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.Forms.MessageBox.Show(ex.Message + "\n" + ex.InnerException + "\n" + ex.StackTrace, "Error loading drag/drop object ");
+                    }
+                }
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -3256,6 +3286,27 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 Player.current.FactionImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 UpdatePersonal();
+            }
+            else if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                String s = (String)e.Data.GetData(DataFormats.StringFormat);
+                Match m = Regex.Match(s, @"data:\s*;\s*base64\s*,\s*(?<data>.+)");
+                if (m.Success)
+                {
+                    try
+                    {
+                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
+                        {
+                            Player.MakeHistory("");
+                            Player.current.FactionImage = new Bitmap(ms);
+                            UpdatePersonal();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.Forms.MessageBox.Show(ex.Message + "\n" + ex.InnerException + "\n" + ex.StackTrace, "Error loading drag/drop object ");
+                    }
+                }
             }
             else if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {

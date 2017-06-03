@@ -106,7 +106,7 @@
     <Compile Include="Items\Armor.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Items\MagicCategory.cs" />
-    <Compile Include="Items\MagicProperty.cs" />
+    <Compile Include="MagicProperty.cs" />
     <Compile Include="Items\Pack.cs" />
     <Compile Include="Items\Scroll.cs" />
     <Compile Include="Items\Shield.cs" />

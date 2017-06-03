@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class SubRaceForm : Form, IMainEditor
+    public partial class SubRaceForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<SubRace> UndoBuffer = new LinkedList<SubRace>();
         public LinkedList<SubRace> RedoBuffer = new LinkedList<SubRace>();
@@ -26,9 +26,11 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.race = race;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
+            imageChooser1.History = this;
             Race.ImportAll();
             foreach (string s in Race.simple.Keys)
             {
@@ -56,6 +58,7 @@ namespace Character_Builder_Builder
             preview.Document.Write(race.toHTML());
             ParentRace.DataBindings.Clear();
             ParentRace.DataBindings.Add("Text", race, "RaceName", true, DataSourceUpdateMode.OnPropertyChanged);
+            ImageChanged?.Invoke(this, race.Image);
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -138,6 +141,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -216,6 +221,13 @@ namespace Character_Builder_Builder
         private void ParentRace_TextChanged(object sender, EventArgs e)
         {
             MakeHistory("Parent");
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            race.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

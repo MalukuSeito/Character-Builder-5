@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class MagicForm : Form, IMainEditor
+    public partial class MagicForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<MagicProperty> UndoBuffer = new LinkedList<MagicProperty>();
         public LinkedList<MagicProperty> RedoBuffer = new LinkedList<MagicProperty>();
@@ -26,6 +26,7 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.cls = cls;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
             Attuned.HistoryManager = this;
             Equipped.HistoryManager = this;
@@ -33,10 +34,11 @@ namespace Character_Builder_Builder
             OnUse.HistoryManager = this;
             AttunedEquipped.HistoryManager = this;
             AttunedOnUse.HistoryManager = this;
+            imageChooser1.History = this;
             foreach (Slot s in Enum.GetValues(typeof(Slot))) Slot.Items.Add(s);
             foreach (Rarity s in Enum.GetValues(typeof(Rarity))) Rarity.Items.Add(s);
             Item.ImportAll();
-
+            
         }
 
         private void refresh()
@@ -67,6 +69,7 @@ namespace Character_Builder_Builder
             OnUse.features = cls.OnUseFeatures;
             AttunedOnUse.features = cls.AttunedOnUseFeatures;
             AttunedEquipped.features = cls.AttunedEquipFeatures;
+            ImageChanged?.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.toHTML());
@@ -152,6 +155,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -271,6 +276,13 @@ namespace Character_Builder_Builder
             }
             preview.Refresh();
 
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            cls.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

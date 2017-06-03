@@ -56,7 +56,9 @@
 			<xsl:when test="Spell/Level = '9'"><div class="Requirement">Scroll, legendary</div><div class="Info">Attack Bonus +11, Save DC 19</div></xsl:when>
 			<xsl:otherwise><div class="Requirement">Scroll, varies</div></xsl:otherwise>
 		</xsl:choose>
-		
+      <xsl:if test="boolean(ImageData/node())">
+        <xsl:apply-templates select="ImageData"/>
+      </xsl:if>
 		<div class="Description">
 			<p>A spell scroll bears the words of a single spell, written in a mystical cipher. If the spell is on your class's spell list, you can use an action to read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible.</p>
 			<p class="morelines">If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spell casting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.</p>

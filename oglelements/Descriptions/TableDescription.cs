@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Character_Builder_5
 {
@@ -12,7 +13,8 @@ namespace Character_Builder_5
         public String UniqueID { get; set; }
         public TableDescription() { }
         public String TableName { get; set; }
-        public List<TableEntry> Entries = new List<TableEntry>();
+        [XmlArrayItem(Type = typeof(TableEntry))]
+        public List<TableEntry> Entries { get; set; } = new List<TableEntry>();
         public TableDescription(String name, String text, String tablename, String uniqueID, int amount=1) : base(name,text)
         {
             Name = name;

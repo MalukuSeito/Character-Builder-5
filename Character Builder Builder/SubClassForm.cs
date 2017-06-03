@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class SubClassForm : Form, IMainEditor
+    public partial class SubClassForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<SubClass> UndoBuffer = new LinkedList<SubClass>();
         public LinkedList<SubClass> RedoBuffer = new LinkedList<SubClass>();
@@ -26,7 +26,9 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.cls = cls;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
+            imageChooser1.History = this;
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             MulticlassSpellLevels.HistoryManager = this;
@@ -61,6 +63,7 @@ namespace Character_Builder_Builder
             featuresFirstClass.features = cls.FirstClassFeatures;
             featuresMultiClass.features = cls.MulticlassingFeatures;
             decriptions1.descriptions = cls.Descriptions;
+            ImageChanged.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.toHTML());
@@ -83,7 +86,8 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            string s = cls.toHTML();
+            preview.Document.Write(s);
             preview.Refresh();
         }
 
@@ -147,6 +151,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -225,6 +231,13 @@ namespace Character_Builder_Builder
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             MakeHistory("SheetName");
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            cls.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Xsl;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Character_Builder_5
 {
@@ -81,7 +83,35 @@ namespace Character_Builder_5
         static private Dictionary<String, Background> simple= new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-
+        [XmlIgnore]
+        public Bitmap Image
+        {
+            set
+            { // serialize
+                if (value == null) ImageData = null;
+                else using (MemoryStream ms = new MemoryStream())
+                {
+                    value.Save(ms, ImageFormat.Png);
+                    ImageData = ms.ToArray();
+                }
+            }
+            get
+            { // deserialize
+                if (ImageData == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    using (MemoryStream ms = new MemoryStream(ImageData))
+                    {
+                        return new Bitmap(ms);
+                    }
+                }
+            }
+        }
+        [XmlElement(Order = 11)]
+        public byte[] ImageData { get; set; }
         public void register(string file)
         {
             filename = file;

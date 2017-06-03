@@ -41,9 +41,15 @@
             this.label4 = new System.Windows.Forms.Label();
             this.Speakers = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.description = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -181,27 +187,55 @@
             this.label5.TabIndex = 22;
             this.label5.Text = "Typical Speakers:";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(1, 123);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.description);
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.imageChooser1);
+            this.splitContainer1.Size = new System.Drawing.Size(326, 137);
+            this.splitContainer1.SplitterDistance = 205;
+            this.splitContainer1.TabIndex = 24;
+            // 
             // description
             // 
             this.description.AcceptsReturn = true;
             this.description.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.description.Location = new System.Drawing.Point(1, 136);
+            this.description.Location = new System.Drawing.Point(0, 13);
             this.description.Multiline = true;
             this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(326, 124);
-            this.description.TabIndex = 25;
+            this.description.Size = new System.Drawing.Size(205, 124);
+            this.description.TabIndex = 27;
             this.description.TextChanged += new System.EventHandler(this.description_TextChanged);
-            this.description.Leave += new System.EventHandler(this.showPreview);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(1, 123);
+            this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 24;
+            this.label2.TabIndex = 26;
             this.label2.Text = "Description:";
+            // 
+            // imageChooser1
+            // 
+            this.imageChooser1.AllowDrop = true;
+            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageChooser1.History = null;
+            this.imageChooser1.Image = null;
+            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
+            this.imageChooser1.Name = "imageChooser1";
+            this.imageChooser1.Size = new System.Drawing.Size(117, 137);
+            this.imageChooser1.TabIndex = 0;
             // 
             // LanguageForm
             // 
@@ -209,8 +243,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(578, 323);
-            this.Controls.Add(this.description);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.Speakers);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.Script);
@@ -229,6 +262,11 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RaceForm_FormClosing);
             this.Shown += new System.EventHandler(this.RaceForm_Shown);
             this.panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -249,7 +287,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox Speakers;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox description;
         private System.Windows.Forms.Label label2;
+        private ImageChooser imageChooser1;
     }
 }

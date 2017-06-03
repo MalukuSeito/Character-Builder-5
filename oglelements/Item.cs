@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Xsl;
 using XCalc;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Character_Builder_5
 {
@@ -51,6 +53,35 @@ namespace Character_Builder_5
         static public Dictionary<String, List<Item>> ItemLists = new Dictionary<string, List<Item>>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
+        [XmlIgnore]
+        public Bitmap Image
+        {
+            set
+            { // serialize
+                if (value == null) ImageData = null;
+                else using (MemoryStream ms = new MemoryStream())
+                {
+                    value.Save(ms, ImageFormat.Png);
+                    ImageData = ms.ToArray();
+                }
+            }
+            get
+            { // deserialize
+                if (ImageData == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    using (MemoryStream ms = new MemoryStream(ImageData))
+                    {
+                        return new Bitmap(ms);
+                    }
+                }
+            }
+        }
+
+        public byte[] ImageData { get; set; }
         public void register(String file)
         {
             filename = file;

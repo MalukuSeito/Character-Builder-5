@@ -12,6 +12,9 @@
 	<body>
 		<div class="Name"><xsl:value-of select="Name"/></div>
 		<xsl:if test="boolean(Flavour/node())" ><div class="Flavour"><xsl:apply-templates select="Flavour"/></div></xsl:if>
+    <xsl:if test="boolean(ImageData/node())">
+      <xsl:apply-templates select="ImageData"/>
+    </xsl:if>
 		<div class="Description">
 			<xsl:call-template name="newline-to-paragraph">
 				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>

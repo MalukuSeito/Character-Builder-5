@@ -18,7 +18,10 @@
 	<body>
 		<div class="Name"><xsl:value-of select="Name"/></div>
 		<xsl:if test="boolean(Requirement/node()) or (boolean(Rarity/node()) and Rarity != 'None') or count(AttunementFeatures/*[text()]) > 0 or count(AttunedEquipFeatures/*[text()]) > 0 or count(AttunedOnUseFeatures/*[text()]) > 0" ><div class="Requirement"><xsl:if test="boolean(Requirement/node())"><xsl:apply-templates select="Requirement"/><xsl:if test="boolean(Rarity/node()) and Rarity != 'None' and not(contains(translate(Requirement, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), translate(Rarity, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'))) and not(Rarity = 'VeryRare' and contains(translate(Requirement, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'very rare'))">, <xsl:if test="Rarity = 'VeryRare'">very rare</xsl:if><xsl:if test="Rarity != 'VeryRare'"><span style="text-transform:lowercase"><xsl:value-of select="Rarity"/></span></xsl:if></xsl:if></xsl:if><xsl:if test="boolean(Rarity/node()) and Rarity != 'None' and not(boolean(Requirement/node()))"><xsl:if test="Rarity = 'VeryRare'">Very rare</xsl:if><xsl:if test="Rarity != 'VeryRare'"><xsl:value-of select="Rarity"/></xsl:if></xsl:if><xsl:if test="(count(AttunementFeatures/*[text()]) > 0 or count(AttunedEquipFeatures/*[text()]) > 0 or count(AttunedOnUseFeatures/*[text()]) > 0) and not(contains(Requirement, 'requires attunement')) and not(boolean(Requirement/node()) or (boolean(Rarity/node()) and Rarity != 'None'))">(Requires attunement)</xsl:if><xsl:if test="(count(AttunementFeatures/*[text()]) > 0 or count(AttunedEquipFeatures/*[text()]) > 0 or count(AttunedOnUseFeatures/*[text()]) > 0) and not(contains(Requirement, 'requires attunement')) and (boolean(Requirement/node()) or (boolean(Rarity/node()) and Rarity != 'None'))"> (requires attunement)</xsl:if></div></xsl:if>
-		<div class="Description">
+    <xsl:if test="boolean(ImageData/node())">
+      <xsl:apply-templates select="ImageData"/>
+    </xsl:if>
+    <div class="Description">
 			<xsl:call-template name="newline-to-paragraph">
 				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>
 			</xsl:call-template>

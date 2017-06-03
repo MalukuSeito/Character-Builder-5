@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Character_Builder_Builder
 {
-    public partial class BackgroundForm : Form, IMainEditor
+    public partial class BackgroundForm : Form, IMainEditor, IImageEditor
     {
         public LinkedList<Background> UndoBuffer = new LinkedList<Background>();
         public LinkedList<Background> RedoBuffer = new LinkedList<Background>();
@@ -26,9 +26,11 @@ namespace Character_Builder_Builder
             InitializeComponent();
             this.cls = cls;
             userControl11.Editor = this;
+            imageChooser1.Image = this;
             refresh();
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
+            imageChooser1.History = this;
             Spell.ImportAll();
             
         }
@@ -51,6 +53,7 @@ namespace Character_Builder_Builder
             ideal.DataSource = new BindingList<TableEntry>(cls.Ideal);
             bond.DataSource = new BindingList<TableEntry>(cls.Bond);
             flaw.DataSource = new BindingList<TableEntry>(cls.Flaw);
+            ImageChanged?.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.toHTML());
@@ -135,6 +138,8 @@ namespace Character_Builder_Builder
         }
 
         public event SavedEvent Saved;
+        public event ImageChanged ImageChanged;
+
         public bool Save()
         {
             if (name.Text == null || name.Text.Length == 0)
@@ -233,6 +238,13 @@ namespace Character_Builder_Builder
         private void traits_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             MakeHistory(null);
+        }
+
+        public void SetImage(Bitmap Image)
+        {
+            cls.Image = Image;
+            ImageChanged?.Invoke(this, Image);
+            ShowPreview();
         }
     }
 }

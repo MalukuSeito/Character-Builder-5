@@ -34,8 +34,10 @@
             this.abort = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.flavour = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
             this.SheetName = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.ParentClass = new System.Windows.Forms.ComboBox();
@@ -71,6 +73,10 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -106,7 +112,7 @@
             this.panel1.Controls.Add(this.save);
             this.panel1.Controls.Add(this.abort);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(1, 590);
+            this.panel1.Location = new System.Drawing.Point(1, 647);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1018, 30);
             this.panel1.TabIndex = 0;
@@ -148,7 +154,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(768, 566);
+            this.splitContainer1.Size = new System.Drawing.Size(768, 623);
             this.splitContainer1.SplitterDistance = 321;
             this.splitContainer1.TabIndex = 11;
             // 
@@ -161,8 +167,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.flavour);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
             this.splitContainer2.Panel1.Controls.Add(this.SheetName);
             this.splitContainer2.Panel1.Controls.Add(label5);
             this.splitContainer2.Panel1.Controls.Add(this.label13);
@@ -175,31 +180,59 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(321, 566);
-            this.splitContainer2.SplitterDistance = 203;
+            this.splitContainer2.Size = new System.Drawing.Size(321, 623);
+            this.splitContainer2.SplitterDistance = 223;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 66);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.flavour);
+            this.splitContainer4.Panel1.Controls.Add(this.label2);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.imageChooser1);
+            this.splitContainer4.Size = new System.Drawing.Size(321, 90);
+            this.splitContainer4.SplitterDistance = 184;
+            this.splitContainer4.TabIndex = 26;
             // 
             // flavour
             // 
             this.flavour.AcceptsReturn = true;
             this.flavour.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flavour.Location = new System.Drawing.Point(0, 79);
+            this.flavour.Location = new System.Drawing.Point(0, 13);
             this.flavour.Multiline = true;
             this.flavour.Name = "flavour";
-            this.flavour.Size = new System.Drawing.Size(321, 57);
-            this.flavour.TabIndex = 27;
+            this.flavour.Size = new System.Drawing.Size(184, 77);
+            this.flavour.TabIndex = 29;
             this.flavour.TextChanged += new System.EventHandler(this.flavour_TextChanged);
-            this.flavour.Enter += new System.EventHandler(this.showPreview);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 66);
+            this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 13);
-            this.label2.TabIndex = 26;
+            this.label2.TabIndex = 28;
             this.label2.Text = "Flavour Text:";
+            // 
+            // imageChooser1
+            // 
+            this.imageChooser1.AllowDrop = true;
+            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageChooser1.History = null;
+            this.imageChooser1.Image = null;
+            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
+            this.imageChooser1.Name = "imageChooser1";
+            this.imageChooser1.Size = new System.Drawing.Size(133, 90);
+            this.imageChooser1.TabIndex = 0;
             // 
             // SheetName
             // 
@@ -215,7 +248,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label13.Location = new System.Drawing.Point(0, 136);
+            this.label13.Location = new System.Drawing.Point(0, 156);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(66, 13);
             this.label13.TabIndex = 22;
@@ -225,7 +258,7 @@
             // 
             this.ParentClass.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ParentClass.FormattingEnabled = true;
-            this.ParentClass.Location = new System.Drawing.Point(0, 149);
+            this.ParentClass.Location = new System.Drawing.Point(0, 169);
             this.ParentClass.Name = "ParentClass";
             this.ParentClass.Size = new System.Drawing.Size(321, 21);
             this.ParentClass.TabIndex = 21;
@@ -237,7 +270,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label3.Location = new System.Drawing.Point(0, 170);
+            this.label3.Location = new System.Drawing.Point(0, 190);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 6;
@@ -248,7 +281,7 @@
             this.source.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.source.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.source.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.source.Location = new System.Drawing.Point(0, 183);
+            this.source.Location = new System.Drawing.Point(0, 203);
             this.source.Name = "source";
             this.source.Size = new System.Drawing.Size(321, 20);
             this.source.TabIndex = 7;
@@ -290,8 +323,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.MulticlassSpellLevels);
             this.splitContainer3.Panel2.Controls.Add(this.label8);
-            this.splitContainer3.Size = new System.Drawing.Size(321, 359);
-            this.splitContainer3.SplitterDistance = 196;
+            this.splitContainer3.Size = new System.Drawing.Size(321, 396);
+            this.splitContainer3.SplitterDistance = 216;
             this.splitContainer3.TabIndex = 0;
             // 
             // groupBox2
@@ -300,7 +333,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(321, 196);
+            this.groupBox2.Size = new System.Drawing.Size(321, 216);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Descriptions";
@@ -319,8 +352,8 @@
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.decriptions1);
-            this.splitContainer7.Size = new System.Drawing.Size(315, 177);
-            this.splitContainer7.SplitterDistance = 81;
+            this.splitContainer7.Size = new System.Drawing.Size(315, 197);
+            this.splitContainer7.SplitterDistance = 89;
             this.splitContainer7.TabIndex = 0;
             // 
             // description
@@ -330,7 +363,7 @@
             this.description.Location = new System.Drawing.Point(0, 0);
             this.description.Multiline = true;
             this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(315, 81);
+            this.description.Size = new System.Drawing.Size(315, 89);
             this.description.TabIndex = 0;
             // 
             // decriptions1
@@ -341,7 +374,7 @@
             this.decriptions1.Location = new System.Drawing.Point(0, 0);
             this.decriptions1.Name = "decriptions1";
             this.decriptions1.preview = this.preview;
-            this.decriptions1.Size = new System.Drawing.Size(315, 92);
+            this.decriptions1.Size = new System.Drawing.Size(315, 104);
             this.decriptions1.TabIndex = 0;
             // 
             // preview
@@ -351,7 +384,7 @@
             this.preview.Location = new System.Drawing.Point(769, 24);
             this.preview.MinimumSize = new System.Drawing.Size(20, 20);
             this.preview.Name = "preview";
-            this.preview.Size = new System.Drawing.Size(250, 566);
+            this.preview.Size = new System.Drawing.Size(250, 623);
             this.preview.TabIndex = 10;
             // 
             // MulticlassSpellLevels
@@ -363,7 +396,7 @@
             this.MulticlassSpellLevels.Items = null;
             this.MulticlassSpellLevels.Location = new System.Drawing.Point(0, 13);
             this.MulticlassSpellLevels.Name = "MulticlassSpellLevels";
-            this.MulticlassSpellLevels.Size = new System.Drawing.Size(321, 146);
+            this.MulticlassSpellLevels.Size = new System.Drawing.Size(321, 163);
             this.MulticlassSpellLevels.Start = 1;
             this.MulticlassSpellLevels.TabIndex = 4;
             // 
@@ -383,7 +416,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(443, 566);
+            this.groupBox1.Size = new System.Drawing.Size(443, 623);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Features";
@@ -403,8 +436,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(437, 547);
-            this.splitContainer5.SplitterDistance = 239;
+            this.splitContainer5.Size = new System.Drawing.Size(437, 604);
+            this.splitContainer5.SplitterDistance = 263;
             this.splitContainer5.TabIndex = 0;
             // 
             // features1
@@ -416,7 +449,7 @@
             this.features1.Location = new System.Drawing.Point(0, 13);
             this.features1.Name = "features1";
             this.features1.preview = this.preview;
-            this.features1.Size = new System.Drawing.Size(437, 226);
+            this.features1.Size = new System.Drawing.Size(437, 250);
             this.features1.TabIndex = 1;
             // 
             // label4
@@ -445,8 +478,8 @@
             // 
             this.splitContainer6.Panel2.Controls.Add(this.featuresMultiClass);
             this.splitContainer6.Panel2.Controls.Add(this.label7);
-            this.splitContainer6.Size = new System.Drawing.Size(437, 304);
-            this.splitContainer6.SplitterDistance = 157;
+            this.splitContainer6.Size = new System.Drawing.Size(437, 337);
+            this.splitContainer6.SplitterDistance = 174;
             this.splitContainer6.TabIndex = 0;
             // 
             // featuresFirstClass
@@ -458,7 +491,7 @@
             this.featuresFirstClass.Location = new System.Drawing.Point(0, 13);
             this.featuresFirstClass.Name = "featuresFirstClass";
             this.featuresFirstClass.preview = this.preview;
-            this.featuresFirstClass.Size = new System.Drawing.Size(437, 144);
+            this.featuresFirstClass.Size = new System.Drawing.Size(437, 161);
             this.featuresFirstClass.TabIndex = 3;
             // 
             // label6
@@ -480,7 +513,7 @@
             this.featuresMultiClass.Location = new System.Drawing.Point(0, 13);
             this.featuresMultiClass.Name = "featuresMultiClass";
             this.featuresMultiClass.preview = this.preview;
-            this.featuresMultiClass.Size = new System.Drawing.Size(437, 130);
+            this.featuresMultiClass.Size = new System.Drawing.Size(437, 146);
             this.featuresMultiClass.TabIndex = 3;
             // 
             // label7
@@ -507,7 +540,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(1020, 620);
+            this.ClientSize = new System.Drawing.Size(1020, 677);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.preview);
             this.Controls.Add(this.userControl11);
@@ -528,6 +561,11 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel1.PerformLayout();
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
@@ -585,8 +623,10 @@
         private System.Windows.Forms.Label label6;
         private Features featuresMultiClass;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox SheetName;
+        private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.TextBox flavour;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox SheetName;
+        private ImageChooser imageChooser1;
     }
 }

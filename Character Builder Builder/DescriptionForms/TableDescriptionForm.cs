@@ -20,6 +20,7 @@ namespace Character_Builder_Builder.DescriptionForms
             InitializeComponent();
             name.DataBindings.Add("Text", td, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
             descText.DataBindings.Add("Text", td, "Text", true, DataSourceUpdateMode.OnPropertyChanged);
+            amount.DataBindings.Add("Value", td, "Amount", true, DataSourceUpdateMode.OnPropertyChanged);
             dataGridView1.DataSource = new BindingList<TableEntry>(td.Entries);
         }
 
