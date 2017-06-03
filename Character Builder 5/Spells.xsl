@@ -43,7 +43,7 @@
 <xsl:template match="Keywords">
 	<div class="Keyword"><xsl:for-each select="Keyword[not(Name='somatic' or Name='verbal' or Name='illusion' or Name='abjuration' or Name='conjuration' or Name='divination' or Name='evocation' or Name='enchantment' or Name='necromancy' or Name='transmutation' or Name='cantrip' or Name='ritual')]|Range|Versatile|Save"><xsl:sort select="Name" /><xsl:apply-templates select="." /><xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if></xsl:for-each></div>
 </xsl:template>
-<xsl:template match="Level">
+<xsl:template match="Spell/Level">
 	<xsl:if test="text() > 0"><xsl:call-template name="FormatRanking"><xsl:with-param name="Value"><xsl:value-of select="text()"/></xsl:with-param></xsl:call-template>-level </xsl:if>
 </xsl:template>
 </xsl:stylesheet>

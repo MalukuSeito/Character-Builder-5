@@ -328,7 +328,8 @@ namespace Character_Builder_Builder
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
             FeatCats.SelectedItem = s;
-            restore(FeatCollection, scroll, id);
+            if (s == null) FeatCollection.Items.Clear();
+            else restore(FeatCollection, scroll, id);
         }
 
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
@@ -589,7 +590,8 @@ namespace Character_Builder_Builder
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
             ItemCat.SelectedItem = s;
-            restore(ItemBox, scroll, id);
+            if (s == null) ItemBox.Items.Clear();
+            else restore(ItemBox, scroll, id);
         }
 
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -879,7 +881,8 @@ namespace Character_Builder_Builder
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
             magicCatBox.SelectedItem = s;
-            restore(magicBox, scroll, id);
+            if (s == null) magicBox.Items.Clear();
+            else restore(magicBox, scroll, id);
         }
     }
 }

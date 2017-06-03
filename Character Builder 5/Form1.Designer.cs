@@ -49,6 +49,7 @@
             this.includeResourcesInSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preservePDFFormsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSpilt = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.MoneyButton = new System.Windows.Forms.Button();
@@ -357,7 +358,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -674,6 +674,16 @@
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Text = "&Make default editor for .cb5 files";
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Click += new System.EventHandler(this.makeDefaultEditorForcb5FilesToolStripMenuItem_Click);
+            // 
+            // showDescriptionToolStripMenuItem
+            // 
+            this.showDescriptionToolStripMenuItem.Checked = true;
+            this.showDescriptionToolStripMenuItem.CheckOnClick = true;
+            this.showDescriptionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showDescriptionToolStripMenuItem.Name = "showDescriptionToolStripMenuItem";
+            this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showDescriptionToolStripMenuItem.Text = "&Show Description";
+            this.showDescriptionToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showDescriptionToolStripMenuItem_CheckedChanged);
             // 
             // mainSpilt
             // 
@@ -4485,16 +4495,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // showDescriptionToolStripMenuItem
-            // 
-            this.showDescriptionToolStripMenuItem.Checked = true;
-            this.showDescriptionToolStripMenuItem.CheckOnClick = true;
-            this.showDescriptionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showDescriptionToolStripMenuItem.Name = "showDescriptionToolStripMenuItem";
-            this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.showDescriptionToolStripMenuItem.Text = "&Show Description";
-            this.showDescriptionToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showDescriptionToolStripMenuItem_CheckedChanged);
             // 
             // Form1
             // 

@@ -70,6 +70,7 @@ namespace Character_Builder_5
             Categories.Clear();
             Boons.Clear();
             Features.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Features);
             foreach (var f in files)
             {

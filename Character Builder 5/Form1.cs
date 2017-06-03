@@ -1649,7 +1649,6 @@ namespace Character_Builder_5
                 Ability spellcastingability = (Ability)int.Parse(box.Controls[0].Name);
                 ModifiedSpell selected = (ModifiedSpell)choicer.SelectedItem;
                 selected.Modifikations.AddRange(from f in Player.current.getFeatures() where f is SpellModifyFeature && Utils.matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
-                List<Feature> ls =
                 selected.Modifikations = selected.Modifikations.Distinct().ToList();
                 selected.Info = Player.current.getAttack(selected, (selected.differentAbility == Ability.None?spellcastingability:selected.differentAbility));
                 if (selected != null)
@@ -2840,6 +2839,8 @@ namespace Character_Builder_5
                     {
                         layouting = true;
                         selected.Info = Player.current.getAttack(selected, selected.differentAbility);
+                        selected.Modifikations.AddRange(from f in Player.current.getFeatures() where f is SpellModifyFeature && Utils.matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
+                        selected.Modifikations = selected.Modifikations.Distinct().ToList();
                         if ((selected.Level > 0 && selected.RechargeModifier < RechargeModifier.AtWill) || (selected.Level == 0 && selected.RechargeModifier != RechargeModifier.Unmodified && selected.RechargeModifier < RechargeModifier.AtWill))
                         {
                             resourceused.Enabled = true;
