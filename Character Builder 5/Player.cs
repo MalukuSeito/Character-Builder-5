@@ -1891,7 +1891,7 @@ namespace Character_Builder_5
                 {
                     BonusFeature b = (BonusFeature)f;
                     if ((b.BaseItemChange != null && b.BaseItemChange.Trim() != "")) {
-                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW))
+                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW) || (p.Item != null && Utils.matches(b, p.Item, fc.classlevel, additionalKW, asa)))
                         {
                             try
                             {
