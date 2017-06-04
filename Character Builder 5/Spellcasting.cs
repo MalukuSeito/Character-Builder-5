@@ -72,7 +72,7 @@ namespace Character_Builder_5
                         SpellChoiceFeature scf = (SpellChoiceFeature)f;
                         if (s.UniqueID == scf.UniqueID && scf.AddTo == PreparationMode.Spellbook)
                         {
-                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, scf.Source), scf.KeywordsToAdd));
+                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, scf.Source), scf.KeywordsToAdd, false, false));
                         }
                     }
                 }

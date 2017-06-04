@@ -82,7 +82,7 @@ namespace Character_Builder_5
             displayShort = false;
             Modifikations = new List<Feature>();
         }
-        public ModifiedSpell(Spell s, IEnumerable<Keyword> kwToAdd, bool addAlwaysPreparedToName)
+        public ModifiedSpell(Spell s, IEnumerable<Keyword> kwToAdd, bool addAlwaysPreparedToName, bool includeResources = true)
         {
             Name = s.Name;
             Keywords = s.Keywords;
@@ -103,6 +103,8 @@ namespace Character_Builder_5
             used = false;
             displayShort = false;
             Modifikations = new List<Feature>();
+            this.includeResources = includeResources;
+            includeRecharge = includeResources;
         }
         public string recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)
         {
@@ -128,9 +130,8 @@ namespace Character_Builder_5
             return "Other";
         }
         public override string ToString() {
-        
-            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
-            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
+            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
+            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
         }
         public override List<Keyword> getKeywords()
         {
