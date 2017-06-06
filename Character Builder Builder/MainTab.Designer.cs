@@ -63,7 +63,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.spellsTab = new System.Windows.Forms.TabPage();
-            this.spellBox = new System.Windows.Forms.ListBox();
             this.NewSpell = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
             this.skillsTab = new System.Windows.Forms.TabPage();
@@ -143,6 +142,9 @@
             this.armorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.spellBox = new System.Windows.Forms.ListBox();
             this.TabControls.SuspendLayout();
             this.racesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -607,6 +609,8 @@
             // spellsTab
             // 
             this.spellsTab.Controls.Add(this.spellBox);
+            this.spellsTab.Controls.Add(this.label30);
+            this.spellsTab.Controls.Add(this.textBox1);
             this.spellsTab.Controls.Add(this.NewSpell);
             this.spellsTab.Controls.Add(this.label26);
             this.spellsTab.Location = new System.Drawing.Point(4, 22);
@@ -616,17 +620,6 @@
             this.spellsTab.TabIndex = 6;
             this.spellsTab.Text = "Spells";
             this.spellsTab.UseVisualStyleBackColor = true;
-            // 
-            // spellBox
-            // 
-            this.spellBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spellBox.FormattingEnabled = true;
-            this.spellBox.Location = new System.Drawing.Point(3, 16);
-            this.spellBox.Name = "spellBox";
-            this.spellBox.Size = new System.Drawing.Size(762, 413);
-            this.spellBox.TabIndex = 16;
-            this.spellBox.SelectedIndexChanged += new System.EventHandler(this.SpellList_SelectedIndexChanged);
-            this.spellBox.DoubleClick += new System.EventHandler(this.editSpell);
             // 
             // NewSpell
             // 
@@ -1550,6 +1543,36 @@
             this.packToolStripMenuItem.Text = "Pack";
             this.packToolStripMenuItem.Click += new System.EventHandler(this.packToolStripMenuItem_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox1.Location = new System.Drawing.Point(3, 409);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(762, 20);
+            this.textBox1.TabIndex = 18;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label30.Location = new System.Drawing.Point(3, 396);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(112, 13);
+            this.label30.TabIndex = 19;
+            this.label30.Text = "Filter/Expression Test:";
+            // 
+            // spellBox
+            // 
+            this.spellBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spellBox.FormattingEnabled = true;
+            this.spellBox.Location = new System.Drawing.Point(3, 16);
+            this.spellBox.Name = "spellBox";
+            this.spellBox.Size = new System.Drawing.Size(762, 380);
+            this.spellBox.TabIndex = 20;
+            this.spellBox.SelectedIndexChanged += new System.EventHandler(this.SpellList_SelectedIndexChanged);
+            this.spellBox.DoubleClick += new System.EventHandler(this.editSpell);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1747,7 +1770,6 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button SaveSettings;
-        private System.Windows.Forms.ListBox spellBox;
         private System.Windows.Forms.Button NewSpell;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ListBox classList;
@@ -1765,6 +1787,9 @@
         private System.Windows.Forms.ListBox magicBox;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Button newMagicBtn;
+        private System.Windows.Forms.ListBox spellBox;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

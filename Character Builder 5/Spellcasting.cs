@@ -22,7 +22,7 @@ namespace Character_Builder_5
         public IEnumerable<ModifiedSpell> getPrepared(int level = 0)
         {
             combinePrepared(level);
-            List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(Spell.Get(s, null), null, false));
+            List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(Spell.Get(s, null), null, false, false));
             
             foreach (Feature f in Player.current.getFeatures(level))
             {
@@ -31,7 +31,7 @@ namespace Character_Builder_5
                     BonusSpellPrepareFeature bspf = (BonusSpellPrepareFeature)f;
                     foreach (string s in bspf.Spells)
                     {
-                        res.Add(new ModifiedSpell(Spell.Get(s, bspf.Source), bspf.KeywordsToAdd, true));
+                        res.Add(new ModifiedSpell(Spell.Get(s, bspf.Source), bspf.KeywordsToAdd, true, false));
                     }
                 }
             }
@@ -50,7 +50,7 @@ namespace Character_Builder_5
                         SpellChoiceFeature scf = (SpellChoiceFeature)f;
                         if (s.UniqueID == scf.UniqueID && scf.AddTo == PreparationMode.LearnSpells)
                         {
-                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, f.Source), scf.KeywordsToAdd));
+                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, f.Source), scf.KeywordsToAdd, false, false));
                         }
                     }
                 }

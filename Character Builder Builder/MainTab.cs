@@ -123,7 +123,7 @@ namespace Character_Builder_Builder
             }
         }
 
-        private void fill(ListBox box, ICollection<string> list, string select)
+        private void fill(ListBox box, IEnumerable<string> list, string select)
         {
             int index = box.SelectedIndex;
             int top = box.TopIndex;
@@ -883,6 +883,23 @@ namespace Character_Builder_Builder
             magicCatBox.SelectedItem = s;
             if (s == null) magicBox.Items.Clear();
             else restore(magicBox, scroll, id);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.Text == null || textBox1.Text == "")
+            {
+                fill(spellBox, Spell.spells.Keys, null);
+            } else
+            {
+                try
+                {
+                    fill(spellBox, from s in Spell.filter(textBox1.Text) select s.Name, null);
+                } catch(Exception ex)
+                {
+                    spellBox.Items.Clear();
+                }
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.IO;
 using System.Text.RegularExpressions;
+using XCalc;
 
 namespace Character_Builder_5
 {
@@ -307,6 +308,57 @@ namespace Character_Builder_5
                 r.filename = filename;
                 return r;
             }
+        }
+        public static List<Spell> filter(string expression)
+        {
+            if (expression == null || expression == "") expression = "true";
+            try
+            {
+                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Spell current = null;
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "classlevel") args.Result = int.MaxValue;
+                    else if (name == "classspelllevel") args.Result = int.MaxValue;
+                    else if (name == "maxspellslot") args.Result = int.MaxValue;
+                    else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "level") args.Result = current.Level;
+                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                List<Spell> res = new List<Spell>();
+                foreach (Spell f in Spell.spells.Values)
+                {
+                    current = f;
+                    object o = ex.Evaluate();
+                    if (o is Boolean && (Boolean)o) res.Add(current);
+
+                }
+                res.Sort();
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+            }
+        }
+        private static void FunctionExtensions(string name, FunctionArgs args)
+        {
+            if (name.Equals("ClassLevel", StringComparison.InvariantCultureIgnoreCase))
+            {
+                args.Result = int.MaxValue;
+            }
+            if (name.Equals("SubClass", StringComparison.InvariantCultureIgnoreCase))
+            {
+                args.Result = "";
+            }
+        }
+        private static bool matchesKW(string kw, string kw2)
+        {
+            return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
