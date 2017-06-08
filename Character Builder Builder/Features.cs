@@ -47,7 +47,7 @@ namespace Character_Builder_Builder
         {
             if (listBox1.SelectedItem != null)
             {
-                HistoryManager.MakeHistory(null);
+                HistoryManager?.MakeHistory(null);
                 list.Remove((Feature)listBox1.SelectedItem);
             }
             fill();
@@ -113,7 +113,7 @@ namespace Character_Builder_Builder
                 return;
             if (data is Feature)
             {
-                HistoryManager.MakeHistory(null);
+                HistoryManager?.MakeHistory(null);
                 list.Remove(data as Feature);
                 list.Insert(index, data as Feature);
                 fill();
@@ -212,7 +212,7 @@ namespace Character_Builder_Builder
             {
                 string s = ((Feature)listBox1.SelectedItem).Save();
                 Clipboard.SetText(s);
-                HistoryManager.MakeHistory(null);
+                HistoryManager?.MakeHistory(null);
                 list.Remove((Feature)listBox1.SelectedItem);
                 fill();
             }
@@ -224,7 +224,7 @@ namespace Character_Builder_Builder
             {
                 if (Clipboard.ContainsText())
                 {
-                    HistoryManager.MakeHistory(null);
+                    HistoryManager?.MakeHistory(null);
                     foreach (Feature f in Feature.LoadString(Clipboard.GetText())) list.Add(f);
                     fill();
                 }

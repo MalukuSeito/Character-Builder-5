@@ -63,6 +63,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.spellsTab = new System.Windows.Forms.TabPage();
+            this.spellBox = new System.Windows.Forms.ListBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.NewSpell = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
             this.skillsTab = new System.Windows.Forms.TabPage();
@@ -142,9 +145,6 @@
             this.armorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.spellBox = new System.Windows.Forms.ListBox();
             this.TabControls.SuspendLayout();
             this.racesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -620,6 +620,36 @@
             this.spellsTab.TabIndex = 6;
             this.spellsTab.Text = "Spells";
             this.spellsTab.UseVisualStyleBackColor = true;
+            // 
+            // spellBox
+            // 
+            this.spellBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spellBox.FormattingEnabled = true;
+            this.spellBox.Location = new System.Drawing.Point(3, 16);
+            this.spellBox.Name = "spellBox";
+            this.spellBox.Size = new System.Drawing.Size(762, 380);
+            this.spellBox.TabIndex = 20;
+            this.spellBox.SelectedIndexChanged += new System.EventHandler(this.SpellList_SelectedIndexChanged);
+            this.spellBox.DoubleClick += new System.EventHandler(this.editSpell);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label30.Location = new System.Drawing.Point(3, 396);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(112, 13);
+            this.label30.TabIndex = 19;
+            this.label30.Text = "Filter/Expression Test:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox1.Location = new System.Drawing.Point(3, 409);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(762, 20);
+            this.textBox1.TabIndex = 18;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // NewSpell
             // 
@@ -1542,36 +1572,6 @@
             this.packToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.packToolStripMenuItem.Text = "Pack";
             this.packToolStripMenuItem.Click += new System.EventHandler(this.packToolStripMenuItem_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textBox1.Location = new System.Drawing.Point(3, 409);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(762, 20);
-            this.textBox1.TabIndex = 18;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label30.Location = new System.Drawing.Point(3, 396);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(112, 13);
-            this.label30.TabIndex = 19;
-            this.label30.Text = "Filter/Expression Test:";
-            // 
-            // spellBox
-            // 
-            this.spellBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.spellBox.FormattingEnabled = true;
-            this.spellBox.Location = new System.Drawing.Point(3, 16);
-            this.spellBox.Name = "spellBox";
-            this.spellBox.Size = new System.Drawing.Size(762, 380);
-            this.spellBox.TabIndex = 20;
-            this.spellBox.SelectedIndexChanged += new System.EventHandler(this.SpellList_SelectedIndexChanged);
-            this.spellBox.DoubleClick += new System.EventHandler(this.editSpell);
             // 
             // MainTab
             // 
