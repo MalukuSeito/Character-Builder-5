@@ -260,7 +260,7 @@ namespace Character_Builder_5
             else
             {
                 Search = Search.ToLowerInvariant();
-                return (from i in items.Values where i.Test() select i.Category).Distinct().OrderBy(i => i);
+                return (from i in items.Values where i.Test() select i.Category).Distinct().Where(i => i.ToString() != "Items").OrderBy(i => i);
             }
         }
         public bool save(Boolean overwrite)

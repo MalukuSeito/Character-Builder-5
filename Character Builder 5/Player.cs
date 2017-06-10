@@ -2182,5 +2182,12 @@ namespace Character_Builder_5
             }
             XP = xp;
         }
+
+        public void removeBoon(Feature feature)
+        {
+            string boon = feature.Name + " " + ConfigManager.SourceSeperator + " " + feature.Source;
+            int index = Boons.FindIndex(s => ConfigManager.SourceInvariantComparer.Equals(s, boon));
+            if (index >= 0) Boons.RemoveAt(index);
+        }
     }
 }

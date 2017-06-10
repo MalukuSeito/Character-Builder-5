@@ -305,6 +305,7 @@ namespace Character_Builder_5
         {
             properties.Clear();
             Categories.Clear();
+            Categories.Add("Magic", new MagicCategory("Magic"));
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Magic, SearchOption.AllDirectories);
             foreach (var f in files)
             {
@@ -312,6 +313,12 @@ namespace Character_Builder_5
                 Uri target = new Uri(f.Key.DirectoryName);
                 string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                 if (!Categories.ContainsKey(cat)) Categories.Add(cat, new MagicCategory(cat));
+                String parent = System.IO.Path.GetDirectoryName(cat);
+                while (parent.IsSubPathOf(ConfigManager.Directory_Magic) && !Categories.ContainsKey(parent))
+                {
+                    Categories.Add(parent, new MagicCategory(parent));
+                    parent = System.IO.Path.GetDirectoryName(parent);
+                }
                 using (TextReader reader = new StreamReader(f.Key.FullName))
                 {
                     MagicProperty mp = ((MagicProperty)serializer.Deserialize(reader));
@@ -326,6 +333,11 @@ namespace Character_Builder_5
                     if (properties.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
                     {
                         throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
+                    }
+                    if (simple.ContainsKey(mp.Name))
+                    {
+                        simple[mp.Name].ShowSource = true;
+                        mp.ShowSource = true;
                     }
                     properties.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
                     simple[mp.Name] = mp;
@@ -404,7 +416,7 @@ namespace Character_Builder_5
             foreach (MagicCategory mc in Categories.Values) {
                 MagicCategory copy = new MagicCategory(mc.Name);
                 copy.Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test() orderby mp select mp);
-                if (copy.Contents.Count>0) res.Add(copy);
+                res.Add(copy);
             }
             return res;
         }

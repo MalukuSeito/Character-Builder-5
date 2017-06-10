@@ -37,6 +37,8 @@ namespace Character_Builder_5
             if (!p.StartsWith(ConfigManager.Directory_Items)) p = System.IO.Path.Combine(ConfigManager.Directory_Items, path);
             p = p.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
             if (!categories.ContainsKey(p)) categories.Add(p.ToString(), new Category(p));
+            String parent = System.IO.Path.GetDirectoryName(p);
+            if (parent.IsSubPathOf(ConfigManager.Directory_Items)) Make(parent);
             return categories[p];
         }
         private Category(String path)
@@ -73,7 +75,7 @@ namespace Character_Builder_5
         }
         public static IOrderedEnumerable<Category> Section()
         {
-            return (from c in categories.Values orderby c select c);
+            return (from c in categories.Values where c.ToString() != "Items" orderby c select c);
         }
     }
 }

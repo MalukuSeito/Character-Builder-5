@@ -79,11 +79,6 @@
             this.sidePortrait = new System.Windows.Forms.PictureBox();
             this.subSplit = new System.Windows.Forms.SplitContainer();
             this.mainTab = new System.Windows.Forms.TabControl();
-            this.racetab = new Character_Builder_5.NoScrollTab();
-            this.subracebox = new System.Windows.Forms.ListBox();
-            this.subracelabel = new System.Windows.Forms.Label();
-            this.racebox = new System.Windows.Forms.ListBox();
-            this.racelabel = new System.Windows.Forms.Label();
             this.classtab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -91,7 +86,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.hpSpinner = new System.Windows.Forms.NumericUpDown();
             this.classesBox = new System.Windows.Forms.ListBox();
-            this.ClassPanel = new Character_Builder_5.NoScrollPanel();
             this.scoretab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -133,17 +127,6 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.AbilityFeatChoiceBox = new System.Windows.Forms.ListBox();
             this.AbilityFeatBox = new System.Windows.Forms.ListBox();
-            this.backtab = new Character_Builder_5.NoScrollTab();
-            this.flaws = new System.Windows.Forms.ListBox();
-            this.flawlabel = new System.Windows.Forms.Label();
-            this.bonds = new System.Windows.Forms.ListBox();
-            this.bondlabel = new System.Windows.Forms.Label();
-            this.ideals = new System.Windows.Forms.ListBox();
-            this.ideallabel = new System.Windows.Forms.Label();
-            this.traits = new System.Windows.Forms.ListBox();
-            this.traitLabel = new System.Windows.Forms.Label();
-            this.background = new System.Windows.Forms.ListBox();
-            this.backgroundLabel = new System.Windows.Forms.Label();
             this.personaltab = new System.Windows.Forms.TabPage();
             this.personalFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.infoBox = new System.Windows.Forms.GroupBox();
@@ -358,6 +341,23 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.racetab = new Character_Builder_5.NoScrollTab();
+            this.subracebox = new System.Windows.Forms.ListBox();
+            this.subracelabel = new System.Windows.Forms.Label();
+            this.racebox = new System.Windows.Forms.ListBox();
+            this.racelabel = new System.Windows.Forms.Label();
+            this.ClassPanel = new Character_Builder_5.NoScrollPanel();
+            this.backtab = new Character_Builder_5.NoScrollTab();
+            this.flaws = new System.Windows.Forms.ListBox();
+            this.flawlabel = new System.Windows.Forms.Label();
+            this.bonds = new System.Windows.Forms.ListBox();
+            this.bondlabel = new System.Windows.Forms.Label();
+            this.ideals = new System.Windows.Forms.ListBox();
+            this.ideallabel = new System.Windows.Forms.Label();
+            this.traits = new System.Windows.Forms.ListBox();
+            this.traitLabel = new System.Windows.Forms.Label();
+            this.background = new System.Windows.Forms.ListBox();
+            this.backgroundLabel = new System.Windows.Forms.Label();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -382,7 +382,6 @@
             this.subSplit.Panel2.SuspendLayout();
             this.subSplit.SuspendLayout();
             this.mainTab.SuspendLayout();
-            this.racetab.SuspendLayout();
             this.classtab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
@@ -414,7 +413,6 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
-            this.backtab.SuspendLayout();
             this.personaltab.SuspendLayout();
             this.personalFlowLayout.SuspendLayout();
             this.infoBox.SuspendLayout();
@@ -499,6 +497,8 @@
             this.conditionbox.SuspendLayout();
             this.spellcastingexample.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpellSlotUsed)).BeginInit();
+            this.racetab.SuspendLayout();
+            this.backtab.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainmenu
@@ -1135,67 +1135,6 @@
             this.mainTab.Size = new System.Drawing.Size(528, 519);
             this.mainTab.TabIndex = 0;
             // 
-            // racetab
-            // 
-            this.racetab.AutoScroll = true;
-            this.racetab.BackColor = System.Drawing.SystemColors.Menu;
-            this.racetab.Controls.Add(this.subracebox);
-            this.racetab.Controls.Add(this.subracelabel);
-            this.racetab.Controls.Add(this.racebox);
-            this.racetab.Controls.Add(this.racelabel);
-            this.racetab.Location = new System.Drawing.Point(4, 22);
-            this.racetab.Name = "racetab";
-            this.racetab.Padding = new System.Windows.Forms.Padding(15);
-            this.racetab.Size = new System.Drawing.Size(520, 493);
-            this.racetab.TabIndex = 0;
-            this.racetab.Text = "Race";
-            // 
-            // subracebox
-            // 
-            this.subracebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.subracebox.FormattingEnabled = true;
-            this.subracebox.Location = new System.Drawing.Point(15, 137);
-            this.subracebox.Name = "subracebox";
-            this.subracebox.Size = new System.Drawing.Size(490, 95);
-            this.subracebox.TabIndex = 5;
-            this.subracebox.SelectedIndexChanged += new System.EventHandler(this.subracebox_SelectedIndexChanged);
-            this.subracebox.DoubleClick += new System.EventHandler(this.subracebox_DoubleClick);
-            this.subracebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // subracelabel
-            // 
-            this.subracelabel.AutoSize = true;
-            this.subracelabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.subracelabel.Location = new System.Drawing.Point(15, 113);
-            this.subracelabel.Name = "subracelabel";
-            this.subracelabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.subracelabel.Size = new System.Drawing.Size(98, 24);
-            this.subracelabel.TabIndex = 4;
-            this.subracelabel.Text = "Choose a Subrace:";
-            // 
-            // racebox
-            // 
-            this.racebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.racebox.FormattingEnabled = true;
-            this.racebox.Location = new System.Drawing.Point(15, 31);
-            this.racebox.Name = "racebox";
-            this.racebox.Size = new System.Drawing.Size(490, 82);
-            this.racebox.TabIndex = 3;
-            this.racebox.SelectedIndexChanged += new System.EventHandler(this.racebox_SelectedIndexChanged);
-            this.racebox.DoubleClick += new System.EventHandler(this.racebox_DoubleClick);
-            this.racebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // racelabel
-            // 
-            this.racelabel.AutoSize = true;
-            this.racelabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.racelabel.Location = new System.Drawing.Point(15, 15);
-            this.racelabel.Name = "racelabel";
-            this.racelabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.racelabel.Size = new System.Drawing.Size(249, 16);
-            this.racelabel.TabIndex = 2;
-            this.racelabel.Text = "Choose a Race: (Double click to choose an option)";
-            // 
             // classtab
             // 
             this.classtab.AutoScroll = true;
@@ -1295,16 +1234,6 @@
             this.classesBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayClass);
             this.classesBox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
             this.classesBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.classesBox_MouseDoubleClick);
-            // 
-            // ClassPanel
-            // 
-            this.ClassPanel.AutoScroll = true;
-            this.ClassPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClassPanel.Location = new System.Drawing.Point(0, 0);
-            this.ClassPanel.Name = "ClassPanel";
-            this.ClassPanel.Padding = new System.Windows.Forms.Padding(15, 7, 15, 15);
-            this.ClassPanel.Size = new System.Drawing.Size(520, 316);
-            this.ClassPanel.TabIndex = 0;
             // 
             // scoretab
             // 
@@ -1824,142 +1753,6 @@
             this.AbilityFeatBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayFeature);
             this.AbilityFeatBox.DoubleClick += new System.EventHandler(this.AbilityFeatBox_DoubleClick);
             this.AbilityFeatBox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // backtab
-            // 
-            this.backtab.AutoScroll = true;
-            this.backtab.BackColor = System.Drawing.SystemColors.Menu;
-            this.backtab.Controls.Add(this.flaws);
-            this.backtab.Controls.Add(this.flawlabel);
-            this.backtab.Controls.Add(this.bonds);
-            this.backtab.Controls.Add(this.bondlabel);
-            this.backtab.Controls.Add(this.ideals);
-            this.backtab.Controls.Add(this.ideallabel);
-            this.backtab.Controls.Add(this.traits);
-            this.backtab.Controls.Add(this.traitLabel);
-            this.backtab.Controls.Add(this.background);
-            this.backtab.Controls.Add(this.backgroundLabel);
-            this.backtab.Location = new System.Drawing.Point(4, 22);
-            this.backtab.Name = "backtab";
-            this.backtab.Padding = new System.Windows.Forms.Padding(15);
-            this.backtab.Size = new System.Drawing.Size(520, 493);
-            this.backtab.TabIndex = 2;
-            this.backtab.Text = "Background";
-            // 
-            // flaws
-            // 
-            this.flaws.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flaws.FormattingEnabled = true;
-            this.flaws.Location = new System.Drawing.Point(15, 494);
-            this.flaws.Name = "flaws";
-            this.flaws.Size = new System.Drawing.Size(473, 95);
-            this.flaws.TabIndex = 9;
-            this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
-            this.flaws.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // flawlabel
-            // 
-            this.flawlabel.AutoSize = true;
-            this.flawlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flawlabel.Location = new System.Drawing.Point(15, 470);
-            this.flawlabel.Name = "flawlabel";
-            this.flawlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.flawlabel.Size = new System.Drawing.Size(80, 24);
-            this.flawlabel.TabIndex = 8;
-            this.flawlabel.Text = "Choose a Flaw:";
-            // 
-            // bonds
-            // 
-            this.bonds.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bonds.FormattingEnabled = true;
-            this.bonds.Location = new System.Drawing.Point(15, 375);
-            this.bonds.Name = "bonds";
-            this.bonds.Size = new System.Drawing.Size(473, 95);
-            this.bonds.TabIndex = 7;
-            this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
-            this.bonds.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // bondlabel
-            // 
-            this.bondlabel.AutoSize = true;
-            this.bondlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bondlabel.Location = new System.Drawing.Point(15, 351);
-            this.bondlabel.Name = "bondlabel";
-            this.bondlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.bondlabel.Size = new System.Drawing.Size(83, 24);
-            this.bondlabel.TabIndex = 6;
-            this.bondlabel.Text = "Choose a Bond:";
-            // 
-            // ideals
-            // 
-            this.ideals.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ideals.FormattingEnabled = true;
-            this.ideals.Location = new System.Drawing.Point(15, 256);
-            this.ideals.Name = "ideals";
-            this.ideals.Size = new System.Drawing.Size(473, 95);
-            this.ideals.TabIndex = 5;
-            this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
-            this.ideals.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // ideallabel
-            // 
-            this.ideallabel.AutoSize = true;
-            this.ideallabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ideallabel.Location = new System.Drawing.Point(15, 232);
-            this.ideallabel.Name = "ideallabel";
-            this.ideallabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.ideallabel.Size = new System.Drawing.Size(87, 24);
-            this.ideallabel.TabIndex = 4;
-            this.ideallabel.Text = "Choose an Ideal:";
-            // 
-            // traits
-            // 
-            this.traits.Dock = System.Windows.Forms.DockStyle.Top;
-            this.traits.FormattingEnabled = true;
-            this.traits.Location = new System.Drawing.Point(15, 137);
-            this.traits.Name = "traits";
-            this.traits.Size = new System.Drawing.Size(473, 95);
-            this.traits.TabIndex = 3;
-            this.traits.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.traits.DoubleClick += new System.EventHandler(this.traits_DoubleClick);
-            this.traits.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // traitLabel
-            // 
-            this.traitLabel.AutoSize = true;
-            this.traitLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.traitLabel.Location = new System.Drawing.Point(15, 113);
-            this.traitLabel.Name = "traitLabel";
-            this.traitLabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.traitLabel.Size = new System.Drawing.Size(133, 24);
-            this.traitLabel.TabIndex = 2;
-            this.traitLabel.Text = "Choose a Personality Trait:";
-            // 
-            // background
-            // 
-            this.background.Dock = System.Windows.Forms.DockStyle.Top;
-            this.background.FormattingEnabled = true;
-            this.background.Location = new System.Drawing.Point(15, 31);
-            this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(473, 82);
-            this.background.TabIndex = 1;
-            this.background.SelectedIndexChanged += new System.EventHandler(this.background_SelectedIndexChanged);
-            this.background.DoubleClick += new System.EventHandler(this.background_DoubleClick);
-            this.background.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // backgroundLabel
-            // 
-            this.backgroundLabel.AutoSize = true;
-            this.backgroundLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.backgroundLabel.Location = new System.Drawing.Point(15, 15);
-            this.backgroundLabel.Name = "backgroundLabel";
-            this.backgroundLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.backgroundLabel.Size = new System.Drawing.Size(116, 16);
-            this.backgroundLabel.TabIndex = 0;
-            this.backgroundLabel.Text = "Choose a Background:";
             // 
             // personaltab
             // 
@@ -3207,6 +3000,7 @@
             // 
             // magicproperties
             // 
+            this.magicproperties.AllowDrop = true;
             this.magicproperties.Dock = System.Windows.Forms.DockStyle.Top;
             this.magicproperties.FormattingEnabled = true;
             this.magicproperties.Location = new System.Drawing.Point(3, 16);
@@ -3214,6 +3008,12 @@
             this.magicproperties.Size = new System.Drawing.Size(161, 186);
             this.magicproperties.TabIndex = 1;
             this.magicproperties.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayMagicProperty);
+            this.magicproperties.DragDrop += new System.Windows.Forms.DragEventHandler(this.magicproperties_DragDrop);
+            this.magicproperties.DragOver += new System.Windows.Forms.DragEventHandler(this.magicproperties_DragOver);
+            this.magicproperties.DragLeave += new System.EventHandler(this.magicproperties_DragLeave);
+            this.magicproperties.MouseDown += new System.Windows.Forms.MouseEventHandler(this.magicproperties_MouseDown);
+            this.magicproperties.MouseMove += new System.Windows.Forms.MouseEventHandler(this.magicproperties_MouseMove);
+            this.magicproperties.MouseUp += new System.Windows.Forms.MouseEventHandler(this.magicproperties_MouseUp);
             // 
             // inventorymodifybox
             // 
@@ -4496,6 +4296,213 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
+            // racetab
+            // 
+            this.racetab.AutoScroll = true;
+            this.racetab.BackColor = System.Drawing.SystemColors.Menu;
+            this.racetab.Controls.Add(this.subracebox);
+            this.racetab.Controls.Add(this.subracelabel);
+            this.racetab.Controls.Add(this.racebox);
+            this.racetab.Controls.Add(this.racelabel);
+            this.racetab.Location = new System.Drawing.Point(4, 22);
+            this.racetab.Name = "racetab";
+            this.racetab.Padding = new System.Windows.Forms.Padding(15);
+            this.racetab.Size = new System.Drawing.Size(520, 493);
+            this.racetab.TabIndex = 0;
+            this.racetab.Text = "Race";
+            // 
+            // subracebox
+            // 
+            this.subracebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.subracebox.FormattingEnabled = true;
+            this.subracebox.Location = new System.Drawing.Point(15, 137);
+            this.subracebox.Name = "subracebox";
+            this.subracebox.Size = new System.Drawing.Size(490, 95);
+            this.subracebox.TabIndex = 5;
+            this.subracebox.SelectedIndexChanged += new System.EventHandler(this.subracebox_SelectedIndexChanged);
+            this.subracebox.DoubleClick += new System.EventHandler(this.subracebox_DoubleClick);
+            this.subracebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // subracelabel
+            // 
+            this.subracelabel.AutoSize = true;
+            this.subracelabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.subracelabel.Location = new System.Drawing.Point(15, 113);
+            this.subracelabel.Name = "subracelabel";
+            this.subracelabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.subracelabel.Size = new System.Drawing.Size(98, 24);
+            this.subracelabel.TabIndex = 4;
+            this.subracelabel.Text = "Choose a Subrace:";
+            // 
+            // racebox
+            // 
+            this.racebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.racebox.FormattingEnabled = true;
+            this.racebox.Location = new System.Drawing.Point(15, 31);
+            this.racebox.Name = "racebox";
+            this.racebox.Size = new System.Drawing.Size(490, 82);
+            this.racebox.TabIndex = 3;
+            this.racebox.SelectedIndexChanged += new System.EventHandler(this.racebox_SelectedIndexChanged);
+            this.racebox.DoubleClick += new System.EventHandler(this.racebox_DoubleClick);
+            this.racebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // racelabel
+            // 
+            this.racelabel.AutoSize = true;
+            this.racelabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.racelabel.Location = new System.Drawing.Point(15, 15);
+            this.racelabel.Name = "racelabel";
+            this.racelabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.racelabel.Size = new System.Drawing.Size(249, 16);
+            this.racelabel.TabIndex = 2;
+            this.racelabel.Text = "Choose a Race: (Double click to choose an option)";
+            // 
+            // ClassPanel
+            // 
+            this.ClassPanel.AutoScroll = true;
+            this.ClassPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClassPanel.Location = new System.Drawing.Point(0, 0);
+            this.ClassPanel.Name = "ClassPanel";
+            this.ClassPanel.Padding = new System.Windows.Forms.Padding(15, 7, 15, 15);
+            this.ClassPanel.Size = new System.Drawing.Size(520, 316);
+            this.ClassPanel.TabIndex = 0;
+            // 
+            // backtab
+            // 
+            this.backtab.AutoScroll = true;
+            this.backtab.BackColor = System.Drawing.SystemColors.Menu;
+            this.backtab.Controls.Add(this.flaws);
+            this.backtab.Controls.Add(this.flawlabel);
+            this.backtab.Controls.Add(this.bonds);
+            this.backtab.Controls.Add(this.bondlabel);
+            this.backtab.Controls.Add(this.ideals);
+            this.backtab.Controls.Add(this.ideallabel);
+            this.backtab.Controls.Add(this.traits);
+            this.backtab.Controls.Add(this.traitLabel);
+            this.backtab.Controls.Add(this.background);
+            this.backtab.Controls.Add(this.backgroundLabel);
+            this.backtab.Location = new System.Drawing.Point(4, 22);
+            this.backtab.Name = "backtab";
+            this.backtab.Padding = new System.Windows.Forms.Padding(15);
+            this.backtab.Size = new System.Drawing.Size(520, 493);
+            this.backtab.TabIndex = 2;
+            this.backtab.Text = "Background";
+            // 
+            // flaws
+            // 
+            this.flaws.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flaws.FormattingEnabled = true;
+            this.flaws.Location = new System.Drawing.Point(15, 494);
+            this.flaws.Name = "flaws";
+            this.flaws.Size = new System.Drawing.Size(473, 95);
+            this.flaws.TabIndex = 9;
+            this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
+            this.flaws.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // flawlabel
+            // 
+            this.flawlabel.AutoSize = true;
+            this.flawlabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flawlabel.Location = new System.Drawing.Point(15, 470);
+            this.flawlabel.Name = "flawlabel";
+            this.flawlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.flawlabel.Size = new System.Drawing.Size(80, 24);
+            this.flawlabel.TabIndex = 8;
+            this.flawlabel.Text = "Choose a Flaw:";
+            // 
+            // bonds
+            // 
+            this.bonds.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bonds.FormattingEnabled = true;
+            this.bonds.Location = new System.Drawing.Point(15, 375);
+            this.bonds.Name = "bonds";
+            this.bonds.Size = new System.Drawing.Size(473, 95);
+            this.bonds.TabIndex = 7;
+            this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
+            this.bonds.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // bondlabel
+            // 
+            this.bondlabel.AutoSize = true;
+            this.bondlabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bondlabel.Location = new System.Drawing.Point(15, 351);
+            this.bondlabel.Name = "bondlabel";
+            this.bondlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.bondlabel.Size = new System.Drawing.Size(83, 24);
+            this.bondlabel.TabIndex = 6;
+            this.bondlabel.Text = "Choose a Bond:";
+            // 
+            // ideals
+            // 
+            this.ideals.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ideals.FormattingEnabled = true;
+            this.ideals.Location = new System.Drawing.Point(15, 256);
+            this.ideals.Name = "ideals";
+            this.ideals.Size = new System.Drawing.Size(473, 95);
+            this.ideals.TabIndex = 5;
+            this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
+            this.ideals.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // ideallabel
+            // 
+            this.ideallabel.AutoSize = true;
+            this.ideallabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ideallabel.Location = new System.Drawing.Point(15, 232);
+            this.ideallabel.Name = "ideallabel";
+            this.ideallabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.ideallabel.Size = new System.Drawing.Size(87, 24);
+            this.ideallabel.TabIndex = 4;
+            this.ideallabel.Text = "Choose an Ideal:";
+            // 
+            // traits
+            // 
+            this.traits.Dock = System.Windows.Forms.DockStyle.Top;
+            this.traits.FormattingEnabled = true;
+            this.traits.Location = new System.Drawing.Point(15, 137);
+            this.traits.Name = "traits";
+            this.traits.Size = new System.Drawing.Size(473, 95);
+            this.traits.TabIndex = 3;
+            this.traits.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.traits.DoubleClick += new System.EventHandler(this.traits_DoubleClick);
+            this.traits.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // traitLabel
+            // 
+            this.traitLabel.AutoSize = true;
+            this.traitLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.traitLabel.Location = new System.Drawing.Point(15, 113);
+            this.traitLabel.Name = "traitLabel";
+            this.traitLabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.traitLabel.Size = new System.Drawing.Size(133, 24);
+            this.traitLabel.TabIndex = 2;
+            this.traitLabel.Text = "Choose a Personality Trait:";
+            // 
+            // background
+            // 
+            this.background.Dock = System.Windows.Forms.DockStyle.Top;
+            this.background.FormattingEnabled = true;
+            this.background.Location = new System.Drawing.Point(15, 31);
+            this.background.Name = "background";
+            this.background.Size = new System.Drawing.Size(473, 82);
+            this.background.TabIndex = 1;
+            this.background.SelectedIndexChanged += new System.EventHandler(this.background_SelectedIndexChanged);
+            this.background.DoubleClick += new System.EventHandler(this.background_DoubleClick);
+            this.background.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // backgroundLabel
+            // 
+            this.backgroundLabel.AutoSize = true;
+            this.backgroundLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.backgroundLabel.Location = new System.Drawing.Point(15, 15);
+            this.backgroundLabel.Name = "backgroundLabel";
+            this.backgroundLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.backgroundLabel.Size = new System.Drawing.Size(116, 16);
+            this.backgroundLabel.TabIndex = 0;
+            this.backgroundLabel.Text = "Choose a Background:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4541,8 +4548,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.subSplit)).EndInit();
             this.subSplit.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
-            this.racetab.ResumeLayout(false);
-            this.racetab.PerformLayout();
             this.classtab.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
@@ -4576,8 +4581,6 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-            this.backtab.ResumeLayout(false);
-            this.backtab.PerformLayout();
             this.personaltab.ResumeLayout(false);
             this.personalFlowLayout.ResumeLayout(false);
             this.infoBox.ResumeLayout(false);
@@ -4682,6 +4685,10 @@
             this.spellcastingexample.ResumeLayout(false);
             this.spellcastingexample.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpellSlotUsed)).EndInit();
+            this.racetab.ResumeLayout(false);
+            this.racetab.PerformLayout();
+            this.backtab.ResumeLayout(false);
+            this.backtab.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -19,6 +19,19 @@ namespace Character_Builder_5
     {
         private bool layouting = false;
         public String lastfile = "";
+        private MouseEventArgs drag;
+        private class Drag
+        {
+            public Drag(int i, object v)
+            {
+                index = i;
+                curindex = index;
+                value = v;
+            }
+            public int curindex;
+            public int index;
+            public object value;
+        }
         public Form1()
         {
             InitializeComponent();
@@ -273,6 +286,7 @@ namespace Character_Builder_5
                 inventory2.Items.Clear();
                 Possession[] pos = Player.current.getItemsAndPossessions().ToArray<Possession>();
                 inventory.Items.AddRange(pos);
+                inventory.Items.AddRange(Player.current.getBoons().ToArray<Feature>());
                 inventory2.Items.AddRange(pos);
                 if (iindex >= 0 && iindex < inventory.Items.Count) inventory.SelectedIndex = iindex;
                 int index = 0;
@@ -295,25 +309,8 @@ namespace Character_Builder_5
                 bool waslayouting = layouting;
                 if (!layouting) layouting = true;
                 equiptab.SuspendLayout();
-                if (inventory.SelectedItem == null)
-                {
-                    possequip.SelectedIndex = -1;
-                    possequip.Enabled = false;
-                    attunedcheck.Enabled = false;
-                    attunedcheck.Checked = false;
-                    highlightcheck.Enabled = false;
-                    highlightcheck.Checked = false;
-                    posscharges.Value = 0;
-                    posscharges.Enabled = false;
-                    possweight.Value = -1;
-                    possweight.Enabled = false;
-                    possname.Text = "";
-                    possdescription.Text = "";
-                    poscounter.Value = 1;
-                    magicproperties.Items.Clear();
-                    unpack.Enabled = false;
-                }
-                else
+                
+                if (inventory.SelectedItem is Possession)
                 {
                     Possession p = (Possession)inventory.SelectedItem;
                     possequip.Enabled = true;
@@ -339,6 +336,52 @@ namespace Character_Builder_5
                     magicproperties.Items.Clear();
                     magicproperties.Items.AddRange((from s in p.MagicProperties select MagicProperty.Get(s, null)).ToArray());
                     unpack.Enabled = (p.BaseItem != null && p.BaseItem != "" && p.Item is Pack);
+                    splitstack.Enabled = true;
+                    changecount.Enabled = true;
+                    updateposs.Enabled = true;
+                }
+                else if (inventory.SelectedItem is Feature)
+                {
+                    possequip.SelectedIndex = -1;
+                    possequip.Enabled = false;
+                    attunedcheck.Enabled = false;
+                    attunedcheck.Checked = false;
+                    highlightcheck.Enabled = false;
+                    highlightcheck.Checked = false;
+                    posscharges.Value = 0;
+                    posscharges.Enabled = false;
+                    possweight.Value = -1;
+                    possweight.Enabled = false;
+                    possname.Text = "";
+                    possdescription.Text = "";
+                    poscounter.Value = 1;
+                    magicproperties.Items.Clear();
+                    unpack.Enabled = false;
+                    splitstack.Enabled = false;
+                    changecount.Enabled = false;
+                    updateposs.Enabled = false;
+                }
+                else
+                {
+                    possequip.SelectedIndex = -1;
+                    possequip.Enabled = false;
+                    attunedcheck.Enabled = false;
+                    attunedcheck.Checked = false;
+                    highlightcheck.Enabled = false;
+                    highlightcheck.Checked = false;
+                    posscharges.Value = 0;
+                    posscharges.Enabled = false;
+                    possweight.Value = -1;
+                    possweight.Enabled = false;
+                    possname.Text = "";
+                    possdescription.Text = "";
+                    poscounter.Value = 1;
+                    magicproperties.Items.Clear();
+                    unpack.Enabled = false;
+                    unpack.Enabled = false;
+                    splitstack.Enabled = false;
+                    changecount.Enabled = false;
+                    updateposs.Enabled = false;
                 }
                 equiptab.ResumeLayout();
                 if (!waslayouting) layouting = false;
@@ -2522,11 +2565,18 @@ namespace Character_Builder_5
 
         private void inventory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
                 displayElement.Document.Write(((Possession)inventory.SelectedItem).toHTML());
+                displayElement.Refresh();
+            }
+            else if (inventory.SelectedItem is Feature)
+            {
+                displayElement.Navigate("about:blank");
+                displayElement.Document.OpenNew(true);
+                displayElement.Document.Write(((Feature)inventory.SelectedItem).toHTML());
                 displayElement.Refresh();
             }
             UpdateInventoryOptions();
@@ -2534,7 +2584,7 @@ namespace Character_Builder_5
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null && magicproperties.SelectedItem != null)
+            if (inventory.SelectedItem is Possession && magicproperties.SelectedItem != null)
             {
                 Player.MakeHistory("");
                 string mp = ((MagicProperty)magicproperties.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((MagicProperty)magicproperties.SelectedItem).Source;
@@ -2546,17 +2596,22 @@ namespace Character_Builder_5
 
         private void removepossesion_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
                 Player.current.removePossessionAndItems((Possession)inventory.SelectedItem);
+                UpdateLayout();
+            } else if (inventory.SelectedItem is Feature)
+            {
+                Player.MakeHistory("");
+                Player.current.removeBoon(inventory.SelectedItem as Feature);
                 UpdateLayout();
             }
         }
 
         private void changecount_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
                 Player.current.changePossessionAmountAndAddRemoveItemsAccordingly((Possession)inventory.SelectedItem,(int)poscounter.Value);
@@ -2579,7 +2634,7 @@ namespace Character_Builder_5
 
         private void splitstack_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
                 Possession p = (Possession)inventory.SelectedItem;
@@ -2598,7 +2653,7 @@ namespace Character_Builder_5
 
         private void updateposs_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
                 Possession p = (Possession)inventory.SelectedItem;
@@ -2623,7 +2678,7 @@ namespace Character_Builder_5
         {
             if (!layouting)
             {
-                if (inventory.SelectedItem != null)
+                if (inventory.SelectedItem is Possession)
                 {
                     string es = (string)possequip.SelectedItem;
                     Player.MakeHistory("");
@@ -2643,7 +2698,7 @@ namespace Character_Builder_5
         {
             if (!layouting)
             {
-                if (inventory.SelectedItem != null)
+                if (inventory.SelectedItem is Possession)
                 {
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
@@ -2658,7 +2713,7 @@ namespace Character_Builder_5
         {
             if (!layouting)
             {
-                if (inventory.SelectedItem != null)
+                if (inventory.SelectedItem is Possession)
                 {
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
@@ -2673,7 +2728,7 @@ namespace Character_Builder_5
         {
             if (!layouting)
             {
-                if (inventory.SelectedItem != null)
+                if (inventory.SelectedItem is Possession)
                 {
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
@@ -2688,7 +2743,7 @@ namespace Character_Builder_5
         {
             if (!layouting)
             {
-                if (inventory.SelectedItem != null)
+                if (inventory.SelectedItem is Possession)
                 {
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
@@ -3089,7 +3144,7 @@ namespace Character_Builder_5
 
         private void unpack_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem != null)
+            if (inventory.SelectedItem is Possession)
             {
                 Possession p = (Possession)inventory.SelectedItem;
                 if (p.BaseItem != null && p.BaseItem != "" && p.Item is Pack)
@@ -3636,6 +3691,62 @@ namespace Character_Builder_5
         private void showDescriptionToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             ConfigManager.Description = showDescriptionToolStripMenuItem.Checked;
+        }
+
+        private void magicproperties_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) drag = e;
+        }
+
+        private void magicproperties_MouseUp(object sender, MouseEventArgs e)
+        {
+            drag = null;
+        }
+
+        private void magicproperties_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (drag == null || this.magicproperties.SelectedItem == null) return;
+            Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
+            if ((e.X - drag.X) * (e.X - drag.X) + (e.Y - drag.Y) * (e.Y - drag.Y) < 6) return;
+            this.magicproperties.DoDragDrop(new Drag(magicproperties.SelectedIndex, this.magicproperties.SelectedItem), DragDropEffects.Move);
+            drag = null;
+        }
+
+        private void magicproperties_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+            Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
+            if (point.Y < 0 || point.Y > magicproperties.Size.Height) return;
+            int index = this.magicproperties.IndexFromPoint(point);
+            if (index < 0) index = this.magicproperties.Items.Count - 1;
+            Drag data = (Drag)e.Data.GetData(typeof(Drag));
+            this.magicproperties.Items.RemoveAt(data.curindex);
+            this.magicproperties.Items.Insert(index, data.value);
+            data.curindex = index;
+        }
+
+        private void magicproperties_DragLeave(object sender, EventArgs e)
+        {
+            UpdateInventoryOptions();
+        }
+
+        private void magicproperties_DragDrop(object sender, DragEventArgs e)
+        {
+            Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
+            int index = this.magicproperties.IndexFromPoint(point);
+            if (index < 0) index = this.magicproperties.Items.Count - 1;
+            Drag data = (Drag)e.Data.GetData(typeof(Drag));
+            if (data == null)
+                return;
+            Player.MakeHistory(null);
+            if (inventory.SelectedItem is Possession)
+            {
+                Possession p = (Possession)inventory.SelectedItem;
+                string prop = p.MagicProperties[data.index];
+                p.MagicProperties.RemoveAt(data.index);
+                p.MagicProperties.Insert(index, prop);
+            }
+            UpdateLayout();
         }
     }
 }
