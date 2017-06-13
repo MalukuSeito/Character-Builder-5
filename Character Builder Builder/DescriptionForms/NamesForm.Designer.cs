@@ -79,6 +79,7 @@
             // stringList1
             // 
             this.stringList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stringList1.HistoryManager = null;
             this.stringList1.Items = null;
             this.stringList1.Location = new System.Drawing.Point(2, 48);
             this.stringList1.Name = "stringList1";

@@ -373,9 +373,9 @@ namespace Character_Builder_5
         }
         public bool Test()
         {
-            if (Name.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Description.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Requirement.ToLowerInvariant().Contains(Item.Search)) return true;
+            if (Name != null && Name.ToLowerInvariant().Contains(Item.Search)) return true;
+            if (Description != null && Description.ToLowerInvariant().Contains(Item.Search)) return true;
+            if (Requirement != null && Requirement.ToLowerInvariant().Contains(Item.Search)) return true;
             return false;
         }
         public override string ToString()

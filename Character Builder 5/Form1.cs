@@ -616,7 +616,7 @@ namespace Character_Builder_5
                 Background back = Player.current.Background;
                 if (back == null)
                 {
-                    background.Items.AddRange(Background.backgrounds.Values.ToArray<Background>());
+                    background.Items.AddRange(Background.backgrounds.Values.OrderBy(s => s.Name).ToArray<Background>());
                     background.Height = Background.backgrounds.Count() * background.ItemHeight + 10;
                 }
                 else
@@ -1236,7 +1236,7 @@ namespace Character_Builder_5
             if (classList.SelectedItem != null)
             {
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
-                classesBox.Items.AddRange(ClassDefinition.GetClasses(ci.Level, Player.current).ToArray<ClassDefinition>());
+                classesBox.Items.AddRange(ClassDefinition.GetClasses(ci.Level, Player.current).OrderBy(s => s.Name).ToArray<ClassDefinition>());
                 if (ci.Class != null)
                 {
                     hpSpinner.Minimum = 0;
@@ -1328,7 +1328,7 @@ namespace Character_Builder_5
                     scb.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
                     scb.MouseWheel += listbox_MouseWheel;
                     SubClass scs = Player.current.getSubclass(sc.ParentClass);
-                    if (scs == null) scb.Items.AddRange(SubClass.For(sc.ParentClass).ToArray<SubClass>());
+                    if (scs == null) scb.Items.AddRange(SubClass.For(sc.ParentClass).OrderBy(s=>s.Name).ToArray<SubClass>());
                     else
                     {
                         scb.ForeColor = Config.SelectColor;
@@ -1467,7 +1467,7 @@ namespace Character_Builder_5
                     SubRace subrac = Player.current.SubRace;
                     subracebox.Items.Clear();
                     subracebox.ForeColor = System.Drawing.SystemColors.WindowText;
-                    if (subrac == null) subracebox.Items.AddRange(SubRace.For(parentraces).ToArray<SubRace>());
+                    if (subrac == null) subracebox.Items.AddRange(SubRace.For(parentraces).OrderBy(s => s.Name).ToArray<SubRace>());
                     else
                     {
                         subracebox.Items.Add(subrac);
@@ -1477,7 +1477,7 @@ namespace Character_Builder_5
                     }
                     subracebox.Height = subracebox.Items.Count * subracebox.ItemHeight + 10;
                 }
-                if (rac == null) racebox.Items.AddRange(Race.races.Values.ToArray<Race>());
+                if (rac == null) racebox.Items.AddRange(Race.races.Values.OrderBy(s => s.Name).ToArray<Race>());
                 else
                 {
                     racebox.Items.Add(rac);
@@ -1896,8 +1896,9 @@ namespace Character_Builder_5
             {
                 try
                 {
-                    lastfile = od.FileName;
                     using (FileStream fs = (FileStream)od.OpenFile()) Player.current.Save(fs);
+                    Player.UnsavedChanges = 0;
+                    lastfile = od.FileName;
                 }
                 catch (Exception ex)
                 {
