@@ -34,8 +34,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.amount = new System.Windows.Forms.NumericUpDown();
+            this.UniqueID = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.amount = new System.Windows.Forms.NumericUpDown();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -74,6 +76,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.amount);
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.UniqueID);
             this.splitContainer1.Size = new System.Drawing.Size(1010, 582);
             this.splitContainer1.SplitterDistance = 504;
             this.splitContainer1.TabIndex = 3;
@@ -113,10 +117,38 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Name/Header:";
             // 
+            // UniqueID
+            // 
+            this.UniqueID.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.UniqueID.Location = new System.Drawing.Point(0, 562);
+            this.UniqueID.Name = "UniqueID";
+            this.UniqueID.Size = new System.Drawing.Size(502, 20);
+            this.UniqueID.TabIndex = 61;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label5.Location = new System.Drawing.Point(0, 549);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(410, 13);
+            this.label5.TabIndex = 62;
+            this.label5.Text = "Unique ID: (to identify the choice in the character file), Only for Amount of Cho" +
+    "ices > 0";
+            // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label3.Location = new System.Drawing.Point(0, 516);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(502, 13);
+            this.label3.TabIndex = 64;
+            this.label3.Text = "Amount of Choices:";
+            // 
             // amount
             // 
             this.amount.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.amount.Location = new System.Drawing.Point(0, 562);
+            this.amount.Location = new System.Drawing.Point(0, 529);
             this.amount.Maximum = new decimal(new int[] {
             10,
             0,
@@ -124,16 +156,7 @@
             0});
             this.amount.Name = "amount";
             this.amount.Size = new System.Drawing.Size(502, 20);
-            this.amount.TabIndex = 13;
-            // 
-            // label3
-            // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label3.Location = new System.Drawing.Point(0, 539);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(502, 23);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Amount of Choices:";
+            this.amount.TabIndex = 63;
             // 
             // dataGridView1
             // 
@@ -141,8 +164,8 @@
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(502, 539);
-            this.dataGridView1.TabIndex = 15;
+            this.dataGridView1.Size = new System.Drawing.Size(502, 516);
+            this.dataGridView1.TabIndex = 65;
             // 
             // TableDescriptionForm
             // 
@@ -158,6 +181,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.amount)).EndInit();
@@ -177,5 +201,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown amount;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox UniqueID;
     }
 }

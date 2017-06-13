@@ -108,7 +108,7 @@ namespace Character_Builder_5
                             foreach (ModifiedSpell mods in bonusspells)
                             {
                                 mods.includeResources = true;
-                                if (bsres.ContainsKey(mods.Name)) mods.used = true;
+                                if (bsres.ContainsKey(mods.getResourceID())) mods.used = bsres[mods.getResourceID()];
                             }
                         } else
                         {

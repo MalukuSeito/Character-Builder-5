@@ -503,7 +503,7 @@ namespace Character_Builder_5
                 List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(Player.current.getBonusSpells());
                 foreach (ModifiedSpell mods in bonusspells)
                 {
-                    if (Player.current.getUsedResources(mods.Name) > 0) mods.used = true;
+                    mods.used = Player.current.getUsedResources(mods.getResourceID());
                     mods.displayShort = true;
                 }
                 ResourcesBox.Items.Clear();
@@ -1957,7 +1957,7 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 if (Player.current.Race == null) Player.current.Race = selected;
                 else Player.current.Race = null;
-                UpdateRaceLayout();
+                UpdateLayout();
             }
         }
 
@@ -1993,7 +1993,7 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 if (Player.current.SubRace == null) Player.current.SubRace = selected;
                 else Player.current.SubRace = null;
-                UpdateRaceLayout();
+                UpdateLayout();
             }
         }
 
@@ -2901,9 +2901,9 @@ namespace Character_Builder_5
                         if ((selected.Level > 0 && selected.RechargeModifier < RechargeModifier.AtWill) || (selected.Level == 0 && selected.RechargeModifier != RechargeModifier.Unmodified && selected.RechargeModifier < RechargeModifier.AtWill))
                         {
                             resourceused.Enabled = true;
-                            resourceused.Maximum = 1;
+                            resourceused.Maximum = selected.count;
                             resourceused.Value = 0;
-                            if (Player.current.getUsedResources(selected.Name)>0) resourceused.Value = 1;
+                            resourceused.Value = Player.current.getUsedResources(selected.getResourceID());
                         }
                         else resourceused.Enabled = false;
                         layouting = false;
@@ -2930,8 +2930,8 @@ namespace Character_Builder_5
                 }
                 else if (ResourcesBox.SelectedItem is ModifiedSpell)
                 {
-                    Player.MakeHistory("Resource" + ((ModifiedSpell)ResourcesBox.SelectedItem).Name);
-                    Player.current.setUsedResources(((ModifiedSpell)ResourcesBox.SelectedItem).Name, (int)resourceused.Value);
+                    Player.MakeHistory("Resource" + ((ModifiedSpell)ResourcesBox.SelectedItem).getResourceID());
+                    Player.current.setUsedResources(((ModifiedSpell)ResourcesBox.SelectedItem).getResourceID(), (int)resourceused.Value);
                     UpdateInPlayInner();
                 }
             }
@@ -2946,7 +2946,7 @@ namespace Character_Builder_5
             }
             foreach (ModifiedSpell ms in Player.current.getBonusSpells())
             {
-                if (ms.RechargeModifier >= RechargeModifier.ShortRest) Player.current.setUsedResources(ms.Name, 0);
+                if (ms.RechargeModifier >= RechargeModifier.ShortRest) Player.current.setUsedResources(ms.getResourceID(), 0);
             }
             UpdateInPlayInner();
         }
@@ -2960,7 +2960,7 @@ namespace Character_Builder_5
             }
             foreach (ModifiedSpell ms in Player.current.getBonusSpells())
             {
-                if (ms.RechargeModifier >= RechargeModifier.LongRest) Player.current.setUsedResources(ms.Name, 0);
+                if (ms.RechargeModifier >= RechargeModifier.LongRest) Player.current.setUsedResources(ms.getResourceID(), 0);
             }
             UpdateInPlayInner();
         }
@@ -2982,9 +2982,12 @@ namespace Character_Builder_5
                 else if (ResourcesBox.SelectedItem is ModifiedSpell)
                 {
                     ModifiedSpell selected = (ModifiedSpell)ResourcesBox.SelectedItem;
-                    Player.MakeHistory("Resource" + selected.Name);
-                    Player.current.setUsedResources(selected.Name, 1);
-                    UpdateInPlayInner();
+                    if (selected.used < selected.count)
+                    {
+                        Player.MakeHistory("Resource" + selected.getResourceID());
+                        Player.current.setUsedResources(selected.getResourceID(), selected.used + 1);
+                        UpdateInPlayInner();
+                    }
                 }
             }
         }

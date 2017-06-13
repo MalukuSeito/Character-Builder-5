@@ -32,15 +32,15 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
-            this.preview = new System.Windows.Forms.WebBrowser();
-            this.label9 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.features1 = new Character_Builder_Builder.Features();
+            this.preview = new System.Windows.Forms.WebBrowser();
             this.label1 = new System.Windows.Forms.Label();
             this.UniqueID = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.AllowSameChoice = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.Amount = new System.Windows.Forms.NumericUpDown();
+            this.AllowSameChoice = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -114,36 +114,6 @@
             this.basicFeature1.Size = new System.Drawing.Size(761, 260);
             this.basicFeature1.TabIndex = 0;
             // 
-            // preview
-            // 
-            this.preview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.preview.Location = new System.Drawing.Point(0, 0);
-            this.preview.MinimumSize = new System.Drawing.Size(20, 20);
-            this.preview.Name = "preview";
-            this.preview.Size = new System.Drawing.Size(269, 539);
-            this.preview.TabIndex = 0;
-            this.preview.Url = new System.Uri("about:blank", System.UriKind.Absolute);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label9.Location = new System.Drawing.Point(0, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(152, 13);
-            this.label9.TabIndex = 50;
-            this.label9.Text = "Amount of Selectable Features";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.Amount);
-            this.panel1.Controls.Add(this.AllowSameChoice);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 13);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(761, 21);
-            this.panel1.TabIndex = 56;
-            // 
             // features1
             // 
             this.features1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
@@ -155,6 +125,16 @@
             this.features1.preview = this.preview;
             this.features1.Size = new System.Drawing.Size(761, 195);
             this.features1.TabIndex = 61;
+            // 
+            // preview
+            // 
+            this.preview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.preview.Location = new System.Drawing.Point(0, 0);
+            this.preview.MinimumSize = new System.Drawing.Size(20, 20);
+            this.preview.Name = "preview";
+            this.preview.Size = new System.Drawing.Size(269, 539);
+            this.preview.TabIndex = 0;
+            this.preview.Url = new System.Uri("about:blank", System.UriKind.Absolute);
             // 
             // label1
             // 
@@ -184,17 +164,15 @@
             this.label5.TabIndex = 58;
             this.label5.Text = "Unique ID: (to identify the choice in the character file)";
             // 
-            // AllowSameChoice
+            // panel1
             // 
-            this.AllowSameChoice.AutoSize = true;
-            this.AllowSameChoice.Dock = System.Windows.Forms.DockStyle.Right;
-            this.AllowSameChoice.Location = new System.Drawing.Point(554, 0);
-            this.AllowSameChoice.Name = "AllowSameChoice";
-            this.AllowSameChoice.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.AllowSameChoice.Size = new System.Drawing.Size(207, 21);
-            this.AllowSameChoice.TabIndex = 59;
-            this.AllowSameChoice.Text = "Allow the same choice multiple times";
-            this.AllowSameChoice.UseVisualStyleBackColor = true;
+            this.panel1.Controls.Add(this.Amount);
+            this.panel1.Controls.Add(this.AllowSameChoice);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 13);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(761, 21);
+            this.panel1.TabIndex = 56;
             // 
             // Amount
             // 
@@ -213,6 +191,28 @@
             0,
             0,
             0});
+            // 
+            // AllowSameChoice
+            // 
+            this.AllowSameChoice.AutoSize = true;
+            this.AllowSameChoice.Dock = System.Windows.Forms.DockStyle.Right;
+            this.AllowSameChoice.Location = new System.Drawing.Point(554, 0);
+            this.AllowSameChoice.Name = "AllowSameChoice";
+            this.AllowSameChoice.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.AllowSameChoice.Size = new System.Drawing.Size(207, 21);
+            this.AllowSameChoice.TabIndex = 59;
+            this.AllowSameChoice.Text = "Allow the same choice multiple times";
+            this.AllowSameChoice.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(152, 13);
+            this.label9.TabIndex = 50;
+            this.label9.Text = "Amount of Selectable Features";
             // 
             // ChoiceFeatureForm
             // 

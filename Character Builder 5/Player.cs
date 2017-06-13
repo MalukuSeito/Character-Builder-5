@@ -1166,8 +1166,21 @@ namespace Character_Builder_5
                 }
                 else if (f is BonusSpellKeywordChoiceFeature) if (!filterAtWill || ((BonusSpellKeywordChoiceFeature)f).SpellCastModifier < RechargeModifier.AtWill) spells.AddRange((Utils.getSpells((BonusSpellKeywordChoiceFeature)f)).Where(s=>s.Level > 0 || !filterAtWill));
             }
-            spells.Sort();
-            return spells.Distinct<ModifiedSpell>();
+            Dictionary<ModifiedSpell, ModifiedSpell> distinct = new Dictionary<ModifiedSpell, ModifiedSpell>();
+            foreach (ModifiedSpell ms in spells)
+            {
+                if (!distinct.ContainsKey(ms)) distinct.Add(ms, ms);
+                else
+                {
+                    ModifiedSpell other = distinct[ms];
+                    other.AdditionalKeywords.AddRange(ms.AdditionalKeywords);
+                    other.AdditionalKeywords = other.AdditionalKeywords.OrderBy(k => k.Name).Distinct().ToList();
+                    other.Modifikations.AddRange(ms.Modifikations);
+                    other.Modifikations = other.Modifikations.OrderBy(k => k.Name).Distinct().ToList();
+                    other.count++;
+                }
+            }
+            return distinct.Keys.OrderBy(ss => ss.Name);
         }
         public IEnumerable<string> getToolKWProficiencies()
         {

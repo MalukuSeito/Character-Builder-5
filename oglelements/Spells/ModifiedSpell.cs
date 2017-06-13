@@ -49,7 +49,9 @@ namespace Character_Builder_5
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> Modifikations;
         [XmlIgnore]
-        public bool used;
+        public int used;
+        [XmlIgnore]
+        public int count;
         [XmlIgnore]
         public bool includeResources = true;
         [XmlIgnore]
@@ -78,9 +80,10 @@ namespace Character_Builder_5
             AddAlwaysPreparedToName = false;
             Source = s.Source;
             CantripDamage = s.CantripDamage;
-            used = false;
+            used = 0;
             displayShort = false;
             Modifikations = new List<Feature>();
+            count = 1;
         }
         public ModifiedSpell(Spell s, IEnumerable<Keyword> kwToAdd, bool addAlwaysPreparedToName, bool includeResources = true)
         {
@@ -100,11 +103,12 @@ namespace Character_Builder_5
             AddAlwaysPreparedToName = addAlwaysPreparedToName;
             Source = s.Source;
             CantripDamage = s.CantripDamage;
-            used = false;
+            used = 0;
             displayShort = false;
             Modifikations = new List<Feature>();
             this.includeResources = includeResources;
             includeRecharge = includeResources;
+            count = 1;
         }
         public string recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)
         {
@@ -130,14 +134,45 @@ namespace Character_Builder_5
             return "Other";
         }
         public override string ToString() {
-            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
-            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (used ? ": 0/1 " : ": 1/1 ") : " ") + recharge(RechargeModifier));
+            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
+            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
         }
         public override List<Keyword> getKeywords()
         {
             List<Keyword> res = new List<Keyword>(Keywords);
             res.AddRange(AdditionalKeywords);
             return res;
+        }
+
+        public string getResourceID()
+        {
+            return ConfigManager.SourceSeperator + "BONUS_SPELL " + Name + " " + ConfigManager.SourceSeperator + " " + Source + "|" + differentAbility + RechargeModifier;
+        }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            ModifiedSpell o = (ModifiedSpell)obj;
+            return String.Equals(Name, o.Name, StringComparison.InvariantCultureIgnoreCase)
+                && differentAbility == o.differentAbility
+                && RechargeModifier == o.RechargeModifier
+                && String.Equals(Source, o.Source, StringComparison.InvariantCultureIgnoreCase);
+
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0)
+                ^ differentAbility.GetHashCode()
+                ^ RechargeModifier.GetHashCode()
+                ^ (Source != null ? Source.GetHashCode() : 0);
         }
     }
 }
