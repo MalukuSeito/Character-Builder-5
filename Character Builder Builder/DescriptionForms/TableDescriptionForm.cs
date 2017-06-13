@@ -18,6 +18,7 @@ namespace Character_Builder_Builder.DescriptionForms
         {
             d = td;
             InitializeComponent();
+            foreach (BackgroundOption s in Enum.GetValues(typeof(BackgroundOption))) if (s != BackgroundOption.None) BackgroundOptions.Items.Add(s, td.BackgroundOption.HasFlag(s));
             name.DataBindings.Add("Text", td, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
             descText.DataBindings.Add("Text", td, "Text", true, DataSourceUpdateMode.OnPropertyChanged);
             amount.DataBindings.Add("Value", td, "Amount", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -30,6 +31,12 @@ namespace Character_Builder_Builder.DescriptionForms
             history?.MakeHistory(null);
             ShowDialog();
             return d;
+        }
+
+        private void BackgroundOptions_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked) d.BackgroundOption |= (BackgroundOption)BackgroundOptions.Items[e.Index];
+            else if (e.NewValue == CheckState.Unchecked) d.BackgroundOption &= ~(BackgroundOption)BackgroundOptions.Items[e.Index];
         }
     }
 }

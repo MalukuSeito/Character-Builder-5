@@ -58,6 +58,15 @@
             this.label21 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.Spell = new System.Windows.Forms.ComboBox();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.SkillList = new Character_Builder_Builder.StringList();
+            this.label18 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Skill = new System.Windows.Forms.TextBox();
+            this.Passive = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.proficiencyOptions = new Character_Builder_Builder.StringList();
+            this.label24 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -67,15 +76,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.SkillList = new Character_Builder_Builder.StringList();
-            this.label18 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Skill = new System.Windows.Forms.TextBox();
-            this.Passive = new System.Windows.Forms.CheckBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.proficiencyOptions = new Character_Builder_Builder.StringList();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -412,6 +412,110 @@
             this.Spell.Size = new System.Drawing.Size(179, 21);
             this.Spell.TabIndex = 78;
             // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.SkillList);
+            this.splitContainer4.Panel1.Controls.Add(this.label18);
+            this.splitContainer4.Panel1.Controls.Add(this.panel1);
+            this.splitContainer4.Panel1.Controls.Add(this.label17);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.proficiencyOptions);
+            this.splitContainer4.Panel2.Controls.Add(this.label24);
+            this.splitContainer4.Size = new System.Drawing.Size(371, 269);
+            this.splitContainer4.SplitterDistance = 156;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // SkillList
+            // 
+            this.SkillList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SkillList.HistoryManager = null;
+            this.SkillList.Items = null;
+            this.SkillList.Location = new System.Drawing.Point(0, 46);
+            this.SkillList.Name = "SkillList";
+            this.SkillList.Size = new System.Drawing.Size(371, 110);
+            this.SkillList.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("SkillList.Suggestions")));
+            this.SkillList.TabIndex = 11;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label18.Location = new System.Drawing.Point(0, 33);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(164, 13);
+            this.label18.TabIndex = 10;
+            this.label18.Text = "Bonus to Skills (Applicable Skills):";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.Skill);
+            this.panel1.Controls.Add(this.Passive);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 13);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(371, 20);
+            this.panel1.TabIndex = 9;
+            // 
+            // Skill
+            // 
+            this.Skill.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Skill.Location = new System.Drawing.Point(0, 0);
+            this.Skill.Name = "Skill";
+            this.Skill.Size = new System.Drawing.Size(201, 20);
+            this.Skill.TabIndex = 4;
+            // 
+            // Passive
+            // 
+            this.Passive.AutoSize = true;
+            this.Passive.Dock = System.Windows.Forms.DockStyle.Right;
+            this.Passive.Location = new System.Drawing.Point(201, 0);
+            this.Passive.Name = "Passive";
+            this.Passive.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.Passive.Size = new System.Drawing.Size(170, 20);
+            this.Passive.TabIndex = 3;
+            this.Passive.Text = "Applies only to passive value";
+            this.Passive.UseVisualStyleBackColor = true;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label17.Location = new System.Drawing.Point(0, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(115, 13);
+            this.label17.TabIndex = 8;
+            this.label17.Text = "Bonus to Skills (Value):";
+            // 
+            // proficiencyOptions
+            // 
+            this.proficiencyOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.proficiencyOptions.HistoryManager = null;
+            this.proficiencyOptions.Items = null;
+            this.proficiencyOptions.Location = new System.Drawing.Point(0, 13);
+            this.proficiencyOptions.Name = "proficiencyOptions";
+            this.proficiencyOptions.Size = new System.Drawing.Size(371, 96);
+            this.proficiencyOptions.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("proficiencyOptions.Suggestions")));
+            this.proficiencyOptions.TabIndex = 12;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label24.Location = new System.Drawing.Point(0, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(233, 13);
+            this.label24.TabIndex = 11;
+            this.label24.Text = "Proficient with this weapon when proficient with:";
+            // 
             // label2
             // 
             this.label2.AutoEllipsis = true;
@@ -516,110 +620,6 @@
             this.basicFeature1.Padding = new System.Windows.Forms.Padding(2);
             this.basicFeature1.Size = new System.Drawing.Size(743, 298);
             this.basicFeature1.TabIndex = 57;
-            // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.SkillList);
-            this.splitContainer4.Panel1.Controls.Add(this.label18);
-            this.splitContainer4.Panel1.Controls.Add(this.panel1);
-            this.splitContainer4.Panel1.Controls.Add(this.label17);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.proficiencyOptions);
-            this.splitContainer4.Panel2.Controls.Add(this.label24);
-            this.splitContainer4.Size = new System.Drawing.Size(371, 269);
-            this.splitContainer4.SplitterDistance = 156;
-            this.splitContainer4.TabIndex = 0;
-            // 
-            // SkillList
-            // 
-            this.SkillList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SkillList.HistoryManager = null;
-            this.SkillList.Items = null;
-            this.SkillList.Location = new System.Drawing.Point(0, 46);
-            this.SkillList.Name = "SkillList";
-            this.SkillList.Size = new System.Drawing.Size(371, 110);
-            this.SkillList.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("SkillList.Suggestions")));
-            this.SkillList.TabIndex = 11;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label18.Location = new System.Drawing.Point(0, 33);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(164, 13);
-            this.label18.TabIndex = 10;
-            this.label18.Text = "Bonus to Skills (Applicable Skills):";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.Skill);
-            this.panel1.Controls.Add(this.Passive);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 13);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(371, 20);
-            this.panel1.TabIndex = 9;
-            // 
-            // Skill
-            // 
-            this.Skill.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Skill.Location = new System.Drawing.Point(0, 0);
-            this.Skill.Name = "Skill";
-            this.Skill.Size = new System.Drawing.Size(201, 20);
-            this.Skill.TabIndex = 4;
-            // 
-            // Passive
-            // 
-            this.Passive.AutoSize = true;
-            this.Passive.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Passive.Location = new System.Drawing.Point(201, 0);
-            this.Passive.Name = "Passive";
-            this.Passive.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.Passive.Size = new System.Drawing.Size(170, 20);
-            this.Passive.TabIndex = 3;
-            this.Passive.Text = "Applies only to passive value";
-            this.Passive.UseVisualStyleBackColor = true;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label17.Location = new System.Drawing.Point(0, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(115, 13);
-            this.label17.TabIndex = 8;
-            this.label17.Text = "Bonus to Skills (Value):";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label24.Location = new System.Drawing.Point(0, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(233, 13);
-            this.label24.TabIndex = 11;
-            this.label24.Text = "Proficient with this weapon when proficient with:";
-            // 
-            // proficiencyOptions
-            // 
-            this.proficiencyOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.proficiencyOptions.HistoryManager = null;
-            this.proficiencyOptions.Items = null;
-            this.proficiencyOptions.Location = new System.Drawing.Point(0, 13);
-            this.proficiencyOptions.Name = "proficiencyOptions";
-            this.proficiencyOptions.Size = new System.Drawing.Size(371, 96);
-            this.proficiencyOptions.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("proficiencyOptions.Suggestions")));
-            this.proficiencyOptions.TabIndex = 12;
             // 
             // BonusFeatureForm
             // 

@@ -614,6 +614,7 @@ namespace Character_Builder_5
                 background.Items.Clear();
                 background.ForeColor = System.Drawing.SystemColors.WindowText;
                 Background back = Player.current.Background;
+                List<TableDescription> tables = Player.current.collectTables();
                 if (back == null)
                 {
                     background.Items.AddRange(Background.backgrounds.Values.OrderBy(s => s.Name).ToArray<Background>());
@@ -637,6 +638,7 @@ namespace Character_Builder_5
                 if (Player.current.PersonalityTrait == null || Player.current.PersonalityTrait == "")
                 {
                     if (back != null) traits.Items.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
+                    foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Trait)) traits.Items.AddRange(td.Entries.ToArray<TableEntry>());
                     traits.Items.Add("- Custom Personality Trait -");
                 }
                 else
@@ -653,6 +655,7 @@ namespace Character_Builder_5
                 if (Player.current.Ideal == null || Player.current.Ideal == "")
                 {
                     if (back != null) ideals.Items.AddRange(back.Ideal.ToArray<TableEntry>());
+                    foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Ideal)) ideals.Items.AddRange(td.Entries.ToArray<TableEntry>());
                     ideals.Items.Add("- Custom Ideal -");
                 }
                 else
@@ -669,6 +672,7 @@ namespace Character_Builder_5
                 if (Player.current.Bond == null || Player.current.Bond == "")
                 {
                     if (back != null) bonds.Items.AddRange(back.Bond.ToArray<TableEntry>());
+                    foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Bond)) bonds.Items.AddRange(td.Entries.ToArray<TableEntry>());
                     bonds.Items.Add("- Custom Bond -");
                 }
                 else
@@ -685,6 +689,7 @@ namespace Character_Builder_5
                 if (Player.current.Flaw == null || Player.current.Flaw == "")
                 {
                     if (back != null) flaws.Items.AddRange(back.Flaw.ToArray<TableEntry>());
+                    foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Flaw)) flaws.Items.AddRange(td.Entries.ToArray<TableEntry>());
                     flaws.Items.Add("- Custom Flaw -");
                 }
                 else

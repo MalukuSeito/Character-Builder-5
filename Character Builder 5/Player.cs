@@ -2202,5 +2202,14 @@ namespace Character_Builder_5
             int index = Boons.FindIndex(s => ConfigManager.SourceInvariantComparer.Equals(s, boon));
             if (index >= 0) Boons.RemoveAt(index);
         }
+        public List<TableDescription> collectTables()
+        {
+            List<TableDescription> res = new List<TableDescription>();
+            if (Background != null) foreach (Description d in Background.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            if (Race != null) foreach (Description d in Race.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            if (SubRace != null) foreach (Description d in SubRace.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            foreach (PlayerClass pc in Classes) res.AddRange(pc.collectTables());
+            return res;
+        }
     }
 }

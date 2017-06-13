@@ -139,6 +139,12 @@ namespace Character_Builder_5
             return 0;
         }
 
-        
+        public List<TableDescription> collectTables()
+        {
+            List<TableDescription> res = new List<TableDescription>();
+            if (Class != null) foreach (Description d in Class.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            if (SubClass != null) foreach (Description d in SubClass.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            return res;
+        }
     }
 }

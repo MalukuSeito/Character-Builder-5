@@ -55,6 +55,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="ClassDefiniton.cs" />
     <Compile Include="Condition.cs" />
+    <Compile Include="Descriptions\BackgroundOption.cs" />
     <Compile Include="Descriptions\Names.cs" />
     <Compile Include="Descriptions\TableEntry.cs" />
     <Compile Include="DescriptionContainer.cs" />

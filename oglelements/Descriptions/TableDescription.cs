@@ -15,6 +15,7 @@ namespace Character_Builder_5
         public String TableName { get; set; }
         [XmlArrayItem(Type = typeof(TableEntry))]
         public List<TableEntry> Entries { get; set; } = new List<TableEntry>();
+        public BackgroundOption BackgroundOption { get; set; }
         public TableDescription(String name, String text, String tablename, String uniqueID, int amount=1) : base(name,text)
         {
             Name = name;
@@ -23,6 +24,7 @@ namespace Character_Builder_5
             Entries = new List<TableEntry>();
             UniqueID = uniqueID;
             Amount = amount;
+            BackgroundOption = BackgroundOption.None;
         }
         public TableDescription(String name, String text, String tablename, String uniqueID, List<TableEntry> table, int amount = 1)
             : base(name, text)
@@ -33,6 +35,7 @@ namespace Character_Builder_5
             Entries = new List<TableEntry>(table);
             UniqueID = uniqueID;
             Amount = amount;
+            BackgroundOption = BackgroundOption.None;
         }
     }
 }
