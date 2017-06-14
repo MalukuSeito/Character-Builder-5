@@ -29,14 +29,14 @@ namespace Character_Builder_5
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyFeature)),
-        XmlArrayItem(Type = typeof(SubRaceFeature)),XmlArrayItem(Type = typeof(SubClassFeature)),
+        XmlArrayItem(Type = typeof(SubRaceFeature)), XmlArrayItem(Type = typeof(SubClassFeature)),
         XmlArrayItem(Type = typeof(ToolProficiencyFeature)),
         XmlArrayItem(Type = typeof(ToolKWProficiencyFeature)),
         XmlArrayItem(Type = typeof(ToolProficiencyChoiceConditionFeature)),
         XmlArrayItem(Type = typeof(BonusFeature)),
         XmlArrayItem(Type = typeof(SpellcastingFeature)),
-        XmlArrayItem(Type = typeof(IncreaseSpellChoiceAmountFeature)),XmlArrayItem(Type = typeof(ModifySpellChoiceFeature)),
-        XmlArrayItem(Type = typeof(SpellChoiceFeature)),XmlArrayItem(Type = typeof(SpellSlotsFeature)),
+        XmlArrayItem(Type = typeof(IncreaseSpellChoiceAmountFeature)), XmlArrayItem(Type = typeof(ModifySpellChoiceFeature)),
+        XmlArrayItem(Type = typeof(SpellChoiceFeature)), XmlArrayItem(Type = typeof(SpellSlotsFeature)),
         XmlArrayItem(Type = typeof(BonusSpellPrepareFeature)),
         XmlArrayItem(Type = typeof(BonusSpellFeature)),
         XmlArrayItem(Type = typeof(ACFeature)),
@@ -46,7 +46,9 @@ namespace Character_Builder_5
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> Choices;
-            public ChoiceFeature()
+        [XmlIgnore]
+        private List<List<Feature>> copies = new List<List<Feature>>();
+        public ChoiceFeature()
             : base()
         {
             Choices = new List<Feature>();
@@ -125,15 +127,29 @@ namespace Character_Builder_5
                 String counter = "";
                 if (c + offset> 0) counter = "_" + (c + offset).ToString();
                 Choice cho = choiceProvider.getChoice(UniqueID + counter);
+                List<Feature> choices = Choices;
+                if (AllowSameChoice) choices = getCopy(c);
                 if (cho != null && cho.Value != "")
                 {
-                    Feature feat = Choices.Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
-                    if (feat == null) feat = Choices.Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
+                    Feature feat = choices.Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
+                    if (feat == null) feat = choices.Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
                     if (feat != null) res.AddRange(feat.Collect(level, choiceProvider));
                 }
             }
             return res;
         }
+
+        private List<Feature> getCopy(int c)
+        {
+            if (c == 0) return Choices;
+            c--;
+            while (c >= copies.Count)
+            {
+                copies.Add(FeatureCollection.MakeCopy(Choices));
+            }
+            return copies[c];
+        }
+
         public override string Source
         {
             get

@@ -36,12 +36,13 @@ namespace Character_Builder_5
 
 
         [XmlIgnore]
-        public static Dictionary<string, List<Feature>> Collections = new Dictionary<string, List<Feature>>(StringComparer.OrdinalIgnoreCase);
+        public static List<Dictionary<string, List<Feature>>> Collections = new List<Dictionary<string, List<Feature>>>();
         public static Dictionary<string, List<FeatureContainer>> Container = new Dictionary<string, List<FeatureContainer>>(StringComparer.OrdinalIgnoreCase);
         public static Dictionary<string, List<Feature>> Categories = new Dictionary<string, List<Feature>>(StringComparer.OrdinalIgnoreCase);
         public static Dictionary<string, Feature> Boons = new Dictionary<string, Feature>(StringComparer.OrdinalIgnoreCase);
         public static Dictionary<string, Feature> simple = new Dictionary<string, Feature>(StringComparer.OrdinalIgnoreCase);
         public static List<Feature> Features = new List<Feature>();
+        private static List<List<Feature>> copies = new List<List<Feature>>();
         /*public static List<Feature> Feats = new List<Feature>();
         public static List<string> Names = new List<string>();
         public static List<int> Levels = new List<int>();
@@ -126,11 +127,16 @@ namespace Character_Builder_5
             //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
             return cat;
         }
-        public static List<Feature> Get(string expression)
+        public static List<Feature> Get(string expression, int copy = 0)
         {
+            while (Collections.Count <= copy) Collections.Add(new Dictionary<string, List<Feature>>(StringComparer.OrdinalIgnoreCase));
+            int c = copy - 1;
+            while (copies.Count <= c) copies.Add(MakeCopy(Features));
+            List<Feature> features = Features;
+            if (c >= 0) features = copies[c];
             if (expression == null || expression == "") expression = "Category = 'Feats'";
             if (expression == "Boons") expression = "Category = 'Boons'";
-            if (Collections.ContainsKey(expression)) return new List<Feature>(Collections[expression]);
+            if (Collections[copy].ContainsKey(expression)) return new List<Feature>(Collections[copy][expression]);
             try
             {
                 Expression ex = new Expression(fixQuotes(expression));
@@ -145,7 +151,7 @@ namespace Character_Builder_5
                     else args.Result = false;
                 };
                 List<Feature> res=new List<Feature>();
-                foreach (Feature f in Features)
+                foreach (Feature f in features)
                 {
                     current=f;
                     object o = ex.Evaluate();
@@ -153,7 +159,7 @@ namespace Character_Builder_5
                     
                 }
                 res.Sort();
-                Collections[expression] = res;
+                Collections[copy][expression] = res;
                 return res;
             }
             catch (Exception e)
@@ -161,6 +167,13 @@ namespace Character_Builder_5
                 throw new Exception("Error while evaluating expression " + expression + ":" + e);
             }
         }
+
+        internal static List<Feature> MakeCopy(List<Feature> features)
+        {
+            FeatureContainer fc = new FeatureContainer(features);
+            return fc.clone().Features;
+        }
+
         public static Feature getBoon(string name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperator))

@@ -38,8 +38,8 @@ namespace Character_Builder_5
                 Choice cho = choiceProvider.getChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "")
                 {
-                    Feature feat = FeatureCollection.Get(Collection).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
-                    if (feat == null) feat = FeatureCollection.Get(Collection).Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
+                    Feature feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
+                    if (feat == null) feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
                     if (feat != null) res.AddRange(feat.Collect(level, choiceProvider));
                 }
             }
