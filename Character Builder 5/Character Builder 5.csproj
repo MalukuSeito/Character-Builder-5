@@ -90,6 +90,7 @@
     <Compile Include="ObjectIdentityEqualityComparer.cs" />
     <Compile Include="PDF.cs" />
     <Compile Include="PDFField.cs" />
+    <Compile Include="PluginManager.cs" />
     <Compile Include="ResourceInfo.cs" />
     <Compile Include="SkillInfo.cs" />
     <Compile Include="Spellcasting.cs" />
@@ -246,6 +247,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Character Builder Plugin\Character Builder Plugin.csproj">
+      <Project>{578ec199-55fb-4830-b085-d16bbb9a22c8}</Project>
+      <Name>Character Builder Plugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\oglelements\OGL Elements.csproj">
       <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
       <Name>OGL Elements</Name>

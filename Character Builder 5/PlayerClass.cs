@@ -65,8 +65,8 @@ namespace Character_Builder_5
             if (Class == null) return new List<Feature>();
             int classlevel = getClassLevelUpToLevel(level);
             bool secondclass = !ClassLevelAtLevel.Contains(1);
-            List<Feature> fl = Class.CollectFeatures(classlevel, secondclass, player);
-            if (SubClass != null) fl.AddRange(SubClass.CollectFeatures(classlevel, secondclass, player));
+            List<Feature> fl = PluginManager.manager.filterClassFeatures(Class, classlevel, Class.CollectFeatures(classlevel, secondclass, player), level, player);
+            if (SubClass != null) fl.AddRange(PluginManager.manager.filterSubClassFeatures(SubClass, Class, classlevel, SubClass.CollectFeatures(classlevel, secondclass, player), level, player));
             return fl;
         }
         public int getClassLevelUpToLevel(int level)

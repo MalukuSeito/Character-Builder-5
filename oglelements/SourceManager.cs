@@ -18,6 +18,7 @@ namespace Character_Builder_5
             AppPath = path;
             foreach (string s in Directory.EnumerateDirectories(path))
             {
+                if (s.Equals(ConfigManager.Directory_Plugins)) continue;
                 Sources.Add(Path.GetFileName(s));
                 string f = Path.Combine(s, "LICENSE");
                 Console.WriteLine(f);

@@ -20,6 +20,7 @@ namespace Character_Builder_5
         private bool layouting = false;
         public String lastfile = "";
         private MouseEventArgs drag;
+        private Dictionary<string, ToolStripMenuItem> plugins = new Dictionary<string, ToolStripMenuItem>();
         private class Drag
         {
             public Drag(int i, object v)
@@ -71,6 +72,19 @@ namespace Character_Builder_5
                 p.Click += new System.EventHandler(this.pdfexporter_click);
                 pDFExporterToolStripMenuItem.DropDownItems.Add(p);
             }
+
+            configureHouserulesToolStripMenuItem.DropDownItems.Clear();
+            if (PluginManager.manager.available.Count == 0) configureHouserulesToolStripMenuItem.Enabled = false;
+            foreach (string s in PluginManager.manager.available.Keys)
+            {
+                ToolStripMenuItem p = new ToolStripMenuItem(s);
+                plugins.Add(s, p);
+                p.Name = s;
+                p.Size = new System.Drawing.Size(152, 22);
+                p.Click += pluginClick;
+                configureHouserulesToolStripMenuItem.DropDownItems.Add(p);
+            }
+            PluginManager.PluginsChanged += PluginManager_PluginsChanged;
             portraitBox.AllowDrop = true;
             FactionInsignia.AllowDrop = true;
             sidePortrait.AllowDrop = true;
@@ -78,6 +92,28 @@ namespace Character_Builder_5
             possequip.Items.Clear();
             possequip.Items.Add(EquipSlot.None);
             foreach (string s in ConfigManager.loaded.Slots) possequip.Items.Add(s);
+        }
+
+        private void PluginManager_PluginsChanged(object sender, EventArgs e)
+        {
+            if (sender is PluginManager)
+            {
+                PluginManager manager = sender as PluginManager;
+                foreach (ToolStripMenuItem t in plugins.Values) t.Checked = false;
+                foreach (Character_Builder_Plugin.IPlugin p in manager.plugins) plugins[p.Name].Checked = true;
+            }
+        }
+
+        private void pluginClick(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem) {
+                ToolStripMenuItem p = (ToolStripMenuItem)sender;
+                Player.MakeHistory(null);
+                if (p.Checked) Player.current.ActiveHouseRules.RemoveAll(s => StringComparer.InvariantCultureIgnoreCase.Equals(s, p.Name));
+                else Player.current.ActiveHouseRules.Add(p.Name);
+                PluginManager.manager.Load(Player.current.ActiveHouseRules);
+                UpdateLayout();
+            }
         }
 
         private void pdfexporter_click(object sender, EventArgs e)

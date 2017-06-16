@@ -22,7 +22,12 @@ namespace Character_Builder_5
         [XmlIgnore]
         public static int MaxBuffer = 200;
         [XmlIgnore]
-        public static Player current = new Player();
+        public static Player _current = new Player();
+        [XmlIgnore]
+        public static Player current {
+            get { return _current; }
+            set { _current = value; PluginManager.manager.Load(value.ActiveHouseRules); }
+        }
         [XmlIgnore]
         public Dictionary<Feature, int> ChoiceCounter;
         [XmlIgnore]
@@ -131,6 +136,7 @@ namespace Character_Builder_5
         public int BaseCharisma { get; set; }
         public List<string> Journal = new List<string>();
         public List<JournalEntry> ComplexJournal = new List<JournalEntry>();
+        public List<string> ActiveHouseRules = new List<string>();
         [XmlElement("Portrait")]
         public string PortraitLocation = null;
         [XmlIgnore]
@@ -418,7 +424,7 @@ namespace Character_Builder_5
             {
                 result.AddRange(p.Collect(level, this));
             }
-            return result;
+            return PluginManager.manager.filterPossessionFeatures(result, level, this);
         }
         public AbilityFeatChoice getAbilityFeatChoice(AbilityScoreFeatFeature f)
         {
@@ -744,7 +750,7 @@ namespace Character_Builder_5
         {
             if (level == 0) level = getLevel();
             List<Feature> fl = new List<Feature>();
-            if (Background != null) fl.AddRange(Background.CollectFeatures(level, this));
+            if (Background != null) fl.AddRange(PluginManager.manager.filterBackgroundFeatures(Background, Background.CollectFeatures(level, this), level, this));
             fl.AddRange(getBoons(level));
             fl.AddRange(getPossessionFeatures(level));
             return fl;
@@ -769,6 +775,7 @@ namespace Character_Builder_5
             List<Feature> fl = new List<Feature>();
             foreach (Feature f in ConfigManager.CommonFeatures)
                 fl.AddRange(f.Collect(level, this));
+            fl = PluginManager.manager.filterCommonFeatures(fl, level, this);
             fl.AddRange(getFeats(level));
             return fl;
         }
@@ -792,8 +799,10 @@ namespace Character_Builder_5
                 if (multiclassinglevel < 1) multiclassinglevel = 1;
                 if (multiclassing > 1)
                 {
+                    List<Feature> res = new List<Feature>();
                     foreach (Feature f in ConfigManager.MultiClassFeatures)
-                        fl.AddRange(f.Collect(multiclassinglevel, this));
+                        res.AddRange(f.Collect(multiclassinglevel, this));
+                    fl.AddRange(PluginManager.manager.filterClassFeatures(null, multiclassinglevel, res, level, this));
                 }
             }
             return fl;
@@ -804,14 +813,14 @@ namespace Character_Builder_5
             List<Feature> fl = new List<Feature>();
             if (Race == null) return fl;
             fl.AddRange(getSubRaceFeatures(level, reset));
-            fl.AddRange(Race.CollectFeatures(level, this));
+            fl.AddRange(PluginManager.manager.filterRaceFeatures(Race, Race.CollectFeatures(level, this), level, this));
             return fl;
         }
         public List<Feature> getSubRaceFeatures(int level = 0, bool reset = true)
         {
             if (level == 0) level = getLevel();
             if (SubRace == null) return new List<Feature>();
-            return SubRace.CollectFeatures(level, this); 
+            return PluginManager.manager.filterSubRaceFeatures(SubRace, Race, SubRace.CollectFeatures(level, this), level, this); 
         }
         public void AddSubclass(string cd, string subclass)
         {
@@ -832,7 +841,7 @@ namespace Character_Builder_5
             List<Feature> res = new List<Feature>();
             if (level == 0) level = getLevel();
             foreach (string s in Boons) res.AddRange(FeatureCollection.getBoon(s, null).Collect(level, this));
-            return res;
+            return PluginManager.manager.filterBoons(res, level, this);
         }
         public List<Feature> getFeats(int level = 0, bool reset = true)
         {
@@ -844,7 +853,7 @@ namespace Character_Builder_5
             {
                 if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.AddRange(feats.Find(f => f.Name == s.Feat).Collect(level, this));
             }
-            return res;
+            return PluginManager.manager.filterFeats(res, level, this);
         }
         public List<string> getFeatNames(int level = 0)
         {
@@ -983,7 +992,7 @@ namespace Character_Builder_5
                 if (ids.Count > 1)
                 {
                     ids.Sort((a, b) => res[b].CompareTo(res[a]));
-                    for (int i = 0; i < ids.Count; i++) res.Remove(ids[i]);
+                    for (int i = 1; i < ids.Count; i++) res.Remove(ids[i]);
                 }
             }
             return res;
@@ -1047,7 +1056,7 @@ namespace Character_Builder_5
                 if (ids.Count > 1)
                 {
                     ids.Sort((a, b) => res[b].CompareTo(res[a]));
-                    for (int i = 0; i < ids.Count; i++) res.Remove(ids[i]);
+                    for (int i = 1; i < ids.Count; i++) res.Remove(ids[i]);
                 }
             }
             return res;
@@ -1416,8 +1425,10 @@ namespace Character_Builder_5
             feats.AddRange(getCommonFeaturesAndFeats(level, false));
             if (multiclassing > 1)
             {
+                List<Feature> res = new List<Feature>();
                 foreach (Feature f in ConfigManager.MultiClassFeatures)
-                    feats.AddRange(f.Collect(multiclassinglevel, this));
+                    res.AddRange(f.Collect(multiclassinglevel, this));
+                feats.AddRange(PluginManager.manager.filterClassFeatures(null, multiclassinglevel, res, level, this));
             }
             if (additional!=null) feats.AddRange(additional);
             foreach (Feature f in feats)

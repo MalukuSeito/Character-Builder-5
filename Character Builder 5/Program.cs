@@ -87,6 +87,7 @@ namespace Character_Builder_5
             {
                 if (SourceManager.init(Application.StartupPath))
                 {
+                    PluginManager.manager = new PluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
                     Skill.ImportAll();
                     Language.ImportAll();
                     Spell.ImportAll();

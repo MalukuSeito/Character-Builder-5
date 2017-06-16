@@ -43,6 +43,7 @@ namespace Character_Builder_5
         public static FileInfo Transform_Possession = new FileInfo("Possession.xsl");
         public static FileInfo Transform_Description = new FileInfo("Descriptions.xsl");
         public static FileInfo Transform_Scroll = new FileInfo("Scroll.xsl");
+        public static string Directory_Plugins = "Plugins";
         public static FileInfo Transform_RemoveDescription = new FileInfo("NoDescription.xsl");
         public static Boolean AlwaysShowSource = false;
 
@@ -116,6 +117,7 @@ namespace Character_Builder_5
         public string Classes_Directory = "Classes/";
         public string Classes_Transform = "Classes.xsl";
         public string SubClasses_Directory = "SubClasses/";
+        public string Plugins_Directory = "Plugins/";
         public string SubClasses_Transform = "SubClasses.xsl";
         public string Races_Directory = "Races/";
         public string Races_Transform = "Races.xsl";
@@ -267,6 +269,7 @@ namespace Character_Builder_5
             Transform_Conditions = new FileInfo(Fullpath(path, loaded.Conditions_Transform));
             Transform_Possession = new FileInfo(Fullpath(path, loaded.Possessions_Transform));
             Transform_RemoveDescription = new FileInfo(Fullpath(path, loaded.RemoveDescription_Transform));
+            Directory_Plugins = makeRelative(loaded.Plugins_Directory);
             PDFExporters = new List<string>();
             foreach (string s in loaded.PDF) PDFExporters.Add(Fullpath(path, s));
             //for (int i = 0; i < loaded.PDF.Count; i++)

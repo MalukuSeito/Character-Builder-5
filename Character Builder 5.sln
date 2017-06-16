@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Builder",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCalc", "XCalc\XCalc.csproj", "{5F014003-50D8-49E0-8AFE-91D38DCCC97C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Plugin", "Character Builder Plugin\Character Builder Plugin.csproj", "{578EC199-55FB-4830-B085-D16BBB9A22C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginDMG", "PluginDMG\PluginDMG.csproj", "{45907531-B5F7-45FC-BA00-80550142D520}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,14 @@ Global
 		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45907531-B5F7-45FC-BA00-80550142D520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45907531-B5F7-45FC-BA00-80550142D520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45907531-B5F7-45FC-BA00-80550142D520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45907531-B5F7-45FC-BA00-80550142D520}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
