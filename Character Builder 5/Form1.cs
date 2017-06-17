@@ -3793,5 +3793,11 @@ namespace Character_Builder_5
             }
             UpdateLayout();
         }
+
+        private void alawaysShowTheSourcebookToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigManager.AlwaysShowSource = alawaysShowTheSourcebookToolStripMenuItem.Checked = !alawaysShowTheSourcebookToolStripMenuItem.Checked;
+            UpdateLayout();
+        }
     }
 }

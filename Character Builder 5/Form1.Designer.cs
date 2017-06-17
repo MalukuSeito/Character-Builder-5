@@ -360,6 +360,7 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -617,7 +618,8 @@
             this.includeResourcesInSheetToolStripMenuItem,
             this.preservePDFFormsToolStripMenuItem,
             this.makeDefaultEditorForcb5FilesToolStripMenuItem,
-            this.showDescriptionToolStripMenuItem});
+            this.showDescriptionToolStripMenuItem,
+            this.alawaysShowTheSourcebookToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -4519,6 +4521,13 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
+            // alawaysShowTheSourcebookToolStripMenuItem
+            // 
+            this.alawaysShowTheSourcebookToolStripMenuItem.Name = "alawaysShowTheSourcebookToolStripMenuItem";
+            this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.alawaysShowTheSourcebookToolStripMenuItem.Text = "Always Show the Sourcebook";
+            this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5042,6 +5051,7 @@
         private System.Windows.Forms.ToolStripMenuItem showDescriptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem someToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rulesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alawaysShowTheSourcebookToolStripMenuItem;
     }
 }
 
