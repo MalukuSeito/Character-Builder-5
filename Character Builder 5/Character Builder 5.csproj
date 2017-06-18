@@ -135,6 +135,9 @@
     <None Include="Default-Spellsheet.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DnDAdvLgLogsheet.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -155,6 +158,7 @@
     </Content>
     <Content Include="AlternatePDF.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Backgrounds.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

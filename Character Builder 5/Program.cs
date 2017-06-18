@@ -83,10 +83,22 @@ namespace Character_Builder_5
             test.Contents.Add(m);
             MagicProperty.Categories.Add("Test", test);
             MagicProperty.ExportAll();*/
+            string[] args = Environment.GetCommandLineArgs();
             try
             {
                 if (SourceManager.init(Application.StartupPath))
                 {
+                    if (args.Count() > 1)
+                    {
+                        string file = args[1];
+                        if (File.Exists(file) && ".pdf".Equals(Path.GetExtension(file), StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            PDF.markFields(file);
+                            Application.Exit();
+                            return;
+                        }
+                    }
+
                     PluginManager.manager = new PluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
                     Skill.ImportAll();
                     Language.ImportAll();
@@ -190,7 +202,7 @@ namespace Character_Builder_5
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainWindow = new Form1();
-            string[] args = Environment.GetCommandLineArgs();
+            
             if (args.Count() > 1)
             {
                 string file = args[1];

@@ -889,7 +889,7 @@ namespace Character_Builder_5
             if (c != null) c.Value = Value;
             else Choices.Add(new Choice(ID, Value));
         }
-        public Price getMoney()
+        public Price getMoney(bool includeJournal = true)
         {
             int cp = CP;
             int sp = SP;
@@ -905,7 +905,7 @@ namespace Character_Builder_5
             Price p = new Price(cp,sp,gp);
             p.ep=ep;
             p.pp=pp;
-            foreach (JournalEntry e in ComplexJournal)
+            if (includeJournal)  foreach (JournalEntry e in ComplexJournal)
             {
                 p.cp += e.CP;
                 p.gp += e.GP;

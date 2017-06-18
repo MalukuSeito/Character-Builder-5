@@ -75,5 +75,22 @@ namespace Character_Builder_5
             if (c.Count > 0) return " (" + String.Join(", ", c) + ")";
             return "";
         }
+
+        public string getMoney()
+        {
+            List<string> c = new List<string>();
+            if (PP > 0) c.Add("+" + PP + " pp");
+            else if (PP < 0) c.Add(PP + " pp");
+            if (GP > 0) c.Add("+" + GP + " gp");
+            else if (GP < 0) c.Add(GP + " gp");
+            if (EP > 0) c.Add("+" + EP + " ep");
+            else if (EP < 0) c.Add(EP + " ep");
+            if (SP > 0) c.Add("+" + SP + " sp");
+            else if (SP < 0) c.Add(SP + " sp");
+            if (CP > 0) c.Add("+" + CP + " cp");
+            else if (CP < 0) c.Add(CP + " cp");
+            if (c.Count > 0) return String.Join(", ", c);
+            return "";
+        }
     }
 }

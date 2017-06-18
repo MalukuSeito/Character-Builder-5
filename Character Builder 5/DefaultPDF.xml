@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PDF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<Fields>
+  <Fields>
     <PDFField Name="CharacterName" Field="CharacterName" />
     <PDFField Name="ClassLevel" Field="ClassLevel" />
     <PDFField Name="Background" Field="Background" />
@@ -8,7 +8,7 @@
     <PDFField Name="Race" Field="Race " />
     <PDFField Name="Alignment" Field="Alignment" />
     <PDFField Name="XP" Field="XP" />
-    
+
     <PDFField Name="Inspiration" Field="Inspiration" />
     <PDFField Name="ProficiencyBonus" Field="ProfBonus" />
     <PDFField Name="AC" Field="AC" />
@@ -41,28 +41,28 @@
     <PDFField Name="Intelligence" Field="INT" />
     <PDFField Name="Wisdom" Field="WIS" />
     <PDFField Name="Charisma" Field="CHA" />
-    
+
     <PDFField Name="StrengthModifier" Field="STRmod" />
     <PDFField Name="DexterityModifier" Field="DEXmod " />
     <PDFField Name="ConstitutionModifier" Field="CONmod" />
     <PDFField Name="IntelligenceModifier" Field="INTmod" />
     <PDFField Name="WisdomModifier" Field="WISmod" />
     <PDFField Name="CharismaModifier" Field="CHamod" />
-    
+
     <PDFField Name="StrengthSave" Field="ST Strength" />
     <PDFField Name="DexteritySave" Field="ST Dexterity" />
     <PDFField Name="ConstitutionSave" Field="ST Constitution" />
     <PDFField Name="IntelligenceSave" Field="ST Intelligence" />
     <PDFField Name="WisdomSave" Field="ST Wisdom" />
     <PDFField Name="CharismaSave" Field="ST Charisma" />
-    
+
     <PDFField Name="StrengthSaveProficiency" Field="Check Box 11" />
     <PDFField Name="DexteritySaveProficiency" Field="Check Box 18" />
     <PDFField Name="ConstitutionSaveProficiency" Field="Check Box 19" />
     <PDFField Name="IntelligenceSaveProficiency" Field="Check Box 20" />
     <PDFField Name="WisdomSaveProficiency" Field="Check Box 21" />
     <PDFField Name="CharismaSaveProficiency" Field="Check Box 22" />
-    
+
     <PDFField Name="Acrobatics" Field="Acrobatics" />
     <PDFField Name="Animal Handling" Field="Animal" />
     <PDFField Name="Athletics" Field="Athletics" />
@@ -100,7 +100,7 @@
     <PDFField Name="Sleight of HandProficiency" Field="Check Box 38" />
     <PDFField Name="StealthProficiency" Field="Check Box 39" />
     <PDFField Name="SurvivalProficiency" Field="Check Box 40" />
-    
+
     <PDFField Name="PassivePerception" Field="Passive" />
 
     <PDFField Name="Attack1" Field="Wpn Name" />
@@ -138,8 +138,8 @@
     <PDFField Name="Backstory" Field="Backstory" />
     <PDFField Name="RaceBackgroundFeatures" Field="Feat+Traits" />
     <PDFField Name="Treasure" Field="Treasure" />
-</Fields>
-<SpellFields>
+  </Fields>
+  <SpellFields>
     <PDFField Name="SpellcastingClass" Field="Spellcasting Class 2" />
     <PDFField Name="SpellcastingAbility" Field="SpellcastingAbility 2" />
     <PDFField Name="SpellSaveDC" Field="SpellSaveDC  2" />
@@ -267,8 +267,8 @@
     <PDFField Name="Prepared4-11" Field="Check Box 3050" />
     <PDFField Name="Prepared4-12" Field="Check Box 3051" />
     <PDFField Name="Prepared4-13" Field="Check Box 3052" />
-    
-    
+
+
     <PDFField Name="SpellSlots5" Field="SlotsTotal 23" />
     <PDFField Name="SpellSlotsExpended5" Field="SlotsRemaining 23" />
     <PDFField Name="Spell5-1" Field="Spells 1074" />
@@ -312,7 +312,7 @@
     <PDFField Name="Prepared6-8" Field="Check Box 3065" />
     <PDFField Name="Prepared6-9" Field="Check Box 3066" />
 
-    
+
     <PDFField Name="SpellSlots7" Field="SlotsTotal 25" />
     <PDFField Name="SpellSlotsExpended7" Field="SlotsRemaining 25" />
     <PDFField Name="Spell7-1" Field="Spells 1092" />
@@ -333,7 +333,7 @@
     <PDFField Name="Prepared7-7" Field="Check Box 3071" />
     <PDFField Name="Prepared7-8" Field="Check Box 3072" />
     <PDFField Name="Prepared7-9" Field="Check Box 3073" />
-   
+
     <PDFField Name="SpellSlots8" Field="SlotsTotal 26" />
     <PDFField Name="SpellSlotsExpended8" Field="SlotsRemaining 26" />
     <PDFField Name="Spell8-1" Field="Spells 10101" />
@@ -350,7 +350,7 @@
     <PDFField Name="Prepared8-5" Field="Check Box 3076" />
     <PDFField Name="Prepared8-6" Field="Check Box 3077" />
     <PDFField Name="Prepared8-7" Field="Check Box 3078" />
-    
+
     <PDFField Name="SpellSlots9" Field="SlotsTotal 27" />
     <PDFField Name="SpellSlotsExpended9" Field="SlotsRemaining 27" />
     <PDFField Name="Spell9-1" Field="Spells 10108" />
@@ -368,7 +368,107 @@
     <PDFField Name="Prepared9-6" Field="Check Box 3082" />
     <PDFField Name="Prepared9-7" Field="Check Box 3083" />
   </SpellFields>
+  <LogFields>
+    <PDFField Name="CharacterName" Field="CharacterName" />
+    <PDFField Name="ClassLevel" Field="Class and Level" />
+    <PDFField Name="PlayerName" Field="Player Name" />
+    <PDFField Name="FactionName" Field="Faction" />
+    <PDFField Name="DCI" Field="DCI Number" />
+    <PDFField Name="Sheet" Field="Sheet Number" />
+
+
+    <PDFField Name="Title1" Field="Adventure Name" />
+    <PDFField Name="Session1" Field="Session" />
+    <PDFField Name="Date1" Field="Date" />
+    <PDFField Name="DM1" Field="DM Name and DCI" />
+
+    <PDFField Name="XP1" Field="XP Earned" />
+    <PDFField Name="XPStart1" Field="Starting XP" />
+    <PDFField Name="XPEnd1" Field="XP Total" />
+
+    <PDFField Name="Gold1" Field="Gold" />
+    <PDFField Name="GoldStart1" Field="Starting Gold" />
+    <PDFField Name="GoldEnd1" Field="Gold Total" />
+
+    <PDFField Name="Downtime1" Field="Downtime" />
+    <PDFField Name="DowntimeStart1" Field="Starting Downtime" />
+    <PDFField Name="DowntimeEnd1" Field="Downtime Total" />
+
+    <PDFField Name="Renown1" Field="Renown Earned" />
+    <PDFField Name="RenownStart1" Field="Starting Renown" />
+    <PDFField Name="RenownEnd1" Field="Renown Total" />
+
+    <PDFField Name="MagicItems1" Field="Magic Items" />
+    <PDFField Name="MagicItemsStart1" Field="Starting  of Magic Items" />
+    <PDFField Name="MagicItemsEnd1" Field="Magic Items Total" />
+
+    <PDFField Name="Notes1Line1" Field="Adventure NotesDowntime Activity 1" />
+    <PDFField Name="Notes1Line2" Field="Adventure NotesDowntime Activity 2" />
+    <PDFField Name="Notes1Line3" Field="Adventure NotesDowntime Activity 3" />
+
+
+    <PDFField Name="Title2" Field="Adventure Name_2" />
+    <PDFField Name="Session2" Field="Session_2" />
+    <PDFField Name="Date2" Field="Date_2" />
+    <PDFField Name="DM2" Field="DM Name and DCI_2" />
+
+    <PDFField Name="XP2" Field="XP Earned_2" />
+    <PDFField Name="XPStart2" Field="Starting XP_2" />
+    <PDFField Name="XPEnd2" Field="XP Total_2" />
+
+    <PDFField Name="Gold2" Field="Gold_2" />
+    <PDFField Name="GoldStart2" Field="Starting Gold_2" />
+    <PDFField Name="GoldEnd2" Field="Gold Total_2" />
+
+    <PDFField Name="Downtime2" Field="Downtime_2" />
+    <PDFField Name="DowntimeStart2" Field="Starting Downtime_2" />
+    <PDFField Name="DowntimeEnd2" Field="Downtime Total_2" />
+
+    <PDFField Name="Renown2" Field="Renown Earned_2" />
+    <PDFField Name="RenownStart2" Field="Starting Renown_2" />
+    <PDFField Name="RenownEnd2" Field="Renown Total_2" />
+
+    <PDFField Name="MagicItems2" Field="Magic Items_2" />
+    <PDFField Name="MagicItemsStart2" Field="Starting  of Magic Items_2" />
+    <PDFField Name="MagicItemsEnd2" Field="Magic Items Total_2" />
+
+    <PDFField Name="Notes2Line1" Field="Adventure NotesDowntime Activity 1_2" />
+    <PDFField Name="Notes2Line2" Field="Adventure NotesDowntime Activity 2_2" />
+    <PDFField Name="Notes2Line3" Field="Adventure NotesDowntime Activity 3_2" />
+
+
+    <PDFField Name="Title3" Field="Adventure Name_3" />
+    <PDFField Name="Session3" Field="Session_3" />
+    <PDFField Name="Date3" Field="Date_3" />
+    <PDFField Name="DM3" Field="DM Name and DCI_3" />
+
+    <PDFField Name="XP3" Field="XP Earned_3" />
+    <PDFField Name="XPStart3" Field="Starting XP_3" />
+    <PDFField Name="XPEnd3" Field="XP Total_3" />
+
+    <PDFField Name="Gold3" Field="Gold_3" />
+    <PDFField Name="GoldStart3" Field="Starting Gold_3" />
+    <PDFField Name="GoldEnd3" Field="Gold Total_3" />
+
+    <PDFField Name="Downtime3" Field="Downtime_3" />
+    <PDFField Name="DowntimeStart3" Field="Starting Downtime_3" />
+    <PDFField Name="DowntimeEnd3" Field="Downtime Total_3" />
+
+    <PDFField Name="Renown3" Field="Renown Earned_3" />
+    <PDFField Name="RenownStart3" Field="Starting Renown_3" />
+    <PDFField Name="RenownEnd3" Field="Renown Total_3" />
+
+    <PDFField Name="MagicItems3" Field="Magic Items_3" />
+    <PDFField Name="MagicItemsStart3" Field="Starting  of Magic Items_3" />
+    <PDFField Name="MagicItemsEnd3" Field="Magic Items Total_3" />
+
+    <PDFField Name="Notes3Line1" Field="Adventure NotesDowntime Activity 1_3" />
+    <PDFField Name="Notes3Line2" Field="Adventure NotesDowntime Activity 2_3" />
+    <PDFField Name="Notes3Line3" Field="Adventure NotesDowntime Activity 3_3" />
+
+  </LogFields>
   <Name>Default Sheet</Name>
   <File>Default-PlayerSheet.pdf</File>
   <SpellFile>Default-Spellsheet.pdf</SpellFile>
+  <LogFile>DnDAdvLgLogsheet.pdf</LogFile>
 </PDF>
