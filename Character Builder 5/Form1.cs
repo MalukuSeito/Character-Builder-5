@@ -300,10 +300,18 @@ namespace Character_Builder_5
             journalTab.SuspendLayout();
             int index = journalEntries.SelectedIndex;
             journalEntries.Items.Clear();
-            foreach (JournalEntry je in Player.current.ComplexJournal) journalEntries.Items.Add(je);
+            int down = 0;
+            int renown = 0;
+            foreach (JournalEntry je in Player.current.ComplexJournal)
+            {
+                down += je.Downtime;
+                renown += je.Renown;
+                journalEntries.Items.Add(je);
+            }
             if (index >= 0 && index < journalEntries.Items.Count) journalEntries.SelectedIndex = index;
             else journalEntries_SelectedIndexChanged(null, null);
-            
+            Downtime.Value = down;
+            Renown.Value = renown;
             journalTab.ResumeLayout();
             if (!waslayouting) layouting = false;
         }
@@ -1217,6 +1225,7 @@ namespace Character_Builder_5
                 XP.Value = Player.current.getXP();
                 Alignment.Text = Player.current.Alignment;
                 PlayerName.Text = Player.current.PlayerName;
+                DCI.Text = Player.current.DCI;
                 XPtoUP.Value = Level.XpToLevelUp(Player.current.getXP());
                 Age.Value = Player.current.Age;
                 HeightValue.Text = Player.current.Height;
@@ -3554,42 +3563,66 @@ namespace Character_Builder_5
                 journalTitle.Text = je.Title;
                 journalTime.Text = je.Time;
                 journalText.Text = je.Text;
+                journalSession.Text = je.Session;
+                journalDM.Text = je.DM;
                 journalCP.Value = je.CP;
                 journalSP.Value = je.SP;
                 journalGP.Value = je.GP;
                 journalEP.Value = je.EP;
                 journalPP.Value = je.PP;
                 journalXP.Value = je.XP;
+                journalMagic.Value = je.MagicItems;
+                journalDowntime.Value = je.Downtime;
+                journalRenown.Value = je.Renown;
+                journalInSheet.Checked = je.InSheet;
                 journalTitle.Enabled = true;
                 journalTime.Enabled = true;
                 journalText.Enabled = true;
+                journalDM.Enabled = true;
+                journalSession.Enabled = true;
                 journalCP.Enabled = true;
                 journalSP.Enabled = true;
                 journalGP.Enabled = true;
                 journalEP.Enabled = true;
                 journalPP.Enabled = true;
                 journalXP.Enabled = true;
+                journalMagic.Enabled = true;
+                journalDowntime.Enabled = true;
+                journalRenown.Enabled = true;
+                journalInSheet.Enabled = true;
                 removeJournalButton.Enabled = true;
             } else
             {
                 journalTitle.Text = "";
                 journalTime.Text = "";
                 journalText.Text = "";
+                journalSession.Text = "";
+                journalDM.Text = "";
                 journalCP.Value = 0;
                 journalSP.Value = 0;
                 journalGP.Value = 0;
                 journalEP.Value = 0;
                 journalPP.Value = 0;
                 journalXP.Value = 0;
+                journalMagic.Value = 0;
+                journalDowntime.Value = 0;
+                journalRenown.Value = 0;
+                journalInSheet.Checked = false;
                 journalTitle.Enabled = false;
                 journalTime.Enabled = false;
                 journalText.Enabled = false;
+                journalDM.Enabled = false;
+                journalSession.Enabled = false;
                 journalCP.Enabled = false;
                 journalSP.Enabled = false;
                 journalGP.Enabled = false;
                 journalEP.Enabled = false;
                 journalPP.Enabled = false;
                 journalXP.Enabled = false;
+                journalMagic.Enabled = false;
+                journalDowntime.Enabled = false;
+                journalRenown.Enabled = false;
+                journalInSheet.Enabled = false;
                 removeJournalButton.Enabled = false;
             }
             if (!waslayouting) layouting = false;
@@ -3651,7 +3684,7 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.PP = (int)journalPP.Value;
-                UpdateSideLayout();
+                UpdateJournal();
             }
         }
 
@@ -3663,7 +3696,7 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.GP = (int)journalGP.Value;
-                UpdateSideLayout();
+                UpdateJournal();
             }
         }
 
@@ -3675,7 +3708,7 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.EP = (int)journalEP.Value;
-                UpdateSideLayout();
+                UpdateJournal();
             }
         }
 
@@ -3687,7 +3720,7 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.SP = (int)journalSP.Value;
-                UpdateSideLayout();
+                UpdateJournal();
             }
         }
 
@@ -3699,7 +3732,7 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.CP = (int)journalCP.Value;
-                UpdateSideLayout();
+                UpdateJournal();
             }
         }
 
@@ -3798,6 +3831,90 @@ namespace Character_Builder_5
         {
             ConfigManager.AlwaysShowSource = alawaysShowTheSourcebookToolStripMenuItem.Checked = !alawaysShowTheSourcebookToolStripMenuItem.Checked;
             UpdateLayout();
+        }
+
+        private void DCI_TextChanged(object sender, EventArgs e)
+        {
+            if (!layouting)
+            {
+                Player.MakeHistory("DCI");
+                Player.current.DCI = DCI.Text;
+            }
+        }
+
+        private void journalSession_TextChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("JournalSession");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.Session = journalSession.Text;
+            }
+        }
+
+        private void journalDM_TextChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("JournalDM");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.DM = journalDM.Text;
+            }
+        }
+
+        private void journalRenown_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("JournalRenown");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.Renown = (int)journalRenown.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void journalDowntime_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("journalDowntime");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.Downtime = (int)journalDowntime.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void journalMagic_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("journalMagic");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.MagicItems = (int)journalMagic.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Player.MakeHistory("journalInclude");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.InSheet = journalInSheet.Checked;
+                UpdateJournal();
+            }
+        }
+
+        private void Renown_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

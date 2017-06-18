@@ -214,6 +214,7 @@ namespace Character_Builder_5
         public String Hair { get; set; }
         public int XP { get; set; }
         public String PlayerName { get; set; }
+        public String DCI { get; set; }
         public bool Inspiration { get; set; }
         public int CP { get; set; }
         public int SP { get; set; }

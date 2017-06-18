@@ -52,6 +52,7 @@
             this.preservePDFFormsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSpilt = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.MoneyButton = new System.Windows.Forms.Button();
@@ -81,11 +82,6 @@
             this.sidePortrait = new System.Windows.Forms.PictureBox();
             this.subSplit = new System.Windows.Forms.SplitContainer();
             this.mainTab = new System.Windows.Forms.TabControl();
-            this.racetab = new Character_Builder_5.NoScrollTab();
-            this.subracebox = new System.Windows.Forms.ListBox();
-            this.subracelabel = new System.Windows.Forms.Label();
-            this.racebox = new System.Windows.Forms.ListBox();
-            this.racelabel = new System.Windows.Forms.Label();
             this.classtab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -93,7 +89,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.hpSpinner = new System.Windows.Forms.NumericUpDown();
             this.classesBox = new System.Windows.Forms.ListBox();
-            this.ClassPanel = new Character_Builder_5.NoScrollPanel();
             this.scoretab = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -135,26 +130,9 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.AbilityFeatChoiceBox = new System.Windows.Forms.ListBox();
             this.AbilityFeatBox = new System.Windows.Forms.ListBox();
-            this.backtab = new Character_Builder_5.NoScrollTab();
-            this.flaws = new System.Windows.Forms.ListBox();
-            this.flawlabel = new System.Windows.Forms.Label();
-            this.bonds = new System.Windows.Forms.ListBox();
-            this.bondlabel = new System.Windows.Forms.Label();
-            this.ideals = new System.Windows.Forms.ListBox();
-            this.ideallabel = new System.Windows.Forms.Label();
-            this.traits = new System.Windows.Forms.ListBox();
-            this.traitLabel = new System.Windows.Forms.Label();
-            this.background = new System.Windows.Forms.ListBox();
-            this.backgroundLabel = new System.Windows.Forms.Label();
             this.personaltab = new System.Windows.Forms.TabPage();
             this.personalFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.infoBox = new System.Windows.Forms.GroupBox();
-            this.XPtoUP = new System.Windows.Forms.NumericUpDown();
-            this.XPupLabel = new System.Windows.Forms.Label();
-            this.PlayerName = new System.Windows.Forms.TextBox();
-            this.PlayerNameLabel = new System.Windows.Forms.Label();
-            this.XP = new System.Windows.Forms.NumericUpDown();
-            this.XPLabel = new System.Windows.Forms.Label();
             this.Alignment = new System.Windows.Forms.ComboBox();
             this.alignmentLabel = new System.Windows.Forms.Label();
             this.characterName = new System.Windows.Forms.TextBox();
@@ -360,7 +338,48 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.XPLabel = new System.Windows.Forms.Label();
+            this.XPupLabel = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.XP = new System.Windows.Forms.NumericUpDown();
+            this.XPtoUP = new System.Windows.Forms.NumericUpDown();
+            this.PlayerName = new System.Windows.Forms.TextBox();
+            this.PlayerNameLabel = new System.Windows.Forms.Label();
+            this.DCI = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.journalMagic = new System.Windows.Forms.NumericUpDown();
+            this.racetab = new Character_Builder_5.NoScrollTab();
+            this.subracebox = new System.Windows.Forms.ListBox();
+            this.subracelabel = new System.Windows.Forms.Label();
+            this.racebox = new System.Windows.Forms.ListBox();
+            this.racelabel = new System.Windows.Forms.Label();
+            this.ClassPanel = new Character_Builder_5.NoScrollPanel();
+            this.backtab = new Character_Builder_5.NoScrollTab();
+            this.flaws = new System.Windows.Forms.ListBox();
+            this.flawlabel = new System.Windows.Forms.Label();
+            this.bonds = new System.Windows.Forms.ListBox();
+            this.bondlabel = new System.Windows.Forms.Label();
+            this.ideals = new System.Windows.Forms.ListBox();
+            this.ideallabel = new System.Windows.Forms.Label();
+            this.traits = new System.Windows.Forms.ListBox();
+            this.traitLabel = new System.Windows.Forms.Label();
+            this.background = new System.Windows.Forms.ListBox();
+            this.backgroundLabel = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.journalDowntime = new System.Windows.Forms.NumericUpDown();
+            this.label30 = new System.Windows.Forms.Label();
+            this.journalRenown = new System.Windows.Forms.NumericUpDown();
+            this.journalSession = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.journalDM = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.journalInSheet = new System.Windows.Forms.CheckBox();
+            this.Renown = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.Downtime = new System.Windows.Forms.NumericUpDown();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -385,7 +404,6 @@
             this.subSplit.Panel2.SuspendLayout();
             this.subSplit.SuspendLayout();
             this.mainTab.SuspendLayout();
-            this.racetab.SuspendLayout();
             this.classtab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
@@ -417,12 +435,9 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
-            this.backtab.SuspendLayout();
             this.personaltab.SuspendLayout();
             this.personalFlowLayout.SuspendLayout();
             this.infoBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.XPtoUP)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.XP)).BeginInit();
             this.Portrait.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.portraitBox)).BeginInit();
             this.additionalInformationbox.SuspendLayout();
@@ -502,6 +517,17 @@
             this.conditionbox.SuspendLayout();
             this.spellcastingexample.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpellSlotUsed)).BeginInit();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.XP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XPtoUP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalMagic)).BeginInit();
+            this.racetab.SuspendLayout();
+            this.backtab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.journalDowntime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalRenown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Renown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Downtime)).BeginInit();
             this.SuspendLayout();
             // 
             // mainmenu
@@ -702,6 +728,13 @@
             this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showDescriptionToolStripMenuItem.Text = "&Show Description";
             this.showDescriptionToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showDescriptionToolStripMenuItem_CheckedChanged);
+            // 
+            // alawaysShowTheSourcebookToolStripMenuItem
+            // 
+            this.alawaysShowTheSourcebookToolStripMenuItem.Name = "alawaysShowTheSourcebookToolStripMenuItem";
+            this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.alawaysShowTheSourcebookToolStripMenuItem.Text = "Always Show the Sourcebook";
+            this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
             // 
             // mainSpilt
             // 
@@ -1153,67 +1186,6 @@
             this.mainTab.Size = new System.Drawing.Size(528, 519);
             this.mainTab.TabIndex = 0;
             // 
-            // racetab
-            // 
-            this.racetab.AutoScroll = true;
-            this.racetab.BackColor = System.Drawing.SystemColors.Menu;
-            this.racetab.Controls.Add(this.subracebox);
-            this.racetab.Controls.Add(this.subracelabel);
-            this.racetab.Controls.Add(this.racebox);
-            this.racetab.Controls.Add(this.racelabel);
-            this.racetab.Location = new System.Drawing.Point(4, 22);
-            this.racetab.Name = "racetab";
-            this.racetab.Padding = new System.Windows.Forms.Padding(15);
-            this.racetab.Size = new System.Drawing.Size(520, 493);
-            this.racetab.TabIndex = 0;
-            this.racetab.Text = "Race";
-            // 
-            // subracebox
-            // 
-            this.subracebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.subracebox.FormattingEnabled = true;
-            this.subracebox.Location = new System.Drawing.Point(15, 137);
-            this.subracebox.Name = "subracebox";
-            this.subracebox.Size = new System.Drawing.Size(490, 95);
-            this.subracebox.TabIndex = 5;
-            this.subracebox.SelectedIndexChanged += new System.EventHandler(this.subracebox_SelectedIndexChanged);
-            this.subracebox.DoubleClick += new System.EventHandler(this.subracebox_DoubleClick);
-            this.subracebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // subracelabel
-            // 
-            this.subracelabel.AutoSize = true;
-            this.subracelabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.subracelabel.Location = new System.Drawing.Point(15, 113);
-            this.subracelabel.Name = "subracelabel";
-            this.subracelabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.subracelabel.Size = new System.Drawing.Size(98, 24);
-            this.subracelabel.TabIndex = 4;
-            this.subracelabel.Text = "Choose a Subrace:";
-            // 
-            // racebox
-            // 
-            this.racebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.racebox.FormattingEnabled = true;
-            this.racebox.Location = new System.Drawing.Point(15, 31);
-            this.racebox.Name = "racebox";
-            this.racebox.Size = new System.Drawing.Size(490, 82);
-            this.racebox.TabIndex = 3;
-            this.racebox.SelectedIndexChanged += new System.EventHandler(this.racebox_SelectedIndexChanged);
-            this.racebox.DoubleClick += new System.EventHandler(this.racebox_DoubleClick);
-            this.racebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // racelabel
-            // 
-            this.racelabel.AutoSize = true;
-            this.racelabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.racelabel.Location = new System.Drawing.Point(15, 15);
-            this.racelabel.Name = "racelabel";
-            this.racelabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.racelabel.Size = new System.Drawing.Size(249, 16);
-            this.racelabel.TabIndex = 2;
-            this.racelabel.Text = "Choose a Race: (Double click to choose an option)";
-            // 
             // classtab
             // 
             this.classtab.AutoScroll = true;
@@ -1313,16 +1285,6 @@
             this.classesBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayClass);
             this.classesBox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
             this.classesBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.classesBox_MouseDoubleClick);
-            // 
-            // ClassPanel
-            // 
-            this.ClassPanel.AutoScroll = true;
-            this.ClassPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClassPanel.Location = new System.Drawing.Point(0, 0);
-            this.ClassPanel.Name = "ClassPanel";
-            this.ClassPanel.Padding = new System.Windows.Forms.Padding(15, 7, 15, 15);
-            this.ClassPanel.Size = new System.Drawing.Size(520, 316);
-            this.ClassPanel.TabIndex = 0;
             // 
             // scoretab
             // 
@@ -1843,142 +1805,6 @@
             this.AbilityFeatBox.DoubleClick += new System.EventHandler(this.AbilityFeatBox_DoubleClick);
             this.AbilityFeatBox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
             // 
-            // backtab
-            // 
-            this.backtab.AutoScroll = true;
-            this.backtab.BackColor = System.Drawing.SystemColors.Menu;
-            this.backtab.Controls.Add(this.flaws);
-            this.backtab.Controls.Add(this.flawlabel);
-            this.backtab.Controls.Add(this.bonds);
-            this.backtab.Controls.Add(this.bondlabel);
-            this.backtab.Controls.Add(this.ideals);
-            this.backtab.Controls.Add(this.ideallabel);
-            this.backtab.Controls.Add(this.traits);
-            this.backtab.Controls.Add(this.traitLabel);
-            this.backtab.Controls.Add(this.background);
-            this.backtab.Controls.Add(this.backgroundLabel);
-            this.backtab.Location = new System.Drawing.Point(4, 22);
-            this.backtab.Name = "backtab";
-            this.backtab.Padding = new System.Windows.Forms.Padding(15);
-            this.backtab.Size = new System.Drawing.Size(520, 493);
-            this.backtab.TabIndex = 2;
-            this.backtab.Text = "Background";
-            // 
-            // flaws
-            // 
-            this.flaws.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flaws.FormattingEnabled = true;
-            this.flaws.Location = new System.Drawing.Point(15, 494);
-            this.flaws.Name = "flaws";
-            this.flaws.Size = new System.Drawing.Size(473, 95);
-            this.flaws.TabIndex = 9;
-            this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
-            this.flaws.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // flawlabel
-            // 
-            this.flawlabel.AutoSize = true;
-            this.flawlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flawlabel.Location = new System.Drawing.Point(15, 470);
-            this.flawlabel.Name = "flawlabel";
-            this.flawlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.flawlabel.Size = new System.Drawing.Size(80, 24);
-            this.flawlabel.TabIndex = 8;
-            this.flawlabel.Text = "Choose a Flaw:";
-            // 
-            // bonds
-            // 
-            this.bonds.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bonds.FormattingEnabled = true;
-            this.bonds.Location = new System.Drawing.Point(15, 375);
-            this.bonds.Name = "bonds";
-            this.bonds.Size = new System.Drawing.Size(473, 95);
-            this.bonds.TabIndex = 7;
-            this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
-            this.bonds.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // bondlabel
-            // 
-            this.bondlabel.AutoSize = true;
-            this.bondlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bondlabel.Location = new System.Drawing.Point(15, 351);
-            this.bondlabel.Name = "bondlabel";
-            this.bondlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.bondlabel.Size = new System.Drawing.Size(83, 24);
-            this.bondlabel.TabIndex = 6;
-            this.bondlabel.Text = "Choose a Bond:";
-            // 
-            // ideals
-            // 
-            this.ideals.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ideals.FormattingEnabled = true;
-            this.ideals.Location = new System.Drawing.Point(15, 256);
-            this.ideals.Name = "ideals";
-            this.ideals.Size = new System.Drawing.Size(473, 95);
-            this.ideals.TabIndex = 5;
-            this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
-            this.ideals.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // ideallabel
-            // 
-            this.ideallabel.AutoSize = true;
-            this.ideallabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ideallabel.Location = new System.Drawing.Point(15, 232);
-            this.ideallabel.Name = "ideallabel";
-            this.ideallabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.ideallabel.Size = new System.Drawing.Size(87, 24);
-            this.ideallabel.TabIndex = 4;
-            this.ideallabel.Text = "Choose an Ideal:";
-            // 
-            // traits
-            // 
-            this.traits.Dock = System.Windows.Forms.DockStyle.Top;
-            this.traits.FormattingEnabled = true;
-            this.traits.Location = new System.Drawing.Point(15, 137);
-            this.traits.Name = "traits";
-            this.traits.Size = new System.Drawing.Size(473, 95);
-            this.traits.TabIndex = 3;
-            this.traits.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
-            this.traits.DoubleClick += new System.EventHandler(this.traits_DoubleClick);
-            this.traits.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // traitLabel
-            // 
-            this.traitLabel.AutoSize = true;
-            this.traitLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.traitLabel.Location = new System.Drawing.Point(15, 113);
-            this.traitLabel.Name = "traitLabel";
-            this.traitLabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-            this.traitLabel.Size = new System.Drawing.Size(133, 24);
-            this.traitLabel.TabIndex = 2;
-            this.traitLabel.Text = "Choose a Personality Trait:";
-            // 
-            // background
-            // 
-            this.background.Dock = System.Windows.Forms.DockStyle.Top;
-            this.background.FormattingEnabled = true;
-            this.background.Location = new System.Drawing.Point(15, 31);
-            this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(473, 82);
-            this.background.TabIndex = 1;
-            this.background.SelectedIndexChanged += new System.EventHandler(this.background_SelectedIndexChanged);
-            this.background.DoubleClick += new System.EventHandler(this.background_DoubleClick);
-            this.background.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-            // 
-            // backgroundLabel
-            // 
-            this.backgroundLabel.AutoSize = true;
-            this.backgroundLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.backgroundLabel.Location = new System.Drawing.Point(15, 15);
-            this.backgroundLabel.Name = "backgroundLabel";
-            this.backgroundLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.backgroundLabel.Size = new System.Drawing.Size(116, 16);
-            this.backgroundLabel.TabIndex = 0;
-            this.backgroundLabel.Text = "Choose a Background:";
-            // 
             // personaltab
             // 
             this.personaltab.AutoScroll = true;
@@ -2009,12 +1835,12 @@
             // 
             // infoBox
             // 
-            this.infoBox.Controls.Add(this.XPtoUP);
-            this.infoBox.Controls.Add(this.XPupLabel);
+            this.infoBox.Controls.Add(this.DCI);
+            this.infoBox.Controls.Add(this.label27);
             this.infoBox.Controls.Add(this.PlayerName);
             this.infoBox.Controls.Add(this.PlayerNameLabel);
-            this.infoBox.Controls.Add(this.XP);
-            this.infoBox.Controls.Add(this.XPLabel);
+            this.infoBox.Controls.Add(this.panel5);
+            this.infoBox.Controls.Add(this.panel4);
             this.infoBox.Controls.Add(this.Alignment);
             this.infoBox.Controls.Add(this.alignmentLabel);
             this.infoBox.Controls.Add(this.characterName);
@@ -2025,89 +1851,6 @@
             this.infoBox.TabIndex = 3;
             this.infoBox.TabStop = false;
             this.infoBox.Text = "Basic Information";
-            // 
-            // XPtoUP
-            // 
-            this.XPtoUP.Dock = System.Windows.Forms.DockStyle.Top;
-            this.XPtoUP.Enabled = false;
-            this.XPtoUP.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.XPtoUP.Location = new System.Drawing.Point(3, 202);
-            this.XPtoUP.Maximum = new decimal(new int[] {
-            355000,
-            0,
-            0,
-            0});
-            this.XPtoUP.Name = "XPtoUP";
-            this.XPtoUP.ReadOnly = true;
-            this.XPtoUP.Size = new System.Drawing.Size(224, 20);
-            this.XPtoUP.TabIndex = 10;
-            this.XPtoUP.ThousandsSeparator = true;
-            // 
-            // XPupLabel
-            // 
-            this.XPupLabel.AutoSize = true;
-            this.XPupLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.XPupLabel.Location = new System.Drawing.Point(3, 181);
-            this.XPupLabel.Name = "XPupLabel";
-            this.XPupLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
-            this.XPupLabel.Size = new System.Drawing.Size(137, 21);
-            this.XPupLabel.TabIndex = 9;
-            this.XPupLabel.Text = "Experience to next level:";
-            // 
-            // PlayerName
-            // 
-            this.PlayerName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PlayerName.Location = new System.Drawing.Point(3, 161);
-            this.PlayerName.Name = "PlayerName";
-            this.PlayerName.Size = new System.Drawing.Size(224, 20);
-            this.PlayerName.TabIndex = 8;
-            this.PlayerName.TextChanged += new System.EventHandler(this.PlayerName_TextChanged);
-            // 
-            // PlayerNameLabel
-            // 
-            this.PlayerNameLabel.AutoSize = true;
-            this.PlayerNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PlayerNameLabel.Location = new System.Drawing.Point(3, 140);
-            this.PlayerNameLabel.Name = "PlayerNameLabel";
-            this.PlayerNameLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
-            this.PlayerNameLabel.Size = new System.Drawing.Size(53, 21);
-            this.PlayerNameLabel.TabIndex = 7;
-            this.PlayerNameLabel.Text = "Player:";
-            // 
-            // XP
-            // 
-            this.XP.Dock = System.Windows.Forms.DockStyle.Top;
-            this.XP.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.XP.Location = new System.Drawing.Point(3, 120);
-            this.XP.Maximum = new decimal(new int[] {
-            355000,
-            0,
-            0,
-            0});
-            this.XP.Name = "XP";
-            this.XP.Size = new System.Drawing.Size(224, 20);
-            this.XP.TabIndex = 6;
-            this.XP.ThousandsSeparator = true;
-            this.XP.ValueChanged += new System.EventHandler(this.XP_ValueChanged);
-            // 
-            // XPLabel
-            // 
-            this.XPLabel.AutoSize = true;
-            this.XPLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.XPLabel.Location = new System.Drawing.Point(3, 99);
-            this.XPLabel.Name = "XPLabel";
-            this.XPLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
-            this.XPLabel.Size = new System.Drawing.Size(77, 21);
-            this.XPLabel.TabIndex = 5;
-            this.XPLabel.Text = "Experience:";
             // 
             // Alignment
             // 
@@ -2601,18 +2344,22 @@
             this.journalEntries.FormattingEnabled = true;
             this.journalEntries.Location = new System.Drawing.Point(3, 3);
             this.journalEntries.Name = "journalEntries";
-            this.journalEntries.Size = new System.Drawing.Size(514, 277);
+            this.journalEntries.Size = new System.Drawing.Size(514, 246);
             this.journalEntries.TabIndex = 3;
             this.journalEntries.SelectedIndexChanged += new System.EventHandler(this.journalEntries_SelectedIndexChanged);
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label34);
+            this.panel2.Controls.Add(this.Downtime);
+            this.panel2.Controls.Add(this.label33);
+            this.panel2.Controls.Add(this.Renown);
             this.panel2.Controls.Add(this.removeJournalButton);
             this.panel2.Controls.Add(this.newJournalEntry);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 280);
+            this.panel2.Location = new System.Drawing.Point(3, 249);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(514, 23);
+            this.panel2.Size = new System.Drawing.Size(514, 25);
             this.panel2.TabIndex = 2;
             // 
             // removeJournalButton
@@ -2620,7 +2367,7 @@
             this.removeJournalButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.removeJournalButton.Location = new System.Drawing.Point(347, 0);
             this.removeJournalButton.Name = "removeJournalButton";
-            this.removeJournalButton.Size = new System.Drawing.Size(92, 23);
+            this.removeJournalButton.Size = new System.Drawing.Size(92, 25);
             this.removeJournalButton.TabIndex = 1;
             this.removeJournalButton.Text = "Remove Entry";
             this.removeJournalButton.UseVisualStyleBackColor = true;
@@ -2631,7 +2378,7 @@
             this.newJournalEntry.Dock = System.Windows.Forms.DockStyle.Right;
             this.newJournalEntry.Location = new System.Drawing.Point(439, 0);
             this.newJournalEntry.Name = "newJournalEntry";
-            this.newJournalEntry.Size = new System.Drawing.Size(75, 23);
+            this.newJournalEntry.Size = new System.Drawing.Size(75, 25);
             this.newJournalEntry.TabIndex = 0;
             this.newJournalEntry.Text = "New Entry";
             this.newJournalEntry.UseVisualStyleBackColor = true;
@@ -2643,9 +2390,9 @@
             this.panel1.Controls.Add(this.journalTitle);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 303);
+            this.panel1.Location = new System.Drawing.Point(3, 274);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(514, 187);
+            this.panel1.Size = new System.Drawing.Size(514, 216);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -2660,7 +2407,7 @@
             this.journalText.Multiline = true;
             this.journalText.Name = "journalText";
             this.journalText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.journalText.Size = new System.Drawing.Size(335, 154);
+            this.journalText.Size = new System.Drawing.Size(267, 183);
             this.journalText.TabIndex = 3;
             this.journalText.TextChanged += new System.EventHandler(this.journalText_TextChanged);
             // 
@@ -2670,12 +2417,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.journalTitle.Location = new System.Drawing.Point(3, 6);
             this.journalTitle.Name = "journalTitle";
-            this.journalTitle.Size = new System.Drawing.Size(335, 20);
+            this.journalTitle.Size = new System.Drawing.Size(267, 20);
             this.journalTitle.TabIndex = 1;
             this.journalTitle.TextChanged += new System.EventHandler(this.journalTitle_TextChanged);
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.journalInSheet);
+            this.panel3.Controls.Add(this.label32);
+            this.panel3.Controls.Add(this.journalDM);
+            this.panel3.Controls.Add(this.label31);
+            this.panel3.Controls.Add(this.journalSession);
+            this.panel3.Controls.Add(this.journalRenown);
+            this.panel3.Controls.Add(this.label30);
+            this.panel3.Controls.Add(this.journalDowntime);
+            this.panel3.Controls.Add(this.label29);
+            this.panel3.Controls.Add(this.journalMagic);
+            this.panel3.Controls.Add(this.label28);
             this.panel3.Controls.Add(this.label26);
             this.panel3.Controls.Add(this.journalTime);
             this.panel3.Controls.Add(this.label25);
@@ -2691,15 +2449,15 @@
             this.panel3.Controls.Add(this.label20);
             this.panel3.Controls.Add(this.journalXP);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(338, 0);
+            this.panel3.Location = new System.Drawing.Point(273, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(176, 187);
+            this.panel3.Size = new System.Drawing.Size(241, 216);
             this.panel3.TabIndex = 0;
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 9);
+            this.label26.Location = new System.Drawing.Point(3, 9);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(33, 13);
             this.label26.TabIndex = 13;
@@ -2707,16 +2465,16 @@
             // 
             // journalTime
             // 
-            this.journalTime.Location = new System.Drawing.Point(45, 6);
+            this.journalTime.Location = new System.Drawing.Point(66, 6);
             this.journalTime.Name = "journalTime";
-            this.journalTime.Size = new System.Drawing.Size(120, 20);
+            this.journalTime.Size = new System.Drawing.Size(171, 20);
             this.journalTime.TabIndex = 12;
             this.journalTime.TextChanged += new System.EventHandler(this.journalTime_TextChanged);
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 163);
+            this.label25.Location = new System.Drawing.Point(3, 164);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(24, 13);
             this.label25.TabIndex = 11;
@@ -2724,7 +2482,7 @@
             // 
             // journalCP
             // 
-            this.journalCP.Location = new System.Drawing.Point(45, 161);
+            this.journalCP.Location = new System.Drawing.Point(66, 162);
             this.journalCP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2736,14 +2494,14 @@
             0,
             -2147483648});
             this.journalCP.Name = "journalCP";
-            this.journalCP.Size = new System.Drawing.Size(120, 20);
+            this.journalCP.Size = new System.Drawing.Size(51, 20);
             this.journalCP.TabIndex = 10;
             this.journalCP.ValueChanged += new System.EventHandler(this.journalCP_ValueChanged);
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(6, 137);
+            this.label24.Location = new System.Drawing.Point(123, 138);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(24, 13);
             this.label24.TabIndex = 9;
@@ -2751,7 +2509,7 @@
             // 
             // journalSP
             // 
-            this.journalSP.Location = new System.Drawing.Point(45, 135);
+            this.journalSP.Location = new System.Drawing.Point(186, 136);
             this.journalSP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2763,14 +2521,14 @@
             0,
             -2147483648});
             this.journalSP.Name = "journalSP";
-            this.journalSP.Size = new System.Drawing.Size(120, 20);
+            this.journalSP.Size = new System.Drawing.Size(51, 20);
             this.journalSP.TabIndex = 8;
             this.journalSP.ValueChanged += new System.EventHandler(this.journalSP_ValueChanged);
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 111);
+            this.label23.Location = new System.Drawing.Point(3, 138);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(24, 13);
             this.label23.TabIndex = 7;
@@ -2778,7 +2536,7 @@
             // 
             // journalEP
             // 
-            this.journalEP.Location = new System.Drawing.Point(45, 109);
+            this.journalEP.Location = new System.Drawing.Point(66, 136);
             this.journalEP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2790,14 +2548,14 @@
             0,
             -2147483648});
             this.journalEP.Name = "journalEP";
-            this.journalEP.Size = new System.Drawing.Size(120, 20);
+            this.journalEP.Size = new System.Drawing.Size(51, 20);
             this.journalEP.TabIndex = 6;
             this.journalEP.ValueChanged += new System.EventHandler(this.journalEP_ValueChanged);
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(6, 85);
+            this.label22.Location = new System.Drawing.Point(123, 112);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(25, 13);
             this.label22.TabIndex = 5;
@@ -2805,7 +2563,7 @@
             // 
             // journalGP
             // 
-            this.journalGP.Location = new System.Drawing.Point(45, 83);
+            this.journalGP.Location = new System.Drawing.Point(186, 110);
             this.journalGP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2817,14 +2575,14 @@
             0,
             -2147483648});
             this.journalGP.Name = "journalGP";
-            this.journalGP.Size = new System.Drawing.Size(120, 20);
+            this.journalGP.Size = new System.Drawing.Size(51, 20);
             this.journalGP.TabIndex = 4;
             this.journalGP.ValueChanged += new System.EventHandler(this.journalGP_ValueChanged);
             // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(6, 59);
+            this.label21.Location = new System.Drawing.Point(3, 112);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(24, 13);
             this.label21.TabIndex = 3;
@@ -2832,7 +2590,7 @@
             // 
             // journalPP
             // 
-            this.journalPP.Location = new System.Drawing.Point(45, 57);
+            this.journalPP.Location = new System.Drawing.Point(66, 110);
             this.journalPP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -2844,14 +2602,14 @@
             0,
             -2147483648});
             this.journalPP.Name = "journalPP";
-            this.journalPP.Size = new System.Drawing.Size(120, 20);
+            this.journalPP.Size = new System.Drawing.Size(51, 20);
             this.journalPP.TabIndex = 2;
             this.journalPP.ValueChanged += new System.EventHandler(this.journalPP_ValueChanged);
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 33);
+            this.label20.Location = new System.Drawing.Point(3, 86);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(24, 13);
             this.label20.TabIndex = 1;
@@ -2859,7 +2617,7 @@
             // 
             // journalXP
             // 
-            this.journalXP.Location = new System.Drawing.Point(45, 31);
+            this.journalXP.Location = new System.Drawing.Point(66, 84);
             this.journalXP.Maximum = new decimal(new int[] {
             100000000,
             0,
@@ -2871,7 +2629,7 @@
             0,
             -2147483648});
             this.journalXP.Name = "journalXP";
-            this.journalXP.Size = new System.Drawing.Size(120, 20);
+            this.journalXP.Size = new System.Drawing.Size(171, 20);
             this.journalXP.TabIndex = 0;
             this.journalXP.ValueChanged += new System.EventHandler(this.journalXP_ValueChanged);
             // 
@@ -4521,12 +4279,495 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
-            // alawaysShowTheSourcebookToolStripMenuItem
+            // panel4
             // 
-            this.alawaysShowTheSourcebookToolStripMenuItem.Name = "alawaysShowTheSourcebookToolStripMenuItem";
-            this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.alawaysShowTheSourcebookToolStripMenuItem.Text = "Always Show the Sourcebook";
-            this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
+            this.panel4.Controls.Add(this.XPupLabel);
+            this.panel4.Controls.Add(this.XPLabel);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(3, 99);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(224, 21);
+            this.panel4.TabIndex = 11;
+            // 
+            // XPLabel
+            // 
+            this.XPLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.XPLabel.Location = new System.Drawing.Point(0, 0);
+            this.XPLabel.Name = "XPLabel";
+            this.XPLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
+            this.XPLabel.Size = new System.Drawing.Size(112, 21);
+            this.XPLabel.TabIndex = 6;
+            this.XPLabel.Text = "Experience:";
+            // 
+            // XPupLabel
+            // 
+            this.XPupLabel.AutoSize = true;
+            this.XPupLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.XPupLabel.Location = new System.Drawing.Point(112, 0);
+            this.XPupLabel.Name = "XPupLabel";
+            this.XPupLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
+            this.XPupLabel.Size = new System.Drawing.Size(91, 21);
+            this.XPupLabel.TabIndex = 10;
+            this.XPupLabel.Text = "Till Next Level:";
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.XPtoUP);
+            this.panel5.Controls.Add(this.XP);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel5.Location = new System.Drawing.Point(3, 120);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(224, 20);
+            this.panel5.TabIndex = 12;
+            // 
+            // XP
+            // 
+            this.XP.Dock = System.Windows.Forms.DockStyle.Left;
+            this.XP.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.XP.Location = new System.Drawing.Point(0, 0);
+            this.XP.Maximum = new decimal(new int[] {
+            355000,
+            0,
+            0,
+            0});
+            this.XP.Name = "XP";
+            this.XP.Size = new System.Drawing.Size(112, 20);
+            this.XP.TabIndex = 7;
+            this.XP.ThousandsSeparator = true;
+            this.XP.ValueChanged += new System.EventHandler(this.XP_ValueChanged);
+            // 
+            // XPtoUP
+            // 
+            this.XPtoUP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.XPtoUP.Enabled = false;
+            this.XPtoUP.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.XPtoUP.Location = new System.Drawing.Point(112, 0);
+            this.XPtoUP.Maximum = new decimal(new int[] {
+            355000,
+            0,
+            0,
+            0});
+            this.XPtoUP.Name = "XPtoUP";
+            this.XPtoUP.ReadOnly = true;
+            this.XPtoUP.Size = new System.Drawing.Size(112, 20);
+            this.XPtoUP.TabIndex = 11;
+            this.XPtoUP.ThousandsSeparator = true;
+            // 
+            // PlayerName
+            // 
+            this.PlayerName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PlayerName.Location = new System.Drawing.Point(3, 161);
+            this.PlayerName.Name = "PlayerName";
+            this.PlayerName.Size = new System.Drawing.Size(224, 20);
+            this.PlayerName.TabIndex = 14;
+            this.PlayerName.TextChanged += new System.EventHandler(this.PlayerName_TextChanged);
+            // 
+            // PlayerNameLabel
+            // 
+            this.PlayerNameLabel.AutoSize = true;
+            this.PlayerNameLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PlayerNameLabel.Location = new System.Drawing.Point(3, 140);
+            this.PlayerNameLabel.Name = "PlayerNameLabel";
+            this.PlayerNameLabel.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
+            this.PlayerNameLabel.Size = new System.Drawing.Size(53, 21);
+            this.PlayerNameLabel.TabIndex = 13;
+            this.PlayerNameLabel.Text = "Player:";
+            // 
+            // DCI
+            // 
+            this.DCI.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DCI.Location = new System.Drawing.Point(3, 202);
+            this.DCI.Name = "DCI";
+            this.DCI.Size = new System.Drawing.Size(224, 20);
+            this.DCI.TabIndex = 16;
+            this.DCI.TextChanged += new System.EventHandler(this.DCI_TextChanged);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label27.Location = new System.Drawing.Point(3, 181);
+            this.label27.Name = "label27";
+            this.label27.Padding = new System.Windows.Forms.Padding(7, 5, 7, 3);
+            this.label27.Size = new System.Drawing.Size(49, 21);
+            this.label27.TabIndex = 15;
+            this.label27.Text = "DCI #";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(123, 191);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(39, 13);
+            this.label28.TabIndex = 14;
+            this.label28.Text = "Magic:";
+            // 
+            // journalMagic
+            // 
+            this.journalMagic.Location = new System.Drawing.Point(186, 189);
+            this.journalMagic.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalMagic.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalMagic.Name = "journalMagic";
+            this.journalMagic.Size = new System.Drawing.Size(51, 20);
+            this.journalMagic.TabIndex = 17;
+            this.journalMagic.ValueChanged += new System.EventHandler(this.journalMagic_ValueChanged);
+            // 
+            // racetab
+            // 
+            this.racetab.AutoScroll = true;
+            this.racetab.BackColor = System.Drawing.SystemColors.Menu;
+            this.racetab.Controls.Add(this.subracebox);
+            this.racetab.Controls.Add(this.subracelabel);
+            this.racetab.Controls.Add(this.racebox);
+            this.racetab.Controls.Add(this.racelabel);
+            this.racetab.Location = new System.Drawing.Point(4, 22);
+            this.racetab.Name = "racetab";
+            this.racetab.Padding = new System.Windows.Forms.Padding(15);
+            this.racetab.Size = new System.Drawing.Size(520, 493);
+            this.racetab.TabIndex = 0;
+            this.racetab.Text = "Race";
+            // 
+            // subracebox
+            // 
+            this.subracebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.subracebox.FormattingEnabled = true;
+            this.subracebox.Location = new System.Drawing.Point(15, 137);
+            this.subracebox.Name = "subracebox";
+            this.subracebox.Size = new System.Drawing.Size(490, 95);
+            this.subracebox.TabIndex = 5;
+            this.subracebox.SelectedIndexChanged += new System.EventHandler(this.subracebox_SelectedIndexChanged);
+            this.subracebox.DoubleClick += new System.EventHandler(this.subracebox_DoubleClick);
+            this.subracebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // subracelabel
+            // 
+            this.subracelabel.AutoSize = true;
+            this.subracelabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.subracelabel.Location = new System.Drawing.Point(15, 113);
+            this.subracelabel.Name = "subracelabel";
+            this.subracelabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.subracelabel.Size = new System.Drawing.Size(98, 24);
+            this.subracelabel.TabIndex = 4;
+            this.subracelabel.Text = "Choose a Subrace:";
+            // 
+            // racebox
+            // 
+            this.racebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.racebox.FormattingEnabled = true;
+            this.racebox.Location = new System.Drawing.Point(15, 31);
+            this.racebox.Name = "racebox";
+            this.racebox.Size = new System.Drawing.Size(490, 82);
+            this.racebox.TabIndex = 3;
+            this.racebox.SelectedIndexChanged += new System.EventHandler(this.racebox_SelectedIndexChanged);
+            this.racebox.DoubleClick += new System.EventHandler(this.racebox_DoubleClick);
+            this.racebox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // racelabel
+            // 
+            this.racelabel.AutoSize = true;
+            this.racelabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.racelabel.Location = new System.Drawing.Point(15, 15);
+            this.racelabel.Name = "racelabel";
+            this.racelabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.racelabel.Size = new System.Drawing.Size(249, 16);
+            this.racelabel.TabIndex = 2;
+            this.racelabel.Text = "Choose a Race: (Double click to choose an option)";
+            // 
+            // ClassPanel
+            // 
+            this.ClassPanel.AutoScroll = true;
+            this.ClassPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClassPanel.Location = new System.Drawing.Point(0, 0);
+            this.ClassPanel.Name = "ClassPanel";
+            this.ClassPanel.Padding = new System.Windows.Forms.Padding(15, 7, 15, 15);
+            this.ClassPanel.Size = new System.Drawing.Size(520, 316);
+            this.ClassPanel.TabIndex = 0;
+            // 
+            // backtab
+            // 
+            this.backtab.AutoScroll = true;
+            this.backtab.BackColor = System.Drawing.SystemColors.Menu;
+            this.backtab.Controls.Add(this.flaws);
+            this.backtab.Controls.Add(this.flawlabel);
+            this.backtab.Controls.Add(this.bonds);
+            this.backtab.Controls.Add(this.bondlabel);
+            this.backtab.Controls.Add(this.ideals);
+            this.backtab.Controls.Add(this.ideallabel);
+            this.backtab.Controls.Add(this.traits);
+            this.backtab.Controls.Add(this.traitLabel);
+            this.backtab.Controls.Add(this.background);
+            this.backtab.Controls.Add(this.backgroundLabel);
+            this.backtab.Location = new System.Drawing.Point(4, 22);
+            this.backtab.Name = "backtab";
+            this.backtab.Padding = new System.Windows.Forms.Padding(15);
+            this.backtab.Size = new System.Drawing.Size(520, 493);
+            this.backtab.TabIndex = 2;
+            this.backtab.Text = "Background";
+            // 
+            // flaws
+            // 
+            this.flaws.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flaws.FormattingEnabled = true;
+            this.flaws.Location = new System.Drawing.Point(15, 494);
+            this.flaws.Name = "flaws";
+            this.flaws.Size = new System.Drawing.Size(473, 95);
+            this.flaws.TabIndex = 9;
+            this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
+            this.flaws.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // flawlabel
+            // 
+            this.flawlabel.AutoSize = true;
+            this.flawlabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flawlabel.Location = new System.Drawing.Point(15, 470);
+            this.flawlabel.Name = "flawlabel";
+            this.flawlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.flawlabel.Size = new System.Drawing.Size(80, 24);
+            this.flawlabel.TabIndex = 8;
+            this.flawlabel.Text = "Choose a Flaw:";
+            // 
+            // bonds
+            // 
+            this.bonds.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bonds.FormattingEnabled = true;
+            this.bonds.Location = new System.Drawing.Point(15, 375);
+            this.bonds.Name = "bonds";
+            this.bonds.Size = new System.Drawing.Size(473, 95);
+            this.bonds.TabIndex = 7;
+            this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
+            this.bonds.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // bondlabel
+            // 
+            this.bondlabel.AutoSize = true;
+            this.bondlabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bondlabel.Location = new System.Drawing.Point(15, 351);
+            this.bondlabel.Name = "bondlabel";
+            this.bondlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.bondlabel.Size = new System.Drawing.Size(83, 24);
+            this.bondlabel.TabIndex = 6;
+            this.bondlabel.Text = "Choose a Bond:";
+            // 
+            // ideals
+            // 
+            this.ideals.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ideals.FormattingEnabled = true;
+            this.ideals.Location = new System.Drawing.Point(15, 256);
+            this.ideals.Name = "ideals";
+            this.ideals.Size = new System.Drawing.Size(473, 95);
+            this.ideals.TabIndex = 5;
+            this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
+            this.ideals.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // ideallabel
+            // 
+            this.ideallabel.AutoSize = true;
+            this.ideallabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ideallabel.Location = new System.Drawing.Point(15, 232);
+            this.ideallabel.Name = "ideallabel";
+            this.ideallabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.ideallabel.Size = new System.Drawing.Size(87, 24);
+            this.ideallabel.TabIndex = 4;
+            this.ideallabel.Text = "Choose an Ideal:";
+            // 
+            // traits
+            // 
+            this.traits.Dock = System.Windows.Forms.DockStyle.Top;
+            this.traits.FormattingEnabled = true;
+            this.traits.Location = new System.Drawing.Point(15, 137);
+            this.traits.Name = "traits";
+            this.traits.Size = new System.Drawing.Size(473, 95);
+            this.traits.TabIndex = 3;
+            this.traits.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.traits.DoubleClick += new System.EventHandler(this.traits_DoubleClick);
+            this.traits.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // traitLabel
+            // 
+            this.traitLabel.AutoSize = true;
+            this.traitLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.traitLabel.Location = new System.Drawing.Point(15, 113);
+            this.traitLabel.Name = "traitLabel";
+            this.traitLabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.traitLabel.Size = new System.Drawing.Size(133, 24);
+            this.traitLabel.TabIndex = 2;
+            this.traitLabel.Text = "Choose a Personality Trait:";
+            // 
+            // background
+            // 
+            this.background.Dock = System.Windows.Forms.DockStyle.Top;
+            this.background.FormattingEnabled = true;
+            this.background.Location = new System.Drawing.Point(15, 31);
+            this.background.Name = "background";
+            this.background.Size = new System.Drawing.Size(473, 82);
+            this.background.TabIndex = 1;
+            this.background.SelectedIndexChanged += new System.EventHandler(this.background_SelectedIndexChanged);
+            this.background.DoubleClick += new System.EventHandler(this.background_DoubleClick);
+            this.background.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // backgroundLabel
+            // 
+            this.backgroundLabel.AutoSize = true;
+            this.backgroundLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.backgroundLabel.Location = new System.Drawing.Point(15, 15);
+            this.backgroundLabel.Name = "backgroundLabel";
+            this.backgroundLabel.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.backgroundLabel.Size = new System.Drawing.Size(116, 16);
+            this.backgroundLabel.TabIndex = 0;
+            this.backgroundLabel.Text = "Choose a Background:";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(3, 191);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(57, 13);
+            this.label29.TabIndex = 18;
+            this.label29.Text = "Downtime:";
+            // 
+            // journalDowntime
+            // 
+            this.journalDowntime.Location = new System.Drawing.Point(66, 189);
+            this.journalDowntime.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalDowntime.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalDowntime.Name = "journalDowntime";
+            this.journalDowntime.Size = new System.Drawing.Size(51, 20);
+            this.journalDowntime.TabIndex = 19;
+            this.journalDowntime.ValueChanged += new System.EventHandler(this.journalDowntime_ValueChanged);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(123, 164);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(50, 13);
+            this.label30.TabIndex = 20;
+            this.label30.Text = "Renown:";
+            // 
+            // journalRenown
+            // 
+            this.journalRenown.Location = new System.Drawing.Point(186, 162);
+            this.journalRenown.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalRenown.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalRenown.Name = "journalRenown";
+            this.journalRenown.Size = new System.Drawing.Size(51, 20);
+            this.journalRenown.TabIndex = 21;
+            this.journalRenown.ValueChanged += new System.EventHandler(this.journalRenown_ValueChanged);
+            // 
+            // journalSession
+            // 
+            this.journalSession.Location = new System.Drawing.Point(66, 32);
+            this.journalSession.Name = "journalSession";
+            this.journalSession.Size = new System.Drawing.Size(51, 20);
+            this.journalSession.TabIndex = 22;
+            this.journalSession.TextChanged += new System.EventHandler(this.journalSession_TextChanged);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 35);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(47, 13);
+            this.label31.TabIndex = 23;
+            this.label31.Text = "Session:";
+            // 
+            // journalDM
+            // 
+            this.journalDM.Location = new System.Drawing.Point(66, 58);
+            this.journalDM.Name = "journalDM";
+            this.journalDM.Size = new System.Drawing.Size(171, 20);
+            this.journalDM.TabIndex = 24;
+            this.journalDM.TextChanged += new System.EventHandler(this.journalDM_TextChanged);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(3, 61);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(57, 13);
+            this.label32.TabIndex = 25;
+            this.label32.Text = "DM + DCI:";
+            // 
+            // journalInSheet
+            // 
+            this.journalInSheet.AutoSize = true;
+            this.journalInSheet.Location = new System.Drawing.Point(123, 34);
+            this.journalInSheet.Name = "journalInSheet";
+            this.journalInSheet.Size = new System.Drawing.Size(119, 17);
+            this.journalInSheet.TabIndex = 26;
+            this.journalInSheet.Text = "Include in Logsheet";
+            this.journalInSheet.UseVisualStyleBackColor = true;
+            this.journalInSheet.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // Renown
+            // 
+            this.Renown.Enabled = false;
+            this.Renown.Location = new System.Drawing.Point(86, 3);
+            this.Renown.Name = "Renown";
+            this.Renown.Size = new System.Drawing.Size(61, 20);
+            this.Renown.TabIndex = 2;
+            this.Renown.ValueChanged += new System.EventHandler(this.Renown_ValueChanged);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(3, 5);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(77, 13);
+            this.label33.TabIndex = 3;
+            this.label33.Text = "Total Renown:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(153, 5);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(84, 13);
+            this.label34.TabIndex = 5;
+            this.label34.Text = "Total Downtime:";
+            // 
+            // Downtime
+            // 
+            this.Downtime.Enabled = false;
+            this.Downtime.Location = new System.Drawing.Point(243, 3);
+            this.Downtime.Name = "Downtime";
+            this.Downtime.Size = new System.Drawing.Size(61, 20);
+            this.Downtime.TabIndex = 4;
             // 
             // Form1
             // 
@@ -4573,8 +4814,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.subSplit)).EndInit();
             this.subSplit.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
-            this.racetab.ResumeLayout(false);
-            this.racetab.PerformLayout();
             this.classtab.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
@@ -4608,14 +4847,10 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-            this.backtab.ResumeLayout(false);
-            this.backtab.PerformLayout();
             this.personaltab.ResumeLayout(false);
             this.personalFlowLayout.ResumeLayout(false);
             this.infoBox.ResumeLayout(false);
             this.infoBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.XPtoUP)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.XP)).EndInit();
             this.Portrait.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.portraitBox)).EndInit();
             this.additionalInformationbox.ResumeLayout(false);
@@ -4641,6 +4876,7 @@
             this.spellcontrol.ResumeLayout(false);
             this.journalTab.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -4714,6 +4950,20 @@
             this.spellcastingexample.ResumeLayout(false);
             this.spellcastingexample.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpellSlotUsed)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.XP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.XPtoUP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalMagic)).EndInit();
+            this.racetab.ResumeLayout(false);
+            this.racetab.PerformLayout();
+            this.backtab.ResumeLayout(false);
+            this.backtab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.journalDowntime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalRenown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Renown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Downtime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4786,12 +5036,6 @@
         private System.Windows.Forms.Label alignmentLabel;
         private System.Windows.Forms.GroupBox additionalInformationbox;
         private System.Windows.Forms.ComboBox Alignment;
-        private System.Windows.Forms.Label XPLabel;
-        private System.Windows.Forms.NumericUpDown XP;
-        private System.Windows.Forms.TextBox PlayerName;
-        private System.Windows.Forms.Label PlayerNameLabel;
-        private System.Windows.Forms.NumericUpDown XPtoUP;
-        private System.Windows.Forms.Label XPupLabel;
         private System.Windows.Forms.SplitContainer AgeHeightSplit;
         private System.Windows.Forms.Label AgeLabel;
         private System.Windows.Forms.Label WeightLabel;
@@ -5052,6 +5296,31 @@
         private System.Windows.Forms.ToolStripMenuItem someToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rulesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alawaysShowTheSourcebookToolStripMenuItem;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.NumericUpDown XPtoUP;
+        private System.Windows.Forms.NumericUpDown XP;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label XPupLabel;
+        private System.Windows.Forms.Label XPLabel;
+        private System.Windows.Forms.TextBox DCI;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox PlayerName;
+        private System.Windows.Forms.Label PlayerNameLabel;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.NumericUpDown journalMagic;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox journalSession;
+        private System.Windows.Forms.NumericUpDown journalRenown;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.NumericUpDown journalDowntime;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.TextBox journalDM;
+        private System.Windows.Forms.CheckBox journalInSheet;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.NumericUpDown Renown;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.NumericUpDown Downtime;
     }
 }
 
