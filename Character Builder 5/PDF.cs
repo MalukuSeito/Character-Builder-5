@@ -22,9 +22,11 @@ namespace Character_Builder_5
         public String File { get; set; }
         public String SpellFile { get; set; }
         public String LogFile { get; set; }
+        public String SpellbookFile { get; set; }
         public List<PDFField> Fields = new List<PDFField>();
         public List<PDFField> SpellFields = new List<PDFField>();
         public List<PDFField> LogFields = new List<PDFField>();
+        public List<PDFField> SpellbookFields = new List<PDFField>();
         public static PDF Load(String file)
         {
             using (TextReader reader = new StreamReader(file))
@@ -39,17 +41,20 @@ namespace Character_Builder_5
         {
             using (TextWriter writer = new StreamWriter(file)) serializer.Serialize(writer, this);
         }
-        public void export(FileStream fs, bool preserveEdit, bool includeResources, bool log)
+        public void export(FileStream fs, bool preserveEdit, bool includeResources, bool log, bool spell)
         {
             Dictionary<String, String> trans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> spelltrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> logtrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<String, String> booktrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (PDFField pf in Fields) trans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellFields) spelltrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in LogFields) logtrans.Add(pf.Name, pf.Field);
+            foreach (PDFField pf in SpellbookFields) booktrans.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = Player.current.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Player.current.getFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
+            List<Spell> spellbook = new List<Spell>();
             using (MemoryStream ms = new MemoryStream())
             {
                 using (PdfReader sheet = new PdfReader(File))
@@ -57,44 +62,7 @@ namespace Character_Builder_5
                     if (preserveEdit) sheet.RemoveUsageRights();
                     using (PdfStamper p = new PdfStamper(sheet, ms))
                     {
-                        if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], Player.current.BackgroundName);
-                        if (trans.ContainsKey("Race")) p.AcroFields.SetField(trans["Race"], Player.current.getRaceSubName());
-                        if (trans.ContainsKey("PersonalityTrait")) p.AcroFields.SetField(trans["PersonalityTrait"], Player.current.PersonalityTrait);
-                        if (trans.ContainsKey("Ideal")) p.AcroFields.SetField(trans["Ideal"], Player.current.Ideal);
-                        if (trans.ContainsKey("Bond")) p.AcroFields.SetField(trans["Bond"], Player.current.Bond);
-                        if (trans.ContainsKey("Flaw")) p.AcroFields.SetField(trans["Flaw"], Player.current.Flaw);
-                        if (trans.ContainsKey("PlayerName")) p.AcroFields.SetField(trans["PlayerName"], Player.current.PlayerName);
-                        if (trans.ContainsKey("Alignment")) p.AcroFields.SetField(trans["Alignment"], Player.current.Alignment);
-                        if (trans.ContainsKey("XP")) p.AcroFields.SetField(trans["XP"], Player.current.getXP().ToString());
-                        if (trans.ContainsKey("Age")) p.AcroFields.SetField(trans["Age"], Player.current.Age.ToString());
-                        if (trans.ContainsKey("Height")) p.AcroFields.SetField(trans["Height"], Player.current.Height.ToString());
-                        if (trans.ContainsKey("Weight")) p.AcroFields.SetField(trans["Weight"], Player.current.Weight.ToString() + " lb");
-                        if (trans.ContainsKey("Eyes")) p.AcroFields.SetField(trans["Eyes"], Player.current.Eyes.ToString());
-                        if (trans.ContainsKey("Skin")) p.AcroFields.SetField(trans["Skin"], Player.current.Skin.ToString());
-                        if (trans.ContainsKey("Hair")) p.AcroFields.SetField(trans["Hair"], Player.current.Hair.ToString());
-                        if (trans.ContainsKey("Speed")) p.AcroFields.SetField(trans["Speed"], Player.current.getSpeed().ToString());
-                        if (trans.ContainsKey("FactionName")) p.AcroFields.SetField(trans["FactionName"], Player.current.FactionName);
-                        if (trans.ContainsKey("Backstory")) p.AcroFields.SetField(trans["Backstory"], Player.current.Backstory);
-                        if (trans.ContainsKey("Allies")) p.AcroFields.SetField(trans["Allies"], Player.current.Allies);
-                        if (trans.ContainsKey("Strength")) p.AcroFields.SetField(trans["Strength"], Player.current.getStrength().ToString());
-                        if (trans.ContainsKey("Dexterity")) p.AcroFields.SetField(trans["Dexterity"], Player.current.getDexterity().ToString());
-                        if (trans.ContainsKey("Constitution")) p.AcroFields.SetField(trans["Constitution"], Player.current.getConstitution().ToString());
-                        if (trans.ContainsKey("Intelligence")) p.AcroFields.SetField(trans["Intelligence"], Player.current.getIntelligence().ToString());
-                        if (trans.ContainsKey("Wisdom")) p.AcroFields.SetField(trans["Wisdom"], Player.current.getWisdom().ToString());
-                        if (trans.ContainsKey("Charisma")) p.AcroFields.SetField(trans["Charisma"], Player.current.getCharisma().ToString());
-                        if (trans.ContainsKey("StrengthModifier")) p.AcroFields.SetField(trans["StrengthModifier"], Form1.plusMinus(Player.current.getStrengthMod()));
-                        if (trans.ContainsKey("DexterityModifier")) p.AcroFields.SetField(trans["DexterityModifier"], Form1.plusMinus(Player.current.getDexterityMod()));
-                        if (trans.ContainsKey("ConstitutionModifier")) p.AcroFields.SetField(trans["ConstitutionModifier"], Form1.plusMinus(Player.current.getConstitutionMod()));
-                        if (trans.ContainsKey("IntelligenceModifier")) p.AcroFields.SetField(trans["IntelligenceModifier"], Form1.plusMinus(Player.current.getIntelligenceMod()));
-                        if (trans.ContainsKey("WisdomModifier")) p.AcroFields.SetField(trans["WisdomModifier"], Form1.plusMinus(Player.current.getWisdomMod()));
-                        if (trans.ContainsKey("AC")) p.AcroFields.SetField(trans["AC"], Player.current.getAC().ToString());
-                        if (trans.ContainsKey("ProficiencyBonus")) p.AcroFields.SetField(trans["ProficiencyBonus"], Form1.plusMinus(Player.current.getProficiency()));
-                        if (trans.ContainsKey("Initiative")) p.AcroFields.SetField(trans["Initiative"], Form1.plusMinus(Player.current.getInitiative()));
-                        if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Player.current.getCharismaMod().ToString());
-                        if (trans.ContainsKey("CharacterName")) p.AcroFields.SetField(trans["CharacterName"], Player.current.Name);
-                        if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Player.current.Name);
-                        if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Player.current.Classes));
-                        if (trans.ContainsKey("DCI")) p.AcroFields.SetField(trans["DCI"], Player.current.DCI);
+                        fillBasicFields(trans, p);
                         String attacks = "";
                         String resources = "";
                         if (trans.ContainsKey("Resources"))
@@ -122,6 +90,7 @@ namespace Character_Builder_5
                                 mods.includeResources = false;
                             }
                         }
+                        spellbook.AddRange(bonusspells);
                         if (trans.ContainsKey("BonusSpells"))
                         {
                             p.AcroFields.SetField(trans["BonusSpells"], String.Join("\n", bonusspells));
@@ -422,6 +391,7 @@ namespace Character_Builder_5
                             }
                             Prepared.AddRange(sc.getLearned());
                             Available.AddRange(Prepared);
+                            spellbook.AddRange(Available);
                             List<Spell> Shown = new List<Spell>(Available.Distinct());
                             Shown.Sort(delegate(Spell t1, Spell t2)
                             {
@@ -456,6 +426,7 @@ namespace Character_Builder_5
                                     {
                                         using (PdfStamper sp = new PdfStamper(spellsheet, sms))
                                         {
+                                            fillBasicFields(spelltrans, sp);
                                             if (spelltrans.ContainsKey("SpellcastingClass")) sp.AcroFields.SetField(spelltrans["SpellcastingClass"], scf.DisplayName);
                                             if (spelltrans.ContainsKey("SpellcastingAbility")) sp.AcroFields.SetField(spelltrans["SpellcastingAbility"], Enum.GetName(typeof(Ability), scf.SpellcastingAbility));
                                             if (spelltrans.ContainsKey("SpellSaveDC")) sp.AcroFields.SetField(spelltrans["SpellSaveDC"], Player.current.getSpellSaveDC(scf.SpellcastingID, scf.SpellcastingAbility).ToString());
@@ -537,11 +508,7 @@ namespace Character_Builder_5
                                     using (PdfStamper lp = new PdfStamper(logsheet, lms))
                                     {
                                         sheet++;
-                                        if (logtrans.ContainsKey("PlayerName")) lp.AcroFields.SetField(logtrans["PlayerName"], Player.current.PlayerName);
-                                        if (logtrans.ContainsKey("ClassLevel")) lp.AcroFields.SetField(logtrans["ClassLevel"], String.Join(" | ", Player.current.Classes));
-                                        if (logtrans.ContainsKey("DCI")) lp.AcroFields.SetField(logtrans["DCI"], Player.current.DCI);
-                                        if (logtrans.ContainsKey("FactionName")) lp.AcroFields.SetField(logtrans["FactionName"], Player.current.FactionName);
-                                        if (logtrans.ContainsKey("CharacterName")) lp.AcroFields.SetField(logtrans["CharacterName"], Player.current.Name);
+                                        fillBasicFields(logtrans, lp);
                                         if (logtrans.ContainsKey("Sheet")) lp.AcroFields.SetField(logtrans["Sheet"], sheet.ToString());
                                         while (entries.Count > 0 && (logtrans.ContainsKey("Title" + counter) || logtrans.ContainsKey("XP" + counter)))
                                         {
@@ -611,10 +578,218 @@ namespace Character_Builder_5
                                 }
                             }
                         }
+
+                    }
+
+                    if (spell && SpellbookFile != null && SpellbookFile != "")
+                    {
+                        List<SpellModifyFeature> mods = (from f in Player.current.getFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
+                        Queue<Spell> entries = new Queue<Spell>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
+                        int sheet = 0;
+                        while (entries.Count > 0)
+                        {
+                            using (PdfReader spellbooksheet = new PdfReader(SpellbookFile))
+                            {
+                                if (preserveEdit) spellbooksheet.RemoveUsageRights();
+                                using (MemoryStream sbms = new MemoryStream())
+                                {
+                                    int counter = 1;
+
+                                    using (PdfStamper sbp = new PdfStamper(spellbooksheet, sbms))
+                                    {
+                                        sheet++;
+                                        fillBasicFields(logtrans, sbp);
+                                        if (booktrans.ContainsKey("Sheet")) sbp.AcroFields.SetField(booktrans["Sheet"], sheet.ToString());
+                                        while (entries.Count > 0 && (booktrans.ContainsKey("Name" + counter) || booktrans.ContainsKey("Description" + counter)))
+                                        {
+                                            Spell entry = entries.Dequeue();
+                                            StringBuilder description = new StringBuilder();
+                                            String name = entry.Name;
+                                            String level = "";
+                                            List<Keyword> original = entry.getKeywords();
+                                            List<Keyword> keywords = new List<Keyword>(original);
+                                            if (booktrans.ContainsKey("Level" + counter)) sbp.AcroFields.SetField(booktrans["Level" + counter], entry.Level.ToString());
+                                            else level = (entry.Level == 0 ? "" : " " + AddOrdinal(entry.Level) + " Level");
+                                            keywords.RemoveAll(k => k.Name.Equals("cantrip", StringComparison.InvariantCultureIgnoreCase));
+                                            if (booktrans.ContainsKey("School" + counter)) sbp.AcroFields.SetField(booktrans["School" + counter], getAndRemoveSchool(keywords));
+                                            else if (!booktrans.ContainsKey("Keywords" + counter)) level += " " + getAndRemoveSchool(keywords);
+                                            if (entry.Level == 0) level += " Cantrip";
+                                            if (booktrans.ContainsKey("SchoolLevel" + counter)) sbp.AcroFields.SetField(booktrans["SchoolLevel" + counter], level);
+                                            else name += ", " + level;
+                                            if (booktrans.ContainsKey("Name" + counter)) sbp.AcroFields.SetField(booktrans["Name" + counter], name);
+                                            else description.Append(name).AppendLine();
+                                            if (booktrans.ContainsKey("Classes" + counter)) sbp.AcroFields.SetField(booktrans["Classes" + counter], getAndRemoveClasses(keywords));
+                                            if (booktrans.ContainsKey("Time" + counter)) sbp.AcroFields.SetField(booktrans["Time" + counter], entry.CastingTime);
+                                            else description.Append("Casting Time: ").Append(entry.CastingTime).AppendLine();
+                                            if (booktrans.ContainsKey("Range" + counter)) sbp.AcroFields.SetField(booktrans["Range" + counter], entry.Range);
+                                            else description.Append("Range: ").Append(entry.Range).AppendLine();
+                                            if (booktrans.ContainsKey("Components" + counter)) sbp.AcroFields.SetField(booktrans["Components" + counter], getAndRemoveComponents(keywords));
+                                            else if (!booktrans.ContainsKey("Keywords" + counter)) description.Append("Components: ").Append(getAndRemoveComponents(keywords)).AppendLine();
+                                            if (booktrans.ContainsKey("Duration" + counter)) sbp.AcroFields.SetField(booktrans["Duration" + counter], entry.Duration);
+                                            else description.Append("Duration: ").Append(entry.Duration).AppendLine();
+
+                                            if (booktrans.ContainsKey("Keywords" + counter)) sbp.AcroFields.SetField(booktrans["Keywords" + counter], String.Join(", ",keywords));
+
+                                            description.Append(entry.Description);
+                                            StringBuilder add = new StringBuilder();
+                                            foreach (Description d in entry.Descriptions)
+                                            {
+                                                add.Append(d.Name.ToUpperInvariant()).Append(": ").Append(d.Text).AppendLine();
+                                                if (d is ListDescription) foreach (Names n in (d as ListDescription).Names) add.Append(n.Title).Append(": ").Append(String.Join(", ", n.ListOfNames)).AppendLine();
+                                                if (d is TableDescription) foreach (TableEntry tr in (d as TableDescription).Entries) add.Append(tr.ToFullString()).AppendLine();
+                                            }
+                                            if (booktrans.ContainsKey("AdditionDescription" + counter)) sbp.AcroFields.SetField(booktrans["AdditionDescription" + counter], add.ToString());
+                                            else description.AppendLine().AppendLine().Append(add.ToString());
+                                            StringBuilder Modifiers = new StringBuilder();
+                                            foreach (SpellModifyFeature m in mods.Where(f => Utils.matches(entry, ((SpellModifyFeature)f).Spells, null)))
+                                            {
+                                                Modifiers.Append(m.Name.ToUpperInvariant()).Append(": ").Append(m.Text).AppendLine();
+                                            }
+                                            if (booktrans.ContainsKey("Modifiers" + counter)) sbp.AcroFields.SetField(booktrans["Modifiers" + counter], Modifiers.ToString());
+                                            else description.AppendLine().Append(Modifiers.ToString());
+                                            if (booktrans.ContainsKey("Source" + counter)) sbp.AcroFields.SetField(booktrans["Source" + counter], entry.Source);
+                                            else description.AppendLine().Append("Source: ").Append(entry.Source).AppendLine();
+                                            if (booktrans.ContainsKey("Description" + counter)) sbp.AcroFields.SetField(booktrans["Description" + counter], description.ToString());
+                                            counter++;
+                                        }
+                                        sbp.FormFlattening = !preserveEdit;
+                                        sbp.Writer.CloseStream = false;
+                                    }
+                                    if (counter > 1)
+                                    {
+                                        PdfReader lx = new PdfReader(sbms.ToArray());
+                                        for (int li = 1; li <= lx.NumberOfPages; li++)
+                                        {
+                                            pdfCopy.SetPageSize(lx.GetPageSize(li));
+                                            pdfCopy.AddPage(pdfCopy.GetImportedPage(lx, li));
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     sourceDocument.Close();
                 }
             }
+        }
+
+        private static List<Keyword> Schools = new List<Keyword>()
+        {
+            new Keyword("Abjuration"), new Keyword("Conjuration"), new Keyword("Divination"), new Keyword("Enchantment"), new Keyword("Evocation"), new Keyword("Illusion"), new Keyword("Necromancy"), new Keyword("Transmutation")
+        };
+
+        private string getAndRemoveSchool(List<Keyword> kw)
+        {
+            List<string> s = new List<string>();
+            foreach (Keyword k in Schools) if (kw.Remove(k)) s.Add(k.Name.ToLowerInvariant());
+            string res = string.Join(", ", s);
+            return char.ToUpper(res[0]) + res.Substring(1);
+        }
+
+        private string getAndRemoveComponents(List<Keyword> kw)
+        {
+            List<string> r = new List<string>();
+            bool v = false, s = false, m = false;
+            string mat = "";
+            for (int i = kw.Count - 1; i >= 0; i--)
+            {
+                if (kw[i].Name.Equals("verbal", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    v = true;
+                    kw.RemoveAt(i);
+                } else if (kw[i].Name.Equals("somatic", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    s = true;
+                    kw.RemoveAt(i);
+                } else  if (kw[i] is Material)
+                {
+                    m = true;
+                    mat = mat == "" ? (kw[i] as Material).Components : mat + "; " + (kw[i] as Material).Components;
+                    kw.RemoveAt(i);
+                }
+            }
+            if (v) r.Add("V");
+            if (s) r.Add("S");
+            if (m) r.Add("M(" + mat + ")");
+            string res = string.Join(", ", r);
+            return char.ToUpper(res[0]) + res.Substring(1);
+        }
+
+        private static List<Keyword> Classes = new List<Keyword>();
+        private string getAndRemoveClasses(List<Keyword> kw)
+        {
+            if (Classes.Count == 0) foreach (string cl in ClassDefinition.simple.Keys) Classes.Add(new Keyword(cl));
+            List<string> s = new List<string>();
+            foreach (Keyword k in Classes) if (kw.Remove(k)) s.Add(char.ToUpper(k.Name[0]) + k.Name.Substring(1).ToLowerInvariant());
+            return string.Join(", ", s);
+        }
+
+        private static string AddOrdinal(int num)
+        {
+            if (num <= 0) return num.ToString();
+
+            switch (num % 100)
+            {
+                case 11:
+                case 12:
+                case 13:
+                    return num + "th";
+            }
+
+            switch (num % 10)
+            {
+                case 1:
+                    return num + "st";
+                case 2:
+                    return num + "nd";
+                case 3:
+                    return num + "rd";
+                default:
+                    return num + "th";
+            }
+
+        }
+
+        private void fillBasicFields(Dictionary<string, string> trans, PdfStamper p)
+        {
+            if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], Player.current.BackgroundName);
+            if (trans.ContainsKey("Race")) p.AcroFields.SetField(trans["Race"], Player.current.getRaceSubName());
+            if (trans.ContainsKey("PersonalityTrait")) p.AcroFields.SetField(trans["PersonalityTrait"], Player.current.PersonalityTrait);
+            if (trans.ContainsKey("Ideal")) p.AcroFields.SetField(trans["Ideal"], Player.current.Ideal);
+            if (trans.ContainsKey("Bond")) p.AcroFields.SetField(trans["Bond"], Player.current.Bond);
+            if (trans.ContainsKey("Flaw")) p.AcroFields.SetField(trans["Flaw"], Player.current.Flaw);
+            if (trans.ContainsKey("PlayerName")) p.AcroFields.SetField(trans["PlayerName"], Player.current.PlayerName);
+            if (trans.ContainsKey("Alignment")) p.AcroFields.SetField(trans["Alignment"], Player.current.Alignment);
+            if (trans.ContainsKey("XP")) p.AcroFields.SetField(trans["XP"], Player.current.getXP().ToString());
+            if (trans.ContainsKey("Age")) p.AcroFields.SetField(trans["Age"], Player.current.Age.ToString());
+            if (trans.ContainsKey("Height")) p.AcroFields.SetField(trans["Height"], Player.current.Height.ToString());
+            if (trans.ContainsKey("Weight")) p.AcroFields.SetField(trans["Weight"], Player.current.Weight.ToString() + " lb");
+            if (trans.ContainsKey("Eyes")) p.AcroFields.SetField(trans["Eyes"], Player.current.Eyes.ToString());
+            if (trans.ContainsKey("Skin")) p.AcroFields.SetField(trans["Skin"], Player.current.Skin.ToString());
+            if (trans.ContainsKey("Hair")) p.AcroFields.SetField(trans["Hair"], Player.current.Hair.ToString());
+            if (trans.ContainsKey("Speed")) p.AcroFields.SetField(trans["Speed"], Player.current.getSpeed().ToString());
+            if (trans.ContainsKey("FactionName")) p.AcroFields.SetField(trans["FactionName"], Player.current.FactionName);
+            if (trans.ContainsKey("Backstory")) p.AcroFields.SetField(trans["Backstory"], Player.current.Backstory);
+            if (trans.ContainsKey("Allies")) p.AcroFields.SetField(trans["Allies"], Player.current.Allies);
+            if (trans.ContainsKey("Strength")) p.AcroFields.SetField(trans["Strength"], Player.current.getStrength().ToString());
+            if (trans.ContainsKey("Dexterity")) p.AcroFields.SetField(trans["Dexterity"], Player.current.getDexterity().ToString());
+            if (trans.ContainsKey("Constitution")) p.AcroFields.SetField(trans["Constitution"], Player.current.getConstitution().ToString());
+            if (trans.ContainsKey("Intelligence")) p.AcroFields.SetField(trans["Intelligence"], Player.current.getIntelligence().ToString());
+            if (trans.ContainsKey("Wisdom")) p.AcroFields.SetField(trans["Wisdom"], Player.current.getWisdom().ToString());
+            if (trans.ContainsKey("Charisma")) p.AcroFields.SetField(trans["Charisma"], Player.current.getCharisma().ToString());
+            if (trans.ContainsKey("StrengthModifier")) p.AcroFields.SetField(trans["StrengthModifier"], Form1.plusMinus(Player.current.getStrengthMod()));
+            if (trans.ContainsKey("DexterityModifier")) p.AcroFields.SetField(trans["DexterityModifier"], Form1.plusMinus(Player.current.getDexterityMod()));
+            if (trans.ContainsKey("ConstitutionModifier")) p.AcroFields.SetField(trans["ConstitutionModifier"], Form1.plusMinus(Player.current.getConstitutionMod()));
+            if (trans.ContainsKey("IntelligenceModifier")) p.AcroFields.SetField(trans["IntelligenceModifier"], Form1.plusMinus(Player.current.getIntelligenceMod()));
+            if (trans.ContainsKey("WisdomModifier")) p.AcroFields.SetField(trans["WisdomModifier"], Form1.plusMinus(Player.current.getWisdomMod()));
+            if (trans.ContainsKey("AC")) p.AcroFields.SetField(trans["AC"], Player.current.getAC().ToString());
+            if (trans.ContainsKey("ProficiencyBonus")) p.AcroFields.SetField(trans["ProficiencyBonus"], Form1.plusMinus(Player.current.getProficiency()));
+            if (trans.ContainsKey("Initiative")) p.AcroFields.SetField(trans["Initiative"], Form1.plusMinus(Player.current.getInitiative()));
+            if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Player.current.getCharismaMod().ToString());
+            if (trans.ContainsKey("CharacterName")) p.AcroFields.SetField(trans["CharacterName"], Player.current.Name);
+            if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Player.current.Name);
+            if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Player.current.Classes));
+            if (trans.ContainsKey("DCI")) p.AcroFields.SetField(trans["DCI"], Player.current.DCI);
         }
 
         private string plusMinus(int value)

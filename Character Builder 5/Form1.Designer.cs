@@ -50,6 +50,7 @@
             this.alternateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.includeResourcesInSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preservePDFFormsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PDFjournal = new System.Windows.Forms.ToolStripMenuItem();
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,9 +82,6 @@
             this.SideName = new System.Windows.Forms.Label();
             this.sidePortrait = new System.Windows.Forms.PictureBox();
             this.subSplit = new System.Windows.Forms.SplitContainer();
-            this.displayElement = new System.Windows.Forms.WebBrowser();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.PDFjournal = new System.Windows.Forms.ToolStripMenuItem();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.racetab = new Character_Builder_5.NoScrollTab();
             this.subracebox = new System.Windows.Forms.ListBox();
@@ -381,6 +379,9 @@
             this.SpellSlotBox = new System.Windows.Forms.ListBox();
             this.label18 = new System.Windows.Forms.Label();
             this.SpellsBox = new System.Windows.Forms.ListBox();
+            this.displayElement = new System.Windows.Forms.WebBrowser();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.PDFspellbook = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -645,6 +646,7 @@
             this.includeResourcesInSheetToolStripMenuItem,
             this.preservePDFFormsToolStripMenuItem,
             this.PDFjournal,
+            this.PDFspellbook,
             this.makeDefaultEditorForcb5FilesToolStripMenuItem,
             this.showDescriptionToolStripMenuItem,
             this.alawaysShowTheSourcebookToolStripMenuItem});
@@ -714,6 +716,15 @@
             this.preservePDFFormsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.preservePDFFormsToolStripMenuItem.Text = "&Preserve PDF forms";
             // 
+            // PDFjournal
+            // 
+            this.PDFjournal.Checked = true;
+            this.PDFjournal.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PDFjournal.Name = "PDFjournal";
+            this.PDFjournal.Size = new System.Drawing.Size(244, 22);
+            this.PDFjournal.Text = "Include &Journal in PDF";
+            this.PDFjournal.Click += new System.EventHandler(this.PDFjournal_Click);
+            // 
             // makeDefaultEditorForcb5FilesToolStripMenuItem
             // 
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Name = "makeDefaultEditorForcb5FilesToolStripMenuItem";
@@ -735,7 +746,7 @@
             // 
             this.alawaysShowTheSourcebookToolStripMenuItem.Name = "alawaysShowTheSourcebookToolStripMenuItem";
             this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.alawaysShowTheSourcebookToolStripMenuItem.Text = "Always Show the Sourcebook";
+            this.alawaysShowTheSourcebookToolStripMenuItem.Text = "&Always Show the Sourcebook";
             this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
             // 
             // mainSpilt
@@ -1168,33 +1179,6 @@
             this.subSplit.Size = new System.Drawing.Size(888, 519);
             this.subSplit.SplitterDistance = 528;
             this.subSplit.TabIndex = 1;
-            // 
-            // displayElement
-            // 
-            this.displayElement.AllowNavigation = false;
-            this.displayElement.AllowWebBrowserDrop = false;
-            this.displayElement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.displayElement.IsWebBrowserContextMenuEnabled = false;
-            this.displayElement.Location = new System.Drawing.Point(0, 0);
-            this.displayElement.MinimumSize = new System.Drawing.Size(20, 20);
-            this.displayElement.Name = "displayElement";
-            this.displayElement.ScriptErrorsSuppressed = true;
-            this.displayElement.Size = new System.Drawing.Size(356, 519);
-            this.displayElement.TabIndex = 0;
-            this.displayElement.Url = new System.Uri("about:blank", System.UriKind.Absolute);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.IsBalloon = true;
-            // 
-            // PDFjournal
-            // 
-            this.PDFjournal.Checked = true;
-            this.PDFjournal.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PDFjournal.Name = "PDFjournal";
-            this.PDFjournal.Size = new System.Drawing.Size(244, 22);
-            this.PDFjournal.Text = "Include &Journal in PDF";
-            this.PDFjournal.Click += new System.EventHandler(this.PDFjournal_Click);
             // 
             // mainTab
             // 
@@ -4780,6 +4764,33 @@
             this.SpellsBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplaySpell);
             this.SpellsBox.DoubleClick += new System.EventHandler(this.listBox2_DoubleClick);
             // 
+            // displayElement
+            // 
+            this.displayElement.AllowNavigation = false;
+            this.displayElement.AllowWebBrowserDrop = false;
+            this.displayElement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.displayElement.IsWebBrowserContextMenuEnabled = false;
+            this.displayElement.Location = new System.Drawing.Point(0, 0);
+            this.displayElement.MinimumSize = new System.Drawing.Size(20, 20);
+            this.displayElement.Name = "displayElement";
+            this.displayElement.ScriptErrorsSuppressed = true;
+            this.displayElement.Size = new System.Drawing.Size(356, 519);
+            this.displayElement.TabIndex = 0;
+            this.displayElement.Url = new System.Uri("about:blank", System.UriKind.Absolute);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            // 
+            // PDFspellbook
+            // 
+            this.PDFspellbook.Checked = true;
+            this.PDFspellbook.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PDFspellbook.Name = "PDFspellbook";
+            this.PDFspellbook.Size = new System.Drawing.Size(244, 22);
+            this.PDFspellbook.Text = "Include Spell&book in PDF";
+            this.PDFspellbook.Click += new System.EventHandler(this.PDFspellbook_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5333,6 +5344,7 @@
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.NumericUpDown Downtime;
         private System.Windows.Forms.ToolStripMenuItem PDFjournal;
+        private System.Windows.Forms.ToolStripMenuItem PDFspellbook;
     }
 }
 

@@ -74,6 +74,9 @@
   <ItemGroup>
     <Compile Include="AbilityFeatChoice.cs" />
     <Compile Include="AbilityFeatChoiceContainer.cs" />
+    <Content Include="Spellbook by TailleferTheWise.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Config.cs" />
     <Compile Include="ClassInfo.cs" />
     <Compile Include="ControlAdder.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="SpellChoice.cs" />
     <Compile Include="SpellChoiceCapsule.cs" />
     <Compile Include="SpellChoicePerLevel.cs" />
+    <Compile Include="SpellEqualityComparer.cs" />
     <Compile Include="SpellPerLevel.cs" />
     <Compile Include="SpellSlotInfo.cs" />
     <Compile Include="Form1.cs">
@@ -148,6 +152,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Spellbook.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

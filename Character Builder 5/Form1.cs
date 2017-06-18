@@ -1966,7 +1966,7 @@ namespace Character_Builder_5
         private void exportPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog od = new SaveFileDialog();
-            if (lastfile != null)
+            if (lastfile != null && lastfile != "")
             {
                 od.InitialDirectory = Path.GetDirectoryName(lastfile);
                 od.FileName = Path.GetFileNameWithoutExtension(lastfile) + ".pdf";
@@ -1980,9 +1980,9 @@ namespace Character_Builder_5
                 {
                     using (FileStream fs = (FileStream)od.OpenFile())
                     {
-                        Config.PDFExporter.export(fs, preservePDFFormsToolStripMenuItem.Checked, includeResourcesInSheetToolStripMenuItem.Checked, PDFjournal.Checked);
+                        Config.PDFExporter.export(fs, preservePDFFormsToolStripMenuItem.Checked, includeResourcesInSheetToolStripMenuItem.Checked, PDFjournal.Checked, PDFspellbook.Checked);
                     }
-                    if (MessageBox.Show("PDF exported to: " + od.FileName + "Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("PDF exported to: " + od.FileName + " Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         Process.Start(od.FileName);
                     }
@@ -3928,6 +3928,11 @@ namespace Character_Builder_5
         private void PDFjournal_Click(object sender, EventArgs e)
         {
             PDFjournal.Checked = !PDFjournal.Checked;
+        }
+
+        private void PDFspellbook_Click(object sender, EventArgs e)
+        {
+            PDFspellbook.Checked = !PDFspellbook.Checked;
         }
     }
 }

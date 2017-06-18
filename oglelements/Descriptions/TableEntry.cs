@@ -35,5 +35,20 @@ namespace Character_Builder_5
             if (Title != null && Title != "") return Title + " " + Text;
             return Text;
         }
+
+        public string ToFullString()
+        {
+            if (Title != null && Title != "") return roll() + Title + " " + Text;
+            return roll() + Text;
+        }
+        private string roll()
+        {
+            if (MinRoll >= 0)
+            {
+                if (MaxRoll > MinRoll) return MinRoll + "-" + MaxRoll + ": ";
+                return MinRoll + ": ";
+            }
+            return "";
+        }
     }
 }

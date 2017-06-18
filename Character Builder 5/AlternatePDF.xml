@@ -453,8 +453,60 @@
     <PDFField Name="Notes3Line3" Field="Adventure NotesDowntime Activity 3_3" />
 
   </LogFields>
+  <SpellbookFields>
+    <PDFField Name="Name1" Field="Spell 1" />
+    <PDFField Name="Classes1" Field="Spell Type 1" />
+    <PDFField Name="Time1" Field="Casting Time 1" />
+    <PDFField Name="Range1" Field="Range 1" />
+    <PDFField Name="Components1" Field="Components 1" />
+    <PDFField Name="Duration1" Field="Duration 1" />
+    <PDFField Name="Description1" Field="Spell Description 1" />
+
+    <PDFField Name="Name2" Field="Spell 4" />
+    <PDFField Name="Classes2" Field="Spell Type 4" />
+    <PDFField Name="Time2" Field="Casting Time 4" />
+    <PDFField Name="Range2" Field="Range 4" />
+    <PDFField Name="Components2" Field="Components 4" />
+    <PDFField Name="Duration2" Field="Duration 4" />
+    <PDFField Name="Description2" Field="Spell Description 4" />
+
+    <PDFField Name="Name3" Field="Spell 2" />
+    <PDFField Name="Classes3" Field="Spell Type 2" />
+    <PDFField Name="Time3" Field="Casting Time 2" />
+    <PDFField Name="Range3" Field="Range 2" />
+    <PDFField Name="Components3" Field="Components 2" />
+    <PDFField Name="Duration3" Field="Duration 2" />
+    <PDFField Name="Description3" Field="Spell Description 2" />
+
+    <PDFField Name="Name4" Field="Spell 5" />
+    <PDFField Name="Classes4" Field="Spell Type 5" />
+    <PDFField Name="Time4" Field="Casting Time 5" />
+    <PDFField Name="Range4" Field="Range 5" />
+    <PDFField Name="Components4" Field="Components 5" />
+    <PDFField Name="Duration4" Field="Duration 5" />
+    <PDFField Name="Description4" Field="Spell Description 5" />
+
+    <PDFField Name="Name5" Field="Spell 3" />
+    <PDFField Name="Classes5" Field="Spell Type 3" />
+    <PDFField Name="Time5" Field="Casting Time 3" />
+    <PDFField Name="Range5" Field="Range 3" />
+    <PDFField Name="Components5" Field="Components 3" />
+    <PDFField Name="Duration5" Field="Duration 3" />
+    <PDFField Name="Description5" Field="Spell Description 3" />
+
+    <PDFField Name="Name6" Field="Spell 6" />
+    <PDFField Name="Classes6" Field="Spell Type 6" />
+    <PDFField Name="Time6" Field="Casting Time 6" />
+    <PDFField Name="Range6" Field="Range 6" />
+    <PDFField Name="Components6" Field="Components 6" />
+    <PDFField Name="Duration6" Field="Duration 6" />
+    <PDFField Name="Description6" Field="Spell Description 6" />
+
+  </SpellbookFields>
   <Name>Alternate Sheet</Name>
   <File>Alternate-PlayerSheet.pdf</File>
   <SpellFile>Default-Spellsheet.pdf</SpellFile>
   <LogFile>DnDAdvLgLogsheet.pdf</LogFile>
+  <SpellbookFile>Spellbook.pdf</SpellbookFile>
+
 </PDF>
