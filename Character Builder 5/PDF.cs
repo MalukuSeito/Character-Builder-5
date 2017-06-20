@@ -389,6 +389,10 @@ namespace Character_Builder_5
                                 Available.AddRange(sc.getSpellbook());
                                 Prepared.AddRange(sc.getPrepared());
                             }
+                            else
+                            {
+                                Prepared.AddRange(sc.getPrepared());
+                            }
                             Prepared.AddRange(sc.getLearned());
                             Available.AddRange(Prepared);
                             spellbook.AddRange(Available);
@@ -519,17 +523,20 @@ namespace Character_Builder_5
                                                 if (logtrans.ContainsKey("Session" + counter)) lp.AcroFields.SetField(logtrans["Session" + counter], entry.Session);
                                                 if (logtrans.ContainsKey("Date" + counter)) lp.AcroFields.SetField(logtrans["Date" + counter], entry.Added.ToString());
                                                 if (logtrans.ContainsKey("DM" + counter)) lp.AcroFields.SetField(logtrans["DM" + counter], entry.DM);
-                                                if (logtrans.ContainsKey("Notes" + counter)) lp.AcroFields.SetField(logtrans["Notes" + counter], entry.Text);
-                                                else if (logtrans.ContainsKey("Notes" + counter + "Line1"))
+                                                if (entry.Text != null)
                                                 {
-                                                    int line = 1;
-                                                    Queue<string> lines = new Queue<string>(entry.Text.Split('\n'));
-                                                    while (lines.Count > 0 && logtrans.ContainsKey("Notes" + counter + "Line" + (line + 1)))
+                                                    if (logtrans.ContainsKey("Notes" + counter)) lp.AcroFields.SetField(logtrans["Notes" + counter], entry.Text);
+                                                    else if (logtrans.ContainsKey("Notes" + counter + "Line1"))
                                                     {
-                                                        lp.AcroFields.SetField(logtrans["Notes" + counter + "Line" + line], lines.Dequeue());
-                                                        line++;
+                                                        int line = 1;
+                                                        Queue<string> lines = new Queue<string>(entry.Text.Split('\n'));
+                                                        while (lines.Count > 0 && logtrans.ContainsKey("Notes" + counter + "Line" + (line + 1)))
+                                                        {
+                                                            lp.AcroFields.SetField(logtrans["Notes" + counter + "Line" + line], lines.Dequeue());
+                                                            line++;
+                                                        }
+                                                        lp.AcroFields.SetField(logtrans["Notes" + counter + "Line" + line], string.Join(" ", lines));
                                                     }
-                                                    lp.AcroFields.SetField(logtrans["Notes" + counter + "Line" + line], string.Join(" ", lines));
                                                 }
                                                 if (logtrans.ContainsKey("XPStart" + counter)) lp.AcroFields.SetField(logtrans["XPStart" + counter], xp.ToString());
                                                 if (logtrans.ContainsKey("GoldStart" + counter)) lp.AcroFields.SetField(logtrans["GoldStart" + counter], gold.toGold());

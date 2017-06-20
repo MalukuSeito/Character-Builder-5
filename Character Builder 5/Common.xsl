@@ -25,7 +25,7 @@
 
 
 
-<xsl:template match="TableEntry"><tr><th valign="top"><xsl:comment></xsl:comment><xsl:value-of select="MinRoll"/><xsl:if test="not(MinRoll = MaxRoll)">-<xsl:value-of select="MaxRoll"/></xsl:if></th><td><xsl:comment></xsl:comment><xsl:if test="boolean(Title/node())"><span class="Header"><xsl:apply-templates select="Title" />: </span></xsl:if><xsl:apply-templates select="Text" /></td></tr></xsl:template>
+<xsl:template match="TableEntry"><tr><xsl:if test="MinRoll >= 0"><th valign="top"><xsl:comment></xsl:comment><xsl:value-of select="MinRoll"/><xsl:if test="not(MinRoll >= MaxRoll)">-<xsl:value-of select="MaxRoll"/></xsl:if></th></xsl:if><td><xsl:comment></xsl:comment><xsl:if test="boolean(Title/node())"><span class="Header"><xsl:apply-templates select="Title" />: </span></xsl:if><xsl:apply-templates select="Text" /></td></tr></xsl:template>
 <xsl:template match="text()" name="insertBreaks">
    <xsl:param name="pText" select="."/>
    <xsl:choose>

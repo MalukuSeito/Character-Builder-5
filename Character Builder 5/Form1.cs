@@ -973,7 +973,7 @@ namespace Character_Builder_5
             {
                 Control[] choices = tab.Controls.Find(tab.Name + "=choices", true);
                 ListBox choicebox = (ListBox)choices[0];
-                if (choicebox != null && choicebox.SelectedItem != null && choicebox.SelectedItem is SpellChoiceCapsule)
+                if (choicebox != null && choicebox.SelectedItem != null && choicebox.SelectedItem is SpellChoiceCapsule && ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature != null)
                 {
                     Player.MakeHistory("");
                     SpellChoiceFeature scf = ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature;
@@ -993,7 +993,7 @@ namespace Character_Builder_5
             {
                 Control[] choices = tab.Controls.Find(tab.Name + "=choices", true);
                 ListBox choicebox = (ListBox)choices[0];
-                if (choicebox != null && choicebox.SelectedItem != null && choicebox.SelectedItem is SpellChoiceCapsule)
+                if (choicebox != null && choicebox.SelectedItem != null && choicebox.SelectedItem is SpellChoiceCapsule && ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature != null)
                 {
                     SpellChoiceFeature scf = ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature;
                     List<Feature> spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
@@ -1086,9 +1086,11 @@ namespace Character_Builder_5
                     Spellcasting sc = Player.current.getSpellcasting(sf.SpellcastingID);
                     Control tab = null;
                     foreach (Control tp in spellcontrol.Controls) if (tp.Name == sf.SpellcastingID) tab = (Control)tp;
+                    
                     if (tab != null)
                     {
                         int classlevel = Player.current.getClassLevel(sf.SpellcastingID);
+                        SpellChoiceCapsule bonusprepared = null;
                         if (sf.Preparation == PreparationMode.ClassList || sf.Preparation == PreparationMode.Spellbook)
                         {
                             Control[] prepare = tab.Controls.Find(sf.SpellcastingID + "=prepared", true);
@@ -1128,6 +1130,10 @@ namespace Character_Builder_5
                                     }
                                 }
                             }
+                        } else if (sc.getPrepared().Count() > 0) {
+                            bonusprepared = new SpellChoiceCapsule(null);
+                            bonusprepared.CalculatedChoices = sc.getPrepared().ToList<Spell>();
+                            bonusprepared.CalculatedAmount = bonusprepared.CalculatedChoices.Count;
                         }
                         Control[] choices = tab.Controls.Find(sf.SpellcastingID + "=choices", true);
                         if (choices.Count() > 0)
@@ -1138,12 +1144,12 @@ namespace Character_Builder_5
                             List<SpellChoiceCapsule> scfs = new List<SpellChoiceCapsule>(from f in spellfeatures where f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == sf.SpellcastingID select new SpellChoiceCapsule((SpellChoiceFeature)f));
                             foreach (SpellChoiceCapsule scf in scfs)
                             {
-                                scf.CalculatedChoices = Player.current.getSpellChoice(sf.SpellcastingID, scf.Spellchoicefeature.UniqueID).Choices;
+                                scf.CalculatedChoices = Player.current.getSpellChoice(sf.SpellcastingID, scf.Spellchoicefeature.UniqueID).Choices.Select(t => Spell.Get(t, scf.Spellchoicefeature.Source)).ToList();
                                 scf.CalculatedAmount = scf.Spellchoicefeature.Amount;
                                 foreach (Feature f in spellfeatures) if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.Spellchoicefeature.UniqueID) scf.CalculatedAmount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
                             }
-
                             choice.Items.AddRange(scfs.ToArray<SpellChoiceCapsule>());
+                            if (bonusprepared != null) choice.Items.Add(bonusprepared);
                             if (spellcontrol.SelectedTab == tab)
                             {
                                 if (index >= 0 && index < choice.Items.Count) choice.SelectedIndex = index;
@@ -1174,35 +1180,56 @@ namespace Character_Builder_5
                     foreach (Feature f in spellfeatures) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcontrol.SelectedTab.Name) sf = (SpellcastingFeature)f;
                     if (sf != null)
                     {
-                        int classlevel = Player.current.getClassLevel(sf.SpellcastingID);
-                        List<Spell> available = new List<Spell>(Utils.filterSpell(scf.AvailableSpellChoices, sf.SpellcastingID, classlevel));
-                        List<Spell> chosen = new List<Spell>(Player.current.getSpellChoice(sf.SpellcastingID, scf.UniqueID).Choices.Select(t => Spell.Get(t, scf.Source)));
-                        int amount = scf.Amount;
-                        foreach (Feature f in spellfeatures)
+                        if (scf != null)
                         {
-                            if (f is ModifySpellChoiceFeature && ((ModifySpellChoiceFeature)f).UniqueID == scf.UniqueID)
-                                available.AddRange(Utils.filterSpell(((ModifySpellChoiceFeature)f).AdditionalSpellChoices, sf.SpellcastingID, classlevel));
-                            if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.UniqueID) amount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
-                        }
-                        available.Sort();
-                        chosen.Sort();
-                        Control tab = null;
-                        foreach (Control tp in spellcontrol.Controls) if (tp.Name == sf.SpellcastingID) tab = (Control)tp;
-                        if (tab != null)
+                            int classlevel = Player.current.getClassLevel(sf.SpellcastingID);
+                            List<Spell> available = new List<Spell>(Utils.filterSpell(scf.AvailableSpellChoices, sf.SpellcastingID, classlevel));
+                            List<Spell> chosen = new List<Spell>(Player.current.getSpellChoice(sf.SpellcastingID, scf.UniqueID).Choices.Select(t => Spell.Get(t, scf.Source)));
+                            int amount = scf.Amount;
+                            foreach (Feature f in spellfeatures)
+                            {
+                                if (f is ModifySpellChoiceFeature && ((ModifySpellChoiceFeature)f).UniqueID == scf.UniqueID)
+                                    available.AddRange(Utils.filterSpell(((ModifySpellChoiceFeature)f).AdditionalSpellChoices, sf.SpellcastingID, classlevel));
+                                if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.UniqueID) amount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
+                            }
+                            available.Sort();
+                            chosen.Sort();
+                            Control tab = null;
+                            foreach (Control tp in spellcontrol.Controls) if (tp.Name == sf.SpellcastingID) tab = (Control)tp;
+                            if (tab != null)
+                            {
+                                available.RemoveAll(t => chosen.Exists(s => s.Name == t.Name && s.Source == t.Source));
+                                Control[] chose = tab.Controls.Find(sf.SpellcastingID + "=chosen", true);
+                                ListBox cho = (ListBox)chose[0];
+                                cho.Items.Clear();
+                                cho.Items.AddRange(chosen.ToArray<Spell>());
+
+                                Control[] chosebox = tab.Controls.Find(sf.SpellcastingID + "=chosenbox", true);
+                                chosebox[0].Text = "Selected Spells (" + chosen.Count + "/" + amount + ")";
+
+                                Control[] choose = tab.Controls.Find(sf.SpellcastingID + "=choose", true);
+                                ListBox choo = (ListBox)choose[0];
+                                choo.Items.Clear();
+                                choo.Items.AddRange(available.ToArray<Spell>());
+                            }
+                        } else
                         {
-                            available.RemoveAll(t => chosen.Exists(s => s.Name == t.Name && s.Source == t.Source));
-                            Control[] chose = tab.Controls.Find(sf.SpellcastingID + "=chosen", true);
-                            ListBox cho = (ListBox)chose[0];
-                            cho.Items.Clear();
-                            cho.Items.AddRange(chosen.ToArray<Spell>());
+                            Control tab = null;
+                            foreach (Control tp in spellcontrol.Controls) if (tp.Name == sf.SpellcastingID) tab = (Control)tp;
+                            if (tab != null)
+                            {
+                                Control[] chose = tab.Controls.Find(sf.SpellcastingID + "=chosen", true);
+                                ListBox cho = (ListBox)chose[0];
+                                cho.Items.Clear();
+                                cho.Items.AddRange(((SpellChoiceCapsule)lb.SelectedItem).CalculatedChoices.ToArray<Spell>());
 
-                            Control[] chosebox = tab.Controls.Find(sf.SpellcastingID + "=chosenbox", true);
-                            chosebox[0].Text = "Selected Spells (" + chosen.Count + "/" + amount + ")";
+                                Control[] chosebox = tab.Controls.Find(sf.SpellcastingID + "=chosenbox", true);
+                                chosebox[0].Text = "Spells (" + ((SpellChoiceCapsule)lb.SelectedItem).CalculatedChoices.Count + ")";
 
-                            Control[] choose = tab.Controls.Find(sf.SpellcastingID + "=choose", true);
-                            ListBox choo = (ListBox)choose[0];
-                            choo.Items.Clear();
-                            choo.Items.AddRange(available.ToArray<Spell>());
+                                Control[] choose = tab.Controls.Find(sf.SpellcastingID + "=choose", true);
+                                ListBox choo = (ListBox)choose[0];
+                                choo.Items.Clear();
+                            }
                         }
                     }
                     if (!waslayouting) layouting = false;

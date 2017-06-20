@@ -15,6 +15,7 @@ namespace Character_Builder_5
         }
         public override string ToString()
         {
+            if (Spellcastingfeature == null) return "Additional Spells";
             return Spellcastingfeature.DisplayName;
         }
     }

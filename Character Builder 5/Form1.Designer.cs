@@ -51,6 +51,7 @@
             this.includeResourcesInSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.preservePDFFormsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PDFjournal = new System.Windows.Forms.ToolStripMenuItem();
+            this.PDFspellbook = new System.Windows.Forms.ToolStripMenuItem();
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -381,7 +382,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.PDFspellbook = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -724,6 +724,15 @@
             this.PDFjournal.Size = new System.Drawing.Size(244, 22);
             this.PDFjournal.Text = "Include &Journal in PDF";
             this.PDFjournal.Click += new System.EventHandler(this.PDFjournal_Click);
+            // 
+            // PDFspellbook
+            // 
+            this.PDFspellbook.Checked = true;
+            this.PDFspellbook.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PDFspellbook.Name = "PDFspellbook";
+            this.PDFspellbook.Size = new System.Drawing.Size(244, 22);
+            this.PDFspellbook.Text = "Include Spell&book in PDF";
+            this.PDFspellbook.Click += new System.EventHandler(this.PDFspellbook_Click);
             // 
             // makeDefaultEditorForcb5FilesToolStripMenuItem
             // 
@@ -4781,15 +4790,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // PDFspellbook
-            // 
-            this.PDFspellbook.Checked = true;
-            this.PDFspellbook.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PDFspellbook.Name = "PDFspellbook";
-            this.PDFspellbook.Size = new System.Drawing.Size(244, 22);
-            this.PDFspellbook.Text = "Include Spell&book in PDF";
-            this.PDFspellbook.Click += new System.EventHandler(this.PDFspellbook_Click);
             // 
             // Form1
             // 
