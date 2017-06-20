@@ -64,6 +64,8 @@ namespace Character_Builder_5
                     UnsavedChanges++;
                 }
                 lastid=id;
+                current.ChoiceCounter.Clear();
+                current.ChoiceTotal.Clear();
             }
         }
         public static bool Undo()
@@ -398,7 +400,7 @@ namespace Character_Builder_5
             total += getMoney().Weight();
             return total;
         }
-        public void setAbilityFeatChoices(AbilityScoreFeatFeature f,Ability ab1, Ability ab2,String feat)
+        public void setAbilityFeatChoices(AbilityScoreFeatFeature f,Ability ab1, Ability ab2,String feat, String source)
         {
             int level=getLevel();
             AbilityFeatChoice afc = AbilityFeatChoices.Find(t => t.UniqueID == f.UniqueID && t.Level == f.Level);
@@ -415,10 +417,11 @@ namespace Character_Builder_5
             }
             afc.Ability1=ab1;
             afc.Ability2=ab2;
-            afc.Feat=feat;
+            afc.Feat = feat + " " + ConfigManager.SourceSeperator + " " + source;
         }
-        public List<Feature> getPossessionFeatures(int level=0)
+        public List<Feature> getPossessionFeatures(int level = 0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
             if (level == 0) level = getLevel();
             List<Feature> result=new List<Feature>();
             foreach (Possession p in Possessions)
@@ -696,6 +699,10 @@ namespace Character_Builder_5
             }
             return ChoiceCounter[f];
         }
+        public void resetChoices()
+        {
+            
+        }
         public int getChoiceTotal(string uniqueID) {
             if (!ChoiceTotal.ContainsKey(uniqueID)) ChoiceTotal.Add(uniqueID, 0);
             return ChoiceTotal[uniqueID];
@@ -747,13 +754,15 @@ namespace Character_Builder_5
                 else SubRaceName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
             }
         }
-        public List<Feature> getBackgroundFeatures(int level=0, bool reset=true)
+        public List<Feature> getBackgroundFeatures(int level=0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             List<Feature> fl = new List<Feature>();
             if (Background != null) fl.AddRange(PluginManager.manager.filterBackgroundFeatures(Background, Background.CollectFeatures(level, this), level, this));
-            fl.AddRange(getBoons(level));
-            fl.AddRange(getPossessionFeatures(level));
+            fl.AddRange(getBoons(level, false));
+            fl.AddRange(getPossessionFeatures(level, false));
             return fl;
         }
         public bool canMulticlass(ClassDefinition c, int level)
@@ -770,18 +779,22 @@ namespace Character_Builder_5
             foreach (var d in Classes) if (d.Class != c && d.Class.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase)) return false; // Can not multiclass into the same class from a different sourcebook
             return Utils.canMulticlass(c, asa);
         }
-        public List<Feature> getCommonFeaturesAndFeats(int level = 0, bool reset = true)
+        public List<Feature> getCommonFeaturesAndFeats(int level = 0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             List<Feature> fl = new List<Feature>();
             foreach (Feature f in ConfigManager.CommonFeatures)
                 fl.AddRange(f.Collect(level, this));
             fl = PluginManager.manager.filterCommonFeatures(fl, level, this);
-            fl.AddRange(getFeats(level));
+            fl.AddRange(getFeats(level, false));
             return fl;
         }
-        public List<Feature> getClassFeatures(int level=0, bool reset = true)
+        public List<Feature> getClassFeatures(int level=0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             List<Feature> fl = new List<Feature>();
             if (Classes!=null && Classes.Count > 0)
@@ -808,17 +821,21 @@ namespace Character_Builder_5
             }
             return fl;
         }
-        public List<Feature> getRaceFeatures(int level = 0, bool reset = true)
+        public List<Feature> getRaceFeatures(int level = 0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             List<Feature> fl = new List<Feature>();
             if (Race == null) return fl;
-            fl.AddRange(getSubRaceFeatures(level, reset));
+            fl.AddRange(getSubRaceFeatures(level, false));
             fl.AddRange(PluginManager.manager.filterRaceFeatures(Race, Race.CollectFeatures(level, this), level, this));
             return fl;
         }
-        public List<Feature> getSubRaceFeatures(int level = 0, bool reset = true)
+        public List<Feature> getSubRaceFeatures(int level = 0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             if (SubRace == null) return new List<Feature>();
             return PluginManager.manager.filterSubRaceFeatures(SubRace, Race, SubRace.CollectFeatures(level, this), level, this); 
@@ -836,23 +853,32 @@ namespace Character_Builder_5
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) p.SubClass = null;
         }
-        public List<Feature> getBoons(int level=0, bool reset = true)
+        public List<Feature> getBoons(int level=0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (Boons == null) return new List<Feature>();
             List<Feature> res = new List<Feature>();
             if (level == 0) level = getLevel();
             foreach (string s in Boons) res.AddRange(FeatureCollection.getBoon(s, null).Collect(level, this));
             return PluginManager.manager.filterBoons(res, level, this);
         }
-        public List<Feature> getFeats(int level = 0, bool reset = true)
+        public List<Feature> getFeats(int level = 0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (AbilityFeatChoices == null) return new List<Feature>();
             List<Feature> res = new List<Feature>();
             if (level == 0) level = getLevel();
             List<Feature> feats = FeatureCollection.Get("");
             foreach (AbilityFeatChoice s in getAbilityFeatChoices(level)) 
             {
-                if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.AddRange(feats.Find(f => f.Name == s.Feat).Collect(level, this));
+                if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "")
+                {
+                    Feature feat = feats.Find(f => string.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat, StringComparison.InvariantCultureIgnoreCase));
+                    if (feat == null) feat = feats.Find(f => ConfigManager.SourceInvariantComparer.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat));
+                    if (feat != null) res.AddRange(feat.Collect(level, this));
+                }
             }
             return PluginManager.manager.filterFeats(res, level, this);
         }
@@ -869,8 +895,10 @@ namespace Character_Builder_5
         {
             return from Feature f in getFeatures(level) where f is AbilityScoreFeatFeature select (AbilityScoreFeatFeature)f;
         }
-        public List<Feature> getFeatures(int level=0, bool reset = true)
+        public List<Feature> getFeatures(int level=0, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             List<Feature> res = new List<Feature>();
             res.AddRange(getBackgroundFeatures(level, false));
             res.AddRange(getRaceFeatures(level, false));
@@ -1277,8 +1305,10 @@ namespace Character_Builder_5
             public Feature feature;
             public int classlevel;
         }
-        private List<FeatureClass> getFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, Predicate<Feature> match, int level=0, IEnumerable<Feature> additional=null)
+        private List<FeatureClass> getFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, Predicate<Feature> match, int level = 0, IEnumerable<Feature> additional = null, bool reset = false)
         {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) resetChoices();
             if (level == 0) level = getLevel();
             asa = new AbilityScoreArray(BaseStrength, BaseDexterity, BaseConstitution, BaseIntelligence, BaseWisdom, BaseCharisma);
             max = new AbilityScoreArray(AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max);

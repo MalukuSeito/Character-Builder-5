@@ -92,6 +92,12 @@ namespace Character_Builder_5
                     foreach (Keyword kw in feat.Keywords) kw.check();
                     feat.Category = cat;
                     if (!Categories.ContainsKey(cat)) Categories.Add(cat, new List<Feature>());
+                    Feature other = Categories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    if (other != null)
+                    {
+                        other.ShowSource = true;
+                        feat.ShowSource = true;
+                    }
                     Categories[cat].Add(feat);
                     if (cat.Contains("Boons"))
                     {

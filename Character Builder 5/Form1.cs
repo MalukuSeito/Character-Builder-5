@@ -670,7 +670,7 @@ namespace Character_Builder_5
                     background.ForeColor = Config.SelectColor;
                     background.Height = background.ItemHeight + 10;
                     ControlAdder.AddControls(back, backt, level);
-                    foreach (Feature f in Player.current.getBackgroundFeatures().OrderBy(a => a.Level))
+                    foreach (Feature f in Player.current.getBackgroundFeatures(0, true).OrderBy(a => a.Level))
                     {
                         ControlAdder.AddControl(backt, level, f);
                     }
@@ -1560,7 +1560,7 @@ namespace Character_Builder_5
                     racebox.Items.Add(rac);
                     racebox.ForeColor = Config.SelectColor;
                     ControlAdder.AddControls(rac, racet, level);
-                    foreach (Feature f in Player.current.getRaceFeatures().OrderBy(a => a.Level))
+                    foreach (Feature f in Player.current.getRaceFeatures(0, true).OrderBy(a => a.Level))
                     {
                         ControlAdder.AddControl(racet, level, f);
                     }
@@ -2408,7 +2408,7 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 afc.Ability1 = Ability.None;
                 afc.Ability2 = Ability.None;
-                afc.Feat = ((Feature)o).Name;
+                afc.Feat = ((Feature)o).Name + " " + ConfigManager.SourceSeperator + " " + ((Feature)o).Source;
                 UpdateLayout();
             }
         }
@@ -2469,11 +2469,39 @@ namespace Character_Builder_5
         private void AbilityFeatChoiceBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateAbilityFeatList();
+            if (AbilityFeatChoiceBox.SelectedItem is AbilityFeatChoiceContainer)
+            {
+                AbilityFeatChoice afc = Player.current.getAbilityFeatChoice(((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF);
+                if (afc != null && afc.Feat != "")
+                {
+                    List<Feature> feats = FeatureCollection.Get("");
+                    Feature selected = feats.Find(f => string.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, afc.Feat, StringComparison.InvariantCultureIgnoreCase));
+                    if (selected == null) selected = feats.Find(f => ConfigManager.SourceInvariantComparer.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, afc.Feat));
+                    if (selected != null)
+                    {
+                        displayElement.Navigate("about:blank");
+                        displayElement.Document.OpenNew(true);
+                        displayElement.Document.Write(selected.toHTML());
+                        displayElement.Refresh();
+                    }
+                }
+            }
         }
 
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateClassesBox();
+            if (classList.SelectedItem != null && classesBox.SelectedItem != null)
+            {
+                ClassInfo ci = (ClassInfo)classList.SelectedItem;
+                if (ci.Class != null)
+                {
+                    displayElement.Navigate("about:blank");
+                    displayElement.Document.OpenNew(true);
+                    displayElement.Document.Write(ci.Class.toHTML());
+                    displayElement.Refresh();
+                }
+            }
         }
 
         private void classesBox_MouseDoubleClick(object sender, MouseEventArgs e)

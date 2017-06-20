@@ -47,6 +47,7 @@ namespace Character_Builder_5
 
         public static void AddClassControls(Player player, List<System.Windows.Forms.Control> control, int level)
         {
+            player.resetChoices();
             foreach (PlayerClass p in player.Classes)
             {
                 int l = p.getClassLevelUpToLevel(level);
