@@ -25,7 +25,7 @@ namespace Character_Builder_5
         }
         public PlayerClass(ClassDefinition classdefinition, int atlevel, int hproll)
         {
-            ClassName = classdefinition.Name;
+            Class = classdefinition;
             SubClassName = null;
             ClassLevelAtLevel = new List<int>() {atlevel};
             HProllAtClassLevel = new List<int>() {hproll};
