@@ -135,8 +135,10 @@ namespace Character_Builder_5
         public List<string> FeaturesToAddClassKeywordTo;
         public List<string> SpellsToAddClassKeywordTo;
         public int HitDie { get; set; }
+        public int HitDieCount { get; set; } = 1;
         public int HPFirstLevel { get; set; }
         public int AverageHPPerLevel { get; set; }
+        public bool AvailableAtFirstLevel { get; set; } = true;
         public String Source { get; set; }
         public String MulticlassingCondition {get; set; }
         [XmlIgnore]
@@ -303,7 +305,7 @@ namespace Character_Builder_5
             {
                 return from c in classes.Values where provider.canMulticlass(c, level) select c;
             }
-            return classes.Values;
+            return from c in classes.Values where c.AvailableAtFirstLevel select c;
         }
         public override string ToString()
         {

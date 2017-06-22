@@ -72,12 +72,16 @@ namespace Character_Builder_Builder
             NewlineFormatter.Add(description.DataBindings, "Text", cls, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
             HD.DataBindings.Clear();
             HD.DataBindings.Add("Value", cls, "HitDie", true, DataSourceUpdateMode.OnPropertyChanged);
+            HDCount.DataBindings.Clear();
+            HDCount.DataBindings.Add("Value", cls, "HitDieCount", true, DataSourceUpdateMode.OnPropertyChanged);
             HDAverage.DataBindings.Clear();
             HDAverage.DataBindings.Add("Value", cls, "AverageHPPerLevel", true, DataSourceUpdateMode.OnPropertyChanged);
             HDFirst.DataBindings.Clear();
             HDFirst.DataBindings.Add("Value", cls, "HPFirstLevel", true, DataSourceUpdateMode.OnPropertyChanged);
             MulticlassCond.DataBindings.Clear();
             MulticlassCond.DataBindings.Add("Text", cls, "MulticlassingCondition", true, DataSourceUpdateMode.OnPropertyChanged);
+            Prestige.DataBindings.Clear();
+            Prestige.DataBindings.Add("Checked", cls, "AvailableAtFirstLevel", true, DataSourceUpdateMode.OnPropertyChanged);
             features1.features = cls.Features;
             featuresFirstClass.features = cls.FirstClassFeatures;
             featuresMultiClass.features = cls.MulticlassingFeatures;
@@ -262,6 +266,16 @@ namespace Character_Builder_Builder
             cls.Image = Image;
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
+        }
+
+        private void HDCount_ValueChanged(object sender, EventArgs e)
+        {
+            MakeHistory("HDCount");
+        }
+
+        private void Prestige_CheckedChanged(object sender, EventArgs e)
+        {
+            MakeHistory("1stLevel");
         }
     }
 }

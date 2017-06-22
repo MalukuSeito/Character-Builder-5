@@ -1634,7 +1634,7 @@ namespace Character_Builder_5
             foreach (PlayerClass p in Classes)
             {
                 while (hd.Count <= p.Class.HitDie) hd.Add(0);
-                hd[p.Class.HitDie] += p.getClassLevelUpToLevel(level);
+                hd[p.Class.HitDie] += p.getClassLevelUpToLevel(level) * Math.Max(1, p.Class.HitDieCount);
             }
             for (int h = 0; h < hd.Count; h++) if (hd[h] > 0) hitdie.Add(new HitDie(h, hd[h], (UsedHitDice.Count > h?UsedHitDice[h]:0)));
             return hitdie;

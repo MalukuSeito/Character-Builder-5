@@ -1317,7 +1317,7 @@ namespace Character_Builder_5
                 if (ci.Class != null)
                 {
                     hpSpinner.Minimum = 0;
-                    hpSpinner.Maximum = ci.Class.HitDie;
+                    hpSpinner.Maximum = ci.Class.HitDieCount * Math.Max(1, ci.Class.HitDie);
                     hpSpinner.Value = ci.Hp;
                     hpSpinner.Enabled = true;
                 }
