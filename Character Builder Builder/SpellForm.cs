@@ -1,15 +1,12 @@
-﻿using System;
+﻿using OGL;
+using OGL.Base;
+using OGL.Common;
+using OGL.Keywords;
+using OGL.Spells;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Character_Builder_5;
-using System.Text.RegularExpressions;
-using System.IO;
 
 namespace Character_Builder_Builder
 {

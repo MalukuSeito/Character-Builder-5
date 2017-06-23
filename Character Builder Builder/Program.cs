@@ -1,10 +1,6 @@
-﻿using Character_Builder_5;
+﻿using OGL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using XCalc;
 
 namespace Character_Builder_Builder
 {
@@ -23,10 +19,11 @@ namespace Character_Builder_Builder
             //Console.WriteLine(s + " = " + e.Evaluate());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (Character_Builder_5.SourceManager.init(Application.StartupPath))
+            ConfigManager.LicenseProvider = new LicenseProvider();
+            if (SourceManager.init(Application.StartupPath))
             {
-                Character_Builder_5.ConfigManager.AlwaysShowSource = true;
-                Character_Builder_5.ConfigManager.LoadConfig(Application.StartupPath);
+                ConfigManager.AlwaysShowSource = true;
+                ConfigManager.LoadConfig(Application.StartupPath);
                 Application.Run(new MainTab());
             } else
             {

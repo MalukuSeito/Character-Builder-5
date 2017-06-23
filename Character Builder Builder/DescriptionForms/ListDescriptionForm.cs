@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Character_Builder_5;
+using OGL.Descriptions;
+using OGL.Common;
 
 namespace Character_Builder_Builder.DescriptionForms
 {

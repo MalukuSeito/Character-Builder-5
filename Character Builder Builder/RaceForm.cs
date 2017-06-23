@@ -1,14 +1,9 @@
-﻿using System;
+﻿using OGL;
+using OGL.Common;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Character_Builder_5;
-using System.IO;
 
 namespace Character_Builder_Builder
 {
@@ -41,7 +36,7 @@ namespace Character_Builder_Builder
             name.DataBindings.Add("Text", race, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
             flavour.DataBindings.Clear();
             NewlineFormatter.Add(flavour.DataBindings, "Text", race, "Flavour", true, DataSourceUpdateMode.OnPropertyChanged);
-            foreach (Character_Builder_5.Size s in Enum.GetValues(typeof(Character_Builder_5.Size))) size.Items.Add(s);
+            foreach (OGL.Base.Size s in Enum.GetValues(typeof(OGL.Base.Size))) size.Items.Add(s);
             size.DataBindings.Clear();
             size.DataBindings.Add("SelectedItem", race, "Size", true, DataSourceUpdateMode.OnPropertyChanged);
             source.DataBindings.Clear();

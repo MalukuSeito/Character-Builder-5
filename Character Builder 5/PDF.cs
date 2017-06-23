@@ -10,7 +10,14 @@ using System.Text.RegularExpressions;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-
+using Character_Builder;
+using OGL.Features;
+using OGL;
+using OGL.Spells;
+using OGL.Base;
+using OGL.Items;
+using OGL.Keywords;
+using OGL.Descriptions;
 
 namespace Character_Builder_5
 {

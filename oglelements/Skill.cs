@@ -1,19 +1,16 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Common;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Xml.Xsl;
-using System.Drawing.Imaging;
-using System.Drawing;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    public class Skill : IComparable<Skill>, IHTML
+    public class Skill : IComparable<Skill>, IHTML, OGLElement<Skill>
     {
         [XmlIgnore]
         private static XmlSerializer serializer = new XmlSerializer(typeof(Skill));

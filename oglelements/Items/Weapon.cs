@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OGL.Base;
+using OGL.Keywords;
+using System;
 
-namespace Character_Builder_5
+namespace OGL.Items
 {
     public class Weapon: Tool
     {

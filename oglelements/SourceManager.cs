@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.IO;
 
-namespace Character_Builder_5
+namespace OGL
 {
     public class SourceManager
     {
@@ -24,8 +24,7 @@ namespace Character_Builder_5
                 Console.WriteLine(f);
                 if (File.Exists(f))
                 {
-                    System.Windows.Forms.DialogResult r = new License(Path.GetFileName(s), File.ReadAllLines(f)).ShowDialog();
-                    if (r == System.Windows.Forms.DialogResult.OK)
+                    if (ConfigManager.LicenseProvider.showLicense(Path.GetFileName(s), File.ReadAllLines(f)))
                     {
                         File.Move(f, f + ".txt");
                     } else

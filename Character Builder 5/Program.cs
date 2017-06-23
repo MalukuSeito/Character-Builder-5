@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using Character_Builder;
+using Microsoft.Win32;
+using OGL;
+using OGL.Keywords;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,9 +86,13 @@ namespace Character_Builder_5
             test.Contents.Add(m);
             MagicProperty.Categories.Add("Test", test);
             MagicProperty.ExportAll();*/
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             string[] args = Environment.GetCommandLineArgs();
             try
             {
+                ConfigManager.LicenseProvider = new LicenseProvider();
                 if (SourceManager.init(Application.StartupPath))
                 {
                     if (args.Count() > 1)
@@ -197,10 +204,7 @@ namespace Character_Builder_5
             //{
             //    kws.Add(new Keyword(s.Name));
             //}
-            Console.Out.WriteLine(String.Join(", ", kws));
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             MainWindow = new Form1();
             
             if (args.Count() > 1)

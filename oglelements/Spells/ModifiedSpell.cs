@@ -1,11 +1,11 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Features;
+using OGL.Keywords;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Character_Builder_5
+namespace OGL.Spells
 {
     public class ModifiedSpell : Spell
     {

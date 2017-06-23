@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Drawing.Drawing2D;
+using OGL.Common;
 
 namespace Character_Builder_Builder
 {

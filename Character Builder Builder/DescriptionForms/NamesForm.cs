@@ -1,5 +1,5 @@
 ﻿using System;
-using Character_Builder_5;
+using OGL.Descriptions;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder.DescriptionForms

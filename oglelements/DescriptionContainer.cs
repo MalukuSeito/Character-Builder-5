@@ -1,14 +1,13 @@
-﻿using System;
+﻿using OGL.Common;
+using OGL.Descriptions;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Threading.Tasks;
 using System.Xml.Xsl;
-using System.IO;
 
-namespace Character_Builder_5
+namespace OGL
 {
     public class DescriptionContainer: IHTML
     {

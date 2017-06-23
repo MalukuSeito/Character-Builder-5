@@ -1,9 +1,7 @@
-﻿using Character_Builder_5;
-using System;
+﻿using OGL;
+using OGL.Common;
+using OGL.Features;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Character_Builder_Plugin
 {

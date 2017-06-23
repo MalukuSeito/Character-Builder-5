@@ -1,8 +1,9 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Character_Builder_5
+namespace OGL.Features
 {
     public class FreeItemAndGoldFeature: Feature
     {

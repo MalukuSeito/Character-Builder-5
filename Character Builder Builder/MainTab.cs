@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using OGL;
+using OGL.Items;
+using OGL.Keywords;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Character_Builder_5;
-using Microsoft.VisualBasic;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Character_Builder_Builder
 {
@@ -752,8 +751,8 @@ namespace Character_Builder_Builder
         {
             Spell s = new Spell();
             s.Level = 1;
-            s.Keywords.Add(new Character_Builder_5.Keyword("Verbal"));
-            s.Keywords.Add(new Character_Builder_5.Keyword("Somatic"));
+            s.Keywords.Add(new Keyword("Verbal"));
+            s.Keywords.Add(new Keyword("Somatic"));
             SpellForm r = new SpellForm(s);
             r.Saved += SpellSaved;
             r.Show();
@@ -895,7 +894,7 @@ namespace Character_Builder_Builder
                 try
                 {
                     fill(spellBox, from s in Spell.filter(textBox1.Text) select s.Name, null);
-                } catch(Exception ex)
+                } catch(Exception)
                 {
                     spellBox.Items.Clear();
                 }

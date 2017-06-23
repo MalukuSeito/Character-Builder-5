@@ -1,19 +1,17 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml.Xsl;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.Xsl;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    public class Language : IComparable<Language>, IHTML
+    public class Language : IComparable<Language>, IHTML, OGLElement<Language>
     {
         [XmlIgnore]
         string filename;

@@ -1,10 +1,9 @@
 ﻿using Character_Builder_Plugin;
-using System;
+using OGL;
+using OGL.Common;
+using OGL.Features;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Character_Builder_5;
 
 namespace PluginDMG
 {

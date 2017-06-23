@@ -1,14 +1,9 @@
-﻿using System;
+﻿using OGL;
+using OGL.Base;
+using OGL.Common;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Character_Builder_5;
-using System.IO;
 
 namespace Character_Builder_Builder
 {
@@ -36,7 +31,7 @@ namespace Character_Builder_Builder
             name.DataBindings.Clear();
             name.DataBindings.Add("Text", skill, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
             Ability.Items.Clear();
-            foreach (Ability a in Enum.GetValues(typeof(Ability))) if (a != Character_Builder_5.Ability.None) Ability.Items.Add(a, skill.Base.HasFlag(a));
+            foreach (Ability a in Enum.GetValues(typeof(Ability))) if (a != OGL.Base.Ability.None) Ability.Items.Add(a, skill.Base.HasFlag(a));
             source.DataBindings.Clear();
             source.DataBindings.Add("Text", skill, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
             description.DataBindings.Clear();

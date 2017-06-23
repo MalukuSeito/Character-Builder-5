@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OGL.Base;
+using OGL.Keywords;
+using System;
 
-namespace Character_Builder_5
+namespace OGL.Items
 {
     public class Armor: Tool
     {

@@ -1,12 +1,6 @@
-﻿using Character_Builder_5;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OGL;
+using OGL.Common;
+using OGL.Features;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder.FeatureForms
@@ -19,6 +13,7 @@ namespace Character_Builder_Builder.FeatureForms
             bf = f;
             InitializeComponent();
             basicFeature1.Feature = f;
+
             stringList1.Items = f.Languages;
             Language.ImportAll();
             stringList1.Suggestions = Language.simple.Keys;

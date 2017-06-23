@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Character_Builder_5
+namespace OGL.Descriptions
 {
     public class TableDescription : Description
     {

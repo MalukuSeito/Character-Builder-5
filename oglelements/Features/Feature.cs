@@ -1,14 +1,10 @@
-﻿using System;
+﻿using OGL.Common;
+using OGL.Keywords;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace Character_Builder_5
+namespace OGL.Features
 {
     public class Feature : IComparable<Feature>, IHTML
     {

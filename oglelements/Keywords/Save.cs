@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OGL.Base;
 
-namespace Character_Builder_5
+namespace OGL.Keywords
 {
     public class Save: Keyword
     {

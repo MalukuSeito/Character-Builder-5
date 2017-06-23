@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Xsl;
+using OGL.Features;
+using OGL.Base;
+using OGL.Common;
 
-namespace Character_Builder_5
+namespace OGL
 {
     public class ConfigManager
     {
@@ -73,7 +76,7 @@ namespace Character_Builder_5
                 loaded.Source = value;
             }
         }
-
+        public static ILicense LicenseProvider;
 
 
         public static void RemoveDescription(MemoryStream mem)

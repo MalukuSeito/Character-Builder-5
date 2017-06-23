@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Character_Builder_5
+namespace OGL.Keywords
 {
     [XmlInclude(typeof(Versatile)),
     XmlInclude(typeof(Range))]

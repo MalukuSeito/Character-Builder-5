@@ -1,20 +1,21 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Common;
+using OGL.Descriptions;
+using OGL.Features;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Drawing.Imaging;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    
-    public class Race: IHTML
+
+    public class Race: IHTML, OGLElement<Race>
     {
         [XmlIgnore]
         private static XmlSerializer serializer = new XmlSerializer(typeof(Race));
@@ -22,7 +23,7 @@ namespace Character_Builder_5
         private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
         public String Flavour { get; set; }
-        public Size Size { get; set; }
+        public Base.Size Size { get; set; }
         public String Description { get; set; }
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(ListDescription)),

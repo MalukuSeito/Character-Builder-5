@@ -1,12 +1,9 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Keywords;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
-namespace Character_Builder_5
+namespace OGL.Features
 {
     public class BonusFeature: Feature
     {

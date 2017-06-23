@@ -1,11 +1,9 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Character_Builder_5
+namespace OGL.Features
 {
     public class ChoiceFeature: Feature
     {

@@ -1,19 +1,20 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Common;
+using OGL.Features;
+using OGL.Items;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Xsl;
-using System.Xml.Serialization;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.Xsl;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    public class MagicProperty : IComparable<MagicProperty>, IHTML
+    public class MagicProperty : IComparable<MagicProperty>, IHTML, OGLElement<MagicProperty>
     {
         [XmlIgnore]
         public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);

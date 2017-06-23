@@ -1,15 +1,19 @@
-﻿using System;
+﻿using OGL.Base;
+using OGL.Common;
+using OGL.Items;
+using OGL.Keywords;
+using System;
 using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using System.Linq;
-using System.Xml.Xsl;
-using XCalc;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.Xsl;
+using XCalc;
 
-namespace Character_Builder_5
+namespace OGL
 {
     [XmlInclude(typeof(Tool)),
     XmlInclude(typeof(Weapon)),
@@ -17,7 +21,7 @@ namespace Character_Builder_5
     XmlInclude(typeof(Shield)),
     XmlInclude(typeof(Pack)),
     XmlInclude(typeof(Scroll))]
-    public class Item : IComparable<Item>, IHTML
+    public class Item : IComparable<Item>, IHTML, OGLElement<Item>
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Versatile)),

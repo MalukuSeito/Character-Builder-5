@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OGL;
+using OGL.Common;
+using OGL.Features;
 using System.Windows.Forms;
-using Character_Builder_5;
 
 namespace Character_Builder_Builder.FeatureForms
 {
@@ -18,6 +12,7 @@ namespace Character_Builder_Builder.FeatureForms
         {
             bf = f;
             InitializeComponent();
+
             basicFeature1.Feature = f;
             Item.ImportAll();
             stringList1.Items = f.Tools;

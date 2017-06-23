@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
+﻿using OGL.Base;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 
-namespace Character_Builder_5
+namespace OGL.Items
 {
     public class Scroll: Item
     {

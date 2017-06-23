@@ -1,19 +1,19 @@
-﻿using System;
+﻿using OGL.Common;
+using OGL.Descriptions;
+using OGL.Features;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Drawing;
-using System.Drawing.Imaging;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    public class SubRace: IHTML
+    public class SubRace: IHTML, OGLElement<SubRace>
     {
         [XmlIgnore]
         public static bool DETAILED_TOSTRING = false;

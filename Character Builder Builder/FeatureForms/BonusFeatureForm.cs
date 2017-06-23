@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using OGL;
+using OGL.Base;
+using OGL.Common;
+using OGL.Features;
+using OGL.Items;
+using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Character_Builder_5;
 
 namespace Character_Builder_Builder.FeatureForms
 {
@@ -39,15 +38,15 @@ namespace Character_Builder_Builder.FeatureForms
             profBonus.DataBindings.Add("Text", f, "ProficiencyBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
-            Character_Builder_5.Skill.ImportAll();
-            SkillList.Suggestions = Character_Builder_5.Skill.simple.Keys;
-            Character_Builder_5.Item.ImportAll();
+            OGL.Skill.ImportAll();
+            SkillList.Suggestions = OGL.Skill.simple.Keys;
+            Item.ImportAll();
             proficiencyOptions.Suggestions = from it in Item.simple.Values where it is Weapon select it.Name;
             basicFeature1.Feature = f;
-            Character_Builder_5.Item.ImportAll();
-            foreach (string s in Character_Builder_5.Item.simple.Keys)
+            Item.ImportAll();
+            foreach (string s in OGL.Item.simple.Keys)
             {
-                if (Character_Builder_5.Item.simple[s] is Weapon)
+                if (Item.simple[s] is Weapon)
                 {
                     Spell.AutoCompleteCustomSource.Add(s);
                     Spell.Items.Add(s);

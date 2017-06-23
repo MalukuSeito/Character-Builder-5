@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace Character_Builder_5
+namespace OGL
 {
     public class AbilityScores
     {

@@ -1,19 +1,19 @@
-﻿using System;
+﻿using OGL.Common;
+using OGL.Descriptions;
+using OGL.Features;
+using System;
 using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Xml.Xsl;
-using System.Drawing.Imaging;
-using System.Drawing;
 
-namespace Character_Builder_5
+namespace OGL
 {
-    public class Background : IComparable<Background>, IHTML
+    public class Background : IComparable<Background>, IHTML, OGLElement<Background>
     {
         [XmlIgnore]
         string filename;

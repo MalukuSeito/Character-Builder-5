@@ -12,6 +12,14 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Character_Builder;
+using OGL;
+using OGL.Items;
+using OGL.Base;
+using OGL.Features;
+using OGL.Spells;
+using OGL.Descriptions;
+using OGL.Common;
 
 namespace Character_Builder_5
 {
@@ -1751,7 +1759,7 @@ namespace Character_Builder_5
             System.Windows.Forms.ListBox choicer = (System.Windows.Forms.ListBox)sender;
             if (choicer != null && choicer.SelectedItem != null && choicer.SelectedItem is Spell)
             {
-                Scroll selected = new Character_Builder_5.Scroll((Spell)choicer.SelectedItem);
+                Scroll selected = new Scroll((Spell)choicer.SelectedItem);
                 if (selected != null)
                 {
                     displayElement.Navigate("about:blank");
@@ -2266,7 +2274,7 @@ namespace Character_Builder_5
                 Player.current.Allies = Allies.Text;
             }
         }
-        public static String plusMinus(int x)
+        public static string plusMinus(int x)
         {
             if (x < 0) return x.ToString();
             return "+" + x;
