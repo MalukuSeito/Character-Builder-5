@@ -169,7 +169,7 @@ namespace OGL
         {
             get
             {
-                if (ClassName == null || ClassName == "") return null;
+                if (ClassName == null || ClassName == "" || ClassName == "*") return null;
                 return ClassDefinition.Get(ClassName, Source);
             }
             set
@@ -317,7 +317,7 @@ namespace OGL
         }
         public static IEnumerable<SubClass> For(string classdefinition)
         {
-            return (from s in subclasses.Values where ConfigManager.SourceInvariantComparer.Equals(s.ClassName, classdefinition) select s);
+            return (from s in subclasses.Values where ConfigManager.SourceInvariantComparer.Equals(s.ClassName, classdefinition) || s.ClassName == "*" select s);
         }
         public bool save(Boolean overwrite)
         {

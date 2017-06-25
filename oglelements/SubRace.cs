@@ -101,7 +101,7 @@ namespace OGL
         {
             get
             {
-                if (RaceName == null || RaceName == "") return null;
+                if (RaceName == null || RaceName == "" || RaceName == "*") return null;
                 return Race.Get(RaceName, Source);
             }
             set
@@ -216,7 +216,7 @@ namespace OGL
         {
             string n = Name;
             if (ShowSource || ConfigManager.AlwaysShowSource) n = n + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (DETAILED_TOSTRING) return n + " (" + ParentRace + ")";
+            if (DETAILED_TOSTRING) return n + " (" + RaceName + ")";
             return n;
         }
         public int CompareTo(SubRace other)
@@ -235,7 +235,7 @@ namespace OGL
         }
         public static IEnumerable<SubRace> For(List<String> races)
         {
-            return (from s in subraces.Values where races.Contains(s.RaceName) select s);
+            return (from s in subraces.Values where races.Contains(s.RaceName) || s.RaceName == "*" select s);
         }
         public bool save(Boolean overwrite)
         {
