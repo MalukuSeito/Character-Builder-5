@@ -77,6 +77,7 @@ namespace OGL
         public static void ImportAll()
         {
             skills.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Skills, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

@@ -172,6 +172,7 @@ namespace OGL
         public static void ImportAll()
         {
             backgrounds.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Backgrounds, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

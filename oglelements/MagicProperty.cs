@@ -316,6 +316,7 @@ namespace OGL
             properties.Clear();
             Categories.Clear();
             Categories.Add("Magic", new MagicCategory("Magic"));
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Magic, SearchOption.AllDirectories);
             foreach (var f in files)
             {

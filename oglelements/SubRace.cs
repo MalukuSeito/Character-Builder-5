@@ -168,6 +168,7 @@ namespace OGL
         public static void ImportAll()
         {
             subraces.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_SubRaces, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

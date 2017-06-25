@@ -265,6 +265,7 @@ namespace OGL
         public static void ImportAll()
         {
             classes.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Classes, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

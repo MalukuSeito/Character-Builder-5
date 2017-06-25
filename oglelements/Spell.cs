@@ -174,6 +174,7 @@ namespace OGL
         {
             spells.Clear();
             SpellLists.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Spells, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

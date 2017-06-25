@@ -109,6 +109,7 @@ namespace OGL
         public static void ImportAll()
         {
             conditions.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Conditions, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

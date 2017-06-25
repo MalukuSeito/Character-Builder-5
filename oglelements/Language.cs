@@ -110,6 +110,7 @@ namespace OGL
         public static void ImportAll()
         {
             languages.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Languages, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {

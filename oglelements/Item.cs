@@ -187,6 +187,7 @@ namespace OGL
         {
             items.Clear();
             ItemLists.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Items);
 
             foreach (var f in files)

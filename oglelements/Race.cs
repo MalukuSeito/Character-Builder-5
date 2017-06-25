@@ -167,6 +167,7 @@ namespace OGL
         public static void ImportAll()
         {
             races.Clear();
+            simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Races, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
