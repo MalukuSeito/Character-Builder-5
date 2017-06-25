@@ -243,6 +243,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> AttunedOnUseFeatures = new List<Feature>();
+
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         [XmlIgnore]
@@ -278,6 +279,14 @@ namespace OGL
         {
             Source = ConfigManager.DefaultSource;
         }
+
+        public MagicProperty(string name, string desc)
+        {
+            Name = name;
+            Description = desc;
+            simple[Name] = this;
+        }
+
         public int CompareTo(MagicProperty other)
         {
             return Name.CompareTo(other.Name);
@@ -310,40 +319,47 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Magic, SearchOption.AllDirectories);
             foreach (var f in files)
             {
-                Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
-                Uri target = new Uri(f.Key.DirectoryName);
-                string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                if (!Categories.ContainsKey(cat)) Categories.Add(cat, new MagicCategory(cat));
-                String parent = System.IO.Path.GetDirectoryName(cat);
-                while (parent.IsSubPathOf(ConfigManager.Directory_Magic) && !Categories.ContainsKey(parent))
+                try
                 {
-                    Categories.Add(parent, new MagicCategory(parent));
-                    parent = System.IO.Path.GetDirectoryName(parent);
+                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
+                    Uri target = new Uri(f.Key.DirectoryName);
+                    string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
+                    if (!Categories.ContainsKey(cat)) Categories.Add(cat, new MagicCategory(cat));
+                    String parent = System.IO.Path.GetDirectoryName(cat);
+                    while (parent.IsSubPathOf(ConfigManager.Directory_Magic) && !Categories.ContainsKey(parent))
+                    {
+                        Categories.Add(parent, new MagicCategory(parent));
+                        parent = System.IO.Path.GetDirectoryName(parent);
+                    }
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        MagicProperty mp = ((MagicProperty)serializer.Deserialize(reader));
+                        mp.filename = f.Key.FullName;
+                        mp.Source = f.Value;
+                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
+                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
+                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
+                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
+                        mp.Category = cat;
+                        Categories[cat].Contents.Add(mp);
+                        if (properties.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
+                        {
+                            throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
+                        }
+                        if (simple.ContainsKey(mp.Name))
+                        {
+                            simple[mp.Name].ShowSource = true;
+                            mp.ShowSource = true;
+                        }
+                        properties.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
+                        simple[mp.Name] = mp;
+                    }
                 }
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                catch (Exception e)
                 {
-                    MagicProperty mp = ((MagicProperty)serializer.Deserialize(reader));
-                    mp.filename = f.Key.FullName;
-                    mp.Source = f.Value;
-                    foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
-                    foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
-                    foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
-                    foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
-                    mp.Category = cat;
-                    Categories[cat].Contents.Add(mp);
-                    if (properties.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
-                    {
-                        throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
-                    }
-                    if (simple.ContainsKey(mp.Name))
-                    {
-                        simple[mp.Name].ShowSource = true;
-                        mp.ShowSource = true;
-                    }
-                    properties.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
-                    simple[mp.Name] = mp;
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
-                
+
                 //Collections[].AddRange(feats);
             }
         }
@@ -370,7 +386,8 @@ namespace OGL
             }
             if (sourcehint != null && properties.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return properties[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown property: " + name);
+            ConfigManager.LogError("Unknown property: " + name);
+            return new MagicProperty(name, "Missing Entry");
         }
         public bool Test()
         {

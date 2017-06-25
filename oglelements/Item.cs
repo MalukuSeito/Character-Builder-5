@@ -191,14 +191,21 @@ namespace OGL
 
             foreach (var f in files)
             {
-                Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Items).FullName);
-                Uri target = new Uri(f.Key.DirectoryName);
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Item s = (Item)serializer.Deserialize(reader);
-                    s.Category = Category.Make(source.MakeRelativeUri(target));
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Items).FullName);
+                    Uri target = new Uri(f.Key.DirectoryName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Item s = (Item)serializer.Deserialize(reader);
+                        s.Category = Category.Make(source.MakeRelativeUri(target));
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }
@@ -342,7 +349,7 @@ namespace OGL
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                throw new Exception("Error while evaluating expression " + expression, e);
             }
         }
     }

@@ -112,11 +112,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Conditions, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Condition s = (Condition)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Condition s = (Condition)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

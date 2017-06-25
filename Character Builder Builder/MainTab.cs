@@ -900,5 +900,10 @@ namespace Character_Builder_Builder
                 }
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Program.Errorlog.Show();
+        }
     }
 }

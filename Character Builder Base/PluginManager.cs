@@ -36,7 +36,13 @@ namespace Character_Builder
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {
-                dllFileNames = Directory.GetFiles(path, "*.dll");
+                try
+                {
+                    dllFileNames = Directory.GetFiles(path, "*.dll");
+                } catch (Exception e)
+                {
+                    ConfigManager.LogError("Error loading Plugins", e);
+                }
             } else
             {
                 return;
@@ -45,8 +51,15 @@ namespace Character_Builder
             ICollection<Assembly> assemblies = new List<Assembly>(dllFileNames.Length);
             foreach (string dllFile in dllFileNames)
             {
-                Assembly assembly = Assembly.LoadFrom(dllFile);
-                assemblies.Add(assembly);
+                try
+                {
+                    Assembly assembly = Assembly.LoadFrom(dllFile);
+                    assemblies.Add(assembly);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error loading Plugin " + dllFile, e);
+                }
             }
             Type pluginType = typeof(IPlugin);
             ICollection<Type> pluginTypes = new List<Type>();
@@ -54,80 +67,177 @@ namespace Character_Builder
             {
                 if (assembly != null)
                 {
-                    Type[] types = assembly.GetTypes();
-                    foreach (Type type in types)
+                    try
                     {
-                        if (type.IsInterface || type.IsAbstract)
+                        Type[] types = assembly.GetTypes();
+                        foreach (Type type in types)
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if (type.GetInterface(pluginType.FullName) != null)
+                            if (type.IsInterface || type.IsAbstract)
                             {
-                                pluginTypes.Add(type);
+                                continue;
+                            }
+                            else
+                            {
+                                if (type.GetInterface(pluginType.FullName) != null)
+                                {
+                                    pluginTypes.Add(type);
+                                }
                             }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        ConfigManager.LogError("Error loading Plugin Assembly " + assembly, e);
                     }
                 }
             }
             foreach (Type type in pluginTypes)
             {
-                IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                available.Add(plugin.Name, plugin);
+                try
+                {
+                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                    available.Add(plugin.Name, plugin);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error loading Plugin Type " + type, e);
+                }
             }
         }
         public List<Feature> filterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterBackgroundFeatures(background, features, level, provider);
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.filterBackgroundFeatures(background, features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterBoons(List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterBoons(features, level, provider);
+            foreach (IPlugin i in plugins) {
+                try { features = i.filterBoons(features, level, provider); }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterClassFeatures(cls, classlevel, features, level, provider);
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.filterClassFeatures(cls, classlevel, features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterCommonFeatures(features, level, provider);
+            foreach (IPlugin i in plugins) {
+                try
+                {
+                    features = i.filterCommonFeatures(features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterFeats(List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterFeats(features, level, provider);
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.filterFeats(features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterPossessionFeatures(features, level, provider);
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.filterPossessionFeatures(features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterRaceFeatures(race, features, level, provider);
+            foreach (IPlugin i in plugins) {
+                try
+                {
+                    features = i.filterRaceFeatures(race, features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterSubClassFeatures(subcls, cls, classlevel, features, level, provider);
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.filterSubClassFeatures(subcls, cls, classlevel, features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
 
         public List<Feature> filterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider)
         {
-            foreach (IPlugin i in plugins) features = i.filterSubRaceFeatures(subrace, race, features, level, provider);
+            foreach (IPlugin i in plugins) {
+                try
+                {
+                    features = i.filterSubRaceFeatures(subrace, race, features, level, provider);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
             return features;
         }
     }

@@ -143,51 +143,57 @@ namespace Character_Builder
         {
             if (level == 0) level = Player.current.getLevel();
             if (classlevel == 0) level = classlevel;
-            
-            Expression ex = new Expression(ConfigManager.fixQuotes(expression));
-            ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+            try
             {
-                name = name.ToLowerInvariant();
-                if (name == "str" || name == "strength") args.Result = asa.Strength;
-                else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
-                else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
-                else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
-                else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
-                else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "playerlevel") args.Result = level;
-                else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
-                else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
-                else if (name == "classlevel") args.Result = classlevel;
-                else if (name == "weapon") args.Result = (i is Weapon);
-                else if (name == "armor") args.Result = (i is Armor);
-                else if (name == "shield") args.Result = (i is Shield);
-                else if (name == "baseac" && i is Armor) args.Result = ((Armor)i).BaseAC;
-                else if (name == "damageroll" && i is Weapon) args.Result = ((Weapon)i).Damage;
-                else if (name == "damagetype" && i is Weapon) args.Result = ((Weapon)i).DamageType;
-                else if (name == "tool") args.Result = i is Tool;
-                else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
-                else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
-                else if (i != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                else args.Result = false;
-            };
-            ex.EvaluateFunction += FunctionExtensions;
-            object o = ex.Evaluate();
-            if (o is Int32) return (int)o;
-            if (o is UInt32) return (int)(UInt32)o;
-            if (o is UInt16) return (int)(UInt16)o;
-            if (o is Int16) return (int)(Int16)o;
-            if (o is UInt64) return (int)(UInt64)o;
-            if (o is Int64) return (int)(Int64)o;
-            if (o is Single) return (int)(Single)o;
-            if (o is Double) return (int)(Double)o;
-            if (o is Decimal) return (int)(Decimal)o;
+                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "str" || name == "strength") args.Result = asa.Strength;
+                    else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
+                    else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
+                    else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
+                    else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
+                    else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "playerlevel") args.Result = level;
+                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
+                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
+                    else if (name == "classlevel") args.Result = classlevel;
+                    else if (name == "weapon") args.Result = (i is Weapon);
+                    else if (name == "armor") args.Result = (i is Armor);
+                    else if (name == "shield") args.Result = (i is Shield);
+                    else if (name == "baseac" && i is Armor) args.Result = ((Armor)i).BaseAC;
+                    else if (name == "damageroll" && i is Weapon) args.Result = ((Weapon)i).Damage;
+                    else if (name == "damagetype" && i is Weapon) args.Result = ((Weapon)i).DamageType;
+                    else if (name == "tool") args.Result = i is Tool;
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
+                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else if (i != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                object o = ex.Evaluate();
+                if (o is Int32) return (int)o;
+                if (o is UInt32) return (int)(UInt32)o;
+                if (o is UInt16) return (int)(UInt16)o;
+                if (o is Int16) return (int)(Int16)o;
+                if (o is UInt64) return (int)(UInt64)o;
+                if (o is Int64) return (int)(Int64)o;
+                if (o is Single) return (int)(Single)o;
+                if (o is Double) return (int)(Double)o;
+                if (o is Decimal) return (int)(Decimal)o;
+            }
+            catch (Exception e)
+            {
+                ConfigManager.LogError("Error while evaluating " + expression, e);
+            }
             return 0;
         }
 
@@ -195,34 +201,41 @@ namespace Character_Builder
         {
             if (level == 0) level = Player.current.getLevel();
             if (classlevel == 0) level = classlevel;
-            Expression ex = new Expression(ConfigManager.fixQuotes(expression));
-            ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+            try
             {
-                name = name.ToLowerInvariant();
-                if (name == "str" || name == "strength") args.Result = asa.Strength;
-                else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
-                else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
-                else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
-                else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
-                else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "playerlevel") args.Result = level;
-                else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
-                else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
-                else if (name == "classlevel") args.Result = classlevel;
-                else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
-                else args.Result = false;
-            };
-            ex.EvaluateFunction += FunctionExtensions;
-            object o = ex.Evaluate();
-            if (o is Boolean && (Boolean)o)
-                return true;
+                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "str" || name == "strength") args.Result = asa.Strength;
+                    else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
+                    else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
+                    else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
+                    else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
+                    else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "playerlevel") args.Result = level;
+                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
+                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
+                    else if (name == "classlevel") args.Result = classlevel;
+                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                object o = ex.Evaluate();
+                if (o is Boolean && (Boolean)o)
+                    return true;
+            }
+            catch (Exception e)
+            {
+                ConfigManager.LogError("Error while evaluating " + expression, e);
+            }
             return false;
         }
 
@@ -230,52 +243,59 @@ namespace Character_Builder
         {
             if (level == 0) level = Player.current.getLevel();
             if (classlevel == 0) level = classlevel;
-            Expression ex = new Expression(ConfigManager.fixQuotes(expression));
-            ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+            try
             {
-                name = name.ToLowerInvariant();
-                if (name == "str" || name == "strength") args.Result = asa.Strength;
-                else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
-                else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
-                else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
-                else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
-                else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                else if (name == "playerlevel") args.Result = level;
-                else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
-                else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
-                else if (name == "classlevel") args.Result = classlevel;
-                else if (name == "name") args.Result = s.Name.ToLowerInvariant();
-                else if (name == "spell") args.Result = true;
-                else if (name == "castingtime") args.Result = s.CastingTime;
-                else if (name == "duration") args.Result = s.Duration;
-                else if (name == "range") args.Result = s.Range;
-                else if (name == "namelower") args.Result = s.Name.ToLowerInvariant();
-                else if (name == "level") args.Result = s.Level;
-                else if (name == "classlevel") args.Result = classlevel;
-                else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
-                else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
-                else args.Result = false;
-            };
-            ex.EvaluateFunction += FunctionExtensions;
-            object o = ex.Evaluate();
-            if (o is Int32) return (int)o;
-            if (o is UInt32) return (int)(UInt32)o;
-            if (o is UInt16) return (int)(UInt16)o;
-            if (o is Int16) return (int)(Int16)o;
-            if (o is UInt64) return (int)(UInt64)o;
-            if (o is Int64) return (int)(Int64)o;
-            if (o is Single) return (int)(Single)o;
-            if (o is Double) return (int)(Double)o;
-            if (o is Decimal) return (int)(Decimal)o;
+                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "str" || name == "strength") args.Result = asa.Strength;
+                    else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
+                    else if (name == "con" || name == "constitution") args.Result = asa.Constitution;
+                    else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
+                    else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
+                    else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "playerlevel") args.Result = level;
+                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
+                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
+                    else if (name == "classlevel") args.Result = classlevel;
+                    else if (name == "name") args.Result = s.Name.ToLowerInvariant();
+                    else if (name == "spell") args.Result = true;
+                    else if (name == "castingtime") args.Result = s.CastingTime;
+                    else if (name == "duration") args.Result = s.Duration;
+                    else if (name == "range") args.Result = s.Range;
+                    else if (name == "namelower") args.Result = s.Name.ToLowerInvariant();
+                    else if (name == "level") args.Result = s.Level;
+                    else if (name == "classlevel") args.Result = classlevel;
+                    else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
+                    else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                object o = ex.Evaluate();
+                if (o is Int32) return (int)o;
+                if (o is UInt32) return (int)(UInt32)o;
+                if (o is UInt16) return (int)(UInt16)o;
+                if (o is Int16) return (int)(Int16)o;
+                if (o is UInt64) return (int)(UInt64)o;
+                if (o is Int64) return (int)(Int64)o;
+                if (o is Single) return (int)(Single)o;
+                if (o is Double) return (int)(Double)o;
+                if (o is Decimal) return (int)(Decimal)o;
+            }
+            catch (Exception e)
+            {
+                ConfigManager.LogError("Error while evaluating " + expression, e);
+            }
             return 0;
         }
 
@@ -327,8 +347,9 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + cls.MulticlassingCondition + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + cls?.MulticlassingCondition, e);
             }
+            return false;
         }
 
         public static int CalcAC(ACFeature acf, Item armor, int shieldbonus, List<string> additionalKeywords, AbilityScoreArray asa, int otherbonus, int classlevel, bool ignoreItemClass = false)
@@ -376,7 +397,7 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + acf.Expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + acf?.Expression, e);
             }
             return -1;
         }
@@ -404,33 +425,40 @@ namespace Character_Builder
         {
 
             if (additionalKeywords == null) additionalKeywords = new List<string>();
-            Expression ex = new Expression(ConfigManager.fixQuotes(bf.Condition));
-            ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+            try
             {
-                name = name.ToLowerInvariant();
-                if (name == "name") args.Result = "";
-                else if (name == "category") args.Result = "";
-                else if (name == "level") args.Result = Player.current.getLevel();
-                else if (name == "playerlevel") args.Result = Player.current.getLevel();
-                else if (name == "classlevel") args.Result = classlevel;
-                else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
-                else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
-                else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
-                else if (name == "str" || name == "strength") args.Result = baseAbility.HasFlag(Ability.Strength);
-                else if (name == "dex" || name == "dexterity") args.Result = baseAbility.HasFlag(Ability.Dexterity);
-                else if (name == "con" || name == "constitution") args.Result = baseAbility.HasFlag(Ability.Constitution);
-                else if (name == "int" || name == "intelligence") args.Result = baseAbility.HasFlag(Ability.Intelligence);
-                else if (name == "wis" || name == "wisdom") args.Result = baseAbility.HasFlag(Ability.Wisdom);
-                else if (name == "cha" || name == "charisma") args.Result = baseAbility.HasFlag(Ability.Charisma);
-                else if (name == SpellcastingID.ToLowerInvariant()) args.Result = true;
-                else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
-                else if (name == kw.ToLowerInvariant()) args.Result = true;
-                else if (additionalKeywords.Exists(s => matchesKW(name, s))) args.Result = true;
-                else args.Result = false;
-            };
-            ex.EvaluateFunction += FunctionExtensions;
-            object o = ex.Evaluate();
-            if (o is Boolean && (Boolean)o) return true;
+                Expression ex = new Expression(ConfigManager.fixQuotes(bf.Condition));
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "name") args.Result = "";
+                    else if (name == "category") args.Result = "";
+                    else if (name == "level") args.Result = Player.current.getLevel();
+                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
+                    else if (name == "classlevel") args.Result = classlevel;
+                    else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
+                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : Player.current.RaceName.ToLowerInvariant();
+                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : Player.current.SubRaceName.ToLowerInvariant();
+                    else if (name == "str" || name == "strength") args.Result = baseAbility.HasFlag(Ability.Strength);
+                    else if (name == "dex" || name == "dexterity") args.Result = baseAbility.HasFlag(Ability.Dexterity);
+                    else if (name == "con" || name == "constitution") args.Result = baseAbility.HasFlag(Ability.Constitution);
+                    else if (name == "int" || name == "intelligence") args.Result = baseAbility.HasFlag(Ability.Intelligence);
+                    else if (name == "wis" || name == "wisdom") args.Result = baseAbility.HasFlag(Ability.Wisdom);
+                    else if (name == "cha" || name == "charisma") args.Result = baseAbility.HasFlag(Ability.Charisma);
+                    else if (name == SpellcastingID.ToLowerInvariant()) args.Result = true;
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
+                    else if (name == kw.ToLowerInvariant()) args.Result = true;
+                    else if (additionalKeywords.Exists(s => matchesKW(name, s))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                object o = ex.Evaluate();
+                if (o is Boolean && (Boolean)o) return true;
+            }
+            catch (Exception e)
+            {
+                ConfigManager.LogError("Error while evaluating " + bf.Condition, e);
+            }
             return false;
         }
 
@@ -515,8 +543,9 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + expression, e);
             }
+            return false;
         }
         public static List<Item> filter(string expression)
         {
@@ -553,8 +582,9 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + expression, e);
             }
+            return new List<Item>();
         }
         public static bool fits(MagicProperty mp, Item item)
         {
@@ -601,8 +631,9 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + expression, e);
             }
+            return new List<Spell>();
         }
         public static bool matches(Spell s, string expression, string SpellcastingID, List<string> additionalKeywords = null, int classlevel = 0)
         {
@@ -638,7 +669,7 @@ namespace Character_Builder
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating " + expression, e);
             }
             return false;
         }

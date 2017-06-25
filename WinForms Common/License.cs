@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Character_Builder_Builder
+namespace Character_Builder_Forms
 {
     public partial class License : Form
     {

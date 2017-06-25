@@ -208,7 +208,7 @@ namespace OGL
         public SubClass(String name, ClassDefinition classdefinition)
         {
             Name = name;
-            ClassName = classdefinition.Name + " " + ConfigManager.SourceSeperator + " " + classdefinition.Source;
+            if (classdefinition != null) ClassName = classdefinition.Name;
             Features = new List<Feature>();
             MulticlassingSpellLevels = new List<int>();
             MulticlassingFeatures = new List<Feature>();
@@ -226,7 +226,10 @@ namespace OGL
             }
             if (sourcehint != null && subclasses.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subclasses[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown subclass: " + name);
+            ConfigManager.LogError("Unknown subclass: " + name);
+            SubClass sc = new SubClass(name, null);
+            sc.Description = "Missing Entry";
+            return sc;
         }
         public static void ExportAll()
         {
@@ -242,11 +245,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_SubClasses, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    SubClass s = (SubClass)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        SubClass s = (SubClass)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

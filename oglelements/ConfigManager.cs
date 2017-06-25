@@ -13,6 +13,7 @@ using OGL.Common;
 
 namespace OGL
 {
+    public delegate void LogEvent(object sender, string message, Exception e);
     public class ConfigManager
     {
         [XmlIgnore]
@@ -77,6 +78,13 @@ namespace OGL
             }
         }
         public static ILicense LicenseProvider;
+
+        public static event LogEvent LogEvents;
+
+        public static void LogError(Exception e) => LogEvents.Invoke(null, e.Message, e);
+        public static void LogError(object source, Exception e) => LogEvents.Invoke(source, e.Message, e);
+        public static void LogError(object source, string text, Exception e = null) => LogEvents.Invoke(source, text, e);
+        public static void LogError(string text, Exception e = null) => LogEvents.Invoke(null, text, e);
 
 
         public static void RemoveDescription(MemoryStream mem)

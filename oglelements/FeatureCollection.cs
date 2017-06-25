@@ -74,46 +74,53 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Features);
             foreach (var f in files)
             {
-                Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Features).FullName);
-                Uri target = new Uri(f.Key.DirectoryName);
-                FeatureContainer cont = FeatureContainer.Load(f.Key.FullName);
-                List<Feature> feats = cont.Features;
-                string cat=cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                if (!Container.ContainsKey(cat)) Container.Add(cat, new List<FeatureContainer>());
-                cont.filename = f.Key.FullName;
-                cont.category = cat;
-                cont.Name = Path.GetFileNameWithoutExtension(f.Key.FullName);
-                cont.Source = f.Value;
-                Container[cat].Add(cont);
-                foreach (Feature feat in feats)
+                try
                 {
-                    feat.Source = cont.Source;
-                    foreach (Keyword kw in feat.Keywords) kw.check();
-                    feat.Category = cat;
-                    if (!Categories.ContainsKey(cat)) Categories.Add(cat, new List<Feature>());
-                    Feature other = Categories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                    if (other != null)
+                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Features).FullName);
+                    Uri target = new Uri(f.Key.DirectoryName);
+                    FeatureContainer cont = FeatureContainer.Load(f.Key.FullName);
+                    List<Feature> feats = cont.Features;
+                    string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
+                    if (!Container.ContainsKey(cat)) Container.Add(cat, new List<FeatureContainer>());
+                    cont.filename = f.Key.FullName;
+                    cont.category = cat;
+                    cont.Name = Path.GetFileNameWithoutExtension(f.Key.FullName);
+                    cont.Source = f.Value;
+                    Container[cat].Add(cont);
+                    foreach (Feature feat in feats)
                     {
-                        other.ShowSource = true;
-                        feat.ShowSource = true;
-                    }
-                    Categories[cat].Add(feat);
-                    if (cat.Contains("Boons"))
-                    {
-                        if (simple.ContainsKey(feat.Name))
+                        feat.Source = cont.Source;
+                        foreach (Keyword kw in feat.Keywords) kw.check();
+                        feat.Category = cat;
+                        if (!Categories.ContainsKey(cat)) Categories.Add(cat, new List<Feature>());
+                        Feature other = Categories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                        if (other != null)
                         {
-                            simple[feat.Name].ShowSource = true;
+                            other.ShowSource = true;
                             feat.ShowSource = true;
                         }
-                        else simple.Add(feat.Name, feat);
-                        Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
+                        Categories[cat].Add(feat);
+                        if (cat.Equals("Boons", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            if (simple.ContainsKey(feat.Name))
+                            {
+                                simple[feat.Name].ShowSource = true;
+                                feat.ShowSource = true;
+                            }
+                            else simple.Add(feat.Name, feat);
+                            if (Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
+                            else Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
+                        }
+                    }
+                    foreach (Feature feat in feats)
+                    {
+                        Features.Add(feat);
                     }
                 }
-                foreach (Feature feat in feats)
+                catch (Exception e)
                 {
-                    Features.Add(feat);
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
-                //Collections[].AddRange(feats);
             }
         }
         public void Add(Feature f)
@@ -169,7 +176,8 @@ namespace OGL
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                ConfigManager.LogError("Error while evaluating expression " + expression, e);
+                return new List<Feature>();
             }
         }
 
@@ -188,7 +196,10 @@ namespace OGL
             }
             if (sourcehint != null && Boons.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return Boons[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Boon: " + name);
+            ConfigManager.LogError("Unknown Boon: " + name);
+            Feature b = new Feature(name, "Missing Boon", 0, false);
+            simple[name] = b;
+            return b;
         }
         public static IEnumerable<string> Section()
         {

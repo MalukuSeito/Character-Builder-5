@@ -137,7 +137,7 @@ namespace OGL
         public SubRace(String name, Race race)
         {
             Name = name;
-            RaceName = race.Name;
+            if (race != null) RaceName = race.Name;
             Features = new List<Feature>();
             Descriptions = new List<Description>();
             Source = ConfigManager.DefaultSource;
@@ -152,7 +152,10 @@ namespace OGL
             }
             if (sourcehint != null && subraces.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subraces[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Subrace: " + name);
+            ConfigManager.LogError("Unknown Subrace: " + name);
+            SubRace sr = new SubRace(name, null);
+            sr.Description = "Missing Entry";
+            return sr;
         }
         public static void ExportAll()
         {
@@ -168,11 +171,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_SubRaces, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    SubRace s = (SubRace)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        SubRace s = (SubRace)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

@@ -96,7 +96,8 @@ namespace OGL
             }
             if (sourcehint != null && languages.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return languages[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Language: " + name);
+            ConfigManager.LogError("Unknown Language: " + name);
+            return new Language(name, "Missing Entry", "", "");
         }
         public static void ExportAll()
         {
@@ -112,11 +113,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Languages, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Language s = (Language)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Language s = (Language)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

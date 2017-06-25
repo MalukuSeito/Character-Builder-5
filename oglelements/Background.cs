@@ -158,7 +158,8 @@ namespace OGL
             }
             if (sourcehint != null && backgrounds.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return backgrounds[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Background: " + name);
+            ConfigManager.LogError("Unknown Background: " + name);
+            return new Background(name, "Missing Entry");
         }
         public static void ExportAll()
         {
@@ -174,12 +175,19 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Backgrounds, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Background s = (Background)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    foreach (Feature fea in s.Features) fea.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Background s = (Background)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        foreach (Feature fea in s.Features) fea.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

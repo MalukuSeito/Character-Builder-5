@@ -1,4 +1,4 @@
-﻿namespace Character_Builder_5
+﻿namespace Character_Builder_Forms
 {
     partial class License
     {

@@ -63,7 +63,8 @@ namespace OGL
             }
             if (sourcehint != null && skills.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return skills[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Skill: " + name);
+            ConfigManager.LogError("Unknown Skill: " + name);
+            return new Skill(name, "Missing Entry", Ability.None);
         }
         public static void ExportAll()
         {
@@ -79,11 +80,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Skills, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Skill s = (Skill)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Skill s = (Skill)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading "+ f.ToString(), e);
                 }
             }
         }

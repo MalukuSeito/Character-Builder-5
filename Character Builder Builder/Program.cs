@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using System;
 using System.Windows.Forms;
 
@@ -6,6 +7,7 @@ namespace Character_Builder_Builder
 {
     static class Program
     {
+        public static ErrorLog Errorlog = null;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -19,8 +21,10 @@ namespace Character_Builder_Builder
             //Console.WriteLine(s + " = " + e.Evaluate());
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
             ConfigManager.LicenseProvider = new LicenseProvider();
-            if (SourceManager.init(Application.StartupPath))
+            Errorlog = new ErrorLog();
+            if (SourceManager.init(Application.StartupPath, true))
             {
                 ConfigManager.AlwaysShowSource = true;
                 ConfigManager.LoadConfig(Application.StartupPath);

@@ -125,7 +125,10 @@ namespace OGL
             }
             if (sourcehint != null && races.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return races[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Race: " + name);
+            ConfigManager.LogError("Unknown Race: " + name);
+            Race r = new Race(name);
+            r.Description = "Missing Entry";
+            return r;
         }
         public Race()
         {
@@ -167,11 +170,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Races, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Race s = (Race)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Race s = (Race)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

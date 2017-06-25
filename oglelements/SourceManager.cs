@@ -12,25 +12,27 @@ namespace OGL
     {
         public static List<string> Sources { get; private set; }
         private static string AppPath = null;
-        public static bool init(string path)
+        public static bool init(string path, bool skipInsteadOfExit = false)
         {
             Sources = new List<string>();
             AppPath = path;
             foreach (string s in Directory.EnumerateDirectories(path))
             {
                 if (s.Equals(ConfigManager.Directory_Plugins)) continue;
-                Sources.Add(Path.GetFileName(s));
                 string f = Path.Combine(s, "LICENSE");
-                Console.WriteLine(f);
                 if (File.Exists(f))
                 {
                     if (ConfigManager.LicenseProvider.showLicense(Path.GetFileName(s), File.ReadAllLines(f)))
                     {
+                        Sources.Add(Path.GetFileName(s));
                         File.Move(f, f + ".txt");
-                    } else
+                    } else if (!skipInsteadOfExit) 
                     {
                         return false;
                     }
+                } else
+                {
+                    Sources.Add(Path.GetFileName(s));
                 }
             }
             return true;
@@ -59,11 +61,19 @@ namespace OGL
         public static Dictionary<FileInfo, string> EnumerateFiles(string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
         {
             Dictionary<FileInfo, string> result = new Dictionary<FileInfo, string>();
-            foreach (var f in getAllDirectories(type))
+            try
             {
-                foreach (FileInfo file in f.Key.EnumerateFiles(pattern, option)) {
-                    result.Add(file, f.Value);
+                foreach (var f in getAllDirectories(type))
+                {
+                    foreach (FileInfo file in f.Key.EnumerateFiles(pattern, option))
+                    {
+                        result.Add(file, f.Value);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                ConfigManager.LogError(e);
             }
             return result;
         }

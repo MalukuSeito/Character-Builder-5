@@ -3997,5 +3997,16 @@ namespace Character_Builder_5
         {
             PDFspellbook.Checked = !PDFspellbook.Checked;
         }
+
+        private void reladDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.reloadData();
+            UpdateLayout();
+        }
+
+        private void showErrorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Errorlog.Show();
+        }
     }
 }

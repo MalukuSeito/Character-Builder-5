@@ -38,6 +38,7 @@ namespace OGL.Features
                     Feature feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
                     if (feat == null) feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
                     if (feat != null) res.AddRange(feat.Collect(level, choiceProvider));
+                    else ConfigManager.LogError("Missing Feature: " + cho.Value + " in " + Collection);
                 }
             }
             return res;

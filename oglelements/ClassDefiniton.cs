@@ -251,7 +251,8 @@ namespace OGL
             }
             if (sourcehint != null && classes.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return classes[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            throw new Exception("Unknown Class: " + name);
+            ConfigManager.LogError("Unknown Class: " + name);
+            return new ClassDefinition(name, "Missing Entry", 4);
         }
         public static void ExportAll()
         {
@@ -267,11 +268,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Classes, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    ClassDefinition s = (ClassDefinition)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        ClassDefinition s = (ClassDefinition)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }

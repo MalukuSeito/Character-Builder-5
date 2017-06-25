@@ -177,11 +177,18 @@ namespace OGL
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Spells, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
-                using (TextReader reader = new StreamReader(f.Key.FullName))
+                try
                 {
-                    Spell s = (Spell)serializer.Deserialize(reader);
-                    s.Source = f.Value;
-                    s.register(f.Key.FullName);
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Spell s = (Spell)serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.register(f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
         }
@@ -220,7 +227,7 @@ namespace OGL
             }
             if (sourcehint != null && spells.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return spells[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
-            //throw new Exception("Spell not found: " + name);
+            ConfigManager.LogError("Spell not found: " + name);
             Spell missing = new Spell();
             missing.Name = name;
             missing.register(null);
@@ -343,7 +350,7 @@ namespace OGL
             }
             catch (Exception e)
             {
-                throw new Exception("Error while evaluating expression " + expression + ":" + e);
+                throw new Exception("Error while evaluating expression " + expression, e);
             }
         }
         private static void FunctionExtensions(string name, FunctionArgs args)

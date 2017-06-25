@@ -145,6 +145,7 @@
             this.armorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button3 = new System.Windows.Forms.Button();
             this.TabControls.SuspendLayout();
             this.racesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -217,7 +218,7 @@
             this.preview.CausesValidation = false;
             this.preview.Dock = System.Windows.Forms.DockStyle.Right;
             this.preview.IsWebBrowserContextMenuEnabled = false;
-            this.preview.Location = new System.Drawing.Point(776, 0);
+            this.preview.Location = new System.Drawing.Point(774, 0);
             this.preview.MinimumSize = new System.Drawing.Size(20, 20);
             this.preview.Name = "preview";
             this.preview.ScriptErrorsSuppressed = true;
@@ -244,7 +245,7 @@
             this.TabControls.Location = new System.Drawing.Point(0, 0);
             this.TabControls.Name = "TabControls";
             this.TabControls.SelectedIndex = 0;
-            this.TabControls.Size = new System.Drawing.Size(776, 481);
+            this.TabControls.Size = new System.Drawing.Size(774, 481);
             this.TabControls.TabIndex = 2;
             this.TabControls.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -254,7 +255,7 @@
             this.racesTab.Location = new System.Drawing.Point(4, 22);
             this.racesTab.Name = "racesTab";
             this.racesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.racesTab.Size = new System.Drawing.Size(768, 455);
+            this.racesTab.Size = new System.Drawing.Size(766, 455);
             this.racesTab.TabIndex = 0;
             this.racesTab.Text = "Races";
             this.racesTab.UseVisualStyleBackColor = true;
@@ -276,8 +277,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.subRaceList);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.newSubRaceBtn);
-            this.splitContainer1.Size = new System.Drawing.Size(762, 449);
-            this.splitContainer1.SplitterDistance = 381;
+            this.splitContainer1.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer1.SplitterDistance = 353;
             this.splitContainer1.TabIndex = 0;
             // 
             // racesList
@@ -286,7 +287,7 @@
             this.racesList.FormattingEnabled = true;
             this.racesList.Location = new System.Drawing.Point(0, 13);
             this.racesList.Name = "racesList";
-            this.racesList.Size = new System.Drawing.Size(381, 413);
+            this.racesList.Size = new System.Drawing.Size(353, 413);
             this.racesList.TabIndex = 3;
             this.racesList.SelectedIndexChanged += new System.EventHandler(this.racesList_SelectedIndexChanged);
             this.racesList.DoubleClick += new System.EventHandler(this.editRace);
@@ -306,7 +307,7 @@
             this.newRaceBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.newRaceBtn.Location = new System.Drawing.Point(0, 426);
             this.newRaceBtn.Name = "newRaceBtn";
-            this.newRaceBtn.Size = new System.Drawing.Size(381, 23);
+            this.newRaceBtn.Size = new System.Drawing.Size(353, 23);
             this.newRaceBtn.TabIndex = 1;
             this.newRaceBtn.Text = "New Race";
             this.newRaceBtn.UseVisualStyleBackColor = true;
@@ -318,7 +319,7 @@
             this.subRaceList.FormattingEnabled = true;
             this.subRaceList.Location = new System.Drawing.Point(0, 13);
             this.subRaceList.Name = "subRaceList";
-            this.subRaceList.Size = new System.Drawing.Size(377, 413);
+            this.subRaceList.Size = new System.Drawing.Size(403, 413);
             this.subRaceList.TabIndex = 3;
             this.subRaceList.SelectedIndexChanged += new System.EventHandler(this.subRaceList_SelectedIndexChanged);
             this.subRaceList.DoubleClick += new System.EventHandler(this.edit_Subrace);
@@ -338,7 +339,7 @@
             this.newSubRaceBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.newSubRaceBtn.Location = new System.Drawing.Point(0, 426);
             this.newSubRaceBtn.Name = "newSubRaceBtn";
-            this.newSubRaceBtn.Size = new System.Drawing.Size(377, 23);
+            this.newSubRaceBtn.Size = new System.Drawing.Size(403, 23);
             this.newSubRaceBtn.TabIndex = 1;
             this.newSubRaceBtn.Text = "New Subrace";
             this.newSubRaceBtn.UseVisualStyleBackColor = true;
@@ -1106,7 +1107,7 @@
             this.arraysTab.Location = new System.Drawing.Point(4, 22);
             this.arraysTab.Name = "arraysTab";
             this.arraysTab.Padding = new System.Windows.Forms.Padding(3);
-            this.arraysTab.Size = new System.Drawing.Size(768, 455);
+            this.arraysTab.Size = new System.Drawing.Size(766, 455);
             this.arraysTab.TabIndex = 13;
             this.arraysTab.Text = "Ability Scores";
             this.arraysTab.UseVisualStyleBackColor = true;
@@ -1134,8 +1135,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.label16);
             this.splitContainer6.Panel2.Controls.Add(this.MaxScore);
             this.splitContainer6.Panel2.Controls.Add(this.label20);
-            this.splitContainer6.Size = new System.Drawing.Size(762, 419);
-            this.splitContainer6.SplitterDistance = 369;
+            this.splitContainer6.Size = new System.Drawing.Size(760, 419);
+            this.splitContainer6.SplitterDistance = 368;
             this.splitContainer6.TabIndex = 4;
             // 
             // PointBuyList
@@ -1147,7 +1148,7 @@
             this.PointBuyList.Items = null;
             this.PointBuyList.Location = new System.Drawing.Point(0, 112);
             this.PointBuyList.Name = "PointBuyList";
-            this.PointBuyList.Size = new System.Drawing.Size(369, 307);
+            this.PointBuyList.Size = new System.Drawing.Size(368, 307);
             this.PointBuyList.Start = 0;
             this.PointBuyList.TabIndex = 11;
             // 
@@ -1171,7 +1172,7 @@
             0,
             0});
             this.PointBuyMax.Name = "PointBuyMax";
-            this.PointBuyMax.Size = new System.Drawing.Size(369, 20);
+            this.PointBuyMax.Size = new System.Drawing.Size(368, 20);
             this.PointBuyMax.TabIndex = 9;
             // 
             // label19
@@ -1194,7 +1195,7 @@
             0,
             0});
             this.PointBuyMin.Name = "PointBuyMin";
-            this.PointBuyMin.Size = new System.Drawing.Size(369, 20);
+            this.PointBuyMin.Size = new System.Drawing.Size(368, 20);
             this.PointBuyMin.TabIndex = 5;
             // 
             // label17
@@ -1217,7 +1218,7 @@
             0,
             0});
             this.PointBuyPoints.Name = "PointBuyPoints";
-            this.PointBuyPoints.Size = new System.Drawing.Size(369, 20);
+            this.PointBuyPoints.Size = new System.Drawing.Size(368, 20);
             this.PointBuyPoints.TabIndex = 3;
             // 
             // label15
@@ -1237,7 +1238,7 @@
             this.Arrays.Items = null;
             this.Arrays.Location = new System.Drawing.Point(0, 46);
             this.Arrays.Name = "Arrays";
-            this.Arrays.Size = new System.Drawing.Size(389, 373);
+            this.Arrays.Size = new System.Drawing.Size(388, 373);
             this.Arrays.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Arrays.Suggestions")));
             this.Arrays.TabIndex = 7;
             // 
@@ -1261,7 +1262,7 @@
             0,
             0});
             this.MaxScore.Name = "MaxScore";
-            this.MaxScore.Size = new System.Drawing.Size(389, 20);
+            this.MaxScore.Size = new System.Drawing.Size(388, 20);
             this.MaxScore.TabIndex = 5;
             // 
             // label20
@@ -1280,14 +1281,14 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(3, 422);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(762, 30);
+            this.panel2.Size = new System.Drawing.Size(760, 30);
             this.panel2.TabIndex = 3;
             // 
             // AbilitySave
             // 
             this.AbilitySave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AbilitySave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.AbilitySave.Location = new System.Drawing.Point(684, 4);
+            this.AbilitySave.Location = new System.Drawing.Point(682, 4);
             this.AbilitySave.Name = "AbilitySave";
             this.AbilitySave.Size = new System.Drawing.Size(75, 23);
             this.AbilitySave.TabIndex = 1;
@@ -1302,7 +1303,7 @@
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
             this.settingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.settingsTab.Size = new System.Drawing.Size(768, 455);
+            this.settingsTab.Size = new System.Drawing.Size(766, 455);
             this.settingsTab.TabIndex = 14;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
@@ -1324,8 +1325,8 @@
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
-            this.splitContainer7.Size = new System.Drawing.Size(762, 419);
-            this.splitContainer7.SplitterDistance = 369;
+            this.splitContainer7.Size = new System.Drawing.Size(760, 419);
+            this.splitContainer7.SplitterDistance = 368;
             this.splitContainer7.TabIndex = 6;
             // 
             // splitContainer9
@@ -1344,7 +1345,7 @@
             // 
             this.splitContainer9.Panel2.Controls.Add(this.PDFExport);
             this.splitContainer9.Panel2.Controls.Add(this.label25);
-            this.splitContainer9.Size = new System.Drawing.Size(369, 353);
+            this.splitContainer9.Size = new System.Drawing.Size(368, 353);
             this.splitContainer9.SplitterDistance = 174;
             this.splitContainer9.TabIndex = 19;
             // 
@@ -1355,7 +1356,7 @@
             this.Slots.Items = null;
             this.Slots.Location = new System.Drawing.Point(0, 13);
             this.Slots.Name = "Slots";
-            this.Slots.Size = new System.Drawing.Size(369, 161);
+            this.Slots.Size = new System.Drawing.Size(368, 161);
             this.Slots.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Slots.Suggestions")));
             this.Slots.TabIndex = 23;
             // 
@@ -1376,7 +1377,7 @@
             this.PDFExport.Items = null;
             this.PDFExport.Location = new System.Drawing.Point(0, 13);
             this.PDFExport.Name = "PDFExport";
-            this.PDFExport.Size = new System.Drawing.Size(369, 162);
+            this.PDFExport.Size = new System.Drawing.Size(368, 162);
             this.PDFExport.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("PDFExport.Suggestions")));
             this.PDFExport.TabIndex = 23;
             // 
@@ -1401,7 +1402,7 @@
             0,
             0});
             this.CoinWeight.Name = "CoinWeight";
-            this.CoinWeight.Size = new System.Drawing.Size(369, 20);
+            this.CoinWeight.Size = new System.Drawing.Size(368, 20);
             this.CoinWeight.TabIndex = 18;
             // 
             // label21
@@ -1421,7 +1422,7 @@
             this.DefaultSource.Dock = System.Windows.Forms.DockStyle.Top;
             this.DefaultSource.Location = new System.Drawing.Point(0, 13);
             this.DefaultSource.Name = "DefaultSource";
-            this.DefaultSource.Size = new System.Drawing.Size(369, 20);
+            this.DefaultSource.Size = new System.Drawing.Size(368, 20);
             this.DefaultSource.TabIndex = 15;
             // 
             // label24
@@ -1450,7 +1451,7 @@
             // 
             this.splitContainer8.Panel2.Controls.Add(this.Multiclassing);
             this.splitContainer8.Panel2.Controls.Add(this.label23);
-            this.splitContainer8.Size = new System.Drawing.Size(389, 419);
+            this.splitContainer8.Size = new System.Drawing.Size(388, 419);
             this.splitContainer8.SplitterDistance = 199;
             this.splitContainer8.TabIndex = 0;
             // 
@@ -1463,7 +1464,7 @@
             this.AllFeatures.Location = new System.Drawing.Point(0, 13);
             this.AllFeatures.Name = "AllFeatures";
             this.AllFeatures.preview = this.preview;
-            this.AllFeatures.Size = new System.Drawing.Size(389, 186);
+            this.AllFeatures.Size = new System.Drawing.Size(388, 186);
             this.AllFeatures.TabIndex = 15;
             // 
             // label22
@@ -1485,7 +1486,7 @@
             this.Multiclassing.Location = new System.Drawing.Point(0, 13);
             this.Multiclassing.Name = "Multiclassing";
             this.Multiclassing.preview = this.preview;
-            this.Multiclassing.Size = new System.Drawing.Size(389, 203);
+            this.Multiclassing.Size = new System.Drawing.Size(388, 203);
             this.Multiclassing.TabIndex = 16;
             // 
             // label23
@@ -1500,18 +1501,19 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.button3);
             this.panel3.Controls.Add(this.SaveSettings);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(3, 422);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(762, 30);
+            this.panel3.Size = new System.Drawing.Size(760, 30);
             this.panel3.TabIndex = 5;
             // 
             // SaveSettings
             // 
             this.SaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SaveSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.SaveSettings.Location = new System.Drawing.Point(684, 4);
+            this.SaveSettings.Location = new System.Drawing.Point(682, 4);
             this.SaveSettings.Name = "SaveSettings";
             this.SaveSettings.Size = new System.Drawing.Size(75, 23);
             this.SaveSettings.TabIndex = 1;
@@ -1573,11 +1575,21 @@
             this.packToolStripMenuItem.Text = "Pack";
             this.packToolStripMenuItem.Click += new System.EventHandler(this.packToolStripMenuItem_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(5, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(113, 23);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Show Errorlog";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1007, 481);
+            this.ClientSize = new System.Drawing.Size(1005, 481);
             this.Controls.Add(this.TabControls);
             this.Controls.Add(this.preview);
             this.Name = "MainTab";
@@ -1790,6 +1802,7 @@
         private System.Windows.Forms.ListBox spellBox;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button3;
     }
 }
 

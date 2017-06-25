@@ -62,13 +62,6 @@
     </Compile>
     <Compile Include="IImageEditor.cs" />
     <Compile Include="IMainEditor.cs" />
-    <Compile Include="License.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="License.Designer.cs">
-      <DependentUpon>License.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LicenseProvider.cs" />
     <Compile Include="ScrollInfo.cs" />
     <Compile Include="KeywordForms\SaveForm.cs">
       <SubType>Form</SubType>
@@ -491,9 +484,6 @@
     <EmbeddedResource Include="KeywordForms\SaveForm.resx">
       <DependentUpon>SaveForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="License.resx">
-      <DependentUpon>License.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SpellForm.resx">
       <DependentUpon>SpellForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -722,6 +712,11 @@
     <ProjectReference Include="..\oglelements\OGL Elements.csproj">
       <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
       <Name>OGL Elements</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinForms Common\Character Builder Forms.csproj">
+      <Project>{eeeb4a2a-17bb-4ec6-a331-0c409f468e44}</Project>
+      <Name>Character Builder Forms</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
     <ProjectReference Include="..\XCalc\XCalc.csproj">
       <Project>{5F014003-50D8-49E0-8AFE-91D38DCCC97C}</Project>

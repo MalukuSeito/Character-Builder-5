@@ -776,15 +776,22 @@ namespace Character_Builder
         {
             AbilityScoreArray asa;
             AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, f => false, level);
+            List<string> skills = new List<string>();
+            foreach (FeatureClass fc in getFeatureAndAbility(out asa, out max, f => f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature, level))
+            {
+                if (fc.feature is SkillProficiencyFeature && ((SkillProficiencyFeature)fc.feature).ProficiencyMultiplier > 0.999) foreach (String s in ((SkillProficiencyFeature)fc.feature).Skills) skills.Add(s);
+                else if (fc.feature is SkillProficiencyChoiceFeature && ((SkillProficiencyChoiceFeature)fc.feature).ProficiencyMultiplier > 0.999) skills.AddRange(((SkillProficiencyChoiceFeature)fc.feature).getSkills(this).Select(s=>s.Name));
+            }
+            
+            
             if (Classes.Count > 0 && Classes[0].Class != null)
             {
                 if (Classes[0].Class == c) return true;
-                if (!Utils.canMulticlass(Classes[0].Class, asa)) return false;
+                if (!Utils.canMulticlass(Classes[0].Class, asa, skills)) return false;
             }
             else return false; //Can not multiclass without first class.
             foreach (var d in Classes) if (d.Class != c && d.Class.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase)) return false; // Can not multiclass into the same class from a different sourcebook
-            return Utils.canMulticlass(c, asa);
+            return Utils.canMulticlass(c, asa, skills);
         }
         public List<Feature> getCommonFeaturesAndFeats(int level = 0, bool reset = false)
         {
@@ -885,6 +892,7 @@ namespace Character_Builder
                     Feature feat = feats.Find(f => string.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat, StringComparison.InvariantCultureIgnoreCase));
                     if (feat == null) feat = feats.Find(f => ConfigManager.SourceInvariantComparer.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat));
                     if (feat != null) res.AddRange(feat.Collect(level, this));
+                    else ConfigManager.LogError("Missing Feat: " + s.Feat);
                 }
             }
             return PluginManager.manager.filterFeats(res, level, this);
