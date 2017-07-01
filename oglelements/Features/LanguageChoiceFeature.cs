@@ -23,12 +23,12 @@ namespace OGL.Features
         public List<Language> getLanguages(IChoiceProvider provider)
         {
             List<Language> res = new List<Language>();
-            int offset = provider.getChoiceOffset(this, UniqueID, Amount);
+            int offset = provider.GetChoiceOffset(this, UniqueID, Amount);
             for (int c = 0; c < Amount; c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = provider.getChoice(UniqueID + counter);
+                Choice cho = provider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "") res.Add(Language.Get(cho.Value, Source));
             }
             return res;

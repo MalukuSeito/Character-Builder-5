@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace Character_Builder_Builder.FeatureForms
             bf = f;
             InitializeComponent();
             basicFeature1.Feature = f;
-            Race.ImportAll();
+            ImportExtensions.ImportRaces();
             stringList1.Items = f.Races;
             stringList1.Suggestions = Race.simple.Keys;
         }

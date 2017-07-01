@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace Character_Builder_Builder.FeatureForms
             bf = f;
             InitializeComponent();
             basicFeature1.Feature = f;
-            Spell.ImportAll();
+            ImportExtensions.ImportSpells();
             stringList1.Suggestions = Spell.simple.Keys;
             foreach (string s in SpellcastingFeatureForm.SPELLCASTING_FEATURES)
             {

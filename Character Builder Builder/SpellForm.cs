@@ -31,37 +31,43 @@ namespace Character_Builder_Builder
             keywordControl1.HistoryManager = this;
             if (castingtime == null)
             {
-                castingtime = new List<string>();
-                castingtime.Add("1 action");
-                castingtime.Add("1 bonus action");
-                castingtime.Add("1 minute");
-                castingtime.Add("10 minutes");
-                castingtime.Add("1 hour");
+                castingtime = new List<string>
+                {
+                    "1 action",
+                    "1 bonus action",
+                    "1 minute",
+                    "10 minutes",
+                    "1 hour"
+                };
             }
             if (range == null)
             {
-                range = new List<string>();
-                range.Add("Self");
-                range.Add("Touch");
-                range.Add("30 feet");
-                range.Add("60 feet");
-                range.Add("90 feet");
-                range.Add("120 feet");
+                range = new List<string>
+                {
+                    "Self",
+                    "Touch",
+                    "30 feet",
+                    "60 feet",
+                    "90 feet",
+                    "120 feet"
+                };
             }
             if (duration == null)
             {
-                duration = new List<string>();
-                duration.Add("Instantaneous");
-                duration.Add("1 round");
-                duration.Add("1 minute");
-                duration.Add("10 minutes");
-                duration.Add("1 hour");
-                duration.Add("8 hours");
-                duration.Add("24 hours");
-                duration.Add("Concentration, up to 1 minute");
-                duration.Add("Concentration, up to 10 minutes");
-                duration.Add("Concentration, up to 1 hour");
-                duration.Add("Concentration, up to 8 hours");
+                duration = new List<string>
+                {
+                    "Instantaneous",
+                    "1 round",
+                    "1 minute",
+                    "10 minutes",
+                    "1 hour",
+                    "8 hours",
+                    "24 hours",
+                    "Concentration, up to 1 minute",
+                    "Concentration, up to 10 minutes",
+                    "Concentration, up to 1 hour",
+                    "Concentration, up to 8 hours"
+                };
             }
             foreach (String s in duration)
             {
@@ -104,7 +110,7 @@ namespace Character_Builder_Builder
             decriptions1.descriptions = spell.Descriptions;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(spell.toHTML());
+            preview.Document.Write(spell.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -114,7 +120,7 @@ namespace Character_Builder_Builder
 
 
 
-        private void showPreview(object sender, EventArgs e)
+        private void ShowPreview(object sender, EventArgs e)
         {
             ShowPreview();
         }
@@ -123,7 +129,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(spell.toHTML());
+            preview.Document.Write(spell.ToHTML());
             preview.Refresh();
         }
 
@@ -134,7 +140,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(spell.clone());
+                UndoBuffer.AddLast(spell.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -194,8 +200,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = spell.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = spell.save(true);
+            bool saved = spell.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = spell.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

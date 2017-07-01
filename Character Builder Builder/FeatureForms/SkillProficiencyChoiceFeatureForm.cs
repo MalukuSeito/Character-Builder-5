@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace Character_Builder_Builder.FeatureForms
             ProfMultiplier.DataBindings.Add("Value", f, "ProficiencyMultiplier", true, DataSourceUpdateMode.OnPropertyChanged);
             Restrict.DataBindings.Add("Checked", f, "OnlyAlreadyKnownSkills", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
-            Skill.ImportAll();
+            ImportExtensions.ImportSkills();
             SkillList.Suggestions = Skill.simple.Keys;
             basicFeature1.Feature = f;
         }

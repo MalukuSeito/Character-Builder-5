@@ -56,7 +56,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(new FeatureContainer((Feature)listBox1.SelectedItem).toHTML());
+                preview.Document.Write(new FeatureContainer((Feature)listBox1.SelectedItem).ToHTML());
                 preview.Refresh();
             }
         }
@@ -163,8 +163,10 @@ namespace Character_Builder_Builder
 
         private void aCCalculationFeatureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ACFeature f = new ACFeature();
-            f.Expression = "if(Armor, if(Light, BaseAC + DexMod, if(Medium, BaseAC + Min(DexMod, 2), BaseAC)), 10 + DexMod) + ShieldBonus";
+            ACFeature f = new ACFeature()
+            {
+                Expression = "if(Armor, if(Light, BaseAC + DexMod, if(Medium, BaseAC + Min(DexMod, 2), BaseAC)), 10 + DexMod) + ShieldBonus"
+            };
             f = new FeatureForms.ACFeatureForm(f).edit(HistoryManager);
             list.Add(f);
             fill();
@@ -246,8 +248,10 @@ namespace Character_Builder_Builder
 
         private void featureCollectionChoiceFeatureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CollectionChoiceFeature f = new CollectionChoiceFeature();
-            f.Collection = "Category = 'Feats'";
+            CollectionChoiceFeature f = new CollectionChoiceFeature()
+            {
+                Collection = "Category = 'Feats'"
+            };
             f = new FeatureForms.CollectionChoiceFeatureForm(f).edit(HistoryManager);
             list.Add(f);
             fill();
@@ -287,8 +291,10 @@ namespace Character_Builder_Builder
 
         private void itemChoiceByConditionFeatureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ItemChoiceConditionFeature f = new ItemChoiceConditionFeature();
-            f.Condition = "Armor and Heavy";
+            ItemChoiceConditionFeature f = new ItemChoiceConditionFeature()
+            {
+                Condition = "Armor and Heavy"
+            };
             f = new FeatureForms.ItemChoiceConditionFeatureForm(f).edit(HistoryManager);
             list.Add(f);
             fill();

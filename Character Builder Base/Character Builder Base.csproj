@@ -51,7 +51,6 @@
     <Compile Include="AbilityFeatChoiceContainer.cs" />
     <Compile Include="ClassInfo.cs" />
     <Compile Include="DisplayPossession.cs" />
-    <Compile Include="FeatureUtils.cs" />
     <Compile Include="HitDie.cs" />
     <Compile Include="JournalEntry.cs" />
     <Compile Include="ObjectIdentityEqualityComparer.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="SpellPerLevel.cs" />
     <Compile Include="SpellSlotInfo.cs" />
     <Compile Include="UsedResource.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

@@ -187,7 +187,7 @@
             this.description.Size = new System.Drawing.Size(379, 140);
             this.description.TabIndex = 0;
             this.description.TextChanged += new System.EventHandler(this.description_TextChanged);
-            this.description.Enter += new System.EventHandler(this.showPreview);
+            this.description.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // decriptions1
             // 
@@ -210,7 +210,7 @@
             this.source.Size = new System.Drawing.Size(385, 20);
             this.source.TabIndex = 41;
             this.source.TextChanged += new System.EventHandler(this.source_TextChanged);
-            this.source.Enter += new System.EventHandler(this.showPreview);
+            this.source.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label3
             // 
@@ -233,7 +233,7 @@
             this.Duration.Size = new System.Drawing.Size(385, 21);
             this.Duration.TabIndex = 38;
             this.Duration.TextChanged += new System.EventHandler(this.Duration_TextChanged);
-            this.Duration.Enter += new System.EventHandler(this.showPreview);
+            this.Duration.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label6
             // 
@@ -256,7 +256,7 @@
             this.Range.Size = new System.Drawing.Size(385, 21);
             this.Range.TabIndex = 35;
             this.Range.TextChanged += new System.EventHandler(this.Range_TextChanged);
-            this.Range.Enter += new System.EventHandler(this.showPreview);
+            this.Range.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label5
             // 
@@ -279,7 +279,7 @@
             this.CastingTime.Size = new System.Drawing.Size(385, 21);
             this.CastingTime.TabIndex = 29;
             this.CastingTime.TextChanged += new System.EventHandler(this.CastingTime_TextChanged);
-            this.CastingTime.Enter += new System.EventHandler(this.showPreview);
+            this.CastingTime.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label4
             // 
@@ -299,7 +299,7 @@
             this.Level.Size = new System.Drawing.Size(385, 20);
             this.Level.TabIndex = 27;
             this.Level.ValueChanged += new System.EventHandler(this.Level_ValueChanged);
-            this.Level.Enter += new System.EventHandler(this.showPreview);
+            this.Level.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label2
             // 
@@ -319,7 +319,7 @@
             this.name.Size = new System.Drawing.Size(385, 20);
             this.name.TabIndex = 17;
             this.name.TextChanged += new System.EventHandler(this.name_TextChanged);
-            this.name.Enter += new System.EventHandler(this.showPreview);
+            this.name.Enter += new System.EventHandler(this.ShowPreview);
             // 
             // label1
             // 

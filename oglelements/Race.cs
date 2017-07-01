@@ -15,10 +15,10 @@ using System.Xml.Xsl;
 namespace OGL
 {
 
-    public class Race: IHTML, OGLElement<Race>
+    public class Race: IHTML, IOGLElement<Race>
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Race));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Race));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
@@ -34,7 +34,7 @@ namespace OGL
         [XmlIgnore]
         static public Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         [XmlIgnore]
         public Bitmap Image {
             set
@@ -65,7 +65,7 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public void register(string file)
         {
-            filename = file;
+            Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (races.ContainsKey(full)) throw new Exception("Duplicate Race: " + full);
             races.Add(full, this);
@@ -126,8 +126,10 @@ namespace OGL
             if (sourcehint != null && races.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return races[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
             ConfigManager.LogError("Unknown Race: " + name);
-            Race r = new Race(name);
-            r.Description = "Missing Entry";
+            Race r = new Race(name)
+            {
+                Description = "Missing Entry"
+            };
             return r;
         }
         public Race()
@@ -149,51 +151,17 @@ namespace OGL
             foreach (Race i in races.Values)
             {
                 FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Races);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
+                using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
             }
         }
-
-
-
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Races);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public static void ImportAll()
-        {
-            races.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Races, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Race s = (Race)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public virtual String toHTML()
+        public virtual String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Races.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -232,14 +200,14 @@ namespace OGL
             return res;
         }
 
-        public Race clone()
+        public Race Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Race r = (Race)serializer.Deserialize(mem);
-                r.filename = filename;
+                Race r = (Race)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }

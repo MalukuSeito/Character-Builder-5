@@ -11,7 +11,8 @@ namespace OGL
 {
     public class AbilityScores
     {
-        private static AbilityScores current;
+        public static AbilityScores Current { get; set; }
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(AbilityScores));
         public List<int> PointBuyCost = new List<int>();
         public int PointBuyPoints { get; set; }
         public int PointBuyMinScore { get; set; }
@@ -19,57 +20,44 @@ namespace OGL
         public int DefaultMax { get; set; }
         public List<String> Arrays = new List<String>();
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(AbilityScores));
-        [XmlIgnore]
-        private string filename;
-        public static AbilityScores Load(String file)
-        {
-            using (TextReader reader = new StreamReader(file)) current = (AbilityScores)serializer.Deserialize(reader);
-            current.filename = file;
-            return current;
-        }
-        public void Save(String file)
-        {
-            using (TextWriter writer = new StreamWriter(file)) serializer.Serialize(writer, this);
-        }
-        public static int getMod(int score)
+        public string Filename { get; set; }
+        
+        public static int GetMod(int score)
         {
             return (score - 10) >> 1;
         }
         public static int getPointBuyCost(int score) {
-            if (score > current.PointBuyMaxScore) return -1;
-            if (score < current.PointBuyMinScore) return -1;
-            return current.PointBuyCost[score - current.PointBuyMinScore];
+            if (score > Current.PointBuyMaxScore) return -1;
+            if (score < Current.PointBuyMinScore) return -1;
+            return Current.PointBuyCost[score - Current.PointBuyMinScore];
         }
         public static int getPointBuyPoints()
         {
-            return current.PointBuyPoints;
+            return Current.PointBuyPoints;
         }
         public static List<AbilityScoreArray> GetArrays()
         {
             List<AbilityScoreArray> res = new List<AbilityScoreArray>();
-            foreach (String s in current.Arrays) res.Add(new AbilityScoreArray(s));
+            foreach (String s in Current.Arrays) res.Add(new AbilityScoreArray(s));
             return res;
         }
         
         public static void Generate()
         {
-            current = new AbilityScores();
-            current.PointBuyCost = new List<int>() { 0, 1, 2, 3, 4, 5, 7, 9 };
-            current.PointBuyPoints = 27;
-            current.PointBuyMinScore = 8;
-            current.PointBuyMaxScore = 15;
-            foreach (AbilityScoreArray a in AbilityScoreArray.Generate()) current.Arrays.Add(a.ToString());
-            current.Save(ConfigManager.loaded.AbilityScores);
+            Current = new AbilityScores()
+            {
+                PointBuyCost = new List<int>() { 0, 1, 2, 3, 4, 5, 7, 9 },
+                PointBuyPoints = 27,
+                PointBuyMinScore = 8,
+                PointBuyMaxScore = 15
+            };
+            foreach (AbilityScoreArray a in AbilityScoreArray.Generate()) Current.Arrays.Add(a.ToString());
         }
         public static int Max { get {
-                if (current.DefaultMax == 0) current.DefaultMax = 20;
-                return current.DefaultMax;
+                if (Current.DefaultMax == 0) Current.DefaultMax = 20;
+                return Current.DefaultMax;
         } }
 
-        public static void Save()
-        {
-            current.Save(current.filename);
-        }
+        
     }
 }

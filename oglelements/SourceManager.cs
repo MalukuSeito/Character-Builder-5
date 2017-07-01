@@ -22,7 +22,7 @@ namespace OGL
                 string f = Path.Combine(s, "LICENSE");
                 if (File.Exists(f))
                 {
-                    if (ConfigManager.LicenseProvider.showLicense(Path.GetFileName(s), File.ReadAllLines(f)))
+                    if (ConfigManager.LicenseProvider.ShowLicense(Path.GetFileName(s), File.ReadAllLines(f)))
                     {
                         Sources.Add(Path.GetFileName(s));
                         File.Move(f, f + ".txt");
@@ -82,19 +82,6 @@ namespace OGL
         {
             String iname = string.Join("_", name.Split(ConfigManager.InvalidChars));
             return new FileInfo(Path.Combine(getDirectory(source, type).FullName, iname + extension));
-        }
-
-        public static IEnumerable<string> EnumerateCategories(string type)
-        {
-            HashSet<string> result = new HashSet<string>();
-            foreach (var f in getAllDirectories(type))
-            {
-                Uri source = new Uri(f.Key.FullName);
-                FeatureCollection.ImportAll();
-                var cats = f.Key.EnumerateDirectories("*", SearchOption.AllDirectories);
-                foreach (DirectoryInfo d in cats) result.Add(cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(new Uri(d.FullName)).ToString()), type));
-            }
-            return from s in result orderby s select s;
         }
 
         public static string cleanname(string path, string cut)

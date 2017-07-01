@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace Character_Builder_5
                 }
                 ConfigManager loaded = ConfigManager.LoadConfig(path);
                 PDFExporter = PDF.Load(ConfigManager.Fullpath(path, loaded.PDF[0]));
-                AbilityScores.Load(ConfigManager.Fullpath(path, loaded.AbilityScores));
+                ImportExtensions.LoadAbilityScores(ConfigManager.Fullpath(path, loaded.AbilityScores));
             }
             catch (Exception e)
             {

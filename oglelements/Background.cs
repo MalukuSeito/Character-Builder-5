@@ -13,12 +13,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Background : IComparable<Background>, IHTML, OGLElement<Background>
+    public class Background : IComparable<Background>, IHTML, IOGLElement<Background>
     {
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Background));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Background));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlElement(Order = 1)] 
@@ -80,7 +80,7 @@ namespace OGL
         [XmlIgnore]
         static public Dictionary<String, Background> backgrounds = new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, Background> simple= new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, Background> simple= new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         [XmlIgnore]
@@ -112,9 +112,9 @@ namespace OGL
         }
         [XmlElement(Order = 11)]
         public byte[] ImageData { get; set; }
-        public void register(string file)
+        public void Register(string file)
         {
-            filename = file;
+            Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (backgrounds.ContainsKey(full)) throw new Exception("Duplicate Background: " + full);
             backgrounds.Add(full, this);
@@ -147,7 +147,7 @@ namespace OGL
             Ideal = new List<TableEntry>();
             Bond = new List<TableEntry>();
             Flaw = new List<TableEntry>();
-            register(null);
+            Register(null);
         }
         public static Background Get(String name, string sourcehint)
         {
@@ -161,45 +161,23 @@ namespace OGL
             ConfigManager.LogError("Unknown Background: " + name);
             return new Background(name, "Missing Entry");
         }
-        public static void ExportAll()
-        {
-            foreach (Background i in backgrounds.Values)
-            {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Backgrounds);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-            }
-        }
-        public static void ImportAll()
-        {
-            backgrounds.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Backgrounds, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Background s = (Background)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        foreach (Feature fea in s.Features) fea.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (Background i in backgrounds.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Backgrounds);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
+        //    }
+        //}
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Backgrounds.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -236,23 +214,14 @@ namespace OGL
             }
             return res;
         }
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Backgrounds);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public Background clone()
+        public Background Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Background r = (Background)serializer.Deserialize(mem);
-                r.filename = filename;
+                Background r = (Background)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }

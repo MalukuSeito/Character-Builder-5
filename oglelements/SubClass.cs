@@ -13,12 +13,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class SubClass: IComparable<SubClass>, IHTML, OGLElement<SubClass>
+    public class SubClass: IComparable<SubClass>, IHTML, IOGLElement<SubClass>
     {
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(SubClass));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(SubClass));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(Description)),
@@ -181,12 +181,12 @@ namespace OGL
         [XmlIgnore]
         static public Dictionary<String, SubClass> subclasses = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, SubClass> simple = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, SubClass> simple = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public void register(string file)
+        public void Register(string file)
         {
-            this.filename = file;
+            this.Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (subclasses.ContainsKey(full)) throw new Exception("Duplicate Subclass: " + full);
             subclasses.Add(full, this);
@@ -215,7 +215,7 @@ namespace OGL
             FirstClassFeatures = new List<Feature>();
             Descriptions = new List<Description>();
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
           public static SubClass Get(String name, string sourcehint)
         {
@@ -227,48 +227,29 @@ namespace OGL
             if (sourcehint != null && subclasses.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subclasses[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
             ConfigManager.LogError("Unknown subclass: " + name);
-            SubClass sc = new SubClass(name, null);
-            sc.Description = "Missing Entry";
+            SubClass sc = new SubClass(name, null)
+            {
+                Description = "Missing Entry"
+            };
             return sc;
         }
-        public static void ExportAll()
-        {
-            foreach (SubClass i in subclasses.Values)
-            {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_SubClasses);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-            }
-        }
-        public static void ImportAll()
-        {
-            subclasses.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_SubClasses, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        SubClass s = (SubClass)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (SubClass i in subclasses.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_SubClasses);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
+        //    }
+        //}
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_SubClasses.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -320,23 +301,14 @@ namespace OGL
         {
             return (from s in subclasses.Values where ConfigManager.SourceInvariantComparer.Equals(s.ClassName, classdefinition) || s.ClassName == "*" select s);
         }
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_SubClasses);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public SubClass clone()
+        public SubClass Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                SubClass r = (SubClass)serializer.Deserialize(mem);
-                r.filename = filename;
+                SubClass r = (SubClass)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }

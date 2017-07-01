@@ -23,7 +23,7 @@ namespace Character_Builder
                     object cls = o[0];
                     if (cls is string)
                     {
-                        Dictionary<ClassDefinition, int> classes = Player.current.getClassLevels();
+                        Dictionary<ClassDefinition, int> classes = Player.Current.GetClassLevels();
                         foreach (ClassDefinition c in classes.Keys)
                         {
                             if (c.Name.Equals(cls as string, StringComparison.InvariantCultureIgnoreCase))
@@ -37,7 +37,7 @@ namespace Character_Builder
                 }
                 else
                 {
-                    args.Result = Player.current.getLevel();
+                    args.Result = Player.Current.GetLevel();
                 }
             }
             if (name.Equals("SubClass", StringComparison.InvariantCultureIgnoreCase))
@@ -48,7 +48,7 @@ namespace Character_Builder
                     object cls = o[0];
                     if (cls is string)
                     {
-                        SubClass s = Player.current.getSubclass((string)cls);
+                        SubClass s = Player.Current.GetSubclass((string)cls);
                         if (s != null)
                         {
                             args.Result = s.Name.ToLowerInvariant();
@@ -63,7 +63,7 @@ namespace Character_Builder
             }
         }
 
-        private static string convert(Ability a, string s = null)
+        private static string Convert(Ability a, string s = null)
         {
             StringBuilder sb = new StringBuilder();
             if (s != null && s.Trim() != "" && s.Trim() != "0") sb.Append(s);
@@ -77,41 +77,41 @@ namespace Character_Builder
         }
 
 
-        public static int evaluate(ResourceFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static int Evaluate(ResourceFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
             if (f.ValueBonus != Ability.None)
             {
-                f.Value = convert(f.ValueBonus, f.Value);
+                f.Value = Convert(f.ValueBonus, f.Value);
                 f.ValueBonus = Ability.None;
             }
-            return evaluate(f.Value, asa, additionalKeywords, classlevel, level);
+            return Evaluate(f.Value, asa, additionalKeywords, classlevel, level);
         }
 
-        public static int evaluate(BonusFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null)
+        public static int Evaluate(BonusFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null)
         {
             if (f.DamageBonusModifier != Ability.None)
             {
-                f.DamageBonus = convert(f.DamageBonusModifier, f.DamageBonus);
+                f.DamageBonus = Convert(f.DamageBonusModifier, f.DamageBonus);
                 f.DamageBonusModifier = Ability.None;
             }
-            return evaluate(f.DamageBonus, asa, additionalKeywords, classlevel, level, i);
+            return Evaluate(f.DamageBonus, asa, additionalKeywords, classlevel, level, i);
         }
 
-        public static int evaluate(Spell s, BonusFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static int Evaluate(Spell s, BonusFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
             if (f.DamageBonusModifier != Ability.None)
             {
-                f.DamageBonus = convert(f.DamageBonusModifier, f.DamageBonus);
+                f.DamageBonus = Convert(f.DamageBonusModifier, f.DamageBonus);
                 f.DamageBonusModifier = Ability.None;
             }
-            return evaluate(s, f.DamageBonus, asa, additionalKeywords, classlevel, level);
+            return Evaluate(s, f.DamageBonus, asa, additionalKeywords, classlevel, level);
         }
 
-        public static int evaluate(SpellcastingFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static int Evaluate(SpellcastingFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
             if (f.PrepareCountAdditionalModifier != Ability.None)
             {
-                f.PrepareCount = convert(f.PrepareCountAdditionalModifier, f.PrepareCount);
+                f.PrepareCount = Convert(f.PrepareCountAdditionalModifier, f.PrepareCount);
                 f.PrepareCountAdditionalModifier = Ability.None;
             }
             if (f.PrepareCountPerClassLevel != 0)
@@ -125,10 +125,10 @@ namespace Character_Builder
                 f.PrepareCountAdditional = 0;
             }
             if (f.PrepareCount == null) f.PrepareCount = "0";
-            return evaluate(f.PrepareCount, asa, additionalKeywords, classlevel, level, null, f.SpellcastingID);
+            return Evaluate(f.PrepareCount, asa, additionalKeywords, classlevel, level, null, f.SpellcastingID);
         }
 
-        public static int evaluate(HitPointsFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static int Evaluate(HitPointsFeature f, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
             if (f.HitPointsPerLevel != 0)
             {
@@ -136,16 +136,16 @@ namespace Character_Builder
                 else f.HitPoints = (f.HitPoints == null || f.HitPoints.Trim() == "0" || f.HitPoints.Trim() == "" ? "" : f.HitPoints + " + ") + "PlayerLevel * " + f.HitPointsPerLevel;
                 f.HitPointsPerLevel = 0;
             }
-            return evaluate(f.HitPoints, asa, additionalKeywords, classlevel, level);
+            return Evaluate(f.HitPoints, asa, additionalKeywords, classlevel, level);
         }
 
-        public static int evaluate(String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null, String SpellcastingID = null)
+        public static int Evaluate(String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null, String SpellcastingID = null)
         {
-            if (level == 0) level = Player.current.getLevel();
+            if (level == 0) level = Player.Current.GetLevel();
             if (classlevel == 0) level = classlevel;
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -155,16 +155,16 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
                     else if (name == "playerlevel") args.Result = level;
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "weapon") args.Result = (i is Weapon);
                     else if (name == "armor") args.Result = (i is Armor);
@@ -173,9 +173,9 @@ namespace Character_Builder
                     else if (name == "damageroll" && i is Weapon) args.Result = ((Weapon)i).Damage;
                     else if (name == "damagetype" && i is Weapon) args.Result = ((Weapon)i).DamageType;
                     else if (name == "tool") args.Result = i is Tool;
-                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
-                    else if (i != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.Current.GetSpellSlotsMax(SpellcastingID);
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
+                    else if (i != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -197,13 +197,13 @@ namespace Character_Builder
             return 0;
         }
 
-        public static bool matches(string expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static bool Matches(string expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
-            if (level == 0) level = Player.current.getLevel();
+            if (level == 0) level = Player.Current.GetLevel();
             if (classlevel == 0) level = classlevel;
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -213,18 +213,18 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
                     else if (name == "playerlevel") args.Result = level;
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
                     else if (name == "classlevel") args.Result = classlevel;
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -239,13 +239,13 @@ namespace Character_Builder
             return false;
         }
 
-        public static int evaluate(Spell s, String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public static int Evaluate(Spell s, String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
-            if (level == 0) level = Player.current.getLevel();
+            if (level == 0) level = Player.Current.GetLevel();
             if (classlevel == 0) level = classlevel;
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -255,16 +255,16 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
                     else if (name == "playerlevel") args.Result = level;
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "name") args.Result = s.Name.ToLowerInvariant();
                     else if (name == "spell") args.Result = true;
@@ -275,9 +275,9 @@ namespace Character_Builder
                     else if (name == "level") args.Result = s.Level;
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
-                    else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                    else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -299,7 +299,7 @@ namespace Character_Builder
             return 0;
         }
 
-        public static bool canMulticlass(ClassDefinition cls, AbilityScoreArray asa, List<string> additionalKeywords = null)
+        public static bool CanMulticlass(ClassDefinition cls, AbilityScoreArray asa, List<string> additionalKeywords = null)
         {
             if (cls.MulticlassingCondition == null || cls.MulticlassingCondition.Length == 0)
             {
@@ -315,7 +315,7 @@ namespace Character_Builder
             }
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(cls.MulticlassingCondition));
+                Expression ex = new Expression(ConfigManager.FixQuotes(cls.MulticlassingCondition));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -325,17 +325,17 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
-                    else if (name == "classlevel") args.Result = Player.current.getLevel();
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
+                    else if (name == "playerlevel") args.Result = Player.Current.GetLevel();
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
+                    else if (name == "classlevel") args.Result = Player.Current.GetLevel();
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -356,7 +356,7 @@ namespace Character_Builder
         {
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(acf.Expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(acf.Expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -377,18 +377,18 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
-                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
-                    else if (name == "classlevel") args.Result = Player.current.getLevel();
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
-                    else if (armor.Keywords.Count > 0 && armor.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
+                    else if (name == "playerlevel") args.Result = Player.Current.GetLevel();
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
+                    else if (name == "classlevel") args.Result = Player.Current.GetLevel();
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
+                    else if (armor.Keywords.Count > 0 && armor.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -401,44 +401,44 @@ namespace Character_Builder
             }
             return -1;
         }
-        public static bool matches(BonusFeature bf, Item w, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
+        public static bool Matches(BonusFeature bf, Item w, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
         {
             if (bf == null) return false;
-            return matches(w, bf.Condition, classlevel, additionalKeywords, asa, ignoreItemClass);
+            return Matches(w, bf.Condition, classlevel, additionalKeywords, asa, ignoreItemClass);
             /*            List<Keyword> kws = new List<Keyword>(Keywords);
                         kws.RemoveAll(k=>k.Name=="weapon"); //If it doesn't contain the weapon or the spell kw, it will match both spell attacks and weapon attacks
                         foreach (Keyword kw in kws) if (!w.Keywords.Contains(kw)) return false;
                         return true;*/
 
         }
-        public static bool matches(BonusFeature bf, Spell s, int classlevel, List<string> additionalKeywords = null)
+        public static bool Matches(BonusFeature bf, Spell s, int classlevel, List<string> additionalKeywords = null)
         {
             if (bf == null) return false;
-            return matches(s, bf.Condition, null, additionalKeywords, classlevel);
+            return Matches(s, bf.Condition, null, additionalKeywords, classlevel);
             /*           List<Keyword> kws = new List<Keyword>(Keywords);
                        kws.RemoveAll(k => k.Name == "spell");
                        foreach (Keyword kw in kws) if (!s.Keywords.Contains(kw)) return false;
                        return true;*/
         }
 
-        public static bool matches(BonusFeature bf, Ability baseAbility, string SpellcastingID, string kw, int classlevel, List<string> additionalKeywords = null)
+        public static bool Matches(BonusFeature bf, Ability baseAbility, string SpellcastingID, string kw, int classlevel, List<string> additionalKeywords = null)
         {
 
             if (additionalKeywords == null) additionalKeywords = new List<string>();
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(bf.Condition));
+                Expression ex = new Expression(ConfigManager.FixQuotes(bf.Condition));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
                     if (name == "name") args.Result = "";
                     else if (name == "category") args.Result = "";
-                    else if (name == "level") args.Result = Player.current.getLevel();
-                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
+                    else if (name == "level") args.Result = Player.Current.GetLevel();
+                    else if (name == "playerlevel") args.Result = Player.Current.GetLevel();
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
                     else if (name == "str" || name == "strength") args.Result = baseAbility.HasFlag(Ability.Strength);
                     else if (name == "dex" || name == "dexterity") args.Result = baseAbility.HasFlag(Ability.Dexterity);
                     else if (name == "con" || name == "constitution") args.Result = baseAbility.HasFlag(Ability.Constitution);
@@ -446,9 +446,9 @@ namespace Character_Builder
                     else if (name == "wis" || name == "wisdom") args.Result = baseAbility.HasFlag(Ability.Wisdom);
                     else if (name == "cha" || name == "charisma") args.Result = baseAbility.HasFlag(Ability.Charisma);
                     else if (name == SpellcastingID.ToLowerInvariant()) args.Result = true;
-                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.Current.GetSpellSlotsMax(SpellcastingID);
                     else if (name == kw.ToLowerInvariant()) args.Result = true;
-                    else if (additionalKeywords.Exists(s => matchesKW(name, s))) args.Result = true;
+                    else if (additionalKeywords.Exists(s => MatchesKW(name, s))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -462,32 +462,32 @@ namespace Character_Builder
             return false;
         }
 
-        public static List<ModifiedSpell> getSpells(BonusSpellKeywordChoiceFeature f)
+        public static List<ModifiedSpell> GetSpells(BonusSpellKeywordChoiceFeature f)
         {
             List<ModifiedSpell> res = new List<ModifiedSpell>();
-            int offset = Player.current.getChoiceOffset(f, f.UniqueID, f.Amount);
+            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
             for (int c = 0; c < f.Amount; c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = Player.current.getChoice(f.UniqueID + counter);
+                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") res.Add(new ModifiedSpell(Spell.Get(cho.Value, f.Source), f.KeywordsToAdd, f.SpellCastingAbility, f.SpellCastModifier));
             }
             return res;
         }
 
-        public static int availableToPrepare(SpellcastingFeature f, int classlevel)
+        public static int AvailableToPrepare(SpellcastingFeature f, int classlevel)
         {
             //return Math.Max(1, Player.current.getFinalAbilityScores().ApplyMod(f.PrepareCountAdditionalModifier) + f.PrepareCountAdditional + (int)Math.Floor(f.PrepareCountPerClassLevel * classlevel));
-            return Utils.evaluate(f, Player.current.getFinalAbilityScores(), null, classlevel);
+            return Utils.Evaluate(f, Player.Current.GetFinalAbilityScores(), null, classlevel);
         }
 
-        public static bool matchesKW(string kw, string kw2)
+        public static bool MatchesKW(string kw, string kw2)
         {
             return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.OrdinalIgnoreCase);
         }
 
-        public static bool matches(Item i, string expression, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
+        public static bool Matches(Item i, string expression, int classlevel, List<string> additionalKeywords = null, AbilityScoreArray asa = null, bool ignoreItemClass = false)
         {
             if (asa == null) asa = new AbilityScoreArray(10, 10, 10, 10, 10, 10);
             if (additionalKeywords == null) additionalKeywords = new List<string>();
@@ -495,7 +495,7 @@ namespace Character_Builder
             if (i != null && i.Matches.ContainsKey(expression + additionalKeywords.ToString())) return i.Matches[expression + additionalKeywords.ToString()];
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -514,20 +514,20 @@ namespace Character_Builder
                     else if (name == "int" || name == "intelligence") args.Result = asa.Intelligence;
                     else if (name == "wis" || name == "wisdom") args.Result = asa.Wisdom;
                     else if (name == "cha" || name == "charisma") args.Result = asa.Charisma;
-                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.strmod;
-                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.dexmod;
-                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.conmod;
-                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.intmod;
-                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.wismod;
-                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.chamod;
+                    else if (name == "strmod" || name == "strengthmodifier") args.Result = asa.StrMod;
+                    else if (name == "dexmod" || name == "dexteritymodifier") args.Result = asa.DexMod;
+                    else if (name == "conmod" || name == "constitutionmodifier") args.Result = asa.ConMod;
+                    else if (name == "intmod" || name == "intelligencemodifier") args.Result = asa.IntMod;
+                    else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
+                    else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
                     else if (name == "autogenerated" && i is Item) args.Result = i.autogenerated;
                     else if (name == "name") args.Result = i != null ? i.Name.ToLowerInvariant() : "";
-                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
+                    else if (name == "playerlevel") args.Result = Player.Current.GetLevel();
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
                     else if (name == "classlevel") args.Result = classlevel;
-                    else if (additionalKeywords.Exists(s => matchesKW(name, s))) args.Result = true;
-                    else if (i != null && i.Keywords != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (additionalKeywords.Exists(s => MatchesKW(name, s))) args.Result = true;
+                    else if (i != null && i.Keywords != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -547,13 +547,13 @@ namespace Character_Builder
             }
             return false;
         }
-        public static List<Item> filter(string expression)
+        public static List<Item> Filter(string expression)
         {
             if (expression == null || expression == "") expression = "true";
             if (Item.ItemLists.ContainsKey(expression)) return new List<Item>(Item.ItemLists[expression]);
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 Item current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -564,7 +564,7 @@ namespace Character_Builder
                     else if (name == "shield") args.Result = (current is Shield);
                     else if (name == "tool") args.Result = (current is Tool);
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
-                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -586,22 +586,22 @@ namespace Character_Builder
             }
             return new List<Item>();
         }
-        public static bool fits(MagicProperty mp, Item item)
+        public static bool Fits(MagicProperty mp, Item item)
         {
-            return matches(item, mp.Base, 0);
+            return Matches(item, mp.Base, 0);
         }
-        public static bool matches(ToolKWProficiencyFeature f, Item tool, int classlevel)
+        public static bool Matches(ToolKWProficiencyFeature f, Item tool, int classlevel)
         {
-            return matches(tool, f.Condition, classlevel);
+            return Matches(tool, f.Condition, classlevel);
         }
-        public static List<Spell> filterSpell(string expression, String SpellcastingID, int classlevel = 0)
+        public static List<Spell> FilterSpell(string expression, String SpellcastingID, int classlevel = 0)
         {
             if (expression == null || expression == "") expression = "true";
             //if (Spell.SpellLists.ContainsKey(expression + "." + classlevel)) return new List<Spell>(Spell.SpellLists[expression + "." + classlevel]);
             try
             {
                 bool caching = true;
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 Spell current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -609,11 +609,11 @@ namespace Character_Builder
                     if (name == "classlevel") args.Result = classlevel;
                     else if (name == "classspelllevel")
                         args.Result = (classlevel + 1) / 2;
-                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.Current.GetSpellSlotsMax(SpellcastingID);
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "level") args.Result = current.Level;
-                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -635,13 +635,13 @@ namespace Character_Builder
             }
             return new List<Spell>();
         }
-        public static bool matches(Spell s, string expression, string SpellcastingID, List<string> additionalKeywords = null, int classlevel = 0)
+        public static bool Matches(Spell s, string expression, string SpellcastingID, List<string> additionalKeywords = null, int classlevel = 0)
         {
             if (expression == null || expression == "") expression = "true";
             if (additionalKeywords == null) additionalKeywords = new List<string>();
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -654,13 +654,13 @@ namespace Character_Builder
                     else if (name == "level") args.Result = s.Level;
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
-                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.current.getSpellSlotsMax(SpellcastingID);
-                    else if (name == "playerlevel") args.Result = Player.current.getLevel();
-                    else if (name == "race") args.Result = Player.current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.RaceName.ToLowerInvariant());
-                    else if (name == "subrace") args.Result = Player.current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.current.SubRaceName.ToLowerInvariant());
-                    else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                    else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
-                    else if (additionalKeywords.Exists(k => matchesKW(k, name))) args.Result = true;
+                    else if (name == "maxspellslot" && SpellcastingID != null) args.Result = Player.Current.GetSpellSlotsMax(SpellcastingID);
+                    else if (name == "playerlevel") args.Result = Player.Current.GetLevel();
+                    else if (name == "race") args.Result = Player.Current.RaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.RaceName.ToLowerInvariant());
+                    else if (name == "subrace") args.Result = Player.Current.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(Player.Current.SubRaceName.ToLowerInvariant());
+                    else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -673,7 +673,7 @@ namespace Character_Builder
             }
             return false;
         }
-        public static String getPointsRemaining(Player p)
+        public static String GetPointsRemaining(Player p)
         {
             int have = AbilityScores.getPointBuyPoints();
             foreach (int score in new List<int>() { p.BaseStrength, p.BaseDexterity, p.BaseConstitution, p.BaseIntelligence, p.BaseWisdom, p.BaseCharisma })

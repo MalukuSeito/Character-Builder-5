@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Base;
 using OGL.Common;
 using OGL.Features;
@@ -38,12 +39,11 @@ namespace Character_Builder_Builder.FeatureForms
             profBonus.DataBindings.Add("Text", f, "ProficiencyBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
-            OGL.Skill.ImportAll();
+            ImportExtensions.ImportSkills();
             SkillList.Suggestions = OGL.Skill.simple.Keys;
-            Item.ImportAll();
+            ImportExtensions.ImportItems();
             proficiencyOptions.Suggestions = from it in Item.simple.Values where it is Weapon select it.Name;
             basicFeature1.Feature = f;
-            Item.ImportAll();
             foreach (string s in OGL.Item.simple.Keys)
             {
                 if (Item.simple[s] is Weapon)

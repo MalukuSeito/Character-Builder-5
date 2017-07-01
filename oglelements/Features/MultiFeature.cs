@@ -77,7 +77,7 @@ namespace OGL.Features
         {
             if (Level > level) return new List<Feature>();
             List<Feature> res = new List<Feature>() {this};
-            if (Condition != null && Condition.Length > 0 && !choiceProvider.matches(Condition, null, level)) return res;
+            if (Condition != null && Condition.Length > 0 && !choiceProvider.Matches(Condition, null, level)) return res;
             foreach (Feature f in Features)
             {
                 res.AddRange(f.Collect(level, choiceProvider));

@@ -23,51 +23,51 @@ namespace OGL
         [XmlAttribute]
         public int Charisma { get; set; }
         [XmlIgnore]
-        public int strmod
+        public int StrMod
         {
             get
             {
-                return AbilityScores.getMod(Strength);
+                return AbilityScores.GetMod(Strength);
             }
         }
         [XmlIgnore]
-        public int dexmod
+        public int DexMod
         {
             get
             {
-                return AbilityScores.getMod(Dexterity);
+                return AbilityScores.GetMod(Dexterity);
             }
         }
         [XmlIgnore]
-        public int conmod
+        public int ConMod
         {
             get
             {
-                return AbilityScores.getMod(Constitution);
+                return AbilityScores.GetMod(Constitution);
             }
         }
         [XmlIgnore]
-        public int intmod
+        public int IntMod
         {
             get
             {
-                return AbilityScores.getMod(Intelligence);
+                return AbilityScores.GetMod(Intelligence);
             }
         }
         [XmlIgnore]
-        public int wismod
+        public int WisMod
         {
             get
             {
-                return AbilityScores.getMod(Wisdom);
+                return AbilityScores.GetMod(Wisdom);
             }
         }
         [XmlIgnore]
-        public int chamod
+        public int ChaMod
         {
             get
             {
-                return AbilityScores.getMod(Charisma);
+                return AbilityScores.GetMod(Charisma);
             }
         }
         public AbilityScoreArray(int str, int dex, int con, int intel, int wis, int cha)
@@ -145,12 +145,12 @@ namespace OGL
         public int ApplyMod(Ability ab)
         {
             int value = 0;
-            if (ab.HasFlag(Ability.Charisma)) value += chamod;
-            if (ab.HasFlag(Ability.Constitution)) value += conmod;
-            if (ab.HasFlag(Ability.Dexterity)) value += dexmod;
-            if (ab.HasFlag(Ability.Intelligence)) value += intmod;
-            if (ab.HasFlag(Ability.Strength)) value += strmod;
-            if (ab.HasFlag(Ability.Wisdom)) value += wismod;
+            if (ab.HasFlag(Ability.Charisma)) value += ChaMod;
+            if (ab.HasFlag(Ability.Constitution)) value += ConMod;
+            if (ab.HasFlag(Ability.Dexterity)) value += DexMod;
+            if (ab.HasFlag(Ability.Intelligence)) value += IntMod;
+            if (ab.HasFlag(Ability.Strength)) value += StrMod;
+            if (ab.HasFlag(Ability.Wisdom)) value += WisMod;
             return value;
         }
         public Ability Highest(Ability ab)

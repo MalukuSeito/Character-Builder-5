@@ -99,7 +99,7 @@ namespace Character_Builder_5
             AllowDrop = true;
             possequip.Items.Clear();
             possequip.Items.Add(EquipSlot.None);
-            foreach (string s in ConfigManager.loaded.Slots) possequip.Items.Add(s);
+            foreach (string s in ConfigManager.Loaded.Slots) possequip.Items.Add(s);
         }
 
         private void PluginManager_PluginsChanged(object sender, EventArgs e)
@@ -114,12 +114,12 @@ namespace Character_Builder_5
 
         private void pluginClick(object sender, EventArgs e)
         {
-            if (sender is ToolStripMenuItem) {
-                ToolStripMenuItem p = (ToolStripMenuItem)sender;
+            if (sender is ToolStripMenuItem p)
+            {
                 Player.MakeHistory(null);
-                if (p.Checked) Player.current.ActiveHouseRules.RemoveAll(s => StringComparer.InvariantCultureIgnoreCase.Equals(s, p.Name));
-                else Player.current.ActiveHouseRules.Add(p.Name);
-                PluginManager.manager.Load(Player.current.ActiveHouseRules);
+                if (p.Checked) Player.Current.ActiveHouseRules.RemoveAll(s => StringComparer.InvariantCultureIgnoreCase.Equals(s, p.Name));
+                else Player.Current.ActiveHouseRules.Add(p.Name);
+                PluginManager.manager.Load(Player.Current.ActiveHouseRules);
                 UpdateLayout();
             }
         }
@@ -175,18 +175,18 @@ namespace Character_Builder_5
                     addtoItemButton.Enabled = false;
                     if (mp.Base == null || mp.Base == "") addButton.Enabled = true;
                     else if (inventory2.SelectedItem != null && ((Possession)inventory2.SelectedItem).BaseItem != null && ((Possession)inventory2.SelectedItem).BaseItem != "")
-                        addtoItemButton.Enabled = Utils.fits(mp, Item.Get(((Possession)inventory2.SelectedItem).BaseItem, null));
+                        addtoItemButton.Enabled = Utils.Fits(mp, Item.Get(((Possession)inventory2.SelectedItem).BaseItem, null));
                 }
                 if (listItems.SelectedItem is Spell)
                 {
                     Choice_DisplaySpellScroll(sender, e);
                     if (spellbookFeaturesBox.SelectedItem != null && spellbookFeaturesBox.SelectedItem is SpellcastingCapsule)
-                        addspellbookButton.Enabled = Utils.matches(((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Player.current.getSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook().Contains((Spell)listItems.SelectedItem);
+                        addspellbookButton.Enabled = Utils.Matches(((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Player.Current.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook().Contains((Spell)listItems.SelectedItem);
                 }
                 if (listItems.SelectedItem is Feature)
                 {
                     Choice_DisplayFeature(sender, e);
-                    addButton.Enabled = !Player.current.Boons.Contains(((Feature)listItems.SelectedItem).Name, ConfigManager.SourceInvariantComparer);
+                    addButton.Enabled = !Player.Current.Boons.Contains(((Feature)listItems.SelectedItem).Name, ConfigManager.SourceInvariantComparer);
                 }
             }
         }
@@ -273,7 +273,7 @@ namespace Character_Builder_5
                 itemsearchbox.Text = "Search";
             }
         }
-        public void resetglobals()
+        public void Resetglobals()
         {
             displayElement.Navigate("about:blank");
         }
@@ -310,7 +310,7 @@ namespace Character_Builder_5
             journalEntries.Items.Clear();
             int down = 0;
             int renown = 0;
-            foreach (JournalEntry je in Player.current.ComplexJournal)
+            foreach (JournalEntry je in Player.Current.ComplexJournal)
             {
                 down += je.Downtime;
                 renown += je.Renown;
@@ -336,16 +336,16 @@ namespace Character_Builder_5
                 int iindex = inventory.SelectedIndex;
                 inventory.Items.Clear();
                 inventory2.Items.Clear();
-                Possession[] pos = Player.current.getItemsAndPossessions().ToArray<Possession>();
+                Possession[] pos = Player.Current.GetItemsAndPossessions().ToArray<Possession>();
                 inventory.Items.AddRange(pos);
-                inventory.Items.AddRange(Player.current.getBoons().ToArray<Feature>());
+                inventory.Items.AddRange(Player.Current.GetBoons().ToArray<Feature>());
                 inventory2.Items.AddRange(pos);
                 if (iindex >= 0 && iindex < inventory.Items.Count) inventory.SelectedIndex = iindex;
                 int index = 0;
                 if (spellbookFeaturesBox.SelectedIndex > 0) index = spellbookFeaturesBox.SelectedIndex;
                 UpdateInventoryOptions();
                 spellbookFeaturesBox.Items.Clear();
-                spellbookFeaturesBox.Items.AddRange((from sc in Player.current.getFeatures() where sc is SpellcastingFeature && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook select new SpellcastingCapsule((SpellcastingFeature)sc)).ToArray<SpellcastingCapsule>());
+                spellbookFeaturesBox.Items.AddRange((from sc in Player.Current.GetFeatures() where sc is SpellcastingFeature && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook select new SpellcastingCapsule((SpellcastingFeature)sc)).ToArray<SpellcastingCapsule>());
                 if (index >= 0 && index < spellbookFeaturesBox.Items.Count) spellbookFeaturesBox.SelectedIndex = index;
                 equiptab.ResumeLayout();
                 if (!waslayouting) layouting = false;
@@ -361,15 +361,15 @@ namespace Character_Builder_5
                 bool waslayouting = layouting;
                 if (!layouting) layouting = true;
                 equiptab.SuspendLayout();
-                
-                if (inventory.SelectedItem is Possession)
+
+                if (inventory.SelectedItem is Possession p)
                 {
-                    Possession p = (Possession)inventory.SelectedItem;
                     possequip.Enabled = true;
                     try
                     {
                         possequip.SelectedItem = p.Equipped;
-                    } catch (Exception)
+                    }
+                    catch (Exception)
                     {
                         p.Equipped = EquipSlot.None;
                         possequip.SelectedItem = EquipSlot.None;
@@ -452,36 +452,36 @@ namespace Character_Builder_5
                 statisticsbox.SuspendLayout();
                 undoToolStripMenuItem.Enabled = Player.CanUndo();
                 redoToolStripMenuItem.Enabled = Player.CanRedo();
-                AbilityScoreArray scores = Player.current.getFinalAbilityScores();
+                AbilityScoreArray scores = Player.Current.GetFinalAbilityScores();
                 SideStrength.Text = "Str " + scores.Strength;
                 SideDexterity.Text = "Dex " + scores.Dexterity;
                 SideConstitution.Text = "Con " + scores.Constitution;
                 SideIntelligence.Text = scores.Intelligence + " Int";
                 SideWisdom.Text = scores.Wisdom + " Wis";
                 SideCharisma.Text = scores.Charisma + " Cha";
-                int speed = Player.current.getSpeed();
+                int speed = Player.Current.GetSpeed();
                 SideSpeed.Text = speed + " ft";
-                int hp = Player.current.getHitpointMax();
+                int hp = Player.Current.GetHitpointMax();
                 Speed.Text = speed.ToString();
                 SideMaxHP.Text = "HP: " + hp;
                 MaxHP.Text = hp.ToString();
-                int curhploss = Player.current.CurrentHPLoss;
+                int curhploss = Player.Current.CurrentHPLoss;
                 if (curhploss > 0) curhploss = 0;
                 CurHP.Maximum = hp;
                 CurHP.Value = hp + curhploss;
-                sidePortrait.Image = Player.current.Portrait;
-                SideName.Text = Player.current.Name + "\n" + String.Join(" | ", Player.current.Classes) + "\n(Level " + Player.current.getLevel() + ")\n" + Player.current.getRaceSubName();
-                int ac = Player.current.getAC();
+                sidePortrait.Image = Player.Current.Portrait;
+                SideName.Text = Player.Current.Name + "\n" + String.Join(" | ", Player.Current.Classes) + "\n(Level " + Player.Current.GetLevel() + ")\n" + Player.Current.GetRaceSubName();
+                int ac = Player.Current.GetAC();
                 SideAC.Text = ac + " AC";
                 AC.Text = ac.ToString();
-                int init = Player.current.getInitiative();
+                int init = Player.Current.GetInitiative();
                 SideInit.Text = "Init: " + plusMinus(init);
                 Initiative.Text = plusMinus(init);
-                double weight = Player.current.getWeight();
+                double weight = Player.Current.GetWeight();
                 currentweight.Text = weight.ToString("N") + " lb / " + scores.Strength * 15 + " lb";
                 CurWeight.Text = weight.ToString("N");
                 MaxWeight.Text = (scores.Strength * 15).ToString();
-                Price money = Player.current.getMoney();
+                Price money = Player.Current.GetMoney();
                 string moneytext = money.ToString();
                 Money.Text = money.ToString();
                 if (moneytext == "") moneytext = "Coinage";
@@ -505,70 +505,69 @@ namespace Character_Builder_5
             try
             {
                 layouting = true;
-                inspiration.Checked = Player.current.Inspiration;
-                int prof = Player.current.getProficiency();
+                inspiration.Checked = Player.Current.Inspiration;
+                int prof = Player.Current.GetProficiency();
                 profval.Text = plusMinus(prof);
-                AbilityScoreArray max = null;
-                AbilityScoreArray asa = Player.current.getFinalAbilityScores(out max);
-                Ability SaveProf = Player.current.getSaveProficiencies();
-                AbilityScoreArray saveBonus = Player.current.getSavingThrowsBoni();
+                AbilityScoreArray asa = Player.Current.GetFinalAbilityScores(out AbilityScoreArray max);
+                Ability SaveProf = Player.Current.GetSaveProficiencies();
+                AbilityScoreArray saveBonus = Player.Current.GetSavingThrowsBoni();
                 strval.Text = asa.Strength.ToString();
-                strmod.Text = plusMinus(asa.strmod);
+                strmod.Text = plusMinus(asa.StrMod);
                 strmax.Text = max.Strength.ToString();
-                strsave.Text = plusMinus(asa.strmod + (SaveProf.HasFlag(Ability.Strength) ? prof : 0) + saveBonus.Strength);
+                strsave.Text = plusMinus(asa.StrMod + (SaveProf.HasFlag(Ability.Strength) ? prof : 0) + saveBonus.Strength);
                 dexval.Text = asa.Dexterity.ToString();
-                dexmod.Text = plusMinus(asa.dexmod);
+                dexmod.Text = plusMinus(asa.DexMod);
                 dexmax.Text = max.Dexterity.ToString();
-                dexsave.Text = plusMinus(asa.dexmod + (SaveProf.HasFlag(Ability.Dexterity) ? prof : 0) + saveBonus.Dexterity);
+                dexsave.Text = plusMinus(asa.DexMod + (SaveProf.HasFlag(Ability.Dexterity) ? prof : 0) + saveBonus.Dexterity);
                 conval.Text = asa.Constitution.ToString();
-                conmod.Text = plusMinus(asa.conmod);
+                conmod.Text = plusMinus(asa.ConMod);
                 conmax.Text = max.Constitution.ToString();
-                consave.Text = plusMinus(asa.conmod + (SaveProf.HasFlag(Ability.Constitution) ? prof : 0) + saveBonus.Constitution);
+                consave.Text = plusMinus(asa.ConMod + (SaveProf.HasFlag(Ability.Constitution) ? prof : 0) + saveBonus.Constitution);
                 intval.Text = asa.Intelligence.ToString();
-                intmod.Text = plusMinus(asa.intmod);
+                intmod.Text = plusMinus(asa.IntMod);
                 intmax.Text = max.Intelligence.ToString();
-                intsave.Text = plusMinus(asa.intmod + (SaveProf.HasFlag(Ability.Intelligence) ? prof : 0) + saveBonus.Intelligence);
+                intsave.Text = plusMinus(asa.IntMod + (SaveProf.HasFlag(Ability.Intelligence) ? prof : 0) + saveBonus.Intelligence);
                 wisval.Text = asa.Wisdom.ToString();
-                wismod.Text = plusMinus(asa.wismod);
+                wismod.Text = plusMinus(asa.WisMod);
                 wismax.Text = max.Wisdom.ToString();
-                wissave.Text = plusMinus(asa.wismod + (SaveProf.HasFlag(Ability.Wisdom) ? prof : 0) + saveBonus.Wisdom);
+                wissave.Text = plusMinus(asa.WisMod + (SaveProf.HasFlag(Ability.Wisdom) ? prof : 0) + saveBonus.Wisdom);
                 chaval.Text = asa.Charisma.ToString();
-                chamod.Text = plusMinus(asa.chamod);
+                chamod.Text = plusMinus(asa.ChaMod);
                 chamax.Text = max.Charisma.ToString();
-                chasave.Text = plusMinus(asa.chamod + (SaveProf.HasFlag(Ability.Charisma) ? prof : 0) + saveBonus.Charisma);
+                chasave.Text = plusMinus(asa.ChaMod + (SaveProf.HasFlag(Ability.Charisma) ? prof : 0) + saveBonus.Charisma);
                 skillbox.Items.Clear();
-                skillbox.Items.AddRange(Player.current.getSkills().ToArray());
-                List<HitDie> hd = Player.current.getHitDie();
+                skillbox.Items.AddRange(Player.Current.GetSkills().ToArray());
+                List<HitDie> hd = Player.Current.GetHitDie();
                 hd.Sort();
                 HitDice.Text = String.Join(", ", from h in hd select h.Total());
                 HitDiceUsed.Items.Clear();
                 HitDiceUsed.Items.AddRange(hd.ToArray());
-                TempHP.Value = Player.current.TempHP;
-                bonusMaxHP.Value = Player.current.BonusMaxHP;
-                if (Player.current.FailedDeathSaves < 0) Player.current.FailedDeathSaves = 0;
-                if (Player.current.SuccessDeathSaves < 0) Player.current.SuccessDeathSaves = 0;
-                if (Player.current.FailedDeathSaves > 3) Player.current.FailedDeathSaves = 3;
-                if (Player.current.SuccessDeathSaves > 3) Player.current.SuccessDeathSaves = 3;
-                DeathFail.Value = Player.current.FailedDeathSaves;
-                DeathSuccess.Value = Player.current.SuccessDeathSaves;
+                TempHP.Value = Player.Current.TempHP;
+                bonusMaxHP.Value = Player.Current.BonusMaxHP;
+                if (Player.Current.FailedDeathSaves < 0) Player.Current.FailedDeathSaves = 0;
+                if (Player.Current.SuccessDeathSaves < 0) Player.Current.SuccessDeathSaves = 0;
+                if (Player.Current.FailedDeathSaves > 3) Player.Current.FailedDeathSaves = 3;
+                if (Player.Current.SuccessDeathSaves > 3) Player.Current.SuccessDeathSaves = 3;
+                DeathFail.Value = Player.Current.FailedDeathSaves;
+                DeathSuccess.Value = Player.Current.SuccessDeathSaves;
                 int resourceindex = ResourcesBox.SelectedIndex;
-                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(Player.current.getBonusSpells());
+                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(Player.Current.GetBonusSpells());
                 foreach (ModifiedSpell mods in bonusspells)
                 {
-                    mods.used = Player.current.getUsedResources(mods.getResourceID());
+                    mods.used = Player.Current.GetUsedResources(mods.getResourceID());
                     mods.displayShort = true;
                 }
                 ResourcesBox.Items.Clear();
-                ResourcesBox.Items.AddRange(Player.current.getResourceInfo(true).Values.ToArray());
+                ResourcesBox.Items.AddRange(Player.Current.GetResourceInfo(true).Values.ToArray());
                 ResourcesBox.Items.AddRange(bonusspells.ToArray());
                 if (resourceindex >= 0 && resourceindex < ResourcesBox.Items.Count) ResourcesBox.SelectedIndex = resourceindex;
                 else resourceused.Enabled = false;
                 int featindex = Features.SelectedIndex;
                 Features.Items.Clear();
-                Features.Items.AddRange((from f in Player.current.getFeatures() where f.Name != "" && !f.Hidden select f).ToArray());
+                Features.Items.AddRange((from f in Player.Current.GetFeatures() where f.Name != "" && !f.Hidden select f).ToArray());
                 if (featindex >= 0 && featindex < Features.Items.Count) Features.SelectedIndex = featindex;
                 else hidefeature.Enabled = false;
-                List<Condition> active = new List<Condition>(from c in Player.current.Conditions select Condition.Get(c, null));
+                List<Condition> active = new List<Condition>(from c in Player.Current.Conditions select Condition.Get(c, null));
                 List<Condition> possible = new List<Condition>(Condition.conditions.Values);
                 possible.RemoveAll(t => active.Contains(t));
                 possible.Sort();
@@ -580,11 +579,10 @@ namespace Character_Builder_5
                 availableConditions.Items.Add("- Custom -");
                 for (int i = 4; i < inplayflow.Controls.Count; i++)
                 {
-                    if (inplayflow.Controls[i] is GroupBox)
+                    if (inplayflow.Controls[i] is GroupBox box)
                     {
-                        GroupBox box = (GroupBox)inplayflow.Controls[i];
                         string spellcasting = box.Name;
-                        Spellcasting sc = Player.current.getSpellcasting(spellcasting);
+                        Spellcasting sc = Player.Current.GetSpellcasting(spellcasting);
                         if (box.Controls[0] is Label)
                         {
                             Ability spellcastingability = (Ability)int.Parse(box.Controls[0].Name);
@@ -612,7 +610,7 @@ namespace Character_Builder_5
                                 Label highlight = (Label)highlights[0];
                                 highlight.Text = "Spell on Sheet: " + (sc.Highlight != null && sc.Highlight != "" ? sc.Highlight : "--");
                             }
-                            List<SpellSlotInfo> ssi = Player.current.getSpellSlotInfo(spellcasting);
+                            List<SpellSlotInfo> ssi = Player.Current.GetSpellSlotInfo(spellcasting);
                             Control[] slotboxes = box.Controls.Find("SpellSlotBox", true);
                             if (slotboxes.Count() > 0)
                             {
@@ -640,10 +638,10 @@ namespace Character_Builder_5
                 }
                 List<object> profs = new List<object>();
                 Proficiencies.Items.Clear();
-                Proficiencies.Items.AddRange(Player.current.getLanguages().ToArray());
-                Proficiencies.Items.AddRange(Player.current.getToolProficiencies().ToArray());
-                Proficiencies.Items.AddRange(Player.current.getToolKWProficiencies().ToArray());
-                Proficiencies.Items.AddRange(Player.current.getOtherProficiencies().ToArray());
+                Proficiencies.Items.AddRange(Player.Current.GetLanguages().ToArray());
+                Proficiencies.Items.AddRange(Player.Current.GetToolProficiencies().ToArray());
+                Proficiencies.Items.AddRange(Player.Current.GetToolKWProficiencies().ToArray());
+                Proficiencies.Items.AddRange(Player.Current.GetOtherProficiencies().ToArray());
                 layouting = false;
             }
             catch (Exception e)
@@ -659,14 +657,14 @@ namespace Character_Builder_5
                 layouting = true;
                 backtab.SuspendLayout();
                 backtab.Controls.Clear();
-                int level = Player.current.getLevel();
+                int level = Player.Current.GetLevel();
                 List<Control> backt = new List<Control>();
                 backt.Add(backgroundLabel);
                 backt.Add(background);
                 background.Items.Clear();
                 background.ForeColor = System.Drawing.SystemColors.WindowText;
-                Background back = Player.current.Background;
-                List<TableDescription> tables = Player.current.collectTables();
+                Background back = Player.Current.Background;
+                List<TableDescription> tables = Player.Current.CollectTables();
                 if (back == null)
                 {
                     background.Items.AddRange(Background.backgrounds.Values.OrderBy(s => s.Name).ToArray<Background>());
@@ -678,7 +676,7 @@ namespace Character_Builder_5
                     background.ForeColor = Config.SelectColor;
                     background.Height = background.ItemHeight + 10;
                     ControlAdder.AddControls(back, backt, level);
-                    foreach (Feature f in Player.current.getBackgroundFeatures(0, true).OrderBy(a => a.Level))
+                    foreach (Feature f in Player.Current.GetBackgroundFeatures(0, true).OrderBy(a => a.Level))
                     {
                         ControlAdder.AddControl(backt, level, f);
                     }
@@ -687,7 +685,7 @@ namespace Character_Builder_5
                 backt.Add(traits);
                 traits.Items.Clear();
                 traits.ForeColor = System.Drawing.SystemColors.WindowText;
-                if (Player.current.PersonalityTrait == null || Player.current.PersonalityTrait == "")
+                if (Player.Current.PersonalityTrait == null || Player.Current.PersonalityTrait == "")
                 {
                     if (back != null) traits.Items.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
                     foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Trait)) traits.Items.AddRange(td.Entries.ToArray<TableEntry>());
@@ -696,7 +694,7 @@ namespace Character_Builder_5
                 else
                 {
                     traits.ForeColor = Config.SelectColor;
-                    traits.Items.Add(Player.current.PersonalityTrait);
+                    traits.Items.Add(Player.Current.PersonalityTrait);
                 }
                 traits.Height = traits.Items.Count * traits.ItemHeight + 10;
 
@@ -704,7 +702,7 @@ namespace Character_Builder_5
                 backt.Add(ideals);
                 ideals.Items.Clear();
                 ideals.ForeColor = System.Drawing.SystemColors.WindowText;
-                if (Player.current.Ideal == null || Player.current.Ideal == "")
+                if (Player.Current.Ideal == null || Player.Current.Ideal == "")
                 {
                     if (back != null) ideals.Items.AddRange(back.Ideal.ToArray<TableEntry>());
                     foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Ideal)) ideals.Items.AddRange(td.Entries.ToArray<TableEntry>());
@@ -713,7 +711,7 @@ namespace Character_Builder_5
                 else
                 {
                     ideals.ForeColor = Config.SelectColor;
-                    ideals.Items.Add(Player.current.Ideal);
+                    ideals.Items.Add(Player.Current.Ideal);
                 }
                 ideals.Height = ideals.Items.Count * ideals.ItemHeight + 10;
 
@@ -721,7 +719,7 @@ namespace Character_Builder_5
                 backt.Add(bonds);
                 bonds.Items.Clear();
                 bonds.ForeColor = System.Drawing.SystemColors.WindowText;
-                if (Player.current.Bond == null || Player.current.Bond == "")
+                if (Player.Current.Bond == null || Player.Current.Bond == "")
                 {
                     if (back != null) bonds.Items.AddRange(back.Bond.ToArray<TableEntry>());
                     foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Bond)) bonds.Items.AddRange(td.Entries.ToArray<TableEntry>());
@@ -730,7 +728,7 @@ namespace Character_Builder_5
                 else
                 {
                     bonds.ForeColor = Config.SelectColor;
-                    bonds.Items.Add(Player.current.Bond);
+                    bonds.Items.Add(Player.Current.Bond);
                 }
                 bonds.Height = bonds.Items.Count * bonds.ItemHeight + 10;
 
@@ -738,7 +736,7 @@ namespace Character_Builder_5
                 backt.Add(flaws);
                 flaws.Items.Clear();
                 flaws.ForeColor = System.Drawing.SystemColors.WindowText;
-                if (Player.current.Flaw == null || Player.current.Flaw == "")
+                if (Player.Current.Flaw == null || Player.Current.Flaw == "")
                 {
                     if (back != null) flaws.Items.AddRange(back.Flaw.ToArray<TableEntry>());
                     foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Flaw)) flaws.Items.AddRange(td.Entries.ToArray<TableEntry>());
@@ -747,7 +745,7 @@ namespace Character_Builder_5
                 else
                 {
                     flaws.ForeColor = Config.SelectColor;
-                    flaws.Items.Add(Player.current.Flaw);
+                    flaws.Items.Add(Player.Current.Flaw);
                 }
                 flaws.Height = flaws.Items.Count * flaws.ItemHeight + 10;
 
@@ -771,7 +769,7 @@ namespace Character_Builder_5
                 layouting = true;
                 spellcontrol.SuspendLayout();
                 inplayflow.SuspendLayout();
-                List<Feature> spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+                List<Feature> spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
                 List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>();
                 foreach (Feature f in spellfeatures) if (f is SpellcastingFeature) spellcasts.Add((SpellcastingFeature)f);
                 int spindex = spellcontrol.SelectedIndex;
@@ -897,7 +895,7 @@ namespace Character_Builder_5
                     attacksave.Location = new System.Drawing.Point(6, 16);
                     attacksave.Name = ((int)sf.SpellcastingAbility).ToString();
                     attacksave.Size = new System.Drawing.Size(218, 13);
-                    attacksave.Text = Enum.GetName(typeof(Ability), sf.SpellcastingAbility) + ": " + plusMinus(Player.current.getSpellAttack(sf.SpellcastingID, sf.SpellcastingAbility)) + " | DC " + Player.current.getSpellSaveDC(sf.SpellcastingID, sf.SpellcastingAbility);
+                    attacksave.Text = Enum.GetName(typeof(Ability), sf.SpellcastingAbility) + ": " + plusMinus(Player.Current.GetSpellAttack(sf.SpellcastingID, sf.SpellcastingAbility)) + " | DC " + Player.Current.GetSpellSaveDC(sf.SpellcastingID, sf.SpellcastingAbility);
                     attacksave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                     box.Controls.Add(attacksave);
 
@@ -986,7 +984,7 @@ namespace Character_Builder_5
                     Player.MakeHistory("");
                     SpellChoiceFeature scf = ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature;
                     string r = ((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source;
-                    Player.current.getSpellChoice(tab.Name, scf.UniqueID).Choices.RemoveAll(t => ConfigManager.SourceInvariantComparer.Equals(t, r));
+                    Player.Current.GetSpellChoice(tab.Name, scf.UniqueID).Choices.RemoveAll(t => ConfigManager.SourceInvariantComparer.Equals(t, r));
                     //UpdateSpellChoices(choicebox);
                     UpdateSpellcastingInner();
                     UpdateInPlayInner();
@@ -1004,10 +1002,10 @@ namespace Character_Builder_5
                 if (choicebox != null && choicebox.SelectedItem != null && choicebox.SelectedItem is SpellChoiceCapsule && ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature != null)
                 {
                     SpellChoiceFeature scf = ((SpellChoiceCapsule)choicebox.SelectedItem).Spellchoicefeature;
-                    List<Feature> spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+                    List<Feature> spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
                     int amount = scf.Amount;
                     foreach (Feature f in spellfeatures) if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.UniqueID) amount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
-                    SpellChoice sc=Player.current.getSpellChoice(tab.Name, scf.UniqueID);
+                    SpellChoice sc=Player.Current.GetSpellChoice(tab.Name, scf.UniqueID);
                     if (sc.Choices.Count < amount)
                     {
                         Player.MakeHistory("");
@@ -1023,7 +1021,7 @@ namespace Character_Builder_5
         private void Choice_DisplaySpellChoices(object sender, EventArgs e)
         {
             ListBox lb = (ListBox)sender;
-            List<Feature> spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+            List<Feature> spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
             if (lb.SelectedItem != null && lb.SelectedItem is SpellChoiceCapsule)
             {
                 SpellChoiceFeature selected = ((SpellChoiceCapsule)lb.SelectedItem).Spellchoicefeature;
@@ -1037,7 +1035,7 @@ namespace Character_Builder_5
                     }
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(new FeatureContainer(choicefeats).toHTML());
+                    displayElement.Document.Write(new FeatureContainer(choicefeats).ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1050,13 +1048,13 @@ namespace Character_Builder_5
             ListBox lb = (ListBox)sender;
             if (lb.SelectedItem != null)
             {
-                List<Feature> spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+                List<Feature> spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
                 SpellcastingFeature sf = null;
                 foreach (Feature f in spellfeatures) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcontrol.SelectedTab.Name) sf = (SpellcastingFeature)f;
                 if (sf != null)
                 {
-                    Spellcasting sc = Player.current.getSpellcasting(sf.SpellcastingID);
-                    if (sc.getPreparedList().Count < Utils.availableToPrepare(sf, Player.current.getClassLevel(sf.SpellcastingID)))
+                    Spellcasting sc = Player.Current.GetSpellcasting(sf.SpellcastingID);
+                    if (sc.getPreparedList().Count < Utils.AvailableToPrepare(sf, Player.Current.GetClassLevel(sf.SpellcastingID)))
                     {
                         Player.MakeHistory("");
                         sc.getPreparedList().Add(((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source);
@@ -1072,7 +1070,7 @@ namespace Character_Builder_5
             ListBox lb = (ListBox)sender;
             if (lb.SelectedItem != null)
             {
-                Spellcasting sc = Player.current.getSpellcasting(spellcontrol.SelectedTab.Name);
+                Spellcasting sc = Player.Current.GetSpellcasting(spellcontrol.SelectedTab.Name);
                 Player.MakeHistory("");
                 string r = ((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source;
                 sc.getPreparedList().RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
@@ -1085,19 +1083,19 @@ namespace Character_Builder_5
             try
             {
                 layouting = true;
-                if (spellfeatures == null) spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+                if (spellfeatures == null) spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
                 List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>();
                 foreach (Feature f in spellfeatures) if (f is SpellcastingFeature) spellcasts.Add((SpellcastingFeature)f);
                 if (updateside) UpdateSideLayout();
                 foreach (SpellcastingFeature sf in spellcasts)
                 {
-                    Spellcasting sc = Player.current.getSpellcasting(sf.SpellcastingID);
+                    Spellcasting sc = Player.Current.GetSpellcasting(sf.SpellcastingID);
                     Control tab = null;
                     foreach (Control tp in spellcontrol.Controls) if (tp.Name == sf.SpellcastingID) tab = (Control)tp;
                     
                     if (tab != null)
                     {
-                        int classlevel = Player.current.getClassLevel(sf.SpellcastingID);
+                        int classlevel = Player.Current.GetClassLevel(sf.SpellcastingID);
                         SpellChoiceCapsule bonusprepared = null;
                         if (sf.Preparation == PreparationMode.ClassList || sf.Preparation == PreparationMode.Spellbook)
                         {
@@ -1108,7 +1106,7 @@ namespace Character_Builder_5
                                 Control[] preparebox = tab.Controls.Find(sf.SpellcastingID + "=preparedbox", true);
                                 if (preparebox.Count() > 0)
                                 {
-                                    preparebox[0].Text = "Prepared Spells (" + sc.getPreparedList().Count + "/" + Utils.availableToPrepare(sf, classlevel) + ")";
+                                    preparebox[0].Text = "Prepared Spells (" + sc.getPreparedList().Count + "/" + Utils.AvailableToPrepare(sf, classlevel) + ")";
                                 }
                                 List<Spell> preparedspells = new List<Spell>(sc.getPrepared());
                                 //List<Spell> preparedspells = new List<Spell>(from s in sc.Prepared select Spell.Get(s));
@@ -1122,7 +1120,7 @@ namespace Character_Builder_5
                                         ListBox prepable = (ListBox)prepareable[0];
                                         prepable.Items.Clear();
                                         List<Spell> prepableSpells = new List<Spell>(sc.getAdditionalClassSpells());
-                                        prepableSpells.AddRange(Utils.filterSpell(sf.PrepareableSpells, sf.SpellcastingID, classlevel));
+                                        prepableSpells.AddRange(Utils.FilterSpell(sf.PrepareableSpells, sf.SpellcastingID, classlevel));
                                         prepableSpells.Sort();
                                         prepable.Items.AddRange(prepableSpells.Where(s => !preparedspells.Exists(t => t.Name == s.Name && s.Source == t.Source)).ToArray<Spell>());
                                     }
@@ -1152,7 +1150,7 @@ namespace Character_Builder_5
                             List<SpellChoiceCapsule> scfs = new List<SpellChoiceCapsule>(from f in spellfeatures where f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == sf.SpellcastingID select new SpellChoiceCapsule((SpellChoiceFeature)f));
                             foreach (SpellChoiceCapsule scf in scfs)
                             {
-                                scf.CalculatedChoices = Player.current.getSpellChoice(sf.SpellcastingID, scf.Spellchoicefeature.UniqueID).Choices.Select(t => Spell.Get(t, scf.Spellchoicefeature.Source)).ToList();
+                                scf.CalculatedChoices = Player.Current.GetSpellChoice(sf.SpellcastingID, scf.Spellchoicefeature.UniqueID).Choices.Select(t => Spell.Get(t, scf.Spellchoicefeature.Source)).ToList();
                                 scf.CalculatedAmount = scf.Spellchoicefeature.Amount;
                                 foreach (Feature f in spellfeatures) if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.Spellchoicefeature.UniqueID) scf.CalculatedAmount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
                             }
@@ -1183,21 +1181,21 @@ namespace Character_Builder_5
                     bool waslayouting = layouting;
                     if (!layouting) layouting = true;
                     SpellChoiceFeature scf = ((SpellChoiceCapsule)lb.SelectedItem).Spellchoicefeature;
-                    if (spellfeatures == null) spellfeatures = new List<Feature>(from f in Player.current.getFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
+                    if (spellfeatures == null) spellfeatures = new List<Feature>(from f in Player.Current.GetFeatures() where f is SpellcastingFeature || f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature select f);
                     SpellcastingFeature sf = null;
                     foreach (Feature f in spellfeatures) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcontrol.SelectedTab.Name) sf = (SpellcastingFeature)f;
                     if (sf != null)
                     {
                         if (scf != null)
                         {
-                            int classlevel = Player.current.getClassLevel(sf.SpellcastingID);
-                            List<Spell> available = new List<Spell>(Utils.filterSpell(scf.AvailableSpellChoices, sf.SpellcastingID, classlevel));
-                            List<Spell> chosen = new List<Spell>(Player.current.getSpellChoice(sf.SpellcastingID, scf.UniqueID).Choices.Select(t => Spell.Get(t, scf.Source)));
+                            int classlevel = Player.Current.GetClassLevel(sf.SpellcastingID);
+                            List<Spell> available = new List<Spell>(Utils.FilterSpell(scf.AvailableSpellChoices, sf.SpellcastingID, classlevel));
+                            List<Spell> chosen = new List<Spell>(Player.Current.GetSpellChoice(sf.SpellcastingID, scf.UniqueID).Choices.Select(t => Spell.Get(t, scf.Source)));
                             int amount = scf.Amount;
                             foreach (Feature f in spellfeatures)
                             {
                                 if (f is ModifySpellChoiceFeature && ((ModifySpellChoiceFeature)f).UniqueID == scf.UniqueID)
-                                    available.AddRange(Utils.filterSpell(((ModifySpellChoiceFeature)f).AdditionalSpellChoices, sf.SpellcastingID, classlevel));
+                                    available.AddRange(Utils.FilterSpell(((ModifySpellChoiceFeature)f).AdditionalSpellChoices, sf.SpellcastingID, classlevel));
                                 if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.UniqueID) amount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
                             }
                             available.Sort();
@@ -1254,26 +1252,26 @@ namespace Character_Builder_5
             {
                 if (updateside) UpdateSideLayout();
                 layouting = true;
-                portraitBox.Image = Player.current.Portrait;
-                characterName.Text = Player.current.Name;
-                XP.Minimum = Player.current.getXP(true);
-                XP.Value = Player.current.getXP();
-                Alignment.Text = Player.current.Alignment;
-                PlayerName.Text = Player.current.PlayerName;
-                DCI.Text = Player.current.DCI;
-                XPtoUP.Value = Level.XpToLevelUp(Player.current.getXP());
-                Age.Value = Player.current.Age;
-                HeightValue.Text = Player.current.Height;
-                Weight.Value = Player.current.Weight;
-                Eyes.Text = Player.current.Eyes;
-                Skin.Text = Player.current.Skin;
-                Hair.Text = Player.current.Hair;
-                FactionName.Text = Player.current.FactionName;
-                FactionInsignia.Image = Player.current.FactionImage;
-                Backstory.Text = Player.current.Backstory;
-                Allies.Text = Player.current.Allies;
+                portraitBox.Image = Player.Current.Portrait;
+                characterName.Text = Player.Current.Name;
+                XP.Minimum = Player.Current.GetXP(true);
+                XP.Value = Player.Current.GetXP();
+                Alignment.Text = Player.Current.Alignment;
+                PlayerName.Text = Player.Current.PlayerName;
+                DCI.Text = Player.Current.DCI;
+                XPtoUP.Value = Level.XpToLevelUp(Player.Current.GetXP());
+                Age.Value = Player.Current.Age;
+                HeightValue.Text = Player.Current.Height;
+                Weight.Value = Player.Current.Weight;
+                Eyes.Text = Player.Current.Eyes;
+                Skin.Text = Player.Current.Skin;
+                Hair.Text = Player.Current.Hair;
+                FactionName.Text = Player.Current.FactionName;
+                FactionInsignia.Image = Player.Current.FactionImage;
+                Backstory.Text = Player.Current.Backstory;
+                Allies.Text = Player.Current.Allies;
                 journalentrybox.Items.Clear();
-                journalentrybox.Items.AddRange((from s in Player.current.Journal select s.IndexOfAny(new char[] { '\r', '\n' }) == -1 ? s : s.Substring(0, s.IndexOfAny(new char[] { '\r', '\n' }))).ToArray());
+                journalentrybox.Items.AddRange((from s in Player.Current.Journal select s.IndexOfAny(new char[] { '\r', '\n' }) == -1 ? s : s.Substring(0, s.IndexOfAny(new char[] { '\r', '\n' }))).ToArray());
                 journalbox.Text = "";
                 layouting = false;
             }
@@ -1293,9 +1291,9 @@ namespace Character_Builder_5
                 else
                 {
                     AbilityScoreFeatFeature asff = ((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF;
-                    List<string> taken = new List<string>(Player.current.getFeatNames());
-                    foreach (Feature f in Player.current.getFeatures()) if (f is CollectionChoiceFeature && (((CollectionChoiceFeature)f).Collection == null || ((CollectionChoiceFeature)f).Collection == "")) taken.AddRange(((CollectionChoiceFeature)f).Choices(Player.current));
-                    taken.RemoveAll(s => s == Player.current.getAbilityFeatChoice(asff).Feat);
+                    List<string> taken = new List<string>(Player.Current.GetFeatNames());
+                    foreach (Feature f in Player.Current.GetFeatures()) if (f is CollectionChoiceFeature && (((CollectionChoiceFeature)f).Collection == null || ((CollectionChoiceFeature)f).Collection == "")) taken.AddRange(((CollectionChoiceFeature)f).Choices(Player.Current));
+                    taken.RemoveAll(s => s == Player.Current.GetAbilityFeatChoice(asff).Feat);
                     AbilityFeatBox.Items.Clear();
                     AbilityFeatBox.Items.Add("+1 Strength");
                     AbilityFeatBox.Items.Add("+1 Dexterity");
@@ -1303,7 +1301,7 @@ namespace Character_Builder_5
                     AbilityFeatBox.Items.Add("+1 Intelligence");
                     AbilityFeatBox.Items.Add("+1 Wisdom");
                     AbilityFeatBox.Items.Add("+1 Charisma");
-                    int level = Player.current.getLevel();
+                    int level = Player.Current.GetLevel();
                     AbilityFeatBox.Items.AddRange(FeatureCollection.Get("").Where(f => !taken.Contains(f.Name) && f.Level <= level).ToArray<Feature>());
                 }
             }
@@ -1321,7 +1319,7 @@ namespace Character_Builder_5
             if (classList.SelectedItem != null)
             {
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
-                classesBox.Items.AddRange(ClassDefinition.GetClasses(ci.Level, Player.current).OrderBy(s => s.Name).ToArray<ClassDefinition>());
+                classesBox.Items.AddRange(ClassDefinition.GetClasses(ci.Level, Player.Current).OrderBy(s => s.Name).ToArray<ClassDefinition>());
                 if (ci.Class != null)
                 {
                     hpSpinner.Minimum = 0;
@@ -1341,11 +1339,11 @@ namespace Character_Builder_5
                 ClassPanel.SuspendLayout();
                 ClassPanel.Controls.Clear();
                 List<Control> classt = new List<Control>();
-                List<SubClassFeature> subclass = new List<SubClassFeature>(from Feature f in Player.current.getFeatures() where f is SubClassFeature select (SubClassFeature)f);
+                List<SubClassFeature> subclass = new List<SubClassFeature>(from Feature f in Player.Current.GetFeatures() where f is SubClassFeature select (SubClassFeature)f);
                 int index = classList.SelectedIndex;
                 int top = classList.TopIndex;
                 classList.Items.Clear();
-                classList.Items.AddRange(Player.current.getClassInfos().ToArray<ClassInfo>());
+                classList.Items.AddRange(Player.Current.GetClassInfos().ToArray<ClassInfo>());
                 if (index >= 0 && index < classList.Items.Count)
                 {
                     classList.SelectedIndex = index;
@@ -1412,7 +1410,7 @@ namespace Character_Builder_5
                     scb.DoubleClick += new System.EventHandler(this.subclassbox_DoubleClick);
                     scb.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
                     scb.MouseWheel += listbox_MouseWheel;
-                    SubClass scs = Player.current.getSubclass(sc.ParentClass);
+                    SubClass scs = Player.Current.GetSubclass(sc.ParentClass);
                     if (scs == null) scb.Items.AddRange(SubClass.For(sc.ParentClass).OrderBy(s=>s.Name).ToArray<SubClass>());
                     else
                     {
@@ -1425,9 +1423,9 @@ namespace Character_Builder_5
                 /*}
             }
         }*/
-                int level = Player.current.getLevel();
-                ControlAdder.AddClassControls(Player.current, classt, level);
-                foreach (Feature f in Player.current.getCommonFeaturesAndFeats())
+                int level = Player.Current.GetLevel();
+                ControlAdder.AddClassControls(Player.Current, classt, level);
+                foreach (Feature f in Player.Current.GetCommonFeaturesAndFeats())
                 {
                     ControlAdder.AddControl(classt, level, f);
                 }
@@ -1446,8 +1444,8 @@ namespace Character_Builder_5
         {
             ListBox l = (ListBox)sender;
             Player.MakeHistory("");
-            if (Player.current.getSubclass(l.Name) == null) Player.current.AddSubclass(l.Name, ((SubClass)l.SelectedItem).Name);
-            else Player.current.RemoveSubclass(l.Name);
+            if (Player.Current.GetSubclass(l.Name) == null) Player.Current.AddSubclass(l.Name, ((SubClass)l.SelectedItem).Name);
+            else Player.Current.RemoveSubclass(l.Name);
             UpdateLayout();
         }
 
@@ -1461,7 +1459,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1472,36 +1470,36 @@ namespace Character_Builder_5
             {
                 if (updateside) UpdateSideLayout();
                 layouting = true;
-                Strength.Value = Player.current.BaseStrength;
-                Dexterity.Value = Player.current.BaseDexterity;
-                Constitution.Value = Player.current.BaseConstitution;
-                Intelligence.Value = Player.current.BaseIntelligence;
-                Wisdom.Value = Player.current.BaseWisdom;
-                Charisma.Value = Player.current.BaseCharisma;
+                Strength.Value = Player.Current.BaseStrength;
+                Dexterity.Value = Player.Current.BaseDexterity;
+                Constitution.Value = Player.Current.BaseConstitution;
+                Intelligence.Value = Player.Current.BaseIntelligence;
+                Wisdom.Value = Player.Current.BaseWisdom;
+                Charisma.Value = Player.Current.BaseCharisma;
                 AbilityScoreArray max;
-                AbilityScoreArray scores = Player.current.getFinalAbilityScores(out max);
+                AbilityScoreArray scores = Player.Current.GetFinalAbilityScores(out max);
                 StrengthFinal.Text = "=" + scores.Strength;
-                StrengthMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Strength)) + ")";
+                StrengthMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Strength)) + ")";
                 DexterityFinal.Text = "=" + scores.Dexterity;
-                DexterityMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Dexterity)) + ")";
+                DexterityMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Dexterity)) + ")";
                 ConstitutionFinal.Text = "=" + scores.Constitution;
-                ConstitutionMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Constitution)) + ")";
+                ConstitutionMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Constitution)) + ")";
                 IntelligenceFinal.Text = "=" + scores.Intelligence;
-                IntelligenceMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Intelligence)) + ")";
+                IntelligenceMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Intelligence)) + ")";
                 WisdomFinal.Text = "=" + scores.Wisdom;
-                WisdomMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Wisdom)) + ")";
+                WisdomMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Wisdom)) + ")";
                 CharismaFinal.Text = "=" + scores.Charisma;
-                CharismaMod.Text = "(" + plusMinus(AbilityScores.getMod(scores.Charisma)) + ")";
+                CharismaMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Charisma)) + ")";
                 StrengthMax.Text = "| " + max.Strength;
                 DexterityMax.Text = "| " + max.Dexterity;
                 ConstitutionMax.Text = "| " + max.Constitution;
                 IntelligenceMax.Text = "| " + max.Intelligence;
                 WisdomMax.Text = "| " + max.Wisdom;
                 CharismaMax.Text = "| " + max.Charisma;
-                PointBuyRemaining.Text = "Points left: " + Utils.getPointsRemaining(Player.current);
+                PointBuyRemaining.Text = "Points left: " + Utils.GetPointsRemaining(Player.Current);
                 int index = AbilityFeatChoiceBox.SelectedIndex;
                 AbilityFeatChoiceBox.Items.Clear();
-                AbilityFeatChoiceBox.Items.AddRange((from asff in Player.current.getAbilityIncreases() select new AbilityFeatChoiceContainer(asff)).ToArray<AbilityFeatChoiceContainer>());
+                AbilityFeatChoiceBox.Items.AddRange((from asff in Player.Current.GetAbilityIncreases() select new AbilityFeatChoiceContainer(asff)).ToArray<AbilityFeatChoiceContainer>());
                 if (index >= 0 && index < AbilityFeatChoiceBox.Items.Count) AbilityFeatChoiceBox.SelectedIndex = index;
                 //splitContainer4.Panel1.SuspendLayout();
                 //splitContainer4.Panel1.Controls.Clear();
@@ -1533,23 +1531,23 @@ namespace Character_Builder_5
                 layouting = true;
                 racetab.SuspendLayout();
                 racetab.Controls.Clear();
-                int level = Player.current.getLevel();
+                int level = Player.Current.GetLevel();
                 List<Control> racet = new List<Control>();
                 racet.Add(racelabel);
                 racet.Add(racebox);
                 racebox.Items.Clear();
                 racebox.ForeColor = System.Drawing.SystemColors.WindowText;
-                Race rac = Player.current.Race;
+                Race rac = Player.Current.Race;
                 
                 
 
                 List<String> parentraces = new List<string>();
-                foreach (Feature f in Player.current.getFeatures().Where<Feature>(f => f is SubRaceFeature)) parentraces.AddRange(((SubRaceFeature)f).Races);
+                foreach (Feature f in Player.Current.GetFeatures().Where<Feature>(f => f is SubRaceFeature)) parentraces.AddRange(((SubRaceFeature)f).Races);
                 if (parentraces.Count > 0)
                 {
                     racet.Add(subracelabel);
                     racet.Add(subracebox);
-                    SubRace subrac = Player.current.SubRace;
+                    SubRace subrac = Player.Current.SubRace;
                     subracebox.Items.Clear();
                     subracebox.ForeColor = System.Drawing.SystemColors.WindowText;
                     if (subrac == null) subracebox.Items.AddRange(SubRace.For(parentraces).OrderBy(s => s.Name).ToArray<SubRace>());
@@ -1568,7 +1566,7 @@ namespace Character_Builder_5
                     racebox.Items.Add(rac);
                     racebox.ForeColor = Config.SelectColor;
                     ControlAdder.AddControls(rac, racet, level);
-                    foreach (Feature f in Player.current.getRaceFeatures(0, true).OrderBy(a => a.Level))
+                    foreach (Feature f in Player.Current.GetRaceFeatures(0, true).OrderBy(a => a.Level))
                     {
                         ControlAdder.AddControl(racet, level, f);
                     }
@@ -1592,7 +1590,7 @@ namespace Character_Builder_5
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(selected.toHTML());
+                displayElement.Document.Write(selected.ToHTML());
                 displayElement.Refresh();
             }
             
@@ -1604,8 +1602,8 @@ namespace Character_Builder_5
             if (selected != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.Background == null) Player.current.Background = selected;
-                else Player.current.Background = null;
+                if (Player.Current.Background == null) Player.Current.Background = selected;
+                else Player.Current.Background = null;
                 UpdateBackgroundLayout();
             }
         }
@@ -1614,12 +1612,12 @@ namespace Character_Builder_5
         {
             if (traits.SelectedItem != null) {
                 Player.MakeHistory("");
-                if (Player.current.PersonalityTrait == null || Player.current.PersonalityTrait == "")
+                if (Player.Current.PersonalityTrait == null || Player.Current.PersonalityTrait == "")
                 {
-                    if (traits.SelectedIndex == traits.Items.Count - 1) Player.current.PersonalityTrait = Interaction.InputBox("Custom Personality Trait:", "CB 5");
-                    else Player.current.PersonalityTrait = traits.SelectedItem.ToString();
+                    if (traits.SelectedIndex == traits.Items.Count - 1) Player.Current.PersonalityTrait = Interaction.InputBox("Custom Personality Trait:", "CB 5");
+                    else Player.Current.PersonalityTrait = traits.SelectedItem.ToString();
                 }
-                else Player.current.PersonalityTrait = "";
+                else Player.Current.PersonalityTrait = "";
                 UpdateBackgroundLayout();
             }
         }
@@ -1629,12 +1627,12 @@ namespace Character_Builder_5
             if (ideals.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.Ideal == null || Player.current.Ideal == "")
+                if (Player.Current.Ideal == null || Player.Current.Ideal == "")
                 {
-                    if (ideals.SelectedIndex == ideals.Items.Count - 1) Player.current.Ideal = Interaction.InputBox("Custom Ideal:", "CB 5");
-                    else Player.current.Ideal = ideals.SelectedItem.ToString();
+                    if (ideals.SelectedIndex == ideals.Items.Count - 1) Player.Current.Ideal = Interaction.InputBox("Custom Ideal:", "CB 5");
+                    else Player.Current.Ideal = ideals.SelectedItem.ToString();
                 }
-                else Player.current.Ideal = "";
+                else Player.Current.Ideal = "";
                 UpdateBackgroundLayout();
             }
         }
@@ -1644,12 +1642,12 @@ namespace Character_Builder_5
             if (bonds.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.Bond == null || Player.current.Bond == "")
+                if (Player.Current.Bond == null || Player.Current.Bond == "")
                 {
-                    if (bonds.SelectedIndex == bonds.Items.Count - 1) Player.current.Bond = Interaction.InputBox("Custom Bond:", "CB 5");
-                    else Player.current.Bond = bonds.SelectedItem.ToString();
+                    if (bonds.SelectedIndex == bonds.Items.Count - 1) Player.Current.Bond = Interaction.InputBox("Custom Bond:", "CB 5");
+                    else Player.Current.Bond = bonds.SelectedItem.ToString();
                 }
-                else Player.current.Bond = "";
+                else Player.Current.Bond = "";
                 UpdateBackgroundLayout();
             }
         }
@@ -1659,12 +1657,12 @@ namespace Character_Builder_5
             if (flaws.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.Flaw == null || Player.current.Flaw == "")
+                if (Player.Current.Flaw == null || Player.Current.Flaw == "")
                 {
-                    if (flaws.SelectedIndex == flaws.Items.Count - 1) Player.current.Flaw = Interaction.InputBox("Custom Flaw:", "CB 5");
-                    else Player.current.Flaw = flaws.SelectedItem.ToString();
+                    if (flaws.SelectedIndex == flaws.Items.Count - 1) Player.Current.Flaw = Interaction.InputBox("Custom Flaw:", "CB 5");
+                    else Player.Current.Flaw = flaws.SelectedItem.ToString();
                 }
-                else Player.current.Flaw = "";
+                else Player.Current.Flaw = "";
                 UpdateBackgroundLayout();
             }
         }
@@ -1680,16 +1678,16 @@ namespace Character_Builder_5
             if (choicer != null && choicer.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                Choice c = Player.current.getChoice(choicer.Name);
+                Choice c = Player.Current.GetChoice(choicer.Name);
                 if (c == null || c.Value == "")
                 {
                     bool old = ConfigManager.AlwaysShowSource;
                     ConfigManager.AlwaysShowSource = true;
-                    if (choicer.SelectedIndex == choicer.Items.Count - 1) Player.current.setChoice(choicer.Name,Interaction.InputBox("Custom Entry:", "CB 5"));
-                    else Player.current.setChoice(choicer.Name,choicer.SelectedItem.ToString());
+                    if (choicer.SelectedIndex == choicer.Items.Count - 1) Player.Current.SetChoice(choicer.Name,Interaction.InputBox("Custom Entry:", "CB 5"));
+                    else Player.Current.SetChoice(choicer.Name,choicer.SelectedItem.ToString());
                     ConfigManager.AlwaysShowSource = old;
                 }
-                else Player.current.RemoveChoice(choicer.Name);
+                else Player.Current.RemoveChoice(choicer.Name);
                 Program.MainWindow.UpdateLayout();
             }
         }
@@ -1699,11 +1697,11 @@ namespace Character_Builder_5
             if (choicer != null && choicer.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                Choice c = Player.current.getChoice(choicer.Name);
+                Choice c = Player.Current.GetChoice(choicer.Name);
                 bool old = ConfigManager.AlwaysShowSource;
                 ConfigManager.AlwaysShowSource = true;
-                if (c == null || c.Value == "") Player.current.setChoice(choicer.Name, choicer.SelectedItem.ToString());
-                else Player.current.RemoveChoice(choicer.Name);
+                if (c == null || c.Value == "") Player.Current.SetChoice(choicer.Name, choicer.SelectedItem.ToString());
+                else Player.Current.RemoveChoice(choicer.Name);
                 ConfigManager.AlwaysShowSource = old;
                 Program.MainWindow.UpdateLayout();
             }
@@ -1719,7 +1717,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1734,7 +1732,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1749,7 +1747,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1764,7 +1762,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1777,14 +1775,14 @@ namespace Character_Builder_5
                 GroupBox box = (GroupBox)choicer.Parent;
                 Ability spellcastingability = (Ability)int.Parse(box.Controls[0].Name);
                 ModifiedSpell selected = (ModifiedSpell)choicer.SelectedItem;
-                selected.Modifikations.AddRange(from f in Player.current.getFeatures() where f is SpellModifyFeature && Utils.matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
+                selected.Modifikations.AddRange(from f in Player.Current.GetFeatures() where f is SpellModifyFeature && Utils.Matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
                 selected.Modifikations = selected.Modifikations.Distinct().ToList();
-                selected.Info = Player.current.getAttack(selected, (selected.differentAbility == Ability.None?spellcastingability:selected.differentAbility));
+                selected.Info = Player.Current.GetAttack(selected, (selected.differentAbility == Ability.None?spellcastingability:selected.differentAbility));
                 if (selected != null)
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1800,7 +1798,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1816,7 +1814,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1831,7 +1829,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1842,7 +1840,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                     skillabilitybox.SelectedIndex = abilitytoindex(((SkillInfo)choicer.SelectedItem).Base);
                 }
@@ -1878,7 +1876,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -1902,11 +1900,11 @@ namespace Character_Builder_5
                             Player.UndoBuffer = new LinkedList<Player>();
                             Player.RedoBuffer = new LinkedList<Player>();
                             Player.UnsavedChanges = 0;
-                            Player.current = newP;
+                            Player.Current = newP;
 
                         }
                         lastfile = od.FileName;
-                        Program.resetglobals();
+                        Program.Resetglobals();
                         UpdateLayout();
                     }
                     catch (Exception ex)
@@ -1930,7 +1928,7 @@ namespace Character_Builder_5
                     try
                     {
                         lastfile = od.FileName;
-                        using (FileStream fs = (FileStream)od.OpenFile()) Player.current.Save(fs);
+                        using (FileStream fs = (FileStream)od.OpenFile()) Player.Current.Save(fs);
                         Player.UnsavedChanges = 0;
                     }
                     catch (Exception ex)
@@ -1945,7 +1943,7 @@ namespace Character_Builder_5
                 {
                     using (FileStream fs = new FileStream(lastfile, FileMode.Truncate))
                     {
-                        Player.current.Save(fs);
+                        Player.Current.Save(fs);
                         Player.UnsavedChanges = 0;
                     }
                 }
@@ -1962,11 +1960,11 @@ namespace Character_Builder_5
             if (Player.UnsavedChanges == 0 || MessageBox.Show(Player.UnsavedChanges + " unsaved changes will be lost. Continue?", "Unsaved Changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 lastfile = "";
-                Player.current = new Player();
+                Player.Current = new Player();
                 Player.UndoBuffer = new LinkedList<Player>();
                 Player.RedoBuffer = new LinkedList<Player>();
                 Player.UnsavedChanges = 0;
-                Program.resetglobals();
+                Program.Resetglobals();
                 UpdateLayout();
             }
         }
@@ -1981,7 +1979,7 @@ namespace Character_Builder_5
             {
                 try
                 {
-                    using (FileStream fs = (FileStream)od.OpenFile()) Player.current.Save(fs);
+                    using (FileStream fs = (FileStream)od.OpenFile()) Player.Current.Save(fs);
                     Player.UnsavedChanges = 0;
                     lastfile = od.FileName;
                 }
@@ -2048,8 +2046,8 @@ namespace Character_Builder_5
             if (selected != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.Race == null) Player.current.Race = selected;
-                else Player.current.Race = null;
+                if (Player.Current.Race == null) Player.Current.Race = selected;
+                else Player.Current.Race = null;
                 UpdateLayout();
             }
         }
@@ -2061,7 +2059,7 @@ namespace Character_Builder_5
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(selected.toHTML());
+                displayElement.Document.Write(selected.ToHTML());
                 displayElement.Refresh();
             }
         }
@@ -2073,7 +2071,7 @@ namespace Character_Builder_5
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(selected.toHTML());
+                displayElement.Document.Write(selected.ToHTML());
                 displayElement.Refresh();
             }
         }
@@ -2084,8 +2082,8 @@ namespace Character_Builder_5
             if (selected != null)
             {
                 Player.MakeHistory("");
-                if (Player.current.SubRace == null) Player.current.SubRace = selected;
-                else Player.current.SubRace = null;
+                if (Player.Current.SubRace == null) Player.Current.SubRace = selected;
+                else Player.Current.SubRace = null;
                 UpdateLayout();
             }
         }
@@ -2095,7 +2093,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Name");
-                Player.current.Name = characterName.Text;
+                Player.Current.Name = characterName.Text;
                 UpdateSideLayout();
             }
         }
@@ -2103,7 +2101,7 @@ namespace Character_Builder_5
         private void removePortrait_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.Portrait = null;
+            Player.Current.Portrait = null;
             UpdatePersonal();
         }
 
@@ -2120,7 +2118,7 @@ namespace Character_Builder_5
                 try
                 {
                     Player.MakeHistory("");
-                    Player.current.Portrait = new Bitmap(ofd.FileName);
+                    Player.Current.Portrait = new Bitmap(ofd.FileName);
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -2135,7 +2133,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("");
-                Player.current.Alignment = Alignment.Text;
+                Player.Current.Alignment = Alignment.Text;
             }
         }
 
@@ -2147,7 +2145,7 @@ namespace Character_Builder_5
                 Decimal xp=Decimal.Round(XP.Value);
                 if (XP.Value == xp)
                 {
-                    Player.current.setXP((int)XP.Value);
+                    Player.Current.SetXP((int)XP.Value);
                     UpdateLayout();
                 }
                 else if (XP.Value > xp) XP.Value = xp + Level.XpToLevelUp((int)xp);
@@ -2160,7 +2158,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Playername");
-                Player.current.PlayerName = PlayerName.Text;
+                Player.Current.PlayerName = PlayerName.Text;
             }
         }
 
@@ -2169,7 +2167,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Age");
-                Player.current.Age = (int)Age.Value;
+                Player.Current.Age = (int)Age.Value;
             }
         }
 
@@ -2178,7 +2176,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Weight");
-                Player.current.Weight = (int)Weight.Value;
+                Player.Current.Weight = (int)Weight.Value;
             }
         }
 
@@ -2187,7 +2185,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Height");
-                Player.current.Height = HeightValue.Text;
+                Player.Current.Height = HeightValue.Text;
             }
         }
 
@@ -2196,7 +2194,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Eyes");
-                Player.current.Eyes = Eyes.Text;
+                Player.Current.Eyes = Eyes.Text;
             }
         }
 
@@ -2205,7 +2203,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Skin");
-                Player.current.Skin = Skin.Text;
+                Player.Current.Skin = Skin.Text;
             }
         }
 
@@ -2214,7 +2212,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Hair");
-                Player.current.Hair = Hair.Text;
+                Player.Current.Hair = Hair.Text;
             }
         }
 
@@ -2223,14 +2221,14 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Factionname");
-                Player.current.FactionName = FactionName.Text;
+                Player.Current.FactionName = FactionName.Text;
             }
         }
 
         private void FactionBlank_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.FactionImage = null;
+            Player.Current.FactionImage = null;
             UpdatePersonal();
         }
 
@@ -2247,7 +2245,7 @@ namespace Character_Builder_5
                 try
                 {
                     Player.MakeHistory("");
-                    Player.current.FactionImage = new Bitmap(ofd.FileName);
+                    Player.Current.FactionImage = new Bitmap(ofd.FileName);
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -2262,7 +2260,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Background");
-                Player.current.Backstory = Backstory.Text;
+                Player.Current.Backstory = Backstory.Text;
             }
         }
 
@@ -2271,7 +2269,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Allies");
-                Player.current.Allies = Allies.Text;
+                Player.Current.Allies = Allies.Text;
             }
         }
         public static string plusMinus(int x)
@@ -2285,12 +2283,12 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Score"+((Control)sender).Name);
-                Player.current.BaseStrength = (int)Strength.Value;
-                Player.current.BaseDexterity = (int)Dexterity.Value;
-                Player.current.BaseConstitution = (int)Constitution.Value;
-                Player.current.BaseIntelligence = (int)Intelligence.Value;
-                Player.current.BaseWisdom = (int)Wisdom.Value;
-                Player.current.BaseCharisma = (int)Charisma.Value;
+                Player.Current.BaseStrength = (int)Strength.Value;
+                Player.Current.BaseDexterity = (int)Dexterity.Value;
+                Player.Current.BaseConstitution = (int)Constitution.Value;
+                Player.Current.BaseIntelligence = (int)Intelligence.Value;
+                Player.Current.BaseWisdom = (int)Wisdom.Value;
+                Player.Current.BaseCharisma = (int)Charisma.Value;
                 UpdateLayout();
             }
         }
@@ -2301,12 +2299,12 @@ namespace Character_Builder_5
             {
                 Player.MakeHistory("");
                 AbilityScoreArray a = (AbilityScoreArray)ArrayBox.SelectedItem;
-                Player.current.BaseStrength = a.Strength;
-                Player.current.BaseDexterity = a.Dexterity;
-                Player.current.BaseConstitution = a.Constitution;
-                Player.current.BaseIntelligence = a.Intelligence;
-                Player.current.BaseWisdom = a.Wisdom;
-                Player.current.BaseCharisma = a.Charisma;
+                Player.Current.BaseStrength = a.Strength;
+                Player.Current.BaseDexterity = a.Dexterity;
+                Player.Current.BaseConstitution = a.Constitution;
+                Player.Current.BaseIntelligence = a.Intelligence;
+                Player.Current.BaseWisdom = a.Wisdom;
+                Player.Current.BaseCharisma = a.Charisma;
                 UpdateScores();
                 ArrayBox.SelectedItem = null;
             }
@@ -2329,40 +2327,40 @@ namespace Character_Builder_5
                         int temp = 0;
                         if (s == "Strength")
                         {
-                            temp = Player.current.BaseStrength;
-                            Player.current.BaseStrength = (int)n.Value;
+                            temp = Player.Current.BaseStrength;
+                            Player.Current.BaseStrength = (int)n.Value;
                         }
                         if (s == "Dexterity")
                         {
-                            temp = Player.current.BaseDexterity;
-                            Player.current.BaseDexterity = (int)n.Value;
+                            temp = Player.Current.BaseDexterity;
+                            Player.Current.BaseDexterity = (int)n.Value;
                         }
                         if (s == "Constitution")
                         {
-                            temp = Player.current.BaseConstitution;
-                            Player.current.BaseConstitution = (int)n.Value;
+                            temp = Player.Current.BaseConstitution;
+                            Player.Current.BaseConstitution = (int)n.Value;
                         }
                         if (s == "Intelligence")
                         {
-                            temp = Player.current.BaseIntelligence;
-                            Player.current.BaseIntelligence = (int)n.Value;
+                            temp = Player.Current.BaseIntelligence;
+                            Player.Current.BaseIntelligence = (int)n.Value;
                         }
                         if (s == "Wisdom")
                         {
-                            temp = Player.current.BaseWisdom;
-                            Player.current.BaseWisdom = (int)n.Value;
+                            temp = Player.Current.BaseWisdom;
+                            Player.Current.BaseWisdom = (int)n.Value;
                         }
                         if (s == "Charisma")
                         {
-                            temp = Player.current.BaseCharisma;
-                            Player.current.BaseCharisma = (int)n.Value;
+                            temp = Player.Current.BaseCharisma;
+                            Player.Current.BaseCharisma = (int)n.Value;
                         }
-                        if (n.Name == "Strength") Player.current.BaseStrength = temp;
-                        if (n.Name == "Dexterity") Player.current.BaseDexterity = temp;
-                        if (n.Name == "Constitution") Player.current.BaseConstitution = temp;
-                        if (n.Name == "Intelligence") Player.current.BaseIntelligence = temp;
-                        if (n.Name == "Wisdom") Player.current.BaseWisdom = temp;
-                        if (n.Name == "Charisma") Player.current.BaseCharisma = temp;
+                        if (n.Name == "Strength") Player.Current.BaseStrength = temp;
+                        if (n.Name == "Dexterity") Player.Current.BaseDexterity = temp;
+                        if (n.Name == "Constitution") Player.Current.BaseConstitution = temp;
+                        if (n.Name == "Intelligence") Player.Current.BaseIntelligence = temp;
+                        if (n.Name == "Wisdom") Player.Current.BaseWisdom = temp;
+                        if (n.Name == "Charisma") Player.Current.BaseCharisma = temp;
                         UpdateScores();
                         UpdateSpellcastingInner();
                     }
@@ -2390,7 +2388,7 @@ namespace Character_Builder_5
             if (AbilityFeatChoiceBox.SelectedItem==null) return;
             if (o == null) return;
             AbilityScoreFeatFeature asff = ((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF;
-            AbilityFeatChoice afc = Player.current.getAbilityFeatChoice(asff);
+            AbilityFeatChoice afc = Player.Current.GetAbilityFeatChoice(asff);
             if (o is string)
             {
                 Player.MakeHistory("");
@@ -2455,7 +2453,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(selected.toHTML());
+                    displayElement.Document.Write(selected.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -2479,7 +2477,7 @@ namespace Character_Builder_5
             UpdateAbilityFeatList();
             if (AbilityFeatChoiceBox.SelectedItem is AbilityFeatChoiceContainer)
             {
-                AbilityFeatChoice afc = Player.current.getAbilityFeatChoice(((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF);
+                AbilityFeatChoice afc = Player.Current.GetAbilityFeatChoice(((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF);
                 if (afc != null && afc.Feat != "")
                 {
                     List<Feature> feats = FeatureCollection.Get("");
@@ -2489,7 +2487,7 @@ namespace Character_Builder_5
                     {
                         displayElement.Navigate("about:blank");
                         displayElement.Document.OpenNew(true);
-                        displayElement.Document.Write(selected.toHTML());
+                        displayElement.Document.Write(selected.ToHTML());
                         displayElement.Refresh();
                     }
                 }
@@ -2506,7 +2504,7 @@ namespace Character_Builder_5
                 {
                     displayElement.Navigate("about:blank");
                     displayElement.Document.OpenNew(true);
-                    displayElement.Document.Write(ci.Class.toHTML());
+                    displayElement.Document.Write(ci.Class.ToHTML());
                     displayElement.Refresh();
                 }
             }
@@ -2518,10 +2516,10 @@ namespace Character_Builder_5
             {
                 Player.MakeHistory("");
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
-                ClassDefinition cur=Player.current.GetClass(ci.Level);
+                ClassDefinition cur=Player.Current.GetClass(ci.Level);
                 if (cur == (ClassDefinition)classesBox.SelectedItem) return;
-                if (cur != null) Player.current.DeleteClass(ci.Level);
-                Player.current.AddClass((ClassDefinition)classesBox.SelectedItem, ci.Level);
+                if (cur != null) Player.Current.DeleteClass(ci.Level);
+                Player.Current.AddClass((ClassDefinition)classesBox.SelectedItem, ci.Level);
                 if (classList.SelectedIndex < classList.Items.Count - 1) classList.SelectedIndex++;
                 UpdateLayout();
             }
@@ -2534,7 +2532,7 @@ namespace Character_Builder_5
             {
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
                 Player.MakeHistory("HP"+ci.Level);
-                Player.current.setHPRoll(ci.Level, (int)hpSpinner.Value);
+                Player.Current.SetHPRoll(ci.Level, (int)hpSpinner.Value);
                 UpdateLayout();
             }
         }
@@ -2545,7 +2543,7 @@ namespace Character_Builder_5
             {
                 Player.MakeHistory("");
                ClassInfo ci = (ClassInfo)classList.SelectedItem;
-               Player.current.DeleteClass(ci.Level);
+               Player.Current.DeleteClass(ci.Level);
                UpdateLayout();
             }
         }
@@ -2555,7 +2553,7 @@ namespace Character_Builder_5
             if (classList.SelectedItem != null)
             {
                 Player.MakeHistory("");
-                AbilityFeatChoice afc = Player.current.getAbilityFeatChoice(((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF);
+                AbilityFeatChoice afc = Player.Current.GetAbilityFeatChoice(((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF);
                 afc.Ability1 = Ability.None;
                 afc.Ability2 = Ability.None;
                 afc.Feat = "";
@@ -2574,7 +2572,7 @@ namespace Character_Builder_5
             {
                 Player.MakeHistory("");
                 SpellcastingFeature sc = ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature;
-                Player.current.getSpellcasting(sc.SpellcastingID).getAdditionalList().Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
+                Player.Current.GetSpellcasting(sc.SpellcastingID).getAdditionalList().Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
                 UpdateLayout();
             }
         }
@@ -2596,7 +2594,7 @@ namespace Character_Builder_5
                 {
                     p.MagicProperties.Add(((MagicProperty)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((MagicProperty)listItems.SelectedItem).Source);
                 }
-                Player.current.AddPossession(p);
+                Player.Current.AddPossession(p);
                 UpdateEquipmentLayout();
             }
         }
@@ -2606,7 +2604,7 @@ namespace Character_Builder_5
             if (listItems.SelectedItem != null && listItems.SelectedItem is Spell)
             {
                 Player.MakeHistory("");
-                Player.current.Items.Add(((Spell)listItems.SelectedItem).Name);
+                Player.Current.Items.Add(((Spell)listItems.SelectedItem).Name);
                 UpdateEquipmentLayout();
             }
         }
@@ -2619,12 +2617,12 @@ namespace Character_Builder_5
                 Item i=(Item)listItems.SelectedItem;
                 int count = (int)ItemCounter.Value;
                 for (int c = 0; c < count; c++)
-                    Player.current.Items.Add(i.Name);
+                    Player.Current.Items.Add(i.Name);
                 //Player.current.Pay(new Price(i.Price,count));
                 if (count > 1)
                 {
-                    Player.current.ComplexJournal.Add(new JournalEntry(i.ToString() + " x " + count, new Price(i.Price, count)));
-                } else Player.current.ComplexJournal.Add(new JournalEntry(i.ToString(), new Price(i.Price, count)));
+                    Player.Current.ComplexJournal.Add(new JournalEntry(i.ToString() + " x " + count, new Price(i.Price, count)));
+                } else Player.Current.ComplexJournal.Add(new JournalEntry(i.ToString(), new Price(i.Price, count)));
                 UpdateLayout();
             }
         }
@@ -2638,13 +2636,13 @@ namespace Character_Builder_5
                 {
                     int count=(int)ItemCounter.Value;
                     for (int c = 0; c < count; c++ )
-                        Player.current.Items.Add(((Item)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Item)listItems.SelectedItem).Source);
+                        Player.Current.Items.Add(((Item)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Item)listItems.SelectedItem).Source);
                 }
                 if (listItems.SelectedItem is MagicProperty && (((MagicProperty)listItems.SelectedItem).Base == null || ((MagicProperty)listItems.SelectedItem).Base == "")) 
-                    Player.current.Possessions.Add(new Possession((Item)null,(MagicProperty)listItems.SelectedItem));
+                    Player.Current.Possessions.Add(new Possession((Item)null,(MagicProperty)listItems.SelectedItem));
                 if (listItems.SelectedItem is Feature)
                 {
-                    Player.current.Boons.Add(((Feature)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Feature)listItems.SelectedItem).Source);
+                    Player.Current.Boons.Add(((Feature)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Feature)listItems.SelectedItem).Source);
                     addButton.Enabled = false;
                 }
                 UpdateLayout();
@@ -2667,12 +2665,12 @@ namespace Character_Builder_5
                     else
                     {
                         addButton.Enabled = false;
-                        addtoItemButton.Enabled = Utils.fits(mp, Item.Get(p.BaseItem, null));
+                        addtoItemButton.Enabled = Utils.Fits(mp, Item.Get(p.BaseItem, null));
                     }
                 }
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(((Possession)inventory2.SelectedItem).toHTML());
+                displayElement.Document.Write(((Possession)inventory2.SelectedItem).ToHTML());
                 displayElement.Refresh();
             }
         }
@@ -2681,7 +2679,7 @@ namespace Character_Builder_5
         {
             if (spellbookFeaturesBox.SelectedItem != null && listItems.SelectedItem != null && listItems.SelectedItem is Spell)
             {
-                addspellbookButton.Enabled = Utils.matches(((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Player.current.getSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook().Contains((Spell)listItems.SelectedItem);
+                addspellbookButton.Enabled = Utils.Matches(((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Player.Current.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook().Contains((Spell)listItems.SelectedItem);
             }
         }
 
@@ -2691,14 +2689,14 @@ namespace Character_Builder_5
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(((Possession)inventory.SelectedItem).toHTML());
+                displayElement.Document.Write(((Possession)inventory.SelectedItem).ToHTML());
                 displayElement.Refresh();
             }
             else if (inventory.SelectedItem is Feature)
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(((Feature)inventory.SelectedItem).toHTML());
+                displayElement.Document.Write(((Feature)inventory.SelectedItem).ToHTML());
                 displayElement.Refresh();
             }
             UpdateInventoryOptions();
@@ -2721,12 +2719,12 @@ namespace Character_Builder_5
             if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
-                Player.current.removePossessionAndItems((Possession)inventory.SelectedItem);
+                Player.Current.RemovePossessionAndItems((Possession)inventory.SelectedItem);
                 UpdateLayout();
             } else if (inventory.SelectedItem is Feature)
             {
                 Player.MakeHistory("");
-                Player.current.removeBoon(inventory.SelectedItem as Feature);
+                Player.Current.RemoveBoon(inventory.SelectedItem as Feature);
                 UpdateLayout();
             }
         }
@@ -2736,7 +2734,7 @@ namespace Character_Builder_5
             if (inventory.SelectedItem is Possession)
             {
                 Player.MakeHistory("");
-                Player.current.changePossessionAmountAndAddRemoveItemsAccordingly((Possession)inventory.SelectedItem,(int)poscounter.Value);
+                Player.Current.ChangePossessionAmountAndAddRemoveItemsAccordingly((Possession)inventory.SelectedItem,(int)poscounter.Value);
                 InventoryRefresh();
             }
         }
@@ -2765,10 +2763,10 @@ namespace Character_Builder_5
                 int stacksize = 1;
                 if (p.Item != null) stacksize = Math.Max(1, p.Item.StackSize);
                 newp.Count = p.Count - (int)poscounter.Value;
-                if (((int)poscounter.Value) % stacksize != 0 && p.Item != null) Player.current.Items.Add(p.BaseItem);
+                if (((int)poscounter.Value) % stacksize != 0 && p.Item != null) Player.Current.Items.Add(p.BaseItem);
                 p.Count=(int)poscounter.Value;
-                Player.current.AddPossession(p);
-                if (newp.Count > 0) Player.current.AddPossession(newp);
+                Player.Current.AddPossession(p);
+                if (newp.Count > 0) Player.Current.AddPossession(newp);
                 UpdateLayout();
             }
         }
@@ -2781,7 +2779,7 @@ namespace Character_Builder_5
                 Possession p = (Possession)inventory.SelectedItem;
                 p.Name = possname.Text;
                 p.Description = possdescription.Text;
-                Player.current.AddPossession(p);
+                Player.Current.AddPossession(p);
                 InventoryRefresh();
             }
         }
@@ -2792,7 +2790,7 @@ namespace Character_Builder_5
             Possession p = new Possession(possname.Text, possdescription.Text, (int)poscounter.Value, (double)possweight.Value);
             p.Name = possname.Text;
             p.Description = possdescription.Text;
-            Player.current.AddPossession(p);
+            Player.Current.AddPossession(p);
             UpdateLayout();
         }
 
@@ -2804,13 +2802,13 @@ namespace Character_Builder_5
                 {
                     string es = (string)possequip.SelectedItem;
                     Player.MakeHistory("");
-                    foreach (Possession pos in Player.current.Possessions)
+                    foreach (Possession pos in Player.Current.Possessions)
                     {
                         if (string.Equals(pos.Equipped, es, StringComparison.InvariantCultureIgnoreCase)) pos.Equipped = EquipSlot.None;
                     }
                     Possession p = (Possession)inventory.SelectedItem;
                     p.Equipped = es;
-                    Player.current.AddPossession(p);
+                    Player.Current.AddPossession(p);
                     UpdateEquipmentLayout();
                 }
             }
@@ -2825,7 +2823,7 @@ namespace Character_Builder_5
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
                     p.Attuned = attunedcheck.Checked;
-                    Player.current.AddPossession(p);
+                    Player.Current.AddPossession(p);
                     UpdateLayout();
                 }
             }
@@ -2840,7 +2838,7 @@ namespace Character_Builder_5
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
                     p.ChargesUsed = (int)posscharges.Value;
-                    Player.current.AddPossession(p);
+                    Player.Current.AddPossession(p);
                     InventoryRefresh();
                 }
             }
@@ -2855,7 +2853,7 @@ namespace Character_Builder_5
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
                     p.Weight = (double)possweight.Value;
-                    Player.current.AddPossession(p);
+                    Player.Current.AddPossession(p);
                     InventoryRefresh();
                 }
             }
@@ -2870,7 +2868,7 @@ namespace Character_Builder_5
                     Player.MakeHistory("");
                     Possession p = (Possession)inventory.SelectedItem;
                     p.Hightlight = highlightcheck.Checked;
-                    Player.current.AddPossession(p);
+                    Player.Current.AddPossession(p);
                     UpdateLayout();
                 }
             }
@@ -2886,7 +2884,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("Money" + ((Control)sender).Name);
-                Player.current.setMoney((int)CP.Value, (int)SP.Value, (int)EP.Value, (int)GP.Value, (int)PP.Value);
+                Player.Current.SetMoney((int)CP.Value, (int)SP.Value, (int)EP.Value, (int)GP.Value, (int)PP.Value);
                 UpdateSideLayout();
             }
         }
@@ -2917,20 +2915,20 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("");
-                Player.current.Inspiration = inspiration.Checked;
+                Player.Current.Inspiration = inspiration.Checked;
             }
         }
 
         private void skillabilitybox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (skillabilitybox.SelectedItem != null && skillbox.SelectedItem != null)
-                skillablityresult.Text = "= " + plusMinus(Player.current.getSkill(((SkillInfo)skillbox.SelectedItem).Skill, indextoability(skillabilitybox.SelectedIndex)));
+                skillablityresult.Text = "= " + plusMinus(Player.Current.GetSkill(((SkillInfo)skillbox.SelectedItem).Skill, indextoability(skillabilitybox.SelectedIndex)));
         }
 
         private void hdreset_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.UsedHitDice = new List<int>();
+            Player.Current.UsedHitDice = new List<int>();
             UpdateInPlayInner();
         }
 
@@ -2947,7 +2945,7 @@ namespace Character_Builder_5
                 if (hd.Used < hd.Count)
                 {
                     Player.MakeHistory("");
-                    Player.current.UseHitDie(hd.Dice);
+                    Player.Current.UseHitDie(hd.Dice);
                     UpdateInPlayInner();
                 }
             }
@@ -2958,7 +2956,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("CurHP");
-                Player.current.CurrentHPLoss = (int)CurHP.Value - Player.current.getHitpointMax();
+                Player.Current.CurrentHPLoss = (int)CurHP.Value - Player.Current.GetHitpointMax();
             }
         }
 
@@ -2967,7 +2965,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("TempHP");
-                Player.current.TempHP = (int)TempHP.Value;
+                Player.Current.TempHP = (int)TempHP.Value;
             }
         }
 
@@ -2976,7 +2974,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("DeathSuccess");
-                Player.current.SuccessDeathSaves = (int)DeathSuccess.Value;
+                Player.Current.SuccessDeathSaves = (int)DeathSuccess.Value;
             }
         }
 
@@ -2985,7 +2983,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("DeathFail");
-                Player.current.FailedDeathSaves = (int)DeathFail.Value;
+                Player.Current.FailedDeathSaves = (int)DeathFail.Value;
             }
         }
 
@@ -3006,7 +3004,7 @@ namespace Character_Builder_5
                         layouting = false;
                         displayElement.Navigate("about:blank");
                         displayElement.Document.OpenNew(true);
-                        displayElement.Document.Write(Player.current.getResourceFeatures(selected.ResourceID).toHTML());
+                        displayElement.Document.Write(Player.Current.GetResourceFeatures(selected.ResourceID).ToHTML());
                         displayElement.Refresh();
                     }
                 }
@@ -3016,21 +3014,21 @@ namespace Character_Builder_5
                     if (selected != null)
                     {
                         layouting = true;
-                        selected.Info = Player.current.getAttack(selected, selected.differentAbility);
-                        selected.Modifikations.AddRange(from f in Player.current.getFeatures() where f is SpellModifyFeature && Utils.matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
+                        selected.Info = Player.Current.GetAttack(selected, selected.differentAbility);
+                        selected.Modifikations.AddRange(from f in Player.Current.GetFeatures() where f is SpellModifyFeature && Utils.Matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
                         selected.Modifikations = selected.Modifikations.Distinct().ToList();
                         if ((selected.Level > 0 && selected.RechargeModifier < RechargeModifier.AtWill) || (selected.Level == 0 && selected.RechargeModifier != RechargeModifier.Unmodified && selected.RechargeModifier < RechargeModifier.AtWill))
                         {
                             resourceused.Enabled = true;
                             resourceused.Maximum = selected.count;
                             resourceused.Value = 0;
-                            resourceused.Value = Player.current.getUsedResources(selected.getResourceID());
+                            resourceused.Value = Player.Current.GetUsedResources(selected.getResourceID());
                         }
                         else resourceused.Enabled = false;
                         layouting = false;
                         displayElement.Navigate("about:blank");
                         displayElement.Document.OpenNew(true);
-                        displayElement.Document.Write(selected.toHTML());
+                        displayElement.Document.Write(selected.ToHTML());
                         displayElement.Refresh();
 
                     }
@@ -3046,13 +3044,13 @@ namespace Character_Builder_5
                 if (ResourcesBox.SelectedItem is ResourceInfo)
                 {
                     Player.MakeHistory("Resource" + ((ResourceInfo)ResourcesBox.SelectedItem).ResourceID);
-                    Player.current.setUsedResources(((ResourceInfo)ResourcesBox.SelectedItem).ResourceID, (int)resourceused.Value);
+                    Player.Current.SetUsedResources(((ResourceInfo)ResourcesBox.SelectedItem).ResourceID, (int)resourceused.Value);
                     UpdateInPlayInner();
                 }
                 else if (ResourcesBox.SelectedItem is ModifiedSpell)
                 {
                     Player.MakeHistory("Resource" + ((ModifiedSpell)ResourcesBox.SelectedItem).getResourceID());
-                    Player.current.setUsedResources(((ModifiedSpell)ResourcesBox.SelectedItem).getResourceID(), (int)resourceused.Value);
+                    Player.Current.SetUsedResources(((ModifiedSpell)ResourcesBox.SelectedItem).getResourceID(), (int)resourceused.Value);
                     UpdateInPlayInner();
                 }
             }
@@ -3061,13 +3059,13 @@ namespace Character_Builder_5
         private void shortrest_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("ShortRest");
-            foreach (ResourceInfo r in Player.current.getResourceInfo(true).Values)
+            foreach (ResourceInfo r in Player.Current.GetResourceInfo(true).Values)
             {
-                if (r.Recharge >= RechargeModifier.ShortRest) Player.current.setUsedResources(r.ResourceID, 0);
+                if (r.Recharge >= RechargeModifier.ShortRest) Player.Current.SetUsedResources(r.ResourceID, 0);
             }
-            foreach (ModifiedSpell ms in Player.current.getBonusSpells())
+            foreach (ModifiedSpell ms in Player.Current.GetBonusSpells())
             {
-                if (ms.RechargeModifier >= RechargeModifier.ShortRest) Player.current.setUsedResources(ms.getResourceID(), 0);
+                if (ms.RechargeModifier >= RechargeModifier.ShortRest) Player.Current.SetUsedResources(ms.getResourceID(), 0);
             }
             UpdateInPlayInner();
         }
@@ -3075,13 +3073,13 @@ namespace Character_Builder_5
         private void longrest_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("LongRest");
-            foreach (ResourceInfo r in Player.current.getResourceInfo(true).Values)
+            foreach (ResourceInfo r in Player.Current.GetResourceInfo(true).Values)
             {
-                if (r.Recharge >= RechargeModifier.LongRest) Player.current.setUsedResources(r.ResourceID, 0);
+                if (r.Recharge >= RechargeModifier.LongRest) Player.Current.SetUsedResources(r.ResourceID, 0);
             }
-            foreach (ModifiedSpell ms in Player.current.getBonusSpells())
+            foreach (ModifiedSpell ms in Player.Current.GetBonusSpells())
             {
-                if (ms.RechargeModifier >= RechargeModifier.LongRest) Player.current.setUsedResources(ms.getResourceID(), 0);
+                if (ms.RechargeModifier >= RechargeModifier.LongRest) Player.Current.SetUsedResources(ms.getResourceID(), 0);
             }
             UpdateInPlayInner();
         }
@@ -3096,7 +3094,7 @@ namespace Character_Builder_5
                     if (selected.Used < selected.Max)
                     {
                         Player.MakeHistory("Resource" + selected.ResourceID);
-                        Player.current.setUsedResources(selected.ResourceID, selected.Used + 1);
+                        Player.Current.SetUsedResources(selected.ResourceID, selected.Used + 1);
                         UpdateInPlayInner();
                     }
                 }
@@ -3106,7 +3104,7 @@ namespace Character_Builder_5
                     if (selected.used < selected.count)
                     {
                         Player.MakeHistory("Resource" + selected.getResourceID());
-                        Player.current.setUsedResources(selected.getResourceID(), selected.used + 1);
+                        Player.Current.SetUsedResources(selected.getResourceID(), selected.used + 1);
                         UpdateInPlayInner();
                     }
                 }
@@ -3118,7 +3116,7 @@ namespace Character_Builder_5
             if (Features.SelectedItem != null && Features.SelectedItem is Feature) {
                 Player.MakeHistory("");
                 Feature f = (Feature)Features.SelectedItem;
-                if (Player.current.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name)) == 0) Player.current.HiddenFeatures.Add(f.Name);
+                if (Player.Current.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name)) == 0) Player.Current.HiddenFeatures.Add(f.Name);
                 UpdateInPlayInner();
             }
         }
@@ -3130,7 +3128,7 @@ namespace Character_Builder_5
                 layouting = true;
                 hidefeature.Enabled = true;
                 Feature f = (Feature)Features.SelectedItem;
-                hidefeature.Checked = Player.current.HiddenFeatures.Exists(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                hidefeature.Checked = Player.Current.HiddenFeatures.Exists(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
                 layouting = false;
                 Choice_DisplayFeature(sender, e);
             }
@@ -3143,8 +3141,8 @@ namespace Character_Builder_5
             {
                 Player.MakeHistory("");
                 Feature f = (Feature)Features.SelectedItem;
-                if (hidefeature.Checked) Player.current.HiddenFeatures.Add(f.Name);
-                else Player.current.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                if (hidefeature.Checked) Player.Current.HiddenFeatures.Add(f.Name);
+                else Player.Current.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
                 //UpdateInPlayInner();
             }
         }
@@ -3156,12 +3154,12 @@ namespace Character_Builder_5
                 Player.MakeHistory("");
                 if (availableConditions.SelectedItem is Condition)
                 {
-                    Player.current.Conditions.Add(((Condition)availableConditions.SelectedItem).Name);
+                    Player.Current.Conditions.Add(((Condition)availableConditions.SelectedItem).Name);
                 }
                 else
                 {
                     string c = Interaction.InputBox("Custom Condition:", "CB 5");
-                    if (c != null && c != "") Player.current.Conditions.Add(c);
+                    if (c != null && c != "") Player.Current.Conditions.Add(c);
                 }
                 UpdateInPlayInner();
             }
@@ -3172,7 +3170,7 @@ namespace Character_Builder_5
             if (activeConditions.SelectedItem != null && activeConditions.SelectedItem is Condition)
             {
                 Player.MakeHistory("");
-                Player.current.Conditions.RemoveAll(t => StringComparer.InvariantCultureIgnoreCase.Equals(t, ((Condition)activeConditions.SelectedItem).Name));
+                Player.Current.Conditions.RemoveAll(t => StringComparer.InvariantCultureIgnoreCase.Equals(t, ((Condition)activeConditions.SelectedItem).Name));
                 UpdateInPlayInner();
             }
         }
@@ -3183,7 +3181,7 @@ namespace Character_Builder_5
             if (lb.SelectedItem != null && lb.SelectedItem is ModifiedSpell)
             {
                 Player.MakeHistory("");
-                Player.current.getSpellcasting(lb.Parent.Name).Highlight = ((ModifiedSpell)lb.SelectedItem).Name;
+                Player.Current.GetSpellcasting(lb.Parent.Name).Highlight = ((ModifiedSpell)lb.SelectedItem).Name;
                 UpdateInPlayInner();
             }
         }
@@ -3195,7 +3193,7 @@ namespace Character_Builder_5
             {
                 SpellSlotInfo ssi = (SpellSlotInfo)lb.SelectedItem;
                 Player.MakeHistory("");
-                if (ssi.Used < ssi.Slots) Player.current.setSpellSlot(ssi.SpellcastingID, ssi.Level, ssi.Used + 1);
+                if (ssi.Used < ssi.Slots) Player.Current.SetSpellSlot(ssi.SpellcastingID, ssi.Level, ssi.Used + 1);
                 UpdateInPlayInner();
             }
         }
@@ -3203,7 +3201,7 @@ namespace Character_Builder_5
         private void label_DoubleClick(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.getSpellcasting(((Control)sender).Parent.Name).Highlight = null;
+            Player.Current.GetSpellcasting(((Control)sender).Parent.Name).Highlight = null;
             UpdateInPlayInner();
         }
 
@@ -3244,7 +3242,7 @@ namespace Character_Builder_5
         private void button1_Click_2(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.resetSpellSlots(((Control)sender).Parent.Name);
+            Player.Current.ResetSpellSlots(((Control)sender).Parent.Name);
             UpdateInPlayInner();
         }
 
@@ -3260,7 +3258,7 @@ namespace Character_Builder_5
                     {
                         SpellSlotInfo ssi = (SpellSlotInfo)lb.SelectedItem;
                         Player.MakeHistory("Spellslots" + ssi.SpellcastingID);
-                        Player.current.setSpellSlot(ssi.SpellcastingID, ssi.Level, (int)nup.Value);
+                        Player.Current.SetSpellSlot(ssi.SpellcastingID, ssi.Level, (int)nup.Value);
                         UpdateInPlayInner();
                     }
                 }
@@ -3269,15 +3267,14 @@ namespace Character_Builder_5
 
         private void unpack_Click(object sender, EventArgs e)
         {
-            if (inventory.SelectedItem is Possession)
+            if (inventory.SelectedItem is Possession p)
             {
-                Possession p = (Possession)inventory.SelectedItem;
                 if (p.BaseItem != null && p.BaseItem != "" && p.Item is Pack)
                 {
                     Player.MakeHistory("");
                     for (int i = 0; i < p.Count; i++)
-                        Player.current.Items.AddRange(((Pack)p.Item).Contents);
-                    Player.current.removePossessionAndItems(p);
+                        Player.Current.Items.AddRange(((Pack)p.Item).Contents);
+                    Player.Current.RemovePossessionAndItems(p);
                     UpdateLayout();
                 }
             }
@@ -3288,7 +3285,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("BonusMaxHP");
-                Player.current.BonusMaxHP = (int)bonusMaxHP.Value;
+                Player.Current.BonusMaxHP = (int)bonusMaxHP.Value;
                 UpdateSideLayout();
             }
         }
@@ -3379,7 +3376,7 @@ namespace Character_Builder_5
             }
             else
             {
-                Program.register();
+                Program.Register();
             }
         }
 
@@ -3414,7 +3411,7 @@ namespace Character_Builder_5
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
                 Player.MakeHistory("");
-                Player.current.Portrait = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                Player.Current.Portrait = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 UpdatePersonal();
             }
             else if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -3428,7 +3425,7 @@ namespace Character_Builder_5
                         using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
                         {
                             Player.MakeHistory("");
-                            Player.current.Portrait = new Bitmap(ms);
+                            Player.Current.Portrait = new Bitmap(ms);
                             UpdatePersonal();
                         }
                     }
@@ -3444,7 +3441,7 @@ namespace Character_Builder_5
                 {
                     Player.MakeHistory("");
                     string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    if (file.Count() == 1) Player.current.Portrait = new Bitmap(file[0]);
+                    if (file.Count() == 1) Player.Current.Portrait = new Bitmap(file[0]);
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -3456,7 +3453,7 @@ namespace Character_Builder_5
 
         private void portraitBox_MouseDown(object sender, MouseEventArgs e)
         {
-            DoDragDrop(Player.current.Portrait, DragDropEffects.Copy);
+            DoDragDrop(Player.Current.Portrait, DragDropEffects.Copy);
         }
 
         private void FactionInsignia_DragDrop(object sender, DragEventArgs e)
@@ -3464,7 +3461,7 @@ namespace Character_Builder_5
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
                 Player.MakeHistory("");
-                Player.current.FactionImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                Player.Current.FactionImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 UpdatePersonal();
             }
             else if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -3478,7 +3475,7 @@ namespace Character_Builder_5
                         using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
                         {
                             Player.MakeHistory("");
-                            Player.current.FactionImage = new Bitmap(ms);
+                            Player.Current.FactionImage = new Bitmap(ms);
                             UpdatePersonal();
                         }
                     }
@@ -3494,7 +3491,7 @@ namespace Character_Builder_5
                 {
                     Player.MakeHistory("");
                     string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    if (file.Count() == 1) Player.current.FactionImage = new Bitmap(file[0]);
+                    if (file.Count() == 1) Player.Current.FactionImage = new Bitmap(file[0]);
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -3539,7 +3536,7 @@ namespace Character_Builder_5
                                     Player.UndoBuffer = new LinkedList<Player>();
                                     Player.RedoBuffer = new LinkedList<Player>();
                                     Player.UnsavedChanges = 0;
-                                    Player.current = p;
+                                    Player.Current = p;
                                     UpdateLayout();
                                 }
                             }
@@ -3562,24 +3559,24 @@ namespace Character_Builder_5
         {
             bool waslayouting = layouting;
             layouting = true;
-            if (journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.current.Journal.Count)
-                journalbox.Text = Player.current.Journal[journalentrybox.SelectedIndex];
+            if (journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.Current.Journal.Count)
+                journalbox.Text = Player.Current.Journal[journalentrybox.SelectedIndex];
             if (!waslayouting) layouting = false;
         }
 
         private void newentrybotton_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Player.current.Journal.Add(journalbox.Text != "" ? journalbox.Text : "-New Entry-");
+            Player.Current.Journal.Add(journalbox.Text != "" ? journalbox.Text : "-New Entry-");
             UpdatePersonal();
         }
 
         private void journalbox_TextChanged(object sender, EventArgs e)
         {
-            if (!layouting && journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.current.Journal.Count)
+            if (!layouting && journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.Current.Journal.Count)
             {
                 Player.MakeHistory("JournalEntry" + journalentrybox.SelectedIndex);
-                Player.current.Journal[journalentrybox.SelectedIndex] = journalbox.Text;
+                Player.Current.Journal[journalentrybox.SelectedIndex] = journalbox.Text;
                 int index = journalbox.Text.IndexOfAny(new char[] { '\r', '\n' });
                 journalentrybox.Items[journalentrybox.SelectedIndex] = index == -1 ? journalbox.Text : journalbox.Text.Substring(0, index);
             }
@@ -3587,10 +3584,10 @@ namespace Character_Builder_5
 
         private void removejournalentry_Click(object sender, EventArgs e)
         {
-            if (journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.current.Journal.Count)
+            if (journalentrybox.SelectedIndex >= 0 && journalentrybox.SelectedIndex < Player.Current.Journal.Count)
             {
                 Player.MakeHistory("");
-                Player.current.Journal.RemoveAt(journalentrybox.SelectedIndex);
+                Player.Current.Journal.RemoveAt(journalentrybox.SelectedIndex);
                 UpdatePersonal();
             }
         }
@@ -3607,7 +3604,7 @@ namespace Character_Builder_5
                     {
                         displayElement.Navigate("about:blank");
                         displayElement.Document.OpenNew(true);
-                        displayElement.Document.Write(selected.toHTML());
+                        displayElement.Document.Write(selected.ToHTML());
                         displayElement.Refresh();
                     }
                 }
@@ -3810,7 +3807,7 @@ namespace Character_Builder_5
         private void newJournalEntry_Click(object sender, EventArgs e)
         {
             Player.MakeHistory();
-            Player.current.ComplexJournal.Add(new JournalEntry());
+            Player.Current.ComplexJournal.Add(new JournalEntry());
             UpdateJournal();
         }
 
@@ -3819,7 +3816,7 @@ namespace Character_Builder_5
             Player.MakeHistory();
             if (journalEntries.SelectedItem is JournalEntry)
             {
-                Player.current.ComplexJournal.RemoveAt(journalEntries.SelectedIndex);
+                Player.Current.ComplexJournal.RemoveAt(journalEntries.SelectedIndex);
                 UpdateJournal();
             }
         }
@@ -3832,7 +3829,7 @@ namespace Character_Builder_5
                 Feature selected = new Feature("Text", choicer.SelectedItem.ToString());
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(selected.toHTML());
+                displayElement.Document.Write(selected.ToHTML());
                 displayElement.Refresh();
             }
         }
@@ -3909,7 +3906,7 @@ namespace Character_Builder_5
             if (!layouting)
             {
                 Player.MakeHistory("DCI");
-                Player.current.DCI = DCI.Text;
+                Player.Current.DCI = DCI.Text;
             }
         }
 
@@ -4000,7 +3997,7 @@ namespace Character_Builder_5
 
         private void reladDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.reloadData();
+            Program.ReloadData();
             UpdateLayout();
         }
 

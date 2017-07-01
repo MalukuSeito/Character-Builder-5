@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Base;
 using OGL.Common;
 using OGL.Features;
@@ -45,12 +46,12 @@ namespace Character_Builder_Builder
             classSpells.HistoryManager = this;
             featuresFirstClass.HistoryManager = this;
             featuresMultiClass.HistoryManager = this;
-            FeatureCollection.ImportAll();
+            ImportExtensions.ImportStandaloneFeatures();
             HashSet<string> feats = new HashSet<string>();
             foreach (Feature f in FeatureCollection.Features) feats.Add(f.Name);
             classFeats.Suggestions = feats;
             MulticlassSpellLevels.Items = cls.MulticlassingSpellLevels;
-            Spell.ImportAll();
+            ImportExtensions.ImportSpells();
             classSpells.Suggestions = Spell.simple.Keys;
             
         }
@@ -88,7 +89,7 @@ namespace Character_Builder_Builder
             decriptions1.descriptions = cls.Descriptions;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -107,7 +108,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
         }
 
@@ -118,7 +119,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(cls.clone());
+                UndoBuffer.AddLast(cls.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -180,8 +181,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = cls.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.save(true);
+            bool saved = cls.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

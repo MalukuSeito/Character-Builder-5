@@ -9,7 +9,7 @@ namespace Character_Builder_Forms
 {
     public class LicenseProvider : ILicense
     {
-        public bool showLicense(string title, string[] lines)
+        public bool ShowLicense(string title, string[] lines)
         {
             System.Windows.Forms.DialogResult r = new License(title, lines).ShowDialog();
             if (r == System.Windows.Forms.DialogResult.OK)

@@ -137,6 +137,7 @@
             this.Multiclassing = new Character_Builder_Builder.Features();
             this.label23 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
             this.SaveSettings = new System.Windows.Forms.Button();
             this.NewItemCTM = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,7 +146,6 @@
             this.armorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button3 = new System.Windows.Forms.Button();
             this.TabControls.SuspendLayout();
             this.racesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -351,7 +351,7 @@
             this.classesTab.Location = new System.Drawing.Point(4, 22);
             this.classesTab.Name = "classesTab";
             this.classesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.classesTab.Size = new System.Drawing.Size(768, 455);
+            this.classesTab.Size = new System.Drawing.Size(766, 455);
             this.classesTab.TabIndex = 2;
             this.classesTab.Text = "Classes";
             this.classesTab.UseVisualStyleBackColor = true;
@@ -375,8 +375,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.subclassList);
             this.splitContainer3.Panel2.Controls.Add(this.label6);
             this.splitContainer3.Panel2.Controls.Add(this.NewSubclass);
-            this.splitContainer3.Size = new System.Drawing.Size(762, 449);
-            this.splitContainer3.SplitterDistance = 381;
+            this.splitContainer3.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer3.SplitterDistance = 380;
             this.splitContainer3.TabIndex = 1;
             // 
             // classList
@@ -385,7 +385,7 @@
             this.classList.FormattingEnabled = true;
             this.classList.Location = new System.Drawing.Point(0, 13);
             this.classList.Name = "classList";
-            this.classList.Size = new System.Drawing.Size(381, 367);
+            this.classList.Size = new System.Drawing.Size(380, 367);
             this.classList.TabIndex = 6;
             this.classList.SelectedIndexChanged += new System.EventHandler(this.classList_SelectedIndexChanged);
             this.classList.DoubleClick += new System.EventHandler(this.editClass);
@@ -395,7 +395,7 @@
             this.NewClassBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.NewClassBtn.Location = new System.Drawing.Point(0, 380);
             this.NewClassBtn.Name = "NewClassBtn";
-            this.NewClassBtn.Size = new System.Drawing.Size(381, 23);
+            this.NewClassBtn.Size = new System.Drawing.Size(380, 23);
             this.NewClassBtn.TabIndex = 5;
             this.NewClassBtn.Text = "New Class";
             this.NewClassBtn.UseVisualStyleBackColor = true;
@@ -406,7 +406,7 @@
             this.ApplySpellsBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ApplySpellsBtn.Location = new System.Drawing.Point(0, 403);
             this.ApplySpellsBtn.Name = "ApplySpellsBtn";
-            this.ApplySpellsBtn.Size = new System.Drawing.Size(381, 23);
+            this.ApplySpellsBtn.Size = new System.Drawing.Size(380, 23);
             this.ApplySpellsBtn.TabIndex = 4;
             this.ApplySpellsBtn.Text = "Apply Class Spells";
             this.ApplySpellsBtn.UseVisualStyleBackColor = true;
@@ -427,7 +427,7 @@
             this.ApplyFeatsBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ApplyFeatsBtn.Location = new System.Drawing.Point(0, 426);
             this.ApplyFeatsBtn.Name = "ApplyFeatsBtn";
-            this.ApplyFeatsBtn.Size = new System.Drawing.Size(381, 23);
+            this.ApplyFeatsBtn.Size = new System.Drawing.Size(380, 23);
             this.ApplyFeatsBtn.TabIndex = 1;
             this.ApplyFeatsBtn.Text = "Apply Class Features";
             this.ApplyFeatsBtn.UseVisualStyleBackColor = true;
@@ -439,7 +439,7 @@
             this.subclassList.FormattingEnabled = true;
             this.subclassList.Location = new System.Drawing.Point(0, 13);
             this.subclassList.Name = "subclassList";
-            this.subclassList.Size = new System.Drawing.Size(377, 413);
+            this.subclassList.Size = new System.Drawing.Size(376, 413);
             this.subclassList.TabIndex = 3;
             this.subclassList.SelectedIndexChanged += new System.EventHandler(this.subclassList_SelectedIndexChanged);
             this.subclassList.DoubleClick += new System.EventHandler(this.editSubClass);
@@ -459,7 +459,7 @@
             this.NewSubclass.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.NewSubclass.Location = new System.Drawing.Point(0, 426);
             this.NewSubclass.Name = "NewSubclass";
-            this.NewSubclass.Size = new System.Drawing.Size(377, 23);
+            this.NewSubclass.Size = new System.Drawing.Size(376, 23);
             this.NewSubclass.TabIndex = 1;
             this.NewSubclass.Text = "New Subclass";
             this.NewSubclass.UseVisualStyleBackColor = true;
@@ -473,7 +473,7 @@
             this.backTab.Location = new System.Drawing.Point(4, 22);
             this.backTab.Name = "backTab";
             this.backTab.Padding = new System.Windows.Forms.Padding(3);
-            this.backTab.Size = new System.Drawing.Size(768, 455);
+            this.backTab.Size = new System.Drawing.Size(766, 455);
             this.backTab.TabIndex = 3;
             this.backTab.Text = "Backgrounds";
             this.backTab.UseVisualStyleBackColor = true;
@@ -484,7 +484,7 @@
             this.backBox.FormattingEnabled = true;
             this.backBox.Location = new System.Drawing.Point(3, 16);
             this.backBox.Name = "backBox";
-            this.backBox.Size = new System.Drawing.Size(762, 413);
+            this.backBox.Size = new System.Drawing.Size(760, 413);
             this.backBox.TabIndex = 10;
             this.backBox.SelectedIndexChanged += new System.EventHandler(this.backList_SelectedIndexChanged);
             this.backBox.DoubleClick += new System.EventHandler(this.editBackground);
@@ -494,7 +494,7 @@
             this.newBackground.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.newBackground.Location = new System.Drawing.Point(3, 429);
             this.newBackground.Name = "newBackground";
-            this.newBackground.Size = new System.Drawing.Size(762, 23);
+            this.newBackground.Size = new System.Drawing.Size(760, 23);
             this.newBackground.TabIndex = 9;
             this.newBackground.Text = "New Background";
             this.newBackground.UseVisualStyleBackColor = true;
@@ -516,7 +516,7 @@
             this.featuresTab.Location = new System.Drawing.Point(4, 22);
             this.featuresTab.Name = "featuresTab";
             this.featuresTab.Padding = new System.Windows.Forms.Padding(3);
-            this.featuresTab.Size = new System.Drawing.Size(768, 455);
+            this.featuresTab.Size = new System.Drawing.Size(766, 455);
             this.featuresTab.TabIndex = 5;
             this.featuresTab.Text = "Standalone Features";
             this.featuresTab.UseVisualStyleBackColor = true;
@@ -538,8 +538,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.FeatCollection);
             this.splitContainer2.Panel2.Controls.Add(this.label4);
             this.splitContainer2.Panel2.Controls.Add(this.button2);
-            this.splitContainer2.Size = new System.Drawing.Size(762, 449);
-            this.splitContainer2.SplitterDistance = 381;
+            this.splitContainer2.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer2.SplitterDistance = 380;
             this.splitContainer2.TabIndex = 1;
             // 
             // FeatCats
@@ -548,7 +548,7 @@
             this.FeatCats.FormattingEnabled = true;
             this.FeatCats.Location = new System.Drawing.Point(0, 13);
             this.FeatCats.Name = "FeatCats";
-            this.FeatCats.Size = new System.Drawing.Size(381, 413);
+            this.FeatCats.Size = new System.Drawing.Size(380, 413);
             this.FeatCats.TabIndex = 3;
             this.FeatCats.SelectedIndexChanged += new System.EventHandler(this.FeatCats_SelectedIndexChanged);
             // 
@@ -568,7 +568,7 @@
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(0, 426);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(381, 23);
+            this.button1.Size = new System.Drawing.Size(380, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "New Sub Category";
             this.button1.UseVisualStyleBackColor = true;
@@ -580,7 +580,7 @@
             this.FeatCollection.FormattingEnabled = true;
             this.FeatCollection.Location = new System.Drawing.Point(0, 13);
             this.FeatCollection.Name = "FeatCollection";
-            this.FeatCollection.Size = new System.Drawing.Size(377, 413);
+            this.FeatCollection.Size = new System.Drawing.Size(376, 413);
             this.FeatCollection.TabIndex = 3;
             this.FeatCollection.SelectedIndexChanged += new System.EventHandler(this.FeatCollection_SelectedIndexChanged);
             this.FeatCollection.DoubleClick += new System.EventHandler(this.editContainer);
@@ -601,7 +601,7 @@
             this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(0, 426);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(377, 23);
+            this.button2.Size = new System.Drawing.Size(376, 23);
             this.button2.TabIndex = 1;
             this.button2.Text = "New Feature Collection";
             this.button2.UseVisualStyleBackColor = true;
@@ -617,7 +617,7 @@
             this.spellsTab.Location = new System.Drawing.Point(4, 22);
             this.spellsTab.Name = "spellsTab";
             this.spellsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.spellsTab.Size = new System.Drawing.Size(768, 455);
+            this.spellsTab.Size = new System.Drawing.Size(766, 455);
             this.spellsTab.TabIndex = 6;
             this.spellsTab.Text = "Spells";
             this.spellsTab.UseVisualStyleBackColor = true;
@@ -628,7 +628,7 @@
             this.spellBox.FormattingEnabled = true;
             this.spellBox.Location = new System.Drawing.Point(3, 16);
             this.spellBox.Name = "spellBox";
-            this.spellBox.Size = new System.Drawing.Size(762, 380);
+            this.spellBox.Size = new System.Drawing.Size(760, 380);
             this.spellBox.TabIndex = 20;
             this.spellBox.SelectedIndexChanged += new System.EventHandler(this.SpellList_SelectedIndexChanged);
             this.spellBox.DoubleClick += new System.EventHandler(this.editSpell);
@@ -648,7 +648,7 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Location = new System.Drawing.Point(3, 409);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(762, 20);
+            this.textBox1.Size = new System.Drawing.Size(760, 20);
             this.textBox1.TabIndex = 18;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -657,7 +657,7 @@
             this.NewSpell.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.NewSpell.Location = new System.Drawing.Point(3, 429);
             this.NewSpell.Name = "NewSpell";
-            this.NewSpell.Size = new System.Drawing.Size(762, 23);
+            this.NewSpell.Size = new System.Drawing.Size(760, 23);
             this.NewSpell.TabIndex = 15;
             this.NewSpell.Text = "New Spell";
             this.NewSpell.UseVisualStyleBackColor = true;
@@ -681,7 +681,7 @@
             this.skillsTab.Location = new System.Drawing.Point(4, 22);
             this.skillsTab.Name = "skillsTab";
             this.skillsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.skillsTab.Size = new System.Drawing.Size(768, 455);
+            this.skillsTab.Size = new System.Drawing.Size(766, 455);
             this.skillsTab.TabIndex = 7;
             this.skillsTab.Text = "Skills";
             this.skillsTab.UseVisualStyleBackColor = true;
@@ -692,7 +692,7 @@
             this.skillList.FormattingEnabled = true;
             this.skillList.Location = new System.Drawing.Point(3, 16);
             this.skillList.Name = "skillList";
-            this.skillList.Size = new System.Drawing.Size(762, 413);
+            this.skillList.Size = new System.Drawing.Size(760, 413);
             this.skillList.TabIndex = 13;
             this.skillList.SelectedIndexChanged += new System.EventHandler(this.skillList_SelectedIndexChanged);
             this.skillList.DoubleClick += new System.EventHandler(this.editSkill);
@@ -702,7 +702,7 @@
             this.NewSkill.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.NewSkill.Location = new System.Drawing.Point(3, 429);
             this.NewSkill.Name = "NewSkill";
-            this.NewSkill.Size = new System.Drawing.Size(762, 23);
+            this.NewSkill.Size = new System.Drawing.Size(760, 23);
             this.NewSkill.TabIndex = 12;
             this.NewSkill.Text = "New Skill";
             this.NewSkill.UseVisualStyleBackColor = true;
@@ -726,7 +726,7 @@
             this.langTab.Location = new System.Drawing.Point(4, 22);
             this.langTab.Name = "langTab";
             this.langTab.Padding = new System.Windows.Forms.Padding(3);
-            this.langTab.Size = new System.Drawing.Size(768, 455);
+            this.langTab.Size = new System.Drawing.Size(766, 455);
             this.langTab.TabIndex = 8;
             this.langTab.Text = "Languages";
             this.langTab.UseVisualStyleBackColor = true;
@@ -737,7 +737,7 @@
             this.langBox.FormattingEnabled = true;
             this.langBox.Location = new System.Drawing.Point(3, 16);
             this.langBox.Name = "langBox";
-            this.langBox.Size = new System.Drawing.Size(762, 413);
+            this.langBox.Size = new System.Drawing.Size(760, 413);
             this.langBox.TabIndex = 7;
             this.langBox.SelectedIndexChanged += new System.EventHandler(this.langList_SelectedIndexChanged);
             this.langBox.DoubleClick += new System.EventHandler(this.editLang);
@@ -747,7 +747,7 @@
             this.newLangButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.newLangButton.Location = new System.Drawing.Point(3, 429);
             this.newLangButton.Name = "newLangButton";
-            this.newLangButton.Size = new System.Drawing.Size(762, 23);
+            this.newLangButton.Size = new System.Drawing.Size(760, 23);
             this.newLangButton.TabIndex = 6;
             this.newLangButton.Text = "New Language";
             this.newLangButton.UseVisualStyleBackColor = true;
@@ -769,7 +769,7 @@
             this.itemTab.Location = new System.Drawing.Point(4, 22);
             this.itemTab.Name = "itemTab";
             this.itemTab.Padding = new System.Windows.Forms.Padding(3);
-            this.itemTab.Size = new System.Drawing.Size(768, 455);
+            this.itemTab.Size = new System.Drawing.Size(766, 455);
             this.itemTab.TabIndex = 9;
             this.itemTab.Text = "Items";
             this.itemTab.UseVisualStyleBackColor = true;
@@ -791,8 +791,8 @@
             this.splitContainer4.Panel2.Controls.Add(this.ItemBox);
             this.splitContainer4.Panel2.Controls.Add(this.label10);
             this.splitContainer4.Panel2.Controls.Add(this.NewItem);
-            this.splitContainer4.Size = new System.Drawing.Size(762, 449);
-            this.splitContainer4.SplitterDistance = 381;
+            this.splitContainer4.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer4.SplitterDistance = 380;
             this.splitContainer4.TabIndex = 2;
             // 
             // ItemCat
@@ -801,7 +801,7 @@
             this.ItemCat.FormattingEnabled = true;
             this.ItemCat.Location = new System.Drawing.Point(0, 13);
             this.ItemCat.Name = "ItemCat";
-            this.ItemCat.Size = new System.Drawing.Size(381, 413);
+            this.ItemCat.Size = new System.Drawing.Size(380, 413);
             this.ItemCat.TabIndex = 3;
             this.ItemCat.SelectedIndexChanged += new System.EventHandler(this.ItemCats_SelectedIndexChanged);
             // 
@@ -821,7 +821,7 @@
             this.NewItemCat.Enabled = false;
             this.NewItemCat.Location = new System.Drawing.Point(0, 426);
             this.NewItemCat.Name = "NewItemCat";
-            this.NewItemCat.Size = new System.Drawing.Size(381, 23);
+            this.NewItemCat.Size = new System.Drawing.Size(380, 23);
             this.NewItemCat.TabIndex = 1;
             this.NewItemCat.Text = "New Sub Category";
             this.NewItemCat.UseVisualStyleBackColor = true;
@@ -833,7 +833,7 @@
             this.ItemBox.FormattingEnabled = true;
             this.ItemBox.Location = new System.Drawing.Point(0, 13);
             this.ItemBox.Name = "ItemBox";
-            this.ItemBox.Size = new System.Drawing.Size(377, 413);
+            this.ItemBox.Size = new System.Drawing.Size(376, 413);
             this.ItemBox.TabIndex = 3;
             this.ItemBox.SelectedIndexChanged += new System.EventHandler(this.Items_SelectedIndexChanged);
             this.ItemBox.DoubleClick += new System.EventHandler(this.editItem);
@@ -854,7 +854,7 @@
             this.NewItem.Enabled = false;
             this.NewItem.Location = new System.Drawing.Point(0, 426);
             this.NewItem.Name = "NewItem";
-            this.NewItem.Size = new System.Drawing.Size(377, 23);
+            this.NewItem.Size = new System.Drawing.Size(376, 23);
             this.NewItem.TabIndex = 1;
             this.NewItem.Text = "New Item:";
             this.NewItem.UseVisualStyleBackColor = true;
@@ -866,7 +866,7 @@
             this.magicTab.Location = new System.Drawing.Point(4, 22);
             this.magicTab.Name = "magicTab";
             this.magicTab.Padding = new System.Windows.Forms.Padding(3);
-            this.magicTab.Size = new System.Drawing.Size(768, 455);
+            this.magicTab.Size = new System.Drawing.Size(766, 455);
             this.magicTab.TabIndex = 10;
             this.magicTab.Text = "Magic Items";
             this.magicTab.UseVisualStyleBackColor = true;
@@ -888,8 +888,8 @@
             this.splitContainer10.Panel2.Controls.Add(this.magicBox);
             this.splitContainer10.Panel2.Controls.Add(this.label29);
             this.splitContainer10.Panel2.Controls.Add(this.newMagicBtn);
-            this.splitContainer10.Size = new System.Drawing.Size(762, 449);
-            this.splitContainer10.SplitterDistance = 381;
+            this.splitContainer10.Size = new System.Drawing.Size(760, 449);
+            this.splitContainer10.SplitterDistance = 380;
             this.splitContainer10.TabIndex = 3;
             // 
             // magicCatBox
@@ -898,7 +898,7 @@
             this.magicCatBox.FormattingEnabled = true;
             this.magicCatBox.Location = new System.Drawing.Point(0, 13);
             this.magicCatBox.Name = "magicCatBox";
-            this.magicCatBox.Size = new System.Drawing.Size(381, 413);
+            this.magicCatBox.Size = new System.Drawing.Size(380, 413);
             this.magicCatBox.TabIndex = 3;
             this.magicCatBox.SelectedIndexChanged += new System.EventHandler(this.MagicCats_SelectedIndexChanged);
             // 
@@ -918,7 +918,7 @@
             this.NewMagicCatBtn.Enabled = false;
             this.NewMagicCatBtn.Location = new System.Drawing.Point(0, 426);
             this.NewMagicCatBtn.Name = "NewMagicCatBtn";
-            this.NewMagicCatBtn.Size = new System.Drawing.Size(381, 23);
+            this.NewMagicCatBtn.Size = new System.Drawing.Size(380, 23);
             this.NewMagicCatBtn.TabIndex = 1;
             this.NewMagicCatBtn.Text = "New Sub Category";
             this.NewMagicCatBtn.UseVisualStyleBackColor = true;
@@ -930,7 +930,7 @@
             this.magicBox.FormattingEnabled = true;
             this.magicBox.Location = new System.Drawing.Point(0, 13);
             this.magicBox.Name = "magicBox";
-            this.magicBox.Size = new System.Drawing.Size(377, 413);
+            this.magicBox.Size = new System.Drawing.Size(376, 413);
             this.magicBox.TabIndex = 3;
             this.magicBox.SelectedIndexChanged += new System.EventHandler(this.Magic_SelectedIndexChanged);
             this.magicBox.DoubleClick += new System.EventHandler(this.editMagic);
@@ -951,7 +951,7 @@
             this.newMagicBtn.Enabled = false;
             this.newMagicBtn.Location = new System.Drawing.Point(0, 426);
             this.newMagicBtn.Name = "newMagicBtn";
-            this.newMagicBtn.Size = new System.Drawing.Size(377, 23);
+            this.newMagicBtn.Size = new System.Drawing.Size(376, 23);
             this.newMagicBtn.TabIndex = 1;
             this.newMagicBtn.Text = "New Magic Property";
             this.newMagicBtn.UseVisualStyleBackColor = true;
@@ -965,7 +965,7 @@
             this.conditionsTab.Location = new System.Drawing.Point(4, 22);
             this.conditionsTab.Name = "conditionsTab";
             this.conditionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.conditionsTab.Size = new System.Drawing.Size(768, 455);
+            this.conditionsTab.Size = new System.Drawing.Size(766, 455);
             this.conditionsTab.TabIndex = 11;
             this.conditionsTab.Text = "Conditions";
             this.conditionsTab.UseVisualStyleBackColor = true;
@@ -976,7 +976,7 @@
             this.condList.FormattingEnabled = true;
             this.condList.Location = new System.Drawing.Point(3, 16);
             this.condList.Name = "condList";
-            this.condList.Size = new System.Drawing.Size(762, 413);
+            this.condList.Size = new System.Drawing.Size(760, 413);
             this.condList.TabIndex = 16;
             this.condList.SelectedIndexChanged += new System.EventHandler(this.condList_SelectedIndexChanged);
             this.condList.DoubleClick += new System.EventHandler(this.editCondition);
@@ -986,7 +986,7 @@
             this.NewCondition.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.NewCondition.Location = new System.Drawing.Point(3, 429);
             this.NewCondition.Name = "NewCondition";
-            this.NewCondition.Size = new System.Drawing.Size(762, 23);
+            this.NewCondition.Size = new System.Drawing.Size(760, 23);
             this.NewCondition.TabIndex = 15;
             this.NewCondition.Text = "New Condition";
             this.NewCondition.UseVisualStyleBackColor = true;
@@ -1009,7 +1009,7 @@
             this.levelTab.Location = new System.Drawing.Point(4, 22);
             this.levelTab.Name = "levelTab";
             this.levelTab.Padding = new System.Windows.Forms.Padding(3);
-            this.levelTab.Size = new System.Drawing.Size(768, 455);
+            this.levelTab.Size = new System.Drawing.Size(766, 455);
             this.levelTab.TabIndex = 12;
             this.levelTab.Text = "Level";
             this.levelTab.UseVisualStyleBackColor = true;
@@ -1029,8 +1029,8 @@
             // 
             this.splitContainer5.Panel2.Controls.Add(this.LevelProficiency);
             this.splitContainer5.Panel2.Controls.Add(this.label13);
-            this.splitContainer5.Size = new System.Drawing.Size(762, 419);
-            this.splitContainer5.SplitterDistance = 369;
+            this.splitContainer5.Size = new System.Drawing.Size(760, 419);
+            this.splitContainer5.SplitterDistance = 368;
             this.splitContainer5.TabIndex = 2;
             // 
             // LevelXP
@@ -1042,7 +1042,7 @@
             this.LevelXP.Items = null;
             this.LevelXP.Location = new System.Drawing.Point(0, 13);
             this.LevelXP.Name = "LevelXP";
-            this.LevelXP.Size = new System.Drawing.Size(369, 406);
+            this.LevelXP.Size = new System.Drawing.Size(368, 406);
             this.LevelXP.Start = 1;
             this.LevelXP.TabIndex = 2;
             // 
@@ -1065,7 +1065,7 @@
             this.LevelProficiency.Items = null;
             this.LevelProficiency.Location = new System.Drawing.Point(0, 13);
             this.LevelProficiency.Name = "LevelProficiency";
-            this.LevelProficiency.Size = new System.Drawing.Size(389, 406);
+            this.LevelProficiency.Size = new System.Drawing.Size(388, 406);
             this.LevelProficiency.Start = 1;
             this.LevelProficiency.TabIndex = 1;
             // 
@@ -1085,14 +1085,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(3, 422);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(762, 30);
+            this.panel1.Size = new System.Drawing.Size(760, 30);
             this.panel1.TabIndex = 1;
             // 
             // save
             // 
             this.save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.save.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.save.Location = new System.Drawing.Point(684, 4);
+            this.save.Location = new System.Drawing.Point(682, 4);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(75, 23);
             this.save.TabIndex = 1;
@@ -1509,6 +1509,16 @@
             this.panel3.Size = new System.Drawing.Size(760, 30);
             this.panel3.TabIndex = 5;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(5, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(113, 23);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Show Errorlog";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // SaveSettings
             // 
             this.SaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -1552,14 +1562,14 @@
             this.weaponToolStripMenuItem.Name = "weaponToolStripMenuItem";
             this.weaponToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.weaponToolStripMenuItem.Text = "Weapon";
-            this.weaponToolStripMenuItem.Click += new System.EventHandler(this.weaponToolStripMenuItem_Click);
+            this.weaponToolStripMenuItem.Click += new System.EventHandler(this.WeaponToolStripMenuItem_Click);
             // 
             // armorToolStripMenuItem
             // 
             this.armorToolStripMenuItem.Name = "armorToolStripMenuItem";
             this.armorToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.armorToolStripMenuItem.Text = "Armor";
-            this.armorToolStripMenuItem.Click += new System.EventHandler(this.armorToolStripMenuItem_Click);
+            this.armorToolStripMenuItem.Click += new System.EventHandler(this.ArmorToolStripMenuItem_Click);
             // 
             // shieldToolStripMenuItem
             // 
@@ -1574,16 +1584,6 @@
             this.packToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.packToolStripMenuItem.Text = "Pack";
             this.packToolStripMenuItem.Click += new System.EventHandler(this.packToolStripMenuItem_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(5, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(113, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Show Errorlog";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // MainTab
             // 

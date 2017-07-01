@@ -54,7 +54,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(new DescriptionContainer((Description)listBox1.SelectedItem).toHTML());
+                preview.Document.Write(new DescriptionContainer((Description)listBox1.SelectedItem).ToHTML());
                 preview.Refresh();
             }
         }

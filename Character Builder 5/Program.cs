@@ -28,7 +28,7 @@ namespace Character_Builder_5
             WindowsPrincipal principal = new WindowsPrincipal(id);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
-        public static void register()
+        public static void Register()
         {
             if (IsRunAsAdmin())
             {
@@ -49,27 +49,28 @@ namespace Character_Builder_5
             }
         }
 
-        public static void reloadData()
+        public static void ReloadData()
         {
             Config.LoadConfig(Application.StartupPath);
             SourceManager.init(Application.StartupPath, true);
-            loadData();
+            LoadData();
         }
 
-        public static void loadData() {
+        public static void LoadData() {
             PluginManager.manager = new PluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
-            Skill.ImportAll();
-            Language.ImportAll();
-            Spell.ImportAll();
-            Item.ImportAll();
-            Background.ImportAll();
-            Race.ImportAll();
-            SubRace.ImportAll();
-            FeatureCollection.ImportAll();
-            Condition.ImportAll();
-            MagicProperty.ImportAll();
-            ClassDefinition.ImportAll();
-            SubClass.ImportAll();
+            ImportExtensions.LoadLevel(ConfigManager.Fullpath(Application.StartupPath, ConfigManager.Loaded.Levels));
+            ImportExtensions.ImportSkills();
+            ImportExtensions.ImportLanguages();
+            ImportExtensions.ImportSpells();
+            ImportExtensions.ImportItems();
+            ImportExtensions.ImportBackgrounds();
+            ImportExtensions.ImportRaces();
+            ImportExtensions.ImportSubRaces();
+            ImportExtensions.ImportStandaloneFeatures();
+            ImportExtensions.ImportConditions();
+            ImportExtensions.ImportMagic();
+            ImportExtensions.ImportClasses();
+            ImportExtensions.ImportSubClasses();
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace Character_Builder_5
                         return;
                     }
                 }
-                loadData();
+                LoadData();
             } else
             {
                 Exit();
@@ -117,7 +118,7 @@ namespace Character_Builder_5
                     {
                         try
                         {
-                            Player.current = Player.Load(fs);
+                            Player.Current = Player.Load(fs);
                             MainWindow.UpdateLayout();
                         }
                         catch (Exception e)
@@ -128,12 +129,12 @@ namespace Character_Builder_5
                     }
                 }
             }
-            if (args.Count() > 2 && args[2] == "register") register();
+            if (args.Count() > 2 && args[2] == "register") Register();
             Application.Run(MainWindow);
         }
-        public static void resetglobals()
+        public static void Resetglobals()
         {
-            MainWindow.resetglobals();
+            MainWindow.Resetglobals();
         }
     }
 }

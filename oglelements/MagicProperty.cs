@@ -14,12 +14,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class MagicProperty : IComparable<MagicProperty>, IHTML, OGLElement<MagicProperty>
+    public class MagicProperty : IComparable<MagicProperty>, IHTML, IOGLElement<MagicProperty>
     {
         [XmlIgnore]
         public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(MagicProperty));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(MagicProperty));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
@@ -29,7 +29,7 @@ namespace OGL
         [XmlIgnore]
         public string Category;
         [XmlIgnore]
-        private string filename;
+        public string Filename { get; set; }
         public String Requirement { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
@@ -291,93 +291,27 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public static void ExportAll()
-        {
-            //foreach (KeyValuePair<string, FeatureCollection> fc in Collections)
-            //{
-            //    string path = Path.Combine(ConfigManager.Directory_Features.FullName, fc.Key);
-            //    foreach (Feature i in fc.Value.Features)
-            foreach (MagicCategory c in Categories.Values)
-            {
-                foreach (MagicProperty i in c.Contents)
-                {
-                    FileInfo file = SourceManager.getFileName(i.Name, i.Source, cleanname(i.Category));
-                    file.Directory.Create();
-                    using (TextWriter writer = new StreamWriter(file.FullName))
-                    {
-                        serializer.Serialize(writer, i);
-                    }
-                }
-            }
-            //}
-        }
-        public static void ImportAll()
-        {
-            properties.Clear();
-            Categories.Clear();
-            Categories.Add("Magic", new MagicCategory("Magic"));
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Magic, SearchOption.AllDirectories);
-            foreach (var f in files)
-            {
-                try
-                {
-                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
-                    Uri target = new Uri(f.Key.DirectoryName);
-                    string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!Categories.ContainsKey(cat)) Categories.Add(cat, new MagicCategory(cat));
-                    String parent = System.IO.Path.GetDirectoryName(cat);
-                    while (parent.IsSubPathOf(ConfigManager.Directory_Magic) && !Categories.ContainsKey(parent))
-                    {
-                        Categories.Add(parent, new MagicCategory(parent));
-                        parent = System.IO.Path.GetDirectoryName(parent);
-                    }
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        MagicProperty mp = ((MagicProperty)serializer.Deserialize(reader));
-                        mp.filename = f.Key.FullName;
-                        mp.Source = f.Value;
-                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
-                        mp.Category = cat;
-                        Categories[cat].Contents.Add(mp);
-                        if (properties.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
-                        {
-                            throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
-                        }
-                        if (simple.ContainsKey(mp.Name))
-                        {
-                            simple[mp.Name].ShowSource = true;
-                            mp.ShowSource = true;
-                        }
-                        properties.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
-                        simple[mp.Name] = mp;
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-
-                //Collections[].AddRange(feats);
-            }
-        }
-        public static string cleanname(string path)
-        {
-            string cat = path;
-            if (!cat.StartsWith(ConfigManager.Directory_Magic)) cat = Path.Combine(ConfigManager.Directory_Magic, path);
-            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
-        }
-
-        public static string path(string path)
-        {
-            string cat = cleanname(path);
-            return cat.Remove(0, ConfigManager.Directory_Magic.Length + 1);
-        }
+        //public static void ExportAll()
+        //{
+        //    //foreach (KeyValuePair<string, FeatureCollection> fc in Collections)
+        //    //{
+        //    //    string path = Path.Combine(ConfigManager.Directory_Features.FullName, fc.Key);
+        //    //    foreach (Feature i in fc.Value.Features)
+        //    foreach (MagicCategory c in Categories.Values)
+        //    {
+        //        foreach (MagicProperty i in c.Contents)
+        //        {
+        //            FileInfo file = SourceManager.getFileName(i.Name, i.Source, cleanname(i.Category));
+        //            file.Directory.Create();
+        //            using (TextWriter writer = new StreamWriter(file.FullName))
+        //            {
+        //                serializer.Serialize(writer, i);
+        //            }
+        //        }
+        //    }
+        //    //}
+        //}
+        
         public static MagicProperty Get(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperator))
@@ -402,14 +336,14 @@ namespace OGL
             if (ShowSource || ConfigManager.AlwaysShowSource) return Name + " " + ConfigManager.SourceSeperator + " " + Source;
             return Name;
         }
-        public String toHTML()
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Magic.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -433,13 +367,15 @@ namespace OGL
             if (Item.Search == null) return from mc in Categories.Values orderby mc select mc;
             List<MagicCategory> res=new List<MagicCategory>();
             foreach (MagicCategory mc in Categories.Values) {
-                MagicCategory copy = new MagicCategory(mc.Name);
-                copy.Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test() orderby mp select mp);
+                MagicCategory copy = new MagicCategory(mc.Name)
+                {
+                    Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test() orderby mp select mp)
+                };
                 res.Add(copy);
             }
             return res;
         }
-        public string getName(string oldname)
+        public string GetName(string oldname)
         {
             if (oldname != null && oldname != "") return (PrependName != null && PrependName != "" ? PrependName + " " : "") + oldname + (PostName != null && PostName != "" ? " " + PostName : "");
             return Name;
@@ -486,29 +422,14 @@ namespace OGL
             return res;
         }
 
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            MagicProperty o = null;
-            if (properties.ContainsKey(Name + " " + ConfigManager.SourceSeperator + " " + Source)) o = properties[Name + " " + ConfigManager.SourceSeperator + " " + Source];
-            if (o != null && o.Category != Category)
-            {
-                throw new Exception("Magic Property needs a unique name");
-            }
-            FileInfo file = SourceManager.getFileName(Name, Source, cleanname(Category));
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public MagicProperty clone()
+        public MagicProperty Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                MagicProperty r = (MagicProperty)serializer.Deserialize(mem);
-                r.filename = filename;
+                MagicProperty r = (MagicProperty)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 r.Category = Category;
                 r.Name = Name;
                 return r;

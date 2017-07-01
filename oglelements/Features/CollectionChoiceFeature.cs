@@ -26,13 +26,13 @@ namespace OGL.Features
         public override List<Feature> Collect(int level, IChoiceProvider choiceProvider)
         {
             if (Level > level) return new List<Feature>();
-            int offset = choiceProvider.getChoiceOffset(this, UniqueID, Amount);
+            int offset = choiceProvider.GetChoiceOffset(this, UniqueID, Amount);
             List<Feature> res= new List<Feature>() { this };
             for (int c = 0; c < Amount; c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = choiceProvider.getChoice(UniqueID + counter);
+                Choice cho = choiceProvider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "")
                 {
                     Feature feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
@@ -45,13 +45,13 @@ namespace OGL.Features
         }
         public List<string> Choices(IChoiceProvider choiceProvider)
         {
-            int offset = choiceProvider.getChoiceOffset(this, UniqueID, Amount);
+            int offset = choiceProvider.GetChoiceOffset(this, UniqueID, Amount);
             List<string> res = new List<string>();
             for (int c = 0; c < Amount; c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = choiceProvider.getChoice(UniqueID + counter);
+                Choice cho = choiceProvider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "") res.Add(cho.Value);
             }
             return res;

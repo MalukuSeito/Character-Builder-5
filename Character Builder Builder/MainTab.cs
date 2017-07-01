@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Character_Builder_Forms;
+using Microsoft.VisualBasic;
 using OGL;
 using OGL.Items;
 using OGL.Keywords;
@@ -17,16 +18,16 @@ namespace Character_Builder_Builder
         public MainTab()
         {
             InitializeComponent();
-            Race.ImportAll();
-            SubRace.ImportAll();
+            ImportExtensions.ImportRaces();
+            ImportExtensions.ImportSubRaces();
             fill(racesList, Race.races.Keys, null);
             fill(subRaceList, SubRace.subraces.Keys, null);
-            DefaultSource.DataBindings.Add("Text", ConfigManager.loaded, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
-            CoinWeight.DataBindings.Add("Value", ConfigManager.loaded, "WeightOfACoin", true, DataSourceUpdateMode.OnPropertyChanged);
-            PDFExport.Items = ConfigManager.loaded.PDF;
-            Slots.Items = ConfigManager.loaded.Slots;
-            AllFeatures.features = ConfigManager.loaded.FeaturesForAll;
-            Multiclassing.features = ConfigManager.loaded.FeaturesForMulticlassing;
+            DefaultSource.DataBindings.Add("Text", ConfigManager.Loaded, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
+            CoinWeight.DataBindings.Add("Value", ConfigManager.Loaded, "WeightOfACoin", true, DataSourceUpdateMode.OnPropertyChanged);
+            PDFExport.Items = ConfigManager.Loaded.PDF;
+            Slots.Items = ConfigManager.Loaded.Slots;
+            AllFeatures.features = ConfigManager.Loaded.FeaturesForAll;
+            Multiclassing.features = ConfigManager.Loaded.FeaturesForMulticlassing;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -34,62 +35,62 @@ namespace Character_Builder_Builder
             TabPage tab = TabControls.SelectedTab;
             if (tab == racesTab)
             {
-                Race.ImportAll();
-                SubRace.ImportAll();
+                ImportExtensions.ImportRaces();
+                ImportExtensions.ImportSubRaces();
                 fill(racesList, Race.races.Keys, null);
                 fill(subRaceList, SubRace.subraces.Keys, null);
             }
             else if (tab == featuresTab)
             {
-                FeatureCollection.ImportAll();
+                ImportExtensions.ImportStandaloneFeatures();
                 FeatCats.Items.Clear();
                 FeatCats.Items.Add("Feats");
-                foreach (string s in SourceManager.EnumerateCategories(ConfigManager.Directory_Features)) FeatCats.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Features)) FeatCats.Items.Add(s);
             }
             else if (tab == classesTab)
             {
-                ClassDefinition.ImportAll();
+                ImportExtensions.ImportClasses();
                 fill(classList, ClassDefinition.classes.Keys, null);
-                SubClass.ImportAll();
+                ImportExtensions.ImportSubClasses();
                 fill(subclassList, SubClass.subclasses.Keys, null);
             }
             else if (tab == langTab)
             {
-                Language.ImportAll();
+                ImportExtensions.ImportLanguages();
                 fill(langBox, Language.languages.Keys, null);
             }
             else if (tab == backTab)
             {
-                Background.ImportAll();
+                ImportExtensions.ImportBackgrounds();
                 fill(backBox, Background.backgrounds.Keys, null);
             }
             else if (tab == itemTab)
             {
-                Item.ImportAll();
+                ImportExtensions.ImportItems();
                 ItemCat.Items.Clear();
                 ItemCat.Items.Add("Items");
-                foreach (string s in SourceManager.EnumerateCategories(ConfigManager.Directory_Items)) ItemCat.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Items)) ItemCat.Items.Add(s);
             }
             else if (tab == skillsTab)
             {
-                Skill.ImportAll();
+                ImportExtensions.ImportSkills();
                 fill(skillList, Skill.skills.Keys, null);
             }
             else if (tab == conditionsTab)
             {
-                Condition.ImportAll();
+                ImportExtensions.ImportConditions();
                 fill(condList, Condition.conditions.Keys, null);
             }
             else if (tab == levelTab)
             {
-                Level c = Level.Load(ConfigManager.loaded.Levels);
+                Level c = ImportExtensions.LoadLevel(ConfigManager.Loaded.Levels);
                 LevelXP.Items = c.Experience;
                 LevelProficiency.Items = c.Proficiency;
 
             }
             else if (tab == arraysTab)
             {
-                AbilityScores ab = AbilityScores.Load(ConfigManager.loaded.AbilityScores);
+                AbilityScores ab = ImportExtensions.LoadAbilityScores(ConfigManager.Loaded.AbilityScores);
                 PointBuyPoints.DataBindings.Clear();
                 PointBuyPoints.DataBindings.Add("Value", ab, "PointBuyPoints", true, DataSourceUpdateMode.OnPropertyChanged);
                 PointBuyMin.DataBindings.Clear();
@@ -105,15 +106,15 @@ namespace Character_Builder_Builder
             }
             else if (tab == spellsTab)
             {
-                Spell.ImportAll();
+                ImportExtensions.ImportSpells();
                 fill(spellBox, Spell.spells.Keys, null);
             }
             else if (tab == magicTab)
             {
-                MagicProperty.ImportAll();
+                ImportExtensions.ImportMagic();
                 magicCatBox.Items.Clear();
                 magicCatBox.Items.Add("Magic");
-                foreach (string s in SourceManager.EnumerateCategories(ConfigManager.Directory_Magic)) magicCatBox.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Magic)) magicCatBox.Items.Add(s);
             }
             else if (tab == settingsTab)
             {
@@ -154,7 +155,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -166,7 +167,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                RaceForm r = new RaceForm(selected.clone());
+                RaceForm r = new RaceForm(selected.Clone());
                 r.Saved += RaceSaved;
                 r.Show();
                 
@@ -175,13 +176,13 @@ namespace Character_Builder_Builder
 
         private void RaceSaved(object sender, string id)
         {
-            Race.ImportAll();
+            ImportExtensions.ImportRaces();
             fill(racesList, Race.races.Keys, id);
         }
 
         private void SubRaceSaved(object sender, string id)
         {
-            SubRace.ImportAll();
+            ImportExtensions.ImportSubRaces();
             fill(subRaceList, SubRace.subraces.Keys, id);
         }
 
@@ -193,7 +194,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -205,7 +206,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                SubRaceForm r = new SubRaceForm(selected.clone());
+                SubRaceForm r = new SubRaceForm(selected.Clone());
                 r.Saved += SubRaceSaved;
                 r.Show();
 
@@ -258,7 +259,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -266,9 +267,11 @@ namespace Character_Builder_Builder
         private void button2_Click(object sender, EventArgs e)
         {
             if (FeatCats.SelectedItem == null) return;
-            FeatureContainer f = new FeatureContainer();
-            f.Source = ConfigManager.DefaultSource;
-            f.category = (string)FeatCats.SelectedItem;
+            FeatureContainer f = new FeatureContainer()
+            {
+                Source = ConfigManager.DefaultSource,
+                category = (string)FeatCats.SelectedItem
+            };
             FeatureContainerForm r = new FeatureContainerForm(f);
             r.Saved += ContainerSaved;
             r.Show();
@@ -281,7 +284,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                FeatureContainerForm r = new FeatureContainerForm(selected.clone());
+                FeatureContainerForm r = new FeatureContainerForm(selected.Clone());
                 r.Saved += ContainerSaved;
                 r.Show();
 
@@ -322,7 +325,7 @@ namespace Character_Builder_Builder
         private void ContainerSaved(object sender, string id)
         {
             string s = (string)FeatCats.SelectedItem;
-            FeatureCollection.ImportAll();
+            ImportExtensions.ImportStandaloneFeatures();
             var scroll = savescroll(FeatCollection);
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
@@ -339,7 +342,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -351,7 +354,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                ClassForm r = new ClassForm(selected.clone());
+                ClassForm r = new ClassForm(selected.Clone());
                 r.Saved += ClassSaved ;
                 r.Show();
 
@@ -360,7 +363,7 @@ namespace Character_Builder_Builder
 
         private void ClassSaved(object sender, string id)
         {
-            ClassDefinition.ImportAll();
+            ImportExtensions.ImportClasses();
             fill(classList, ClassDefinition.classes.Keys, id);
         }
 
@@ -386,7 +389,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -398,7 +401,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                SubClassForm r = new SubClassForm(selected.clone());
+                SubClassForm r = new SubClassForm(selected.Clone());
                 r.Saved += SubClassSaved;
                 r.Show();
 
@@ -407,7 +410,7 @@ namespace Character_Builder_Builder
 
         private void SubClassSaved(object sender, string id)
         {
-            SubClass.ImportAll();
+            ImportExtensions.ImportSubClasses();
             fill(subclassList, SubClass.subclasses.Keys, id);
         }
 
@@ -426,7 +429,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -438,7 +441,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                LanguageForm r = new LanguageForm(selected.clone());
+                LanguageForm r = new LanguageForm(selected.Clone());
                 r.Saved += LangSaved;
                 r.Show();
 
@@ -447,7 +450,7 @@ namespace Character_Builder_Builder
 
         private void LangSaved(object sender, string id)
         {
-            Language.ImportAll();
+            ImportExtensions.ImportLanguages();
             fill(langBox, Language.languages.Keys, id);
         }
 
@@ -466,7 +469,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -478,7 +481,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                BackgroundForm r = new BackgroundForm(selected.clone());
+                BackgroundForm r = new BackgroundForm(selected.Clone());
                 r.Saved += BackSaved;
                 r.Show();
 
@@ -487,7 +490,7 @@ namespace Character_Builder_Builder
 
         private void BackSaved(object sender, string id)
         {
-            Background.ImportAll();
+            ImportExtensions.ImportBackgrounds();
             fill(backBox, Background.backgrounds.Keys, id);
         }
 
@@ -530,7 +533,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -544,37 +547,37 @@ namespace Character_Builder_Builder
                 string sel = selected.Name;
                 if (selected is Armor)
                 {
-                    ArmorForm r = new ArmorForm((Armor)selected.clone());
+                    ArmorForm r = new ArmorForm((Armor)selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
                 else if (selected is Shield)
                 {
-                    ShieldForm r = new ShieldForm((Shield)selected.clone());
+                    ShieldForm r = new ShieldForm((Shield)selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
                 else if (selected is Weapon)
                 {
-                    WeaponForm r = new WeaponForm((Weapon)selected.clone());
+                    WeaponForm r = new WeaponForm((Weapon)selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
                 else if (selected is Pack)
                 {
-                    PackForm r = new PackForm((Pack)selected.clone());
+                    PackForm r = new PackForm((Pack)selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
                 else if (selected is Tool)
                 {
-                    ToolForm r = new ToolForm((Tool)selected.clone());
+                    ToolForm r = new ToolForm((Tool)selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
                 else
                 {
-                    ItemForm r = new ItemForm(selected.clone());
+                    ItemForm r = new ItemForm(selected.Clone());
                     r.Saved += ItemSaved;
                     r.Show();
                 }
@@ -584,7 +587,7 @@ namespace Character_Builder_Builder
         private void ItemSaved(object sender, string id)
         {
             string s = (string)ItemCat.SelectedItem;
-            Item.ImportAll();
+            ImportExtensions.ImportItems();
             var scroll = savescroll(ItemBox);
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
@@ -596,8 +599,10 @@ namespace Character_Builder_Builder
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ItemCat.SelectedItem == null) return;
-            Item i = new Item();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Item i = new Item()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             ItemForm r = new ItemForm(i);
             r.Saved += ItemSaved;
             r.Show();
@@ -606,28 +611,34 @@ namespace Character_Builder_Builder
         private void toolToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(ItemCat.SelectedItem == null) return;
-            Tool i = new Tool();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Tool i = new Tool()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             ToolForm r = new ToolForm(i);
             r.Saved += ItemSaved;
             r.Show();
         }
 
-        private void weaponToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WeaponToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ItemCat.SelectedItem == null) return;
-            Weapon i = new Weapon();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Weapon i = new Weapon()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             WeaponForm r = new WeaponForm(i);
             r.Saved += ItemSaved;
             r.Show();
         }
 
-        private void armorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ArmorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ItemCat.SelectedItem == null) return;
-            Armor i = new Armor();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Armor i = new Armor()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             ArmorForm r = new ArmorForm(i);
             r.Saved += ItemSaved;
             r.Show();
@@ -636,8 +647,10 @@ namespace Character_Builder_Builder
         private void shieldToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ItemCat.SelectedItem == null) return;
-            Shield i = new Shield();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Shield i = new Shield()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             ShieldForm r = new ShieldForm(i);
             r.Saved += ItemSaved;
             r.Show();
@@ -646,8 +659,10 @@ namespace Character_Builder_Builder
         private void packToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ItemCat.SelectedItem == null) return;
-            Pack i = new Pack();
-            i.Category = Category.Make((string)ItemCat.SelectedItem);
+            Pack i = new Pack()
+            {
+                Category = Category.Make((string)ItemCat.SelectedItem)
+            };
             PackForm r = new PackForm(i);
             r.Saved += ItemSaved;
             r.Show();
@@ -668,7 +683,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -680,7 +695,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                SkillForm r = new SkillForm(selected.clone());
+                SkillForm r = new SkillForm(selected.Clone());
                 r.Saved += SkillSaved;
                 r.Show();
 
@@ -689,7 +704,7 @@ namespace Character_Builder_Builder
 
         private void SkillSaved(object sender, string id)
         {
-            Skill.ImportAll();
+            ImportExtensions.ImportSkills();
             fill(skillList, Skill.skills.Keys, id);
         }
         private void NewCond_Click(object sender, EventArgs e)
@@ -707,7 +722,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -719,7 +734,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                ConditionForm r = new ConditionForm(selected.clone());
+                ConditionForm r = new ConditionForm(selected.Clone());
                 r.Saved += ConditionSaved;
                 r.Show();
 
@@ -728,29 +743,31 @@ namespace Character_Builder_Builder
 
         private void ConditionSaved(object sender, string id)
         {
-            Condition.ImportAll();
+            ImportExtensions.ImportConditions();
             fill(condList, Condition.conditions.Keys, id);
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            Level.Save(ConfigManager.loaded.Levels);
+            Level.Current.Save(ConfigManager.Loaded.Levels);
         }
 
         private void AbilitySave_Click(object sender, EventArgs e)
         {
-            AbilityScores.Save();
+            SaveExtensions.SaveAbilityScores();
         }
 
         private void SaveSettings_Click(object sender, EventArgs e)
         {
-            ConfigManager.loaded.Save(Path.Combine(Application.StartupPath, "Config.xml"));
+            ConfigManager.Loaded.Save(Path.Combine(Application.StartupPath, "Config.xml"));
         }
 
         private void NewSpell_Click(object sender, EventArgs e)
         {
-            Spell s = new Spell();
-            s.Level = 1;
+            Spell s = new Spell()
+            {
+                Level = 1
+            };
             s.Keywords.Add(new Keyword("Verbal"));
             s.Keywords.Add(new Keyword("Somatic"));
             SpellForm r = new SpellForm(s);
@@ -766,7 +783,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -778,7 +795,7 @@ namespace Character_Builder_Builder
             if (selected != null)
             {
                 string sel = selected.Name;
-                SpellForm r = new SpellForm(selected.clone());
+                SpellForm r = new SpellForm(selected.Clone());
                 r.Saved += SpellSaved;
                 r.Show();
 
@@ -787,29 +804,29 @@ namespace Character_Builder_Builder
 
         private void SpellSaved(object sender, string id)
         {
-            Spell.ImportAll();
+            ImportExtensions.ImportSpells();
             fill(spellBox, Spell.spells.Keys, id);
         }
 
         private void ApplySpellsBtn_Click(object sender, EventArgs e)
         {
-            Spell.ImportAll();
-            ClassDefinition.ImportAll();
+            ImportExtensions.ImportSpells();
+            ImportExtensions.ImportClasses();
             foreach (Spell s in Spell.spells.Values)
             {
-                if (s.KWChanged) s.save(false);
+                if (s.KWChanged) s.Save(false);
             }
         }
 
         private void ApplyFeatsBtn_Click(object sender, EventArgs e)
         {
-            FeatureCollection.ImportAll();
-            ClassDefinition.ImportAll();
+            ImportExtensions.ImportStandaloneFeatures();
+            ImportExtensions.ImportClasses();
             foreach (List<FeatureContainer> c in FeatureCollection.Container.Values)
             {
                 foreach (FeatureContainer s in c)
                 {
-                    if (s.Features.Any(f => f.KWChanged)) s.save(false);
+                    if (s.Features.Any(f => f.KWChanged)) s.Save(false);
                 }
             }
         }
@@ -858,7 +875,7 @@ namespace Character_Builder_Builder
             {
                 preview.Navigate("about:blank");
                 preview.Document.OpenNew(true);
-                preview.Document.Write(selected.toHTML());
+                preview.Document.Write(selected.ToHTML());
                 preview.Refresh();
             }
         }
@@ -867,7 +884,7 @@ namespace Character_Builder_Builder
         {
             if (magicBox.SelectedItem == null) return;
             MagicProperty selected = (MagicProperty)magicBox.SelectedItem;
-            MagicForm r = new MagicForm(selected.clone());
+            MagicForm r = new MagicForm(selected.Clone());
             r.Saved += MagicSaved;
             r.Show();
         }
@@ -876,7 +893,7 @@ namespace Character_Builder_Builder
         {
             string s = (string)magicCatBox.SelectedItem;
             var scroll = savescroll(magicBox);
-            MagicProperty.ImportAll();
+            ImportExtensions.ImportMagic();
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
             magicCatBox.SelectedItem = s;
@@ -893,7 +910,7 @@ namespace Character_Builder_Builder
             {
                 try
                 {
-                    fill(spellBox, from s in Spell.filter(textBox1.Text) select s.Name, null);
+                    fill(spellBox, from s in Spell.Filter(textBox1.Text) select s.Name, null);
                 } catch(Exception)
                 {
                     spellBox.Items.Clear();

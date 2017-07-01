@@ -14,14 +14,14 @@ using XCalc;
 namespace OGL
 {
     [XmlInclude(typeof(ModifiedSpell))]
-    public class Spell : IComparable<Spell>, IHTML, OGLElement<Spell>
+    public class Spell : IComparable<Spell>, IHTML, IOGLElement<Spell>
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
         XmlArrayItem(Type = typeof(Material))]
         public List<Keyword> Keywords;
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Spell));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Spell));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
@@ -29,7 +29,7 @@ namespace OGL
         [XmlIgnore]
         static public Dictionary<String, List<Spell>> SpellLists = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         [XmlIgnore]
         static public Dictionary<String, Spell> simple = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
         public string Name { get; set; }
@@ -114,7 +114,7 @@ namespace OGL
                 Keywords.Add(new Keyword("Charisma Saving Throw"));
                 if (!Keywords.Exists(k => k.Name == "save")) Keywords.Add(new Keyword("Save"));
             }
-            register(null);
+            Register(null);
         }
         public Spell AssignKeywords(Keyword kw1, Keyword kw2 = null, Keyword kw3 = null, Keyword kw4 = null, Keyword kw5 = null, Keyword kw6 = null, Keyword kw7 = null, Keyword kw8 = null, Keyword kw9 = null, Keyword kw10 = null, Keyword kw11 = null, Keyword kw12 = null)
         {
@@ -147,9 +147,9 @@ namespace OGL
             if (fifth > 0) CantripDamage.Add(new CantripDamage(fifth, fifthdamage));
             return this;
         }
-        public void register(String file)
+        public void Register(String file)
         {
-            filename = file;
+            Filename = file;
             if (this is ModifiedSpell) return;
             foreach (Keyword kw in Keywords) kw.check();
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -162,45 +162,23 @@ namespace OGL
             }
             else simple.Add(Name, this);
         }
-        public static void ExportAll()
-        {
-            foreach (Spell i in spells.Values)
-            {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Spells);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-            }
-        }
-        public static void ImportAll()
-        {
-            spells.Clear();
-            SpellLists.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Spells, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Spell s = (Spell)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (Spell i in spells.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Spells);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
+        //    }
+        //}
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Spells.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
                     using (StringWriter textWriter = new StringWriter())
@@ -229,11 +207,13 @@ namespace OGL
             if (sourcehint != null && spells.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return spells[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
             ConfigManager.LogError("Spell not found: " + name);
-            Spell missing = new Spell();
-            missing.Name = name;
-            missing.register(null);
-            missing.Source = "Autogenerated Entry";
-            missing.ShowSource = true;
+            Spell missing = new Spell()
+            {
+                Name = name,
+                Source = "Autogenerated Entry",
+                ShowSource = true
+            };
+            missing.Register(null);
             return missing;
         }
         public override string ToString()
@@ -278,7 +258,7 @@ namespace OGL
         public string GetDamageType()
         {
             List<string> damagetypes=new List<string>();
-            foreach (Keyword kw in getKeywords())
+            foreach (Keyword kw in GetKeywords())
             {
                 //TODO external file
                 if (kw.Name == "cold") damagetypes.Add(kw.Name);
@@ -294,36 +274,27 @@ namespace OGL
             }
             return String.Join(", ",damagetypes);
         }
-        public virtual List<Keyword> getKeywords()
+        public virtual List<Keyword> GetKeywords()
         {
             return Keywords;
         }
-
-        public bool save(Boolean overwrite)
-        {
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Spells);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public Spell clone()
+        public Spell Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Spell r = (Spell)serializer.Deserialize(mem);
-                r.filename = filename;
+                Spell r = (Spell)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }
-        public static List<Spell> filter(string expression)
+        public static List<Spell> Filter(string expression)
         {
             if (expression == null || expression == "") expression = "true";
             try
             {
-                Expression ex = new Expression(ConfigManager.fixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
                 Spell current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -334,7 +305,7 @@ namespace OGL
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "level") args.Result = current.Level;
-                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => matchesKW(k.Name, name))) args.Result = true;
+                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
                 ex.EvaluateFunction += FunctionExtensions;
@@ -365,7 +336,7 @@ namespace OGL
                 args.Result = "";
             }
         }
-        private static bool matchesKW(string kw, string kw2)
+        private static bool MatchesKW(string kw, string kw2)
         {
             return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.InvariantCultureIgnoreCase);
         }

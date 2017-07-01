@@ -52,11 +52,11 @@
     <Compile Include="Base\Rarity.cs" />
     <Compile Include="Common\IHistoryManager.cs" />
     <Compile Include="Common\ILicense.cs" />
+    <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
     <Compile Include="Common\IXSLTransform.cs" />
     <Compile Include="Items\Category.cs" />
     <Compile Include="ClassDefiniton.cs" />
-    <Compile Include="Common\OGLElement.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="Descriptions\BackgroundOption.cs" />
     <Compile Include="Descriptions\Names.cs" />

@@ -35,7 +35,7 @@ namespace Character_Builder_Builder
             features1.features = container.Features;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(container.toHTML());
+            preview.Document.Write(container.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -54,7 +54,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(container.toHTML());
+            preview.Document.Write(container.ToHTML());
             preview.Refresh();
         }
 
@@ -65,7 +65,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(container.clone());
+                UndoBuffer.AddLast(container.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -125,8 +125,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = container.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = container.save(true);
+            bool saved = container.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = container.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

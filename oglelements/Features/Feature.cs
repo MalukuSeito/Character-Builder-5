@@ -65,9 +65,9 @@ namespace OGL.Features
             if (Level > level) return new List<Feature>();
             return new List<Feature>() { this };
         }
-        public String toHTML()
+        public String ToHTML()
         {
-            return new FeatureContainer(this).toHTML();
+            return new FeatureContainer(this).ToHTML();
         }
         public override string ToString()
         {
@@ -80,22 +80,11 @@ namespace OGL.Features
         {
             return Name + ": " + Text;
         }
-        public static List<Feature> Load(String path)
-        {
-            return FeatureContainer.Load(path).Features;
-        }
         public static List<Feature> LoadString(String text)
         {
             return FeatureContainer.LoadString(text).Features;
         }
-        public void Save(String path)
-        {
-            new FeatureContainer(this).Save(path);
-        }
-        public string Save()
-        {
-            return new FeatureContainer(this).Save();
-        }
+        
         public int CompareTo (Feature other) {
             return Name.CompareTo(other.Name);
         }
@@ -110,7 +99,10 @@ namespace OGL.Features
         {
             return "Basic Feature";
         }
-
+        public string Save()
+        {
+            return new FeatureContainer(this).Save();
+        }
         public Feature SetPrerequisite(string v)
         {
             this.Prerequisite = v;

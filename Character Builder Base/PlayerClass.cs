@@ -122,14 +122,14 @@ namespace Character_Builder
         public override string ToString()
         {
             OGL.SubClass s = SubClass;
-            if (s != null && s.SheetName != null && s.SheetName.Length > 0) return s.SheetName + " " + getClassLevelUpToLevel(Player.current.getLevel());
-            if (SubClassName != null && SubClassName != "") return SubClassName + " " + getClassLevelUpToLevel(Player.current.getLevel());
-            return ClassName + " " + getClassLevelUpToLevel(Player.current.getLevel());
+            if (s != null && s.SheetName != null && s.SheetName.Length > 0) return s.SheetName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
+            if (SubClassName != null && SubClassName != "") return SubClassName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
+            return ClassName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
         }
 
         public int getMulticlassingLevel(int level=0)
         {
-            if (level == 0) level = Player.current.getLevel();
+            if (level == 0) level = Player.Current.GetLevel();
             int classlevel = getClassLevelUpToLevel(level);
             if (classlevel == 0) return 0;
             SubClass sc = SubClass;

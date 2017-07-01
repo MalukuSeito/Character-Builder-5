@@ -13,16 +13,16 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class SubRace: IHTML, OGLElement<SubRace>
+    public class SubRace: IHTML, IOGLElement<SubRace>
     {
         [XmlIgnore]
         public static bool DETAILED_TOSTRING = false;
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(SubRace));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(SubRace));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(ListDescription)),
         XmlArrayItem(Type = typeof(TableDescription))]
@@ -115,10 +115,10 @@ namespace OGL
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         [XmlIgnore]
-        static private Dictionary<String, SubRace> simple = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
-        public void register(string file)
+        static public Dictionary<String, SubRace> simple = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
+        public void Register(string file)
         {
-            filename = file;
+            Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (subraces.ContainsKey(full)) throw new Exception("Duplicate Subrace: " + full);
             subraces.Add(full, this);
@@ -141,7 +141,7 @@ namespace OGL
             Features = new List<Feature>();
             Descriptions = new List<Description>();
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
           public static SubRace Get(String name, string sourcehint)
         {
@@ -153,48 +153,29 @@ namespace OGL
             if (sourcehint != null && subraces.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subraces[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
             if (simple.ContainsKey(name)) return simple[name];
             ConfigManager.LogError("Unknown Subrace: " + name);
-            SubRace sr = new SubRace(name, null);
-            sr.Description = "Missing Entry";
+            SubRace sr = new SubRace(name, null)
+            {
+                Description = "Missing Entry"
+            };
             return sr;
         }
-        public static void ExportAll()
-        {
-            foreach (SubRace i in subraces.Values)
-            {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_SubRaces);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-            }
-        }
-        public static void ImportAll()
-        {
-            subraces.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_SubRaces, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        SubRace s = (SubRace)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (SubRace i in subraces.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_SubRaces);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
+        //    }
+        //}
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_SubRaces.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -238,23 +219,14 @@ namespace OGL
         {
             return (from s in subraces.Values where races.Contains(s.RaceName) || s.RaceName == "*" select s);
         }
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_SubRaces);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public SubRace clone()
+        public SubRace Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                SubRace r = (SubRace)serializer.Deserialize(mem);
-                r.filename = filename;
+                SubRace r = (SubRace)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }

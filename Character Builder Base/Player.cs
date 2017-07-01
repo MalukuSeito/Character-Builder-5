@@ -29,7 +29,7 @@ namespace Character_Builder
         [XmlIgnore]
         public static Player _current = new Player();
         [XmlIgnore]
-        public static Player current {
+        public static Player Current {
             get { return _current; }
             set { _current = value; PluginManager.manager.Load(value.ActiveHouseRules); }
         }
@@ -46,15 +46,15 @@ namespace Character_Builder
                 if (id==null) id = "";
                 if (id == "" || id != lastid)
                 {
-                    Bitmap port = current.Portrait;
-                    Bitmap fac = current.FactionImage;
-                    current.Portrait = null;
-                    current.FactionImage = null;
-                    serializer.Serialize(mem, current);
+                    Bitmap port = Current.Portrait;
+                    Bitmap fac = Current.FactionImage;
+                    Current.Portrait = null;
+                    Current.FactionImage = null;
+                    serializer.Serialize(mem, Current);
                     mem.Seek(0, SeekOrigin.Begin);
                     UndoBuffer.AddLast((Player)serializer.Deserialize(mem));
-                    current.Portrait = port;
-                    current.FactionImage = fac;
+                    Current.Portrait = port;
+                    Current.FactionImage = fac;
                     UndoBuffer.Last.Value.Portrait = port;
                     UndoBuffer.Last.Value.FactionImage = fac;
                     foreach (Possession pos in UndoBuffer.Last.Value.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
@@ -62,14 +62,14 @@ namespace Character_Builder
                     for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) if (UndoBuffer.Last.Value.ComplexJournal[i].Text != null) UndoBuffer.Last.Value.ComplexJournal[i].Text = UndoBuffer.Last.Value.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
                     UndoBuffer.Last.Value.Allies = UndoBuffer.Last.Value.Allies.Replace("\n", Environment.NewLine);
                     UndoBuffer.Last.Value.Backstory = UndoBuffer.Last.Value.Backstory.Replace("\n", Environment.NewLine);
-                    HistoryButtonChange?.Invoke(Player.current, true, false);
+                    HistoryButtonChange?.Invoke(Player.Current, true, false);
                     RedoBuffer.Clear();
                     if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
                     UnsavedChanges++;
                 }
                 lastid=id;
-                current.ChoiceCounter.Clear();
-                current.ChoiceTotal.Clear();
+                Current.ChoiceCounter.Clear();
+                Current.ChoiceTotal.Clear();
             }
         }
         public static event HistoryButtonChangeEvent HistoryButtonChange;
@@ -78,11 +78,11 @@ namespace Character_Builder
             if (UndoBuffer.Count > 0)
             {
                 lastid = "";
-                RedoBuffer.AddLast(current);
-                current = UndoBuffer.Last.Value;
+                RedoBuffer.AddLast(Current);
+                Current = UndoBuffer.Last.Value;
                 UndoBuffer.RemoveLast();
                 if (UnsavedChanges > 0) UnsavedChanges--;
-                HistoryButtonChange?.Invoke(Player.current, UndoBuffer.Count > 0, true);
+                HistoryButtonChange?.Invoke(Player.Current, UndoBuffer.Count > 0, true);
                 return true;
             }
             return false;
@@ -92,11 +92,11 @@ namespace Character_Builder
             if (RedoBuffer.Count > 0)
             {
                 lastid = "";
-                UndoBuffer.AddLast(current);
-                current = RedoBuffer.Last.Value;
+                UndoBuffer.AddLast(Current);
+                Current = RedoBuffer.Last.Value;
                 RedoBuffer.RemoveLast();
                 UnsavedChanges++;
-                HistoryButtonChange?.Invoke(Player.current, true, RedoBuffer.Count > 0);
+                HistoryButtonChange?.Invoke(Player.Current, true, RedoBuffer.Count > 0);
                 return true;
             }
             return false;
@@ -272,9 +272,9 @@ namespace Character_Builder
             Journal = new List<string>();
         }
 
-        public int getSpellSlotsMax(String SpellcastingID)
+        public int GetSpellSlotsMax(String SpellcastingID)
         {
-            List<int> slots = getSpellSlots(SpellcastingID);
+            List<int> slots = GetSpellSlots(SpellcastingID);
             for (int level = slots.Count - 1; level >= 0; level--)
             {
                 if (slots[level] > 0) return level + 1;
@@ -282,10 +282,10 @@ namespace Character_Builder
             return 0;
         }
 
-        public List<Possession> getItemsAndPossessions()
+        public List<Possession> GetItemsAndPossessions()
         {
             Dictionary<string, int> items = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            foreach (Item i in getFreeItems())
+            foreach (Item i in GetFreeItems())
             {
                 if (!items.ContainsKey(i.Name)) items.Add(i.Name, 1);
                 else items[i.Name]++;
@@ -322,7 +322,7 @@ namespace Character_Builder
             result.Sort();
             return result;
         }
-        public void changePossessionAmountAndAddRemoveItemsAccordingly(Possession p, int count)
+        public void ChangePossessionAmountAndAddRemoveItemsAccordingly(Possession p, int count)
         {
             if (Possessions.Contains(p))
             {
@@ -370,7 +370,7 @@ namespace Character_Builder
                 Possessions.Add(p);
             }
         }
-        public void removePossessionAndItems(Possession p)
+        public void RemovePossessionAndItems(Possession p)
         {
             bool worked = true;
             if (p.BaseItem != null && p.BaseItem != "")
@@ -399,23 +399,25 @@ namespace Character_Builder
         {
             if (!Possessions.Contains(p)) Possessions.Add(p);
         }
-        public double getWeight()
+        public double GetWeight()
         {
-            List<Possession> items = getItemsAndPossessions();
+            List<Possession> items = GetItemsAndPossessions();
             double total=0.0;
             foreach (Possession o in items) total += o.getWeight();
-            total += getMoney().Weight();
+            total += GetMoney().Weight();
             return total;
         }
-        public void setAbilityFeatChoices(AbilityScoreFeatFeature f, Ability ab1, Ability ab2,String feat, String source)
+        public void SetAbilityFeatChoices(AbilityScoreFeatFeature f, Ability ab1, Ability ab2,String feat, String source)
         {
-            int level=getLevel();
+            int level=GetLevel();
             AbilityFeatChoice afc = AbilityFeatChoices.Find(t => t.UniqueID == f.UniqueID && t.Level == f.Level);
             if (afc == null)
             {
-                afc = new AbilityFeatChoice();
-                afc.Level = f.Level;
-                afc.UniqueID = f.UniqueID;
+                afc = new AbilityFeatChoice()
+                {
+                    Level = f.Level,
+                    UniqueID = f.UniqueID
+                };
                 AbilityFeatChoices.Add(afc);
                 foreach (PlayerClass p in Classes)
                 {
@@ -426,10 +428,10 @@ namespace Character_Builder
             afc.Ability2=ab2;
             afc.Feat = feat + " " + ConfigManager.SourceSeperator + " " + source;
         }
-        public List<Feature> getPossessionFeatures(int level = 0, bool reset = false)
+        public List<Feature> GetPossessionFeatures(int level = 0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             List<Feature> result=new List<Feature>();
             foreach (Possession p in Possessions)
             {
@@ -437,15 +439,17 @@ namespace Character_Builder
             }
             return PluginManager.manager.filterPossessionFeatures(result, level, this);
         }
-        public AbilityFeatChoice getAbilityFeatChoice(AbilityScoreFeatFeature f)
+        public AbilityFeatChoice GetAbilityFeatChoice(AbilityScoreFeatFeature f)
         {
-            int level = getLevel();
+            int level = GetLevel();
             AbilityFeatChoice afc = AbilityFeatChoices.Find(t => t.UniqueID == f.UniqueID && t.Level == f.Level);
             if (afc == null)
             {
-                afc = new AbilityFeatChoice();
-                afc.Level = f.Level;
-                afc.UniqueID = f.UniqueID;
+                afc = new AbilityFeatChoice()
+                {
+                    Level = f.Level,
+                    UniqueID = f.UniqueID
+                };
                 AbilityFeatChoices.Add(afc);
                 foreach (PlayerClass p in Classes)
                 {
@@ -454,15 +458,15 @@ namespace Character_Builder
             }
             return afc;
         }
-        public IEnumerable<AbilityFeatChoice> getAbilityFeatChoices(int level=0)
+        public IEnumerable<AbilityFeatChoice> GetAbilityFeatChoices(int level=0)
         {
-            if (level==0) level = getLevel();
-            Dictionary<String, int> cl = getClassLevelStrings(level);
+            if (level==0) level = GetLevel();
+            Dictionary<String, int> cl = GetClassLevelStrings(level);
             return from AbilityFeatChoice afc in AbilityFeatChoices where (afc.UniqueID != null && afc.UniqueID != "" && afc.Level <= level && (afc.Class == null || afc.Class == "")) || (cl.ContainsKey(afc.Class) && afc.Level <= cl[afc.Class]) select afc;
         }
-        public Dictionary<ClassDefinition, int> getClassLevels(int level=0)
+        public Dictionary<ClassDefinition, int> GetClassLevels(int level=0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             Dictionary<ClassDefinition, int> classlevels = new Dictionary<ClassDefinition, int>();
             foreach (PlayerClass p in Classes)
             {
@@ -470,27 +474,29 @@ namespace Character_Builder
             }
             return classlevels;
         }
-        public Spellcasting getSpellcasting(string spellcastingID)
+        public Spellcasting GetSpellcasting(string spellcastingID)
         {
             foreach (Spellcasting sc in Spellcasting) if (sc.SpellcastingID == spellcastingID) return sc;
-            Spellcasting s = new Spellcasting();
-            s.SpellcastingID = spellcastingID;
+            Spellcasting s = new Spellcasting()
+            {
+                SpellcastingID = spellcastingID
+            };
             Spellcasting.Add(s);
             return s;
         }
-        public int getClassLevel(string spellcastingID, int level = 0)
+        public int GetClassLevel(string spellcastingID, int level = 0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             foreach (PlayerClass pc in Classes)
             {
                 foreach (Feature f in pc.getFeatures(level, this)) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID) return pc.getClassLevelUpToLevel(level);
             }
             return 0;
         }
-        public SpellChoice getSpellChoice(string spellcastingID, string uniqueID)
+        public SpellChoice GetSpellChoice(string spellcastingID, string uniqueID)
         {
-            Spellcasting sc = getSpellcasting(spellcastingID);
-            int level = getLevel();
+            Spellcasting sc = GetSpellcasting(spellcastingID);
+            int level = GetLevel();
             foreach (SpellChoicePerLevel spcl in sc.SpellChoicesPerLevel) if (spcl.Level == level)
                 {
                     foreach (SpellChoice spc in spcl.Choices) if (spc.UniqueID == uniqueID) return spc;
@@ -524,11 +530,11 @@ namespace Character_Builder
 
         
 
-        public List<int> getSpellSlots(string spellcastingID, int level = 0)
+        public List<int> GetSpellSlots(string spellcastingID, int level = 0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             int classlevel = 0;
-            Spellcasting sc = getSpellcasting(spellcastingID);
+            Spellcasting sc = GetSpellcasting(spellcastingID);
             int multiclassinglevel = 0;
             bool overwrittenbymulticlassing = false;
             foreach (PlayerClass pc in Classes)
@@ -545,7 +551,7 @@ namespace Character_Builder
             }
             int curlevel = 0;
             List<int> slots = null;
-            List<Feature> features = getFeatures();
+            List<Feature> features = GetFeatures();
             if (overwrittenbymulticlassing && features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == "MULTICLASS")) {
                 spellcastingID="MULTICLASS";
                 classlevel = multiclassinglevel;
@@ -563,32 +569,32 @@ namespace Character_Builder
             if (slots == null) slots = new List<int>();
             return slots;
         }
-        public List<int> getUsedSpellSlots(string spellcastingID)
+        public List<int> GetUsedSpellSlots(string spellcastingID)
         {
-            List<Feature> features = getFeatures();
+            List<Feature> features = GetFeatures();
             if (features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID && ((SpellcastingFeature)f).OverwrittenByMulticlassing) && features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == "MULTICLASS")) spellcastingID = "MULTICLASS";
-            Spellcasting sc = getSpellcasting(spellcastingID);
+            Spellcasting sc = GetSpellcasting(spellcastingID);
             return sc.UsedSlots;
         }
-        public void setSpellSlot(string spellcastingID, int spelllevel, int value)
+        public void SetSpellSlot(string spellcastingID, int spelllevel, int value)
         {
-            List<Feature> features = getFeatures();
+            List<Feature> features = GetFeatures();
             if (features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID && ((SpellcastingFeature)f).OverwrittenByMulticlassing) && features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == "MULTICLASS")) spellcastingID = "MULTICLASS";
-            Spellcasting sc = getSpellcasting(spellcastingID);
+            Spellcasting sc = GetSpellcasting(spellcastingID);
             while (sc.UsedSlots.Count < spelllevel) sc.UsedSlots.Add(0);
             sc.UsedSlots[spelllevel - 1] = value;
         }
-        public void resetSpellSlots(string spellcastingID)
+        public void ResetSpellSlots(string spellcastingID)
         {
-            List<Feature> features = getFeatures();
+            List<Feature> features = GetFeatures();
             if (features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID && ((SpellcastingFeature)f).OverwrittenByMulticlassing) && features.Exists(f => f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == "MULTICLASS")) spellcastingID = "MULTICLASS";
-            Spellcasting sc = getSpellcasting(spellcastingID);
+            Spellcasting sc = GetSpellcasting(spellcastingID);
             sc.UsedSlots = new List<int>();
         }
-        public List<SpellSlotInfo> getSpellSlotInfo(string SpellcastingID, int level = 0)
+        public List<SpellSlotInfo> GetSpellSlotInfo(string SpellcastingID, int level = 0)
         {
-            List<int> slots = getSpellSlots(SpellcastingID, level);
-            List<int> usedSlots = getUsedSpellSlots(SpellcastingID);
+            List<int> slots = GetSpellSlots(SpellcastingID, level);
+            List<int> usedSlots = GetUsedSpellSlots(SpellcastingID);
             List<SpellSlotInfo> res = new List<SpellSlotInfo>();
             for (int spelllevel = 0; spelllevel < slots.Count; spelllevel++)
             {
@@ -598,9 +604,9 @@ namespace Character_Builder
             }
             return res;
         }
-        public Dictionary<String, int> getClassLevelStrings(int level = 0)
+        public Dictionary<String, int> GetClassLevelStrings(int level = 0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             Dictionary<String, int> classlevels = new Dictionary<String, int>(StringComparer.OrdinalIgnoreCase);
             if (Classes == null) Classes = new List<PlayerClass>();
             foreach (PlayerClass p in Classes)
@@ -652,7 +658,7 @@ namespace Character_Builder
             if (todelete != null) Classes.Remove(todelete);
             return false;
         }
-        public void setHPRoll(int atLevel, int hproll)
+        public void SetHPRoll(int atLevel, int hproll)
         {
             foreach (PlayerClass p in Classes)
             {
@@ -662,9 +668,9 @@ namespace Character_Builder
                 }
             }
         }
-        public List<ClassDefinition> getClassesByLevel()
+        public List<ClassDefinition> GetClassesByLevel()
         {
-            int level=getLevel();
+            int level=GetLevel();
             List<ClassDefinition> cd=new List<ClassDefinition>();
             if (Classes == null) Classes = new List<PlayerClass>();
             for (int c = 1; c <= level; c++) {
@@ -674,9 +680,9 @@ namespace Character_Builder
             }
             return cd;
         }
-        public List<int> getHProllsByLevel()
+        public List<int> GetHProllsByLevel()
         {
-            int level = getLevel();
+            int level = GetLevel();
             List<int> chp = new List<int>();
             for (int c = 1; c <= level; c++)
             {
@@ -686,9 +692,9 @@ namespace Character_Builder
             }
             return chp;
         }
-        public List<ClassInfo> getClassInfos(int level=0)
+        public List<ClassInfo> GetClassInfos(int level=0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             List<ClassInfo> ci = new List<ClassInfo>();
             for (int c = 1; c <= level; c++)
             {
@@ -698,19 +704,19 @@ namespace Character_Builder
             }
             return ci;
         }
-        public int getChoiceOffset(Feature f,string uniqueID, int amount) {
+        public int GetChoiceOffset(Feature f,string uniqueID, int amount) {
             if (!ChoiceCounter.ContainsKey(f))
             {
-                ChoiceCounter.Add(f, getChoiceTotal(uniqueID));
+                ChoiceCounter.Add(f, GetChoiceTotal(uniqueID));
                 ChoiceTotal[uniqueID] += amount;
             }
             return ChoiceCounter[f];
         }
-        public void resetChoices()
+        public void ResetChoices()
         {
             
         }
-        public int getChoiceTotal(string uniqueID) {
+        public int GetChoiceTotal(string uniqueID) {
             if (!ChoiceTotal.ContainsKey(uniqueID)) ChoiceTotal.Add(uniqueID, 0);
             return ChoiceTotal[uniqueID];
         }
@@ -761,23 +767,22 @@ namespace Character_Builder
                 else SubRaceName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
             }
         }
-        public List<Feature> getBackgroundFeatures(int level=0, bool reset = false)
+        public List<Feature> GetBackgroundFeatures(int level=0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             List<Feature> fl = new List<Feature>();
             if (Background != null) fl.AddRange(PluginManager.manager.filterBackgroundFeatures(Background, Background.CollectFeatures(level, this), level, this));
-            fl.AddRange(getBoons(level, false));
-            fl.AddRange(getPossessionFeatures(level, false));
+            fl.AddRange(GetBoons(level, false));
+            fl.AddRange(GetPossessionFeatures(level, false));
             return fl;
         }
-        public bool canMulticlass(ClassDefinition c, int level)
+        public bool CanMulticlass(ClassDefinition c, int level)
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
             List<string> skills = new List<string>();
-            foreach (FeatureClass fc in getFeatureAndAbility(out asa, out max, f => f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature, level))
+            var features = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, f => f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature, level);
+            foreach (FeatureClass fc in features)
             {
                 if (fc.feature is SkillProficiencyFeature && ((SkillProficiencyFeature)fc.feature).ProficiencyMultiplier > 0.999) foreach (String s in ((SkillProficiencyFeature)fc.feature).Skills) skills.Add(s);
                 else if (fc.feature is SkillProficiencyChoiceFeature && ((SkillProficiencyChoiceFeature)fc.feature).ProficiencyMultiplier > 0.999) skills.AddRange(((SkillProficiencyChoiceFeature)fc.feature).getSkills(this).Select(s=>s.Name));
@@ -787,29 +792,29 @@ namespace Character_Builder
             if (Classes.Count > 0 && Classes[0].Class != null)
             {
                 if (Classes[0].Class == c) return true;
-                if (!Utils.canMulticlass(Classes[0].Class, asa, skills)) return false;
+                if (!Utils.CanMulticlass(Classes[0].Class, asa, skills)) return false;
             }
             else return false; //Can not multiclass without first class.
             foreach (var d in Classes) if (d.Class != c && d.Class.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase)) return false; // Can not multiclass into the same class from a different sourcebook
-            return Utils.canMulticlass(c, asa, skills);
+            return Utils.CanMulticlass(c, asa, skills);
         }
-        public List<Feature> getCommonFeaturesAndFeats(int level = 0, bool reset = false)
+        public List<Feature> GetCommonFeaturesAndFeats(int level = 0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             List<Feature> fl = new List<Feature>();
             foreach (Feature f in ConfigManager.CommonFeatures)
                 fl.AddRange(f.Collect(level, this));
             fl = PluginManager.manager.filterCommonFeatures(fl, level, this);
-            fl.AddRange(getFeats(level, false));
+            fl.AddRange(GetFeats(level, false));
             return fl;
         }
-        public List<Feature> getClassFeatures(int level=0, bool reset = false)
+        public List<Feature> GetClassFeatures(int level=0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             List<Feature> fl = new List<Feature>();
             if (Classes!=null && Classes.Count > 0)
             {
@@ -835,22 +840,22 @@ namespace Character_Builder
             }
             return fl;
         }
-        public List<Feature> getRaceFeatures(int level = 0, bool reset = false)
+        public List<Feature> GetRaceFeatures(int level = 0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             List<Feature> fl = new List<Feature>();
             if (Race == null) return fl;
-            fl.AddRange(getSubRaceFeatures(level, false));
+            fl.AddRange(GetSubRaceFeatures(level, false));
             fl.AddRange(PluginManager.manager.filterRaceFeatures(Race, Race.CollectFeatures(level, this), level, this));
             return fl;
         }
-        public List<Feature> getSubRaceFeatures(int level = 0, bool reset = false)
+        public List<Feature> GetSubRaceFeatures(int level = 0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             if (SubRace == null) return new List<Feature>();
             return PluginManager.manager.filterSubRaceFeatures(SubRace, Race, SubRace.CollectFeatures(level, this), level, this); 
         }
@@ -858,7 +863,7 @@ namespace Character_Builder
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) p.SubClassName = subclass;
         }
-        public SubClass getSubclass(string cd)
+        public SubClass GetSubclass(string cd)
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) return p.SubClass;
             return null;
@@ -867,25 +872,25 @@ namespace Character_Builder
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) p.SubClass = null;
         }
-        public List<Feature> getBoons(int level=0, bool reset = false)
+        public List<Feature> GetBoons(int level=0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
+            if (reset) ResetChoices();
             if (Boons == null) return new List<Feature>();
             List<Feature> res = new List<Feature>();
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             foreach (string s in Boons) res.AddRange(FeatureCollection.getBoon(s, null).Collect(level, this));
             return PluginManager.manager.filterBoons(res, level, this);
         }
-        public List<Feature> getFeats(int level = 0, bool reset = false)
+        public List<Feature> GetFeats(int level = 0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
+            if (reset) ResetChoices();
             if (AbilityFeatChoices == null) return new List<Feature>();
             List<Feature> res = new List<Feature>();
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             List<Feature> feats = FeatureCollection.Get("");
-            foreach (AbilityFeatChoice s in getAbilityFeatChoices(level)) 
+            foreach (AbilityFeatChoice s in GetAbilityFeatChoices(level)) 
             {
                 if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "")
                 {
@@ -897,57 +902,59 @@ namespace Character_Builder
             }
             return PluginManager.manager.filterFeats(res, level, this);
         }
-        public List<string> getFeatNames(int level = 0)
+        public List<string> GetFeatNames(int level = 0)
         {
             if (AbilityFeatChoices == null) return new List<string>();
             List<string> res = new List<string>();
-            if (level==0) level = getLevel();
+            if (level==0) level = GetLevel();
             List<Feature> feats = FeatureCollection.Get("");
-            foreach (AbilityFeatChoice s in getAbilityFeatChoices(level)) if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.Add(s.Feat);
+            foreach (AbilityFeatChoice s in GetAbilityFeatChoices(level)) if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.Add(s.Feat);
             return res;
         }
-        public IEnumerable<AbilityScoreFeatFeature> getAbilityIncreases(int level = 0)
+        public IEnumerable<AbilityScoreFeatFeature> GetAbilityIncreases(int level = 0)
         {
-            return from Feature f in getFeatures(level) where f is AbilityScoreFeatFeature select (AbilityScoreFeatFeature)f;
+            return from Feature f in GetFeatures(level) where f is AbilityScoreFeatFeature select (AbilityScoreFeatFeature)f;
         }
-        public List<Feature> getFeatures(int level=0, bool reset = false)
+        public List<Feature> GetFeatures(int level=0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
+            if (reset) ResetChoices();
             List<Feature> res = new List<Feature>();
-            res.AddRange(getBackgroundFeatures(level, false));
-            res.AddRange(getRaceFeatures(level, false));
-            res.AddRange(getClassFeatures(level, false));
-            res.AddRange(getCommonFeaturesAndFeats(level, false));
+            res.AddRange(GetBackgroundFeatures(level, false));
+            res.AddRange(GetRaceFeatures(level, false));
+            res.AddRange(GetClassFeatures(level, false));
+            res.AddRange(GetCommonFeaturesAndFeats(level, false));
             return res;
         }
-        public Choice getChoice(String ID)
+        public Choice GetChoice(String ID)
         {
             return (from c in Choices where c.UniqueID == ID select c).FirstOrDefault<Choice>();
         }
 
-        public void setChoice(String ID, String Value)
+        public void SetChoice(String ID, String Value)
         {
-            Choice c = getChoice(ID);
+            Choice c = GetChoice(ID);
             if (c != null) c.Value = Value;
             else Choices.Add(new Choice(ID, Value));
         }
-        public Price getMoney(bool includeJournal = true)
+        public Price GetMoney(bool includeJournal = true)
         {
             int cp = CP;
             int sp = SP;
             int ep = EP;
             int gp = GP;
             int pp = PP;
-            foreach (Feature f in getFeatures()) if (f is FreeItemAndGoldFeature)
+            foreach (Feature f in GetFeatures()) if (f is FreeItemAndGoldFeature)
                 {
                     cp += ((FreeItemAndGoldFeature)f).CP;
                     sp += ((FreeItemAndGoldFeature)f).SP;
                     gp += ((FreeItemAndGoldFeature)f).GP;
                 }
-            Price p = new Price(cp,sp,gp);
-            p.ep=ep;
-            p.pp=pp;
+            Price p = new Price(cp, sp, gp)
+            {
+                ep = ep,
+                pp = pp
+            };
             if (includeJournal)  foreach (JournalEntry e in ComplexJournal)
             {
                 p.cp += e.CP;
@@ -979,9 +986,9 @@ namespace Character_Builder
             return p;
         }
 
-        public void setMoney(int cp, int sp, int ep, int gp, int pp)
+        public void SetMoney(int cp, int sp, int ep, int gp, int pp)
         {
-            foreach (Feature f in getFeatures()) if (f is FreeItemAndGoldFeature)
+            foreach (Feature f in GetFeatures()) if (f is FreeItemAndGoldFeature)
                 {
                     cp -= ((FreeItemAndGoldFeature)f).CP;
                     sp -= ((FreeItemAndGoldFeature)f).SP;
@@ -1002,29 +1009,27 @@ namespace Character_Builder
             PP = pp;
         }
 
-        public Dictionary<string,int> getResources(int level = 0)
+        public Dictionary<string,int> GetResources(int level = 0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
+            if (level == 0) level = GetLevel();
             Dictionary<string, string> exclusion = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, int> res = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            foreach (FeatureClass fc in getFeatureAndAbility(out asa, out max, t => t is ResourceFeature))
+            var features = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is ResourceFeature);
+            foreach (FeatureClass fc in features)
             {
                 Feature f = fc.feature;
-                if (f is ResourceFeature)
+                if (f is ResourceFeature rf)
                 {
-                    ResourceFeature rf = ((ResourceFeature)f);
                     if (!res.ContainsKey(rf.ResourceID))
                     {
-                        int v = Utils.evaluate(rf, asa, null, fc.classlevel, level);
+                        int v = Utils.Evaluate(rf, asa, null, fc.classlevel, level);
                         if (rf.ValueBonus != Ability.None) v = Math.Max(1, v);
                         res.Add(rf.ResourceID, v);
                         if (rf.ExclusionID != null && rf.ExclusionID != "" && !exclusion.ContainsKey(rf.ResourceID)) exclusion.Add(rf.ResourceID, rf.ExclusionID);
                     }
                     else
                     {
-                        res[rf.ResourceID] += Utils.evaluate(rf, asa, null, fc.classlevel, level);
+                        res[rf.ResourceID] += Utils.Evaluate(rf, asa, null, fc.classlevel, level);
                         if (rf.ExclusionID != null && rf.ExclusionID != "" && !exclusion.ContainsKey(rf.ResourceID)) exclusion.Add(rf.ResourceID, rf.ExclusionID);
                     }
                 }
@@ -1041,52 +1046,48 @@ namespace Character_Builder
             }
             return res;
         }
-        public Dictionary<string, RechargeModifier> getResourceRecharge()
+        public Dictionary<string, RechargeModifier> GetResourceRecharge()
         {
             Dictionary<string, RechargeModifier> res = new Dictionary<string, RechargeModifier>(StringComparer.OrdinalIgnoreCase);
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
-                if (f is ResourceFeature)
+                if (f is ResourceFeature rf)
                 {
-                    ResourceFeature rf = ((ResourceFeature)f);
                     if (!res.ContainsKey(rf.ResourceID))
                     {
                         res.Add(rf.ResourceID, rf.Recharge);
                     }
                     else
                     {
-                         if (res[rf.ResourceID] < rf.Recharge) res[rf.ResourceID] = rf.Recharge; //Bigger is better (more often)
+                        if (res[rf.ResourceID] < rf.Recharge) res[rf.ResourceID] = rf.Recharge; //Bigger is better (more often)
                     }
                 }
             }
             return res;
         }
-        public Dictionary<string, ResourceInfo> getResourceInfo(bool displayUsed, int level = 0)
+        public Dictionary<string, ResourceInfo> GetResourceInfo(bool displayUsed, int level = 0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
+            if (level == 0) level = GetLevel();
             Dictionary<string, string> exclusion = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, ResourceInfo> res = new Dictionary<string, ResourceInfo>(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, int> used = new Dictionary<string, int>();
             foreach (UsedResource ur in UsedResources) used[ur.ResourceID] = ur.Used;
-            foreach (FeatureClass fc in getFeatureAndAbility(out asa, out max, t => t is ResourceFeature))
+            foreach (FeatureClass fc in GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is ResourceFeature))
             {
                 Feature f = fc.feature;
-                if (f is ResourceFeature)
+                if (f is ResourceFeature rf)
                 {
-                    ResourceFeature rf = ((ResourceFeature)f);
                     if (!res.ContainsKey(rf.ResourceID))
                     {
-                        int v = Utils.evaluate(rf, asa, null, fc.classlevel, level);
-                        res.Add(rf.ResourceID, new ResourceInfo(rf.ResourceID, rf.Name, getUsedResources(rf.ResourceID), v, rf.Recharge, displayUsed));
+                        int v = Utils.Evaluate(rf, asa, null, fc.classlevel, level);
+                        res.Add(rf.ResourceID, new ResourceInfo(rf.ResourceID, rf.Name, GetUsedResources(rf.ResourceID), v, rf.Recharge, displayUsed));
                         if (rf.ExclusionID != null && rf.ExclusionID != "" && !exclusion.ContainsKey(rf.ResourceID)) exclusion.Add(rf.ResourceID, rf.ExclusionID);
                     }
                     else
                     {
                         ResourceInfo r = res[rf.ResourceID];
                         if (r.Recharge < rf.Recharge) r.Recharge = rf.Recharge; //Bigger is better (more often)
-                        r.Max += Utils.evaluate(rf, asa, null, fc.classlevel, level);
+                        r.Max += Utils.Evaluate(rf, asa, null, fc.classlevel, level);
                         res[rf.ResourceID] = r;
                         if (rf.ExclusionID != null && rf.ExclusionID != "" && !exclusion.ContainsKey(rf.ResourceID)) exclusion.Add(rf.ResourceID, rf.ExclusionID);
                     }
@@ -1105,18 +1106,18 @@ namespace Character_Builder
             }
             return res;
         }
-        public FeatureContainer getResourceFeatures(String resourceID) //.toHTML for description
+        public FeatureContainer GetResourceFeatures(String resourceID) //.toHTML for description
         {
-            return new FeatureContainer(from f in getFeatures() where f is ResourceFeature && ((ResourceFeature)f).ResourceID == resourceID orderby f.Level select f);
+            return new FeatureContainer(from f in GetFeatures() where f is ResourceFeature && ((ResourceFeature)f).ResourceID == resourceID orderby f.Level select f);
         }
-        public int getUsedResources(String resourceID)
+        public int GetUsedResources(String resourceID)
         {
             if (UsedResources.Count == 0) return 0;
             List<UsedResource> ur=new List<UsedResource>(from f in UsedResources where f.ResourceID == resourceID select f);
             if (ur.Count > 0) return ur[0].Used;
             return 0;
         }
-        public void setUsedResources(String resourceID, int value)
+        public void SetUsedResources(String resourceID, int value)
         {
             if (UsedResources.Count == 0)
             {
@@ -1155,7 +1156,7 @@ namespace Character_Builder
                 p.PortraitLocation = null;
                 p.FactionImageLocation = null;
                 foreach (Spellcasting sc in p.Spellcasting) {
-                    sc.postLoad(p.getLevel());
+                    sc.postLoad(p.GetLevel());
                 }
                 return p;
             }
@@ -1164,26 +1165,26 @@ namespace Character_Builder
                 throw ex;
             }
         }
-        public IEnumerable<Skill> getSkillProficiencies()
+        public IEnumerable<Skill> GetSkillProficiencies()
         {
             List<Skill> skills=new List<Skill>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
                 if (f is SkillProficiencyFeature && ((SkillProficiencyFeature)f).ProficiencyMultiplier > 0.999) foreach (String s in ((SkillProficiencyFeature)f).Skills) skills.Add(Skill.Get(s, f.Source));
                 else if (f is SkillProficiencyChoiceFeature && ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier > 0.999) skills.AddRange(((SkillProficiencyChoiceFeature)f).getSkills(this));
             }
             return skills.Distinct<Skill>();
         }
-        public Ability getSaveProficiencies()
+        public Ability GetSaveProficiencies()
         {
             Ability saves = Ability.None;
-            foreach (Feature f in getFeatures()) if (f is SaveProficiencyFeature) saves |= ((SaveProficiencyFeature)f).Ability;
+            foreach (Feature f in GetFeatures()) if (f is SaveProficiencyFeature) saves |= ((SaveProficiencyFeature)f).Ability;
             return saves;
         }
-        public IEnumerable<Language> getLanguages()
+        public IEnumerable<Language> GetLanguages()
         {
             List<Language> langs = new List<Language>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
                 if (f is LanguageProficiencyFeature) foreach (String s in ((LanguageProficiencyFeature)f).Languages) langs.Add(Language.Get(s, f.Source));
                 else if (f is LanguageChoiceFeature) langs.AddRange(((LanguageChoiceFeature)f).getLanguages(this));
@@ -1191,33 +1192,32 @@ namespace Character_Builder
             langs.Sort();
             return langs.Distinct<Language>();
         }
-        public IEnumerable<Tool> getToolProficiencies()
+        public IEnumerable<Tool> GetToolProficiencies()
         {
             List<Tool> tools = new List<Tool>();
             List<ToolKWProficiencyFeature> kwpf = new List<ToolKWProficiencyFeature>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
                 if (f is ToolProficiencyFeature) foreach (String s in ((ToolProficiencyFeature)f).Tools) tools.Add(Item.Get(s, f.Source).asTool());
                 else if (f is ToolProficiencyChoiceConditionFeature) tools.AddRange(((ToolProficiencyChoiceConditionFeature)f).getTools(this));
                 if (f is ToolKWProficiencyFeature) kwpf.Add(((ToolKWProficiencyFeature)f));
             }
             tools.Sort();
-            tools.RemoveAll(t=>kwpf.Find(p=>Utils.matches(p, t, 0))!=null);
+            tools.RemoveAll(t=>kwpf.Find(p=>Utils.Matches(p, t, 0))!=null);
             return tools.Distinct<Tool>();
         }
-        public IEnumerable<ModifiedSpell> getBonusSpells(bool filterAtWill=false)
+        public IEnumerable<ModifiedSpell> GetBonusSpells(bool filterAtWill=false)
         {
             List<ModifiedSpell> spells = new List<ModifiedSpell>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
-                if (f is BonusSpellFeature)
+                if (f is BonusSpellFeature bsf)
                 {
-                    BonusSpellFeature bsf=(BonusSpellFeature)f;
                     Spell s = Spell.Get(bsf.Spell, bsf.Source);
                     if (!filterAtWill || (bsf.SpellCastModifier < RechargeModifier.AtWill && bsf.SpellCastModifier != RechargeModifier.Unmodified) || (bsf.SpellCastModifier < RechargeModifier.AtWill && s.Level > 0))
                         spells.Add(new ModifiedSpell(Spell.Get(bsf.Spell, bsf.Source), bsf.KeywordsToAdd, bsf.SpellCastingAbility, bsf.SpellCastModifier));
                 }
-                else if (f is BonusSpellKeywordChoiceFeature) if (!filterAtWill || ((BonusSpellKeywordChoiceFeature)f).SpellCastModifier < RechargeModifier.AtWill) spells.AddRange((Utils.getSpells((BonusSpellKeywordChoiceFeature)f)).Where(s=>s.Level > 0 || !filterAtWill));
+                else if (f is BonusSpellKeywordChoiceFeature) if (!filterAtWill || ((BonusSpellKeywordChoiceFeature)f).SpellCastModifier < RechargeModifier.AtWill) spells.AddRange((Utils.GetSpells((BonusSpellKeywordChoiceFeature)f)).Where(s => s.Level > 0 || !filterAtWill));
             }
             Dictionary<ModifiedSpell, ModifiedSpell> distinct = new Dictionary<ModifiedSpell, ModifiedSpell>();
             foreach (ModifiedSpell ms in spells)
@@ -1235,23 +1235,23 @@ namespace Character_Builder
             }
             return distinct.Keys.OrderBy(ss => ss.Name);
         }
-        public IEnumerable<string> getToolKWProficiencies()
+        public IEnumerable<string> GetToolKWProficiencies()
         {
             List<string> tools = new List<string>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
                 if (f is ToolKWProficiencyFeature) tools.Add(((ToolKWProficiencyFeature)f).Description);
             }
             return tools;
         }
-        public IEnumerable<string> getOtherProficiencies()
+        public IEnumerable<string> GetOtherProficiencies()
         {
-            return from f in getFeatures() where f is OtherProficiencyFeature orderby f.Text select f.Text;
+            return from f in GetFeatures() where f is OtherProficiencyFeature orderby f.Text select f.Text;
         }
-        public List<Item> getFreeItems()
+        public List<Item> GetFreeItems()
         {
             List<Item> items = new List<Item>();
-            foreach (Feature f in getFeatures())
+            foreach (Feature f in GetFeatures())
             {
                 if (f is ItemChoiceConditionFeature) items.AddRange(((ItemChoiceConditionFeature)f).getItems(this));
                 else if (f is ItemChoiceFeature) items.AddRange(((ItemChoiceFeature)f).getItems(this));
@@ -1260,48 +1260,49 @@ namespace Character_Builder
             items.Sort();
             return items;
         }
-        public int getExtraAttacks()
+        public int GetExtraAttacks()
         {
             int extraattacks = 0;
-            foreach (Feature f in getFeatures()) if (f is ExtraAttackFeature) extraattacks=Math.Max(extraattacks,((ExtraAttackFeature)f).ExtraAttacks);
+            foreach (Feature f in GetFeatures()) if (f is ExtraAttackFeature) extraattacks=Math.Max(extraattacks,((ExtraAttackFeature)f).ExtraAttacks);
             return extraattacks;
         }
-        public string getRaceSubName()
+        public string GetRaceSubName()
         {
             if (SubRaceName != null && SubRaceName != "") return SourceInvariantComparer.NoSource(SubRaceName);
             if (RaceName != null && RaceName != "") return SourceInvariantComparer.NoSource(RaceName);
             return "";
         }
-        public int getSpeed()
+        public int GetSpeed()
         {
             int extraspeed=0;
             int basespeed = 0;
             int basespeedIgnoreArmor = -10;
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item mainHand = getMainHand();
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item mainHand = GetMainHand();
 
             List<string> additionalKW = new List<string>();
             if (armor == null)
             {
                 additionalKW.Add("unarmored");
-                armor = new Item();
-                armor.Name = "No Armor";
+                armor = new Item()
+                {
+                    Name = "No Armor"
+                };
             }
             if (offHand == null && !(mainHand is Weapon && mainHand.Keywords.Exists(t => t.Name == "two-handed"))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             List<ACFeature> ways = new List<ACFeature>();
-            foreach (FeatureClass fc in getFeatureAndAbility(out asa, out max, t => t is SpeedFeature))
+            var features = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SpeedFeature);
+            foreach (FeatureClass fc in features)
             {
                 Feature f = fc.feature;
                 if (((SpeedFeature)f).Condition != null && ((SpeedFeature)f).Condition.Length > 0)
                 {
-                    if (!Utils.matches(armor, ((SpeedFeature)f).Condition, fc.classlevel, additionalKW, asa)) continue;
+                    if (!Utils.Matches(armor, ((SpeedFeature)f).Condition, fc.classlevel, additionalKW, asa)) continue;
                 }
-                extraspeed += Utils.evaluate(((SpeedFeature)f).ExtraSpeed, asa, additionalKW, fc.classlevel, 0, armor);
+                extraspeed += Utils.Evaluate(((SpeedFeature)f).ExtraSpeed, asa, additionalKW, fc.classlevel, 0, armor);
                 if (basespeed < ((SpeedFeature)f).BaseSpeed) basespeed = ((SpeedFeature)f).BaseSpeed;
                 if (((SpeedFeature)f).IgnoreArmor && basespeedIgnoreArmor < ((SpeedFeature)f).BaseSpeed) basespeedIgnoreArmor = ((SpeedFeature)f).BaseSpeed;
             }
@@ -1309,10 +1310,10 @@ namespace Character_Builder
             if (armor != null && armor is Armor && ((Armor)armor).StrengthRequired > asa.Strength) ArmorPenalty = 10;
             return Math.Max(basespeed + extraspeed - ArmorPenalty, basespeedIgnoreArmor + extraspeed);
         }
-        public int getVisionRange()
+        public int GetVisionRange()
         {
             int range = 0;
-            foreach (Feature f in getFeatures()) if (f is VisionFeature) range += ((VisionFeature)f).Range;
+            foreach (Feature f in GetFeatures()) if (f is VisionFeature) range += ((VisionFeature)f).Range;
             return range;
         }
         public struct FeatureClass
@@ -1320,11 +1321,11 @@ namespace Character_Builder
             public Feature feature;
             public int classlevel;
         }
-        private List<FeatureClass> getFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, Predicate<Feature> match, int level = 0, IEnumerable<Feature> additional = null, bool reset = false)
+        private List<FeatureClass> GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, Predicate<Feature> match, int level = 0, IEnumerable<Feature> additional = null, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();
-            if (reset) resetChoices();
-            if (level == 0) level = getLevel();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
             asa = new AbilityScoreArray(BaseStrength, BaseDexterity, BaseConstitution, BaseIntelligence, BaseWisdom, BaseCharisma);
             max = new AbilityScoreArray(AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max, AbilityScores.Max);
             AbilityScoreArray asaset = new AbilityScoreArray(0, 0, 0, 0, 0, 0);
@@ -1332,7 +1333,7 @@ namespace Character_Builder
             AbilityScoreArray bonus = new AbilityScoreArray(0, 0, 0, 0, 0, 0);
             AbilityScoreArray bonusmax = new AbilityScoreArray(0, 0, 0, 0, 0, 0);
             List<FeatureClass> found = new List<FeatureClass>();
-            foreach (AbilityFeatChoice afc in getAbilityFeatChoices(level)) {
+            foreach (AbilityFeatChoice afc in GetAbilityFeatChoices(level)) {
                 if (afc.Ability1 == Ability.Strength) asa.Strength++;                
                 else if (afc.Ability1 == Ability.Dexterity) asa.Dexterity++;
                 else if (afc.Ability1 == Ability.Constitution) asa.Constitution++;
@@ -1359,12 +1360,11 @@ namespace Character_Builder
                     {
                         foreach (Feature f in p.getFeatures(level, this))
                         {
-                            if (f is AbilityScoreFeature)
+                            if (f is AbilityScoreFeature asf)
                             {
-                                AbilityScoreFeature asf = ((AbilityScoreFeature)f);
                                 AbilityScoreArray cur = asa;
                                 AbilityScoreArray curset = asaset;
-                                
+
                                 if (asf.Modifier.HasFlag(AbilityScoreModifikation.Maximum))
                                 {
                                     if (asf.Modifier.HasFlag(AbilityScoreModifikation.Set))
@@ -1423,7 +1423,8 @@ namespace Character_Builder
                                             bonus.Wisdom = Math.Max(bonus.Wisdom, asf.Wisdom);
                                             bonus.Charisma = Math.Max(bonus.Charisma, asf.Charisma);
                                         }
-                                        else {
+                                        else
+                                        {
                                             if (asf.Strength > curset.Strength) curset.Strength = asf.Strength;
                                             if (asf.Dexterity > curset.Dexterity) curset.Dexterity = asf.Dexterity;
                                             if (asf.Constitution > curset.Constitution) curset.Constitution = asf.Constitution;
@@ -1443,7 +1444,8 @@ namespace Character_Builder
                                             bonus.Wisdom += asf.Wisdom;
                                             bonus.Charisma += asf.Charisma;
                                         }
-                                        else {
+                                        else
+                                        {
                                             cur.Strength += asf.Strength;
                                             cur.Constitution += asf.Constitution;
                                             cur.Dexterity += asf.Dexterity;
@@ -1465,10 +1467,10 @@ namespace Character_Builder
             }
 
             List<Feature> feats = new List<Feature>();
-            feats.AddRange(getBackgroundFeatures(level, false));
-            feats.AddRange(getRaceFeatures(level, false));
+            feats.AddRange(GetBackgroundFeatures(level, false));
+            feats.AddRange(GetRaceFeatures(level, false));
             //feats.AddRange(getClassFeatures(level, false));
-            feats.AddRange(getCommonFeaturesAndFeats(level, false));
+            feats.AddRange(GetCommonFeaturesAndFeats(level, false));
             if (multiclassing > 1)
             {
                 List<Feature> res = new List<Feature>();
@@ -1479,9 +1481,8 @@ namespace Character_Builder
             if (additional!=null) feats.AddRange(additional);
             foreach (Feature f in feats)
             {
-                if (f is AbilityScoreFeature)
+                if (f is AbilityScoreFeature asf)
                 {
-                    AbilityScoreFeature asf = ((AbilityScoreFeature)f);
                     AbilityScoreArray cur = asa;
                     AbilityScoreArray curset = asaset;
                     if (asf.Modifier.HasFlag(AbilityScoreModifikation.Maximum))
@@ -1538,114 +1539,88 @@ namespace Character_Builder
             asa.Min(max);
             return found;
         }
-        public int getStrength()
+        public int GetStrength()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Strength;
         }
-        public int getDexterity()
+        public int GetDexterity()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Dexterity;
         }
-        public int getConstitution()
+        public int GetConstitution()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Constitution;
         }
-        public int getIntelligence()
+        public int GetIntelligence()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Intelligence;
         }
-        public int getWisdom()
+        public int GetWisdom()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Wisdom;
         }
-        public int getCharisma()
+        public int GetCharisma()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa.Charisma;
         }
-        public int getStrengthMod()
+        public int GetStrengthMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.strmod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.StrMod;
         }
-        public int getDexterityMod()
+        public int GetDexterityMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.dexmod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.DexMod;
         }
 
-        public int getConstitutionMod()
+        public int GetConstitutionMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.conmod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.ConMod;
         }
-        public int getIntelligenceMod()
+        public int GetIntelligenceMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.intmod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.IntMod;
         }
-        public int getWisdomMod()
+        public int GetWisdomMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.wismod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.WisMod;
         }
-        public int getCharismaMod()
+        public int GetCharismaMod()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
-            return asa.chamod;
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+            return asa.ChaMod;
         }
-        public int getHitpointMax()
+        public int GetHitpointMax()
         {
             int hp = 0;
-            int level=getLevel();
-            int hpperlevel=getConstitutionMod();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is HitPointsFeature);
+            int level=GetLevel();
+            int hpperlevel=GetConstitutionMod();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is HitPointsFeature);
             foreach (PlayerClass p in Classes)
             {
                 hp += p.getHP(p.getClassLevelUpToLevel(level));
             }
             foreach (FeatureClass fc in fa)
             {
-                hp += Utils.evaluate(fc.feature as HitPointsFeature, asa, null, fc.classlevel, level);
+                hp += Utils.Evaluate(fc.feature as HitPointsFeature, asa, null, fc.classlevel, level);
             }
             return hp + hpperlevel * level + BonusMaxHP;
         }
-        public List<HitDie> getHitDie()
+        public List<HitDie> GetHitDie()
         {
             List<int> hd = new List<int>();
             List<HitDie> hitdie = new List<HitDie>();
-            int level=getLevel();
+            int level=GetLevel();
             foreach (PlayerClass p in Classes)
             {
                 while (hd.Count <= p.Class.HitDie) hd.Add(0);
@@ -1655,38 +1630,31 @@ namespace Character_Builder
             return hitdie;
         }
 
-        public AbilityScoreArray getFinalAbilityScores()
+        public AbilityScoreArray GetFinalAbilityScores()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
             return asa;
         }
-        public AbilityScoreArray getFinalAbilityScores(out AbilityScoreArray max)
+        public AbilityScoreArray GetFinalAbilityScores(out AbilityScoreArray max)
         {
-            AbilityScoreArray asa;
-            getFeatureAndAbility(out asa, out max, t => false);
+            GetFeatureAndAbility(out AbilityScoreArray asa, out max, t => false);
             return asa;
         }
-        public int getSave(Ability ab)
+        public int GetSave(Ability ab)
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List < FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is SaveProficiencyFeature);
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SaveProficiencyFeature);
             Ability saves = Ability.None;
             foreach (FeatureClass f in fa) saves |= ((SaveProficiencyFeature)f.feature).Ability;
             int value = asa.Apply(ab);
-            if ((ab & saves) != Ability.None) value += getProficiency();
+            if ((ab & saves) != Ability.None) value += GetProficiency();
             return value;
         }
-        public List<SkillInfo> getSkills()
+        public List<SkillInfo> GetSkills()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -1721,13 +1689,13 @@ namespace Character_Builder
                         else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
                     }
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 { 
-                    if (((BonusFeature)f).Skills.Count == 0) generalBonus+= Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
-                    foreach (string s in ((BonusFeature)f).Skills) res[Skill.Get(s, f.Source)]+= Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (((BonusFeature)f).Skills.Count == 0) generalBonus+= Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    foreach (string s in ((BonusFeature)f).Skills) res[Skill.Get(s, f.Source)]+= Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
-            int prof = getProficiency();
+            int prof = GetProficiency();
             List<SkillInfo> result = new List<SkillInfo>();
             foreach (Skill s in Skill.skills.Values)
             {
@@ -1739,14 +1707,12 @@ namespace Character_Builder
             result.Sort();
             return result;
         }
-        public int getSkill(Skill s, Ability ability=Ability.None)
+        public int GetSkill(Skill s, Ability ability=Ability.None)
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -1771,23 +1737,21 @@ namespace Character_Builder
                     if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
                     else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive  && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive  && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 {
-                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
-            int prof = getProficiency();
+            int prof = GetProficiency();
             Dictionary<Skill, int> res = new Dictionary<Skill, int>();
             return asa.ApplyMod(ability) + (int)Math.Floor(prof * modifier);
         }
-        public int getPassiveSkill(Skill s)
+        public int GetPassiveSkill(Skill s)
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List <FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SkillProficiencyChoiceFeature || t is SkillProficiencyFeature || t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -1811,25 +1775,23 @@ namespace Character_Builder
                     if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
                     else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
                 }
-                else if (f is BonusFeature && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
                 {
-                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
-            int prof = getProficiency();
+            int prof = GetProficiency();
             Dictionary<Skill, int> res = new Dictionary<Skill, int>();
             return 10 + bonus + asa.ApplyMod(s.Base) + (int)Math.Floor(prof * modifier);
         }
 
-        public AbilityScoreArray getSavingThrowsBoni()
+        public AbilityScoreArray GetSavingThrowsBoni()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
             AbilityScoreArray res = new AbilityScoreArray(0, 0, 0, 0, 0, 0);
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -1837,33 +1799,31 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
 
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.Matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
                 {
-                    res.AddBonus(Utils.evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
+                    res.AddBonus(Utils.Evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
 
                 }
             return res;
         }
 
-        public Dictionary<Ability,int> getSaves()
+        public Dictionary<Ability,int> GetSaves()
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is SaveProficiencyFeature || t is BonusFeature);
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SaveProficiencyFeature || t is BonusFeature);
             AbilityScoreArray bonus = new AbilityScoreArray(0, 0, 0, 0, 0, 0);
             Ability saves = Ability.None;
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SavingThrowBonus != null && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "" && ((BonusFeature)fc.feature).SavingThrowBonus.Trim() != "0" && Utils.Matches(((BonusFeature)fc.feature).Condition, asa, additionalKW, fc.classlevel, 0))
                 {
-                    bonus.AddBonus(Utils.evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
+                    bonus.AddBonus(Utils.Evaluate(null, ((BonusFeature)fc.feature).SavingThrowBonus, asa, additionalKW, fc.classlevel), ((BonusFeature)fc.feature).SavingThrowAbility);
 
                 }
             Dictionary<Ability,int> res=new Dictionary<Ability,int>();
@@ -1871,30 +1831,30 @@ namespace Character_Builder
             {
                 if (f.feature is SaveProficiencyFeature) saves |= ((SaveProficiencyFeature)f.feature).Ability;
             }
-            int prof = getProficiency();
-            res.Add(Ability.Strength, asa.strmod + (saves.HasFlag(Ability.Strength) ? prof : 0) + bonus.Strength);
-            res.Add(Ability.Dexterity, asa.dexmod + (saves.HasFlag(Ability.Dexterity) ? prof : 0) + bonus.Dexterity);
-            res.Add(Ability.Constitution, asa.conmod + (saves.HasFlag(Ability.Constitution) ? prof : 0) + bonus.Constitution);
-            res.Add(Ability.Intelligence, asa.intmod + (saves.HasFlag(Ability.Intelligence) ? prof : 0) + bonus.Intelligence);
-            res.Add(Ability.Wisdom, asa.wismod + (saves.HasFlag(Ability.Wisdom) ? prof : 0) + bonus.Wisdom);
-            res.Add(Ability.Charisma, asa.chamod + (saves.HasFlag(Ability.Charisma) ? prof : 0) + bonus.Charisma);
+            int prof = GetProficiency();
+            res.Add(Ability.Strength, asa.StrMod + (saves.HasFlag(Ability.Strength) ? prof : 0) + bonus.Strength);
+            res.Add(Ability.Dexterity, asa.DexMod + (saves.HasFlag(Ability.Dexterity) ? prof : 0) + bonus.Dexterity);
+            res.Add(Ability.Constitution, asa.ConMod + (saves.HasFlag(Ability.Constitution) ? prof : 0) + bonus.Constitution);
+            res.Add(Ability.Intelligence, asa.IntMod + (saves.HasFlag(Ability.Intelligence) ? prof : 0) + bonus.Intelligence);
+            res.Add(Ability.Wisdom, asa.WisMod + (saves.HasFlag(Ability.Wisdom) ? prof : 0) + bonus.Wisdom);
+            res.Add(Ability.Charisma, asa.ChaMod + (saves.HasFlag(Ability.Charisma) ? prof : 0) + bonus.Charisma);
             return res;
         }
-        public int getAC(int level = 0)
+        public int GetAC(int level = 0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List <FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is ACFeature || t is BonusFeature);
-            Item armor=getArmor();
-            Item offHand=getOffHand();
-            Item mainHand=getMainHand();
+            if (level == 0) level = GetLevel();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is ACFeature || t is BonusFeature);
+            Item armor=GetArmor();
+            Item offHand=GetOffHand();
+            Item mainHand=GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null)
             {
                 additionalKW.Add("unarmored");
-                armor = new Item();
-                armor.Name="No Armor";
+                armor = new Item()
+                {
+                    Name = "No Armor"
+                };
             }
             if (offHand == null && !(mainHand is Weapon && mainHand.Keywords.Exists(t=>t.Name=="two-handed"))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
@@ -1909,7 +1869,7 @@ namespace Character_Builder
                 if (f is BonusFeature && ((BonusFeature)f).ACBonus != null && ((BonusFeature)f).ACBonus.Trim() != "" && ((BonusFeature)f).ACBonus.Trim() != "0")
                 {
                     BonusFeature b = (BonusFeature)f;
-                    if (Utils.matches(b, armor, fc.classlevel, additionalKW, asa)) bonus+=Utils.evaluate(b.ACBonus, asa, additionalKW, fc.classlevel, level, armor);
+                    if (Utils.Matches(b, armor, fc.classlevel, additionalKW, asa)) bonus+=Utils.Evaluate(b.ACBonus, asa, additionalKW, fc.classlevel, level, armor);
                 }
             }
             int AC = 0;
@@ -1923,30 +1883,28 @@ namespace Character_Builder
             }
             return AC + bonus;
         }
-        public Item getArmor()
+        public Item GetArmor()
         {
             foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.Armor, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
             return null;
         }
-        public Item getMainHand()
+        public Item GetMainHand()
         {
             foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.MainHand, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
             return null;
         }
-        public Item getOffHand()
+        public Item GetOffHand()
         {
             foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
             return null;
         }
-        public AttackInfo getAttack(Possession p,int level=0)
+        public AttackInfo GetAttack(Possession p,int level=0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature||t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature,level,p.CollectOnUse(level, this));
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item mainHand = getMainHand();
+            if (level == 0) level = GetLevel();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature || t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature, level, p.CollectOnUse(level, this));
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item mainHand = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand is Weapon) additionalKW.Add("offhand");
@@ -1957,11 +1915,11 @@ namespace Character_Builder
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is BonusFeature)
+                if (f is BonusFeature b)
                 {
-                    BonusFeature b = (BonusFeature)f;
-                    if ((b.BaseItemChange != null && b.BaseItemChange.Trim() != "")) {
-                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW) || (p.Item != null && Utils.matches(b, p.Item, fc.classlevel, additionalKW, asa)))
+                    if ((b.BaseItemChange != null && b.BaseItemChange.Trim() != ""))
+                    {
+                        if (Utils.Matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW) || (p.Item != null && Utils.Matches(b, p.Item, fc.classlevel, additionalKW, asa)))
                         {
                             try
                             {
@@ -1974,9 +1932,10 @@ namespace Character_Builder
                     }
                     if ((b.ProficiencyOptions != null && b.ProficiencyOptions.Count > 0))
                     {
-                        if (Utils.matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW))
+                        if (Utils.Matches(b, Ability.Strength | Ability.Dexterity, "Weapon", "Weapon", fc.classlevel, additionalKW))
                         {
-                            foreach (String i in b.ProficiencyOptions) {
+                            foreach (String i in b.ProficiencyOptions)
+                            {
                                 try
                                 {
                                     Item it = Item.Get(i, ((BonusFeature)f).Source);
@@ -2016,15 +1975,14 @@ namespace Character_Builder
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is BonusFeature)
+                if (f is BonusFeature b)
                 {
-                    BonusFeature b = (BonusFeature)f;
                     if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0"))
                     {
-                        if (Utils.matches(b, weapon, fc.classlevel, additionalKW, asa) || Utils.matches(b, baseAbility, "Weapon","Weapon", fc.classlevel, additionalKW))
+                        if (Utils.Matches(b, weapon, fc.classlevel, additionalKW, asa) || Utils.Matches(b, baseAbility, "Weapon", "Weapon", fc.classlevel, additionalKW))
                         {
-                            attackbonus += Utils.evaluate(b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
-                            damagebonus += Utils.evaluate(b, asa, additionalKW, fc.classlevel, level, weapon);
+                            attackbonus += Utils.Evaluate(b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
+                            damagebonus += Utils.Evaluate(b, asa, additionalKW, fc.classlevel, level, weapon);
                             if (b.DamageBonusText != null && b.DamageBonusText != "") damage += " " + b.DamageBonusText;
                             if (b.BaseAbility != Ability.None) baseAbility = asa.Highest(baseAbility | b.BaseAbility);
                         }
@@ -2049,37 +2007,35 @@ namespace Character_Builder
                 {
                     foreach (Weapon w in countsAs)
                     {
-                        if (Utils.matches(((ToolKWProficiencyFeature)f), w, fc.classlevel)) profbonus = true;
+                        if (Utils.Matches(((ToolKWProficiencyFeature)f), w, fc.classlevel)) profbonus = true;
                     }
                 }
             }
             int ability = asa.ApplyMod(baseAbility); ;
             attackbonus += ability;
             damagebonus += ability;
-            if (profbonus) attackbonus += getProficiency(level);
+            if (profbonus) attackbonus += GetProficiency(level);
             if (damagebonus > 0) damage += "+" + damagebonus;
             else if (damagebonus < 0) damage += damagebonus;
             extraatk++;
             if (extraatk > 1) damage = extraatk.ToString() + " x " + damage;
             return new AttackInfo(attackbonus,damage,damagetype);
         }
-        public AttackInfo getAttack(Spell s, Ability spellcastingModifier, int level = 0)
+        public AttackInfo GetAttack(Spell s, Ability spellcastingModifier, int level = 0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List < FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature, level);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
+            if (level == 0) level = GetLevel();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature, level);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
-            if (getMainHand() is Weapon) additionalKW.Add("mainhand");
+            if (GetMainHand() is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int attackbonus = asa.ApplyMod(spellcastingModifier);
-            attackbonus += getProficiency(level);
+            attackbonus += GetProficiency(level);
             int savedc = 8 + attackbonus;
             int damagebonus = 0;
             String damage = s.GetCantripDamage(level);
@@ -2087,16 +2043,15 @@ namespace Character_Builder
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is BonusFeature)
+                if (f is BonusFeature b)
                 {
-                    BonusFeature b = (BonusFeature)f;
                     if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0") || (b.SaveDCBonus != null && b.SaveDCBonus.Trim() != "" && b.SaveDCBonus.Trim() != "0"))
                     {
-                        if (Utils.matches(b, s, fc.classlevel, additionalKW) || Utils.matches(b, spellcastingModifier, "Spell", "Spell", fc.classlevel, additionalKW))
+                        if (Utils.Matches(b, s, fc.classlevel, additionalKW) || Utils.Matches(b, spellcastingModifier, "Spell", "Spell", fc.classlevel, additionalKW))
                         {
-                            attackbonus += Utils.evaluate(s, b.AttackBonus, asa, additionalKW, fc.classlevel, level);
-                            damagebonus += Utils.evaluate(s, b, asa, additionalKW, fc.classlevel, level);
-                            savedc += Utils.evaluate(s, b.SaveDCBonus, asa, additionalKW, fc.classlevel, level);
+                            attackbonus += Utils.Evaluate(s, b.AttackBonus, asa, additionalKW, fc.classlevel, level);
+                            damagebonus += Utils.Evaluate(s, b, asa, additionalKW, fc.classlevel, level);
+                            savedc += Utils.Evaluate(s, b.SaveDCBonus, asa, additionalKW, fc.classlevel, level);
                             damagebonus += asa.ApplyMod(b.DamageBonusModifier);
                             if (b.DamageBonusText != null && b.DamageBonusText != "") damage += "+" + b.DamageBonusText;
                         }
@@ -2105,19 +2060,17 @@ namespace Character_Builder
             }
             if (damagebonus > 0) damage += "+" + damagebonus;
             else if (damagebonus < 0) damage += damagebonus;
-            if (Utils.matches(s, "Save", null)) return new AttackInfo(savedc.ToString(), damage, damagetype);
-            else if (Utils.matches(s, "Attack", null)) return new AttackInfo(attackbonus, damage, damagetype);
+            if (Utils.Matches(s, "Save", null)) return new AttackInfo(savedc.ToString(), damage, damagetype);
+            else if (Utils.Matches(s, "Attack", null)) return new AttackInfo(attackbonus, damage, damagetype);
             else return null;
         }
-        public int getInitiative(int level = 0)
+        public int GetInitiative(int level = 0)
         {
-            if (level == 0) level = getLevel();
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            if (level == 0) level = GetLevel();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -2126,23 +2079,21 @@ namespace Character_Builder
             if (weapon is Weapon) additionalKW.Add("mainhand");
             Ability baseAbility = Ability.Dexterity;
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).InitiativeBonus != null && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "" && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).InitiativeBonus, asa, null, fc.classlevel, level);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).InitiativeBonus != null && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "" && ((BonusFeature)fc.feature).InitiativeBonus.Trim() != "0" && Utils.Matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.Evaluate(((BonusFeature)fc.feature).InitiativeBonus, asa, null, fc.classlevel, level);
             return asa.ApplyMod(baseAbility) + bonus;
         }
-        public int getLevel()
+        public int GetLevel()
         {
-            return Level.Get(getXP());
+            return Level.Get(GetXP());
         }
-        public int getProficiency(int level = 0)
+        public int GetProficiency(int level = 0)
         {
-            if (level == 0) level = getLevel();
+            if (level == 0) level = GetLevel();
             int prof = Level.GetProficiency(level);
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -2150,16 +2101,14 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).ProficiencyBonus != null && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "" && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "0" && Utils.matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.evaluate(((BonusFeature)fc.feature).ProficiencyBonus, asa, null, fc.classlevel, level);
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).ProficiencyBonus != null && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "" && ((BonusFeature)fc.feature).ProficiencyBonus.Trim() != "0" && Utils.Matches(fc.feature as BonusFeature, weapon, fc.classlevel, additionalKW, asa)) bonus += Utils.Evaluate(((BonusFeature)fc.feature).ProficiencyBonus, asa, null, fc.classlevel, level);
             return prof + bonus;
         }
-        public int getSpellSaveDC(string SpellcastingID, Ability baseAbility) {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+        public int GetSpellSaveDC(string SpellcastingID, Ability baseAbility) {
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -2168,17 +2117,15 @@ namespace Character_Builder
             if (weapon is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SaveDCBonus != null && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "" && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).SaveDCBonus, asa, additionalKW, fc.classlevel);
-            return 8+getProficiency()+  asa.ApplyMod(baseAbility) + bonus;
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).SaveDCBonus != null && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "" && ((BonusFeature)fc.feature).SaveDCBonus.Trim() != "0" && Utils.Matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel)) bonus += Utils.Evaluate(null, ((BonusFeature)fc.feature).SaveDCBonus, asa, additionalKW, fc.classlevel);
+            return 8+GetProficiency()+  asa.ApplyMod(baseAbility) + bonus;
         }
-        public int getSpellAttack(string SpellcastingID, Ability baseAbility)
+        public int GetSpellAttack(string SpellcastingID, Ability baseAbility)
         {
-            AbilityScoreArray asa;
-            AbilityScoreArray max;
-            List<FeatureClass> fa = getFeatureAndAbility(out asa, out max, t => t is BonusFeature);
-            Item armor = getArmor();
-            Item offHand = getOffHand();
-            Item weapon = getMainHand();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
             if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
@@ -2187,8 +2134,8 @@ namespace Character_Builder
             if (weapon is Weapon) additionalKW.Add("mainhand");
             additionalKW.Add("Spell");
             int bonus = 0;
-            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).AttackBonus != null && ((BonusFeature)fc.feature).AttackBonus.Trim() != "" && ((BonusFeature)fc.feature).AttackBonus.Trim() != "0" && Utils.matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel, additionalKW)) bonus += Utils.evaluate(null, ((BonusFeature)fc.feature).AttackBonus, asa, additionalKW, fc.classlevel);
-            return getProficiency() + asa.ApplyMod(baseAbility) + bonus;
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature && ((BonusFeature)fc.feature).AttackBonus != null && ((BonusFeature)fc.feature).AttackBonus.Trim() != "" && ((BonusFeature)fc.feature).AttackBonus.Trim() != "0" && Utils.Matches(((BonusFeature)fc.feature), baseAbility, SpellcastingID, "Spell", fc.classlevel, additionalKW)) bonus += Utils.Evaluate(null, ((BonusFeature)fc.feature).AttackBonus, asa, additionalKW, fc.classlevel);
+            return GetProficiency() + asa.ApplyMod(baseAbility) + bonus;
         }
 
         public void Pay(Price price)
@@ -2230,12 +2177,12 @@ namespace Character_Builder
             UsedHitDice[dice]++;
         }
 
-        public bool matches(String expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        public bool Matches(String expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
-            return Utils.matches(expression, new AbilityScoreArray(BaseStrength, BaseDexterity, BaseConstitution, BaseIntelligence, BaseWisdom, BaseCharisma), additionalKeywords, classlevel, level);
+            return Utils.Matches(expression, new AbilityScoreArray(BaseStrength, BaseDexterity, BaseConstitution, BaseIntelligence, BaseWisdom, BaseCharisma), additionalKeywords, classlevel, level);
         }
 
-        public int getXP(bool onlyJournal = false)
+        public int GetXP(bool onlyJournal = false)
         {
             int x = onlyJournal ? 0 : XP;
             foreach (JournalEntry e in ComplexJournal)
@@ -2244,7 +2191,7 @@ namespace Character_Builder
             }
             return x;
         }
-        public void setXP(int xp)
+        public void SetXP(int xp)
         {
             foreach (JournalEntry e in ComplexJournal)
             {
@@ -2253,13 +2200,13 @@ namespace Character_Builder
             XP = xp;
         }
 
-        public void removeBoon(Feature feature)
+        public void RemoveBoon(Feature feature)
         {
             string boon = feature.Name + " " + ConfigManager.SourceSeperator + " " + feature.Source;
             int index = Boons.FindIndex(s => ConfigManager.SourceInvariantComparer.Equals(s, boon));
             if (index >= 0) Boons.RemoveAt(index);
         }
-        public List<TableDescription> collectTables()
+        public List<TableDescription> CollectTables()
         {
             List<TableDescription> res = new List<TableDescription>();
             if (Background != null) foreach (Description d in Background.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);

@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Items;
 using System;
@@ -23,7 +24,7 @@ namespace Character_Builder_Builder
             userControl11.Editor = this;
             basicItem1.HistoryManager = this;
             stringList1.HistoryManager = this;
-            Item.ImportAll();
+            ImportExtensions.ImportItems();
             stringList1.Suggestions = Item.simple.Keys;
             refresh();
         }
@@ -36,7 +37,7 @@ namespace Character_Builder_Builder
             stringList1.Items = Pack.Contents;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Pack.toHTML());
+            preview.Document.Write(Pack.ToHTML());
             preview.Refresh();
             onChange();
             doHistory = oldHistory;
@@ -53,7 +54,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Pack.toHTML());
+            preview.Document.Write(Pack.ToHTML());
             preview.Refresh();
         }
 
@@ -64,7 +65,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast((Pack)Pack.clone());
+                UndoBuffer.AddLast((Pack)Pack.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -131,8 +132,8 @@ namespace Character_Builder_Builder
             }
             try
             {
-                bool saved = Pack.save(false);
-                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Pack.save(true);
+                bool saved = Pack.Save(false);
+                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Pack.Save(true);
                 if (saved)
                 {
                     UnsavedChanges = 0;

@@ -8,6 +8,6 @@ namespace OGL.Common
 {
     public interface IHTML
     {
-        String toHTML();
+        String ToHTML();
     }
 }

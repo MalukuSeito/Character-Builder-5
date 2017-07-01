@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="IImageEditor.cs" />
     <Compile Include="IMainEditor.cs" />
+    <Compile Include="SaveExtensions.cs" />
     <Compile Include="ScrollInfo.cs" />
     <Compile Include="KeywordForms\SaveForm.cs">
       <SubType>Form</SubType>

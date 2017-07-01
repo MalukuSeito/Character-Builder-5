@@ -48,7 +48,7 @@ namespace Character_Builder_Builder
             ImageChanged?.Invoke(this, race.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(race.toHTML());
+            preview.Document.Write(race.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -67,7 +67,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(race.toHTML());
+            preview.Document.Write(race.ToHTML());
             preview.Refresh();
         }
 
@@ -78,7 +78,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(race.clone());
+                UndoBuffer.AddLast(race.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -140,8 +140,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = race.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = race.save(true);
+            bool saved = race.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = race.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

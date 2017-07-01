@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Character_Builder_Builder
             MulticlassSpellLevels.HistoryManager = this;
             featuresFirstClass.HistoryManager = this;
             featuresMultiClass.HistoryManager = this;
-            ClassDefinition.ImportAll();
+            ImportExtensions.ImportClasses();
             foreach (string s in ClassDefinition.simple.Keys)
             {
                 ParentClass.AutoCompleteCustomSource.Add(s);
@@ -61,7 +62,7 @@ namespace Character_Builder_Builder
             ImageChanged.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -81,7 +82,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            string s = cls.toHTML();
+            string s = cls.ToHTML();
             preview.Document.Write(s);
             preview.Refresh();
         }
@@ -93,7 +94,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(cls.clone());
+                UndoBuffer.AddLast(cls.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -155,8 +156,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = cls.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.save(true);
+            bool saved = cls.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

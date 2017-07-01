@@ -47,82 +47,23 @@ namespace OGL
         public static List<int> Levels = new List<int>();
         public static List<List<string>> Keywords = new List<List<string>>();
         public static List<string> Categories = new List<string>();*/
-        public static void ExportAll()
-        {
-            //foreach (KeyValuePair<string, FeatureCollection> fc in Collections)
-            //{
-            //    string path = Path.Combine(ConfigManager.Directory_Features.FullName, fc.Key);
-            //    foreach (Feature i in fc.Value.Features)
-                foreach (Feature i in Features)
-                {
-                    string path = Path.Combine(SourceManager.getDirectory(i.Source, Path.Combine(ConfigManager.Directory_Features, i.Category)).FullName, i.Category);
-                    String iname = string.Join("_", i.Name.Split(ConfigManager.InvalidChars));
-                    FileInfo file = new FileInfo(Path.Combine(path, iname + ".xml"));
-                    file.Directory.Create();
-                    i.Save(file.FullName);
-                }
-            //}
-        }
-        public static void ImportAll()
-        {
-            Collections.Clear();
-            Container.Clear();
-            Categories.Clear();
-            Boons.Clear();
-            Features.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Features);
-            foreach (var f in files)
-            {
-                try
-                {
-                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Features).FullName);
-                    Uri target = new Uri(f.Key.DirectoryName);
-                    FeatureContainer cont = FeatureContainer.Load(f.Key.FullName);
-                    List<Feature> feats = cont.Features;
-                    string cat = cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!Container.ContainsKey(cat)) Container.Add(cat, new List<FeatureContainer>());
-                    cont.filename = f.Key.FullName;
-                    cont.category = cat;
-                    cont.Name = Path.GetFileNameWithoutExtension(f.Key.FullName);
-                    cont.Source = f.Value;
-                    Container[cat].Add(cont);
-                    foreach (Feature feat in feats)
-                    {
-                        feat.Source = cont.Source;
-                        foreach (Keyword kw in feat.Keywords) kw.check();
-                        feat.Category = cat;
-                        if (!Categories.ContainsKey(cat)) Categories.Add(cat, new List<Feature>());
-                        Feature other = Categories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (other != null)
-                        {
-                            other.ShowSource = true;
-                            feat.ShowSource = true;
-                        }
-                        Categories[cat].Add(feat);
-                        if (cat.Equals("Boons", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (simple.ContainsKey(feat.Name))
-                            {
-                                simple[feat.Name].ShowSource = true;
-                                feat.ShowSource = true;
-                            }
-                            else simple.Add(feat.Name, feat);
-                            if (Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
-                            else Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
-                        }
-                    }
-                    foreach (Feature feat in feats)
-                    {
-                        Features.Add(feat);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
+        //public static void ExportAll()
+        //{
+        //    //foreach (KeyValuePair<string, FeatureCollection> fc in Collections)
+        //    //{
+        //    //    string path = Path.Combine(ConfigManager.Directory_Features.FullName, fc.Key);
+        //    //    foreach (Feature i in fc.Value.Features)
+        //        foreach (Feature i in Features)
+        //        {
+        //            string path = Path.Combine(SourceManager.getDirectory(i.Source, Path.Combine(ConfigManager.Directory_Features, i.Category)).FullName, i.Category);
+        //            String iname = string.Join("_", i.Name.Split(ConfigManager.InvalidChars));
+        //            FileInfo file = new FileInfo(Path.Combine(path, iname + ".xml"));
+        //            file.Directory.Create();
+        //            i.Save(file.FullName);
+        //        }
+        //    //}
+        //}
+        
         public void Add(Feature f)
         {
             Features.Add(f);
@@ -130,14 +71,6 @@ namespace OGL
         public void AddRange(List<Feature> f)
         {
             Features.AddRange(f);
-        }
-        public static string cleanname(string path)
-        {
-            string cat = path;
-            if (!cat.StartsWith(ConfigManager.Directory_Features)) cat = Path.Combine(ConfigManager.Directory_Features, path);
-            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
         }
         public static List<Feature> Get(string expression, int copy = 0)
         {
@@ -184,7 +117,7 @@ namespace OGL
         internal static List<Feature> MakeCopy(List<Feature> features)
         {
             FeatureContainer fc = new FeatureContainer(features);
-            return fc.clone().Features;
+            return fc.Clone().Features;
         }
 
         public static Feature getBoon(string name, string sourcehint)

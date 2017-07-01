@@ -26,7 +26,7 @@ namespace Character_Builder
             Weight = p.Weight;
             Item = p.Item;
             Magic = p.Magic;
-            Info = Player.current.getAttack(p);
+            Info = Player.Current.GetAttack(p);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Character_Builder
             combinePrepared(level);
             List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(Spell.Get(s, null), null, false, false));
             
-            foreach (Feature f in Player.current.getFeatures(level))
+            foreach (Feature f in Player.Current.GetFeatures(level))
             {
                 if (f is BonusSpellPrepareFeature && ((BonusSpellPrepareFeature)f).SpellcastingID == SpellcastingID)
                 {
@@ -43,7 +43,7 @@ namespace Character_Builder
         {
             List<ModifiedSpell> res = new List<ModifiedSpell>();
             combineSpellChoices(level);
-            foreach (Feature f in Player.current.getFeatures(level))
+            foreach (Feature f in Player.Current.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     foreach (SpellChoice s in Spellchoices)
@@ -64,7 +64,7 @@ namespace Character_Builder
             combineSpellChoices(level);
             combineSpellbookAdditional(level);
             string sourcehint = null;
-            foreach (Feature f in Player.current.getFeatures(level))
+            foreach (Feature f in Player.Current.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -88,7 +88,7 @@ namespace Character_Builder
             combineSpellbookAdditional(level);
             combineSpellChoices(level);
             string sourcehint = null;
-            foreach (Feature f in Player.current.getFeatures(level))
+            foreach (Feature f in Player.Current.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -109,7 +109,7 @@ namespace Character_Builder
         public List<string> getPreparedList(int level = 0)
         {
             if (level ==0) {
-                level = Player.current.getLevel();
+                level = Player.Current.GetLevel();
             }
             SpellPerLevel result = (from prep in PreparedPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null)
@@ -131,7 +131,7 @@ namespace Character_Builder
         {
             if (level == 0)
             {
-                level = Player.current.getLevel();
+                level = Player.Current.GetLevel();
             }
             SpellPerLevel result = (from prep in SpellbookAdditionalPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null)
@@ -152,7 +152,7 @@ namespace Character_Builder
         private void combinePrepared(int level = 0)
         {
             if (level ==0) {
-                level = Player.current.getLevel();
+                level = Player.Current.GetLevel();
             }
             SpellPerLevel result = (from prep in PreparedPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null) Prepared = new List<string>(result.Spells);
@@ -163,7 +163,7 @@ namespace Character_Builder
         {
             if (level == 0)
             {
-                level = Player.current.getLevel();
+                level = Player.Current.GetLevel();
             }
             SpellPerLevel result = (from prep in SpellbookAdditionalPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null) SpellbookAdditional = new List<string>(result.Spells);
@@ -174,7 +174,7 @@ namespace Character_Builder
         {
             if (level == 0)
             {
-                level = Player.current.getLevel();
+                level = Player.Current.GetLevel();
             }
             Spellchoices.Clear();
             foreach (SpellChoicePerLevel scpl in from prep in SpellChoicesPerLevel where prep.Level <= level orderby prep.Level descending select prep) {

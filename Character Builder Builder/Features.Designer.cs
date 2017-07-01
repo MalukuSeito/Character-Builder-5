@@ -181,7 +181,7 @@
             this.subclassFeatureToolStripMenuItem,
             this.subraceFeatureToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(165, 246);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(165, 268);
             // 
             // basicFeatureToolStripMenuItem
             // 
@@ -454,15 +454,15 @@
             // bonusSpellFeatureToolStripMenuItem1
             // 
             this.bonusSpellFeatureToolStripMenuItem1.Name = "bonusSpellFeatureToolStripMenuItem1";
-            this.bonusSpellFeatureToolStripMenuItem1.Size = new System.Drawing.Size(210, 22);
+            this.bonusSpellFeatureToolStripMenuItem1.Size = new System.Drawing.Size(217, 22);
             this.bonusSpellFeatureToolStripMenuItem1.Text = "Bonus Spell Feature";
             this.bonusSpellFeatureToolStripMenuItem1.Click += new System.EventHandler(this.bonusSpellFeatureToolStripMenuItem1_Click);
             // 
             // bonusSpellCoiceFeatureToolStripMenuItem
             // 
             this.bonusSpellCoiceFeatureToolStripMenuItem.Name = "bonusSpellCoiceFeatureToolStripMenuItem";
-            this.bonusSpellCoiceFeatureToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
-            this.bonusSpellCoiceFeatureToolStripMenuItem.Text = "Bonus Spell Coice Feature";
+            this.bonusSpellCoiceFeatureToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.bonusSpellCoiceFeatureToolStripMenuItem.Text = "Bonus Spell Choice Feature";
             this.bonusSpellCoiceFeatureToolStripMenuItem.Click += new System.EventHandler(this.bonusSpellCoiceFeatureToolStripMenuItem_Click);
             // 
             // bonusSpellFeatureToolStripMenuItem

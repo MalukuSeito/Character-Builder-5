@@ -38,7 +38,7 @@ namespace Character_Builder_Builder
             NewlineFormatter.Add(description.DataBindings, "Text", skill, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(skill.toHTML());
+            preview.Document.Write(skill.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -50,7 +50,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(skill.toHTML());
+            preview.Document.Write(skill.ToHTML());
             preview.Refresh();
         }
 
@@ -66,7 +66,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(skill.clone());
+                UndoBuffer.AddLast(skill.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -126,8 +126,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = skill.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = skill.save(true);
+            bool saved = skill.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = skill.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

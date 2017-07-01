@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Descriptions;
 using System;
@@ -28,8 +29,8 @@ namespace Character_Builder_Builder
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             imageChooser1.History = this;
-            Spell.ImportAll();
-            
+            ImportExtensions.ImportSpells();
+
         }
 
         private void refresh()
@@ -53,7 +54,7 @@ namespace Character_Builder_Builder
             ImageChanged?.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -72,7 +73,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
         }
 
@@ -82,7 +83,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(cls.clone());
+                UndoBuffer.AddLast(cls.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -144,8 +145,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = cls.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.save(true);
+            bool saved = cls.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Base;
 using OGL.Common;
 using OGL.Features;
@@ -37,8 +38,8 @@ namespace Character_Builder_Builder
             imageChooser1.History = this;
             foreach (Slot s in Enum.GetValues(typeof(Slot))) Slot.Items.Add(s);
             foreach (Rarity s in Enum.GetValues(typeof(Rarity))) Rarity.Items.Add(s);
-            Item.ImportAll();
-            
+            ImportExtensions.ImportItems();
+
         }
 
         private void refresh()
@@ -72,7 +73,7 @@ namespace Character_Builder_Builder
             ImageChanged?.Invoke(this, cls.Image);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -91,7 +92,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(cls.toHTML());
+            preview.Document.Write(cls.ToHTML());
             preview.Refresh();
         }
 
@@ -102,7 +103,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(cls.clone());
+                UndoBuffer.AddLast(cls.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -164,8 +165,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = cls.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.save(true);
+            bool saved = cls.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = cls.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;
@@ -268,7 +269,7 @@ namespace Character_Builder_Builder
             try
             {
                 Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Item.filterPreview(Base.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
-                preview.Document.Write(f.toHTML());
+                preview.Document.Write(f.ToHTML());
             }
             catch (Exception ex)
             {

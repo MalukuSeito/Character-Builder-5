@@ -119,12 +119,12 @@ namespace OGL.Features
         {
             if (Level > level) return new List<Feature>();
             List<Feature> res= new List<Feature>() { this };
-            int offset = choiceProvider.getChoiceOffset(this, UniqueID, Amount);
+            int offset = choiceProvider.GetChoiceOffset(this, UniqueID, Amount);
             for (int c = 0; c < Amount; c++)
             {
                 String counter = "";
                 if (c + offset> 0) counter = "_" + (c + offset).ToString();
-                Choice cho = choiceProvider.getChoice(UniqueID + counter);
+                Choice cho = choiceProvider.GetChoice(UniqueID + counter);
                 List<Feature> choices = Choices;
                 if (AllowSameChoice) choices = getCopy(c);
                 if (cho != null && cho.Value != "")

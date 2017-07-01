@@ -1,4 +1,5 @@
-﻿using OGL.Base;
+﻿using Character_Builder_Forms;
+using OGL.Base;
 using OGL.Common;
 using OGL.Features;
 using System;
@@ -17,7 +18,7 @@ namespace Character_Builder_Builder.FeatureForms
             basicFeature1.Feature = f;
             foreach (RechargeModifier s in Enum.GetValues(typeof(RechargeModifier))) Recharge.Items.Add(s);
             Recharge.DataBindings.Add("SelectedItem", bf, "SpellCastModifier", true, DataSourceUpdateMode.OnPropertyChanged);
-            OGL.Spell.ImportAll();
+            ImportExtensions.ImportSpells();
             foreach (string s in OGL.Spell.simple.Keys)
             {
                 Spell.AutoCompleteCustomSource.Add(s);

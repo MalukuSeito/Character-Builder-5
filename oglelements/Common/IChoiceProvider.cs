@@ -7,10 +7,10 @@ namespace OGL.Common
 {
     public interface IChoiceProvider
     {
-        int getChoiceOffset(Feature f, string uniqueID, int amount);
-        int getChoiceTotal(string uniqueID);
-        Choice getChoice(String ID);
-        bool canMulticlass(ClassDefinition c, int level);
-        bool matches(String expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0);
+        int GetChoiceOffset(Feature f, string uniqueID, int amount);
+        int GetChoiceTotal(string uniqueID);
+        Choice GetChoice(String ID);
+        bool CanMulticlass(ClassDefinition c, int level);
+        bool Matches(String expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0);
     }
 }

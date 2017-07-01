@@ -38,7 +38,7 @@ namespace Character_Builder_Builder
             DisStealth.DataBindings.Add("Checked", Armor, "StealthDisadvantage", true, DataSourceUpdateMode.OnPropertyChanged);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Armor.toHTML());
+            preview.Document.Write(Armor.ToHTML());
             preview.Refresh();
             onChange();
             doHistory = oldHistory;
@@ -55,7 +55,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Armor.toHTML());
+            preview.Document.Write(Armor.ToHTML());
             preview.Refresh();
         }
 
@@ -66,7 +66,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast((Armor)Armor.clone());
+                UndoBuffer.AddLast((Armor)Armor.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -128,8 +128,8 @@ namespace Character_Builder_Builder
             }
             try
             {
-                bool saved = Armor.save(false);
-                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Armor.save(true);
+                bool saved = Armor.Save(false);
+                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Armor.Save(true);
                 if (saved)
                 {
                     UnsavedChanges = 0;

@@ -32,7 +32,7 @@ namespace Character_Builder_Builder
             basicItem1.Item = Tool;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Tool.toHTML());
+            preview.Document.Write(Tool.ToHTML());
             preview.Refresh();
             onChange();
             doHistory = oldHistory;
@@ -49,7 +49,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Tool.toHTML());
+            preview.Document.Write(Tool.ToHTML());
             preview.Refresh();
         }
 
@@ -60,7 +60,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast((Tool)Tool.clone());
+                UndoBuffer.AddLast((Tool)Tool.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -122,8 +122,8 @@ namespace Character_Builder_Builder
             }
             try
             {
-                bool saved = Tool.save(false);
-                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Tool.save(true);
+                bool saved = Tool.Save(false);
+                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Tool.Save(true);
                 if (saved)
                 {
                     UnsavedChanges = 0;

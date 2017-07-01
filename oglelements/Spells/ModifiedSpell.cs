@@ -137,7 +137,7 @@ namespace OGL.Spells
             if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
             return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
         }
-        public override List<Keyword> getKeywords()
+        public override List<Keyword> GetKeywords()
         {
             List<Keyword> res = new List<Keyword>(Keywords);
             res.AddRange(AdditionalKeywords);

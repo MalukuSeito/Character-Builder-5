@@ -11,7 +11,7 @@ namespace Character_Builder
         }
         public override string ToString()
         {
-            return Player.current.getAbilityFeatChoice(ASFF).ToString();
+            return Player.Current.GetAbilityFeatChoice(ASFF).ToString();
         }
     }
 }

@@ -8,6 +8,6 @@ namespace OGL.Common
 {
     public interface ILicense
     {
-        bool showLicense(string title, string[] lines);
+        bool ShowLicense(string title, string[] lines);
     }
 }

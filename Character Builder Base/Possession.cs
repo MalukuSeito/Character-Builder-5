@@ -152,7 +152,7 @@ namespace Character_Builder
         {
             string name = Name;
             if (name == null || name == "") name = Item.Get(BaseItem, null).Name;
-            foreach (string mp in MagicProperties) name = MagicProperty.Get(mp, null).getName(name);
+            foreach (string mp in MagicProperties) name = MagicProperty.Get(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
@@ -166,7 +166,7 @@ namespace Character_Builder
             return name;
         }
 
-        public virtual String toHTML()
+        public virtual String ToHTML()
         {
             try
             {

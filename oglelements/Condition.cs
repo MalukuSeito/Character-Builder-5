@@ -11,18 +11,18 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Condition : IComparable<Condition>, IHTML, OGLElement<Condition>
+    public class Condition : IComparable<Condition>, IHTML, IOGLElement<Condition>
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Condition));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Condition));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         static public Dictionary<String, Condition> conditions = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        static private Dictionary<String, Condition> simple = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
+        static public Dictionary<String, Condition> simple = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        string filename;
+        public string filename;
         public String Name { get; set; }
         public String Description { get; set; }
         public String Source { get; set; }
@@ -103,39 +103,18 @@ namespace OGL
             foreach (Condition s in conditions.Values)
             {
                 FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Conditions);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, s);
+                using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, s);
             }
         }
-        public static void ImportAll()
-        {
-            conditions.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Conditions, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Condition s = (Condition)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Conditions.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
                     using (StringWriter textWriter = new StringWriter())
@@ -162,22 +141,13 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Conditions);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public Condition clone()
+        public Condition Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Condition r = (Condition)serializer.Deserialize(mem);
+                Condition r = (Condition)Serializer.Deserialize(mem);
                 r.filename = filename;
                 return r;
             }

@@ -67,7 +67,7 @@ namespace OGL.Base
         }
         public double Weight()
         {
-            return ConfigManager.loaded.WeightOfACoin * (pp + gp + ep + sp + cp);
+            return ConfigManager.Loaded.WeightOfACoin * (pp + gp + ep + sp + cp);
         }
     }
 }

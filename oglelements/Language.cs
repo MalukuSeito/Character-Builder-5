@@ -11,12 +11,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Language : IComparable<Language>, IHTML, OGLElement<Language>
+    public class Language : IComparable<Language>, IHTML, IOGLElement<Language>
     {
         [XmlIgnore]
-        string filename;
+        public string filename;
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Language));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Language));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
@@ -99,44 +99,23 @@ namespace OGL
             ConfigManager.LogError("Unknown Language: " + name);
             return new Language(name, "Missing Entry", "", "");
         }
-        public static void ExportAll()
-        {
-            foreach (Language s in languages.Values)
-            {
-                FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Languages);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, s);
-            }
-        }
-        public static void ImportAll()
-        {
-            languages.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Languages, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Language s = (Language)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (Language s in languages.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Languages);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, s);
+        //    }
+        //}
+        
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Languages.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -164,23 +143,13 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Languages);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public Language clone()
+        public Language Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Language r = (Language)serializer.Deserialize(mem);
+                Language r = (Language)Serializer.Deserialize(mem);
                 r.filename = filename;
                 return r;
             }

@@ -37,7 +37,7 @@ namespace Character_Builder_Builder
             DamageType.DataBindings.Add("Text", Weapon, "DamageType", true, DataSourceUpdateMode.OnPropertyChanged);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Weapon.toHTML());
+            preview.Document.Write(Weapon.ToHTML());
             preview.Refresh();
             onChange();
             doHistory = oldHistory;
@@ -54,7 +54,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Weapon.toHTML());
+            preview.Document.Write(Weapon.ToHTML());
             preview.Refresh();
         }
 
@@ -65,7 +65,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast((Weapon)Weapon.clone());
+                UndoBuffer.AddLast((Weapon)Weapon.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -127,8 +127,8 @@ namespace Character_Builder_Builder
             }
             try
             {
-                bool saved = Weapon.save(false);
-                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Weapon.save(true);
+                bool saved = Weapon.Save(false);
+                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Weapon.Save(true);
                 if (saved)
                 {
                     UnsavedChanges = 0;

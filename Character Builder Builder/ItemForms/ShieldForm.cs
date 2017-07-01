@@ -34,7 +34,7 @@ namespace Character_Builder_Builder
             numericUpDown1.DataBindings.Add("Value", Shield, "ACBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Shield.toHTML());
+            preview.Document.Write(Shield.ToHTML());
             preview.Refresh();
             onChange();
             doHistory = oldHistory;
@@ -51,7 +51,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(Shield.toHTML());
+            preview.Document.Write(Shield.ToHTML());
             preview.Refresh();
         }
 
@@ -62,7 +62,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast((Shield)Shield.clone());
+                UndoBuffer.AddLast((Shield)Shield.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -124,8 +124,8 @@ namespace Character_Builder_Builder
             }
             try
             {
-                bool saved = Shield.save(false);
-                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Shield.save(true);
+                bool saved = Shield.Save(false);
+                if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = Shield.Save(true);
                 if (saved)
                 {
                     UnsavedChanges = 0;

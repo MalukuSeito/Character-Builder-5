@@ -10,10 +10,10 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Skill : IComparable<Skill>, IHTML, OGLElement<Skill>
+    public class Skill : IComparable<Skill>, IHTML, IOGLElement<Skill>
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Skill));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
@@ -21,16 +21,16 @@ namespace OGL
         [XmlIgnore]
         static public Dictionary<String, Skill> simple = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
-        string filename;
+        public string Filename { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public Ability Base { get; set; }
         public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public void register(String file)
+        public void Register(String file)
         {
-            filename = file;
+            Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (skills.ContainsKey(full)) throw new Exception("Duplicate Skill: " + full);
             skills.Add(full, this);
@@ -52,7 +52,7 @@ namespace OGL
             Description = description;
             Base = basedOn;
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
         public static Skill Get(String name, string sourcehint)
         {
@@ -66,44 +66,22 @@ namespace OGL
             ConfigManager.LogError("Unknown Skill: " + name);
             return new Skill(name, "Missing Entry", Ability.None);
         }
-        public static void ExportAll()
-        {
-            foreach (Skill s in skills.Values)
-            {
-                FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Skills);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, s);
-            }
-        }
-        public static void ImportAll()
-        {
-            skills.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Skills, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        Skill s = (Skill)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading "+ f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (Skill s in skills.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Skills);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, s);
+        //    }
+        //}
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Skills.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -132,23 +110,14 @@ namespace OGL
             if (Base.CompareTo(other.Base) != 0) return Base.CompareTo(other.Base);
             return Name.CompareTo(other.Name);
         }
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Skills);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public Skill clone()
+        public Skill Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                Skill r = (Skill)serializer.Deserialize(mem);
-                r.filename = filename;
+                Skill r = (Skill)Serializer.Deserialize(mem);
+                r.Filename = Filename;
                 return r;
             }
         }

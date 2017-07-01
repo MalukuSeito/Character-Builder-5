@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Character_Builder_Builder
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             imageChooser1.History = this;
-            Race.ImportAll();
+            ImportExtensions.ImportRaces();
             foreach (string s in Race.simple.Keys)
             {
                 ParentRace.AutoCompleteCustomSource.Add(s);
@@ -50,7 +51,7 @@ namespace Character_Builder_Builder
             decriptions1.descriptions = race.Descriptions;
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(race.toHTML());
+            preview.Document.Write(race.ToHTML());
             ParentRace.DataBindings.Clear();
             ParentRace.DataBindings.Add("Text", race, "RaceName", true, DataSourceUpdateMode.OnPropertyChanged);
             ImageChanged?.Invoke(this, race.Image);
@@ -72,7 +73,7 @@ namespace Character_Builder_Builder
         {
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
-            preview.Document.Write(race.toHTML());
+            preview.Document.Write(race.ToHTML());
             preview.Refresh();
         }
 
@@ -83,7 +84,7 @@ namespace Character_Builder_Builder
             if (id == null) id = "";
             if (id == "" || id != lastid)
             {
-                UndoBuffer.AddLast(race.clone());
+                UndoBuffer.AddLast(race.Clone());
                 RedoBuffer.Clear();
                 onChange();
                 if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
@@ -145,8 +146,8 @@ namespace Character_Builder_Builder
                 MessageBox.Show("Unable to save without a name");
                 return false;
             }
-            bool saved = race.save(false);
-            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = race.save(true);
+            bool saved = race.Save(false);
+            if (!saved && MessageBox.Show("File exists! Overwrite?", "File exists", MessageBoxButtons.YesNo) == DialogResult.Yes) saved = race.Save(true);
             if (saved)
             {
                 UnsavedChanges = 0;

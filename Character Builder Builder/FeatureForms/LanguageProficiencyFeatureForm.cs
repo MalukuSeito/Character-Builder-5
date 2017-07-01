@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System.Windows.Forms;
@@ -15,7 +16,7 @@ namespace Character_Builder_Builder.FeatureForms
             basicFeature1.Feature = f;
 
             stringList1.Items = f.Languages;
-            Language.ImportAll();
+            ImportExtensions.ImportLanguages();
             stringList1.Suggestions = Language.simple.Keys;
         }
 

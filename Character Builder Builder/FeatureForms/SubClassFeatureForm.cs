@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace Character_Builder_Builder.FeatureForms
             InitializeComponent();
             basicFeature1.Feature = f;
             Parentclass.DataBindings.Add("Text", f, "ParentClass", true, DataSourceUpdateMode.OnPropertyChanged);
-            ClassDefinition.ImportAll();
+            ImportExtensions.ImportClasses();
             foreach (string s in ClassDefinition.simple.Keys)
             {
                 Parentclass.AutoCompleteCustomSource.Add(s);

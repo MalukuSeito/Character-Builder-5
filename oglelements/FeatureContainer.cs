@@ -9,7 +9,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class FeatureContainer: IHTML, OGLElement<FeatureContainer>
+    public class FeatureContainer: IHTML, IOGLElement<FeatureContainer>
     {
         [XmlIgnore]
         public string filename;
@@ -18,7 +18,7 @@ namespace OGL
         [XmlIgnore]
         public string Name { get; set; }
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(FeatureContainer));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(FeatureContainer));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
@@ -76,14 +76,14 @@ namespace OGL
             Source = "";
             Features = new List<Feature>(features);
         }
-        public String toHTML()
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Features.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -102,58 +102,33 @@ namespace OGL
                 return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
             }
         }
-        public static FeatureContainer Load(String path)
+        public static FeatureContainer LoadString(string text)
         {
-            using (TextReader reader = new StreamReader(path))
+            using (TextReader reader = new StringReader(text))
             {
-                return ((FeatureContainer)serializer.Deserialize(reader));
+                return ((FeatureContainer)Serializer.Deserialize(reader));
             }
-        }
-        public void Save(String path)
-        {
-            using (TextWriter writer = new StreamWriter(path))
-            {
-                serializer.Serialize(writer, this);
-            }
-
         }
         public string Save()
         {
             using (StringWriter writer = new StringWriter())
             {
-                serializer.Serialize(writer, this);
+                Serializer.Serialize(writer, this);
                 return writer.ToString();
             }
         }
-        public static FeatureContainer LoadString(string text)
-        {
-            using (TextReader reader = new StringReader(text))
-            {
-                return ((FeatureContainer)serializer.Deserialize(reader));
-            }
-        }
-
         public override string ToString()
         {
             if (ShowSource || ConfigManager.AlwaysShowSource) return Name + " " + ConfigManager.SourceSeperator + " " + Source;
             return Name;
         }
-
-        public bool save(Boolean overwrite)
-        {
-            FileInfo file = SourceManager.getFileName(Name, Source, category);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public FeatureContainer clone()
+        public FeatureContainer Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                FeatureContainer r = (FeatureContainer)serializer.Deserialize(mem);
+                FeatureContainer r = (FeatureContainer)Serializer.Deserialize(mem);
                 r.filename = filename;
                 r.category = category;
                 r.Name = Name;

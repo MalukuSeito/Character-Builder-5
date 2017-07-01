@@ -15,12 +15,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class ClassDefinition : IComparable<ClassDefinition>, IHTML, OGLElement<ClassDefinition>
+    public class ClassDefinition : IComparable<ClassDefinition>, IHTML, IOGLElement<ClassDefinition>
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(ClassDefinition));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));
         [XmlIgnore]
-        string filename;
+        public string filename;
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
@@ -254,44 +254,22 @@ namespace OGL
             ConfigManager.LogError("Unknown Class: " + name);
             return new ClassDefinition(name, "Missing Entry", 4);
         }
-        public static void ExportAll()
-        {
-            foreach (ClassDefinition i in classes.Values)
-            {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Classes);
-                using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-            }
-        }
-        public static void ImportAll()
-        {
-            classes.Clear();
-            simple.Clear();
-            var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Classes, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                try
-                {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
-                    {
-                        ClassDefinition s = (ClassDefinition)serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.register(f.Key.FullName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-            }
-        }
-        public String toHTML()
+        //public static void ExportAll()
+        //{
+        //    foreach (ClassDefinition i in classes.Values)
+        //    {
+        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Classes);
+        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
+        //    }
+        //}
+        public String ToHTML()
         {
             try
             {
                 if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Classes.FullName);
                 using (MemoryStream mem = new MemoryStream())
                 {
-                    serializer.Serialize(mem, this);
+                    Serializer.Serialize(mem, this);
                     ConfigManager.RemoveDescription(mem);
                     mem.Seek(0, SeekOrigin.Begin);
                     XmlReader xr = XmlReader.Create(mem);
@@ -314,7 +292,7 @@ namespace OGL
         {
             if (level > 1)
             {
-                return from c in classes.Values where provider.canMulticlass(c, level) select c;
+                return from c in classes.Values where provider.CanMulticlass(c, level) select c;
             }
             return from c in classes.Values where c.AvailableAtFirstLevel select c;
         }
@@ -348,22 +326,14 @@ namespace OGL
             return res;
         }
 
-        public bool save(Boolean overwrite)
-        {
-            Name = Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(Name, Source, ConfigManager.Directory_Classes);
-            if (file.Exists && (filename == null || !filename.Equals(file.FullName)) && !overwrite) return false;
-            using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, this);
-            this.filename = file.FullName;
-            return true;
-        }
-        public ClassDefinition clone()
+        
+        public ClassDefinition Clone()
         {
             using (MemoryStream mem = new MemoryStream())
             {
-                serializer.Serialize(mem, this);
+                Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
-                ClassDefinition r = (ClassDefinition)serializer.Deserialize(mem);
+                ClassDefinition r = (ClassDefinition)Serializer.Deserialize(mem);
                 r.filename = filename;
                 return r;
             }

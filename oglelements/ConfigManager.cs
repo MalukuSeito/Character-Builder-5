@@ -58,23 +58,23 @@ namespace OGL
         {
             get
             {
-                if (loaded!=null && loaded.MultiClassingAbilityScoreRequirement > 0) return loaded.MultiClassingAbilityScoreRequirement;
+                if (Loaded!=null && Loaded.MultiClassingAbilityScoreRequirement > 0) return Loaded.MultiClassingAbilityScoreRequirement;
                 return 13;
             }
             set
             {
-                loaded.MultiClassingAbilityScoreRequirement = value;
+                Loaded.MultiClassingAbilityScoreRequirement = value;
             }
         }
         public static string DefaultSource
         {
             get
             {
-                return loaded.Source;
+                return Loaded.Source;
             }
             set
             {
-                loaded.Source = value;
+                Loaded.Source = value;
             }
         }
         public static ILicense LicenseProvider;
@@ -111,7 +111,7 @@ namespace OGL
             Source = "My Source";
         }
 
-        public static ConfigManager loaded = null;
+        public static ConfigManager Loaded { get; set; } = null;
         
 
         public int MultiClassingAbilityScoreRequirement = 13;
@@ -223,14 +223,14 @@ namespace OGL
         {
             get
             {
-                return loaded.FeaturesForAll;
+                return Loaded.FeaturesForAll;
             }
         }
         public static List<Feature> MultiClassFeatures
         {
             get
             {
-                return loaded.FeaturesForMulticlassing;
+                return Loaded.FeaturesForMulticlassing;
             }
         }
         public static string Fullpath(string basepath, string path) {
@@ -242,58 +242,60 @@ namespace OGL
         {
             if (!File.Exists(Path.Combine(path, "Config.xml")))
             {
-                ConfigManager cm = new ConfigManager();
-                cm.FeaturesForAll = new List<Feature>() {
-                    new ACFeature("Normal AC Calculation", "Wearing Armor","if(Armor,if(Light,BaseAC+DexMod,if(Medium, BaseAC+Min(DexMod,2),BaseAC)),10+DexMod)+ShieldBonus",1,true)
+                ConfigManager cm = new ConfigManager()
+                {
+                    FeaturesForAll = new List<Feature>() {
+                        new ACFeature("Normal AC Calculation", "Wearing Armor","if(Armor,if(Light,BaseAC+DexMod,if(Medium, BaseAC+Min(DexMod,2),BaseAC)),10+DexMod)+ShieldBonus",1,true)
+                    },
+                    PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" }
                 };
-                cm.PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" };
                 cm.Save(Path.Combine(path, "Config.xml"));
             }
-            loaded = Load(Path.Combine(path, "Config.xml"));
-            if (loaded.Slots.Count == 0)
+            Loaded = Load(Path.Combine(path, "Config.xml"));
+            if (Loaded.Slots.Count == 0)
             {
-                loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
+                Loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
             }
-            Directory_Items = makeRelative(loaded.Items_Directory);
-            Transform_Items = new FileInfo(Fullpath(path, loaded.Items_Transform));
-            Directory_Skills = makeRelative(loaded.Skills_Directory);
-            Transform_Skills = new FileInfo(Fullpath(path, loaded.Skills_Transform));
-            Directory_Languages = makeRelative(loaded.Languages_Directory);
-            Transform_Languages = new FileInfo(Fullpath(path, loaded.Languages_Transform));
-            Directory_Features = makeRelative(loaded.Features_Directory);
-            Transform_Features = new FileInfo(Fullpath(path, loaded.Features_Transform));
-            Directory_Backgrounds = makeRelative(loaded.Backgrounds_Directory);
-            Transform_Backgrounds = new FileInfo(Fullpath(path, loaded.Backgrounds_Transform));
-            Directory_Classes = makeRelative(loaded.Classes_Directory);
-            Transform_Classes = new FileInfo(Fullpath(path, loaded.Classes_Transform));
-            Directory_SubClasses = makeRelative(loaded.SubClasses_Directory);
-            Transform_SubClasses = new FileInfo(Fullpath(path, loaded.SubClasses_Transform));
-            Directory_Races = makeRelative(loaded.Races_Directory);
-            Transform_Races = new FileInfo(Fullpath(path, loaded.Races_Transform));
-            Directory_SubRaces = makeRelative(loaded.SubRaces_Directory);
-            Transform_SubRaces = new FileInfo(Fullpath(path, loaded.SubRaces_Transform));
-            Directory_Spells = makeRelative(loaded.Spells_Directory);
-            Transform_Spells = new FileInfo(Fullpath(path, loaded.Spells_Transform));
-            Directory_Magic = makeRelative(loaded.Magic_Directory);
-            Transform_Magic = new FileInfo(Fullpath(path, loaded.Magic_Transform));
-            Directory_Conditions = makeRelative(loaded.Conditions_Directory);
-            Transform_Conditions = new FileInfo(Fullpath(path, loaded.Conditions_Transform));
-            Transform_Possession = new FileInfo(Fullpath(path, loaded.Possessions_Transform));
-            Transform_RemoveDescription = new FileInfo(Fullpath(path, loaded.RemoveDescription_Transform));
-            Directory_Plugins = makeRelative(loaded.Plugins_Directory);
+            Directory_Items = MakeRelative(Loaded.Items_Directory);
+            Transform_Items = new FileInfo(Fullpath(path, Loaded.Items_Transform));
+            Directory_Skills = MakeRelative(Loaded.Skills_Directory);
+            Transform_Skills = new FileInfo(Fullpath(path, Loaded.Skills_Transform));
+            Directory_Languages = MakeRelative(Loaded.Languages_Directory);
+            Transform_Languages = new FileInfo(Fullpath(path, Loaded.Languages_Transform));
+            Directory_Features = MakeRelative(Loaded.Features_Directory);
+            Transform_Features = new FileInfo(Fullpath(path, Loaded.Features_Transform));
+            Directory_Backgrounds = MakeRelative(Loaded.Backgrounds_Directory);
+            Transform_Backgrounds = new FileInfo(Fullpath(path, Loaded.Backgrounds_Transform));
+            Directory_Classes = MakeRelative(Loaded.Classes_Directory);
+            Transform_Classes = new FileInfo(Fullpath(path, Loaded.Classes_Transform));
+            Directory_SubClasses = MakeRelative(Loaded.SubClasses_Directory);
+            Transform_SubClasses = new FileInfo(Fullpath(path, Loaded.SubClasses_Transform));
+            Directory_Races = MakeRelative(Loaded.Races_Directory);
+            Transform_Races = new FileInfo(Fullpath(path, Loaded.Races_Transform));
+            Directory_SubRaces = MakeRelative(Loaded.SubRaces_Directory);
+            Transform_SubRaces = new FileInfo(Fullpath(path, Loaded.SubRaces_Transform));
+            Directory_Spells = MakeRelative(Loaded.Spells_Directory);
+            Transform_Spells = new FileInfo(Fullpath(path, Loaded.Spells_Transform));
+            Directory_Magic = MakeRelative(Loaded.Magic_Directory);
+            Transform_Magic = new FileInfo(Fullpath(path, Loaded.Magic_Transform));
+            Directory_Conditions = MakeRelative(Loaded.Conditions_Directory);
+            Transform_Conditions = new FileInfo(Fullpath(path, Loaded.Conditions_Transform));
+            Transform_Possession = new FileInfo(Fullpath(path, Loaded.Possessions_Transform));
+            Transform_RemoveDescription = new FileInfo(Fullpath(path, Loaded.RemoveDescription_Transform));
+            Directory_Plugins = MakeRelative(Loaded.Plugins_Directory);
             PDFExporters = new List<string>();
-            foreach (string s in loaded.PDF) PDFExporters.Add(Fullpath(path, s));
+            foreach (string s in Loaded.PDF) PDFExporters.Add(Fullpath(path, s));
             //for (int i = 0; i < loaded.PDF.Count; i++)
             //{
             //    loaded.PDF[i] = Fullpath(path, loaded.PDF[i]);
             //}
 
-            Level.Load(ConfigManager.Fullpath(path, loaded.Levels));
-            return loaded;
+            
+            return Loaded;
             
         }
 
-        private static string makeRelative(string dir)
+        private static string MakeRelative(string dir)
         {
             return Path.GetDirectoryName(dir);
         }
@@ -313,7 +315,7 @@ namespace OGL
 
         private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1", RegexOptions.Compiled);
 
-        public static string fixQuotes(string exp)
+        public static string FixQuotes(string exp)
         {
             if (exp == null) return "true";
             StringBuilder res = new StringBuilder();
