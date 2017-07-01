@@ -1,6 +1,8 @@
 ﻿using OGL.Common;
 using OGL.Features;
+using Character_Builder_Forms;
 using System.Windows.Forms;
+using OGL;
 
 namespace Character_Builder_Builder.FeatureForms
 {
@@ -20,6 +22,9 @@ namespace Character_Builder_Builder.FeatureForms
             Condition.DataBindings.Add("Text", f, "AdditionalSpellChoices", true, DataSourceUpdateMode.OnPropertyChanged);
             UniqueID.DataBindings.Add("Text", f, "UniqueID", true, DataSourceUpdateMode.OnPropertyChanged);
             keywordControl1.Keywords = f.KeywordsToAdd;
+            AdditinalSpells.Items = f.AdditionalSpells;
+            ImportExtensions.ImportSpells();
+            AdditinalSpells.Suggestions = Spell.simple.Keys;
         }
 
         public ModifySpellChoiceFeature edit(IHistoryManager history)

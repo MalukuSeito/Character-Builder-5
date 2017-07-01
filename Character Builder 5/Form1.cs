@@ -1194,8 +1194,11 @@ namespace Character_Builder_5
                             int amount = scf.Amount;
                             foreach (Feature f in spellfeatures)
                             {
-                                if (f is ModifySpellChoiceFeature && ((ModifySpellChoiceFeature)f).UniqueID == scf.UniqueID)
-                                    available.AddRange(Utils.FilterSpell(((ModifySpellChoiceFeature)f).AdditionalSpellChoices, sf.SpellcastingID, classlevel));
+                                if (f is ModifySpellChoiceFeature msf && msf.UniqueID == scf.UniqueID)
+                                {
+                                    if (msf.AdditionalSpellChoices != "false") available.AddRange(Utils.FilterSpell(msf.AdditionalSpellChoices, sf.SpellcastingID, classlevel));
+                                    if (msf.AdditionalSpells != null && msf.AdditionalSpells.Count > 0) available.AddRange(Spell.spells.Values.Where(s => msf.AdditionalSpells.FirstOrDefault(ss => StringComparer.InvariantCultureIgnoreCase.Equals(s.Name, ss)) != null));
+                                }
                                 if (f is IncreaseSpellChoiceAmountFeature && ((IncreaseSpellChoiceAmountFeature)f).UniqueID == scf.UniqueID) amount += ((IncreaseSpellChoiceAmountFeature)f).Amount;
                             }
                             available.Sort();
