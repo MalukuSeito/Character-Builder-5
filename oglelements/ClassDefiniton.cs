@@ -178,7 +178,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(string filename)
+        public void register(string filename, bool applyKeywords)
         {
             this.filename = filename;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -191,8 +191,11 @@ namespace OGL
             }
             else simple.Add(Name, this);
             Keyword me = new Keyword(Name);
-            if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in FeatureCollection.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
-            if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in Spell.spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me); 
+            if (applyKeywords)
+            {
+                if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in FeatureCollection.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
+                if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in Spell.spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me);
+            }
         }
         public ClassDefinition()
         {
@@ -240,7 +243,7 @@ namespace OGL
                     SpellsToAddClassKeywordTo.AddRange(ls);
                 }
             }
-            register(null);
+            register(null, false);
         }
         public static ClassDefinition Get(String name, string sourcehint)
         {

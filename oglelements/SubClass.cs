@@ -184,7 +184,7 @@ namespace OGL
         static public Dictionary<String, SubClass> simple = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public void Register(string file)
+        public void Register(string file, bool applyKeywords)
         {
             this.Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -215,7 +215,7 @@ namespace OGL
             FirstClassFeatures = new List<Feature>();
             Descriptions = new List<Description>();
             Source = ConfigManager.DefaultSource;
-            Register(null);
+            Register(null, false);
         }
           public static SubClass Get(String name, string sourcehint)
         {

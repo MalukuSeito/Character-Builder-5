@@ -69,8 +69,8 @@ namespace Character_Builder_5
             ImportExtensions.ImportStandaloneFeatures();
             ImportExtensions.ImportConditions();
             ImportExtensions.ImportMagic();
-            ImportExtensions.ImportClasses();
-            ImportExtensions.ImportSubClasses();
+            ImportExtensions.ImportClasses(true);
+            ImportExtensions.ImportSubClasses(true);
         }
 
         /// <summary>

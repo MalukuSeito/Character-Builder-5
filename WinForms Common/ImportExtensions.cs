@@ -41,7 +41,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportClasses()
+        public static void ImportClasses(bool applyKeywords = false)
         {
             ClassDefinition.classes.Clear();
             ClassDefinition.simple.Clear();
@@ -54,7 +54,7 @@ namespace Character_Builder_Forms
                     {
                         ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.register(f.Key.FullName);
+                        s.register(f.Key.FullName, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -361,7 +361,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSubClasses()
+        public static void ImportSubClasses(bool applyKeywords = false)
         {
             SubClass.subclasses.Clear();
             SubClass.simple.Clear();
@@ -374,7 +374,7 @@ namespace Character_Builder_Forms
                     {
                         SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.FullName);
+                        s.Register(f.Key.FullName, applyKeywords);
                     }
                 }
                 catch (Exception e)
