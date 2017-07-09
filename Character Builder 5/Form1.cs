@@ -506,10 +506,11 @@ namespace Character_Builder_5
                 int init = Player.Current.GetInitiative();
                 SideInit.Text = "Init: " + plusMinus(init);
                 Initiative.Text = plusMinus(init);
+                double carry = Player.Current.GetCarryCapacity();
                 double weight = Player.Current.GetWeight();
-                currentweight.Text = weight.ToString("N") + " lb / " + scores.Strength * 15 + " lb";
+                currentweight.Text = weight.ToString("N") + " lb / " + carry.ToString("N") + " lb";
                 CurWeight.Text = weight.ToString("N");
-                MaxWeight.Text = (scores.Strength * 15).ToString();
+                MaxWeight.Text = carry.ToString("N");
                 Price money = Player.Current.GetMoney();
                 string moneytext = money.ToString();
                 Money.Text = money.ToString();

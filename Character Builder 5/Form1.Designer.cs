@@ -47,6 +47,8 @@
             this.configureHouserulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.someToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sourcesToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pDFExporterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alternateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -384,8 +386,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.sourcesToolStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -696,6 +696,20 @@
             this.rulesToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
             this.rulesToolStripMenuItem.Text = "Rules";
             // 
+            // sourcesToolStrip
+            // 
+            this.sourcesToolStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noneToolStripMenuItem});
+            this.sourcesToolStrip.Name = "sourcesToolStrip";
+            this.sourcesToolStrip.Size = new System.Drawing.Size(244, 22);
+            this.sourcesToolStrip.Text = "Sources";
+            // 
+            // noneToolStripMenuItem
+            // 
+            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.noneToolStripMenuItem.Text = "None";
+            // 
             // pDFExporterToolStripMenuItem
             // 
             this.pDFExporterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -710,14 +724,14 @@
             this.defaultPDFToolStripMenuItem.Checked = true;
             this.defaultPDFToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.defaultPDFToolStripMenuItem.Name = "defaultPDFToolStripMenuItem";
-            this.defaultPDFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.defaultPDFToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.defaultPDFToolStripMenuItem.Text = "&Default";
             this.defaultPDFToolStripMenuItem.Click += new System.EventHandler(this.defaultPDFToolStripMenuItem_Click);
             // 
             // alternateToolStripMenuItem
             // 
             this.alternateToolStripMenuItem.Name = "alternateToolStripMenuItem";
-            this.alternateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.alternateToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.alternateToolStripMenuItem.Text = "&Alternate";
             this.alternateToolStripMenuItem.Click += new System.EventHandler(this.alternateToolStripMenuItem_Click);
             // 
@@ -4811,20 +4825,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // sourcesToolStrip
-            // 
-            this.sourcesToolStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noneToolStripMenuItem});
-            this.sourcesToolStrip.Name = "sourcesToolStrip";
-            this.sourcesToolStrip.Size = new System.Drawing.Size(244, 22);
-            this.sourcesToolStrip.Text = "Sources";
-            // 
-            // noneToolStripMenuItem
-            // 
-            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.noneToolStripMenuItem.Text = "None";
             // 
             // Form1
             // 

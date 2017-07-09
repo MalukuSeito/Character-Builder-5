@@ -37,6 +37,7 @@ namespace Character_Builder_Builder.FeatureForms
             Passive.DataBindings.Add("Checked", f, "SkillPassive", true, DataSourceUpdateMode.OnPropertyChanged);
             saveBonus.DataBindings.Add("Text", f, "SavingThrowBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             profBonus.DataBindings.Add("Text", f, "ProficiencyBonus", true, DataSourceUpdateMode.OnPropertyChanged);
+            BonusSize.DataBindings.Add("Value", f, "SizeChange", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
             ImportExtensions.ImportSkills();

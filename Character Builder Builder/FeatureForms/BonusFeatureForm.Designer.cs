@@ -76,6 +76,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
+            this.label25 = new System.Windows.Forms.Label();
+            this.BonusSize = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -93,13 +95,14 @@
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(2, 719);
+            this.button1.Location = new System.Drawing.Point(2, 748);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(743, 25);
             this.button1.TabIndex = 18;
@@ -110,7 +113,7 @@
             // 
             this.label20.AutoEllipsis = true;
             this.label20.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label20.Location = new System.Drawing.Point(2, 706);
+            this.label20.Location = new System.Drawing.Point(2, 735);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(743, 13);
             this.label20.TabIndex = 45;
@@ -147,7 +150,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer1.Size = new System.Drawing.Size(743, 269);
+            this.splitContainer1.Size = new System.Drawing.Size(743, 298);
             this.splitContainer1.SplitterDistance = 368;
             this.splitContainer1.TabIndex = 54;
             // 
@@ -159,6 +162,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.BonusSize);
+            this.splitContainer2.Panel1.Controls.Add(this.label25);
             this.splitContainer2.Panel1.Controls.Add(this.profBonus);
             this.splitContainer2.Panel1.Controls.Add(this.label22);
             this.splitContainer2.Panel1.Controls.Add(this.saveBonus);
@@ -181,13 +186,13 @@
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.Panel2.Controls.Add(this.label23);
             this.splitContainer2.Panel2.Controls.Add(this.Spell);
-            this.splitContainer2.Size = new System.Drawing.Size(368, 269);
+            this.splitContainer2.Size = new System.Drawing.Size(368, 298);
             this.splitContainer2.SplitterDistance = 185;
             this.splitContainer2.TabIndex = 54;
             // 
             // profBonus
             // 
-            this.profBonus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.profBonus.Dock = System.Windows.Forms.DockStyle.Top;
             this.profBonus.Location = new System.Drawing.Point(0, 244);
             this.profBonus.Name = "profBonus";
             this.profBonus.Size = new System.Drawing.Size(185, 20);
@@ -345,8 +350,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.SaveBonusAbility);
             this.splitContainer3.Panel2.Controls.Add(this.label21);
-            this.splitContainer3.Size = new System.Drawing.Size(179, 235);
-            this.splitContainer3.SplitterDistance = 114;
+            this.splitContainer3.Size = new System.Drawing.Size(179, 264);
+            this.splitContainer3.SplitterDistance = 128;
             this.splitContainer3.TabIndex = 80;
             // 
             // BaseAbility
@@ -356,7 +361,7 @@
             this.BaseAbility.Location = new System.Drawing.Point(0, 13);
             this.BaseAbility.Name = "BaseAbility";
             this.BaseAbility.ScrollAlwaysVisible = true;
-            this.BaseAbility.Size = new System.Drawing.Size(179, 101);
+            this.BaseAbility.Size = new System.Drawing.Size(179, 115);
             this.BaseAbility.TabIndex = 8;
             this.BaseAbility.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.BaseAbility_ItemCheck);
             // 
@@ -377,7 +382,7 @@
             this.SaveBonusAbility.Location = new System.Drawing.Point(0, 13);
             this.SaveBonusAbility.Name = "SaveBonusAbility";
             this.SaveBonusAbility.ScrollAlwaysVisible = true;
-            this.SaveBonusAbility.Size = new System.Drawing.Size(179, 104);
+            this.SaveBonusAbility.Size = new System.Drawing.Size(179, 119);
             this.SaveBonusAbility.TabIndex = 8;
             this.SaveBonusAbility.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.SaveBonusAbility_ItemCheck);
             // 
@@ -395,7 +400,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label23.Location = new System.Drawing.Point(0, 235);
+            this.label23.Location = new System.Drawing.Point(0, 264);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(102, 13);
             this.label23.TabIndex = 79;
@@ -407,7 +412,7 @@
             this.Spell.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.Spell.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.Spell.FormattingEnabled = true;
-            this.Spell.Location = new System.Drawing.Point(0, 248);
+            this.Spell.Location = new System.Drawing.Point(0, 277);
             this.Spell.Name = "Spell";
             this.Spell.Size = new System.Drawing.Size(179, 21);
             this.Spell.TabIndex = 78;
@@ -430,8 +435,8 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.proficiencyOptions);
             this.splitContainer4.Panel2.Controls.Add(this.label24);
-            this.splitContainer4.Size = new System.Drawing.Size(371, 269);
-            this.splitContainer4.SplitterDistance = 156;
+            this.splitContainer4.Size = new System.Drawing.Size(371, 298);
+            this.splitContainer4.SplitterDistance = 172;
             this.splitContainer4.TabIndex = 0;
             // 
             // SkillList
@@ -441,7 +446,7 @@
             this.SkillList.Items = null;
             this.SkillList.Location = new System.Drawing.Point(0, 46);
             this.SkillList.Name = "SkillList";
-            this.SkillList.Size = new System.Drawing.Size(371, 110);
+            this.SkillList.Size = new System.Drawing.Size(371, 126);
             this.SkillList.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("SkillList.Suggestions")));
             this.SkillList.TabIndex = 11;
             // 
@@ -502,7 +507,7 @@
             this.proficiencyOptions.Items = null;
             this.proficiencyOptions.Location = new System.Drawing.Point(0, 13);
             this.proficiencyOptions.Name = "proficiencyOptions";
-            this.proficiencyOptions.Size = new System.Drawing.Size(371, 96);
+            this.proficiencyOptions.Size = new System.Drawing.Size(371, 109);
             this.proficiencyOptions.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("proficiencyOptions.Suggestions")));
             this.proficiencyOptions.TabIndex = 12;
             // 
@@ -520,7 +525,7 @@
             // 
             this.label2.AutoEllipsis = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label2.Location = new System.Drawing.Point(2, 602);
+            this.label2.Location = new System.Drawing.Point(2, 631);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(743, 13);
             this.label2.TabIndex = 53;
@@ -531,7 +536,7 @@
             // 
             this.label3.AutoEllipsis = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label3.Location = new System.Drawing.Point(2, 615);
+            this.label3.Location = new System.Drawing.Point(2, 644);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.label3.Size = new System.Drawing.Size(743, 13);
@@ -542,7 +547,7 @@
             // 
             this.label4.AutoEllipsis = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label4.Location = new System.Drawing.Point(2, 628);
+            this.label4.Location = new System.Drawing.Point(2, 657);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.label4.Size = new System.Drawing.Size(743, 13);
@@ -554,7 +559,7 @@
             // 
             this.label5.AutoEllipsis = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(2, 641);
+            this.label5.Location = new System.Drawing.Point(2, 670);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.label5.Size = new System.Drawing.Size(743, 13);
@@ -566,7 +571,7 @@
             // 
             this.label6.AutoEllipsis = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label6.Location = new System.Drawing.Point(2, 654);
+            this.label6.Location = new System.Drawing.Point(2, 683);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.label6.Size = new System.Drawing.Size(743, 13);
@@ -578,7 +583,7 @@
             // 
             this.label7.AutoEllipsis = true;
             this.label7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label7.Location = new System.Drawing.Point(2, 667);
+            this.label7.Location = new System.Drawing.Point(2, 696);
             this.label7.Name = "label7";
             this.label7.Padding = new System.Windows.Forms.Padding(50, 0, 0, 0);
             this.label7.Size = new System.Drawing.Size(743, 13);
@@ -590,7 +595,7 @@
             // 
             this.label8.AutoEllipsis = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label8.Location = new System.Drawing.Point(2, 680);
+            this.label8.Location = new System.Drawing.Point(2, 709);
             this.label8.Name = "label8";
             this.label8.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
             this.label8.Size = new System.Drawing.Size(743, 13);
@@ -602,7 +607,7 @@
             // 
             this.label9.AutoEllipsis = true;
             this.label9.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label9.Location = new System.Drawing.Point(2, 693);
+            this.label9.Location = new System.Drawing.Point(2, 722);
             this.label9.Name = "label9";
             this.label9.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
             this.label9.Size = new System.Drawing.Size(743, 13);
@@ -621,13 +626,31 @@
             this.basicFeature1.Size = new System.Drawing.Size(743, 298);
             this.basicFeature1.TabIndex = 57;
             // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label25.Location = new System.Drawing.Point(0, 264);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(152, 13);
+            this.label25.TabIndex = 75;
+            this.label25.Text = "Bonus to Size (Carry Capacity):";
+            // 
+            // BonusSize
+            // 
+            this.BonusSize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BonusSize.Location = new System.Drawing.Point(0, 277);
+            this.BonusSize.Name = "BonusSize";
+            this.BonusSize.Size = new System.Drawing.Size(185, 20);
+            this.BonusSize.TabIndex = 76;
+            // 
             // BonusFeatureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(747, 746);
+            this.ClientSize = new System.Drawing.Size(747, 775);
             this.Controls.Add(this.basicFeature1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Condition);
@@ -670,6 +693,7 @@
             this.splitContainer4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -724,5 +748,7 @@
         private System.Windows.Forms.Label label17;
         private StringList proficiencyOptions;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.NumericUpDown BonusSize;
+        private System.Windows.Forms.Label label25;
     }
 }

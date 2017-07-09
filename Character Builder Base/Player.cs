@@ -2327,5 +2327,47 @@ namespace Character_Builder
             foreach (PlayerClass pc in Classes) res.AddRange(pc.collectTables());
             return res;
         }
+        public double GetCarryCapacity(int level = 0)
+        {
+            int size = 0;
+            if (level == 0) level = GetLevel();
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature);
+            Item armor = GetArmor();
+            Item offHand = GetOffHand();
+            Item weapon = GetMainHand();
+            List<string> additionalKW = new List<string>();
+            if (armor == null) additionalKW.Add("unarmored");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand is Weapon) additionalKW.Add("offhand");
+            if (offHand is Shield) additionalKW.Add("shield");
+            if (weapon is Weapon) additionalKW.Add("mainhand");
+            int bonus = 0;
+            foreach (FeatureClass fc in fa) if (fc.feature is BonusFeature bf && bf.SizeChange != 0 && Utils.Matches(bf, weapon, fc.classlevel, additionalKW, asa)) bonus += bf.SizeChange;
+            if (Race != null)
+            {
+                switch (Race.Size)
+                {
+                    case OGL.Base.Size.Tiny:
+                        size = -2;
+                        break;
+                    case OGL.Base.Size.Small:
+                        size = -1;
+                        break;
+                    case OGL.Base.Size.Medium:
+                        size = 0;
+                        break;
+                    case OGL.Base.Size.Large:
+                        size = 1;
+                        break;
+                    case OGL.Base.Size.Huge:
+                        size = 2;
+                        break;
+                    case OGL.Base.Size.Gargantuan:
+                        size = 3;
+                        break;
+                }
+            }
+            return asa.Strength * 15 * Math.Pow(2, size + bonus);
+        }
     }
 }

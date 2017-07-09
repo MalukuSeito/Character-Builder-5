@@ -27,6 +27,7 @@ namespace OGL.Features
         public String ProficiencyBonus { get; set; }
         public Ability SavingThrowAbility { get; set; }
         public String BaseItemChange { get; set; }
+        public int SizeChange { get; set; } = 0;
         public List<String> ProficiencyOptions { get; set; } = new List<string>();
         public BonusFeature():base()
         {
