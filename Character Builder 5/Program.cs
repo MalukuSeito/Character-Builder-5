@@ -52,8 +52,11 @@ namespace Character_Builder_5
         public static void ReloadData()
         {
             Config.LoadConfig(Application.StartupPath);
-            SourceManager.init(Application.StartupPath, true);
+            SourceManager.Init(Application.StartupPath, true);
             LoadData();
+            Player.Current.ChoiceCounter.Clear();
+            Player.Current.ChoiceTotal.Clear();
+            MainWindow.BuildSources();
         }
 
         public static void LoadData() {
@@ -87,8 +90,7 @@ namespace Character_Builder_5
             Errorlog = new ErrorLog();
             Config.LoadConfig(Application.StartupPath);
             ConfigManager.LicenseProvider = new LicenseProvider();
-                
-            if (SourceManager.init(Application.StartupPath, true))
+            if (SourceManager.Init(Application.StartupPath, true))
             {
                 if (args.Count() > 1)
                 {
@@ -106,8 +108,8 @@ namespace Character_Builder_5
                 Exit();
                 return;
             }
+            Player.SourcesChangedEvent += Player_SourcesChangedEvent;
             MainWindow = new Form1();
-            
             if (args.Count() > 1)
             {
                 string file = args[1];
@@ -132,6 +134,12 @@ namespace Character_Builder_5
             if (args.Count() > 2 && args[2] == "register") Register();
             Application.Run(MainWindow);
         }
+
+        private static void Player_SourcesChangedEvent(object sender, EventArgs e)
+        {
+            ReloadData();
+        }
+
         public static void Resetglobals()
         {
             MainWindow.Resetglobals();

@@ -24,7 +24,7 @@ namespace Character_Builder_Builder
             ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
             ConfigManager.LicenseProvider = new LicenseProvider();
             Errorlog = new ErrorLog();
-            if (SourceManager.init(Application.StartupPath, true))
+            if (SourceManager.Init(Application.StartupPath, true))
             {
                 ConfigManager.AlwaysShowSource = true;
                 ConfigManager.LoadConfig(Application.StartupPath);

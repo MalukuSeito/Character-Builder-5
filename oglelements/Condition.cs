@@ -102,7 +102,7 @@ namespace OGL
         {
             foreach (Condition s in conditions.Values)
             {
-                FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Conditions);
+                FileInfo file = SourceManager.GetFileName(s.Name, s.Source, ConfigManager.Directory_Conditions);
                 using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, s);
             }
         }

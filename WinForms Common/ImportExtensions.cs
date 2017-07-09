@@ -98,7 +98,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Features).FullName);
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, ConfigManager.Directory_Features).FullName);
                     Uri target = new Uri(f.Key.DirectoryName);
                     FeatureContainer cont = LoadFeatureContainer(f.Key.FullName);
                     List<Feature> feats = cont.Features;
@@ -163,12 +163,12 @@ namespace Character_Builder_Forms
         public static IEnumerable<string> EnumerateCategories(string type)
         {
             HashSet<string> result = new HashSet<string>();
-            foreach (var f in SourceManager.getAllDirectories(type))
+            foreach (var f in SourceManager.GetAllDirectories(type))
             {
                 Uri source = new Uri(f.Key.FullName);
                 ImportStandaloneFeatures();
                 var cats = f.Key.EnumerateDirectories("*", SearchOption.AllDirectories);
-                foreach (DirectoryInfo d in cats) result.Add(SourceManager.cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(new Uri(d.FullName)).ToString()), type));
+                foreach (DirectoryInfo d in cats) result.Add(SourceManager.Cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(new Uri(d.FullName)).ToString()), type));
             }
             return from s in result orderby s select s;
         }
@@ -183,7 +183,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Items).FullName);
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, ConfigManager.Directory_Items).FullName);
                     Uri target = new Uri(f.Key.DirectoryName);
                     using (TextReader reader = new StreamReader(f.Key.FullName))
                     {
@@ -238,7 +238,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.getDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
                     Uri target = new Uri(f.Key.DirectoryName);
                     string cat = MagicPropertyCleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!MagicProperty.Categories.ContainsKey(cat)) MagicProperty.Categories.Add(cat, new MagicCategory(cat));

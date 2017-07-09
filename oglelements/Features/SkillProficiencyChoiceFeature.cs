@@ -1,4 +1,5 @@
-﻿using OGL.Common;
+﻿using OGL.Base;
+using OGL.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace OGL.Features
     {
         public int Amount { get; set; }
         public double ProficiencyMultiplier { get; set; }
+        public ProficiencyBonus BonusType { get; set; } = ProficiencyBonus.AddOnlyIfNotProficient;
         public bool OnlyAlreadyKnownSkills { get; set; }
         public String UniqueID { get; set; }
         public List<string> Skills;

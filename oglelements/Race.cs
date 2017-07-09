@@ -150,7 +150,7 @@ namespace OGL
         {
             foreach (Race i in races.Values)
             {
-                FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Races);
+                FileInfo file = SourceManager.GetFileName(i.Name, i.Source, ConfigManager.Directory_Races);
                 using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
             }
         }

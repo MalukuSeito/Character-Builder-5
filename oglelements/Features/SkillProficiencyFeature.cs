@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OGL.Base;
+using System;
 using System.Collections.Generic;
 
 namespace OGL.Features
@@ -7,6 +8,7 @@ namespace OGL.Features
     {
         public List<String> Skills;
         public double ProficiencyMultiplier { get; set; }
+        public ProficiencyBonus BonusType { get; set; } = ProficiencyBonus.AddOnlyIfNotProficient;
         public SkillProficiencyFeature()
             : base()
         {

@@ -46,6 +46,7 @@
     <Compile Include="Background.cs" />
     <Compile Include="Base\Ability.cs" />
     <Compile Include="Base\AttackInfo.cs" />
+    <Compile Include="Base\ProficiencyBonus.cs" />
     <Compile Include="Common\Choice.cs" />
     <Compile Include="Base\EquipSlot.cs" />
     <Compile Include="Base\Price.cs" />

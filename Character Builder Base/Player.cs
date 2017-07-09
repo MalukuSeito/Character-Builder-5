@@ -31,7 +31,15 @@ namespace Character_Builder
         [XmlIgnore]
         public static Player Current {
             get { return _current; }
-            set { _current = value; PluginManager.manager.Load(value.ActiveHouseRules); }
+            set {
+                _current = value;
+                PluginManager.manager.Load(value.ActiveHouseRules);
+                if (!SourceManager.ExcludedSources.SetEquals(value.ExcludedSources)) {
+                    SourceManager.ExcludedSources.Clear();
+                    SourceManager.ExcludedSources.UnionWith(value.ExcludedSources);
+                    SourcesChangedEvent?.Invoke(_current, null);
+                }
+            }
         }
         [XmlIgnore]
         public Dictionary<Feature, int> ChoiceCounter;
@@ -73,6 +81,7 @@ namespace Character_Builder
             }
         }
         public static event HistoryButtonChangeEvent HistoryButtonChange;
+        public static event EventHandler SourcesChangedEvent;
         public static bool Undo()
         {
             if (UndoBuffer.Count > 0)
@@ -118,6 +127,7 @@ namespace Character_Builder
         public List<Possession> Possessions = new List<Possession>();
         public List<string> Conditions = new List<string>();
         public List<string> HiddenFeatures = new List<string>();
+        public List<string> ExcludedSources = new List<string>();
         public List<String> Items = new List<String>();
         private static XmlSerializer serializer = new XmlSerializer(typeof(Player));
         public int CurrentHPLoss { get; set; }
@@ -1662,45 +1672,92 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
             Dictionary<Skill, double> ProfModifier = new Dictionary<Skill, double>();
+            Dictionary<Skill, double> ProfModifierAlwaysBonus = new Dictionary<Skill, double>();
+            Dictionary<Skill, double> ProfModifierOnlyBonus = new Dictionary<Skill, double>();
             Dictionary<Skill, int> res = new Dictionary<Skill, int>();
             foreach (Skill s in Skill.skills.Values) res.Add(s, 0);
             int generalBonus=0;
             double generalModifier = 0;
+            double generalAlwaysModifier = 0;
+            double generalOnlyModifier = 0;
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is SkillProficiencyChoiceFeature)
+                if (f is SkillProficiencyChoiceFeature spcf)
                 {
-                    foreach (Skill s in ((SkillProficiencyChoiceFeature)f).getSkills(this))
+                    foreach (Skill s in spcf.getSkills(this))
                     {
-                        double mod = ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier;
-                        if (!ProfModifier.ContainsKey(s)) ProfModifier.Add(s, mod);
-                        else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
+                        double mod = spcf.ProficiencyMultiplier;
+                        switch (spcf.BonusType)
+                        {
+                            case ProficiencyBonus.AddOnlyIfNotProficient:
+                                if (!ProfModifier.ContainsKey(s)) ProfModifier.Add(s, mod);
+                                else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
+                                break;
+                            case ProficiencyBonus.AddOnlyIfProficient:
+                                if (!ProfModifierOnlyBonus.ContainsKey(s)) ProfModifierOnlyBonus.Add(s, mod);
+                                else if (ProfModifierOnlyBonus[s] < mod) ProfModifierOnlyBonus[s] = mod;
+                                break;
+                            case ProficiencyBonus.AddRegardless:
+                                if (!ProfModifierAlwaysBonus.ContainsKey(s)) ProfModifierAlwaysBonus.Add(s, mod);
+                                else if (ProfModifierAlwaysBonus[s] < mod) ProfModifierAlwaysBonus[s] = mod;
+                                break;
+                        }
                     }
                 }
-                else if (f is SkillProficiencyFeature)
+                else if (f is SkillProficiencyFeature spf)
                 {
-                    double mod = ((SkillProficiencyFeature)f).ProficiencyMultiplier;
-                    if (((SkillProficiencyFeature)f).Skills.Count == 0) if (generalModifier < mod) generalModifier = mod;
-                    foreach (String sst in ((SkillProficiencyFeature)f).Skills)
+                    double mod = spf.ProficiencyMultiplier;
+                    if (spf.Skills.Count == 0)
+                    {
+                        switch (spf.BonusType)
+                        {
+                            case ProficiencyBonus.AddOnlyIfNotProficient:
+                                if (generalModifier < mod) generalModifier = mod;
+                                break;
+                            case ProficiencyBonus.AddOnlyIfProficient:
+                                if (generalModifier < mod) generalModifier = mod;
+                                break;
+                            case ProficiencyBonus.AddRegardless:
+                                if (generalModifier < mod) generalModifier = mod;
+                                break;
+                        }
+                    }
+                    foreach (String sst in spf.Skills)
                     {
                         Skill s = Skill.Get(sst, f.Source);
-                        if (!ProfModifier.ContainsKey(s)) ProfModifier.Add(s, mod);
-                        else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
+                        switch (spf.BonusType)
+                        {
+                            case ProficiencyBonus.AddOnlyIfNotProficient:
+                                if (!ProfModifier.ContainsKey(s)) ProfModifier.Add(s, mod);
+                                else if (ProfModifier[s] < mod) ProfModifier[s] = mod;
+                                break;
+                            case ProficiencyBonus.AddOnlyIfProficient:
+                                if (!ProfModifierOnlyBonus.ContainsKey(s)) ProfModifierOnlyBonus.Add(s, mod);
+                                else if (ProfModifierOnlyBonus[s] < mod) ProfModifierOnlyBonus[s] = mod;
+                                break;
+                            case ProficiencyBonus.AddRegardless:
+                                if (!ProfModifierAlwaysBonus.ContainsKey(s)) ProfModifierAlwaysBonus.Add(s, mod);
+                                else if (ProfModifierAlwaysBonus[s] < mod) ProfModifierAlwaysBonus[s] = mod;
+                                break;
+                        }
                     }
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature bf && !bf.SkillPassive && bf.SkillBonus != null && bf.SkillBonus.Trim() != "" && bf.SkillBonus.Trim() != "0" && Utils.Matches(bf, armor, fc.classlevel, additionalKW, asa, true))
                 { 
-                    if (((BonusFeature)f).Skills.Count == 0) generalBonus+= Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
-                    foreach (string s in ((BonusFeature)f).Skills) res[Skill.Get(s, f.Source)]+= Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (bf.Skills.Count == 0) generalBonus+= Utils.Evaluate(bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    foreach (string s in bf.Skills) res[Skill.Get(s, f.Source)]+= Utils.Evaluate(bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
             int prof = GetProficiency();
             List<SkillInfo> result = new List<SkillInfo>();
             foreach (Skill s in Skill.skills.Values)
             {
-                double multiplier=generalModifier;
-                if (ProfModifier.ContainsKey(s)) multiplier=ProfModifier[s];
+                double multiplier = generalModifier + generalAlwaysModifier;
+                if (multiplier > 0.999) multiplier += generalOnlyModifier;
+                if (ProfModifier.ContainsKey(s) && ProfModifier[s]>multiplier) multiplier=ProfModifier[s];
+                if (ProfModifierAlwaysBonus.ContainsKey(s)) multiplier += ProfModifierAlwaysBonus[s];
+                if (multiplier > 0.999 && ProfModifierOnlyBonus.ContainsKey(s)) multiplier += ProfModifierOnlyBonus[s];
                 res[s]+=asa.ApplyMod(s.Base) + (int)Math.Floor(prof * multiplier);
                 result.Add(new SkillInfo(s, res[s], s.Base));
             }
@@ -1720,31 +1777,59 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
             double modifier = 0;
+            double onlymodifier = 0;
+            double alwaysmodifier = 0;
             int bonus = 0;
             if (ability == Ability.None) ability = s.Base;
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is SkillProficiencyChoiceFeature)
+                if (f is SkillProficiencyChoiceFeature spcf)
                 {
-                    if (((SkillProficiencyChoiceFeature)f).getSkills(this).Contains(s))
-                        if (modifier < ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier)
-                            modifier = ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier;
+                    if (spcf.getSkills(this).Contains(s))
+                    {
+                        switch (spcf.BonusType)
+                        {
+                            case ProficiencyBonus.AddOnlyIfNotProficient:
+                                if (modifier < spcf.ProficiencyMultiplier) modifier = spcf.ProficiencyMultiplier;
+                                break;
+                            case ProficiencyBonus.AddOnlyIfProficient:
+                                if (onlymodifier < spcf.ProficiencyMultiplier) onlymodifier = spcf.ProficiencyMultiplier;
+                                break;
+                            case ProficiencyBonus.AddRegardless:
+                                if (alwaysmodifier < spcf.ProficiencyMultiplier) alwaysmodifier = spcf.ProficiencyMultiplier;
+                                break;
+                        }
+                    }
                 }
-                else if (f is SkillProficiencyFeature)
+                else if (f is SkillProficiencyFeature spf)
                 {
-                    double mod = ((SkillProficiencyFeature)f).ProficiencyMultiplier;
-                    if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
-                    else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
+                    double mod = spf.ProficiencyMultiplier;
+                    switch (spf.BonusType)
+                    {
+                        case ProficiencyBonus.AddOnlyIfNotProficient:
+                            if (spf.Skills.Count == 0) { if (modifier < mod) modifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
+                            break;
+                        case ProficiencyBonus.AddOnlyIfProficient:
+                            if (spf.Skills.Count == 0) { if (onlymodifier < mod) onlymodifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (onlymodifier < mod) onlymodifier = mod;
+                            break;
+                        case ProficiencyBonus.AddRegardless:
+                            if (spf.Skills.Count == 0) { if (alwaysmodifier < mod) alwaysmodifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (alwaysmodifier < mod) alwaysmodifier = mod;
+                            break;
+                    }
                 }
-                else if (f is BonusFeature && !((BonusFeature)f).SkillPassive  && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature bf && !bf.SkillPassive && bf.SkillBonus != null && bf.SkillBonus.Trim() != "" && bf.SkillBonus.Trim() != "0" && Utils.Matches(bf, armor, fc.classlevel, additionalKW, asa, true))
                 {
-                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (bf.Skills.Count == 0 || bf.Skills.Contains(s.Name)) bonus = Utils.Evaluate(bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
             int prof = GetProficiency();
-            Dictionary<Skill, int> res = new Dictionary<Skill, int>();
-            return asa.ApplyMod(ability) + (int)Math.Floor(prof * modifier);
+            if (modifier > 0.999) modifier += onlymodifier;
+            modifier += alwaysmodifier;
+            return asa.ApplyMod(ability) + (int)Math.Floor(prof * modifier) + bonus;
         }
         public int GetPassiveSkill(Skill s)
         {
@@ -1759,25 +1844,52 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
             double modifier = 0;
+            double onlymodifier = 0;
+            double alwaysmodifier = 0;
             int bonus = 0;
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
-                if (f is SkillProficiencyChoiceFeature)
+                if (f is SkillProficiencyChoiceFeature spcf)
                 {
-                    if (((SkillProficiencyChoiceFeature)f).getSkills(this).Contains(s))
-                        if (modifier < ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier)
-                            modifier = ((SkillProficiencyChoiceFeature)f).ProficiencyMultiplier;
+                    if (spcf.getSkills(this).Contains(s))
+                    {
+                        switch (spcf.BonusType)
+                        {
+                            case ProficiencyBonus.AddOnlyIfNotProficient:
+                                if (modifier < spcf.ProficiencyMultiplier) modifier = spcf.ProficiencyMultiplier;
+                                break;
+                            case ProficiencyBonus.AddOnlyIfProficient:
+                                if (onlymodifier < spcf.ProficiencyMultiplier) onlymodifier = spcf.ProficiencyMultiplier;
+                                break;
+                            case ProficiencyBonus.AddRegardless:
+                                if (alwaysmodifier < spcf.ProficiencyMultiplier) alwaysmodifier = spcf.ProficiencyMultiplier;
+                                break;
+                        }
+                    }
                 }
-                else if (f is SkillProficiencyFeature)
+                else if (f is SkillProficiencyFeature spf)
                 {
-                    double mod = ((SkillProficiencyFeature)f).ProficiencyMultiplier;
-                    if (((SkillProficiencyFeature)f).Skills.Count == 0) { if (modifier < mod) modifier = mod; }
-                    else if (((SkillProficiencyFeature)f).Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
+                    double mod = spf.ProficiencyMultiplier;
+                    switch (spf.BonusType)
+                    {
+                        case ProficiencyBonus.AddOnlyIfNotProficient:
+                            if (spf.Skills.Count == 0) { if (modifier < mod) modifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (modifier < mod) modifier = mod;
+                            break;
+                        case ProficiencyBonus.AddOnlyIfProficient:
+                            if (spf.Skills.Count == 0) { if (onlymodifier < mod) onlymodifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (onlymodifier < mod) onlymodifier = mod;
+                            break;
+                        case ProficiencyBonus.AddRegardless:
+                            if (spf.Skills.Count == 0) { if (alwaysmodifier < mod) alwaysmodifier = mod; }
+                            else if (spf.Skills.Contains(s.Name)) if (alwaysmodifier < mod) alwaysmodifier = mod;
+                            break;
+                    }
                 }
-                else if (f is BonusFeature && ((BonusFeature)f).SkillBonus != null && ((BonusFeature)f).SkillBonus.Trim() != "" && ((BonusFeature)f).SkillBonus.Trim() != "0" && Utils.Matches((BonusFeature)f, armor, fc.classlevel, additionalKW, asa, true))
+                else if (f is BonusFeature bf && bf.SkillBonus != null && bf.SkillBonus.Trim() != "" && bf.SkillBonus.Trim() != "0" && Utils.Matches(bf, armor, fc.classlevel, additionalKW, asa, true))
                 {
-                    if (((BonusFeature)f).Skills.Count == 0 || ((BonusFeature)f).Skills.Contains(s.Name)) bonus = Utils.Evaluate(((BonusFeature)f).SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (bf.Skills.Count == 0 || bf.Skills.Contains(s.Name)) bonus = Utils.Evaluate(bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
                 }
             }
             int prof = GetProficiency();

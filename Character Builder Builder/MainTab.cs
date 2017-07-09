@@ -246,7 +246,7 @@ namespace Character_Builder_Builder
             if (FeatCats.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.getDirectory(ConfigManager.DefaultSource, Path.Combine((string)FeatCats.SelectedItem, cat));
+            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)FeatCats.SelectedItem, cat));
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
         }
@@ -520,7 +520,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.getDirectory(ConfigManager.DefaultSource, Path.Combine((string)ItemCat.SelectedItem, cat));
+            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)ItemCat.SelectedItem, cat));
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
         }
@@ -862,7 +862,7 @@ namespace Character_Builder_Builder
             if (magicCatBox.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.getDirectory(ConfigManager.DefaultSource, Path.Combine((string)magicCatBox.SelectedItem, cat));
+            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)magicCatBox.SelectedItem, cat));
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
         }

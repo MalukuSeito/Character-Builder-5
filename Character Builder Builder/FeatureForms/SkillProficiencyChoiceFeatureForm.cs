@@ -1,7 +1,9 @@
 ﻿using Character_Builder_Forms;
 using OGL;
+using OGL.Base;
 using OGL.Common;
 using OGL.Features;
+using System;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder.FeatureForms
@@ -16,6 +18,8 @@ namespace Character_Builder_Builder.FeatureForms
             Amount.DataBindings.Add("Value", f, "Amount", true, DataSourceUpdateMode.OnPropertyChanged);
             ProfMultiplier.DataBindings.Add("Value", f, "ProficiencyMultiplier", true, DataSourceUpdateMode.OnPropertyChanged);
             Restrict.DataBindings.Add("Checked", f, "OnlyAlreadyKnownSkills", true, DataSourceUpdateMode.OnPropertyChanged);
+            foreach (ProficiencyBonus s in Enum.GetValues(typeof(ProficiencyBonus))) BonusType.Items.Add(s);
+            BonusType.DataBindings.Add("SelectedItem", bf, "BonusType", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             ImportExtensions.ImportSkills();
             SkillList.Suggestions = Skill.simple.Keys;

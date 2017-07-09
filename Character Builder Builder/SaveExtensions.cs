@@ -19,7 +19,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Background background, Boolean overwrite)
         {
             background.Name = background.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(background.Name, background.Source, ConfigManager.Directory_Backgrounds);
+            FileInfo file = SourceManager.GetFileName(background.Name, background.Source, ConfigManager.Directory_Backgrounds);
             if (file.Exists && (background.Filename == null || !background.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Background.Serializer.Serialize(writer, background);
             background.Filename = file.FullName;
@@ -28,7 +28,7 @@ namespace Character_Builder_Builder
         public static bool Save(this ClassDefinition clz, Boolean overwrite)
         {
             clz.Name = clz.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(clz.Name, clz.Source, ConfigManager.Directory_Classes);
+            FileInfo file = SourceManager.GetFileName(clz.Name, clz.Source, ConfigManager.Directory_Classes);
             if (file.Exists && (clz.filename == null || !clz.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) ClassDefinition.Serializer.Serialize(writer, clz);
             clz.filename = file.FullName;
@@ -37,7 +37,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Condition cond, Boolean overwrite)
         {
             cond.Name = cond.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(cond.Name, cond.Source, ConfigManager.Directory_Conditions);
+            FileInfo file = SourceManager.GetFileName(cond.Name, cond.Source, ConfigManager.Directory_Conditions);
             if (file.Exists && (cond.filename == null || !cond.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Condition.Serializer.Serialize(writer, cond);
             cond.filename = file.FullName;
@@ -45,7 +45,7 @@ namespace Character_Builder_Builder
         }
         public static bool Save(this FeatureContainer f, Boolean overwrite)
         {
-            FileInfo file = SourceManager.getFileName(f.Name, f.Source, f.category);
+            FileInfo file = SourceManager.GetFileName(f.Name, f.Source, f.category);
             if (file.Exists && (f.filename == null || !f.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) FeatureContainer.Serializer.Serialize(writer, f);
             f.filename = file.FullName;
@@ -73,7 +73,7 @@ namespace Character_Builder_Builder
             {
                 throw new Exception("Item needs a unique name");
             }
-            FileInfo file = SourceManager.getFileName(i.Name, i.Source, Path.Combine(ConfigManager.Directory_Items, i.Category.makePath()));
+            FileInfo file = SourceManager.GetFileName(i.Name, i.Source, Path.Combine(ConfigManager.Directory_Items, i.Category.makePath()));
             if (file.Exists && (i.filename == null || !i.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Item.Serializer.Serialize(writer, i);
             i.filename = file.FullName;
@@ -82,7 +82,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Language l, Boolean overwrite)
         {
             l.Name = l.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(l.Name, l.Source, ConfigManager.Directory_Languages);
+            FileInfo file = SourceManager.GetFileName(l.Name, l.Source, ConfigManager.Directory_Languages);
             if (file.Exists && (l.filename == null || !l.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Language.Serializer.Serialize(writer, l);
             l.filename = file.FullName;
@@ -101,7 +101,7 @@ namespace Character_Builder_Builder
             {
                 throw new Exception("Magic Property needs a unique name");
             }
-            FileInfo file = SourceManager.getFileName(mp.Name, mp.Source, ImportExtensions.MagicPropertyCleanname(mp.Category));
+            FileInfo file = SourceManager.GetFileName(mp.Name, mp.Source, ImportExtensions.MagicPropertyCleanname(mp.Category));
             if (file.Exists && (mp.Filename == null || !mp.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) MagicProperty.Serializer.Serialize(writer, mp);
             mp.Filename = file.FullName;
@@ -110,7 +110,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Race r, Boolean overwrite)
         {
             r.Name = r.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(r.Name, r.Source, ConfigManager.Directory_Races);
+            FileInfo file = SourceManager.GetFileName(r.Name, r.Source, ConfigManager.Directory_Races);
             if (file.Exists && (r.Filename == null || !r.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Race.Serializer.Serialize(writer, r);
             r.Filename = file.FullName;
@@ -119,7 +119,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Skill s, Boolean overwrite)
         {
             s.Name = s.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Skills);
+            FileInfo file = SourceManager.GetFileName(s.Name, s.Source, ConfigManager.Directory_Skills);
             if (file.Exists && (s.Filename == null || !s.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Skill.Serializer.Serialize(writer, s);
             s.Filename = file.FullName;
@@ -128,7 +128,7 @@ namespace Character_Builder_Builder
         public static bool Save(this Spell s, Boolean overwrite)
         {
             s.Name = s.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Spells);
+            FileInfo file = SourceManager.GetFileName(s.Name, s.Source, ConfigManager.Directory_Spells);
             if (file.Exists && (s.Filename == null || !s.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Spell.Serializer.Serialize(writer, s);
             s.Filename = file.FullName;
@@ -137,7 +137,7 @@ namespace Character_Builder_Builder
         public static bool Save(this SubClass s, Boolean overwrite)
         {
             s.Name = s.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_SubClasses);
+            FileInfo file = SourceManager.GetFileName(s.Name, s.Source, ConfigManager.Directory_SubClasses);
             if (file.Exists && (s.Filename == null || !s.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) SubClass.Serializer.Serialize(writer, s);
             s.Filename = file.FullName;
@@ -146,7 +146,7 @@ namespace Character_Builder_Builder
         public static bool Save(this SubRace r, Boolean overwrite)
         {
             r.Name = r.Name.Replace(ConfigManager.SourceSeperator, '-');
-            FileInfo file = SourceManager.getFileName(r.Name, r.Source, ConfigManager.Directory_SubRaces);
+            FileInfo file = SourceManager.GetFileName(r.Name, r.Source, ConfigManager.Directory_SubRaces);
             if (file.Exists && (r.Filename == null || !r.Filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) SubRace.Serializer.Serialize(writer, r);
             r.Filename = file.FullName;

@@ -93,6 +93,7 @@ namespace Character_Builder_5
                 configureHouserulesToolStripMenuItem.DropDownItems.Add(p);
             }
             PluginManager.PluginsChanged += PluginManager_PluginsChanged;
+            BuildSources();
             portraitBox.AllowDrop = true;
             FactionInsignia.AllowDrop = true;
             sidePortrait.AllowDrop = true;
@@ -100,6 +101,34 @@ namespace Character_Builder_5
             possequip.Items.Clear();
             possequip.Items.Add(EquipSlot.None);
             foreach (string s in ConfigManager.Loaded.Slots) possequip.Items.Add(s);
+        }
+
+        public void BuildSources()
+        {
+            sourcesToolStrip.DropDownItems.Clear();
+            foreach (string s in SourceManager.Sources)
+            {
+                ToolStripMenuItem p = new ToolStripMenuItem(s);
+                p.Name = s;
+                p.Size = new System.Drawing.Size(152, 22);
+                p.Click += SourceClick;
+                p.Checked = !SourceManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
+                sourcesToolStrip.DropDownItems.Add(p);
+            }
+        }
+
+        private void SourceClick(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem tsmi)
+            {
+                Player.MakeHistory("Sources");
+                if (tsmi.Checked) Player.Current.ExcludedSources.Add(tsmi.Name);
+                else Player.Current.ExcludedSources.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, tsmi.Name));
+                SourceManager.ExcludedSources.Clear();
+                SourceManager.ExcludedSources.UnionWith(Player.Current.ExcludedSources);
+                Program.ReloadData();
+                UpdateLayout();
+            }
         }
 
         private void PluginManager_PluginsChanged(object sender, EventArgs e)

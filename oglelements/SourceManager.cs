@@ -10,9 +10,10 @@ namespace OGL
 {
     public class SourceManager
     {
+        public static HashSet<string> ExcludedSources { get; private set; } = new HashSet<string>();
         public static List<string> Sources { get; private set; }
         private static string AppPath = null;
-        public static bool init(string path, bool skipInsteadOfExit = false)
+        public static bool Init(string path, bool skipInsteadOfExit = false)
         {
             Sources = new List<string>();
             AppPath = path;
@@ -38,7 +39,7 @@ namespace OGL
             return true;
         }
 
-        public static DirectoryInfo getDirectory(string source, string type) {
+        public static DirectoryInfo GetDirectory(string source, string type) {
             if (source == null || source == "") source = "No Source";
             String isource = string.Join("_", source.Split(Path.GetInvalidFileNameChars()));
             if (!Sources.Contains(isource)) Sources.Add(isource);
@@ -47,11 +48,12 @@ namespace OGL
             return res;
         }
 
-        public static Dictionary<DirectoryInfo, string> getAllDirectories(string type)
+        public static Dictionary<DirectoryInfo, string> GetAllDirectories(string type)
         {
             Dictionary<DirectoryInfo, string> result = new Dictionary<DirectoryInfo, string>();
             foreach (string s in Sources)
             {
+                if (ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
                 DirectoryInfo res = new DirectoryInfo(Path.Combine(AppPath, s, type));
                 if (res.Exists) result.Add(res, s);
             }
@@ -63,7 +65,7 @@ namespace OGL
             Dictionary<FileInfo, string> result = new Dictionary<FileInfo, string>();
             try
             {
-                foreach (var f in getAllDirectories(type))
+                foreach (var f in GetAllDirectories(type))
                 {
                     foreach (FileInfo file in f.Key.EnumerateFiles(pattern, option))
                     {
@@ -78,13 +80,13 @@ namespace OGL
             return result;
         }
 
-        public static FileInfo getFileName(string name, string source, string type, string extension = ".xml")
+        public static FileInfo GetFileName(string name, string source, string type, string extension = ".xml")
         {
             String iname = string.Join("_", name.Split(ConfigManager.InvalidChars));
-            return new FileInfo(Path.Combine(getDirectory(source, type).FullName, iname + extension));
+            return new FileInfo(Path.Combine(GetDirectory(source, type).FullName, iname + extension));
         }
 
-        public static string cleanname(string path, string cut)
+        public static string Cleanname(string path, string cut)
         {
             string cat = path;
             if (!cat.StartsWith(cut)) cat = Path.Combine(cut, path);
