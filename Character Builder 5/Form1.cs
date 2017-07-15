@@ -498,7 +498,7 @@ namespace Character_Builder_5
                 if (curhploss > 0) curhploss = 0;
                 CurHP.Maximum = hp;
                 CurHP.Value = hp + curhploss;
-                sidePortrait.Image = Player.Current.Portrait;
+                sidePortrait.Image = Player.Current.GetPortrait();
                 SideName.Text = Player.Current.Name + "\n" + String.Join(" | ", Player.Current.Classes) + "\n(Level " + Player.Current.GetLevel() + ")\n" + Player.Current.GetRaceSubName();
                 int ac = Player.Current.GetAC();
                 SideAC.Text = ac + " AC";
@@ -1334,7 +1334,7 @@ namespace Character_Builder_5
             {
                 if (updateside) UpdateSideLayout();
                 layouting = true;
-                portraitBox.Image = Player.Current.Portrait;
+                portraitBox.Image = Player.Current.GetPortrait();
                 characterName.Text = Player.Current.Name;
                 XP.Minimum = Player.Current.GetXP(true);
                 XP.Value = Player.Current.GetXP();
@@ -1349,7 +1349,7 @@ namespace Character_Builder_5
                 Skin.Text = Player.Current.Skin;
                 Hair.Text = Player.Current.Hair;
                 FactionName.Text = Player.Current.FactionName;
-                FactionInsignia.Image = Player.Current.FactionImage;
+                FactionInsignia.Image = Player.Current.GetFactionImage();
                 Backstory.Text = Player.Current.Backstory;
                 Allies.Text = Player.Current.Allies;
                 journalentrybox.Items.Clear();
@@ -1985,7 +1985,7 @@ namespace Character_Builder_5
                     {
                         using (FileStream fs = (FileStream)od.OpenFile())
                         {
-                            Player newP = Player.Load(fs);
+                            Player newP = PlayerExtensions.Load(fs);
                             Player.UndoBuffer = new LinkedList<Player>();
                             Player.RedoBuffer = new LinkedList<Player>();
                             Player.UnsavedChanges = 0;
@@ -2213,7 +2213,7 @@ namespace Character_Builder_5
                 try
                 {
                     Player.MakeHistory("");
-                    Player.Current.Portrait = new Bitmap(ofd.FileName);
+                    Player.Current.SetPortrait(new Bitmap(ofd.FileName));
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -2342,7 +2342,7 @@ namespace Character_Builder_5
                 try
                 {
                     Player.MakeHistory("");
-                    Player.Current.FactionImage = new Bitmap(ofd.FileName);
+                    Player.Current.SetFactionImage(new Bitmap(ofd.FileName));
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -3508,7 +3508,7 @@ namespace Character_Builder_5
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
                 Player.MakeHistory("");
-                Player.Current.Portrait = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                Player.Current.SetPortrait((Bitmap)e.Data.GetData(DataFormats.Bitmap));
                 UpdatePersonal();
             }
             else if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -3519,12 +3519,9 @@ namespace Character_Builder_5
                 {
                     try
                     {
-                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
-                        {
-                            Player.MakeHistory("");
-                            Player.Current.Portrait = new Bitmap(ms);
-                            UpdatePersonal();
-                        }
+                        Player.MakeHistory("");
+                        Player.Current.Portrait = Convert.FromBase64String(m.Groups["data"].Value);
+                        UpdatePersonal();
                     }
                     catch (Exception ex)
                     {
@@ -3538,7 +3535,7 @@ namespace Character_Builder_5
                 {
                     Player.MakeHistory("");
                     string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    if (file.Count() == 1) Player.Current.Portrait = new Bitmap(file[0]);
+                    if (file.Count() == 1) Player.Current.SetPortrait(new Bitmap(file[0]));
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -3558,7 +3555,7 @@ namespace Character_Builder_5
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
             {
                 Player.MakeHistory("");
-                Player.Current.FactionImage = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                Player.Current.SetFactionImage((Bitmap)e.Data.GetData(DataFormats.Bitmap));
                 UpdatePersonal();
             }
             else if (e.Data.GetDataPresent(DataFormats.StringFormat))
@@ -3569,12 +3566,9 @@ namespace Character_Builder_5
                 {
                     try
                     {
-                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(m.Groups["data"].Value)))
-                        {
-                            Player.MakeHistory("");
-                            Player.Current.FactionImage = new Bitmap(ms);
-                            UpdatePersonal();
-                        }
+                        Player.MakeHistory("");
+                        Player.Current.FactionImage = Convert.FromBase64String(m.Groups["data"].Value);
+                        UpdatePersonal();
                     }
                     catch (Exception ex)
                     {
@@ -3588,7 +3582,7 @@ namespace Character_Builder_5
                 {
                     Player.MakeHistory("");
                     string[] file = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    if (file.Count() == 1) Player.Current.FactionImage = new Bitmap(file[0]);
+                    if (file.Count() == 1) Player.Current.SetFactionImage(new Bitmap(file[0]));
                     UpdatePersonal();
                 }
                 catch (Exception ex)
@@ -3625,7 +3619,7 @@ namespace Character_Builder_5
                     {
                         using (FileStream fs = new FileStream(file[0], FileMode.Open))
                         {
-                            Player p = Player.Load(fs);
+                            Player p = PlayerExtensions.Load(fs);
                             if (p != null)
                             {
                                 if (Player.UnsavedChanges == 0 || MessageBox.Show(Player.UnsavedChanges + " unsaved changes will be lost. Continue?", "Unsaved Changes", MessageBoxButtons.YesNo) == DialogResult.Yes)

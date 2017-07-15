@@ -220,7 +220,7 @@ namespace Character_Builder
             }*/
         }
 
-        internal void postLoad(int level)
+        public void PostLoad(int level)
         {
             if (Spellchoices.Count > 0)
             {

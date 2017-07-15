@@ -10,8 +10,8 @@ namespace Character_Builder
         {
             if (x == null) return y == null;
             if (y == null) return false;
-            return String.Equals(x.Name, y.Name, StringComparison.InvariantCultureIgnoreCase)
-                && String.Equals(x.Source, y.Source, StringComparison.InvariantCultureIgnoreCase)
+            return String.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
+                && String.Equals(x.Source, y.Source, StringComparison.OrdinalIgnoreCase)
                 && int.Equals(x.Level, y.Level);
         }
 

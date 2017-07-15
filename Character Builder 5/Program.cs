@@ -60,7 +60,7 @@ namespace Character_Builder_5
         }
 
         public static void LoadData() {
-            PluginManager.manager = new PluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
+            PlayerExtensions.LoadPluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
             ImportExtensions.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, ConfigManager.Loaded.Levels));
             ImportExtensions.ImportSkills();
             ImportExtensions.ImportLanguages();
@@ -121,7 +121,7 @@ namespace Character_Builder_5
                     {
                         try
                         {
-                            Player.Current = Player.Load(fs);
+                            Player.Current = PlayerExtensions.Load(fs);
                             MainWindow.UpdateLayout();
                         }
                         catch (Exception e)

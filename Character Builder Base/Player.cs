@@ -7,11 +7,8 @@ using OGL.Items;
 using OGL.Spells;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace Character_Builder
@@ -54,13 +51,13 @@ namespace Character_Builder
                 if (id==null) id = "";
                 if (id == "" || id != lastid)
                 {
-                    Bitmap port = Current.Portrait;
-                    Bitmap fac = Current.FactionImage;
+                    byte[] port = Current.Portrait;
+                    byte[] fac = Current.FactionImage;
                     Current.Portrait = null;
                     Current.FactionImage = null;
-                    serializer.Serialize(mem, Current);
+                    Serializer.Serialize(mem, Current);
                     mem.Seek(0, SeekOrigin.Begin);
-                    UndoBuffer.AddLast((Player)serializer.Deserialize(mem));
+                    UndoBuffer.AddLast((Player)Serializer.Deserialize(mem));
                     Current.Portrait = port;
                     Current.FactionImage = fac;
                     UndoBuffer.Last.Value.Portrait = port;
@@ -129,7 +126,7 @@ namespace Character_Builder
         public List<string> HiddenFeatures = new List<string>();
         public List<string> ExcludedSources = new List<string>();
         public List<String> Items = new List<String>();
-        private static XmlSerializer serializer = new XmlSerializer(typeof(Player));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(Player));
         public int CurrentHPLoss { get; set; }
         public int TempHP { get; set; }
         public int BonusMaxHP { get; set; }
@@ -158,70 +155,17 @@ namespace Character_Builder
         public List<string> ActiveHouseRules = new List<string>();
         [XmlElement("Portrait")]
         public string PortraitLocation = null;
-        [XmlIgnore]
-        public Bitmap Portrait { get; set; }
 
         [XmlElement("PortraitData")]
-        public byte[] PortraitSerialized
-        {
-            get
-            { // serialize
-                if (Portrait == null) return null;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    Portrait.Save(ms, ImageFormat.Png);
-                    return ms.ToArray();
-                }
-            }
-            set
-            { // deserialize
-                if (value == null)
-                {
-                    Portrait = null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(value))
-                    {
-                        Portrait = new Bitmap(ms);
-                    }
-                }
-            }
-        }
+        public byte[] Portrait { get; set; }
         public String Name { get; set; }
         public String FactionName { get; set;}
         [XmlElement("FactionImage")]
         public string FactionImageLocation = null;
-        [XmlIgnore]
-        public Bitmap FactionImage { get; set; }
+
 
         [XmlElement("FactionImageData")]
-        public byte[] FactionImageSerialized
-        {
-            get
-            { // serialize
-                if (FactionImage == null) return null;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    FactionImage.Save(ms, ImageFormat.Png);
-                    return ms.ToArray();
-                }
-            }
-            set
-            { // deserialize
-                if (value == null)
-                {
-                    FactionImage = null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(value))
-                    {
-                        FactionImage = new Bitmap(ms);
-                    }
-                }
-            }
-        }
+        public byte[] FactionImage { get; set; }
         public String Allies { get; set; }
         public String Backstory { get; set; }
         public String Alignment { get; set; }
@@ -904,7 +848,7 @@ namespace Character_Builder
             {
                 if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "")
                 {
-                    Feature feat = feats.Find(f => string.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat, StringComparison.InvariantCultureIgnoreCase));
+                    Feature feat = feats.Find(f => string.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat, StringComparison.OrdinalIgnoreCase));
                     if (feat == null) feat = feats.Find(f => ConfigManager.SourceInvariantComparer.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, s.Feat));
                     if (feat != null) res.AddRange(feat.Collect(level, this));
                     else ConfigManager.LogError("Missing Feat: " + s.Feat);
@@ -1142,39 +1086,7 @@ namespace Character_Builder
         {
             Choices.RemoveAll(c => c.UniqueID == ID);
         }
-        public void Save(FileStream fs)
-        {
-            serializer.Serialize(fs, this);
-        }
-        public void Save(TextWriter fs)
-        {
-            serializer.Serialize(fs, this);
-        }
-        public static Player Load(FileStream fs)
-        {
-            try
-            {
-                Player p = (Player)serializer.Deserialize(fs);
-
-                p.Allies = p.Allies.Replace("\n", Environment.NewLine);
-                p.Backstory = p.Backstory.Replace("\n", Environment.NewLine);
-                foreach (Possession pos in p.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
-                for (int i = 0; i < p.Journal.Count; i++) p.Journal[i] = p.Journal[i].Replace("\n", Environment.NewLine);
-                for (int i = 0; i < p.ComplexJournal.Count; i++) if (p.ComplexJournal[i].Text != null) p.ComplexJournal[i].Text = p.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
-                if (p.Portrait == null && p.PortraitLocation != null && File.Exists(p.PortraitLocation)) p.Portrait = new Bitmap(p.PortraitLocation);
-                if (p.FactionImage == null && p.FactionImageLocation != null && File.Exists(p.FactionImageLocation)) p.FactionImage = new Bitmap(p.FactionImageLocation);
-                p.PortraitLocation = null;
-                p.FactionImageLocation = null;
-                foreach (Spellcasting sc in p.Spellcasting) {
-                    sc.postLoad(p.GetLevel());
-                }
-                return p;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        
         public IEnumerable<Skill> GetSkillProficiencies()
         {
             List<Skill> skills=new List<Skill>();
@@ -1667,7 +1579,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -1772,7 +1684,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -1839,7 +1751,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -1906,7 +1818,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -1929,7 +1841,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -1997,17 +1909,17 @@ namespace Character_Builder
         }
         public Item GetArmor()
         {
-            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.Armor, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
+            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.Armor, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
         }
         public Item GetMainHand()
         {
-            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.MainHand, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
+            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.MainHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
         }
         public Item GetOffHand()
         {
-            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.InvariantCultureIgnoreCase)) return p.Item;
+            foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
         }
         public AttackInfo GetAttack(Possession p,int level=0)
@@ -2069,7 +1981,7 @@ namespace Character_Builder
                 weapon = p.Item as Weapon;
             }
             countsAs.Add(weapon);
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k=>k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k=>k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             Ability baseAbility = Ability.Strength;
             
 
@@ -2185,7 +2097,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -2208,7 +2120,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -2223,7 +2135,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -2240,7 +2152,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");
@@ -2337,7 +2249,7 @@ namespace Character_Builder
             Item weapon = GetMainHand();
             List<string> additionalKW = new List<string>();
             if (armor == null) additionalKW.Add("unarmored");
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.InvariantCultureIgnoreCase)))) additionalKW.Add("freehand");
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
             if (offHand is Weapon) additionalKW.Add("offhand");
             if (offHand is Shield) additionalKW.Add("shield");
             if (weapon is Weapon) additionalKW.Add("mainhand");

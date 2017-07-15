@@ -23,86 +23,14 @@ namespace Character_Builder
         }
         public static event EventHandler PluginsChanged;
         public static PluginManager manager;
-        public Dictionary<string, IPlugin> available = new Dictionary<string, IPlugin>(StringComparer.InvariantCultureIgnoreCase);
+        public Dictionary<string, IPlugin> available = new Dictionary<string, IPlugin>(StringComparer.OrdinalIgnoreCase);
         public List<IPlugin> plugins = new List<IPlugin>();
+        public static void FireEvent(PluginManager plug, EventArgs args) => PluginsChanged?.Invoke(plug, args);
         public void Load(List<string> rules)
         {
             plugins.Clear();
             if (rules != null) foreach (string p in rules) if (available.ContainsKey(p)) plugins.Add(available[p]);
-            PluginsChanged?.Invoke(this, EventArgs.Empty);
-        }
-        public PluginManager(string path)
-        {
-            string[] dllFileNames = null;
-            if (Directory.Exists(path))
-            {
-                try
-                {
-                    dllFileNames = Directory.GetFiles(path, "*.dll");
-                } catch (Exception e)
-                {
-                    ConfigManager.LogError("Error loading Plugins", e);
-                }
-            } else
-            {
-                return;
-            }
-            
-            ICollection<Assembly> assemblies = new List<Assembly>(dllFileNames.Length);
-            foreach (string dllFile in dllFileNames)
-            {
-                try
-                {
-                    Assembly assembly = Assembly.LoadFrom(dllFile);
-                    assemblies.Add(assembly);
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error loading Plugin " + dllFile, e);
-                }
-            }
-            Type pluginType = typeof(IPlugin);
-            ICollection<Type> pluginTypes = new List<Type>();
-            foreach (Assembly assembly in assemblies)
-            {
-                if (assembly != null)
-                {
-                    try
-                    {
-                        Type[] types = assembly.GetTypes();
-                        foreach (Type type in types)
-                        {
-                            if (type.IsInterface || type.IsAbstract)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                if (type.GetInterface(pluginType.FullName) != null)
-                                {
-                                    pluginTypes.Add(type);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        ConfigManager.LogError("Error loading Plugin Assembly " + assembly, e);
-                    }
-                }
-            }
-            foreach (Type type in pluginTypes)
-            {
-                try
-                {
-                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                    available.Add(plugin.Name, plugin);
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error loading Plugin Type " + type, e);
-                }
-            }
+            PluginManager.FireEvent(this, EventArgs.Empty);
         }
         public List<Feature> filterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider)
         {

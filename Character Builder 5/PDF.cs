@@ -134,7 +134,7 @@ namespace Character_Builder_5
                         {
                             foreach (AcroFields.FieldPosition pos in p.AcroFields.GetFieldPositions(trans["Portrait"]))
                             {
-                                iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Player.Current.Portrait, BaseColor.WHITE);
+                                iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Player.Current.GetPortrait(), BaseColor.WHITE);
                                 img.ScaleToFit(pos.position.Width, pos.position.Height);
                                 img.SetAbsolutePosition(pos.position.Left + pos.position.Width / 2 - img.ScaledWidth / 2, pos.position.Bottom + pos.position.Height / 2 - img.ScaledHeight / 2);
                                 p.GetOverContent(pos.page).AddImage(img);
@@ -144,7 +144,7 @@ namespace Character_Builder_5
                         {
                             foreach (AcroFields.FieldPosition pos in p.AcroFields.GetFieldPositions(trans["FactionPortrait"]))
                             {
-                                iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Player.Current.FactionImage, BaseColor.WHITE);
+                                iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Player.Current.GetFactionImage(), BaseColor.WHITE);
                                 img.ScaleToFit(pos.position.Width, pos.position.Height);
                                 img.SetAbsolutePosition(pos.position.Left + pos.position.Width / 2 - img.ScaledWidth / 2, pos.position.Bottom + pos.position.Height / 2 - img.ScaledHeight / 2);
                                 p.GetOverContent(pos.page).AddImage(img);

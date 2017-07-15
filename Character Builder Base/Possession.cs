@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace Character_Builder
 {
@@ -16,8 +15,6 @@ namespace Character_Builder
     {
         [XmlIgnore]
         private static XmlSerializer Serializer = new XmlSerializer(typeof(DisplayPossession));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
         public String BaseItem { get; set; }
         public string Equipped { get; set; }
@@ -160,10 +157,10 @@ namespace Character_Builder
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
             if (Count == 0) name = name + " (lost)";
             if (Attuned) name = name + " (attuned)";
-            if (string.Equals(Equipped, EquipSlot.Armor, StringComparison.InvariantCultureIgnoreCase)) name = name + " (worn)";
-            else if (string.Equals(Equipped, EquipSlot.MainHand, StringComparison.InvariantCultureIgnoreCase)) name = name + " (main hand)";
-            else if (string.Equals(Equipped, EquipSlot.OffHand, StringComparison.InvariantCultureIgnoreCase)) name = name + " (off hand)";
-            else if (!string.Equals(Equipped, EquipSlot.None, StringComparison.InvariantCultureIgnoreCase)) name = name + " (" + Equipped + ")";
+            if (string.Equals(Equipped, EquipSlot.Armor, StringComparison.OrdinalIgnoreCase)) name = name + " (worn)";
+            else if (string.Equals(Equipped, EquipSlot.MainHand, StringComparison.OrdinalIgnoreCase)) name = name + " (main hand)";
+            else if (string.Equals(Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) name = name + " (off hand)";
+            else if (!string.Equals(Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) name = name + " (" + Equipped + ")";
             if (ChargesUsed > 0) name = name + " (" + ChargesUsed + " charges used)";
             return name;
         }
@@ -190,7 +187,7 @@ namespace Character_Builder
         public IEnumerable<Feature> Collect(int level, IChoiceProvider provider, bool pretendEquipped = false)
         {
             List<Feature> result = new List<Feature>();
-            bool equip = !EquipSlot.None.Equals(Equipped, StringComparison.InvariantCultureIgnoreCase);
+            bool equip = !EquipSlot.None.Equals(Equipped, StringComparison.OrdinalIgnoreCase);
             foreach (string mp in MagicProperties) result.AddRange(MagicProperty.Get(mp, null).Collect(level, equip || pretendEquipped, Attuned, provider));
             return result;
         }

@@ -16,7 +16,7 @@ namespace Character_Builder
         
         private static void FunctionExtensions(string name, FunctionArgs args)
         {
-            if (name.Equals("ClassLevel", StringComparison.InvariantCultureIgnoreCase)) {
+            if (name.Equals("ClassLevel", StringComparison.OrdinalIgnoreCase)) {
                 object[] o = args.EvaluateParameters();
                 if (o.Length > 0)
                 {
@@ -26,7 +26,7 @@ namespace Character_Builder
                         Dictionary<ClassDefinition, int> classes = Player.Current.GetClassLevels();
                         foreach (ClassDefinition c in classes.Keys)
                         {
-                            if (c.Name.Equals(cls as string, StringComparison.InvariantCultureIgnoreCase))
+                            if (c.Name.Equals(cls as string, StringComparison.OrdinalIgnoreCase))
                             {
                                 args.Result = classes[c];
                                 return;
@@ -40,7 +40,7 @@ namespace Character_Builder
                     args.Result = Player.Current.GetLevel();
                 }
             }
-            if (name.Equals("SubClass", StringComparison.InvariantCultureIgnoreCase))
+            if (name.Equals("SubClass", StringComparison.OrdinalIgnoreCase))
             {
                 object[] o = args.EvaluateParameters();
                 if (o.Length > 0)
