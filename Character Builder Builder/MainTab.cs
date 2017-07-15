@@ -510,7 +510,7 @@ namespace Character_Builder_Builder
             {
                 NewItemCat.Enabled = true;
                 NewItem.Enabled = true;
-                Category category = Category.Make(cat);
+                Category category = ImportExtensions.Make(cat);
                 foreach (Item i in from i in Item.items.Values where category.Equals(i.Category) orderby i.Name select i) ItemBox.Items.Add(i);
             }
         }
@@ -601,7 +601,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Item i = new Item()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             ItemForm r = new ItemForm(i);
             r.Saved += ItemSaved;
@@ -613,7 +613,7 @@ namespace Character_Builder_Builder
             if(ItemCat.SelectedItem == null) return;
             Tool i = new Tool()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             ToolForm r = new ToolForm(i);
             r.Saved += ItemSaved;
@@ -625,7 +625,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Weapon i = new Weapon()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             WeaponForm r = new WeaponForm(i);
             r.Saved += ItemSaved;
@@ -637,7 +637,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Armor i = new Armor()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             ArmorForm r = new ArmorForm(i);
             r.Saved += ItemSaved;
@@ -649,7 +649,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Shield i = new Shield()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             ShieldForm r = new ShieldForm(i);
             r.Saved += ItemSaved;
@@ -661,7 +661,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Pack i = new Pack()
             {
-                Category = Category.Make((string)ItemCat.SelectedItem)
+                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
             };
             PackForm r = new PackForm(i);
             r.Saved += ItemSaved;

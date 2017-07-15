@@ -34,9 +34,9 @@ namespace Character_Builder
             set {
                 _current = value;
                 PluginManager.manager.Load(value.ActiveHouseRules);
-                if (!SourceManager.ExcludedSources.SetEquals(value.ExcludedSources)) {
-                    SourceManager.ExcludedSources.Clear();
-                    SourceManager.ExcludedSources.UnionWith(value.ExcludedSources);
+                if (!ConfigManager.ExcludedSources.SetEquals(value.ExcludedSources)) {
+                    ConfigManager.ExcludedSources.Clear();
+                    ConfigManager.ExcludedSources.UnionWith(value.ExcludedSources);
                     SourcesChangedEvent?.Invoke(_current, null);
                 }
             }

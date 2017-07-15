@@ -8,8 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
-using XCalc;
+using NCalc;
 
 namespace OGL
 {
@@ -22,8 +21,6 @@ namespace OGL
         public List<Keyword> Keywords;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Spell));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         static public Dictionary<String, Spell> spells = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
@@ -180,7 +177,7 @@ namespace OGL
 
         public static Spell Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (spells.ContainsKey(name)) return spells[name];
                 name = SourceInvariantComparer.NoSource(name);
@@ -208,7 +205,7 @@ namespace OGL
         }
         public override bool Equals(object other)
         {
-            if (other is Spell) return String.Equals(Name, ((Spell)other).Name, StringComparison.InvariantCultureIgnoreCase);
+            if (other is Spell) return String.Equals(Name, ((Spell)other).Name, StringComparison.OrdinalIgnoreCase);
             return false;
         }
         public override int GetHashCode()
@@ -308,18 +305,18 @@ namespace OGL
         }
         private static void FunctionExtensions(string name, FunctionArgs args)
         {
-            if (name.Equals("ClassLevel", StringComparison.InvariantCultureIgnoreCase))
+            if (name.Equals("ClassLevel", StringComparison.OrdinalIgnoreCase))
             {
                 args.Result = int.MaxValue;
             }
-            if (name.Equals("SubClass", StringComparison.InvariantCultureIgnoreCase))
+            if (name.Equals("SubClass", StringComparison.OrdinalIgnoreCase))
             {
                 args.Result = "";
             }
         }
         private static bool MatchesKW(string kw, string kw2)
         {
-            return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.InvariantCultureIgnoreCase);
+            return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using XCalc;
+using NCalc;
 
 namespace OGL
 {
     public class FeatureCollection
     {
         [XmlIgnore]
-        private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1", RegexOptions.Compiled);
+        private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1");
 
         private static string fixQuotes(string exp)
         {
@@ -122,7 +122,7 @@ namespace OGL
 
         public static Feature getBoon(string name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (Boons.ContainsKey(name)) return Boons[name];
                 name = SourceInvariantComparer.NoSource(name);

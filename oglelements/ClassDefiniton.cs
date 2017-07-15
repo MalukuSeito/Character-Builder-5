@@ -5,13 +5,9 @@ using OGL.Features;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -21,8 +17,6 @@ namespace OGL
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));
         [XmlIgnore]
         public string filename;
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
         public String Description { get; set; }
         public String Flavour { get; set; }
@@ -149,34 +143,7 @@ namespace OGL
         static public Dictionary<String, ClassDefinition> simple = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
-
+        
         public byte[] ImageData { get; set; }
         public void Register(string filename, bool applyKeywords)
         {
@@ -247,7 +214,7 @@ namespace OGL
         }
         public static ClassDefinition Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (classes.ContainsKey(name)) return classes[name];
                 name = SourceInvariantComparer.NoSource(name);

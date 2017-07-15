@@ -1,13 +1,9 @@
 ﻿using OGL.Base;
-using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL.Items
 {
     public class Scroll: Item
     {
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         public Spell Spell;
         public Scroll()
         {

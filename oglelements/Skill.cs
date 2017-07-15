@@ -3,10 +3,7 @@ using OGL.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -14,8 +11,6 @@ namespace OGL
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         static public Dictionary<String, Skill> skills = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
@@ -56,7 +51,7 @@ namespace OGL
         }
         public static Skill Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (skills.ContainsKey(name)) return skills[name];
                 name = SourceInvariantComparer.NoSource(name);

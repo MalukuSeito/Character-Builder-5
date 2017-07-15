@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -48,7 +49,7 @@ namespace Character_Builder_Builder.ItemForms
                     EP.DataBindings.Add("Value", item.Price, "ep", true, DataSourceUpdateMode.OnPropertyChanged);
                     SP.DataBindings.Add("Value", item.Price, "sp", true, DataSourceUpdateMode.OnPropertyChanged);
                     CP.DataBindings.Add("Value", item.Price, "cp", true, DataSourceUpdateMode.OnPropertyChanged);
-                    ImageChanged?.Invoke(this, item.Image);
+                    ImageChanged?.Invoke(this, item.GetImage());
                 }
                 else
                 {
@@ -90,7 +91,7 @@ namespace Character_Builder_Builder.ItemForms
         {
             if (item != null)
             {
-                item.Image = Image;
+                item.SetImage(Image);
                 ImageChanged?.Invoke(this, Image);
                 history?.ShowPreview();
             }

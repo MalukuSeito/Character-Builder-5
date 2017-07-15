@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -13,8 +12,6 @@ namespace OGL
     {
         [XmlIgnore]
         private static XmlSerializer Serializer = new XmlSerializer(typeof(DescriptionContainer));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(TableDescription)),
         XmlArrayItem(Type = typeof(ListDescription))]
@@ -48,21 +45,6 @@ namespace OGL
             MemoryStream mem = new MemoryStream();
             Serializer.Serialize(mem, this);
             return mem;
-        }
-        public static FeatureContainer Load(String path)
-        {
-            using (TextReader reader = new StreamReader(path))
-            {
-                return ((FeatureContainer)Serializer.Deserialize(reader));
-            }
-        }
-        public void Save(String path)
-        {
-            using (TextWriter writer = new StreamWriter(path))
-            {
-                Serializer.Serialize(writer, this);
-            }
-
         }
         public string Save()
         {

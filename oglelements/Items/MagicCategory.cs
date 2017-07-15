@@ -6,20 +6,19 @@ namespace OGL.Items
     public class MagicCategory : IComparable<MagicCategory>
     {
         public string Name;
+        public string DisplayName;
+        public int Indent;
         public List<MagicProperty> Contents;
-        public MagicCategory(string name)
+        public MagicCategory(string name, string display, int indent)
         {
             Name = name;
+            DisplayName = display;
+            Indent = indent;
             Contents = new List<MagicProperty>();
         }
         public override string ToString()
         {
-            string path = System.IO.Path.GetFileName(Name);
-            if (path == null) path = Name;
-            int count = 0;
-            foreach (char c in Name)
-                if (c == System.IO.Path.AltDirectorySeparatorChar) count++;
-            return new String(' ', count) + path;
+            return new String(' ', Indent) + DisplayName;
         }
         public int CompareTo(MagicCategory other)
         {

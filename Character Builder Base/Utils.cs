@@ -7,7 +7,7 @@ using OGL.Spells;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using XCalc;
+using NCalc;
 
 namespace Character_Builder
 {

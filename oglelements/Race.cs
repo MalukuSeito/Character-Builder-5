@@ -1,16 +1,10 @@
-﻿using OGL.Base;
-using OGL.Common;
+﻿using OGL.Common;
 using OGL.Descriptions;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -19,8 +13,6 @@ namespace OGL
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Race));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
         public String Flavour { get; set; }
         public Base.Size Size { get; set; }
@@ -35,32 +27,6 @@ namespace OGL
         static public Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public string Filename { get; set; }
-        [XmlIgnore]
-        public Bitmap Image {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
 
         public byte[] ImageData { get; set; }
         public void Register(string file)
@@ -118,7 +84,7 @@ namespace OGL
         public bool ShowSource { get; set; } = false;
         public static Race Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (races.ContainsKey(name)) return races[name];
                 name = SourceInvariantComparer.NoSource(name);

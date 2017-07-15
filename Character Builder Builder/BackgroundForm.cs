@@ -51,7 +51,7 @@ namespace Character_Builder_Builder
             ideal.DataSource = new BindingList<TableEntry>(cls.Ideal);
             bond.DataSource = new BindingList<TableEntry>(cls.Bond);
             flaw.DataSource = new BindingList<TableEntry>(cls.Flaw);
-            ImageChanged?.Invoke(this, cls.Image);
+            ImageChanged?.Invoke(this, cls.GetImage());
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());
@@ -240,7 +240,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            cls.Image = Image;
+            cls.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

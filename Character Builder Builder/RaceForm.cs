@@ -46,7 +46,7 @@ namespace Character_Builder_Builder
             NewlineFormatter.Add(description.DataBindings, "Text", race, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
             features1.features = race.Features;
             decriptions1.descriptions = race.Descriptions;
-            ImageChanged?.Invoke(this, race.Image);
+            ImageChanged?.Invoke(this, race.GetImage());
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(race.ToHTML());
@@ -211,7 +211,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            race.Image = Image;
+            race.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

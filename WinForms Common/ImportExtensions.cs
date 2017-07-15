@@ -189,7 +189,7 @@ namespace Character_Builder_Forms
                     using (TextReader reader = new StreamReader(f.Key.FullName))
                     {
                         Item s = (Item)Item.Serializer.Deserialize(reader);
-                        s.Category = Category.Make(source.MakeRelativeUri(target));
+                        s.Category = Make(source.MakeRelativeUri(target));
                         s.Source = f.Value;
                         s.Register(f.Key.FullName);
                     }
@@ -228,11 +228,20 @@ namespace Character_Builder_Forms
             Level.Current.Sort();
             return Level.Current;
         }
+        private static MagicCategory MakeMagicCategory(string Name)
+        {
+            string path = Path.GetFileName(Name);
+            if (path == null) path = Name;
+            int count = 0;
+            foreach (char c in Name)
+                if (c == Path.AltDirectorySeparatorChar) count++;
+            return new MagicCategory(Name, path, count);
+        }
         public static void ImportMagic()
         {
             MagicProperty.properties.Clear();
             MagicProperty.Categories.Clear();
-            MagicProperty.Categories.Add("Magic", new MagicCategory("Magic"));
+            MagicProperty.Categories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
             MagicProperty.simple.Clear();
             var files = SourceManager.EnumerateFiles(ConfigManager.Directory_Magic, SearchOption.AllDirectories);
             foreach (var f in files)
@@ -242,12 +251,12 @@ namespace Character_Builder_Forms
                     Uri source = new Uri(SourceManager.GetDirectory(f.Value, ConfigManager.Directory_Magic).FullName);
                     Uri target = new Uri(f.Key.DirectoryName);
                     string cat = MagicPropertyCleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!MagicProperty.Categories.ContainsKey(cat)) MagicProperty.Categories.Add(cat, new MagicCategory(cat));
-                    String parent = System.IO.Path.GetDirectoryName(cat);
+                    if (!MagicProperty.Categories.ContainsKey(cat)) MagicProperty.Categories.Add(cat, MakeMagicCategory(cat));
+                    String parent = Path.GetDirectoryName(cat);
                     while (parent.IsSubPathOf(ConfigManager.Directory_Magic) && !MagicProperty.Categories.ContainsKey(parent))
                     {
-                        MagicProperty.Categories.Add(parent, new MagicCategory(parent));
-                        parent = System.IO.Path.GetDirectoryName(parent);
+                        MagicProperty.Categories.Add(parent, MakeMagicCategory(parent));
+                        parent = Path.GetDirectoryName(parent);
                     }
                     using (TextReader reader = new StreamReader(f.Key.FullName))
                     {
@@ -284,8 +293,8 @@ namespace Character_Builder_Forms
         public static string MagicPropertyCleanname(string path)
         {
             string cat = path;
-            if (!cat.StartsWith(ConfigManager.Directory_Magic)) cat = System.IO.Path.Combine(ConfigManager.Directory_Magic, path);
-            cat = cat.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            if (!cat.StartsWith(ConfigManager.Directory_Magic)) cat = Path.Combine(ConfigManager.Directory_Magic, path);
+            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
             return cat;
         }
@@ -425,31 +434,31 @@ namespace Character_Builder_Forms
                 ConfigManager.Loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
             }
             ConfigManager.Directory_Items = MakeRelative(Loaded.Items_Directory);
-            ConfigManager.Transform_Items = new FileInfo(Fullpath(path, Loaded.Items_Transform));
+            HTMLExtensions.Transform_Items = new FileInfo(Fullpath(path, Loaded.Items_Transform));
             ConfigManager.Directory_Skills = MakeRelative(Loaded.Skills_Directory);
-            ConfigManager.Transform_Skills = new FileInfo(Fullpath(path, Loaded.Skills_Transform));
+            HTMLExtensions.Transform_Skills = new FileInfo(Fullpath(path, Loaded.Skills_Transform));
             ConfigManager.Directory_Languages = MakeRelative(Loaded.Languages_Directory);
-            ConfigManager.Transform_Languages = new FileInfo(Fullpath(path, Loaded.Languages_Transform));
+            HTMLExtensions.Transform_Languages = new FileInfo(Fullpath(path, Loaded.Languages_Transform));
             ConfigManager.Directory_Features = MakeRelative(Loaded.Features_Directory);
-            ConfigManager.Transform_Features = new FileInfo(Fullpath(path, Loaded.Features_Transform));
+            HTMLExtensions.Transform_Features = new FileInfo(Fullpath(path, Loaded.Features_Transform));
             ConfigManager.Directory_Backgrounds = MakeRelative(Loaded.Backgrounds_Directory);
-            ConfigManager.Transform_Backgrounds = new FileInfo(Fullpath(path, Loaded.Backgrounds_Transform));
+            HTMLExtensions.Transform_Backgrounds = new FileInfo(Fullpath(path, Loaded.Backgrounds_Transform));
             ConfigManager.Directory_Classes = MakeRelative(Loaded.Classes_Directory);
-            ConfigManager.Transform_Classes = new FileInfo(Fullpath(path, Loaded.Classes_Transform));
+            HTMLExtensions.Transform_Classes = new FileInfo(Fullpath(path, Loaded.Classes_Transform));
             ConfigManager.Directory_SubClasses = MakeRelative(Loaded.SubClasses_Directory);
-            ConfigManager.Transform_SubClasses = new FileInfo(Fullpath(path, Loaded.SubClasses_Transform));
+            HTMLExtensions.Transform_SubClasses = new FileInfo(Fullpath(path, Loaded.SubClasses_Transform));
             ConfigManager.Directory_Races = MakeRelative(Loaded.Races_Directory);
-            ConfigManager.Transform_Races = new FileInfo(Fullpath(path, Loaded.Races_Transform));
+            HTMLExtensions.Transform_Races = new FileInfo(Fullpath(path, Loaded.Races_Transform));
             ConfigManager.Directory_SubRaces = MakeRelative(Loaded.SubRaces_Directory);
-            ConfigManager.Transform_SubRaces = new FileInfo(Fullpath(path, Loaded.SubRaces_Transform));
+            HTMLExtensions.Transform_SubRaces = new FileInfo(Fullpath(path, Loaded.SubRaces_Transform));
             ConfigManager.Directory_Spells = MakeRelative(Loaded.Spells_Directory);
-            ConfigManager.Transform_Spells = new FileInfo(Fullpath(path, Loaded.Spells_Transform));
+            HTMLExtensions.Transform_Spells = new FileInfo(Fullpath(path, Loaded.Spells_Transform));
             ConfigManager.Directory_Magic = MakeRelative(Loaded.Magic_Directory);
-            ConfigManager.Transform_Magic = new FileInfo(Fullpath(path, Loaded.Magic_Transform));
+            HTMLExtensions.Transform_Magic = new FileInfo(Fullpath(path, Loaded.Magic_Transform));
             ConfigManager.Directory_Conditions = MakeRelative(Loaded.Conditions_Directory);
-            ConfigManager.Transform_Conditions = new FileInfo(Fullpath(path, Loaded.Conditions_Transform));
-            ConfigManager.Transform_Possession = new FileInfo(Fullpath(path, Loaded.Possessions_Transform));
-            ConfigManager.Transform_RemoveDescription = new FileInfo(Fullpath(path, Loaded.RemoveDescription_Transform));
+            HTMLExtensions.Transform_Conditions = new FileInfo(Fullpath(path, Loaded.Conditions_Transform));
+            HTMLExtensions.Transform_Possession = new FileInfo(Fullpath(path, Loaded.Possessions_Transform));
+            HTMLExtensions.Transform_RemoveDescription = new FileInfo(Fullpath(path, Loaded.RemoveDescription_Transform));
             ConfigManager.Directory_Plugins = MakeRelative(Loaded.Plugins_Directory);
             ConfigManager.PDFExporters = new List<string>();
             foreach (string s in ConfigManager.Loaded.PDF) ConfigManager.PDFExporters.Add(Fullpath(path, s));
@@ -487,5 +496,23 @@ namespace Character_Builder_Forms
         {
             using (TextWriter writer = new StreamWriter(file)) ConfigManager.Serializer.Serialize(writer, m);
         }
+        public static Category Make(Uri path)
+        {
+            return Make(Uri.UnescapeDataString(path.ToString()));
+        }
+        public static Category Make(String path)
+        {
+            String p = path;
+            if (!p.StartsWith(ConfigManager.Directory_Items)) p = Path.Combine(ConfigManager.Directory_Items, path);
+            p = p.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (!Category.Categories.ContainsKey(p))
+            {
+                Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }).ToList()));
+            }
+            String parent = Path.GetDirectoryName(p);
+            if (parent.IsSubPathOf(ConfigManager.Directory_Items)) Make(parent);
+            return Category.Categories[p];
+        }
+
     }
 }

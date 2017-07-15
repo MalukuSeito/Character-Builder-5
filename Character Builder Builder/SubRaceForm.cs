@@ -54,7 +54,7 @@ namespace Character_Builder_Builder
             preview.Document.Write(race.ToHTML());
             ParentRace.DataBindings.Clear();
             ParentRace.DataBindings.Add("Text", race, "RaceName", true, DataSourceUpdateMode.OnPropertyChanged);
-            ImageChanged?.Invoke(this, race.Image);
+            ImageChanged?.Invoke(this, race.GetImage());
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
@@ -221,7 +221,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            race.Image = Image;
+            race.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

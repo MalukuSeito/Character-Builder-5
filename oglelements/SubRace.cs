@@ -3,13 +3,9 @@ using OGL.Descriptions;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -19,8 +15,6 @@ namespace OGL
         public static bool DETAILED_TOSTRING = false;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubRace));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         public string Filename { get; set; }
         [XmlArrayItem(Type = typeof(Description)),
@@ -67,34 +61,6 @@ namespace OGL
         public String Description { get; set; }
         [XmlElement(ElementName = "ParentRace")]
         public String RaceName { get; set; }
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
-
         public byte[] ImageData { get; set; }
         [XmlIgnore]
         public Race ParentRace
@@ -145,7 +111,7 @@ namespace OGL
         }
           public static SubRace Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (subraces.ContainsKey(name)) return subraces[name];
                 name = SourceInvariantComparer.NoSource(name);

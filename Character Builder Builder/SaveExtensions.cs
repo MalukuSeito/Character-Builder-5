@@ -73,7 +73,7 @@ namespace Character_Builder_Builder
             {
                 throw new Exception("Item needs a unique name");
             }
-            FileInfo file = SourceManager.GetFileName(i.Name, i.Source, Path.Combine(ConfigManager.Directory_Items, i.Category.makePath()));
+            FileInfo file = SourceManager.GetFileName(i.Name, i.Source, Path.Combine(ConfigManager.Directory_Items, Path.Combine(i.Category.MakePath().ToArray())));
             if (file.Exists && (i.filename == null || !i.filename.Equals(file.FullName)) && !overwrite) return false;
             using (TextWriter writer = new StreamWriter(file.FullName)) Item.Serializer.Serialize(writer, i);
             i.filename = file.FullName;

@@ -3,9 +3,7 @@ using OGL.Features;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -19,8 +17,6 @@ namespace OGL
         public string Name { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(FeatureContainer));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),

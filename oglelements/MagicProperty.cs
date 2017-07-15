@@ -4,13 +4,9 @@ using OGL.Features;
 using OGL.Items;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -20,8 +16,6 @@ namespace OGL
         public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(MagicProperty));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         static public Dictionary<String, MagicProperty> properties = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
@@ -246,34 +240,6 @@ namespace OGL
 
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
-
         public byte[] ImageData { get; set; }
         public MagicProperty()
         {
@@ -314,7 +280,7 @@ namespace OGL
         
         public static MagicProperty Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (properties.ContainsKey(name)) return properties[name];
                 name = SourceInvariantComparer.NoSource(name);
@@ -356,7 +322,7 @@ namespace OGL
             if (Item.Search == null) return from mc in Categories.Values orderby mc select mc;
             List<MagicCategory> res=new List<MagicCategory>();
             foreach (MagicCategory mc in Categories.Values) {
-                MagicCategory copy = new MagicCategory(mc.Name)
+                MagicCategory copy = new MagicCategory(mc.Name, mc.DisplayName, mc.Indent)
                 {
                     Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test() orderby mp select mp)
                 };

@@ -15,41 +15,40 @@ namespace OGL
     public delegate void LogEvent(object sender, string message, Exception e);
     public class ConfigManager
     {
+        public static HashSet<string> ExcludedSources { get; private set; } = new HashSet<string>();
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
         public static StringComparer SourceInvariantComparer = new SourceInvariantComparer();
         public static string Directory_Items = "Items";
-        public static FileInfo Transform_Items = new FileInfo("Items.xsl");
+        
         public static string Directory_Skills = "Skills";
-        public static FileInfo Transform_Skills = new FileInfo("Skills.xsl");
+
         public static string Directory_Languages = "Languages";
-        public static FileInfo Transform_Languages = new FileInfo("Languages.xsl");
+        
         public static string Directory_Features = "Feats";
-        public static FileInfo Transform_Features = new FileInfo("Features.xsl");
+        
         public static string Directory_Backgrounds = "Backgrounds";
-        public static FileInfo Transform_Backgrounds = new FileInfo("Backgrounds.xsl");
+        
         public static string Directory_Classes = "Classes";
-        public static FileInfo Transform_Classes = new FileInfo("Classes.xsl");
+        
         public static string Directory_SubClasses = "SubClasses/";
-        public static FileInfo Transform_SubClasses = new FileInfo("SubClasses.xsl");
+        
         public static string Directory_Races = "Races";
-        public static FileInfo Transform_Races = new FileInfo("Races.xsl");
+        
         public static string Directory_SubRaces = "SubRaces";
-        public static FileInfo Transform_SubRaces = new FileInfo("SubRaces.xsl");
+        
         public static string Directory_Spells = "Spells";
-        public static FileInfo Transform_Spells = new FileInfo("Spells.xsl");
+        
         public static string Directory_Magic = "Magic";
-        public static FileInfo Transform_Magic = new FileInfo("Magic.xsl");
+        
         public static string Directory_Conditions = "Conditions";
-        public static FileInfo Transform_Conditions = new FileInfo("Conditions.xsl");
-        public static FileInfo Transform_Possession = new FileInfo("Possession.xsl");
-        public static FileInfo Transform_Description = new FileInfo("Descriptions.xsl");
-        public static FileInfo Transform_Scroll = new FileInfo("Scroll.xsl");
+
         public static string Directory_Plugins = "Plugins";
-        public static FileInfo Transform_RemoveDescription = new FileInfo("NoDescription.xsl");
+        
         public static Boolean AlwaysShowSource = false;
 
         public static char SourceSeperator = '\u2014';
-        public static char[] InvalidChars = (new string(Path.GetInvalidFileNameChars()) + SourceSeperator).ToCharArray();
+        public static string SourceSeperatorString = "\u2014";
+        public static char[] InvalidChars = "\u2014".ToCharArray();
         public static bool Description = true;
         public static int MultiClassTarget
         {
@@ -212,7 +211,7 @@ namespace OGL
                 return Loaded.FeaturesForMulticlassing;
             }
         }
-        private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1", RegexOptions.Compiled);
+        private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1");
 
         public static string FixQuotes(string exp)
         {

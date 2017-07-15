@@ -37,7 +37,7 @@ namespace Character_Builder_Builder
             source.DataBindings.Add("Text", lang, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
             description.DataBindings.Clear();
             NewlineFormatter.Add(description.DataBindings, "Text", lang, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
-            ImageChanged?.Invoke(this, lang.Image);
+            ImageChanged?.Invoke(this, lang.GetImage());
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(lang.ToHTML());
@@ -190,7 +190,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            lang.Image = Image;
+            lang.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

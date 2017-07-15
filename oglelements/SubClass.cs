@@ -3,13 +3,9 @@ using OGL.Descriptions;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -19,8 +15,6 @@ namespace OGL
         public string Filename { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubClass));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(ListDescription)),
         XmlArrayItem(Type = typeof(TableDescription))]
@@ -135,33 +129,6 @@ namespace OGL
         public String Description { get; set; }
         [XmlElement(ElementName = "ParentRace")]
         public String ClassName { get; set; }
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
 
         public byte[] ImageData { get; set; }
         [XmlIgnore]
@@ -219,7 +186,7 @@ namespace OGL
         }
           public static SubClass Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (subclasses.ContainsKey(name)) return subclasses[name];
                 name = SourceInvariantComparer.NoSource(name);

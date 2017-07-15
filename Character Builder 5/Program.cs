@@ -89,7 +89,7 @@ namespace Character_Builder_5
             string[] args = Environment.GetCommandLineArgs();
             Errorlog = new ErrorLog();
             Config.LoadConfig(Application.StartupPath);
-            HTMLExtensions.LoadTransform += (t, o) => { if (o is Possession) t.Load(ConfigManager.Transform_Possession.FullName); };
+            HTMLExtensions.LoadTransform += (t, o) => { if (o is Possession) t.Load(HTMLExtensions.Transform_Possession.FullName); };
             ConfigManager.LicenseProvider = new LicenseProvider();
             if (SourceManager.Init(Application.StartupPath, true))
             {

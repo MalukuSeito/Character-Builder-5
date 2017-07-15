@@ -3,13 +3,8 @@ using OGL.Descriptions;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -81,33 +76,6 @@ namespace OGL
         static public Dictionary<String, Background> simple= new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
         [XmlElement(Order = 11)]
         public byte[] ImageData { get; set; }
         public void Register(string file)
@@ -149,7 +117,7 @@ namespace OGL
         }
         public static Background Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (backgrounds.ContainsKey(name)) return backgrounds[name];
                 name = SourceInvariantComparer.NoSource(name);

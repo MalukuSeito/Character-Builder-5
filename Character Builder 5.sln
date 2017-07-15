@@ -4,21 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder 5 WinForms", "Character Builder 5\Character Builder 5 WinForms.csproj", "{D13C103F-53AA-4A9B-89B6-69BFC4DEC0E7}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGL Elements", "oglelements\OGL Elements.csproj", "{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Builder", "Character Builder Builder\Character Builder Builder.csproj", "{D6F8C899-E13C-448C-AEEA-5CA962AF659C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C} = {5F014003-50D8-49E0-8AFE-91D38DCCC97C}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XCalc", "XCalc\XCalc.csproj", "{5F014003-50D8-49E0-8AFE-91D38DCCC97C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Plugin", "Character Builder Plugin\Character Builder Plugin.csproj", "{578EC199-55FB-4830-B085-D16BBB9A22C8}"
 EndProject
@@ -29,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Static", "Character Builder Static\Character Builder Static.csproj", "{8AD49ACA-D834-4E40-BEB7-B7DAD920B023}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Forms", "WinForms Common\Character Builder Forms.csproj", "{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCalc2", "NCalc2\NCalc2.csproj", "{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,18 +67,6 @@ Global
 		{D6F8C899-E13C-448C-AEEA-5CA962AF659C}.Release|iPhone.Build.0 = Release|Any CPU
 		{D6F8C899-E13C-448C-AEEA-5CA962AF659C}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{D6F8C899-E13C-448C-AEEA-5CA962AF659C}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|iPhone.Build.0 = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{5F014003-50D8-49E0-8AFE-91D38DCCC97C}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578EC199-55FB-4830-B085-D16BBB9A22C8}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -148,6 +127,18 @@ Global
 		{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}.Release|iPhone.Build.0 = Release|Any CPU
 		{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|iPhone.Build.0 = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

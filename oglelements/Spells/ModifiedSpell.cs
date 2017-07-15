@@ -159,10 +159,10 @@ namespace OGL.Spells
                 return false;
             }
             ModifiedSpell o = (ModifiedSpell)obj;
-            return String.Equals(Name, o.Name, StringComparison.InvariantCultureIgnoreCase)
+            return String.Equals(Name, o.Name, StringComparison.OrdinalIgnoreCase)
                 && differentAbility == o.differentAbility
                 && RechargeModifier == o.RechargeModifier
-                && String.Equals(Source, o.Source, StringComparison.InvariantCultureIgnoreCase);
+                && String.Equals(Source, o.Source, StringComparison.OrdinalIgnoreCase);
 
         }
 

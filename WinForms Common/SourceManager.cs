@@ -10,13 +10,13 @@ namespace OGL
 {
     public class SourceManager
     {
-        public static HashSet<string> ExcludedSources { get; private set; } = new HashSet<string>();
         public static List<string> Sources { get; private set; }
         private static string AppPath = null;
         public static bool Init(string path, bool skipInsteadOfExit = false)
         {
             Sources = new List<string>();
             AppPath = path;
+            ConfigManager.InvalidChars = (new string(Path.GetInvalidFileNameChars()) + ConfigManager.SourceSeperator).ToCharArray();
             foreach (string s in Directory.EnumerateDirectories(path))
             {
                 if (s.Equals(ConfigManager.Directory_Plugins)) continue;
@@ -53,7 +53,7 @@ namespace OGL
             Dictionary<DirectoryInfo, string> result = new Dictionary<DirectoryInfo, string>();
             foreach (string s in Sources)
             {
-                if (ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                if (ConfigManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
                 DirectoryInfo res = new DirectoryInfo(Path.Combine(AppPath, s, type));
                 if (res.Exists) result.Add(res, s);
             }

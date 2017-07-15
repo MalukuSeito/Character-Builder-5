@@ -70,7 +70,7 @@ namespace Character_Builder_Builder
             OnUse.features = cls.OnUseFeatures;
             AttunedOnUse.features = cls.AttunedOnUseFeatures;
             AttunedEquipped.features = cls.AttunedEquipFeatures;
-            ImageChanged?.Invoke(this, cls.Image);
+            ImageChanged?.Invoke(this, cls.GetImage());
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());
@@ -281,7 +281,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            cls.Image = Image;
+            cls.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

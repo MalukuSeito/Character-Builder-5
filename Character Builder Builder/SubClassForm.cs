@@ -59,7 +59,7 @@ namespace Character_Builder_Builder
             featuresFirstClass.features = cls.FirstClassFeatures;
             featuresMultiClass.features = cls.MulticlassingFeatures;
             decriptions1.descriptions = cls.Descriptions;
-            ImageChanged.Invoke(this, cls.Image);
+            ImageChanged.Invoke(this, cls.GetImage());
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());
@@ -231,7 +231,7 @@ namespace Character_Builder_Builder
 
         public void SetImage(Bitmap Image)
         {
-            cls.Image = Image;
+            cls.SetImage(Image);
             ImageChanged?.Invoke(this, Image);
             ShowPreview();
         }

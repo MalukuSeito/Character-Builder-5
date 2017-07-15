@@ -37,13 +37,13 @@
       <Project>{578ec199-55fb-4830-b085-d16bbb9a22c8}</Project>
       <Name>Character Builder Plugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NCalc2\NCalc2.csproj">
+      <Project>{c0dd223d-d679-4b5e-abac-5b662d7a7fa2}</Project>
+      <Name>NCalc2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\oglelements\OGL Elements.csproj">
       <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
       <Name>OGL Elements</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XCalc\XCalc.csproj">
-      <Project>{5f014003-50d8-49e0-8afe-91d38dccc97c}</Project>
-      <Name>XCalc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

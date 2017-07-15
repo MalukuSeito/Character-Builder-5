@@ -46,6 +46,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundForm.cs">
@@ -718,10 +719,6 @@
       <Project>{eeeb4a2a-17bb-4ec6-a331-0c409f468e44}</Project>
       <Name>Character Builder Forms</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-    </ProjectReference>
-    <ProjectReference Include="..\XCalc\XCalc.csproj">
-      <Project>{5F014003-50D8-49E0-8AFE-91D38DCCC97C}</Project>
-      <Name>XCalc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

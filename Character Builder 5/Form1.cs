@@ -112,7 +112,7 @@ namespace Character_Builder_5
                     Size = new System.Drawing.Size(152, 22)
                 };
                 p.Click += SourceClick;
-                p.Checked = !SourceManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
+                p.Checked = !ConfigManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
                 sourcesToolStrip.DropDownItems.Add(p);
             }
         }
@@ -124,8 +124,8 @@ namespace Character_Builder_5
                 Player.MakeHistory("Sources");
                 if (tsmi.Checked) Player.Current.ExcludedSources.Add(tsmi.Name);
                 else Player.Current.ExcludedSources.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, tsmi.Name));
-                SourceManager.ExcludedSources.Clear();
-                SourceManager.ExcludedSources.UnionWith(Player.Current.ExcludedSources);
+                ConfigManager.ExcludedSources.Clear();
+                ConfigManager.ExcludedSources.UnionWith(Player.Current.ExcludedSources);
                 Program.ReloadData();
                 UpdateLayout();
             }
@@ -508,7 +508,7 @@ namespace Character_Builder_5
                 Initiative.Text = plusMinus(init);
                 double carry = Player.Current.GetCarryCapacity();
                 double weight = Player.Current.GetWeight();
-                currentweight.Text = weight.ToString("N") + " lb / " + carry.ToString("N") + " lb";
+                currentweight.Text = weight.ToString("N") + " lb / " + carry.ToString("N0") + " lb";
                 CurWeight.Text = weight.ToString("N");
                 MaxWeight.Text = carry.ToString("N");
                 Price money = Player.Current.GetMoney();

@@ -1,13 +1,8 @@
 ﻿using OGL.Common;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 
 namespace OGL
 {
@@ -15,8 +10,6 @@ namespace OGL
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Condition));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlIgnore]
         static public Dictionary<String, Condition> conditions = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
         [XmlIgnore]
@@ -28,33 +21,6 @@ namespace OGL
         public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        [XmlIgnore]
-        public Bitmap Image
-        {
-            set
-            { // serialize
-                if (value == null) ImageData = null;
-                else using (MemoryStream ms = new MemoryStream())
-                {
-                    value.Save(ms, ImageFormat.Png);
-                    ImageData = ms.ToArray();
-                }
-            }
-            get
-            { // deserialize
-                if (ImageData == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream(ImageData))
-                    {
-                        return new Bitmap(ms);
-                    }
-                }
-            }
-        }
 
         public byte[] ImageData { get; set; }
         public void Register(string file)
@@ -89,7 +55,7 @@ namespace OGL
         }
         public static Condition Get(String name, string sourcehint)
         {
-            if (name.Contains(ConfigManager.SourceSeperator))
+            if (name.Contains(ConfigManager.SourceSeperatorString))
             {
                 if (conditions.ContainsKey(name)) return conditions[name];
                 name = SourceInvariantComparer.NoSource(name);

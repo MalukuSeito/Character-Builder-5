@@ -13,50 +13,34 @@ namespace OGL.Items
     public class Category: IComparable<Category>
     {
         [XmlIgnore]
-        public static string regex2 = String.Format("[{0}]", Regex.Escape(new string(System.IO.Path.GetInvalidPathChars())));
+        private static string regex2 = String.Format("[{0}]", Regex.Escape(new string(ConfigManager.InvalidChars)));
         [XmlIgnore]
-        public static Regex removeInvalidPathChars = new Regex(regex2, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static Regex removeInvalidPathChars = new Regex(regex2, RegexOptions.Singleline | RegexOptions.CultureInvariant);
         [XmlIgnore]
         public List<String> CategoryPath { get; private set; }
         public string Path { get; private set; }
         [XmlIgnore]
-        public static Dictionary<String, Category> categories = new Dictionary<string, Category>();
-
+        public static Dictionary<String, Category> Categories = new Dictionary<string, Category>();
         public static Category Make()
         {
-            if (!categories.ContainsKey(ConfigManager.Directory_Items)) categories.Add(ConfigManager.Directory_Items, new Category());
-            return categories[ConfigManager.Directory_Items];
+            if (!Category.Categories.ContainsKey(ConfigManager.Directory_Items)) Category.Categories.Add(ConfigManager.Directory_Items, new Category());
+            return Category.Categories[ConfigManager.Directory_Items];
         }
-        public static Category Make(Uri path)
+        public Category(String path, List<string> categorypath)
         {
-            return Make(Uri.UnescapeDataString(path.ToString()));
-        }
-        public static Category Make(String path)
-        {
-            String p=path;
-            if (!p.StartsWith(ConfigManager.Directory_Items)) p = System.IO.Path.Combine(ConfigManager.Directory_Items, path);
-            p = p.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-            if (!categories.ContainsKey(p)) categories.Add(p.ToString(), new Category(p));
-            String parent = System.IO.Path.GetDirectoryName(p);
-            if (parent.IsSubPathOf(ConfigManager.Directory_Items)) Make(parent);
-            return categories[p];
-        }
-        private Category(String path)
-        {
-            
-            CategoryPath = new List<string>();
-            CategoryPath.AddRange(path.Split(new[] { System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar }));
+
+            CategoryPath = categorypath;
             Path = path;
             //if (CategoryPath.First<String>() != ConfigManager.Directory_Items.Directory.Name) CategoryPath.Insert(0, ConfigManager.Directory_Items.Directory.Name);
         }
-        private Category()
+        public Category()
         {
             CategoryPath = new List<string>();
             CategoryPath.Add(ConfigManager.Directory_Items);
         }
-        public string makePath()
+        public List<String> MakePath()
         {
-            if (CategoryPath.Count > 1 && CategoryPath.Last<String>() == ConfigManager.Directory_Items) return ".";
+            if (CategoryPath.Count > 1 && CategoryPath.Last<String>() == ConfigManager.Directory_Items) return new List<string>() { "." };
             List<String> cnames = new List<string>();
             foreach (string s in CategoryPath) 
             {
@@ -64,10 +48,10 @@ namespace OGL.Items
                 cnames.Add(s);
             }
             cnames.Remove(ConfigManager.Directory_Items);
-            return System.IO.Path.Combine(cnames.ToArray());
+            return cnames;
         }
         public int CompareTo (Category other) {
-            return makePath().CompareTo(other.makePath());
+            return String.Join("//", MakePath()).CompareTo(String.Join("//", other.MakePath()));
         }
         public override string ToString()
         {
@@ -75,7 +59,7 @@ namespace OGL.Items
         }
         public static IOrderedEnumerable<Category> Section()
         {
-            return (from c in categories.Values where c.ToString() != "Items" orderby c select c);
+            return (from c in Categories.Values where c.ToString() != "Items" orderby c select c);
         }
     }
 }
