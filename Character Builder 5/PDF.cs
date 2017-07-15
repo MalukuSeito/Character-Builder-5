@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using iTextSharp;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Text.RegularExpressions;
-using System.IO;
+﻿using Character_Builder;
+using Character_Builder_Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Character_Builder;
-using OGL.Features;
 using OGL;
-using OGL.Spells;
 using OGL.Base;
+using OGL.Descriptions;
+using OGL.Features;
 using OGL.Items;
 using OGL.Keywords;
-using OGL.Descriptions;
+using OGL.Spells;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace Character_Builder_5
 {
@@ -39,8 +36,8 @@ namespace Character_Builder_5
             using (TextReader reader = new StreamReader(file))
             {
                 PDF p = (PDF)serializer.Deserialize(reader);
-                p.File = ConfigManager.Fullpath(Path.GetDirectoryName(file), p.File);
-                p.SpellFile = ConfigManager.Fullpath(Path.GetDirectoryName(file), p.SpellFile);
+                p.File = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.File);
+                p.SpellFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.SpellFile);
                 return p;
             }
         }

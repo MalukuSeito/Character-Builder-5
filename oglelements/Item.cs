@@ -21,7 +21,7 @@ namespace OGL
     XmlInclude(typeof(Shield)),
     XmlInclude(typeof(Pack)),
     XmlInclude(typeof(Scroll))]
-    public class Item : IComparable<Item>, IHTML, IOGLElement<Item>
+    public class Item : IComparable<Item>, IXML, IOGLElement<Item>
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Versatile)),
@@ -86,7 +86,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(String file)
+        public void Register(String file)
         {
             filename = file;
             foreach (Keyword kw in Keywords) kw.check();
@@ -133,9 +133,9 @@ namespace OGL
             Source = ConfigManager.DefaultSource;
             Keywords = new List<Keyword>() { kw1, kw2, kw3, kw4, kw5, kw6, kw7 };
             Keywords.RemoveAll(kw => kw == null);
-            register(null);
+            Register(null);
         }
-        public Tool asTool()
+        public Tool AsTool()
         {
             if (this is Tool)
             {
@@ -174,40 +174,20 @@ namespace OGL
             if (Spell.simple.ContainsKey(name)) return new Scroll(Spell.Get(name, sourcehint));
             return new Item(name);
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (Item i in items.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, Path.Combine(ConfigManager.Directory_Items, i.Category.makePath()));
-        //        file.Directory.Create();
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-        //    }
-        //}
-        public virtual String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Items.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {
@@ -261,7 +241,7 @@ namespace OGL
                 return r;
             }
         }
-        public static string cleanname(string path)
+        public static string Cleanname(string path)
         {
             string cat = path;
             if (!cat.StartsWith(new FileInfo(ConfigManager.Directory_Items).Directory.Name)) cat = Path.Combine(new FileInfo(ConfigManager.Directory_Items).Directory.Name, path);
@@ -273,7 +253,7 @@ namespace OGL
         {
             return kw.Replace('-', '_').Equals(kw2.Replace('-', '_'), StringComparison.InvariantCultureIgnoreCase);
         }
-        public static List<Item> filterPreview(string expression)
+        public static List<Item> FilterPreview(string expression)
         {
             if (expression == null || expression == "") expression = "true";
             if (Item.ItemLists.ContainsKey(expression)) return new List<Item>(Item.ItemLists[expression]);

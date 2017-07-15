@@ -14,7 +14,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class MagicProperty : IComparable<MagicProperty>, IHTML, IOGLElement<MagicProperty>
+    public class MagicProperty : IComparable<MagicProperty>, IXML, IOGLElement<MagicProperty>
     {
         [XmlIgnore]
         public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);
@@ -336,31 +336,20 @@ namespace OGL
             if (ShowSource || ConfigManager.AlwaysShowSource) return Name + " " + ConfigManager.SourceSeperator + " " + Source;
             return Name;
         }
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Magic.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public static IEnumerable<MagicCategory> Section()
         {

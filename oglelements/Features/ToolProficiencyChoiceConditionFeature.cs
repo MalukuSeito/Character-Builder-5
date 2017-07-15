@@ -32,7 +32,7 @@ namespace OGL.Features
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
                 Choice cho = provider.GetChoice(UniqueID + counter);
-                if (cho != null && cho.Value != "") res.Add(Item.Get(cho.Value, Source).asTool());
+                if (cho != null && cho.Value != "") res.Add(Item.Get(cho.Value, Source).AsTool());
             }
             return res;
         }

@@ -49,6 +49,7 @@
     <Compile Include="ErrorLog.Designer.cs">
       <DependentUpon>ErrorLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="HTMLExtensions.cs" />
     <Compile Include="ImportExtensions.cs" />
     <Compile Include="License.cs">
       <SubType>Form</SubType>

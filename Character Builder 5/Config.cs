@@ -16,13 +16,15 @@ namespace Character_Builder_5
             {
                 if (!File.Exists(Path.Combine(path, "Config.xml")))
                 {
-                    ConfigManager cm = new ConfigManager();
-                    cm.PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" };
+                    ConfigManager cm = new ConfigManager()
+                    {
+                        PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" }
+                    };
                     cm.Save(Path.Combine(path, "Config.xml"));
                 }
-                ConfigManager loaded = ConfigManager.LoadConfig(path);
-                PDFExporter = PDF.Load(ConfigManager.Fullpath(path, loaded.PDF[0]));
-                ImportExtensions.LoadAbilityScores(ConfigManager.Fullpath(path, loaded.AbilityScores));
+                ConfigManager loaded = ImportExtensions.LoadConfig(path);
+                PDFExporter = PDF.Load(ImportExtensions.Fullpath(path, loaded.PDF[0]));
+                ImportExtensions.LoadAbilityScores(ImportExtensions.Fullpath(path, loaded.AbilityScores));
             }
             catch (Exception e)
             {

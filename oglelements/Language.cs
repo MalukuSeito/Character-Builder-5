@@ -11,7 +11,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Language : IComparable<Language>, IHTML, IOGLElement<Language>
+    public class Language : IComparable<Language>, IXML, IOGLElement<Language>
     {
         [XmlIgnore]
         public string filename;
@@ -59,7 +59,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(string file)
+        public void Register(string file)
         {
             filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -85,7 +85,7 @@ namespace OGL
             Skript = skript;
             TypicalSpeakers = speakers;
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
         public static Language Get(String name, string sourcehint)
         {
@@ -99,40 +99,20 @@ namespace OGL
             ConfigManager.LogError("Unknown Language: " + name);
             return new Language(name, "Missing Entry", "", "");
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (Language s in languages.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Languages);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, s);
-        //    }
-        //}
-        
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Languages.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {

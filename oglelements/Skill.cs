@@ -10,7 +10,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Skill : IComparable<Skill>, IHTML, IOGLElement<Skill>
+    public class Skill : IComparable<Skill>, IXML, IOGLElement<Skill>
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
@@ -66,39 +66,20 @@ namespace OGL
             ConfigManager.LogError("Unknown Skill: " + name);
             return new Skill(name, "Missing Entry", Ability.None);
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (Skill s in skills.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(s.Name, s.Source, ConfigManager.Directory_Skills);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, s);
-        //    }
-        //}
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Skills.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {

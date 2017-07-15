@@ -15,7 +15,7 @@ using System.Xml.Xsl;
 namespace OGL
 {
 
-    public class Race: IHTML, IOGLElement<Race>
+    public class Race: IXML, IOGLElement<Race>
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Race));
@@ -63,7 +63,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(string file)
+        public void Register(string file)
         {
             Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -144,41 +144,22 @@ namespace OGL
             Features = new List<Feature>();
             Descriptions = new List<Description>();
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
-        public static void ExportAll()
+        public String ToXML()
         {
-            foreach (Race i in races.Values)
+            using (StringWriter mem = new StringWriter())
             {
-                FileInfo file = SourceManager.GetFileName(i.Name, i.Source, ConfigManager.Directory_Races);
-                using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
         }
-        public virtual String ToHTML()
+
+        public MemoryStream ToXMLStream()
         {
-            try
-            {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Races.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {

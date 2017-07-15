@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Character_Builder;
+using Character_Builder_Forms;
 using Microsoft.VisualBasic;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using Character_Builder;
 using OGL;
-using OGL.Items;
 using OGL.Base;
-using OGL.Features;
-using OGL.Spells;
-using OGL.Descriptions;
 using OGL.Common;
+using OGL.Descriptions;
+using OGL.Features;
+using OGL.Items;
+using OGL.Spells;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Character_Builder_5
 {
@@ -77,7 +75,7 @@ namespace Character_Builder_5
                 }
                 p.Name = s;
                 p.Size = new System.Drawing.Size(152, 22);
-                p.Click += new System.EventHandler(this.pdfexporter_click);
+                p.Click += new EventHandler(pdfexporter_click);
                 pDFExporterToolStripMenuItem.DropDownItems.Add(p);
             }
 
@@ -108,9 +106,11 @@ namespace Character_Builder_5
             sourcesToolStrip.DropDownItems.Clear();
             foreach (string s in SourceManager.Sources)
             {
-                ToolStripMenuItem p = new ToolStripMenuItem(s);
-                p.Name = s;
-                p.Size = new System.Drawing.Size(152, 22);
+                ToolStripMenuItem p = new ToolStripMenuItem(s)
+                {
+                    Name = s,
+                    Size = new System.Drawing.Size(152, 22)
+                };
                 p.Click += SourceClick;
                 p.Checked = !SourceManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
                 sourcesToolStrip.DropDownItems.Add(p);
@@ -310,8 +310,8 @@ namespace Character_Builder_5
         {
             try
             {
-                if (lastfile == "") this.Text = "Character Builder 5";
-                else this.Text = "Character Builder 5 - " + lastfile;
+                if (lastfile == "") Text = "Character Builder 5";
+                else Text = "Character Builder 5 - " + lastfile;
                 UpdateSideLayout();
                 UpdateRaceLayout(false);
                 UpdateBackgroundLayout(false);
@@ -688,9 +688,11 @@ namespace Character_Builder_5
                 backtab.SuspendLayout();
                 backtab.Controls.Clear();
                 int level = Player.Current.GetLevel();
-                List<Control> backt = new List<Control>();
-                backt.Add(backgroundLabel);
-                backt.Add(background);
+                List<Control> backt = new List<Control>
+                {
+                    backgroundLabel,
+                    background
+                };
                 background.Items.Clear();
                 background.ForeColor = System.Drawing.SystemColors.WindowText;
                 Background back = Player.Current.Background;
@@ -813,176 +815,221 @@ namespace Character_Builder_5
                 foreach (SpellcastingFeature sf in spellcasts)
                 {
                     if (sf.SpellcastingID == "MULTICLASS") continue;
-                    TabPage tab = new TabPage(sf.DisplayName);
-                    tab.Name = sf.SpellcastingID;
+                    TabPage tab = new TabPage(sf.DisplayName)
+                    {
+                        Name = sf.SpellcastingID
+                    };
                     spellcontrol.Controls.Add(tab);
                     Control target = tab;
                     if (sf.Preparation == PreparationMode.ClassList || sf.Preparation == PreparationMode.Spellbook)
                     {
-                        SplitContainer split = new SplitContainer();
-                        split.Dock = DockStyle.Fill;
-                        split.Orientation = Orientation.Horizontal;
-                        split.Size = new System.Drawing.Size(100, 100);
-                        split.SplitterDistance = 50;
-                        split.IsSplitterFixed = true;
+                        SplitContainer split = new SplitContainer()
+                        {
+                            Dock = DockStyle.Fill,
+                            Orientation = Orientation.Horizontal,
+                            Size = new System.Drawing.Size(100, 100),
+                            SplitterDistance = 50,
+                            IsSplitterFixed = true
+                        };
                         target.Controls.Add(split);
                         target = split.Panel2;
-                        SplitContainer split2 = new SplitContainer();
-                        split2.Dock = DockStyle.Fill;
-                        split2.Orientation = Orientation.Vertical;
-                        split2.Size = new System.Drawing.Size(100, 100);
-                        split2.SplitterDistance = 50;
-                        split2.IsSplitterFixed = true;
+                        SplitContainer split2 = new SplitContainer()
+                        {
+                            Dock = DockStyle.Fill,
+                            Orientation = Orientation.Vertical,
+                            Size = new System.Drawing.Size(100, 100),
+                            SplitterDistance = 50,
+                            IsSplitterFixed = true
+                        };
                         split.Panel1.Controls.Add(split2);
                         split2.Panel1.Padding = new Padding(5);
                         split2.Panel2.Padding = new Padding(5);
-                        GroupBox spellspreparedbox = new GroupBox();
-                        spellspreparedbox.Text = "Prepared Spells";
-                        spellspreparedbox.Name = sf.SpellcastingID + "=preparedbox";
-                        spellspreparedbox.Dock = DockStyle.Fill;
-                        ListBox spellsprepared = new ListBox();
-                        spellsprepared.Name = sf.SpellcastingID + "=prepared";
+                        GroupBox spellspreparedbox = new GroupBox()
+                        {
+                            Text = "Prepared Spells",
+                            Name = sf.SpellcastingID + "=preparedbox",
+                            Dock = DockStyle.Fill
+                        };
+                        ListBox spellsprepared = new ListBox()
+                        {
+                            Name = sf.SpellcastingID + "=prepared"
+                        };
                         spellsprepared.SelectedIndexChanged += Choice_DisplaySpell;
                         spellsprepared.Leave += listbox_Deselect_on_Leave;
                         spellsprepared.DoubleClick += unprepare_Spell;
                         spellsprepared.Dock = DockStyle.Fill;
                         spellspreparedbox.Controls.Add(spellsprepared);
                         split2.Panel1.Controls.Add(spellspreparedbox);
-                        ListBox spellsprepareable = new ListBox();
+                        ListBox spellsprepareable = new ListBox()
+                        {
+                            Dock = DockStyle.Fill,
+                            Name = sf.SpellcastingID + "=prepareable"
+                    };
                         spellsprepareable.SelectedIndexChanged += Choice_DisplaySpell;
                         spellsprepareable.Leave += listbox_Deselect_on_Leave;
                         spellsprepareable.DoubleClick += prepare_Spell;
-                        spellsprepareable.Dock = DockStyle.Fill;
-                        GroupBox spellsprepareablebox = new GroupBox();
-                        spellsprepareablebox.Text = (sf.Preparation == PreparationMode.ClassList ? "Available Spells" : "Spellbook");
-                        spellsprepareablebox.Name = sf.SpellcastingID + "=prepareablebox";
-                        spellsprepareablebox.Dock = DockStyle.Fill;
+                        GroupBox spellsprepareablebox = new GroupBox()
+                        {
+                            Text = (sf.Preparation == PreparationMode.ClassList ? "Available Spells" : "Spellbook"),
+                            Name = sf.SpellcastingID + "=prepareablebox",
+                            Dock = DockStyle.Fill
+                        };
                         spellsprepareablebox.Controls.Add(spellsprepareable);
                         split2.Panel2.Controls.Add(spellsprepareablebox);
-                        spellsprepareable.Name = sf.SpellcastingID + "=prepareable";
                     }
-                    SplitContainer split3 = new SplitContainer();
-                    split3.Dock = DockStyle.Fill;
-                    split3.Orientation = Orientation.Horizontal;
-                    split3.Size = new System.Drawing.Size(100, 100);
-                    split3.SplitterDistance = 50;
-                    split3.IsSplitterFixed = true;
+                    SplitContainer split3 = new SplitContainer()
+                    {
+                        Dock = DockStyle.Fill,
+                        Orientation = Orientation.Horizontal,
+                        Size = new System.Drawing.Size(100, 100),
+                        SplitterDistance = 50,
+                        IsSplitterFixed = true
+                    };
                     target.Controls.Add(split3);
-                    SplitContainer split4 = new SplitContainer();
-                    split4.Dock = DockStyle.Fill;
-                    split4.Orientation = Orientation.Vertical;
-                    split4.Size = new System.Drawing.Size(100, 100);
-                    split4.SplitterDistance = 50;
-                    split4.IsSplitterFixed = true;
+                    SplitContainer split4 = new SplitContainer()
+                    {
+                        Dock = DockStyle.Fill,
+                        Orientation = Orientation.Vertical,
+                        Size = new System.Drawing.Size(100, 100),
+                        SplitterDistance = 50,
+                        IsSplitterFixed = true
+                    };
                     split3.Panel2.Controls.Add(split4);
                     split4.Panel1.Padding = new Padding(5);
                     split4.Panel2.Padding = new Padding(5);
 
                     split3.Panel1.Padding = new Padding(5);
-                    GroupBox spellchoicesbox = new GroupBox();
-                    spellchoicesbox.Text = "Available Choices:";
-                    spellchoicesbox.Name = sf.SpellcastingID + "=choicesbox";
-                    spellchoicesbox.Dock = DockStyle.Fill;
-                    ListBox spellchoices = new ListBox();
-                    spellchoices.Name = sf.SpellcastingID + "=choices";
+                    GroupBox spellchoicesbox = new GroupBox()
+                    {
+                        Text = "Available Choices:",
+                        Name = sf.SpellcastingID + "=choicesbox",
+                        Dock = DockStyle.Fill
+                    };
+                    ListBox spellchoices = new ListBox()
+                    {
+                        Name = sf.SpellcastingID + "=choices",
+                        Dock = DockStyle.Fill
+                };
                     spellchoices.SelectedIndexChanged += Choice_DisplaySpellChoices;
-                    spellchoices.Dock = DockStyle.Fill;
                     spellchoicesbox.Controls.Add(spellchoices);
                     split3.Panel1.Controls.Add(spellchoicesbox);
 
-                    GroupBox spellchosenbox = new GroupBox();
-                    spellchosenbox.Text = "Selected Spells:";
-                    spellchosenbox.Name = sf.SpellcastingID + "=chosenbox";
-                    spellchosenbox.Dock = DockStyle.Fill;
-                    ListBox spellschosen = new ListBox();
-                    spellschosen.Name = sf.SpellcastingID + "=chosen";
+                    GroupBox spellchosenbox = new GroupBox()
+                    {
+                        Text = "Selected Spells:",
+                        Name = sf.SpellcastingID + "=chosenbox",
+                        Dock = DockStyle.Fill
+                    };
+                    ListBox spellschosen = new ListBox()
+                    {
+                        Name = sf.SpellcastingID + "=chosen",
+                        Dock = DockStyle.Fill
+                    };
                     spellschosen.SelectedIndexChanged += Choice_DisplaySpell;
                     spellschosen.Leave += listbox_Deselect_on_Leave;
                     spellschosen.DoubleClick += deselect_Spell;
-                    spellschosen.Dock = DockStyle.Fill;
                     spellchosenbox.Controls.Add(spellschosen);
                     split4.Panel1.Controls.Add(spellchosenbox);
-                    ListBox spelltochoose = new ListBox();
+                    ListBox spelltochoose = new ListBox()
+                    {
+                        Dock = DockStyle.Fill
+                    };
                     spelltochoose.SelectedIndexChanged += Choice_DisplaySpell;
                     spelltochoose.Leave += listbox_Deselect_on_Leave;
                     spelltochoose.DoubleClick += select_Spell;
-                    spelltochoose.Dock = DockStyle.Fill;
-                    GroupBox spelltochoosebox = new GroupBox();
-                    spelltochoosebox.Text = "Available Spells:";
-                    spelltochoosebox.Name = sf.SpellcastingID + "=choosebox";
-                    spelltochoosebox.Dock = DockStyle.Fill;
+                    GroupBox spelltochoosebox = new GroupBox()
+                    {
+                        Text = "Available Spells:",
+                        Name = sf.SpellcastingID + "=choosebox",
+                        Dock = DockStyle.Fill
+                    };
                     spelltochoosebox.Controls.Add(spelltochoose);
                     split4.Panel2.Controls.Add(spelltochoosebox);
                     spelltochoose.Name = sf.SpellcastingID + "=choose";
 
-                    GroupBox box = new System.Windows.Forms.GroupBox();
-                    box.Name = sf.SpellcastingID;
-                    box.Size = new System.Drawing.Size(230, 457);
-                    box.Text = "Spellcasting - " + sf.DisplayName;
-
-                    Label attacksave = new Label();
-                    attacksave.AutoEllipsis = true;
-                    attacksave.Location = new System.Drawing.Point(6, 16);
-                    attacksave.Name = ((int)sf.SpellcastingAbility).ToString();
-                    attacksave.Size = new System.Drawing.Size(218, 13);
-                    attacksave.Text = Enum.GetName(typeof(Ability), sf.SpellcastingAbility) + ": " + plusMinus(Player.Current.GetSpellAttack(sf.SpellcastingID, sf.SpellcastingAbility)) + " | DC " + Player.Current.GetSpellSaveDC(sf.SpellcastingID, sf.SpellcastingAbility);
-                    attacksave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                    GroupBox box = new GroupBox()
+                    {
+                        Name = sf.SpellcastingID,
+                        Size = new System.Drawing.Size(230, 457),
+                        Text = "Spellcasting - " + sf.DisplayName
+                    };
+                    Label attacksave = new Label()
+                    {
+                        AutoEllipsis = true,
+                        Location = new Point(6, 16),
+                        Name = ((int)sf.SpellcastingAbility).ToString(),
+                        Size = new System.Drawing.Size(218, 13),
+                        Text = Enum.GetName(typeof(Ability), sf.SpellcastingAbility) + ": " + plusMinus(Player.Current.GetSpellAttack(sf.SpellcastingID, sf.SpellcastingAbility)) + " | DC " + Player.Current.GetSpellSaveDC(sf.SpellcastingID, sf.SpellcastingAbility),
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
                     box.Controls.Add(attacksave);
 
-                    Button reset = new System.Windows.Forms.Button();
-                    reset.Enabled = false;
-                    reset.Location = new System.Drawing.Point(12, 425);
-                    reset.Name = "ResetSlots";
-                    reset.Size = new System.Drawing.Size(50, 23);
-                    reset.Text = "Reset";
-                    reset.Click += new System.EventHandler(this.button1_Click_2);
+                    Button reset = new Button()
+                    {
+                        Enabled = false,
+                        Location = new Point(12, 425),
+                        Name = "ResetSlots",
+                        Size = new System.Drawing.Size(50, 23),
+                        Text = "Reset"
+                    };
+                    reset.Click += new EventHandler(button1_Click_2);
                     box.Controls.Add(reset);
 
-                    NumericUpDown slotused = new NumericUpDown();
-                    slotused.Enabled = false;
-                    slotused.Location = new System.Drawing.Point(12, 399);
-                    slotused.Name = "SpellSlotUsed";
-                    slotused.Size = new System.Drawing.Size(50, 20);
-                    slotused.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+                    NumericUpDown slotused = new NumericUpDown()
+                    {
+                        Enabled = false,
+                        Location = new Point(12, 399),
+                        Name = "SpellSlotUsed",
+                        Size = new System.Drawing.Size(50, 20)
+                    };
+                    slotused.ValueChanged += new EventHandler(numericUpDown1_ValueChanged);
                     box.Controls.Add(slotused);
 
-                    Label spellonsheet = new Label();
-                    spellonsheet.AutoEllipsis = true;
-                    spellonsheet.AutoSize = true;
-                    spellonsheet.Location = new System.Drawing.Point(6, 363);
-                    spellonsheet.Name = "SpellOnSheetLabel";
-                    spellonsheet.Text = "Spell on Sheet: --";
-                    spellonsheet.Cursor = Cursors.Hand;
-                    spellonsheet.DoubleClick += new System.EventHandler(this.label_DoubleClick);
+                    Label spellonsheet = new Label()
+                    {
+                        AutoEllipsis = true,
+                        AutoSize = true,
+                        Location = new Point(6, 363),
+                        Name = "SpellOnSheetLabel",
+                        Text = "Spell on Sheet: --",
+                        Cursor = Cursors.Hand
+                    };
+                    spellonsheet.DoubleClick += new EventHandler(label_DoubleClick);
                     box.Controls.Add(spellonsheet);
 
-                    ListBox spellslots = new ListBox();
-                    spellslots.ColumnWidth = 60;
-                    spellslots.FormattingEnabled = true;
-                    spellslots.Location = new System.Drawing.Point(68, 382);
-                    spellslots.MultiColumn = true;
-                    spellslots.Name = "SpellSlotBox";
-                    spellslots.Size = new System.Drawing.Size(156, 69);
-                    spellslots.SelectedIndexChanged += new System.EventHandler(this.listBox1_IndexChanged);
-                    spellslots.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+                    ListBox spellslots = new ListBox()
+                    {
+                        ColumnWidth = 60,
+                        FormattingEnabled = true,
+                        Location = new Point(68, 382),
+                        MultiColumn = true,
+                        Name = "SpellSlotBox",
+                        Size = new System.Drawing.Size(156, 69)
+                    };
+                    spellslots.SelectedIndexChanged += new EventHandler(listBox1_IndexChanged);
+                    spellslots.DoubleClick += new EventHandler(listBox1_DoubleClick);
                     spellslots.MouseWheel += listbox_MouseWheel;
                     box.Controls.Add(spellslots);
 
-                    Label label = new Label();
-                    label.AutoSize = true;
-                    label.Location = new System.Drawing.Point(9, 382);
-                    label.Size = new System.Drawing.Size(56, 13);
-                    label.Text = "Slots Used:";
+                    Label label = new Label()
+                    {
+                        AutoSize = true,
+                        Location = new Point(9, 382),
+                        Size = new System.Drawing.Size(56, 13),
+                        Text = "Slots Used:"
+                    };
                     box.Controls.Add(label);
 
-                    ListBox spells = new ListBox();
-                    spells.FormattingEnabled = true;
-                    spells.Location = new System.Drawing.Point(6, 31);
-                    spells.Name = "SpellsBox";
-                    spells.Size = new System.Drawing.Size(218, 329);
-                    spells.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayModifiedSpell);
-                    spells.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
-                    spells.DoubleClick += new System.EventHandler(this.listBox2_DoubleClick);
+                    ListBox spells = new ListBox()
+                    {
+                        FormattingEnabled = true,
+                        Location = new Point(6, 31),
+                        Name = "SpellsBox",
+                        Size = new System.Drawing.Size(218, 329)
+                    };
+                    spells.SelectedIndexChanged += new EventHandler(Choice_DisplayModifiedSpell);
+                    spells.Leave += new EventHandler(listbox_Deselect_on_Leave);
+                    spells.DoubleClick += new EventHandler(listBox2_DoubleClick);
                     spells.MouseWheel += listbox_MouseWheel;
                     box.Controls.Add(spells);
 
@@ -1167,8 +1214,10 @@ namespace Character_Builder_5
                                 }
                             }
                         } else if (sc.getPrepared().Count() > 0) {
-                            bonusprepared = new SpellChoiceCapsule(null);
-                            bonusprepared.CalculatedChoices = sc.getPrepared().ToList<Spell>();
+                            bonusprepared = new SpellChoiceCapsule(null)
+                            {
+                                CalculatedChoices = sc.getPrepared().ToList<Spell>()
+                            };
                             bonusprepared.CalculatedAmount = bonusprepared.CalculatedChoices.Count;
                         }
                         Control[] choices = tab.Controls.Find(sf.SpellcastingID + "=choices", true);
@@ -1429,19 +1478,23 @@ namespace Character_Builder_5
                             subclass.RemoveAll(sc => sc.ParentClass == classes[c].Name);*/
                 foreach (SubClassFeature sc in subclass)
                 {
-                    Label scl = new Label();
-                    scl.AutoSize = true;
-                    scl.Dock = System.Windows.Forms.DockStyle.Top;
-                    scl.Name = "subclasslabel" + sc.ParentClass;
-                    scl.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
-                    scl.Text = "Choose a Subclass for " + sc.ParentClass + ":";
+                    Label scl = new Label()
+                    {
+                        AutoSize = true,
+                        Dock = System.Windows.Forms.DockStyle.Top,
+                        Name = "subclasslabel" + sc.ParentClass,
+                        Padding = new System.Windows.Forms.Padding(0, 8, 0, 3),
+                        Text = "Choose a Subclass for " + sc.ParentClass + ":"
+                    };
                     classt.Add(scl);
-                    ListBox scb = new ListBox();
-                    scb.Dock = System.Windows.Forms.DockStyle.Top;
-                    scb.Name = sc.ParentClass;
-                    scb.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplaySubClass);
-                    scb.DoubleClick += new System.EventHandler(this.subclassbox_DoubleClick);
-                    scb.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+                    ListBox scb = new ListBox()
+                    {
+                        Dock = System.Windows.Forms.DockStyle.Top,
+                        Name = sc.ParentClass
+                    };
+                    scb.SelectedIndexChanged += new EventHandler(Choice_DisplaySubClass);
+                    scb.DoubleClick += new EventHandler(subclassbox_DoubleClick);
+                    scb.Leave += new EventHandler(listbox_Deselect_on_Leave);
                     scb.MouseWheel += listbox_MouseWheel;
                     SubClass scs = Player.Current.GetSubclass(sc.ParentClass);
                     if (scs == null) scb.Items.AddRange(SubClass.For(sc.ParentClass).OrderBy(s=>s.Name).ToArray<SubClass>());
@@ -1509,8 +1562,7 @@ namespace Character_Builder_5
                 Intelligence.Value = Player.Current.BaseIntelligence;
                 Wisdom.Value = Player.Current.BaseWisdom;
                 Charisma.Value = Player.Current.BaseCharisma;
-                AbilityScoreArray max;
-                AbilityScoreArray scores = Player.Current.GetFinalAbilityScores(out max);
+                AbilityScoreArray scores = Player.Current.GetFinalAbilityScores(out AbilityScoreArray max);
                 StrengthFinal.Text = "=" + scores.Strength;
                 StrengthMod.Text = "(" + plusMinus(AbilityScores.GetMod(scores.Strength)) + ")";
                 DexterityFinal.Text = "=" + scores.Dexterity;
@@ -1565,9 +1617,11 @@ namespace Character_Builder_5
                 racetab.SuspendLayout();
                 racetab.Controls.Clear();
                 int level = Player.Current.GetLevel();
-                List<Control> racet = new List<Control>();
-                racet.Add(racelabel);
-                racet.Add(racebox);
+                List<Control> racet = new List<Control>
+                {
+                    racelabel,
+                    racebox
+                };
                 racebox.Items.Clear();
                 racebox.ForeColor = System.Drawing.SystemColors.WindowText;
                 Race rac = Player.Current.Race;
@@ -1919,9 +1973,11 @@ namespace Character_Builder_5
         {
             if (Player.UnsavedChanges == 0 || MessageBox.Show(Player.UnsavedChanges + " unsaved changes will be lost. Continue?", "Unsaved Changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                OpenFileDialog od = new OpenFileDialog();
-                od.Filter = "CB5 XML|*.cb5";
-                od.Title = "Open a Player File";
+                OpenFileDialog od = new OpenFileDialog()
+                {
+                    Filter = "CB5 XML|*.cb5",
+                    Title = "Open a Player File"
+                };
                 od.ShowDialog();
                 if (od.FileName != "")
                 {
@@ -1952,9 +2008,11 @@ namespace Character_Builder_5
         {
             if (lastfile == "")
             {
-                SaveFileDialog od = new SaveFileDialog();
-                od.Filter = "CB5 XML|*.cb5";
-                od.Title = "Save a Player File";
+                SaveFileDialog od = new SaveFileDialog()
+                {
+                    Filter = "CB5 XML|*.cb5",
+                    Title = "Save a Player File"
+                };
                 od.ShowDialog();
                 if (od.FileName != "")
                 {
@@ -2004,9 +2062,11 @@ namespace Character_Builder_5
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog od = new SaveFileDialog();
-            od.Filter = "CB5 XML|*.cb5";
-            od.Title = "Save a Player File";
+            SaveFileDialog od = new SaveFileDialog()
+            {
+                Filter = "CB5 XML|*.cb5",
+                Title = "Save a Player File"
+            };
             od.ShowDialog();
             if (od.FileName != "")
             {
@@ -2140,8 +2200,10 @@ namespace Character_Builder_5
 
         private void choosePortrait_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Choose a Portrait";
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Title = "Choose a Portrait"
+            };
             List<String> extensions=new List<string>();
             foreach (string s in (from c in ImageCodecInfo.GetImageEncoders() select c.FilenameExtension)) extensions.AddRange(s.Split(';'));
             ofd.Filter = "Image Files | *." + String.Join(";", extensions);
@@ -2267,8 +2329,10 @@ namespace Character_Builder_5
 
         private void FactionChoose_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Choose a Insignia";
+            OpenFileDialog ofd = new OpenFileDialog()
+            {
+                Title = "Choose a Insignia"
+            };
             List<String> extensions = new List<string>();
             foreach (string s in (from c in ImageCodecInfo.GetImageEncoders() select c.FilenameExtension)) extensions.AddRange(s.Split(';'));
             ofd.Filter = "Image Files | *." + String.Join(";", extensions);
@@ -2820,9 +2884,11 @@ namespace Character_Builder_5
         private void newposs_Click(object sender, EventArgs e)
         {
             Player.MakeHistory("");
-            Possession p = new Possession(possname.Text, possdescription.Text, (int)poscounter.Value, (double)possweight.Value);
-            p.Name = possname.Text;
-            p.Description = possdescription.Text;
+            Possession p = new Possession(possname.Text, possdescription.Text, (int)poscounter.Value, (double)possweight.Value)
+            {
+                Name = possname.Text,
+                Description = possdescription.Text
+            };
             Player.Current.AddPossession(p);
             UpdateLayout();
         }
@@ -3024,9 +3090,8 @@ namespace Character_Builder_5
         {
             if (ResourcesBox.SelectedItem != null)
             {
-                if (ResourcesBox.SelectedItem is ResourceInfo)
+                if (ResourcesBox.SelectedItem is ResourceInfo selected)
                 {
-                    ResourceInfo selected = (ResourceInfo)ResourcesBox.SelectedItem;
                     if (selected != null)
                     {
                         layouting = true;
@@ -3041,27 +3106,26 @@ namespace Character_Builder_5
                         displayElement.Refresh();
                     }
                 }
-                else if (ResourcesBox.SelectedItem is ModifiedSpell)
+                else if (ResourcesBox.SelectedItem is ModifiedSpell ms)
                 {
-                    ModifiedSpell selected = (ModifiedSpell)ResourcesBox.SelectedItem;
-                    if (selected != null)
+                    if (ms != null)
                     {
                         layouting = true;
-                        selected.Info = Player.Current.GetAttack(selected, selected.differentAbility);
-                        selected.Modifikations.AddRange(from f in Player.Current.GetFeatures() where f is SpellModifyFeature && Utils.Matches(selected, ((SpellModifyFeature)f).Spells, null) select f);
-                        selected.Modifikations = selected.Modifikations.Distinct().ToList();
-                        if ((selected.Level > 0 && selected.RechargeModifier < RechargeModifier.AtWill) || (selected.Level == 0 && selected.RechargeModifier != RechargeModifier.Unmodified && selected.RechargeModifier < RechargeModifier.AtWill))
+                        ms.Info = Player.Current.GetAttack(ms, ms.differentAbility);
+                        ms.Modifikations.AddRange(from f in Player.Current.GetFeatures() where f is SpellModifyFeature && Utils.Matches(ms, ((SpellModifyFeature)f).Spells, null) select f);
+                        ms.Modifikations = ms.Modifikations.Distinct().ToList();
+                        if ((ms.Level > 0 && ms.RechargeModifier < RechargeModifier.AtWill) || (ms.Level == 0 && ms.RechargeModifier != RechargeModifier.Unmodified && ms.RechargeModifier < RechargeModifier.AtWill))
                         {
                             resourceused.Enabled = true;
-                            resourceused.Maximum = selected.count;
+                            resourceused.Maximum = ms.count;
                             resourceused.Value = 0;
-                            resourceused.Value = Player.Current.GetUsedResources(selected.getResourceID());
+                            resourceused.Value = Player.Current.GetUsedResources(ms.getResourceID());
                         }
                         else resourceused.Enabled = false;
                         layouting = false;
                         displayElement.Navigate("about:blank");
                         displayElement.Document.OpenNew(true);
-                        displayElement.Document.Write(selected.ToHTML());
+                        displayElement.Document.Write(ms.ToHTML());
                         displayElement.Refresh();
 
                     }
@@ -3121,9 +3185,8 @@ namespace Character_Builder_5
         {
             if (ResourcesBox.SelectedItem != null)
             {
-                if (ResourcesBox.SelectedItem is ResourceInfo)
+                if (ResourcesBox.SelectedItem is ResourceInfo selected)
                 {
-                    ResourceInfo selected = (ResourceInfo)ResourcesBox.SelectedItem;
                     if (selected.Used < selected.Max)
                     {
                         Player.MakeHistory("Resource" + selected.ResourceID);
@@ -3131,13 +3194,12 @@ namespace Character_Builder_5
                         UpdateInPlayInner();
                     }
                 }
-                else if (ResourcesBox.SelectedItem is ModifiedSpell)
+                else if (ResourcesBox.SelectedItem is ModifiedSpell ms)
                 {
-                    ModifiedSpell selected = (ModifiedSpell)ResourcesBox.SelectedItem;
-                    if (selected.used < selected.count)
+                    if (ms.used < ms.count)
                     {
-                        Player.MakeHistory("Resource" + selected.getResourceID());
-                        Player.Current.SetUsedResources(selected.getResourceID(), selected.used + 1);
+                        Player.MakeHistory("Resource" + ms.getResourceID());
+                        Player.Current.SetUsedResources(ms.getResourceID(), ms.used + 1);
                         UpdateInPlayInner();
                     }
                 }
@@ -3388,12 +3450,14 @@ namespace Character_Builder_5
                 if (Player.UnsavedChanges == 0 || MessageBox.Show("The application needs to restart for that.\n" + Player.UnsavedChanges + " unsaved changes will be lost. Continue?", "Unsaved Changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     // Launch itself as administrator
-                    ProcessStartInfo proc = new ProcessStartInfo();
-                    proc.UseShellExecute = true;
-                    proc.WorkingDirectory = Environment.CurrentDirectory;
-                    proc.FileName = Application.ExecutablePath;
-                    proc.Verb = "runas";
-                    proc.Arguments = BuildCommandLineFromArgs(new string[] { lastfile, "register" });
+                    ProcessStartInfo proc = new ProcessStartInfo()
+                    {
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = Application.ExecutablePath,
+                        Verb = "runas",
+                        Arguments = BuildCommandLineFromArgs(new string[] { lastfile, "register" })
+                    };
                     try
                     {
                         Process.Start(proc);
@@ -3630,9 +3694,8 @@ namespace Character_Builder_5
             System.Windows.Forms.ListBox choicer = (System.Windows.Forms.ListBox)sender;
             if (choicer != null && choicer.SelectedItem != null)
             {
-                if (choicer.SelectedItem is IHTML)
+                if (choicer.SelectedItem is IXML selected)
                 {
-                    IHTML selected = (IHTML)choicer.SelectedItem;
                     if (selected != null)
                     {
                         displayElement.Navigate("about:blank");
@@ -3884,10 +3947,10 @@ namespace Character_Builder_5
 
         private void magicproperties_MouseMove(object sender, MouseEventArgs e)
         {
-            if (drag == null || this.magicproperties.SelectedItem == null) return;
+            if (drag == null || magicproperties.SelectedItem == null) return;
             Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
             if ((e.X - drag.X) * (e.X - drag.X) + (e.Y - drag.Y) * (e.Y - drag.Y) < 6) return;
-            this.magicproperties.DoDragDrop(new Drag(magicproperties.SelectedIndex, this.magicproperties.SelectedItem), DragDropEffects.Move);
+            magicproperties.DoDragDrop(new Drag(magicproperties.SelectedIndex, magicproperties.SelectedItem), DragDropEffects.Move);
             drag = null;
         }
 
@@ -3896,11 +3959,11 @@ namespace Character_Builder_5
             e.Effect = DragDropEffects.Move;
             Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
             if (point.Y < 0 || point.Y > magicproperties.Size.Height) return;
-            int index = this.magicproperties.IndexFromPoint(point);
-            if (index < 0) index = this.magicproperties.Items.Count - 1;
+            int index = magicproperties.IndexFromPoint(point);
+            if (index < 0) index = magicproperties.Items.Count - 1;
             Drag data = (Drag)e.Data.GetData(typeof(Drag));
-            this.magicproperties.Items.RemoveAt(data.curindex);
-            this.magicproperties.Items.Insert(index, data.value);
+            magicproperties.Items.RemoveAt(data.curindex);
+            magicproperties.Items.Insert(index, data.value);
             data.curindex = index;
         }
 
@@ -3912,15 +3975,14 @@ namespace Character_Builder_5
         private void magicproperties_DragDrop(object sender, DragEventArgs e)
         {
             Point point = magicproperties.PointToClient(new Point(e.X, e.Y));
-            int index = this.magicproperties.IndexFromPoint(point);
-            if (index < 0) index = this.magicproperties.Items.Count - 1;
+            int index = magicproperties.IndexFromPoint(point);
+            if (index < 0) index = magicproperties.Items.Count - 1;
             Drag data = (Drag)e.Data.GetData(typeof(Drag));
             if (data == null)
                 return;
             Player.MakeHistory(null);
-            if (inventory.SelectedItem is Possession)
+            if (inventory.SelectedItem is Possession p)
             {
-                Possession p = (Possession)inventory.SelectedItem;
                 string prop = p.MagicProperties[data.index];
                 p.MagicProperties.RemoveAt(data.index);
                 p.MagicProperties.Insert(index, prop);

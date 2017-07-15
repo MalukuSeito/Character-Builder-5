@@ -9,10 +9,10 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class DescriptionContainer: IHTML
+    public class DescriptionContainer: IXML
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(DescriptionContainer));
+        private static XmlSerializer Serializer = new XmlSerializer(typeof(DescriptionContainer));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlArrayItem(Type = typeof(Description)),
@@ -25,51 +25,42 @@ namespace OGL
         }
         public DescriptionContainer(Description d)
         {
-            Descriptions = new List<Description>();
-            Descriptions.Add(d);
+            Descriptions = new List<Description>
+            {
+                d
+            };
         }
         public DescriptionContainer(IEnumerable<Description> descs)
         {
             Descriptions = new List<Description>(descs);
         }
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Description.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public static FeatureContainer Load(String path)
         {
             using (TextReader reader = new StreamReader(path))
             {
-                return ((FeatureContainer)serializer.Deserialize(reader));
+                return ((FeatureContainer)Serializer.Deserialize(reader));
             }
         }
         public void Save(String path)
         {
             using (TextWriter writer = new StreamWriter(path))
             {
-                serializer.Serialize(writer, this);
+                Serializer.Serialize(writer, this);
             }
 
         }
@@ -77,7 +68,7 @@ namespace OGL
         {
             using (StringWriter writer = new StringWriter())
             {
-                serializer.Serialize(writer, this);
+                Serializer.Serialize(writer, this);
                 return writer.ToString();
             }
         }
@@ -85,7 +76,7 @@ namespace OGL
         {
             using (TextReader reader = new StringReader(text))
             {
-                return ((DescriptionContainer)serializer.Deserialize(reader));
+                return ((DescriptionContainer)Serializer.Deserialize(reader));
             }
         }
     }

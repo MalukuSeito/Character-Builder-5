@@ -12,10 +12,10 @@ using System.Xml.Xsl;
 
 namespace Character_Builder
 {
-    public class Possession : IComparable<Possession>, IHTML
+    public class Possession : IComparable<Possession>, IXML
     {
         [XmlIgnore]
-        private static XmlSerializer serializer = new XmlSerializer(typeof(DisplayPossession));
+        private static XmlSerializer Serializer = new XmlSerializer(typeof(DisplayPossession));
         [XmlIgnore]
         private static XslCompiledTransform transform = new XslCompiledTransform();
         public String Name { get; set; }
@@ -114,8 +114,10 @@ namespace Character_Builder
             Attuned = false;
             ChargesUsed = 0;
             Hightlight = false;
-            MagicProperties = new List<string>(p.MagicProperties);
-            MagicProperties.Add(magic.Name + " " + ConfigManager.SourceSeperator + " " + magic.Source);
+            MagicProperties = new List<string>(p.MagicProperties)
+            {
+                magic.Name + " " + ConfigManager.SourceSeperator + " " + magic.Source
+            };
             Weight = -1;
         }
         public Possession(Item Base, MagicProperty magic)
@@ -132,7 +134,7 @@ namespace Character_Builder
             MagicProperties = new List<string>() {magic.Name + " " + ConfigManager.SourceSeperator + " " + magic.Source };
             Weight = -1;
         }
-        public double getWeight()
+        public double GetWeight()
         {
             if (Weight < 0)
             {
@@ -166,35 +168,20 @@ namespace Character_Builder
             return name;
         }
 
-        public virtual String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Possession.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    serializer.Serialize(mem, new DisplayPossession(this));
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    using (TextWriter writer = new StringWriter())
-                    {
-                        serializer.Serialize(writer, new DisplayPossession(this));
-                    }
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public int CompareTo(Possession other) {
             return this.ToString().CompareTo(other.ToString());

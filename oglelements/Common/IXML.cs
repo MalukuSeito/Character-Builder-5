@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace OGL.Common
 {
-    public interface IXSLTransform
+    public interface IXML
     {
-        void Transform(string file, XmlReader reader, XmlWriter writer);
+        String ToXML();
+        MemoryStream ToXMLStream();
     }
 }

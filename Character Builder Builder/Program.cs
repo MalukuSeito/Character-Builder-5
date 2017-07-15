@@ -27,7 +27,7 @@ namespace Character_Builder_Builder
             if (SourceManager.Init(Application.StartupPath, true))
             {
                 ConfigManager.AlwaysShowSource = true;
-                ConfigManager.LoadConfig(Application.StartupPath);
+                ImportExtensions.LoadConfig(Application.StartupPath);
                 Application.Run(new MainTab());
             } else
             {

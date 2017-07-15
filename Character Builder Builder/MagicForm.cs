@@ -268,7 +268,7 @@ namespace Character_Builder_Builder
             preview.Document.OpenNew(true);
             try
             {
-                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Item.filterPreview(Base.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
+                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Item.FilterPreview(Base.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
                 preview.Document.Write(f.ToHTML());
             }
             catch (Exception ex)

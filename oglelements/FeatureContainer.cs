@@ -9,7 +9,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class FeatureContainer: IHTML, IOGLElement<FeatureContainer>
+    public class FeatureContainer: IXML, IOGLElement<FeatureContainer>
     {
         [XmlIgnore]
         public string filename;
@@ -66,8 +66,10 @@ namespace OGL
         public FeatureContainer(Feature f)
         {
             Source = "";
-            Features = new List<Feature>();
-            Features.Add(f);
+            Features = new List<Feature>
+            {
+                f
+            };
             if (f.Source != null) Source = f.Source;
         }
 
@@ -76,31 +78,20 @@ namespace OGL
             Source = "";
             Features = new List<Feature>(features);
         }
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Features.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public static FeatureContainer LoadString(string text)
         {

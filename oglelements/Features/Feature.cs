@@ -2,11 +2,12 @@
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace OGL.Features
 {
-    public class Feature : IComparable<Feature>, IHTML
+    public class Feature : IComparable<Feature>, IXML
     {
         public static bool DETAILED_TO_STRING = false;
         [XmlArrayItem(Type = typeof(Keyword))]
@@ -14,7 +15,7 @@ namespace OGL.Features
         [XmlIgnore]
         private string name;
 
-        public String Name { get { return name; } set { name = value == null ? null : value.Replace(ConfigManager.SourceSeperator, '-'); } }
+        public String Name { get { return name; } set { name = value?.Replace(ConfigManager.SourceSeperator, '-'); } }
         public String Text { get; set; }
         [XmlIgnore]
         public String Category { get; set; }
@@ -65,9 +66,14 @@ namespace OGL.Features
             if (Level > level) return new List<Feature>();
             return new List<Feature>() { this };
         }
-        public String ToHTML()
+        public String ToXML()
         {
-            return new FeatureContainer(this).ToHTML();
+            return new FeatureContainer(this).ToXML();
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            return new FeatureContainer(this).ToXMLStream();
         }
         public override string ToString()
         {

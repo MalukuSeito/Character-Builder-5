@@ -11,7 +11,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Condition : IComparable<Condition>, IHTML, IOGLElement<Condition>
+    public class Condition : IComparable<Condition>, IXML, IOGLElement<Condition>
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Condition));
@@ -57,7 +57,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(string file)
+        public void Register(string file)
         {
             filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -85,7 +85,7 @@ namespace OGL
             Name = name;
             Description = description;
             Source = ConfigManager.DefaultSource;
-            register(null);
+            Register(null);
         }
         public static Condition Get(String name, string sourcehint)
         {
@@ -98,39 +98,20 @@ namespace OGL
             if (simple.ContainsKey(name)) return simple[name];
             return new Condition(name);
         }
-        public static void ExportAll()
+        public String ToXML()
         {
-            foreach (Condition s in conditions.Values)
+            using (StringWriter mem = new StringWriter())
             {
-                FileInfo file = SourceManager.GetFileName(s.Name, s.Source, ConfigManager.Directory_Conditions);
-                using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, s);
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
         }
-        
-        public String ToHTML()
+
+        public MemoryStream ToXMLStream()
         {
-            try
-            {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Conditions.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {

@@ -14,7 +14,7 @@ using XCalc;
 namespace OGL
 {
     [XmlInclude(typeof(ModifiedSpell))]
-    public class Spell : IComparable<Spell>, IHTML, IOGLElement<Spell>
+    public class Spell : IComparable<Spell>, IXML, IOGLElement<Spell>
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
@@ -162,39 +162,20 @@ namespace OGL
             }
             else simple.Add(Name, this);
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (Spell i in spells.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Spells);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-        //    }
-        //}
-        
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Spells.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
 
         public static Spell Get(String name, string sourcehint)

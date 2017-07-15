@@ -13,14 +13,12 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class Background : IComparable<Background>, IHTML, IOGLElement<Background>
+    public class Background : IComparable<Background>, IXML, IOGLElement<Background>
     {
         [XmlIgnore]
         public string Filename { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Background));
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
         [XmlElement(Order = 1)] 
         public String Name { get; set; }
         [XmlElement(Order = 2)] 
@@ -170,31 +168,20 @@ namespace OGL
         //    }
         //}
         
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Backgrounds.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {

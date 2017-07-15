@@ -15,7 +15,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class ClassDefinition : IComparable<ClassDefinition>, IHTML, IOGLElement<ClassDefinition>
+    public class ClassDefinition : IComparable<ClassDefinition>, IXML, IOGLElement<ClassDefinition>
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));
@@ -178,7 +178,7 @@ namespace OGL
         }
 
         public byte[] ImageData { get; set; }
-        public void register(string filename, bool applyKeywords)
+        public void Register(string filename, bool applyKeywords)
         {
             this.filename = filename;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -243,7 +243,7 @@ namespace OGL
                     SpellsToAddClassKeywordTo.AddRange(ls);
                 }
             }
-            register(null, false);
+            Register(null, false);
         }
         public static ClassDefinition Get(String name, string sourcehint)
         {
@@ -257,39 +257,20 @@ namespace OGL
             ConfigManager.LogError("Unknown Class: " + name);
             return new ClassDefinition(name, "Missing Entry", 4);
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (ClassDefinition i in classes.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Classes);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) serializer.Serialize(writer, i);
-        //    }
-        //}
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_Classes.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public static IEnumerable<ClassDefinition> GetClasses(int level, IChoiceProvider provider)
         {

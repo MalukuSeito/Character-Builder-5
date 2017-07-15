@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Xsl;
 using OGL.Features;
 using OGL.Base;
 using OGL.Common;
@@ -16,9 +15,7 @@ namespace OGL
     public delegate void LogEvent(object sender, string message, Exception e);
     public class ConfigManager
     {
-        [XmlIgnore]
-        private static XslCompiledTransform transform = new XslCompiledTransform();
-        private static XmlSerializer serializer = new XmlSerializer(typeof(ConfigManager));
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
         public static StringComparer SourceInvariantComparer = new SourceInvariantComparer();
         public static string Directory_Items = "Items";
         public static FileInfo Transform_Items = new FileInfo("Items.xsl");
@@ -86,24 +83,6 @@ namespace OGL
         public static void LogError(object source, string text, Exception e = null) => LogEvents.Invoke(source, text, e);
         public static void LogError(string text, Exception e = null) => LogEvents.Invoke(null, text, e);
 
-
-        public static void RemoveDescription(MemoryStream mem)
-        {
-            if (Description) return;
-            if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_RemoveDescription.FullName);
-            using (MemoryStream mem2 = new MemoryStream())
-            {
-                mem.Seek(0, SeekOrigin.Begin);
-                XmlReader xr = XmlReader.Create(mem);
-                using (XmlWriter xw = XmlWriter.Create(mem2))
-                {
-                    transform.Transform(xr, xw);
-                    mem.SetLength(0);
-                    mem2.Seek(0, SeekOrigin.Begin);
-                    mem2.CopyTo(mem);
-                }
-            }
-        }
 
         public ConfigManager()
         {
@@ -233,86 +212,6 @@ namespace OGL
                 return Loaded.FeaturesForMulticlassing;
             }
         }
-        public static string Fullpath(string basepath, string path) {
-            if (Path.IsPathRooted(path)) return path;
-            return Path.GetFullPath(Path.Combine(basepath, path));
-        }
-        //public static PDF PDFExporter = PDF.Load("AlternatePDF.xml");
-        public static ConfigManager LoadConfig(string path)
-        {
-            if (!File.Exists(Path.Combine(path, "Config.xml")))
-            {
-                ConfigManager cm = new ConfigManager()
-                {
-                    FeaturesForAll = new List<Feature>() {
-                        new ACFeature("Normal AC Calculation", "Wearing Armor","if(Armor,if(Light,BaseAC+DexMod,if(Medium, BaseAC+Min(DexMod,2),BaseAC)),10+DexMod)+ShieldBonus",1,true)
-                    },
-                    PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" }
-                };
-                cm.Save(Path.Combine(path, "Config.xml"));
-            }
-            Loaded = Load(Path.Combine(path, "Config.xml"));
-            if (Loaded.Slots.Count == 0)
-            {
-                Loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
-            }
-            Directory_Items = MakeRelative(Loaded.Items_Directory);
-            Transform_Items = new FileInfo(Fullpath(path, Loaded.Items_Transform));
-            Directory_Skills = MakeRelative(Loaded.Skills_Directory);
-            Transform_Skills = new FileInfo(Fullpath(path, Loaded.Skills_Transform));
-            Directory_Languages = MakeRelative(Loaded.Languages_Directory);
-            Transform_Languages = new FileInfo(Fullpath(path, Loaded.Languages_Transform));
-            Directory_Features = MakeRelative(Loaded.Features_Directory);
-            Transform_Features = new FileInfo(Fullpath(path, Loaded.Features_Transform));
-            Directory_Backgrounds = MakeRelative(Loaded.Backgrounds_Directory);
-            Transform_Backgrounds = new FileInfo(Fullpath(path, Loaded.Backgrounds_Transform));
-            Directory_Classes = MakeRelative(Loaded.Classes_Directory);
-            Transform_Classes = new FileInfo(Fullpath(path, Loaded.Classes_Transform));
-            Directory_SubClasses = MakeRelative(Loaded.SubClasses_Directory);
-            Transform_SubClasses = new FileInfo(Fullpath(path, Loaded.SubClasses_Transform));
-            Directory_Races = MakeRelative(Loaded.Races_Directory);
-            Transform_Races = new FileInfo(Fullpath(path, Loaded.Races_Transform));
-            Directory_SubRaces = MakeRelative(Loaded.SubRaces_Directory);
-            Transform_SubRaces = new FileInfo(Fullpath(path, Loaded.SubRaces_Transform));
-            Directory_Spells = MakeRelative(Loaded.Spells_Directory);
-            Transform_Spells = new FileInfo(Fullpath(path, Loaded.Spells_Transform));
-            Directory_Magic = MakeRelative(Loaded.Magic_Directory);
-            Transform_Magic = new FileInfo(Fullpath(path, Loaded.Magic_Transform));
-            Directory_Conditions = MakeRelative(Loaded.Conditions_Directory);
-            Transform_Conditions = new FileInfo(Fullpath(path, Loaded.Conditions_Transform));
-            Transform_Possession = new FileInfo(Fullpath(path, Loaded.Possessions_Transform));
-            Transform_RemoveDescription = new FileInfo(Fullpath(path, Loaded.RemoveDescription_Transform));
-            Directory_Plugins = MakeRelative(Loaded.Plugins_Directory);
-            PDFExporters = new List<string>();
-            foreach (string s in Loaded.PDF) PDFExporters.Add(Fullpath(path, s));
-            //for (int i = 0; i < loaded.PDF.Count; i++)
-            //{
-            //    loaded.PDF[i] = Fullpath(path, loaded.PDF[i]);
-            //}
-
-            
-            return Loaded;
-            
-        }
-
-        private static string MakeRelative(string dir)
-        {
-            return Path.GetDirectoryName(dir);
-        }
-
-        public void Save(string file)
-        {
-            using (TextWriter writer = new StreamWriter(file)) serializer.Serialize(writer, this);
-        }
-        public static ConfigManager Load(string file)
-        {
-            using (TextReader reader = new StreamReader(file))
-            {
-                ConfigManager cm = (ConfigManager)serializer.Deserialize(reader);
-                return cm;
-            }
-        }
-
         private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1", RegexOptions.Compiled);
 
         public static string FixQuotes(string exp)

@@ -413,7 +413,7 @@ namespace Character_Builder
         {
             List<Possession> items = GetItemsAndPossessions();
             double total=0.0;
-            foreach (Possession o in items) total += o.getWeight();
+            foreach (Possession o in items) total += o.GetWeight();
             total += GetMoney().Weight();
             return total;
         }
@@ -1208,7 +1208,7 @@ namespace Character_Builder
             List<ToolKWProficiencyFeature> kwpf = new List<ToolKWProficiencyFeature>();
             foreach (Feature f in GetFeatures())
             {
-                if (f is ToolProficiencyFeature) foreach (String s in ((ToolProficiencyFeature)f).Tools) tools.Add(Item.Get(s, f.Source).asTool());
+                if (f is ToolProficiencyFeature) foreach (String s in ((ToolProficiencyFeature)f).Tools) tools.Add(Item.Get(s, f.Source).AsTool());
                 else if (f is ToolProficiencyChoiceConditionFeature) tools.AddRange(((ToolProficiencyChoiceConditionFeature)f).getTools(this));
                 if (f is ToolKWProficiencyFeature) kwpf.Add(((ToolKWProficiencyFeature)f));
             }

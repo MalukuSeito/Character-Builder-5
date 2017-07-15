@@ -55,7 +55,6 @@
     <Compile Include="Common\ILicense.cs" />
     <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
-    <Compile Include="Common\IXSLTransform.cs" />
     <Compile Include="Items\Category.cs" />
     <Compile Include="ClassDefiniton.cs" />
     <Compile Include="Condition.cs" />
@@ -106,7 +105,7 @@
     <Compile Include="Features\ToolProficiencyChoiceConditionFeature.cs" />
     <Compile Include="Features\ToolProficiencyFeature.cs" />
     <Compile Include="Features\VisionFeature.cs" />
-    <Compile Include="Common\IHTML.cs" />
+    <Compile Include="Common\IXML.cs" />
     <Compile Include="Descriptions\ListDescription.cs" />
     <Compile Include="Items\Armor.cs" />
     <Compile Include="Item.cs" />

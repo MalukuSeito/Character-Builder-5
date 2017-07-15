@@ -1,4 +1,5 @@
 ﻿using OGL;
+using OGL.Base;
 using OGL.Features;
 using OGL.Items;
 using OGL.Keywords;
@@ -54,7 +55,7 @@ namespace Character_Builder_Forms
                     {
                         ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.register(f.Key.FullName, applyKeywords);
+                        s.Register(f.Key.FullName, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -76,7 +77,7 @@ namespace Character_Builder_Forms
                     {
                         Condition s = (Condition)Condition.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.register(f.Key.FullName);
+                        s.Register(f.Key.FullName);
                     }
                 }
                 catch (Exception e)
@@ -190,7 +191,7 @@ namespace Character_Builder_Forms
                         Item s = (Item)Item.Serializer.Deserialize(reader);
                         s.Category = Category.Make(source.MakeRelativeUri(target));
                         s.Source = f.Value;
-                        s.register(f.Key.FullName);
+                        s.Register(f.Key.FullName);
                     }
                 }
                 catch (Exception e)
@@ -212,7 +213,7 @@ namespace Character_Builder_Forms
                     {
                         Language s = (Language)Language.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.register(f.Key.FullName);
+                        s.Register(f.Key.FullName);
                     }
                 }
                 catch (Exception e)
@@ -307,7 +308,7 @@ namespace Character_Builder_Forms
                     {
                         Race s = (Race)Race.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.register(f.Key.FullName);
+                        s.Register(f.Key.FullName);
                     }
                 }
                 catch (Exception e)
@@ -404,6 +405,87 @@ namespace Character_Builder_Forms
                     ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
+        }
+        public static ConfigManager LoadConfig(string path)
+        {
+            if (!File.Exists(Path.Combine(path, "Config.xml")))
+            {
+                ConfigManager cm = new ConfigManager()
+                {
+                    FeaturesForAll = new List<Feature>() {
+                        new ACFeature("Normal AC Calculation", "Wearing Armor","if(Armor,if(Light,BaseAC+DexMod,if(Medium, BaseAC+Min(DexMod,2),BaseAC)),10+DexMod)+ShieldBonus",1,true)
+                    },
+                    PDF = new List<string>() { "DefaultPDF.xml", "AlternatePDF.xml" }
+                };
+                cm.Save(Path.Combine(path, "Config.xml"));
+            }
+            ConfigManager Loaded = ConfigManager.Loaded = LoadConfigManager(Path.Combine(path, "Config.xml"));
+            if (ConfigManager.Loaded.Slots.Count == 0)
+            {
+                ConfigManager.Loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
+            }
+            ConfigManager.Directory_Items = MakeRelative(Loaded.Items_Directory);
+            ConfigManager.Transform_Items = new FileInfo(Fullpath(path, Loaded.Items_Transform));
+            ConfigManager.Directory_Skills = MakeRelative(Loaded.Skills_Directory);
+            ConfigManager.Transform_Skills = new FileInfo(Fullpath(path, Loaded.Skills_Transform));
+            ConfigManager.Directory_Languages = MakeRelative(Loaded.Languages_Directory);
+            ConfigManager.Transform_Languages = new FileInfo(Fullpath(path, Loaded.Languages_Transform));
+            ConfigManager.Directory_Features = MakeRelative(Loaded.Features_Directory);
+            ConfigManager.Transform_Features = new FileInfo(Fullpath(path, Loaded.Features_Transform));
+            ConfigManager.Directory_Backgrounds = MakeRelative(Loaded.Backgrounds_Directory);
+            ConfigManager.Transform_Backgrounds = new FileInfo(Fullpath(path, Loaded.Backgrounds_Transform));
+            ConfigManager.Directory_Classes = MakeRelative(Loaded.Classes_Directory);
+            ConfigManager.Transform_Classes = new FileInfo(Fullpath(path, Loaded.Classes_Transform));
+            ConfigManager.Directory_SubClasses = MakeRelative(Loaded.SubClasses_Directory);
+            ConfigManager.Transform_SubClasses = new FileInfo(Fullpath(path, Loaded.SubClasses_Transform));
+            ConfigManager.Directory_Races = MakeRelative(Loaded.Races_Directory);
+            ConfigManager.Transform_Races = new FileInfo(Fullpath(path, Loaded.Races_Transform));
+            ConfigManager.Directory_SubRaces = MakeRelative(Loaded.SubRaces_Directory);
+            ConfigManager.Transform_SubRaces = new FileInfo(Fullpath(path, Loaded.SubRaces_Transform));
+            ConfigManager.Directory_Spells = MakeRelative(Loaded.Spells_Directory);
+            ConfigManager.Transform_Spells = new FileInfo(Fullpath(path, Loaded.Spells_Transform));
+            ConfigManager.Directory_Magic = MakeRelative(Loaded.Magic_Directory);
+            ConfigManager.Transform_Magic = new FileInfo(Fullpath(path, Loaded.Magic_Transform));
+            ConfigManager.Directory_Conditions = MakeRelative(Loaded.Conditions_Directory);
+            ConfigManager.Transform_Conditions = new FileInfo(Fullpath(path, Loaded.Conditions_Transform));
+            ConfigManager.Transform_Possession = new FileInfo(Fullpath(path, Loaded.Possessions_Transform));
+            ConfigManager.Transform_RemoveDescription = new FileInfo(Fullpath(path, Loaded.RemoveDescription_Transform));
+            ConfigManager.Directory_Plugins = MakeRelative(Loaded.Plugins_Directory);
+            ConfigManager.PDFExporters = new List<string>();
+            foreach (string s in ConfigManager.Loaded.PDF) ConfigManager.PDFExporters.Add(Fullpath(path, s));
+            //for (int i = 0; i < loaded.PDF.Count; i++)
+            //{
+            //    loaded.PDF[i] = Fullpath(path, loaded.PDF[i]);
+            //}
+
+
+            return ConfigManager.Loaded;
+
+        }
+        public static string Fullpath(string basepath, string path)
+        {
+            if (Path.IsPathRooted(path)) return path;
+            return Path.GetFullPath(Path.Combine(basepath, path));
+        }
+        //public static PDF PDFExporter = PDF.Load("AlternatePDF.xml");
+
+
+        private static string MakeRelative(string dir)
+        {
+            return Path.GetDirectoryName(dir);
+        }
+
+        public static ConfigManager LoadConfigManager(string file)
+        {
+            using (TextReader reader = new StreamReader(file))
+            {
+                ConfigManager cm = (ConfigManager)ConfigManager.Serializer.Deserialize(reader);
+                return cm;
+            }
+        }
+        public static void Save(this ConfigManager m, string file)
+        {
+            using (TextWriter writer = new StreamWriter(file)) ConfigManager.Serializer.Serialize(writer, m);
         }
     }
 }

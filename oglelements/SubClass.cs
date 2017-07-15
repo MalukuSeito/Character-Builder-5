@@ -13,7 +13,7 @@ using System.Xml.Xsl;
 
 namespace OGL
 {
-    public class SubClass: IComparable<SubClass>, IHTML, IOGLElement<SubClass>
+    public class SubClass: IComparable<SubClass>, IXML, IOGLElement<SubClass>
     {
         [XmlIgnore]
         public string Filename { get; set; }
@@ -233,40 +233,20 @@ namespace OGL
             };
             return sc;
         }
-        //public static void ExportAll()
-        //{
-        //    foreach (SubClass i in subclasses.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_SubClasses);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
-        //    }
-        //}
-        
-        public String ToHTML()
+        public String ToXML()
         {
-            try
+            using (StringWriter mem = new StringWriter())
             {
-                if (transform.OutputSettings == null) transform.Load(ConfigManager.Transform_SubClasses.FullName);
-                using (MemoryStream mem = new MemoryStream())
-                {
-                    Serializer.Serialize(mem, this);
-                    ConfigManager.RemoveDescription(mem);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    XmlReader xr = XmlReader.Create(mem);
-                    using (StringWriter textWriter = new StringWriter())
-                    {
-                        using (XmlWriter xw = XmlWriter.Create(textWriter))
-                        {
-                            transform.Transform(xr, xw);
-                            return textWriter.ToString();
-                        }
-                    }
-                }
+                Serializer.Serialize(mem, this);
+                return mem.ToString();
             }
-            catch (Exception ex)
-            {
-                return "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
-            }
+        }
+
+        public MemoryStream ToXMLStream()
+        {
+            MemoryStream mem = new MemoryStream();
+            Serializer.Serialize(mem, this);
+            return mem;
         }
         public override string ToString()
         {
