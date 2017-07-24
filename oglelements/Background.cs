@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class Background : IComparable<Background>, IXML, IOGLElement<Background>
+    public class Background : IComparable<Background>, IXML, IOGLElement<Background>, IOGLElement
     {
         [XmlIgnore]
         public string Filename { get; set; }

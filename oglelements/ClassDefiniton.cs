@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class ClassDefinition : IComparable<ClassDefinition>, IXML, IOGLElement<ClassDefinition>
+    public class ClassDefinition : IComparable<ClassDefinition>, IXML, IOGLElement<ClassDefinition>, IOGLElement
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));

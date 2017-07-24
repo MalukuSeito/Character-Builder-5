@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using NCalc.Domain;
 using L = System.Linq.Expressions;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace NCalc
 {
@@ -161,15 +161,15 @@ namespace NCalc
                 case "if":
                     _result = L.Expression.Condition(args[0], args[1], args[2]);
                     break;
-                //case "in":
-                //    var items = L.Expression.NewArrayInit(args[0].Type,
-                //        new ArraySegment<L.Expression>(args, 1, args.Length - 1));
-                //    var smi = GetRuntimeMethod(typeof (Array),"IndexOf", new[] { typeof(Array), typeof(object) });
-                //    var r = L.Expression.Call(smi, L.Expression.Convert(items, typeof(Array)), L.Expression.Convert(args[0], typeof(object)));
-                //    _result = L.Expression.GreaterThanOrEqual(r, L.Expression.Constant(0));
-                //    break;
+                case "in":
+                    var items = L.Expression.NewArrayInit(args[0].Type,
+                        new ArraySegment<L.Expression>(args, 1, args.Length - 1));
+                    var smi = typeof(Array).GetRuntimeMethod("IndexOf", new[] { typeof(Array), typeof(object) });
+                    var r = L.Expression.Call(smi, L.Expression.Convert(items, typeof(Array)), L.Expression.Convert(args[0], typeof(object)));
+                    _result = L.Expression.GreaterThanOrEqual(r, L.Expression.Constant(0));
+                    break;
                 default:
-                    var mi = _context.Type.GetMethods().FirstOrDefault(
+                    var mi = _context.Type.GetTypeInfo().DeclaredMethods.FirstOrDefault(
                         m => m.Name.Equals(function.Identifier.Name, StringComparison.OrdinalIgnoreCase) &&
                              m.IsPublic && !m.IsStatic);
                     _result = L.Expression.Call(_context, mi, args);
@@ -237,12 +237,12 @@ namespace NCalc
             {
                 switch (expressiontype)
                 {
-                    case BinaryExpressionType.Equal: return L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Equals", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right });
-                    case BinaryExpressionType.NotEqual: return L.Expression.Not(L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Equals", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }));
-                    case BinaryExpressionType.GreaterOrEqual: return L.Expression.GreaterThanOrEqual(L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
-                    case BinaryExpressionType.LesserOrEqual: return L.Expression.LessThanOrEqual(L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
-                    case BinaryExpressionType.Greater: return L.Expression.GreaterThan(L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
-                    case BinaryExpressionType.Lesser: return L.Expression.LessThan(L.Expression.Call(comparer, GetRuntimeMethod(typeof(StringComparer),"Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
+                    case BinaryExpressionType.Equal: return L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Equals", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right });
+                    case BinaryExpressionType.NotEqual: return L.Expression.Not(L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Equals", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }));
+                    case BinaryExpressionType.GreaterOrEqual: return L.Expression.GreaterThanOrEqual(L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
+                    case BinaryExpressionType.LesserOrEqual: return L.Expression.LessThanOrEqual(L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
+                    case BinaryExpressionType.Greater: return L.Expression.GreaterThan(L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
+                    case BinaryExpressionType.Lesser: return L.Expression.LessThan(L.Expression.Call(comparer, typeof(StringComparer).GetRuntimeMethod("Compare", new[] { typeof(string), typeof(string) }), new L.Expression[] { left, right }), L.Expression.Constant(0));
                 }
             }
             return action(left, right);
@@ -250,30 +250,16 @@ namespace NCalc
 
         private L.Expression UnwrapNullable(L.Expression expression)
         {
-            if (expression.Type.IsGenericType && expression.Type.GetGenericTypeDefinition() == typeof (Nullable<>))
+            var ti = expression.Type.GetTypeInfo();
+            if (ti.IsGenericType && ti.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 return L.Expression.Condition(
                     L.Expression.Property(expression, "HasValue"),
                     L.Expression.Property(expression, "Value"),
-                    L.Expression.Default(expression.Type.GetGenericArguments()[0]));
+                    L.Expression.Default(expression.Type.GetTypeInfo().GenericTypeArguments[0]));
             }
 
             return expression;
-        }
-
-        public static MethodInfo GetRuntimeMethod(Type type, string name, params Type[] types)
-        {
-            // Find potential methods with the correct name and the right number of parameters
-            // and parameter names
-            var potentials = (from ele in type.GetMethods()
-                              where ele.Name.Equals(name)
-                              let param = ele.GetParameters()
-                              where param.Length == types.Length
-                              && param.Select(p => p.ParameterType.Name).SequenceEqual(types.Select(t => t.Name))
-                              select ele);
-
-            // Maybe check if we have more than 1? Or not?
-            return potentials.FirstOrDefault();
         }
     }
 }

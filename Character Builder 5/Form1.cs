@@ -3038,9 +3038,8 @@ namespace Character_Builder_5
 
         private void HitDiceUsed_DoubleClick(object sender, EventArgs e)
         {
-            if (HitDiceUsed.SelectedItem != null)
+            if (HitDiceUsed.SelectedItem is HitDie hd)
             {
-                HitDie hd = (HitDie)HitDiceUsed.SelectedItem;
                 if (hd.Used < hd.Count)
                 {
                     Player.MakeHistory("");

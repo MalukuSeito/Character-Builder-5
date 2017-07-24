@@ -15,32 +15,32 @@ namespace NCalc.Domain
         {
             switch (value.GetTypeCode())
             {
-                case TypeCode.Boolean :
+                case MyTypeCode.Boolean :
                     Type = ValueType.Boolean;
                     break;
 
-                case TypeCode.DateTime :
+                case MyTypeCode.DateTime :
                     Type = ValueType.DateTime;
                     break;
 
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Single:
+                case MyTypeCode.Decimal:
+                case MyTypeCode.Double:
+                case MyTypeCode.Single:
                     Type = ValueType.Float;
                     break;
 
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
+                case MyTypeCode.Byte:
+                case MyTypeCode.SByte:
+                case MyTypeCode.Int16:
+                case MyTypeCode.Int32:
+                case MyTypeCode.Int64:
+                case MyTypeCode.UInt16:
+                case MyTypeCode.UInt32:
+                case MyTypeCode.UInt64:
                     Type = ValueType.Integer;
                     break;
 
-                case TypeCode.String:
+                case MyTypeCode.String:
                     Type = ValueType.String;
                     break;
 

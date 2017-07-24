@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class SubRace: IXML, IOGLElement<SubRace>
+    public class SubRace: IXML, IOGLElement<SubRace>, IOGLElement
     {
         [XmlIgnore]
         public static bool DETAILED_TOSTRING = false;

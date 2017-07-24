@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class SubClass: IComparable<SubClass>, IXML, IOGLElement<SubClass>
+    public class SubClass: IComparable<SubClass>, IXML, IOGLElement<SubClass>, IOGLElement
     {
         [XmlIgnore]
         public string Filename { get; set; }

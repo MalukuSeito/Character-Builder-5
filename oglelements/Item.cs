@@ -17,7 +17,7 @@ namespace OGL
     XmlInclude(typeof(Shield)),
     XmlInclude(typeof(Pack)),
     XmlInclude(typeof(Scroll))]
-    public class Item : IComparable<Item>, IXML, IOGLElement<Item>
+    public class Item : IComparable<Item>, IXML, IOGLElement<Item>, IOGLElement
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Versatile)),

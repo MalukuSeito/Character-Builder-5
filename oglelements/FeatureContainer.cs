@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class FeatureContainer: IXML, IOGLElement<FeatureContainer>
+    public class FeatureContainer: IXML, IOGLElement<FeatureContainer>, IOGLElement
     {
         [XmlIgnore]
         public string filename;

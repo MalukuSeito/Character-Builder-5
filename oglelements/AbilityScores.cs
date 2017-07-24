@@ -54,6 +54,7 @@ namespace OGL
             foreach (AbilityScoreArray a in AbilityScoreArray.Generate()) Current.Arrays.Add(a.ToString());
         }
         public static int Max { get {
+                if (Current == null) return 20;
                 if (Current.DefaultMax == 0) Current.DefaultMax = 20;
                 return Current.DefaultMax;
         } }

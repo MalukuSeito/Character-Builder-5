@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class Skill : IComparable<Skill>, IXML, IOGLElement<Skill>
+    public class Skill : IComparable<Skill>, IXML, IOGLElement<Skill>, IOGLElement
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));

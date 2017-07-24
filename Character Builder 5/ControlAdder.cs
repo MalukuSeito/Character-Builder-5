@@ -62,7 +62,7 @@ namespace Character_Builder_5
         {
             AddControls(p.Class, control, level);
             int classlevel = p.getClassLevelUpToLevel(level);
-            foreach (Feature f in p.getFeatures(level, player).OrderBy(a => a.Level)) AddControl(control, classlevel, f);
+            foreach (Feature f in p.GetFeatures(level, player).OrderBy(a => a.Level)) AddControl(control, classlevel, f);
         }
 
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, Feature f)

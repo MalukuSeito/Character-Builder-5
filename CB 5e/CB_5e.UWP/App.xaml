@@ -1,0 +1,8 @@
+﻿<Application
+    x:Class="CB_5e.UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CB_5e.UWP"
+    RequestedTheme="Light">
+
+</Application>

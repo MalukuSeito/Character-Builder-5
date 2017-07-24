@@ -13,7 +13,7 @@ using NCalc;
 namespace OGL
 {
     [XmlInclude(typeof(ModifiedSpell))]
-    public class Spell : IComparable<Spell>, IXML, IOGLElement<Spell>
+    public class Spell : IComparable<Spell>, IXML, IOGLElement<Spell>, IOGLElement
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),

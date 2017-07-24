@@ -32,5 +32,6 @@ namespace Character_Builder
             if (x < 0) return x.ToString();
             return "+" + x;
         }
+        public string Desc { get { return ToString(); } }
     }
 }

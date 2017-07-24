@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace OGL
 {
 
-    public class Race: IXML, IOGLElement<Race>
+    public class Race: IXML, IOGLElement<Race>, IOGLElement
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Race));

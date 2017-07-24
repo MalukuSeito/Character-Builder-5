@@ -61,7 +61,7 @@ namespace Character_Builder
                 else SubClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
             }
         }
-        public List<Feature> getFeatures(int level, Player player)
+        public List<Feature> GetFeatures(int level, Player player)
         {
             if (Class == null) return new List<Feature>();
             int classlevel = getClassLevelUpToLevel(level);
@@ -110,7 +110,7 @@ namespace Character_Builder
             if (ClassLevelAtLevel.IndexOf(atlevel) < 0) return;
             HProllAtClassLevel[ClassLevelAtLevel.IndexOf(atlevel)] = hproll;
         }
-        public bool deleteLevel(int atlevel)
+        public bool DeleteLevel(int atlevel)
         {
             if (ClassLevelAtLevel.Count < 2) return false;
             int classlevel = ClassLevelAtLevel.IndexOf(atlevel);
@@ -121,10 +121,15 @@ namespace Character_Builder
         }
         public override string ToString()
         {
+            return ToString(Player.Current.GetLevel());
+        }
+
+        public string ToString(int level)
+        {
             OGL.SubClass s = SubClass;
-            if (s != null && s.SheetName != null && s.SheetName.Length > 0) return s.SheetName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
-            if (SubClassName != null && SubClassName != "") return SubClassName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
-            return ClassName + " " + getClassLevelUpToLevel(Player.Current.GetLevel());
+            if (s != null && s.SheetName != null && s.SheetName.Length > 0) return s.SheetName + " (" + getClassLevelUpToLevel(level) + ")";
+            if (SubClassName != null && SubClassName != "") return SourceInvariantComparer.NoSource(SubClassName) + " (" + getClassLevelUpToLevel(level) + ")";
+            return SourceInvariantComparer.NoSource(ClassName) + " (" + getClassLevelUpToLevel(level) + ")";
         }
 
         public int getMulticlassingLevel(int level=0)
@@ -140,7 +145,7 @@ namespace Character_Builder
             return 0;
         }
 
-        public List<TableDescription> collectTables()
+        public List<TableDescription> CollectTables()
         {
             List<TableDescription> res = new List<TableDescription>();
             if (Class != null) foreach (Description d in Class.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);

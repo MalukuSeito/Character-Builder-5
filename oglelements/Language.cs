@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class Language : IComparable<Language>, IXML, IOGLElement<Language>
+    public class Language : IComparable<Language>, IXML, IOGLElement<Language>, IOGLElement
     {
         [XmlIgnore]
         public string filename;

@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerOverview" >
+    <ContentPage Title="{Binding Name}">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+            <ToolbarItem Text="&gt;&gt;" Clicked="OnNext" />
+        </ContentPage.ToolbarItems>
+        <ScrollView >
+            <Grid RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="52"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="19"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="18"/>
+                    <RowDefinition Height="23"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="4" HorizontalOptions="Fill" Aspect="AspectFit" VerticalOptions="Start" Source="{Binding Portrait}" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowImage}" CommandParameter="{Binding Portrait}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding Name}" />
+                <Label Grid.Row="0" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Race}" TextColor="{Binding Accent}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowRace}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Grid.Row="1" Grid.Column ="2" Grid.ColumnSpan="4" Text="{Binding Classes}" LineBreakMode="WordWrap" TextColor="{Binding Accent}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowClasses}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Grid.Row="2" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Background}" TextColor="{Binding Accent}" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowBackground}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Grid.Row="2" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding Alignment}" />
+                <Label Grid.Row="3" Grid.Column ="2" Text="AC:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="3" Grid.Column ="3" Text="{Binding AC}" />
+                <Label Grid.Row="3" Grid.Column ="4" Text="Initiative:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="3" Grid.Column ="5" Text="{Binding Initiative}" />
+
+                <Label Grid.Row="4" Grid.Column ="2" Text="Proficiency:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="4" Grid.Column ="3" Text="{Binding Proficiency}" />
+                <Label Grid.Row="4" Grid.Column ="4" Text="Speed:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="4" Grid.Column ="5" Text="{Binding Speed}" />
+
+                <Label Grid.Row="5" Grid.Column ="2" Text="Inspiration:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Switch Grid.Row="5" Grid.Column ="3" IsToggled="{Binding Inspiration}" HorizontalOptions="Start"/>
+                <Label Grid.Row="5" Grid.Column ="4" Text="XP:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="5" Grid.Column ="5" Text="{Binding XP}" />
+
+                <Label Grid.Row="6" Grid.Column ="2" Text="Weight:" FontSize="Micro" VerticalTextAlignment="Center" HorizontalOptions="End" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="6" Grid.Column ="3" Grid.ColumnSpan="2" Text="{Binding Carried}" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="6" Grid.Column ="5" Text="{Binding LevelText}" FontSize="Micro" VerticalTextAlignment="Start"/>
+                
+                <Button Clicked="Money_Clicked" Grid.Row="5" Grid.Column ="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Text="{Binding Money}" FontSize="Micro" />
+
+
+                <!-- <Label Grid.Row="6" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Ability" FontSize="Micro"/>-->
+                <Label Grid.Row="7" Grid.Column ="2" Text="Score" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+                <Label Grid.Row="7" Grid.Column ="3" Text="Max" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+                <Label Grid.Row="7" Grid.Column ="4" Text="Modifier" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="7" Grid.Column ="5" Text="Save" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+
+                <Label Grid.Row="8" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Strength:" FontSize="Small"/>
+                <Label Grid.Row="8" Grid.Column ="2" Text="{Binding Scores.StrengthValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="8" Grid.Column ="3" Text="{Binding Scores.StrengthMax}" />
+                <Label Grid.Row="8" Grid.Column ="4" Text="{Binding Scores.StrengthMod}"/>
+                <Label Grid.Row="8" Grid.Column ="5" Text="{Binding Scores.StrengthSave}"/>
+
+                <Label Grid.Row="9" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Dexterity:" FontSize="Small"/>
+                <Label Grid.Row="9" Grid.Column ="2" Text="{Binding Scores.DexterityValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="9" Grid.Column ="3" Text="{Binding Scores.DexterityMax}"/>
+                <Label Grid.Row="9" Grid.Column ="4" Text="{Binding Scores.DexterityMod}"/>
+                <Label Grid.Row="9" Grid.Column ="5" Text="{Binding Scores.DexteritySave}"/>
+
+                <Label Grid.Row="10" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Constitution:" FontSize="Small"/>
+                <Label Grid.Row="10" Grid.Column ="2" Text="{Binding Scores.ConstitutionValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="10" Grid.Column ="3" Text="{Binding Scores.ConstitutionMax}"/>
+                <Label Grid.Row="10" Grid.Column ="4" Text="{Binding Scores.ConstitutionMod}"/>
+                <Label Grid.Row="10" Grid.Column ="5" Text="{Binding Scores.ConstitutionSave}"/>
+
+                <Label Grid.Row="11" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Intelligence:" FontSize="Small"/>
+                <Label Grid.Row="11" Grid.Column ="2" Text="{Binding Scores.IntelligenceValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="11" Grid.Column ="3" Text="{Binding Scores.IntelligenceMax}"/>
+                <Label Grid.Row="11" Grid.Column ="4" Text="{Binding Scores.IntelligenceMod}"/>
+                <Label Grid.Row="11" Grid.Column ="5" Text="{Binding Scores.IntelligenceSave}"/>
+
+                <Label Grid.Row="12" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Wisdom:" FontSize="Small"/>
+                <Label Grid.Row="12" Grid.Column ="2" Text="{Binding Scores.WisdomValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="12" Grid.Column ="3" Text="{Binding Scores.WisdomMax}"/>
+                <Label Grid.Row="12" Grid.Column ="4" Text="{Binding Scores.WisdomMod}"/>
+                <Label Grid.Row="12" Grid.Column ="5" Text="{Binding Scores.WisdomSave}"/>
+
+                <Label Grid.Row="13" Grid.Column ="0" Grid.ColumnSpan="2" HorizontalTextAlignment="End" Text="Charisma:" FontSize="Small"/>
+                <Label Grid.Row="13" Grid.Column ="2" Text="{Binding Scores.CharismaValue}" FontAttributes="Bold"/>
+                <Label Grid.Row="13" Grid.Column ="3" Text="{Binding Scores.CharismaMax}"/>
+                <Label Grid.Row="13" Grid.Column ="4" Text="{Binding Scores.CharismaMod}"/>
+                <Label Grid.Row="13" Grid.Column ="5" Text="{Binding Scores.CharismaSave}"/>
+
+                <Label Grid.Row="14" Grid.Column ="0" Grid.ColumnSpan="2" Text="Hitpoints" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+                <Label Grid.Row="15" Grid.Column ="0" Text="{Binding HPMax}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="WordWrap"/>
+                <Label Grid.Row="16" Grid.Column ="0" Text="Temp" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                <Label Grid.Row="17" Grid.Column ="0" Text="Bonus Max" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                <Entry Grid.Row="15" Grid.Column ="1" Keyboard="Default" Text="{Binding HP}"  TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="16" Grid.Column ="1" Keyboard="Numeric" Text="{Binding TempHP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="17" Grid.Column ="1" Keyboard="Numeric" Text="{Binding BonusHP}" TextColor="{Binding Accent}"/>
+
+                <Label Grid.Row="14" Grid.Column ="2" Grid.ColumnSpan="2" Text="Hit Die" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+                <!-- <Label Grid.Row="15" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding HDTotal}}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>-->
+                <ListView Grid.Row="15" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="2"  ItemsSource="{Binding HitDice}"
+                    x:Name="HitDice"
+                    VerticalOptions="FillAndExpand"
+                    HasUnevenRows="true"
+                    IsPullToRefreshEnabled="true"
+                    RefreshCommand="{Binding ResetHitDie}"
+                    IsRefreshing="{Binding HDBusy, Mode=OneWay}"
+                    CachingStrategy="RecycleElement"
+                    ItemSelected="HitDice_ItemSelected"
+                          RowHeight="30">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Current}" Command="{Binding Reduce}" CommandParameter="{Binding .}" Height="30">
+                                <TextCell.ContextActions>
+                                    <MenuItem Clicked="ResetHitDie" Text="Reset All HitDie" />
+                                </TextCell.ContextActions>
+                            </TextCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Label Grid.Row="14" Grid.Column ="4" Grid.ColumnSpan="2" Text="Death Saves" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+                <Label Grid.Row="15" Grid.Column ="4" Text="Successes" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                <Label Grid.Row="16" Grid.Column ="4" Text="Fails" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                <Picker Grid.Row="15" Grid.Column="5" SelectedIndex="{Binding DeathSaveSuccess}" TextColor="{Binding Accent}">
+                    <Picker.Items>
+                        <x:String>0</x:String>
+                        <x:String>1</x:String>
+                        <x:String>2</x:String>
+                        <x:String>3</x:String>
+                    </Picker.Items>
+                </Picker>
+                <Picker Grid.Row="16" Grid.Column="5" SelectedIndex="{Binding DeathSaveFail}" TextColor="{Binding Accent}">
+                    <Picker.Items>
+                        <x:String>0</x:String>
+                        <x:String>1</x:String>
+                        <x:String>2</x:String>
+                        <x:String>3</x:String>
+                    </Picker.Items>
+                </Picker>
+                <Button Grid.Row="17" Grid.Column="4" Grid.ColumnSpan="2" Command="{Binding ResetHD}" Text="Reset" FontSize="Micro" />
+            </Grid>
+        </ScrollView>
+    </ContentPage>
+    <ContentPage Title="Skills">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="&lt;&lt;" Clicked="OnPrev" />
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+            <ToolbarItem Text="&gt;&gt;" Clicked="OnNext" />
+        </ContentPage.ToolbarItems>
+        <Grid RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Skills}"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      IsPullToRefreshEnabled="true"
+                      RefreshCommand="{Binding DeselectSkill}"
+                    IsRefreshing="{Binding SkillBusy, Mode=OneWay}"
+                      CachingStrategy="RecycleElement"
+                      SelectedItem="{Binding SelectedSkill}" RowHeight="30">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Desc}" Height="30">
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="SkillInfo" Text="Description" />
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Grid.Row="1" Grid.Column ="0" Grid.ColumnSpan="2" Text="Change Base Ability" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+            <Picker Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Abilities}" SelectedIndex="{Binding SkillBaseIndex}"/>
+            <Label Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding SkillValue}"/>
+        </Grid>
+    </ContentPage>
+    <ContentPage>
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="&lt;&lt;" Clicked="OnPrev" />
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+        </ContentPage.ToolbarItems>
+        <StackLayout>
+            <Label Text="Welcome to Xamarin Forms!" />
+        </StackLayout>
+    </ContentPage>
+</CarouselPage>
+    

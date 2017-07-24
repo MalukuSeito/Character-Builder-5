@@ -30,11 +30,24 @@ namespace Character_Builder
             get { return _current; }
             set {
                 _current = value;
-                PluginManager.manager.Load(value.ActiveHouseRules);
-                if (!ConfigManager.ExcludedSources.SetEquals(value.ExcludedSources)) {
-                    ConfigManager.ExcludedSources.Clear();
-                    ConfigManager.ExcludedSources.UnionWith(value.ExcludedSources);
-                    SourcesChangedEvent?.Invoke(_current, null);
+                if (_current == null)
+                {
+                    PluginManager.manager.Load(null);
+                    if (ConfigManager.ExcludedSources.Count > 0)
+                    {
+                        ConfigManager.ExcludedSources.Clear();
+                        SourcesChangedEvent?.Invoke(_current, null);
+                    }
+                }
+                else
+                {
+                    PluginManager.manager.Load(value.ActiveHouseRules);
+                    if (!ConfigManager.ExcludedSources.SetEquals(value.ExcludedSources))
+                    {
+                        ConfigManager.ExcludedSources.Clear();
+                        ConfigManager.ExcludedSources.UnionWith(value.ExcludedSources);
+                        SourcesChangedEvent?.Invoke(_current, null);
+                    }
                 }
             }
         }
@@ -67,8 +80,8 @@ namespace Character_Builder
                     for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) if (UndoBuffer.Last.Value.ComplexJournal[i].Text != null) UndoBuffer.Last.Value.ComplexJournal[i].Text = UndoBuffer.Last.Value.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
                     UndoBuffer.Last.Value.Allies = UndoBuffer.Last.Value.Allies.Replace("\n", Environment.NewLine);
                     UndoBuffer.Last.Value.Backstory = UndoBuffer.Last.Value.Backstory.Replace("\n", Environment.NewLine);
-                    HistoryButtonChange?.Invoke(Player.Current, true, false);
                     RedoBuffer.Clear();
+                    HistoryButtonChange?.Invoke(Player.Current, true, false);
                     if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
                     UnsavedChanges++;
                 }
@@ -116,6 +129,8 @@ namespace Character_Builder
             return RedoBuffer.Count > 0;
         }
 
+        [XmlIgnore]
+        public object FilePath { get; set; }
 
         public List<Spellcasting> Spellcasting = new List<Spellcasting>();
         public List<string> Boons = new List<string>();
@@ -375,7 +390,7 @@ namespace Character_Builder
                 AbilityFeatChoices.Add(afc);
                 foreach (PlayerClass p in Classes)
                 {
-                    if (p.getFeatures(level, this).Contains(f)) afc.Class = p.ClassName;
+                    if (p.GetFeatures(level, this).Contains(f)) afc.Class = p.ClassName;
                 }
             }
             afc.Ability1=ab1;
@@ -407,7 +422,7 @@ namespace Character_Builder
                 AbilityFeatChoices.Add(afc);
                 foreach (PlayerClass p in Classes)
                 {
-                    if (p.getFeatures(level, this).Contains(f)) afc.Class = p.ClassName;
+                    if (p.GetFeatures(level, this).Contains(f)) afc.Class = p.ClassName;
                 }
             }
             return afc;
@@ -443,7 +458,7 @@ namespace Character_Builder
             if (level == 0) level = GetLevel();
             foreach (PlayerClass pc in Classes)
             {
-                foreach (Feature f in pc.getFeatures(level, this)) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID) return pc.getClassLevelUpToLevel(level);
+                foreach (Feature f in pc.GetFeatures(level, this)) if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID) return pc.getClassLevelUpToLevel(level);
             }
             return 0;
         }
@@ -493,7 +508,7 @@ namespace Character_Builder
             bool overwrittenbymulticlassing = false;
             foreach (PlayerClass pc in Classes)
             {
-                foreach (Feature f in pc.getFeatures(level, this))
+                foreach (Feature f in pc.GetFeatures(level, this))
                 {
                     if (f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID == spellcastingID)
                     {
@@ -606,7 +621,7 @@ namespace Character_Builder
                 if (p.getClassLevelAtLevel(atLevel) > 0)
                 {
                     todelete = p;
-                    if (p.deleteLevel(atLevel)) return true;
+                    if (p.DeleteLevel(atLevel)) return true;
                 }
             }
             if (todelete != null) Classes.Remove(todelete);
@@ -778,7 +793,7 @@ namespace Character_Builder
                 {
                     if (p.getClassLevelUpToLevel(level) > 0)
                     {
-                        fl.AddRange(p.getFeatures(level, this));
+                        fl.AddRange(p.GetFeatures(level, this));
                         multiclassing++;
                         multiclassinglevel += p.getMulticlassingLevel();
                     }
@@ -1280,7 +1295,7 @@ namespace Character_Builder
                     int classlevel = p.getClassLevelUpToLevel(level);
                     if (classlevel > 0)
                     {
-                        foreach (Feature f in p.getFeatures(level, this))
+                        foreach (Feature f in p.GetFeatures(level, this))
                         {
                             if (f is AbilityScoreFeature asf)
                             {
@@ -2236,7 +2251,7 @@ namespace Character_Builder
             if (Background != null) foreach (Description d in Background.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
             if (Race != null) foreach (Description d in Race.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
             if (SubRace != null) foreach (Description d in SubRace.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
-            foreach (PlayerClass pc in Classes) res.AddRange(pc.collectTables());
+            foreach (PlayerClass pc in Classes) res.AddRange(pc.CollectTables());
             return res;
         }
         public double GetCarryCapacity(int level = 0)
@@ -2280,6 +2295,11 @@ namespace Character_Builder
                 }
             }
             return asa.Strength * 15 * Math.Pow(2, size + bonus);
+        }
+        public IEnumerable<String> GetClassesStrings()
+        {
+            int l = GetLevel();
+            return from c in Classes select c.ToString(l);
         }
     }
 }

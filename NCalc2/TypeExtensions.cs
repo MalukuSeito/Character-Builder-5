@@ -3,38 +3,60 @@
 // ReSharper disable once CheckNamespace
 namespace System
 {
+
+    public enum MyTypeCode
+    {
+        Boolean,
+        Byte,
+        SByte,
+        Char,
+        DateTime,
+        Decimal,
+        Double,
+        Single,
+        Int16,
+        Int32,
+        Int64,
+        UInt16,
+        UInt32,
+        UInt64,
+        String,
+        Empty,
+        Object
+    }
+
     public static class TypeExtensions
     {
-        private static readonly Dictionary<Type, TypeCode> TypeCodeMap =
-            new Dictionary<Type, TypeCode>
+        private static readonly Dictionary<Type, MyTypeCode> TypeCodeMap =
+            new Dictionary<Type, MyTypeCode>
             {
-                {typeof(bool), TypeCode.Boolean},
-                {typeof(byte), TypeCode.Byte},
-                {typeof(sbyte), TypeCode.SByte},
-                {typeof(char), TypeCode.Char},
-                {typeof(DateTime), TypeCode.DateTime},
-                {typeof(decimal), TypeCode.Decimal},
-                {typeof(double), TypeCode.Double},
-                {typeof(float), TypeCode.Single},
-                {typeof(short), TypeCode.Int16},
-                {typeof(int), TypeCode.Int32},
-                {typeof(long), TypeCode.Int64},
-                {typeof(ushort), TypeCode.UInt16},
-                {typeof(uint), TypeCode.UInt32},
-                {typeof(ulong), TypeCode.UInt64},
-                {typeof(string), TypeCode.String}
+                {typeof(bool), MyTypeCode.Boolean},
+                {typeof(byte), MyTypeCode.Byte},
+                {typeof(sbyte), MyTypeCode.SByte},
+                {typeof(char), MyTypeCode.Char},
+                {typeof(DateTime), MyTypeCode.DateTime},
+                {typeof(decimal), MyTypeCode.Decimal},
+                {typeof(double), MyTypeCode.Double},
+                {typeof(float), MyTypeCode.Single},
+                {typeof(short), MyTypeCode.Int16},
+                {typeof(int), MyTypeCode.Int32},
+                {typeof(long), MyTypeCode.Int64},
+                {typeof(ushort), MyTypeCode.UInt16},
+                {typeof(uint), MyTypeCode.UInt32},
+                {typeof(ulong), MyTypeCode.UInt64},
+                {typeof(string), MyTypeCode.String}
             };
 
-        public static TypeCode GetTypeCode(this object obj)
+        public static MyTypeCode GetTypeCode(this object obj)
         {
             if (obj == null)
-                return TypeCode.Empty;
+                return MyTypeCode.Empty;
 
-            TypeCode tc;
+            MyTypeCode tc;
             var type = obj.GetType();
             if (!TypeCodeMap.TryGetValue(type, out tc))
             {
-                tc = TypeCode.Object;
+                tc = MyTypeCode.Object;
             }
 
             return tc;

@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class MagicProperty : IComparable<MagicProperty>, IXML, IOGLElement<MagicProperty>
+    public class MagicProperty : IComparable<MagicProperty>, IXML, IOGLElement<MagicProperty>, IOGLElement
     {
         [XmlIgnore]
         public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);

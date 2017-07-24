@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.LoadingPage">
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Center">
+            <Label HorizontalOptions ="Center"  VerticalOptions="Start" Text="Loading" />
+            <Label HorizontalOptions ="Center" VerticalOptions="Start" Text="{Binding Text}" />
+            <ProgressBar VerticalOptions="End" Progress="{Binding Percentage}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

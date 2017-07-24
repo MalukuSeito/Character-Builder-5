@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace OGL
 {
-    public class Condition : IComparable<Condition>, IXML, IOGLElement<Condition>
+    public class Condition : IComparable<Condition>, IXML, IOGLElement<Condition>, IOGLElement
     {
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Condition));
