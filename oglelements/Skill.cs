@@ -12,10 +12,6 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
         [XmlIgnore]
-        static public Dictionary<String, Skill> skills = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, Skill> simple = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
         public string Filename { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
@@ -23,43 +19,30 @@ namespace OGL
         public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public void Register(String file)
+        public void Register(OGLContext context, String file)
         {
             Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (skills.ContainsKey(full)) throw new Exception("Duplicate Skill: " + full);
-            skills.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.Skills.ContainsKey(full)) throw new Exception("Duplicate Skill: " + full);
+            context.Skills.Add(full, this);
+            if (context.SkillsSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.SkillsSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.SkillsSimple.Add(Name, this);
         }
         public Skill() 
         {
             Base = Ability.None;
-            Source = ConfigManager.DefaultSource;
         }
-        public Skill(String name, String description, Ability basedOn)
+        public Skill(OGLContext context, String name, String description, Ability basedOn)
         {
             Name = name;
             Description = description;
             Base = basedOn;
-            Source = ConfigManager.DefaultSource;
-            Register(null);
-        }
-        public static Skill Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (skills.ContainsKey(name)) return skills[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && skills.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return skills[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown Skill: " + name);
-            return new Skill(name, "Missing Entry", Ability.None);
+            Source = context.Config.DefaultSource;
+            Register(context, null);
         }
         public String ToXML()
         {

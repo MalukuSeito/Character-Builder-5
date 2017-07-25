@@ -17,12 +17,15 @@ namespace CB_5e.Views
 	{
         public static IntToStringConverter IntConverter = PlayerViewModel.IntConverter;
 
-        public PlayerOverview()
+        public PlayerViewModel Model { get; private set; }
+
+        public PlayerOverview(PlayerViewModel model)
 		{
-			InitializeComponent ();
+            BindingContext = Model = model;
+            Model.Navigation = Navigation;
+            InitializeComponent ();
             CurrentPageChanged += CarouselPage_CurrentPageChanged; 
-            BindingContext = PlayerViewModel.Instance;
-            PlayerViewModel.Instance.Navigation = Navigation;
+            
             //Image.GestureRecognizers.Add(new TapGestureRecognizer(OnTap));
             Title = CurrentPage.Title;
         }
@@ -42,14 +45,14 @@ namespace CB_5e.Views
 
         private void ResetHitDie(object sender, EventArgs e)
         {
-            PlayerViewModel.Instance.ResetHitDie.Execute(null);
+            Model.ResetHitDie.Execute(null);
         }
 
         private async void Money_Clicked(object sender, EventArgs e)
         {
             if (IsBusy) return;
             IsBusy = true;
-            await Navigation.PushAsync(new EditMoneyPage());
+            await Navigation.PushAsync(new EditMoneyPage(Model));
             IsBusy = false;
         }
 
@@ -61,15 +64,14 @@ namespace CB_5e.Views
             {
                 PlayerViewModel.Saving.WaitForAll();
             }
-            else if (Player.UnsavedChanges > 0)
+            else if (Model.Context.UnsavedChanges > 0)
             {
-                if (DisplayAlert("Unsaved Changes", "You have " + Player.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
                 {
-                    PlayerViewModel.Instance.DoSave();
+                    Model.DoSave();
                 }
             }
             await Navigation.PopModalAsync();
-            Player.Current = null;
             CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             IsBusy = false;
         }

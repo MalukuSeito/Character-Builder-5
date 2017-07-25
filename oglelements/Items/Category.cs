@@ -21,10 +21,12 @@ namespace OGL.Items
         public string Path { get; private set; }
         [XmlIgnore]
         public static Dictionary<String, Category> Categories = new Dictionary<string, Category>();
-        public static Category Make()
+
+        private string ItemsDir;
+        public static Category Make(OGLContext context)
         {
-            if (!Category.Categories.ContainsKey(ConfigManager.Directory_Items)) Category.Categories.Add(ConfigManager.Directory_Items, new Category());
-            return Category.Categories[ConfigManager.Directory_Items];
+            if (!Category.Categories.ContainsKey(context.Config.Items_Directory)) Category.Categories.Add(context.Config.Items_Directory, new Category(context));
+            return Category.Categories[context.Config.Items_Directory];
         }
         public Category(String path, List<string> categorypath)
         {
@@ -33,21 +35,24 @@ namespace OGL.Items
             Path = path;
             //if (CategoryPath.First<String>() != ConfigManager.Directory_Items.Directory.Name) CategoryPath.Insert(0, ConfigManager.Directory_Items.Directory.Name);
         }
-        public Category()
+        public Category(OGLContext context)
         {
-            CategoryPath = new List<string>();
-            CategoryPath.Add(ConfigManager.Directory_Items);
+            ItemsDir = context.Config.Items_Directory;
+            CategoryPath = new List<string>
+            {
+                context.Config.Items_Directory
+            };
         }
         public List<String> MakePath()
         {
-            if (CategoryPath.Count > 1 && CategoryPath.Last<String>() == ConfigManager.Directory_Items) return new List<string>() { "." };
+            if (CategoryPath.Count > 1 && CategoryPath.Last() == ItemsDir) return new List<string>() { "." };
             List<String> cnames = new List<string>();
             foreach (string s in CategoryPath) 
             {
                 removeInvalidPathChars.Replace(s, "_");
                 cnames.Add(s);
             }
-            cnames.Remove(ConfigManager.Directory_Items);
+            cnames.Remove(ItemsDir);
             return cnames;
         }
         public int CompareTo (Category other) {

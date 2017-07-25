@@ -73,14 +73,14 @@ namespace OGL.Features
             Features.Add(feature3);
             Features.Add(feature4);
         }
-        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider)
+        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             if (Level > level) return new List<Feature>();
             List<Feature> res = new List<Feature>() {this};
             if (Condition != null && Condition.Length > 0 && !choiceProvider.Matches(Condition, null, level)) return res;
             foreach (Feature f in Features)
             {
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             return res;
         }

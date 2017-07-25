@@ -122,5 +122,10 @@ namespace OGL
                 return r;
             }
         }
+        public static List<Feature> MakeCopy(List<Feature> features)
+        {
+            FeatureContainer fc = new FeatureContainer(features);
+            return fc.Clone().Features;
+        }
     }
 }

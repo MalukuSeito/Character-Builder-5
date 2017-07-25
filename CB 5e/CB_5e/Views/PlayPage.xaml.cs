@@ -15,11 +15,13 @@ namespace CB_5e.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlayPage : TabbedPage
     {
-        public PlayPage()
+        private PlayerViewModel Model;
+        public PlayPage(PlayerViewModel model)
         {
+            BindingContext = Model = model;
             InitializeComponent();
             Children.Add(
-                    new NavigationPage(new PlayerOverview())
+                    new NavigationPage(new PlayerOverview(Model))
                     {
                         Title = "Stats",
                         Icon = Device.OnPlatform("tab_feed.png", null, null)
@@ -48,14 +50,13 @@ namespace CB_5e.Views
             if (App.AutoSaveDuringPlay)
             {
                 PlayerViewModel.Saving.WaitForAll();
-            } else if (Player.UnsavedChanges > 0)
+            } else if (Model.Context.UnsavedChanges > 0)
             {
-                if (DisplayAlert("Unsaved Changes", "You have " + Player.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
                 {
-                    PlayerViewModel.Instance.DoSave();
+                    Model.DoSave();
                 }
             }
-            Player.Current = null;
             CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             return base.OnBackButtonPressed();
         }

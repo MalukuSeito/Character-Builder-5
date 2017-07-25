@@ -20,7 +20,7 @@ namespace OGL.Features
             UniqueID = uniqueID;
         }
         
-        public List<Language> getLanguages(IChoiceProvider provider)
+        public List<Language> getLanguages(IChoiceProvider provider, OGLContext context)
         {
             List<Language> res = new List<Language>();
             int offset = provider.GetChoiceOffset(this, UniqueID, Amount);
@@ -29,7 +29,7 @@ namespace OGL.Features
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
                 Choice cho = provider.GetChoice(UniqueID + counter);
-                if (cho != null && cho.Value != "") res.Add(Language.Get(cho.Value, Source));
+                if (cho != null && cho.Value != "") res.Add(context.GetLanguage(cho.Value, Source));
             }
             return res;
         }

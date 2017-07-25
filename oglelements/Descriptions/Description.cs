@@ -13,10 +13,10 @@ namespace OGL.Descriptions
             Name = name;
             Text = text;
         }
-        public bool Test()
+        public bool Test(OGLContext context)
         {
-            if (Name != null && Name.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Text != null && Text.ToLowerInvariant().Contains(Item.Search)) return true;
+            if (Name != null && Name.ToLowerInvariant().Contains(context.Search)) return true;
+            if (Text != null && Text.ToLowerInvariant().Contains(context.Search)) return true;
             return false;
         }
         public override string ToString()

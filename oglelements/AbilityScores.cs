@@ -11,7 +11,6 @@ namespace OGL
 {
     public class AbilityScores
     {
-        public static AbilityScores Current { get; set; }
         public static XmlSerializer Serializer = new XmlSerializer(typeof(AbilityScores));
         public List<int> PointBuyCost = new List<int>();
         public int PointBuyPoints { get; set; }
@@ -26,37 +25,25 @@ namespace OGL
         {
             return (score - 10) >> 1;
         }
-        public static int getPointBuyCost(int score) {
-            if (score > Current.PointBuyMaxScore) return -1;
-            if (score < Current.PointBuyMinScore) return -1;
-            return Current.PointBuyCost[score - Current.PointBuyMinScore];
+        public int GetPointBuyCost(int score) {
+            if (score > PointBuyMaxScore) return -1;
+            if (score < PointBuyMinScore) return -1;
+            return PointBuyCost[score - PointBuyMinScore];
         }
-        public static int getPointBuyPoints()
+        public int GetPointBuyPoints()
         {
-            return Current.PointBuyPoints;
+            return PointBuyPoints;
         }
-        public static List<AbilityScoreArray> GetArrays()
+        public List<AbilityScoreArray> GetArrays()
         {
             List<AbilityScoreArray> res = new List<AbilityScoreArray>();
-            foreach (String s in Current.Arrays) res.Add(new AbilityScoreArray(s));
+            foreach (String s in Arrays) res.Add(new AbilityScoreArray(s));
             return res;
         }
         
-        public static void Generate()
-        {
-            Current = new AbilityScores()
-            {
-                PointBuyCost = new List<int>() { 0, 1, 2, 3, 4, 5, 7, 9 },
-                PointBuyPoints = 27,
-                PointBuyMinScore = 8,
-                PointBuyMaxScore = 15
-            };
-            foreach (AbilityScoreArray a in AbilityScoreArray.Generate()) Current.Arrays.Add(a.ToString());
-        }
-        public static int Max { get {
-                if (Current == null) return 20;
-                if (Current.DefaultMax == 0) Current.DefaultMax = 20;
-                return Current.DefaultMax;
+        public int Max { get {
+                if (DefaultMax == 0) DefaultMax = 20;
+                return DefaultMax;
         } }
 
         

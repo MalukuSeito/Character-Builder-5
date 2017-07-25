@@ -24,8 +24,8 @@ namespace Character_Builder_Builder
             userControl11.Editor = this;
             basicItem1.HistoryManager = this;
             stringList1.HistoryManager = this;
-            ImportExtensions.ImportItems();
-            stringList1.Suggestions = Item.simple.Keys;
+            Program.Context.ImportItems();
+            stringList1.Suggestions = Program.Context.ItemsSimple.Keys;
             refresh();
         }
 
@@ -128,7 +128,7 @@ namespace Character_Builder_Builder
             Pack.Weight = 0;
             foreach (string i in Pack.Contents)
             {
-                Pack.Weight += Item.Get(i, Pack.Source).Weight;
+                Pack.Weight += Program.Context.GetItem(i, Pack.Source).Weight;
             }
             try
             {

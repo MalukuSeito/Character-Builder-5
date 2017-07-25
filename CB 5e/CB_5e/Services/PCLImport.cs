@@ -15,20 +15,20 @@ using OGL.Keywords;
 
 namespace CB_5e.Services
 {
-    public class PCLImport
+    public static class PCLImport
     {
-        public static async Task<AbilityScores> LoadAbilityScoresAsync(IFile file)
+        public static async Task<AbilityScores> LoadAbilityScoresAsync(this OGLContext context, IFile file)
         {
-            using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false)) AbilityScores.Current = (AbilityScores)AbilityScores.Serializer.Deserialize(fs);
-            AbilityScores.Current.Filename = file.Path;
-            return AbilityScores.Current;
+            using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false)) context.Scores = (AbilityScores)AbilityScores.Serializer.Deserialize(fs);
+            context.Scores.Filename = file.Path;
+            return context.Scores;
         }
 
-        public static async Task ImportClassesAsync(bool applyKeywords = false)
+        public static async Task ImportClassesAsync(this OGLContext context, bool applyKeywords = false)
         {
-            ClassDefinition.classes.Clear();
-            ClassDefinition.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Classes).ConfigureAwait(false);
+            context.Classes.Clear();
+            context.ClassesSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Classes_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -37,7 +37,7 @@ namespace CB_5e.Services
                     {
                         ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path, applyKeywords);
+                        s.Register(context, f.Key.Path, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -47,11 +47,11 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSubClassesAsync(bool applyKeywords = false)
+        public static async Task ImportSubClassesAsync(this OGLContext context, bool applyKeywords = false)
         {
-            SubClass.subclasses.Clear();
-            SubClass.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_SubClasses).ConfigureAwait(false);
+            context.SubClasses.Clear();
+            context.SubClassesSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.SubClasses_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -60,7 +60,7 @@ namespace CB_5e.Services
                     {
                         SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path, applyKeywords);
+                        s.Register(context, f.Key.Path, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -69,11 +69,11 @@ namespace CB_5e.Services
                 }
             }
         }
-        public async static Task ImportSubRacesAsync()
+        public async static Task ImportSubRacesAsync(this OGLContext context)
         {
-            SubRace.subraces.Clear();
-            SubRace.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_SubRaces).ConfigureAwait(false);
+            context.SubRaces.Clear();
+            context.SubRacesSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.SubRaces_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -82,7 +82,7 @@ namespace CB_5e.Services
                     {
                         SubRace s = (SubRace)SubRace.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -91,11 +91,11 @@ namespace CB_5e.Services
                 }
             }
         }
-        public async static Task ImportRacesAsync()
+        public async static Task ImportRacesAsync(this OGLContext context)
         {
-            Race.races.Clear();
-            Race.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Races).ConfigureAwait(false);
+            context.Races.Clear();
+            context.RacesSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Races_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -104,7 +104,7 @@ namespace CB_5e.Services
                     {
                         Race s = (Race)Race.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -114,11 +114,11 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSkillsAsync()
+        public static async Task ImportSkillsAsync(this OGLContext context)
         {
-            Skill.skills.Clear();
-            Skill.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Skills).ConfigureAwait(false);
+            context.Skills.Clear();
+            context.SkillsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Skills_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -127,7 +127,7 @@ namespace CB_5e.Services
                     {
                         Skill s = (Skill)Skill.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -137,11 +137,11 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportLanguagesAsync()
+        public static async Task ImportLanguagesAsync(this OGLContext context)
         {
-            Language.languages.Clear();
-            Language.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Languages).ConfigureAwait(false);
+            context.Languages.Clear();
+            context.LanguagesSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Languages_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -150,7 +150,7 @@ namespace CB_5e.Services
                     {
                         Language s = (Language)Language.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -160,12 +160,12 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSpellsAsync()
+        public static async Task ImportSpellsAsync(this OGLContext context)
         {
-            Spell.spells.Clear();
-            Spell.SpellLists.Clear();
-            Spell.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Spells).ConfigureAwait(false);
+            context.Spells.Clear();
+            context.SpellLists.Clear();
+            context.SpellsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Spells_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -174,7 +174,7 @@ namespace CB_5e.Services
                     {
                         Spell s = (Spell)Spell.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -184,25 +184,25 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportItemsAsync()
+        public static async Task ImportItemsAsync(this OGLContext context)
         {
-            Item.items.Clear();
-            Item.ItemLists.Clear();
-            Item.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Items, true).ConfigureAwait(false);
+            context.Items.Clear();
+            context.ItemLists.Clear();
+            context.ItemsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Items_Directory, true).ConfigureAwait(false);
 
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, ConfigManager.Directory_Items));
+                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Items_Directory));
                     Uri target = new Uri(PCLSourceManager.Parent(f.Key));
                     using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
                     {
                         Item s = (Item)Item.Serializer.Deserialize(reader);
-                        s.Category = Make(source.MakeRelativeUri(target));
+                        s.Category = Make(context, source.MakeRelativeUri(target));
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -212,31 +212,31 @@ namespace CB_5e.Services
             }
         }
 
-        public static Category Make(Uri path)
+        public static Category Make(this OGLContext context, Uri path)
         {
-            return Make(Uri.UnescapeDataString(path.ToString()));
+            return Make(context, Uri.UnescapeDataString(path.ToString()));
         }
 
-        public static Category Make(String path)
+        public static Category Make(this OGLContext context, String path)
         {
             String p = path;
-            if (!p.StartsWith(ConfigManager.Directory_Items)) p = PortablePath.Combine(ConfigManager.Directory_Items, path);
+            if (!p.StartsWith(context.Config.Items_Directory)) p = PortablePath.Combine(context.Config.Items_Directory, path);
             p = p.Replace(PortablePath.DirectorySeparatorChar, '/');
             if (!Category.Categories.ContainsKey(p))
             {
                 Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { PortablePath.DirectorySeparatorChar }).ToList()));
             }
             String parent = PCLSourceManager.Parent(p);
-            if (parent.StartsWith(ConfigManager.Directory_Items) && !parent.Equals(ConfigManager.Directory_Items)) Make(parent);
+            if (parent.StartsWith(context.Config.Items_Directory) && !parent.Equals(context.Config.Items_Directory)) Make(context, parent);
             return Category.Categories[p];
         }
 
 
-        public static async Task ImportBackgroundsAsync()
+        public static async Task ImportBackgroundsAsync(this OGLContext context)
         {
-            Background.backgrounds.Clear();
-            Background.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Backgrounds).ConfigureAwait(false);
+            context.Backgrounds.Clear();
+            context.BackgroundsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Backgrounds_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -246,7 +246,7 @@ namespace CB_5e.Services
                         Background s = (Background)Background.Serializer.Deserialize(reader);
                         s.Source = f.Value;
                         foreach (Feature fea in s.Features) fea.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -256,25 +256,25 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportStandaloneFeaturesAsync()
+        public static async Task ImportStandaloneFeaturesAsync(this OGLContext context)
         {
-            FeatureCollection.Collections.Clear();
-            FeatureCollection.Container.Clear();
-            FeatureCollection.Categories.Clear();
-            FeatureCollection.Boons.Clear();
-            FeatureCollection.Features.Clear();
-            FeatureCollection.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Features, true).ConfigureAwait(false);
+            context.FeatureCollections.Clear();
+            context.FeatureContainers.Clear();
+            context.FeatureCategories.Clear();
+            context.Boons.Clear();
+            context.Features.Clear();
+            context.BoonsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Features_Directory, true).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, ConfigManager.Directory_Features));
+                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Features_Directory));
                     Uri target = new Uri(PCLSourceManager.Parent(f.Key));
                     FeatureContainer cont = await LoadFeatureContainerAsync(f.Key);
                     List<Feature> feats = cont.Features;
-                    string cat = FeatureCleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!FeatureCollection.Container.ContainsKey(cat)) FeatureCollection.Container.Add(cat, new List<FeatureContainer>());
+                    string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
+                    if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
                     cont.filename = f.Key.Path;
                     cont.category = cat;
                     cont.Name = f.Key.Name;
@@ -284,35 +284,35 @@ namespace CB_5e.Services
                         cont.Name = cont.Name.Substring(0, i);
                     }
                     cont.Source = f.Value;
-                    FeatureCollection.Container[cat].Add(cont);
+                    context.FeatureContainers[cat].Add(cont);
                     foreach (Feature feat in feats)
                     {
                         feat.Source = cont.Source;
                         foreach (Keyword kw in feat.Keywords) kw.check();
                         feat.Category = cat;
-                        if (!FeatureCollection.Categories.ContainsKey(cat)) FeatureCollection.Categories.Add(cat, new List<Feature>());
-                        Feature other = FeatureCollection.Categories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                        if (!context.FeatureCategories.ContainsKey(cat)) context.FeatureCategories.Add(cat, new List<Feature>());
+                        Feature other = context.FeatureCategories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                         if (other != null)
                         {
                             other.ShowSource = true;
                             feat.ShowSource = true;
                         }
-                        FeatureCollection.Categories[cat].Add(feat);
+                        context.FeatureCategories[cat].Add(feat);
                         if (cat.Equals("Boons", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (FeatureCollection.simple.ContainsKey(feat.Name))
+                            if (context.BoonsSimple.ContainsKey(feat.Name))
                             {
-                                FeatureCollection.simple[feat.Name].ShowSource = true;
+                                context.BoonsSimple[feat.Name].ShowSource = true;
                                 feat.ShowSource = true;
                             }
-                            else FeatureCollection.simple.Add(feat.Name, feat);
-                            if (FeatureCollection.Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
-                            else FeatureCollection.Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
+                            else context.BoonsSimple.Add(feat.Name, feat);
+                            if (context.Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
+                            else context.Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
                         }
                     }
                     foreach (Feature feat in feats)
                     {
-                        FeatureCollection.Features.Add(feat);
+                        context.Features.Add(feat);
                     }
                 }
                 catch (Exception e)
@@ -330,20 +330,20 @@ namespace CB_5e.Services
             }
         }
 
-        public static string FeatureCleanname(string path)
+        public static string FeatureCleanname(this OGLContext context, string path)
         {
             string cat = path;
-            if (!cat.StartsWith(ConfigManager.Directory_Features)) cat = PortablePath.Combine(ConfigManager.Directory_Features, path);
+            if (!cat.StartsWith(context.Config.Features_Directory)) cat = PortablePath.Combine(context.Config.Features_Directory, path);
             cat = cat.Replace(PortablePath.DirectorySeparatorChar, '/');
             //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
             return cat;
         }
 
-        public static async Task ImportConditionsAsync()
+        public static async Task ImportConditionsAsync(this OGLContext context)
         {
-            OGL.Condition.conditions.Clear();
-            OGL.Condition.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Conditions).ConfigureAwait(false);
+            context.Conditions.Clear();
+            context.ConditionsSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Conditions_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
@@ -352,7 +352,7 @@ namespace CB_5e.Services
                     {
                         OGL.Condition s = (OGL.Condition)OGL.Condition.Serializer.Deserialize(reader);
                         s.Source = f.Value;
-                        s.Register(f.Key.Path);
+                        s.Register(context, f.Key.Path);
                     }
                 }
                 catch (Exception e)
@@ -371,25 +371,25 @@ namespace CB_5e.Services
                 if (c == '/') count++;
             return new MagicCategory(Name, path, count);
         }
-        public static async Task ImportMagicAsync()
+        public static async Task ImportMagicAsync(this OGLContext context)
         {
-            MagicProperty.properties.Clear();
-            MagicProperty.Categories.Clear();
-            MagicProperty.Categories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
-            MagicProperty.simple.Clear();
-            var files = await PCLSourceManager.EnumerateFilesAsync(ConfigManager.Directory_Magic, true).ConfigureAwait(false);
+            context.Magic.Clear();
+            context.MagicCategories.Clear();
+            context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+            context.MagicSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Magic_Directory, true).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, ConfigManager.Directory_Features));
+                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Magic_Directory));
                     Uri target = new Uri(PCLSourceManager.Parent(f.Key));
-                    string cat = MagicPropertyCleanname(Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!MagicProperty.Categories.ContainsKey(cat)) MagicProperty.Categories.Add(cat, MakeMagicCategory(cat));
+                    string cat = MagicPropertyCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
+                    if (!context.MagicCategories.ContainsKey(cat)) context.MagicCategories.Add(cat, MakeMagicCategory(cat));
                     String parent = PCLSourceManager.Parent(cat);
-                    while (parent.StartsWith(ConfigManager.Directory_Magic) && !MagicProperty.Categories.ContainsKey(parent))
+                    while (parent.StartsWith(context.Config.Magic_Directory) && !context.MagicCategories.ContainsKey(parent))
                     {
-                        MagicProperty.Categories.Add(parent, MakeMagicCategory(parent));
+                        context.MagicCategories.Add(parent, MakeMagicCategory(parent));
                         parent = PCLSourceManager.Parent(parent);
                     }
                     using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
@@ -402,18 +402,18 @@ namespace CB_5e.Services
                         foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
                         foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
                         mp.Category = cat;
-                        MagicProperty.Categories[cat].Contents.Add(mp);
-                        if (MagicProperty.properties.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
+                        context.MagicCategories[cat].Contents.Add(mp);
+                        if (context.Magic.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
                         {
                             throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
                         }
-                        if (MagicProperty.simple.ContainsKey(mp.Name))
+                        if (context.MagicSimple.ContainsKey(mp.Name))
                         {
-                            MagicProperty.simple[mp.Name].ShowSource = true;
+                            context.MagicSimple[mp.Name].ShowSource = true;
                             mp.ShowSource = true;
                         }
-                        MagicProperty.properties.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
-                        MagicProperty.simple[mp.Name] = mp;
+                        context.Magic.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
+                        context.MagicSimple[mp.Name] = mp;
                     }
                 }
                 catch (Exception e)
@@ -424,53 +424,53 @@ namespace CB_5e.Services
                 //Collections[].AddRange(feats);
             }
         }
-        public static string MagicPropertyCleanname(string path)
+        public static string MagicPropertyCleanname(this OGLContext context, string path)
         {
             string cat = path;
-            if (!cat.StartsWith(ConfigManager.Directory_Magic)) cat = PortablePath.Combine(ConfigManager.Directory_Magic, path);
+            if (!cat.StartsWith(context.Config.Magic_Directory)) cat = PortablePath.Combine(context.Config.Magic_Directory, path);
             cat = cat.Replace(PortablePath.DirectorySeparatorChar, '/');
             //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
             return cat;
         }
 
-        public static string MagicPropertyPath(string path)
+        public static string MagicPropertyPath(OGLContext context, string path)
         {
-            string cat = MagicPropertyCleanname(path);
-            return cat.Remove(0, ConfigManager.Directory_Magic.Length + 1);
+            string cat = MagicPropertyCleanname(context, path);
+            return cat.Remove(0, context.Config.Magic_Directory.Length + 1);
         }
 
         public static string Path(string path)
         {
             return path.Replace(PCLSourceManager.Data.Path, "");
         }
-        public async static Task<ConfigManager> LoadConfigAsync(IFile file)
+        public async static Task<ConfigManager> LoadConfigAsync(this OGLContext context, IFile file)
         {
-            ConfigManager Loaded = ConfigManager.Loaded = await LoadConfigManagerAsync(file);
-            if (ConfigManager.Loaded.Slots.Count == 0)
+            context.Config = await LoadConfigManagerAsync(file);
+            if (context.Config.Slots.Count == 0)
             {
-                ConfigManager.Loaded.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
+                context.Config.Slots = new List<string>() { EquipSlot.MainHand, EquipSlot.OffHand, EquipSlot.Armor };
             }
-            ConfigManager.Directory_Items = MakeRelative(Loaded.Items_Directory);
-            ConfigManager.Directory_Skills = MakeRelative(Loaded.Skills_Directory);
-            ConfigManager.Directory_Languages = MakeRelative(Loaded.Languages_Directory);
-            ConfigManager.Directory_Features = MakeRelative(Loaded.Features_Directory);
-            ConfigManager.Directory_Backgrounds = MakeRelative(Loaded.Backgrounds_Directory);
-            ConfigManager.Directory_Classes = MakeRelative(Loaded.Classes_Directory);
-            ConfigManager.Directory_SubClasses = MakeRelative(Loaded.SubClasses_Directory);
-            ConfigManager.Directory_Races = MakeRelative(Loaded.Races_Directory);
-            ConfigManager.Directory_SubRaces = MakeRelative(Loaded.SubRaces_Directory);
-            ConfigManager.Directory_Spells = MakeRelative(Loaded.Spells_Directory);
-            ConfigManager.Directory_Magic = MakeRelative(Loaded.Magic_Directory);
-            ConfigManager.Directory_Conditions = MakeRelative(Loaded.Conditions_Directory);
-            ConfigManager.PDFExporters = new List<string>();
-            foreach (string s in ConfigManager.Loaded.PDF) ConfigManager.PDFExporters.Add(s);
+            context.Config.Items_Directory = MakeRelative(context.Config.Items_Directory);
+            context.Config.Skills_Directory = MakeRelative(context.Config.Skills_Directory);
+            context.Config.Languages_Directory = MakeRelative(context.Config.Languages_Directory);
+            context.Config.Features_Directory = MakeRelative(context.Config.Features_Directory);
+            context.Config.Backgrounds_Directory = MakeRelative(context.Config.Backgrounds_Directory);
+            context.Config.Classes_Directory = MakeRelative(context.Config.Classes_Directory);
+            context.Config.SubClasses_Directory = MakeRelative(context.Config.SubClasses_Directory);
+            context.Config.Races_Directory = MakeRelative(context.Config.Races_Directory);
+            context.Config.SubRaces_Directory = MakeRelative(context.Config.SubRaces_Directory);
+            context.Config.Spells_Directory = MakeRelative(context.Config.Spells_Directory);
+            context.Config.Magic_Directory = MakeRelative(context.Config.Magic_Directory);
+            context.Config.Conditions_Directory = MakeRelative(context.Config.Conditions_Directory);
+            context.Config.PDFExporters = new List<string>();
+            foreach (string s in context.Config.PDF) context.Config.PDFExporters.Add(s);
             //for (int i = 0; i < loaded.PDF.Count; i++)
             //{
             //    loaded.PDF[i] = Fullpath(path, loaded.PDF[i]);
             //}
 
 
-            return ConfigManager.Loaded;
+            return context.Config;
         }
 
 
@@ -488,13 +488,14 @@ namespace CB_5e.Services
             }
         }
 
-        public async static Task<Player> LoadPlayerAsync(IFile file, bool postLoad = true)
+        public async static Task<Player> LoadPlayerAsync(this BuilderContext context, IFile file, bool postLoad = true)
         {
             try
             {
                 using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false))
                 {
                     Player p = (Player)Player.Serializer.Deserialize(fs);
+                    p.Context = context;
                     p.FilePath = file;
                     //p.Allies = p.Allies.Replace("\n", Environment.NewLine);
                     //p.Backstory = p.Backstory.Replace("\n", Environment.NewLine);
@@ -520,11 +521,11 @@ namespace CB_5e.Services
                 throw new Exception("Can't load " + file.Name + ": " + e.Message, e);
             }
         }
-        public static async Task<Level> LoadLevelAsync(IFile file)
+        public static async Task<Level> LoadLevelAsync(this OGLContext context, IFile file)
         {
-            using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false)) Level.Current = (Level)Level.Serializer.Deserialize(fs);
-            Level.Current.Sort();
-            return Level.Current;
+            using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false)) context.Levels = (Level)Level.Serializer.Deserialize(fs);
+            context.Levels.Sort();
+            return context.Levels;
         }
     }
 }

@@ -18,8 +18,8 @@ namespace Character_Builder_Builder.FeatureForms
             GP.DataBindings.Add("Value", f, "GP", true, DataSourceUpdateMode.OnPropertyChanged);
             basicFeature1.Feature = f;
             stringList1.Items = f.Items;
-            ImportExtensions.ImportItems();
-            stringList1.Suggestions = Item.simple.Keys;
+            Program.Context.ImportItems();
+            stringList1.Suggestions = Program.Context.ItemsSimple.Keys;
             UniqueID.DataBindings.Add("Text", f, "UniqueID", true, DataSourceUpdateMode.OnPropertyChanged);
             Amount.DataBindings.Add("Value", f, "Amount", true, DataSourceUpdateMode.OnPropertyChanged);
         }

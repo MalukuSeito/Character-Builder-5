@@ -23,8 +23,8 @@ namespace Character_Builder_Builder.FeatureForms
             UniqueID.DataBindings.Add("Text", f, "UniqueID", true, DataSourceUpdateMode.OnPropertyChanged);
             keywordControl1.Keywords = f.KeywordsToAdd;
             AdditinalSpells.Items = f.AdditionalSpells;
-            ImportExtensions.ImportSpells();
-            AdditinalSpells.Suggestions = Spell.simple.Keys;
+            Program.Context.ImportSpells();
+            AdditinalSpells.Suggestions = Program.Context.SpellsSimple.Keys;
         }
 
         public ModifySpellChoiceFeature edit(IHistoryManager history)

@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder_Forms;
+using OGL;
 using OGL.Base;
 using OGL.Common;
 using OGL.Keywords;
@@ -31,7 +32,8 @@ namespace Character_Builder_Builder
                 Groups.Add(KeywordGroup.NONE, none);
 
                 List<Keyword> feat = new List<Keyword>();
-                foreach (ClassDefinition c in ClassDefinition.simple.Values) feat.Add(new Keyword(c.Name));
+                Program.Context.ImportClasses();
+                foreach (ClassDefinition c in Program.Context.ClassesSimple.Values) feat.Add(new Keyword(c.Name));
                 Groups.Add(KeywordGroup.FEAT, feat);
                 List<Keyword> item = new List<Keyword>();
                 foreach (String s in "Unarmed, Simple, Martial, Finesse, Thrown, Loading, Reach, Melee, Ranged, Bludgeoning, Piercing, Slashing".Split(',')) item.Add(new Keyword(s.Trim()));
@@ -47,7 +49,7 @@ namespace Character_Builder_Builder
                 spell.Add(new Save(Ability.None));
                 foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) spell.Add(new Keyword(s.Trim()));
                 foreach (String s in "Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder".Split(',')) spell.Add(new Keyword(s.Trim()));
-                foreach (ClassDefinition c in ClassDefinition.simple.Values) spell.Add(new Keyword(c.Name));
+                foreach (ClassDefinition c in Program.Context.ClassesSimple.Values) spell.Add(new Keyword(c.Name));
                 Groups.Add(KeywordGroup.SPELL, spell);
             }
             InitializeComponent();

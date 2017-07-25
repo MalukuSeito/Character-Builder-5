@@ -13,13 +13,7 @@ namespace OGL
     public class MagicProperty : IComparable<MagicProperty>, IXML, IOGLElement<MagicProperty>, IOGLElement
     {
         [XmlIgnore]
-        public static Dictionary<string, MagicCategory> Categories = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        public static XmlSerializer Serializer = new XmlSerializer(typeof(MagicProperty));
-        [XmlIgnore]
-        static public Dictionary<String, MagicProperty> properties = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, MagicProperty> simple = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
+        public static XmlSerializer Serializer = new XmlSerializer(typeof(MagicProperty));        
         [XmlIgnore]
         public string Category;
         [XmlIgnore]
@@ -243,58 +237,25 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public MagicProperty()
         {
-            Source = ConfigManager.DefaultSource;
+            Source = "";
         }
 
-        public MagicProperty(string name, string desc)
+        public MagicProperty(OGLContext context, string name, string desc)
         {
             Name = name;
             Description = desc;
-            simple[Name] = this;
+            context.MagicSimple[Name] = this;
         }
 
         public int CompareTo(MagicProperty other)
         {
             return Name.CompareTo(other.Name);
-        }
-        //public static void ExportAll()
-        //{
-        //    //foreach (KeyValuePair<string, FeatureCollection> fc in Collections)
-        //    //{
-        //    //    string path = Path.Combine(ConfigManager.Directory_Features.FullName, fc.Key);
-        //    //    foreach (Feature i in fc.Value.Features)
-        //    foreach (MagicCategory c in Categories.Values)
-        //    {
-        //        foreach (MagicProperty i in c.Contents)
-        //        {
-        //            FileInfo file = SourceManager.getFileName(i.Name, i.Source, cleanname(i.Category));
-        //            file.Directory.Create();
-        //            using (TextWriter writer = new StreamWriter(file.FullName))
-        //            {
-        //                serializer.Serialize(writer, i);
-        //            }
-        //        }
-        //    }
-        //    //}
-        //}
-        
-        public static MagicProperty Get(String name, string sourcehint)
+        }        
+        public bool Test(OGLContext context)
         {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (properties.ContainsKey(name)) return properties[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && properties.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return properties[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown property: " + name);
-            return new MagicProperty(name, "Missing Entry");
-        }
-        public bool Test()
-        {
-            if (Name != null && Name.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Description != null && Description.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Requirement != null && Requirement.ToLowerInvariant().Contains(Item.Search)) return true;
+            if (Name != null && Name.ToLowerInvariant().Contains(context.Search)) return true;
+            if (Description != null && Description.ToLowerInvariant().Contains(context.Search)) return true;
+            if (Requirement != null && Requirement.ToLowerInvariant().Contains(context.Search)) return true;
             return false;
         }
         public override string ToString()
@@ -317,62 +278,49 @@ namespace OGL
             Serializer.Serialize(mem, this);
             return mem;
         }
-        public static IEnumerable<MagicCategory> Section()
-        {
-            if (Item.Search == null) return from mc in Categories.Values orderby mc select mc;
-            List<MagicCategory> res=new List<MagicCategory>();
-            foreach (MagicCategory mc in Categories.Values) {
-                MagicCategory copy = new MagicCategory(mc.Name, mc.DisplayName, mc.Indent)
-                {
-                    Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test() orderby mp select mp)
-                };
-                res.Add(copy);
-            }
-            return res;
-        }
         public string GetName(string oldname)
         {
             if (oldname != null && oldname != "") return (PrependName != null && PrependName != "" ? PrependName + " " : "") + oldname + (PostName != null && PostName != "" ? " " + PostName : "");
             return Name;
         }
-        public IEnumerable<Feature> Collect(int level, bool equipped, bool attuned, IChoiceProvider choiceProvider)
+        public IEnumerable<Feature> Collect(int level, bool equipped, bool attuned, IChoiceProvider choiceProvider, OGLContext context)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in CarryFeatures)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             if (equipped) foreach (Feature f in EquipFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             if (attuned) foreach (Feature f in AttunementFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             if (attuned && equipped) foreach (Feature f in AttunedEquipFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             return res;
         }
-        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider choiceProvider, bool attuned)
+        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider choiceProvider, bool attuned, OGLContext context)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in OnUseFeatures)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             if (attuned)
                 foreach (Feature f in AttunedOnUseFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             return res;
         }

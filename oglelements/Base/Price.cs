@@ -60,14 +60,14 @@ namespace OGL.Base
             }
             return r;
         }
-        public string toGold()
+        public string ToGold()
         {
             double res = gp + pp * 10.0 + sp / 10.0 + cp / 100.0 + ep / 2.0;
             return String.Format("{0:0.00}", res);
         }
-        public double Weight()
+        public double Weight(OGLContext context)
         {
-            return ConfigManager.Loaded.WeightOfACoin * (pp + gp + ep + sp + cp);
+            return context.Config.WeightOfACoin * (pp + gp + ep + sp + cp);
         }
     }
 }

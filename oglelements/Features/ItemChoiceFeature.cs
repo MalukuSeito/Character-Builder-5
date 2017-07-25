@@ -32,7 +32,7 @@ namespace OGL.Features
             Amount = amount;
             UniqueID = uniqueID;
         }
-        public override IEnumerable<Item> getItems(IChoiceProvider provider)
+        public override IEnumerable<Item> getItems(IChoiceProvider provider, OGLContext context)
         {
             List<Item> res = new List<Item>();
             int offset = provider.GetChoiceOffset(this, UniqueID, Amount);
@@ -41,7 +41,7 @@ namespace OGL.Features
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
                 Choice cho = provider.GetChoice(UniqueID + counter);
-                if (cho != null && cho.Value != "") res.Add(Item.Get(cho.Value, Source));
+                if (cho != null && cho.Value != "") res.Add(context.GetItem(cho.Value, Source));
             }
             return res;
         }

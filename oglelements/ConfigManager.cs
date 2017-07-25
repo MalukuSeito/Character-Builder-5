@@ -15,62 +15,35 @@ namespace OGL
     public delegate void LogEvent(object sender, string message, Exception e);
     public class ConfigManager
     {
-        public static HashSet<string> ExcludedSources { get; private set; } = new HashSet<string>();
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
-        public static StringComparer SourceInvariantComparer = new SourceInvariantComparer();
-        public static string Directory_Items = "Items";
-        
-        public static string Directory_Skills = "Skills";
-
-        public static string Directory_Languages = "Languages";
-        
-        public static string Directory_Features = "Feats";
-        
-        public static string Directory_Backgrounds = "Backgrounds";
-        
-        public static string Directory_Classes = "Classes";
-        
-        public static string Directory_SubClasses = "SubClasses/";
-        
-        public static string Directory_Races = "Races";
-        
-        public static string Directory_SubRaces = "SubRaces";
-        
-        public static string Directory_Spells = "Spells";
-        
-        public static string Directory_Magic = "Magic";
-        
-        public static string Directory_Conditions = "Conditions";
-
-        public static string Directory_Plugins = "Plugins";
-        
+        public static StringComparer SourceInvariantComparer = new SourceInvariantComparer(); 
         public static Boolean AlwaysShowSource = false;
 
         public static char SourceSeperator = '\u2014';
         public static string SourceSeperatorString = "\u2014";
         public static char[] InvalidChars = "\u2014".ToCharArray();
         public static bool Description = true;
-        public static int MultiClassTarget
+        public int MultiClassTarget
         {
             get
             {
-                if (Loaded!=null && Loaded.MultiClassingAbilityScoreRequirement > 0) return Loaded.MultiClassingAbilityScoreRequirement;
+                if (MultiClassingAbilityScoreRequirement > 0) return MultiClassingAbilityScoreRequirement;
                 return 13;
             }
             set
             {
-                Loaded.MultiClassingAbilityScoreRequirement = value;
+                MultiClassingAbilityScoreRequirement = value;
             }
         }
-        public static string DefaultSource
+        public string DefaultSource
         {
             get
             {
-                return Loaded.Source;
+                return Source;
             }
             set
             {
-                Loaded.Source = value;
+                Source = value;
             }
         }
         public static ILicense LicenseProvider;
@@ -88,9 +61,7 @@ namespace OGL
             WeightOfACoin = 1.0 / 50.0;
             Source = "My Source";
         }
-
-        public static ConfigManager Loaded { get; set; } = null;
-        
+       
 
         public int MultiClassingAbilityScoreRequirement = 13;
         public string Items_Directory = "Items/";
@@ -196,19 +167,19 @@ namespace OGL
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> FeaturesForMulticlassing = new List<Feature>() {};
         
-        public static List<string> PDFExporters { get; set; }
-        public static List<Feature> CommonFeatures
+        public List<string> PDFExporters { get; set; }
+        public List<Feature> CommonFeatures
         {
             get
             {
-                return Loaded.FeaturesForAll;
+                return FeaturesForAll;
             }
         }
-        public static List<Feature> MultiClassFeatures
+        public List<Feature> MultiClassFeatures
         {
             get
             {
-                return Loaded.FeaturesForMulticlassing;
+                return FeaturesForMulticlassing;
             }
         }
         private static Regex quotes = new Regex("([\\\"])(?:\\\\\\1|.)*?\\1");

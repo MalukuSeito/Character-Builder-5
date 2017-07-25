@@ -71,71 +71,45 @@ namespace OGL
         [XmlElement(Order = 10)]
         public String Flavour { get; set; }
         [XmlIgnore]
-        static public Dictionary<String, Background> backgrounds = new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, Background> simple= new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         [XmlElement(Order = 11)]
         public byte[] ImageData { get; set; }
-        public void Register(string file)
+        public void Register(OGLContext context, string file)
         {
             Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (backgrounds.ContainsKey(full)) throw new Exception("Duplicate Background: " + full);
-            backgrounds.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.Backgrounds.ContainsKey(full)) throw new Exception("Duplicate Background: " + full);
+            context.Backgrounds.Add(full, this);
+            if (context.BackgroundsSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.BackgroundsSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.BackgroundsSimple.Add(Name, this);
             
         }
         public Background()
         {
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
             Features = new List<Feature>();
             PersonalityTrait = new List<TableEntry>();
             Ideal = new List<TableEntry>();
             Bond = new List<TableEntry>();
             Flaw = new List<TableEntry>();
         }
-        public Background(String name, String description)
+        public Background(OGLContext context, String name, String description)
         {
             Name = name;
             Description = description;
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
+            Source = context.Config.DefaultSource;
             Features = new List<Feature>();
             PersonalityTrait = new List<TableEntry>();
             Ideal = new List<TableEntry>();
             Bond = new List<TableEntry>();
             Flaw = new List<TableEntry>();
-            Register(null);
-        }
-        public static Background Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (backgrounds.ContainsKey(name)) return backgrounds[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && backgrounds.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return backgrounds[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown Background: " + name);
-            return new Background(name, "Missing Entry");
-        }
-        //public static void ExportAll()
-        //{
-        //    foreach (Background i in backgrounds.Values)
-        //    {
-        //        FileInfo file = SourceManager.getFileName(i.Name, i.Source, ConfigManager.Directory_Backgrounds);
-        //        using (TextWriter writer = new StreamWriter(file.FullName)) Serializer.Serialize(writer, i);
-        //    }
-        //}
-        
+            Register(context, null);
+        }        
         public String ToXML()
         {
             using (StringWriter mem = new StringWriter())
@@ -160,12 +134,12 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public List<Feature> CollectFeatures(int level, IChoiceProvider provider)
+        public List<Feature> CollectFeatures(int level, IChoiceProvider provider, OGLContext context)
         {
             List<Feature> res=new List<Feature>();
             foreach (Feature f in Features)
             {
-                res.AddRange(f.Collect(level, provider));
+                res.AddRange(f.Collect(level, provider, context));
             }
             return res;
         }

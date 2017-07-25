@@ -19,8 +19,8 @@ namespace Character_Builder_Builder.FeatureForms
             foreach (ProficiencyBonus s in Enum.GetValues(typeof(ProficiencyBonus))) BonusType.Items.Add(s);
             BonusType.DataBindings.Add("SelectedItem", bf, "BonusType", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
-            ImportExtensions.ImportSkills();
-            SkillList.Suggestions = Skill.simple.Keys;
+            Program.Context.ImportSkills();
+            SkillList.Suggestions = Program.Context.SkillsSimple.Keys;
             basicFeature1.Feature = f;
         }
 

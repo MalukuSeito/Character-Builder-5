@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using PCLStorage;
 using System.IO;
 using System.Threading.Tasks;
+using PluginDMG;
 
 namespace CB_5e.Views
 {
@@ -32,12 +33,17 @@ namespace CB_5e.Views
             var item = args.SelectedItem as Character;
             if (item == null)
                 return;
-            Player.Current = item.Player;
+            BuilderContext Context = new BuilderContext(item.Player);
+            PluginManager manager = new PluginManager();
+            manager.plugins.Add(new SpellPoints());
+            manager.plugins.Add(new SingleLanguage());
+            Context.Plugins = manager;
+
             if (App.AutoSaveDuringPlay)
             {
                 Task.Run(async () =>
                 {
-                    if (Player.Current.FilePath is IFile file)
+                    if (Context.Player.FilePath is IFile file)
                     {
                         string name = file.Name;
                         IFile target = await (await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false)).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
@@ -51,26 +57,26 @@ namespace CB_5e.Views
                     }
                 }).Forget();
             }
-            Player.UndoBuffer = new LinkedList<Player>();
-            Player.RedoBuffer = new LinkedList<Player>();
-            Player.UnsavedChanges = 0;
+            Context.UndoBuffer = new LinkedList<Player>();
+            Context.RedoBuffer = new LinkedList<Player>();
+            Context.UnsavedChanges = 0;
             ItemsListView.SelectedItem = null;
-            LoadingPage l = new LoadingPage();
+            LoadingProgress loader = new LoadingProgress(Context);
+            LoadingPage l = new LoadingPage(loader);
             await Navigation.PushModalAsync(l);
             var t = l.Cancel.Token;
             try
             {
-                await LoadingProgress.Instance.Load(t).ConfigureAwait(false);
+                await loader.Load(t).ConfigureAwait(false);
                 t.ThrowIfCancellationRequested();
-                PlayerViewModel.Instance.FirePlayerChanged();
+                PlayerViewModel model = new PlayerViewModel(Context);
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopModalAsync(false);
-                    await Navigation.PushModalAsync(new PlayPage());
+                    await Navigation.PushModalAsync(new PlayPage(model));
                 });
             }
             catch (OperationCanceledException) {
-                Player.Current = null;
                 CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             }
             finally

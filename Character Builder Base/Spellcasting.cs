@@ -20,30 +20,30 @@ namespace Character_Builder
         public string Highlight { get; set; }
         //[XmlIgnore]
         // public string Displayname { get; set; }
-        public IEnumerable<ModifiedSpell> getPrepared(int level = 0)
+        public IEnumerable<ModifiedSpell> getPrepared(Player player, OGLContext context, int level = 0)
         {
-            combinePrepared(level);
-            List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(Spell.Get(s, null), null, false, false));
+            CombinePrepared(player, context, level);
+            List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(context.GetSpell(s, null), null, false, false));
             
-            foreach (Feature f in Player.Current.GetFeatures(level))
+            foreach (Feature f in player.GetFeatures(level))
             {
                 if (f is BonusSpellPrepareFeature && ((BonusSpellPrepareFeature)f).SpellcastingID == SpellcastingID)
                 {
                     BonusSpellPrepareFeature bspf = (BonusSpellPrepareFeature)f;
                     foreach (string s in bspf.Spells)
                     {
-                        res.Add(new ModifiedSpell(Spell.Get(s, bspf.Source), bspf.KeywordsToAdd, true, false));
+                        res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, true, false));
                     }
                 }
             }
             res.Sort();
             return res;
         }
-        public IEnumerable<ModifiedSpell> getLearned(int level = 0)
+        public IEnumerable<ModifiedSpell> getLearned(Player player, OGLContext context, int level = 0)
         {
             List<ModifiedSpell> res = new List<ModifiedSpell>();
-            combineSpellChoices(level);
-            foreach (Feature f in Player.Current.GetFeatures(level))
+            CombineSpellChoices(player, context, level);
+            foreach (Feature f in player.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     foreach (SpellChoice s in Spellchoices)
@@ -51,20 +51,20 @@ namespace Character_Builder
                         SpellChoiceFeature scf = (SpellChoiceFeature)f;
                         if (s.UniqueID == scf.UniqueID && scf.AddTo == PreparationMode.LearnSpells)
                         {
-                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, f.Source), scf.KeywordsToAdd, false, false));
+                            res.AddRange(from spell in s.Choices select new ModifiedSpell(context.GetSpell(spell, f.Source), scf.KeywordsToAdd, false, false));
                         }
                     }
                 }
             res.Sort();
             return res;
         }
-        public IEnumerable<Spell> getSpellbook(int level = 0)
+        public IEnumerable<Spell> getSpellbook(Player player, OGLContext context, int level = 0)
         {
             List<Spell> res = new List<Spell>();
-            combineSpellChoices(level);
-            combineSpellbookAdditional(level);
+            CombineSpellChoices(player, context, level);
+            CombineSpellbookAdditional(player, context, level);
             string sourcehint = null;
-            foreach (Feature f in Player.Current.GetFeatures(level))
+            foreach (Feature f in player.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -73,22 +73,22 @@ namespace Character_Builder
                         SpellChoiceFeature scf = (SpellChoiceFeature)f;
                         if (s.UniqueID == scf.UniqueID && scf.AddTo == PreparationMode.Spellbook)
                         {
-                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, scf.Source), scf.KeywordsToAdd, false, false));
+                            res.AddRange(from spell in s.Choices select new ModifiedSpell(context.GetSpell(spell, scf.Source), scf.KeywordsToAdd, false, false));
                         }
                     }
                 }
-            res.AddRange(from s in SpellbookAdditional select Spell.Get(s, sourcehint));
+            res.AddRange(from s in SpellbookAdditional select context.GetSpell(s, sourcehint));
             res.Sort();
             return res;
 
         }
-        public IEnumerable<Spell> getAdditionalClassSpells(int level = 0)
+        public IEnumerable<Spell> getAdditionalClassSpells(Player player, OGLContext context, int level = 0)
         {
             List<Spell> res = new List<Spell>();
-            combineSpellbookAdditional(level);
-            combineSpellChoices(level);
+            CombineSpellbookAdditional(player, context, level);
+            CombineSpellChoices(player, context, level);
             string sourcehint = null;
-            foreach (Feature f in Player.Current.GetFeatures(level))
+            foreach (Feature f in player.GetFeatures(level))
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -97,19 +97,19 @@ namespace Character_Builder
                         SpellChoiceFeature scf = (SpellChoiceFeature)f;
                         if (s.UniqueID == scf.UniqueID && scf.AddTo == PreparationMode.ClassList)
                         {
-                            res.AddRange(from spell in s.Choices select new ModifiedSpell(Spell.Get(spell, scf.Source), scf.KeywordsToAdd));
+                            res.AddRange(from spell in s.Choices select new ModifiedSpell(context.GetSpell(spell, scf.Source), scf.KeywordsToAdd));
                         }
                     }
                 }
-            res.AddRange(from s in SpellbookAdditional select Spell.Get(s, sourcehint));
+            res.AddRange(from s in SpellbookAdditional select context.GetSpell(s, sourcehint));
             res.Sort();
             return res;
         }
 
-        public List<string> getPreparedList(int level = 0)
+        public List<string> getPreparedList(Player player, OGLContext context, int level = 0)
         {
             if (level ==0) {
-                level = Player.Current.GetLevel();
+                level = player.GetLevel();
             }
             SpellPerLevel result = (from prep in PreparedPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null)
@@ -127,11 +127,11 @@ namespace Character_Builder
             return result.Spells;
         }
 
-        public List<string> getAdditionalList(int level = 0)
+        public List<string> getAdditionalList(Player player, OGLContext context, int level = 0)
         {
             if (level == 0)
             {
-                level = Player.Current.GetLevel();
+                level = player.GetLevel();
             }
             SpellPerLevel result = (from prep in SpellbookAdditionalPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null)
@@ -149,32 +149,32 @@ namespace Character_Builder
             return result.Spells;
         }
 
-        private void combinePrepared(int level = 0)
+        private void CombinePrepared(Player player, OGLContext context, int level = 0)
         {
             if (level ==0) {
-                level = Player.Current.GetLevel();
+                level = player.GetLevel();
             }
             SpellPerLevel result = (from prep in PreparedPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null) Prepared = new List<string>(result.Spells);
             else Prepared = new List<string>();
         }
 
-        private void combineSpellbookAdditional(int level = 0)
+        private void CombineSpellbookAdditional(Player player, OGLContext context, int level = 0)
         {
             if (level == 0)
             {
-                level = Player.Current.GetLevel();
+                level = player.GetLevel();
             }
             SpellPerLevel result = (from prep in SpellbookAdditionalPerLevel where prep.Level <= level orderby prep.Level descending select prep).FirstOrDefault();
             if (result != null) SpellbookAdditional = new List<string>(result.Spells);
             else SpellbookAdditional = new List<string>();
         }
 
-        private void combineSpellChoices(int level = 0)
+        private void CombineSpellChoices(Player player, OGLContext context, int level = 0)
         {
             if (level == 0)
             {
-                level = Player.Current.GetLevel();
+                level = player.GetLevel();
             }
             Spellchoices.Clear();
             foreach (SpellChoicePerLevel scpl in from prep in SpellChoicesPerLevel where prep.Level <= level orderby prep.Level descending select prep) {

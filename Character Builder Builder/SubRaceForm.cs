@@ -27,8 +27,8 @@ namespace Character_Builder_Builder
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             imageChooser1.History = this;
-            ImportExtensions.ImportRaces();
-            foreach (string s in Race.simple.Keys)
+            Program.Context.ImportRaces();
+            foreach (string s in Program.Context.RacesSimple.Keys)
             {
                 ParentRace.AutoCompleteCustomSource.Add(s);
                 ParentRace.Items.Add(s);

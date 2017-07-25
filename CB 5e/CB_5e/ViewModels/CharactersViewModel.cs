@@ -53,10 +53,11 @@ namespace CB_5e.ViewModels
             {
                 Items.Clear();
                 await PCLSourceManager.InitAsync().ConfigureAwait(false);
-                ConfigManager config = await PCLImport.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml").ConfigureAwait(false)).ConfigureAwait(false);
-                await PCLImport.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels).ConfigureAwait(false)).ConfigureAwait(false);
-                await PCLImport.ImportClassesAsync(false).ConfigureAwait(true);
-                await PCLImport.ImportSubClassesAsync(false).ConfigureAwait(true);
+                BuilderContext TinyContext = new BuilderContext();
+                ConfigManager config = await TinyContext.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml").ConfigureAwait(false)).ConfigureAwait(false);
+                await TinyContext.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels).ConfigureAwait(false)).ConfigureAwait(false);
+                await TinyContext.ImportClassesAsync(false).ConfigureAwait(true);
+                await TinyContext.ImportSubClassesAsync(false).ConfigureAwait(true);
                 IFolder characters = await App.Storage.CreateFolderAsync("Characters", CreationCollisionOption.OpenIfExists);
                 var items = new List<Character>();
                 foreach (IFile c in await characters.GetFilesAsync().ConfigureAwait(false))
@@ -64,7 +65,7 @@ namespace CB_5e.ViewModels
                     if (!c.Name.EndsWith(".cb5", StringComparison.OrdinalIgnoreCase)) continue;
                     try
                     {
-                        Player p = await PCLImport.LoadPlayerAsync(c);
+                        Player p = await TinyContext.LoadPlayerAsync(c);
                         items.Add(new Character()
                         {
                             Player = p

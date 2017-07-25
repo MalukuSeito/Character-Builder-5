@@ -8,15 +8,15 @@ namespace Character_Builder_Plugin
     public interface IPlugin
     {
         string Name { get; }
-        List<Feature> filterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterFeats(List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterBoons(List<Feature> features, int level, IChoiceProvider provider);
-        List<Feature> filterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider);
+        List<Feature> FilterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterFeats(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterBoons(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
+        List<Feature> FilterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
     }
 }
  

@@ -38,7 +38,7 @@ namespace Character_Builder_Builder
             imageChooser1.History = this;
             foreach (Slot s in Enum.GetValues(typeof(Slot))) Slot.Items.Add(s);
             foreach (Rarity s in Enum.GetValues(typeof(Rarity))) Rarity.Items.Add(s);
-            ImportExtensions.ImportItems();
+            Program.Context.ImportItems();
 
         }
 
@@ -268,7 +268,7 @@ namespace Character_Builder_Builder
             preview.Document.OpenNew(true);
             try
             {
-                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Item.FilterPreview(Base.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
+                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Program.Context.FilterPreview(Base.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
                 preview.Document.Write(f.ToHTML());
             }
             catch (Exception ex)

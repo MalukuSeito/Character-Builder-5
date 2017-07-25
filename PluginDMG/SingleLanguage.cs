@@ -27,54 +27,54 @@ namespace PluginDMG
             }
         }
 
-        public List<Feature> filterBackgroundFeatures(Background b, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBackgroundFeatures(Background b, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, background);
+            return ScanReplace(features, background);
         }
 
-        public List<Feature> filterBoons(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBoons(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, boon);
+            return ScanReplace(features, boon);
         }
 
-        public List<Feature> filterClassFeatures(ClassDefinition c, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterClassFeatures(ClassDefinition c, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, cls);
+            return ScanReplace(features, cls);
         }
 
-        public List<Feature> filterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, common);
+            return ScanReplace(features, common);
         }
 
-        public List<Feature> filterFeats(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterFeats(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, feat);
+            return ScanReplace(features, feat);
         }
 
-        public List<Feature> filterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, possesion);
+            return ScanReplace(features, possesion);
         }
 
-        public List<Feature> filterRaceFeatures(Race r, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterRaceFeatures(Race r, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            List<Feature> res = scanReplace(features, race);
-            if (Language.simple.ContainsKey("Common"))
-                res.Add(new LanguageProficiencyFeature("", "", Language.simple["Common"], 0, true));
+            List<Feature> res = ScanReplace(features, race);
+            if (Context.LanguagesSimple.ContainsKey("Common"))
+                res.Add(new LanguageProficiencyFeature("", "", Context.LanguagesSimple["Common"], 0, true));
             return res;
         }
 
-        public List<Feature> filterSubClassFeatures(SubClass sc, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterSubClassFeatures(SubClass sc, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, subcls);
+            return ScanReplace(features, subcls);
         }
 
-        public List<Feature> filterSubRaceFeatures(SubRace sr, Race race, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterSubRaceFeatures(SubRace sr, Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-            return scanReplace(features, subrace);
+            return ScanReplace(features, subrace);
         }
-        private List<Feature> scanReplace(List<Feature> feats, SkillProficiencyChoiceFeature replacement)
+        private List<Feature> ScanReplace(List<Feature> feats, SkillProficiencyChoiceFeature replacement)
         {
             List<Feature> res = new List<Feature>(feats.Count);
             int count = 0;

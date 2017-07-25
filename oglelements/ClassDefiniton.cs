@@ -138,36 +138,31 @@ namespace OGL
         public String Source { get; set; }
         public String MulticlassingCondition {get; set; }
         [XmlIgnore]
-        static public Dictionary<String, ClassDefinition> classes = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, ClassDefinition> simple = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         
         public byte[] ImageData { get; set; }
-        public void Register(string filename, bool applyKeywords)
+        public void Register(OGLContext context, string filename, bool applyKeywords)
         {
             this.filename = filename;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (classes.ContainsKey(full)) throw new Exception("Duplicate Class: " + full);
-            classes.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.Classes.ContainsKey(full)) throw new Exception("Duplicate Class: " + full);
+            context.Classes.Add(full, this);
+            if (context.ClassesSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.ClassesSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.ClassesSimple.Add(Name, this);
             Keyword me = new Keyword(Name);
             if (applyKeywords)
             {
-                if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in FeatureCollection.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
-                if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in Spell.spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me);
+                if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in context.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
+                if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in context.Spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me);
             }
         }
         public ClassDefinition()
         {
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
             Features = new List<Feature>();
             MulticlassingSpellLevels = new List<int>();
             MulticlassingFeatures = new List<Feature>();
@@ -179,12 +174,12 @@ namespace OGL
             HitDie = 4;
             AverageHPPerLevel = 2;
         }
-        public ClassDefinition(String name, String description, int hitdie, List<string> featuresToAddClassKeywordTo = null, List<List<string>> spellsToAddClassKeywordTo = null)
+        public ClassDefinition(OGLContext context, String name, String description, int hitdie, List<string> featuresToAddClassKeywordTo = null, List<List<string>> spellsToAddClassKeywordTo = null)
         {
             Name = name;
             Description = description;
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
+            Source = context.Config.DefaultSource;
             Features = new List<Feature>();
             MulticlassingSpellLevels = new List<int>();
             MulticlassingFeatures = new List<Feature>();
@@ -200,9 +195,9 @@ namespace OGL
             {
                 foreach (List<string> ls in spellsToAddClassKeywordTo)
                 {
-                    foreach (string s in ls) if (!Spell.simple.ContainsKey(s))
+                    foreach (string s in ls) if (!context.SpellsSimple.ContainsKey(s))
                         {
-                            Spell sp = new Spell(level, s, "", "", "", "Missing Entry");
+                            Spell sp = new Spell(context, level, s, "", "", "", "Missing Entry");
                             if (level == 0) sp.AssignKeywords(new Keyword("Cantrip"));
 
                         }
@@ -210,20 +205,9 @@ namespace OGL
                     SpellsToAddClassKeywordTo.AddRange(ls);
                 }
             }
-            Register(null, false);
+            Register(context, null, false);
         }
-        public static ClassDefinition Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (classes.ContainsKey(name)) return classes[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && classes.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return classes[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown Class: " + name);
-            return new ClassDefinition(name, "Missing Entry", 4);
-        }
+        
         public String ToXML()
         {
             using (StringWriter mem = new StringWriter())
@@ -239,14 +223,6 @@ namespace OGL
             Serializer.Serialize(mem, this);
             return mem;
         }
-        public static IEnumerable<ClassDefinition> GetClasses(int level, IChoiceProvider provider)
-        {
-            if (level > 1)
-            {
-                return from c in classes.Values where provider.CanMulticlass(c, level) select c;
-            }
-            return from c in classes.Values where c.AvailableAtFirstLevel select c;
-        }
         public override string ToString()
         {
             if (ShowSource || ConfigManager.AlwaysShowSource) return Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -256,23 +232,23 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public List<Feature> CollectFeatures(int level, bool secondClass, IChoiceProvider provider)
+        public List<Feature> CollectFeatures(int level, bool secondClass, IChoiceProvider provider, OGLContext context)
         {
             List<Feature> res=new List<Feature>();
             foreach (Feature f in Features)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, provider));
+                res.AddRange(f.Collect(level, provider, context));
             }
             if (secondClass) foreach (Feature f in MulticlassingFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, provider));
+                    res.AddRange(f.Collect(level, provider, context));
                 }
             else foreach (Feature f in FirstClassFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, provider));
+                    res.AddRange(f.Collect(level, provider, context));
                 }
             return res;
         }

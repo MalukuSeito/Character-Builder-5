@@ -21,24 +21,23 @@ namespace Character_Builder
                 throw new NotImplementedException();
             }
         }
-        public static event EventHandler PluginsChanged;
-        public static PluginManager manager;
+        public event EventHandler PluginsChanged;
         public Dictionary<string, IPlugin> available = new Dictionary<string, IPlugin>(StringComparer.OrdinalIgnoreCase);
         public List<IPlugin> plugins = new List<IPlugin>();
-        public static void FireEvent(PluginManager plug, EventArgs args) => PluginsChanged?.Invoke(plug, args);
+        public void FireEvent(PluginManager plug, EventArgs args) => PluginsChanged?.Invoke(plug, args);
         public void Load(List<string> rules)
         {
             plugins.Clear();
             if (rules != null) foreach (string p in rules) if (available.ContainsKey(p)) plugins.Add(available[p]);
-            PluginManager.FireEvent(this, EventArgs.Empty);
+            FireEvent(this, EventArgs.Empty);
         }
-        public List<Feature> filterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins)
             {
                 try
                 {
-                    features = i.filterBackgroundFeatures(background, features, level, provider);
+                    features = i.FilterBackgroundFeatures(background, features, level, provider, context);
                 }
                 catch (Exception e)
                 {
@@ -48,10 +47,10 @@ namespace Character_Builder
             return features;
         }
 
-        public List<Feature> filterBoons(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBoons(List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins) {
-                try { features = i.filterBoons(features, level, provider); }
+                try { features = i.FilterBoons(features, level, provider, context); }
                 catch (Exception e)
                 {
                     ConfigManager.LogError("Error in Plugin " + i.Name, e);
@@ -60,13 +59,13 @@ namespace Character_Builder
             return features;
         }
 
-        public List<Feature> filterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins)
             {
                 try
                 {
-                    features = i.filterClassFeatures(cls, classlevel, features, level, provider);
+                    features = i.FilterClassFeatures(cls, classlevel, features, level, provider, context);
                 }
                 catch (Exception e)
                 {
@@ -76,59 +75,12 @@ namespace Character_Builder
             return features;
         }
 
-        public List<Feature> filterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider)
-        {
-            foreach (IPlugin i in plugins) {
-                try
-                {
-                    features = i.filterCommonFeatures(features, level, provider);
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
-                }
-            }
-            return features;
-        }
-
-        public List<Feature> filterFeats(List<Feature> features, int level, IChoiceProvider provider)
-        {
-            foreach (IPlugin i in plugins)
-            {
-                try
-                {
-                    features = i.filterFeats(features, level, provider);
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
-                }
-            }
-            return features;
-        }
-
-        public List<Feature> filterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider)
-        {
-            foreach (IPlugin i in plugins)
-            {
-                try
-                {
-                    features = i.filterPossessionFeatures(features, level, provider);
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
-                }
-            }
-            return features;
-        }
-
-        public List<Feature> filterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins) {
                 try
                 {
-                    features = i.filterRaceFeatures(race, features, level, provider);
+                    features = i.FilterCommonFeatures(features, level, provider, context);
                 }
                 catch (Exception e)
                 {
@@ -138,13 +90,13 @@ namespace Character_Builder
             return features;
         }
 
-        public List<Feature> filterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterFeats(List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins)
             {
                 try
                 {
-                    features = i.filterSubClassFeatures(subcls, cls, classlevel, features, level, provider);
+                    features = i.FilterFeats(features, level, provider, context);
                 }
                 catch (Exception e)
                 {
@@ -154,12 +106,59 @@ namespace Character_Builder
             return features;
         }
 
-        public List<Feature> filterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
+        {
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.FilterPossessionFeatures(features, level, provider, context);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
+            return features;
+        }
+
+        public List<Feature> FilterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins) {
                 try
                 {
-                    features = i.filterSubRaceFeatures(subrace, race, features, level, provider);
+                    features = i.FilterRaceFeatures(race, features, level, provider, context);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
+            return features;
+        }
+
+        public List<Feature> FilterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
+        {
+            foreach (IPlugin i in plugins)
+            {
+                try
+                {
+                    features = i.FilterSubClassFeatures(subcls, cls, classlevel, features, level, provider, context);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error in Plugin " + i.Name, e);
+                }
+            }
+            return features;
+        }
+
+        public List<Feature> FilterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
+        {
+            foreach (IPlugin i in plugins) {
+                try
+                {
+                    features = i.FilterSubRaceFeatures(subrace, race, features, level, provider, context);
                 }
                 catch (Exception e)
                 {

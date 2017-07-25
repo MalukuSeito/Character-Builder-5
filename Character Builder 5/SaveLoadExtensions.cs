@@ -23,12 +23,12 @@ namespace Character_Builder_5
         {
             Player.Serializer.Serialize(fs, p);
         }
-        public static Player Load(FileStream fs)
+        public static Player Load(BuilderContext context, FileStream fs)
         {
             try
             {
                 Player p = (Player)Player.Serializer.Deserialize(fs);
-
+                p.Context = context;
                 p.Allies = p.Allies.Replace("\n", Environment.NewLine);
                 p.Backstory = p.Backstory.Replace("\n", Environment.NewLine);
                 foreach (Possession pos in p.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
@@ -78,10 +78,10 @@ namespace Character_Builder_5
                     o.FactionImage = ms.ToArray();
                 }
         }
-        public static void LoadPluginManager(string path)
+        public static void LoadPluginManager(this BuilderContext context, string path)
         {
             PluginManager plug = new PluginManager();
-            PluginManager.manager = plug;
+            context.Plugins = plug;
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {

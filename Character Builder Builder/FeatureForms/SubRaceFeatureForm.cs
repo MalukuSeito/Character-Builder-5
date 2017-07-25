@@ -14,9 +14,9 @@ namespace Character_Builder_Builder.FeatureForms
             bf = f;
             InitializeComponent();
             basicFeature1.Feature = f;
-            ImportExtensions.ImportRaces();
+            Program.Context.ImportRaces();
             stringList1.Items = f.Races;
-            stringList1.Suggestions = Race.simple.Keys;
+            stringList1.Suggestions = Program.Context.RacesSimple.Keys;
         }
 
         public SubRaceFeature edit(IHistoryManager history)

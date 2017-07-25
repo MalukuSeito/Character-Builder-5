@@ -23,7 +23,7 @@ namespace OGL.Features
             Amount = amount;
             UniqueID = uniqueID;
         }
-        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider)
+        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             if (Level > level) return new List<Feature>();
             int offset = choiceProvider.GetChoiceOffset(this, UniqueID, Amount);
@@ -35,9 +35,9 @@ namespace OGL.Features
                 Choice cho = choiceProvider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "")
                 {
-                    Feature feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
-                    if (feat == null) feat = FeatureCollection.Get(Collection, AllowSameChoice ? c : 0).Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
-                    if (feat != null) res.AddRange(feat.Collect(level, choiceProvider));
+                    Feature feat = context.GetFeatureCollection(Collection, AllowSameChoice ? c : 0).Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
+                    if (feat == null) feat = context.GetFeatureCollection(Collection, AllowSameChoice ? c : 0).Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
+                    if (feat != null) res.AddRange(feat.Collect(level, choiceProvider, context));
                     else ConfigManager.LogError("Missing Feature: " + cho.Value + " in " + Collection);
                 }
             }

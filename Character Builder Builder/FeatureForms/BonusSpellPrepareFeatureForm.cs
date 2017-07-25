@@ -14,8 +14,8 @@ namespace Character_Builder_Builder.FeatureForms
             bf = f;
             InitializeComponent();
             basicFeature1.Feature = f;
-            ImportExtensions.ImportSpells();
-            stringList1.Suggestions = Spell.simple.Keys;
+            Program.Context.ImportSpells();
+            stringList1.Suggestions = Program.Context.SpellsSimple.Keys;
             foreach (string s in SpellcastingFeatureForm.SPELLCASTING_FEATURES)
             {
                 SpellcastingID.AutoCompleteCustomSource.Add(s);

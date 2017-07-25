@@ -18,64 +18,64 @@ namespace PluginDMG
             }
         }
 
-        public List<Feature> filterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterBoons(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterBoons(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             if (cls != null && cls.MulticlassingSpellLevels != null && cls.MulticlassingSpellLevels.Count >= classlevel)
             {
                 features.RemoveAll(f => f is SpellSlotsFeature);
-                features.AddRange(getFeature("CLS_" + cls.Name, cls.MulticlassingSpellLevels[classlevel - 1]));
+                features.AddRange(GetFeature("CLS_" + cls.Name, cls.MulticlassingSpellLevels[classlevel - 1]));
             } else if (cls == null)
             {
-                features.AddRange(getFeature("MULTICLASSING", classlevel));
+                features.AddRange(GetFeature("MULTICLASSING", classlevel));
             }
             return features;
         }
 
-        public List<Feature> filterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterCommonFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterFeats(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterFeats(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterPossessionFeatures(List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
 
-        public List<Feature> filterSubClassFeatures(SubClass sc, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterSubClassFeatures(SubClass sc, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             if (sc != null && sc.MulticlassingSpellLevels != null && sc.MulticlassingSpellLevels.Count >= classlevel)
             {
                 features.RemoveAll(f => f is SpellSlotsFeature);
-                features.AddRange(getFeature("SUB_" + sc.Name, sc.MulticlassingSpellLevels[classlevel - 1]));
+                features.AddRange(GetFeature("SUB_" + sc.Name, sc.MulticlassingSpellLevels[classlevel - 1]));
             }
             return features;
         }
 
-        public List<Feature> filterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider)
+        public List<Feature> FilterSubRaceFeatures(SubRace subrace, Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
             return features;
         }
-        private List<ResourceFeature> getFeature(string i, int level)
+        private List<ResourceFeature> GetFeature(string i, int level)
         {
             List<ResourceFeature> features = new List<ResourceFeature>();
             ResourceFeature feature = new ResourceFeature("Spell Points", "Spell Level: Point Cost\n1st: 2\n2nd: 3\n3rd: 5 \n4th: 6\n5th: 7\n6th: 9\n7th: 10\n8th: 11\n9th: 13", "VARIANT_SPELL_POINTS_" + i.ToUpperInvariant(), "VARIANT_SPELL_POINTS", 0, RechargeModifier.LongRest, 1, false);

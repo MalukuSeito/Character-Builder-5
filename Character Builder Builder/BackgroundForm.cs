@@ -29,7 +29,7 @@ namespace Character_Builder_Builder
             features1.HistoryManager = this;
             decriptions1.HistoryManager = this;
             imageChooser1.History = this;
-            ImportExtensions.ImportSpells();
+            Program.Context.ImportSpells();
 
         }
 

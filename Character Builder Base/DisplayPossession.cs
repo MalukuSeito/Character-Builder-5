@@ -18,7 +18,7 @@ namespace Character_Builder
         {
 
         }
-        public DisplayPossession(Possession p)
+        public DisplayPossession(Possession p, Player player)
         {
             Count = p.Count;
             Description = p.Description;
@@ -26,7 +26,7 @@ namespace Character_Builder
             Weight = p.Weight;
             Item = p.Item;
             Magic = p.Magic;
-            Info = Player.Current.GetAttack(p);
+            Info = player.GetAttack(p);
         }
     }
 }

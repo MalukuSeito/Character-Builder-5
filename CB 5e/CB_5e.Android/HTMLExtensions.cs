@@ -37,14 +37,14 @@ namespace CB_5e.Droid
         public static string Error(Exception ex) => "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
         public static Dictionary<Type, XslCompiledTransform> Transforms = new Dictionary<Type, XslCompiledTransform>();
         public static XslCompiledTransform Transform = new XslCompiledTransform();
-
+        public static ConfigManager Config;
 
         public static event LoadTransformEventHandler LoadTransform;
 
         public static void RemoveDescription(MemoryStream mem)
         {
             if (ConfigManager.Description) return;
-            if (Transform.OutputSettings == null) Transform.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.RemoveDescription_Transform);
+            if (Transform.OutputSettings == null) Transform.Load(App.Storage.Path + "/Data/" + Config.RemoveDescription_Transform);
             using (MemoryStream mem2 = new MemoryStream())
             {
                 mem.Seek(0, SeekOrigin.Begin);
@@ -61,21 +61,21 @@ namespace CB_5e.Droid
 
         static HTMLExtensions()
         {
-            LoadTransform += (t, o) => { if (o is Background) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Backgrounds_Transform); };
-            LoadTransform += (t, o) => { if (o is Feature) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Features_Transform); };
-            LoadTransform += (t, o) => { if (o is FeatureContainer) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Features_Transform); };
-            LoadTransform += (t, o) => { if (o is ClassDefinition) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Classes_Transform); };
-            LoadTransform += (t, o) => { if (o is Condition) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Conditions_Transform); };
+            LoadTransform += (t, o) => { if (o is Background) t.Load(App.Storage.Path + "/Data/" + Config.Backgrounds_Transform); };
+            LoadTransform += (t, o) => { if (o is Feature) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
+            LoadTransform += (t, o) => { if (o is FeatureContainer) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
+            LoadTransform += (t, o) => { if (o is ClassDefinition) t.Load(App.Storage.Path + "/Data/" + Config.Classes_Transform); };
+            LoadTransform += (t, o) => { if (o is Condition) t.Load(App.Storage.Path + "/Data/" + Config.Conditions_Transform); };
             LoadTransform += (t, o) => { if (o is Description) t.Load(App.Storage.Path + "/Data/" + Transform_Description); };
             LoadTransform += (t, o) => { if (o is DescriptionContainer) t.Load(App.Storage.Path + "/Data/" + Transform_Description); };
-            LoadTransform += (t, o) => { if (o is Item) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Items_Transform); };
-            LoadTransform += (t, o) => { if (o is Language) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Languages_Transform); };
-            LoadTransform += (t, o) => { if (o is MagicProperty) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Magic_Transform); };
-            LoadTransform += (t, o) => { if (o is Race) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Races_Transform); };
-            LoadTransform += (t, o) => { if (o is Skill) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Skills_Transform); };
-            LoadTransform += (t, o) => { if (o is Spell) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.Spells_Transform); };
-            LoadTransform += (t, o) => { if (o is SubClass) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.SubClasses_Transform); };
-            LoadTransform += (t, o) => { if (o is SubRace) t.Load(App.Storage.Path + "/Data/" + ConfigManager.Loaded.SubRaces_Transform); };
+            LoadTransform += (t, o) => { if (o is Item) t.Load(App.Storage.Path + "/Data/" + Config.Items_Transform); };
+            LoadTransform += (t, o) => { if (o is Language) t.Load(App.Storage.Path + "/Data/" + Config.Languages_Transform); };
+            LoadTransform += (t, o) => { if (o is MagicProperty) t.Load(App.Storage.Path + "/Data/" + Config.Magic_Transform); };
+            LoadTransform += (t, o) => { if (o is Race) t.Load(App.Storage.Path + "/Data/" + Config.Races_Transform); };
+            LoadTransform += (t, o) => { if (o is Skill) t.Load(App.Storage.Path + "/Data/" + Config.Skills_Transform); };
+            LoadTransform += (t, o) => { if (o is Spell) t.Load(App.Storage.Path + "/Data/" + Config.Spells_Transform); };
+            LoadTransform += (t, o) => { if (o is SubClass) t.Load(App.Storage.Path + "/Data/" + Config.SubClasses_Transform); };
+            LoadTransform += (t, o) => { if (o is SubRace) t.Load(App.Storage.Path + "/Data/" + Config.SubRaces_Transform); };
             LoadTransform += (t, o) => { if (o is Possession) t.Load(App.Storage.Path + "/Data/" + Transform_Possession); };
         }
 

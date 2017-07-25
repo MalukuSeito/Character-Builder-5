@@ -53,15 +53,15 @@ namespace OGL.Features
             if (kws.Count > 0) KWChanged = true;
             return this;
         }
-        public Feature AssignCategory(string cat)
+        public Feature AssignCategory(OGLContext context, string cat)
         {
             Category = cat;
-            if (!FeatureCollection.Categories.ContainsKey(cat)) FeatureCollection.Categories.Add(cat,new List<Feature>());
-            FeatureCollection.Categories[cat].Add(this);
-            FeatureCollection.Features.Add(this);
+            if (!context.FeatureCategories.ContainsKey(cat)) context.FeatureCategories.Add(cat,new List<Feature>());
+            context.FeatureCategories[cat].Add(this);
+            context.Features.Add(this);
             return this;
         }
-        public virtual List<Feature> Collect(int level, IChoiceProvider choiceProvider)
+        public virtual List<Feature> Collect(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             if (Level > level) return new List<Feature>();
             return new List<Feature>() { this };
@@ -94,11 +94,11 @@ namespace OGL.Features
         public int CompareTo (Feature other) {
             return Name.CompareTo(other.Name);
         }
-        public bool Test()
+        public bool Test(OGLContext context)
         {
-            if (Name.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Text.ToLowerInvariant().Contains(Item.Search)) return true;
-            if (Keywords.Exists(k => k.Name == Item.Search)) return true;
+            if (Name.ToLowerInvariant().Contains(context.Search)) return true;
+            if (Text.ToLowerInvariant().Contains(context.Search)) return true;
+            if (Keywords.Exists(k => k.Name == context.Search)) return true;
             return false;
         }
         public virtual string Displayname()

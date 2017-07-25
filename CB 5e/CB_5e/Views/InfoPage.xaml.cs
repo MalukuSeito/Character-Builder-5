@@ -1,4 +1,5 @@
-﻿using OGL.Common;
+﻿using OGL;
+using OGL.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CB_5e.Views
     public interface IHTMLService
     {
         string Convert(IXML obj);
-        void Reset();
+        void Reset(ConfigManager config);
     }
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InfoPage : ContentPage

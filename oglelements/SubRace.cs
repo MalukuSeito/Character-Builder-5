@@ -62,68 +62,49 @@ namespace OGL
         [XmlElement(ElementName = "ParentRace")]
         public String RaceName { get; set; }
         public byte[] ImageData { get; set; }
-        [XmlIgnore]
-        public Race ParentRace
-        {
-            get
-            {
-                if (RaceName == null || RaceName == "" || RaceName == "*") return null;
-                return Race.Get(RaceName, Source);
-            }
-            set
-            {
-                if (value == null) RaceName = "";
-                else RaceName = value.Name;
-            }
-        }
-        [XmlIgnore]
-        static public Dictionary<String, SubRace> subraces = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
+        //[XmlIgnore]
+        //public Race ParentRace
+        //{
+        //    get
+        //    {
+        //        if (RaceName == null || RaceName == "" || RaceName == "*") return null;
+        //        return Race.Get(RaceName, Source);
+        //    }
+        //    set
+        //    {
+        //        if (value == null) RaceName = "";
+        //        else RaceName = value.Name;
+        //    }
+        //}
+        
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        [XmlIgnore]
-        static public Dictionary<String, SubRace> simple = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
-        public void Register(string file)
+
+        public void Register(OGLContext context, string file)
         {
             Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (subraces.ContainsKey(full)) throw new Exception("Duplicate Subrace: " + full);
-            subraces.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.SubRaces.ContainsKey(full)) throw new Exception("Duplicate Subrace: " + full);
+            context.SubRaces.Add(full, this);
+            if (context.SubRacesSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.SubRacesSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.SubRacesSimple.Add(Name, this);
         }
         public SubRace() : base() {
             Features = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
         }
-        public SubRace(String name, Race race)
+        public SubRace(OGLContext context, String name, Race race)
         {
             Name = name;
             if (race != null) RaceName = race.Name;
             Features = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
-            Register(null);
-        }
-          public static SubRace Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (subraces.ContainsKey(name)) return subraces[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && subraces.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subraces[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown Subrace: " + name);
-            SubRace sr = new SubRace(name, null)
-            {
-                Description = "Missing Entry"
-            };
-            return sr;
+            Source = context.Config.DefaultSource;
+            Register(context, null);
         }
         public String ToXML()
         {
@@ -151,19 +132,15 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public List<Feature> CollectFeatures(int level, IChoiceProvider choiceProvider)
+        public List<Feature> CollectFeatures(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in Features)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             return res;
-        }
-        public static IEnumerable<SubRace> For(List<String> races)
-        {
-            return (from s in subraces.Values where races.Contains(s.RaceName) || s.RaceName == "*" select s);
         }
         public SubRace Clone()
         {

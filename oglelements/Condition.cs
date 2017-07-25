@@ -11,10 +11,6 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Condition));
         [XmlIgnore]
-        static public Dictionary<String, Condition> conditions = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, Condition> simple = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
         public string filename;
         public String Name { get; set; }
         public String Description { get; set; }
@@ -23,46 +19,34 @@ namespace OGL
         public bool ShowSource { get; set; } = false;
 
         public byte[] ImageData { get; set; }
-        public void Register(string file)
+        public void Register(OGLContext context, string file)
         {
             filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (conditions.ContainsKey(full)) throw new Exception("Duplicate Condition: " + full);
-            conditions.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.Conditions.ContainsKey(full)) throw new Exception("Duplicate Condition: " + full);
+            context.Conditions.Add(full, this);
+            if (context.ConditionsSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.ConditionsSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.ConditionsSimple.Add(Name, this);
         }
         public Condition() 
         {
-            Source = ConfigManager.DefaultSource;
         }
         public Condition(String name)
         {
             Name = name;
             Description = "Custom Condition";
-            Source = ConfigManager.DefaultSource;
+            Source = "Custom";
         }
-        public Condition(String name, String description)
+        public Condition(OGLContext context, String name, String description)
         {
             Name = name;
             Description = description;
-            Source = ConfigManager.DefaultSource;
-            Register(null);
-        }
-        public static Condition Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (conditions.ContainsKey(name)) return conditions[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && conditions.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return conditions[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            return new Condition(name);
+            Source = context.Config.DefaultSource;
+            Register(context, null);
         }
         public String ToXML()
         {

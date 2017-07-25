@@ -15,9 +15,9 @@ namespace Character_Builder_Builder.FeatureForms
             InitializeComponent();
 
             basicFeature1.Feature = f;
-            ImportExtensions.ImportItems();
+            Program.Context.ImportItems();
             stringList1.Items = f.Tools;
-            stringList1.Suggestions = Item.simple.Keys;
+            stringList1.Suggestions = Program.Context.ItemsSimple.Keys;
         }
 
         public ToolProficiencyFeature edit(IHistoryManager history)

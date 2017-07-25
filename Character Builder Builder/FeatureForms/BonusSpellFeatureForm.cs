@@ -18,8 +18,8 @@ namespace Character_Builder_Builder.FeatureForms
             basicFeature1.Feature = f;
             foreach (RechargeModifier s in Enum.GetValues(typeof(RechargeModifier))) Recharge.Items.Add(s);
             Recharge.DataBindings.Add("SelectedItem", bf, "SpellCastModifier", true, DataSourceUpdateMode.OnPropertyChanged);
-            ImportExtensions.ImportSpells();
-            foreach (string s in OGL.Spell.simple.Keys)
+            Program.Context.ImportSpells();
+            foreach (string s in Program.Context.SpellsSimple.Keys)
             {
                 Spell.AutoCompleteCustomSource.Add(s);
                 Spell.Items.Add(s);

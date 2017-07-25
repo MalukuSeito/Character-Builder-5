@@ -26,48 +26,45 @@ namespace Character_Builder
         }
         public PlayerClass(ClassDefinition classdefinition, int atlevel, int hproll)
         {
-            Class = classdefinition;
+            SetClass(classdefinition);
             SubClassName = null;
             ClassLevelAtLevel = new List<int>() {atlevel};
             HProllAtClassLevel = new List<int>() {hproll};
         }
-        [XmlIgnore]
-        public ClassDefinition Class
+
+        public ClassDefinition GetClass(OGLContext context)
         {
-            get
-            {
-                if (ClassName == null || ClassName == "") return null;
-                return ClassDefinition.Get(ClassName, null);
-            }
-            set
-            {
-                if (value == null) ClassName = "";
-                else ClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
-            }
+            if (ClassName == null || ClassName == "") return null;
+            return context.GetClass(ClassName, null);
         }
-        [XmlIgnore]
-        public SubClass SubClass
+
+        public void SetClass(ClassDefinition value)
         {
-            get
-            {
-                if (SubClassName == null || SubClassName == "") return null;
-                string source = null;
-                if (Class != null) source = Class.Source;
-                return SubClass.Get(SubClassName, source);
-            }
-            set
-            {
-                if (value == null) SubClassName = "";
-                else SubClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
-            }
+            if (value == null) ClassName = "";
+            else ClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
         }
-        public List<Feature> GetFeatures(int level, Player player)
+
+        public SubClass GetSubClass(OGLContext context)
         {
-            if (Class == null) return new List<Feature>();
+            if (SubClassName == null || SubClassName == "") return null;
+            string source = null;
+            if (GetClass(context) != null) source = GetClass(context).Source;
+            return context.GetSubClass(SubClassName, source);
+        }
+
+        public void SetSubClass(SubClass value)
+        {
+            if (value == null) SubClassName = "";
+            else SubClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
+        }
+
+        public List<Feature> GetFeatures(int level, Player player, BuilderContext context)
+        {
+            if (GetClass(context) == null) return new List<Feature>();
             int classlevel = getClassLevelUpToLevel(level);
             bool secondclass = !ClassLevelAtLevel.Contains(1);
-            List<Feature> fl = PluginManager.manager.filterClassFeatures(Class, classlevel, Class.CollectFeatures(classlevel, secondclass, player), level, player);
-            if (SubClass != null) fl.AddRange(PluginManager.manager.filterSubClassFeatures(SubClass, Class, classlevel, SubClass.CollectFeatures(classlevel, secondclass, player), level, player));
+            List<Feature> fl = context.Plugins.FilterClassFeatures(GetClass(context), classlevel, GetClass(context).CollectFeatures(classlevel, secondclass, player, context), level, player, context);
+            if (GetSubClass(context) != null) fl.AddRange(context.Plugins.FilterSubClassFeatures(GetSubClass(context), GetClass(context), classlevel, GetSubClass(context).CollectFeatures(classlevel, secondclass, player, context), level, player, context));
             return fl;
         }
         public int getClassLevelUpToLevel(int level)
@@ -121,35 +118,34 @@ namespace Character_Builder
         }
         public override string ToString()
         {
-            return ToString(Player.Current.GetLevel());
+            throw new NotImplementedException();
         }
 
-        public string ToString(int level)
+        public string ToString(OGLContext context, int level)
         {
-            OGL.SubClass s = SubClass;
+            OGL.SubClass s = GetSubClass(context);
             if (s != null && s.SheetName != null && s.SheetName.Length > 0) return s.SheetName + " (" + getClassLevelUpToLevel(level) + ")";
             if (SubClassName != null && SubClassName != "") return SourceInvariantComparer.NoSource(SubClassName) + " (" + getClassLevelUpToLevel(level) + ")";
             return SourceInvariantComparer.NoSource(ClassName) + " (" + getClassLevelUpToLevel(level) + ")";
         }
 
-        public int getMulticlassingLevel(int level=0)
+        public int getMulticlassingLevel(OGLContext context, int level)
         {
-            if (level == 0) level = Player.Current.GetLevel();
             int classlevel = getClassLevelUpToLevel(level);
             if (classlevel == 0) return 0;
-            SubClass sc = SubClass;
+            SubClass sc = GetSubClass(context);
             if (sc!=null && sc.MulticlassingSpellLevels != null && sc.MulticlassingSpellLevels.Count >= classlevel) return sc.MulticlassingSpellLevels[classlevel - 1];
-            ClassDefinition cl=Class;
+            ClassDefinition cl= GetClass(context);
             if (cl == null) return 0;
             if (cl.MulticlassingSpellLevels != null && cl.MulticlassingSpellLevels.Count >= classlevel) return cl.MulticlassingSpellLevels[classlevel - 1];
             return 0;
         }
 
-        public List<TableDescription> CollectTables()
+        public List<TableDescription> CollectTables(OGLContext context)
         {
             List<TableDescription> res = new List<TableDescription>();
-            if (Class != null) foreach (Description d in Class.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
-            if (SubClass != null) foreach (Description d in SubClass.Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            if (GetClass(context) != null) foreach (Description d in GetClass(context).Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
+            if (GetSubClass(context) != null) foreach (Description d in GetSubClass(context).Descriptions) if (d is TableDescription) res.Add(d as TableDescription);
             return res;
         }
     }

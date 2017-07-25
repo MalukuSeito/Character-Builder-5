@@ -12,14 +12,14 @@ namespace OGL
     {
         public static List<string> Sources { get; private set; }
         private static string AppPath = null;
-        public static bool Init(string path, bool skipInsteadOfExit = false)
+        public static bool Init(OGLContext context, string path, bool skipInsteadOfExit = false)
         {
             Sources = new List<string>();
             AppPath = path;
             ConfigManager.InvalidChars = (new string(Path.GetInvalidFileNameChars()) + ConfigManager.SourceSeperator).ToCharArray();
             foreach (string s in Directory.EnumerateDirectories(path))
             {
-                if (s.Equals(ConfigManager.Directory_Plugins)) continue;
+                if (s.Equals(context.Config.Plugins_Directory)) continue;
                 string f = Path.Combine(s, "LICENSE");
                 if (File.Exists(f))
                 {
@@ -48,24 +48,24 @@ namespace OGL
             return res;
         }
 
-        public static Dictionary<DirectoryInfo, string> GetAllDirectories(string type)
+        public static Dictionary<DirectoryInfo, string> GetAllDirectories(OGLContext context, string type)
         {
             Dictionary<DirectoryInfo, string> result = new Dictionary<DirectoryInfo, string>();
             foreach (string s in Sources)
             {
-                if (ConfigManager.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
                 DirectoryInfo res = new DirectoryInfo(Path.Combine(AppPath, s, type));
                 if (res.Exists) result.Add(res, s);
             }
             return result;
         }
 
-        public static Dictionary<FileInfo, string> EnumerateFiles(string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
+        public static Dictionary<FileInfo, string> EnumerateFiles(OGLContext context, string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
         {
             Dictionary<FileInfo, string> result = new Dictionary<FileInfo, string>();
             try
             {
-                foreach (var f in GetAllDirectories(type))
+                foreach (var f in GetAllDirectories(context, type))
                 {
                     foreach (FileInfo file in f.Key.EnumerateFiles(pattern, option))
                     {

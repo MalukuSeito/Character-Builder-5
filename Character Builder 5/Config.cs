@@ -22,9 +22,9 @@ namespace Character_Builder_5
                     };
                     cm.Save(Path.Combine(path, "Config.xml"));
                 }
-                ConfigManager loaded = ImportExtensions.LoadConfig(path);
+                ConfigManager loaded = Program.Context.LoadConfig(path);
                 PDFExporter = PDF.Load(ImportExtensions.Fullpath(path, loaded.PDF[0]));
-                ImportExtensions.LoadAbilityScores(ImportExtensions.Fullpath(path, loaded.AbilityScores));
+                Program.Context.LoadAbilityScores(ImportExtensions.Fullpath(path, loaded.AbilityScores));
             }
             catch (Exception e)
             {

@@ -71,7 +71,7 @@ namespace OGL.Features
             ProficiencyMultiplier = 1.0;
         }
         
-        public List<Skill> getSkills(IChoiceProvider provider)
+        public List<Skill> getSkills(IChoiceProvider provider, OGLContext context)
         {
             List<Skill> res = new List<Skill>();
             int offset = provider.GetChoiceOffset(this, UniqueID, Amount);
@@ -80,7 +80,7 @@ namespace OGL.Features
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
                 Choice cho = provider.GetChoice(UniqueID + counter);
-                if (cho != null && cho.Value != "") res.Add(Skill.Get(cho.Value, Source));
+                if (cho != null && cho.Value != "") res.Add(context.GetSkill(cho.Value, Source));
             }
             return res;
         }

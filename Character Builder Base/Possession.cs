@@ -15,6 +15,9 @@ namespace Character_Builder
     {
         [XmlIgnore]
         private static XmlSerializer Serializer = new XmlSerializer(typeof(DisplayPossession));
+        [XmlIgnore]
+        public OGLContext Context;
+
         public String Name { get; set; }
         public String BaseItem { get; set; }
         public string Equipped { get; set; }
@@ -30,7 +33,7 @@ namespace Character_Builder
         {
             get
             {
-                return (from mp in MagicProperties select MagicProperty.Get(mp, null)).ToList();
+                return (from mp in MagicProperties select Context.GetMagic(mp, null)).ToList();
             }
         }
         [XmlIgnore]
@@ -38,7 +41,7 @@ namespace Character_Builder
         {
             get
             {
-                if (BaseItem != null && BaseItem != "") return Item.Get(BaseItem, null);
+                if (BaseItem != null && BaseItem != "") return Context.GetItem(BaseItem, null);
                 return null;
             }
         }
@@ -46,8 +49,9 @@ namespace Character_Builder
         {
             MagicProperties = new List<string>();
         }
-        public Possession(string name, string text, int count, double weight=0.0)
+        public Possession(OGLContext context, string name, string text, int count, double weight=0.0)
         {
+            Context = context;
             Name = name;
             Description = text;
             Count = count;
@@ -59,8 +63,9 @@ namespace Character_Builder
             Hightlight = false;
             MagicProperties = new List<string>();
         }
-        public Possession(Item Base, int count)
+        public Possession(OGLContext context, Item Base, int count)
         {
+            Context = context;
             Name = "";
             Description = "";
             Count = count;
@@ -73,11 +78,12 @@ namespace Character_Builder
             MagicProperties = new List<string>();
             Weight = -1;
         }
-        public Possession(string Base, int count)
+        public Possession(OGLContext context, string Base, int count)
         {
+            Context = context;
             Name = "";
             Description = "";
-            Count = count*Item.Get(Base, null).StackSize;
+            Count = count*Context.GetItem(Base, null).StackSize;
             BaseItem = Base;
             Equipped = EquipSlot.None;
             Attuned = false;
@@ -88,6 +94,7 @@ namespace Character_Builder
         }
         public Possession(Possession p)
         {
+            Context = p.Context;
             Name = p.Name;
             Description = p.Description;
             Count = 1;
@@ -102,6 +109,7 @@ namespace Character_Builder
         }
         public Possession(Possession p, MagicProperty magic)
         {
+            Context = p.Context;
             Name = p.Name;
             Description = p.Description;
             Count = 1;
@@ -117,8 +125,9 @@ namespace Character_Builder
             };
             Weight = -1;
         }
-        public Possession(Item Base, MagicProperty magic)
+        public Possession(OGLContext context, Item Base, MagicProperty magic)
         {
+            Context = context;
             Name = "";
             Description = "";
             Count = 1;
@@ -150,8 +159,8 @@ namespace Character_Builder
         public override string ToString()
         {
             string name = Name;
-            if (name == null || name == "") name = Item.Get(BaseItem, null).Name;
-            foreach (string mp in MagicProperties) name = MagicProperty.Get(mp, null).GetName(name);
+            if (name == null || name == "") name = Context.GetItem(BaseItem, null).Name;
+            foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
@@ -184,17 +193,19 @@ namespace Character_Builder
             return this.ToString().CompareTo(other.ToString());
         }
 
-        public IEnumerable<Feature> Collect(int level, IChoiceProvider provider, bool pretendEquipped = false)
+        public IEnumerable<Feature> Collect(int level, IChoiceProvider provider, OGLContext context, bool pretendEquipped = false)
         {
+            Context = context;
             List<Feature> result = new List<Feature>();
             bool equip = !EquipSlot.None.Equals(Equipped, StringComparison.OrdinalIgnoreCase);
-            foreach (string mp in MagicProperties) result.AddRange(MagicProperty.Get(mp, null).Collect(level, equip || pretendEquipped, Attuned, provider));
+            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).Collect(level, equip || pretendEquipped, Attuned, provider, context));
             return result;
         }
-        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider provider)
+        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider provider, OGLContext context)
         {
+            Context = context;
             List<Feature> result = new List<Feature>();
-            foreach (string mp in MagicProperties) result.AddRange(MagicProperty.Get(mp, null).CollectOnUse(level, provider, Attuned));
+            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).CollectOnUse(level, provider, Attuned, context));
             return result;
         }
     }

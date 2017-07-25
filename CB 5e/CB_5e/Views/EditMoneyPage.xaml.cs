@@ -15,9 +15,9 @@ namespace CB_5e.Views
 	public partial class EditMoneyPage : ContentPage
 	{
         public static IntToStringConverter IntConverter = PlayerViewModel.IntConverter;
-        public EditMoneyPage ()
+        public EditMoneyPage (PlayerViewModel model)
 		{
-            BindingContext = PlayerViewModel.Instance;
+            BindingContext = model;
 			InitializeComponent ();
 		}
 	}

@@ -19,9 +19,6 @@ namespace CB_5e
         {
             InitializeComponent();
             ConfigManager.LogEvents += DisplayLog;
-            PluginManager.manager = new PluginManager();
-            PluginManager.manager.plugins.Add(new SpellPoints());
-            PluginManager.manager.plugins.Add(new SingleLanguage());
             SetMainPage();
         }
 

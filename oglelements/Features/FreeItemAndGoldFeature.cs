@@ -69,9 +69,9 @@ namespace OGL.Features
             SP = sp;
             GP = gp;      
         }
-        public virtual IEnumerable<Item> getItems(IChoiceProvider provider)
+        public virtual IEnumerable<Item> getItems(IChoiceProvider provider, OGLContext context)
         {
-            return (from i in Items select Item.Get(i, Source));
+            return (from i in Items select context.GetItem(i, Source));
         }
         public override string Displayname()
         {

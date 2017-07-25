@@ -5,9 +5,11 @@ using System.Windows.Forms;
 
 namespace Character_Builder_Builder
 {
-    static class Program
+    public static class Program
     {
         public static ErrorLog Errorlog = null;
+
+        public static OGLContext Context = new OGLContext();
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -24,10 +26,10 @@ namespace Character_Builder_Builder
             ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
             ConfigManager.LicenseProvider = new LicenseProvider();
             Errorlog = new ErrorLog();
-            if (SourceManager.Init(Application.StartupPath, true))
+            ConfigManager.AlwaysShowSource = true;
+            Context.LoadConfig(Application.StartupPath);
+            if (SourceManager.Init(Program.Context, Application.StartupPath, true))
             {
-                ConfigManager.AlwaysShowSource = true;
-                ImportExtensions.LoadConfig(Application.StartupPath);
                 Application.Run(new MainTab());
             } else
             {

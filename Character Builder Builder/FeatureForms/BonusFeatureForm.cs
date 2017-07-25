@@ -40,14 +40,14 @@ namespace Character_Builder_Builder.FeatureForms
             BonusSize.DataBindings.Add("Value", f, "SizeChange", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
-            ImportExtensions.ImportSkills();
-            SkillList.Suggestions = OGL.Skill.simple.Keys;
-            ImportExtensions.ImportItems();
-            proficiencyOptions.Suggestions = from it in Item.simple.Values where it is Weapon select it.Name;
+            Program.Context.ImportSkills();
+            SkillList.Suggestions = Program.Context.SkillsSimple.Keys;
+            Program.Context.ImportItems();
+            proficiencyOptions.Suggestions = from it in Program.Context.ItemsSimple.Values where it is Weapon select it.Name;
             basicFeature1.Feature = f;
-            foreach (string s in OGL.Item.simple.Keys)
+            foreach (string s in Program.Context.ItemsSimple.Keys)
             {
-                if (Item.simple[s] is Weapon)
+                if (Program.Context.ItemsSimple[s] is Weapon)
                 {
                     Spell.AutoCompleteCustomSource.Add(s);
                     Spell.Items.Add(s);

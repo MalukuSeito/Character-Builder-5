@@ -18,16 +18,16 @@ namespace Character_Builder_Builder
         public MainTab()
         {
             InitializeComponent();
-            ImportExtensions.ImportRaces();
-            ImportExtensions.ImportSubRaces();
-            fill(racesList, Race.races.Keys, null);
-            fill(subRaceList, SubRace.subraces.Keys, null);
-            DefaultSource.DataBindings.Add("Text", ConfigManager.Loaded, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
-            CoinWeight.DataBindings.Add("Value", ConfigManager.Loaded, "WeightOfACoin", true, DataSourceUpdateMode.OnPropertyChanged);
-            PDFExport.Items = ConfigManager.Loaded.PDF;
-            Slots.Items = ConfigManager.Loaded.Slots;
-            AllFeatures.features = ConfigManager.Loaded.FeaturesForAll;
-            Multiclassing.features = ConfigManager.Loaded.FeaturesForMulticlassing;
+            Program.Context.ImportRaces();
+            Program.Context.ImportSubRaces();
+            fill(racesList, Program.Context.Races.Keys, null);
+            fill(subRaceList, Program.Context.SubRaces.Keys, null);
+            DefaultSource.DataBindings.Add("Text", Program.Context.Config, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
+            CoinWeight.DataBindings.Add("Value", Program.Context.Config, "WeightOfACoin", true, DataSourceUpdateMode.OnPropertyChanged);
+            PDFExport.Items = Program.Context.Config.PDF;
+            Slots.Items = Program.Context.Config.Slots;
+            AllFeatures.features = Program.Context.Config.FeaturesForAll;
+            Multiclassing.features = Program.Context.Config.FeaturesForMulticlassing;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -35,62 +35,62 @@ namespace Character_Builder_Builder
             TabPage tab = TabControls.SelectedTab;
             if (tab == racesTab)
             {
-                ImportExtensions.ImportRaces();
-                ImportExtensions.ImportSubRaces();
-                fill(racesList, Race.races.Keys, null);
-                fill(subRaceList, SubRace.subraces.Keys, null);
+                Program.Context.ImportRaces();
+                Program.Context.ImportSubRaces();
+                fill(racesList, Program.Context.Races.Keys, null);
+                fill(subRaceList, Program.Context.SubRaces.Keys, null);
             }
             else if (tab == featuresTab)
             {
-                ImportExtensions.ImportStandaloneFeatures();
+                Program.Context.ImportStandaloneFeatures();
                 FeatCats.Items.Clear();
                 FeatCats.Items.Add("Feats");
-                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Features)) FeatCats.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Features_Directory)) FeatCats.Items.Add(s);
             }
             else if (tab == classesTab)
             {
-                ImportExtensions.ImportClasses();
-                fill(classList, ClassDefinition.classes.Keys, null);
-                ImportExtensions.ImportSubClasses();
-                fill(subclassList, SubClass.subclasses.Keys, null);
+                Program.Context.ImportClasses();
+                fill(classList, Program.Context.Classes.Keys, null);
+                Program.Context.ImportSubClasses();
+                fill(subclassList, Program.Context.SubClasses.Keys, null);
             }
             else if (tab == langTab)
             {
-                ImportExtensions.ImportLanguages();
-                fill(langBox, Language.languages.Keys, null);
+                Program.Context.ImportLanguages();
+                fill(langBox, Program.Context.Languages.Keys, null);
             }
             else if (tab == backTab)
             {
-                ImportExtensions.ImportBackgrounds();
-                fill(backBox, Background.backgrounds.Keys, null);
+                Program.Context.ImportBackgrounds();
+                fill(backBox, Program.Context.Backgrounds.Keys, null);
             }
             else if (tab == itemTab)
             {
-                ImportExtensions.ImportItems();
+                Program.Context.ImportItems();
                 ItemCat.Items.Clear();
                 ItemCat.Items.Add("Items");
-                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Items)) ItemCat.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Items_Directory)) ItemCat.Items.Add(s);
             }
             else if (tab == skillsTab)
             {
-                ImportExtensions.ImportSkills();
-                fill(skillList, Skill.skills.Keys, null);
+                Program.Context.ImportSkills();
+                fill(skillList, Program.Context.Skills.Keys, null);
             }
             else if (tab == conditionsTab)
             {
-                ImportExtensions.ImportConditions();
-                fill(condList, Condition.conditions.Keys, null);
+                Program.Context.ImportConditions();
+                fill(condList, Program.Context.Conditions.Keys, null);
             }
             else if (tab == levelTab)
             {
-                Level c = ImportExtensions.LoadLevel(ConfigManager.Loaded.Levels);
+                Level c = Program.Context.LoadLevel(Program.Context.Config.Levels);
                 LevelXP.Items = c.Experience;
                 LevelProficiency.Items = c.Proficiency;
 
             }
             else if (tab == arraysTab)
             {
-                AbilityScores ab = ImportExtensions.LoadAbilityScores(ConfigManager.Loaded.AbilityScores);
+                AbilityScores ab = Program.Context.LoadAbilityScores(Program.Context.Config.AbilityScores);
                 PointBuyPoints.DataBindings.Clear();
                 PointBuyPoints.DataBindings.Add("Value", ab, "PointBuyPoints", true, DataSourceUpdateMode.OnPropertyChanged);
                 PointBuyMin.DataBindings.Clear();
@@ -106,15 +106,15 @@ namespace Character_Builder_Builder
             }
             else if (tab == spellsTab)
             {
-                ImportExtensions.ImportSpells();
-                fill(spellBox, Spell.spells.Keys, null);
+                Program.Context.ImportSpells();
+                fill(spellBox, Program.Context.Spells.Keys, null);
             }
             else if (tab == magicTab)
             {
-                ImportExtensions.ImportMagic();
+                Program.Context.ImportMagic();
                 magicCatBox.Items.Clear();
                 magicCatBox.Items.Add("Magic");
-                foreach (string s in ImportExtensions.EnumerateCategories(ConfigManager.Directory_Magic)) magicCatBox.Items.Add(s);
+                foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Magic_Directory)) magicCatBox.Items.Add(s);
             }
             else if (tab == settingsTab)
             {
@@ -150,7 +150,7 @@ namespace Character_Builder_Builder
         private void racesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (racesList.SelectedItem == null) return;
-            Race selected = Race.Get((string)racesList.SelectedItem, null);
+            Race selected = Program.Context.GetRace((string)racesList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -163,7 +163,7 @@ namespace Character_Builder_Builder
         private void editRace(object sender, EventArgs e)
         {
             if (racesList.SelectedItem == null) return;
-            Race selected = Race.Get((string)racesList.SelectedItem, null);
+            Race selected = Program.Context.GetRace((string)racesList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -176,20 +176,20 @@ namespace Character_Builder_Builder
 
         private void RaceSaved(object sender, string id)
         {
-            ImportExtensions.ImportRaces();
-            fill(racesList, Race.races.Keys, id);
+            Program.Context.ImportRaces();
+            fill(racesList, Program.Context.Races.Keys, id);
         }
 
         private void SubRaceSaved(object sender, string id)
         {
-            ImportExtensions.ImportSubRaces();
-            fill(subRaceList, SubRace.subraces.Keys, id);
+            Program.Context.ImportSubRaces();
+            fill(subRaceList, Program.Context.SubRaces.Keys, id);
         }
 
         private void subRaceList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (subRaceList.SelectedItem == null) return;
-            SubRace selected = SubRace.Get((string)subRaceList.SelectedItem, null);
+            SubRace selected = Program.Context.GetSubRace((string)subRaceList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -202,7 +202,7 @@ namespace Character_Builder_Builder
         private void edit_Subrace(object sender, EventArgs e)
         {
             if (subRaceList.SelectedItem == null) return;
-            SubRace selected = SubRace.Get((string)subRaceList.SelectedItem, null);
+            SubRace selected = Program.Context.GetSubRace((string)subRaceList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -215,14 +215,20 @@ namespace Character_Builder_Builder
 
         private void newRaceBtn_Click(object sender, EventArgs e)
         {
-            RaceForm r = new RaceForm(new Race());
+            RaceForm r = new RaceForm(new Race()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += RaceSaved;
             r.Show();
         }
 
         private void newSubRaceBtn_Click(object sender, EventArgs e)
         {
-            SubRaceForm r = new SubRaceForm(new SubRace());
+            SubRaceForm r = new SubRaceForm(new SubRace()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += SubRaceSaved;
             r.Show();
         }
@@ -237,7 +243,7 @@ namespace Character_Builder_Builder
             {
                 button1.Enabled = true;
                 button2.Enabled = true;
-                if (FeatureCollection.Container.ContainsKey(cat)) foreach (FeatureContainer cont in FeatureCollection.Container[cat]) FeatCollection.Items.Add(cont);
+                if (Program.Context.FeatureContainers.ContainsKey(cat)) foreach (FeatureContainer cont in Program.Context.FeatureContainers[cat]) FeatCollection.Items.Add(cont);
             }
         }
 
@@ -246,7 +252,7 @@ namespace Character_Builder_Builder
             if (FeatCats.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)FeatCats.SelectedItem, cat));
+            SourceManager.GetDirectory(Program.Context.Config.DefaultSource, Path.Combine((string)FeatCats.SelectedItem, cat));
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
         }
@@ -269,7 +275,7 @@ namespace Character_Builder_Builder
             if (FeatCats.SelectedItem == null) return;
             FeatureContainer f = new FeatureContainer()
             {
-                Source = ConfigManager.DefaultSource,
+                Source = Program.Context.Config.DefaultSource,
                 category = (string)FeatCats.SelectedItem
             };
             FeatureContainerForm r = new FeatureContainerForm(f);
@@ -325,7 +331,7 @@ namespace Character_Builder_Builder
         private void ContainerSaved(object sender, string id)
         {
             string s = (string)FeatCats.SelectedItem;
-            ImportExtensions.ImportStandaloneFeatures();
+            Program.Context.ImportStandaloneFeatures();
             var scroll = savescroll(FeatCollection);
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
@@ -337,7 +343,7 @@ namespace Character_Builder_Builder
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (classList.SelectedItem == null) return;
-            ClassDefinition selected = ClassDefinition.Get((string)classList.SelectedItem, null);
+            ClassDefinition selected = Program.Context.GetClass((string)classList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -350,7 +356,7 @@ namespace Character_Builder_Builder
         private void editClass(object sender, EventArgs e)
         {
             if (classList.SelectedItem == null) return;
-            ClassDefinition selected = ClassDefinition.Get((string)classList.SelectedItem, null);
+            ClassDefinition selected = Program.Context.GetClass((string)classList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -363,20 +369,26 @@ namespace Character_Builder_Builder
 
         private void ClassSaved(object sender, string id)
         {
-            ImportExtensions.ImportClasses();
-            fill(classList, ClassDefinition.classes.Keys, id);
+            Program.Context.ImportClasses();
+            fill(classList, Program.Context.Classes.Keys, id);
         }
 
         private void NewClassBtn_Click(object sender, EventArgs e)
         {
-            ClassForm r = new ClassForm(new ClassDefinition());
+            ClassForm r = new ClassForm(new ClassDefinition()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += ClassSaved;
             r.Show();
         }
 
         private void NewSubclass_Click(object sender, EventArgs e)
         {
-            SubClassForm r = new SubClassForm(new SubClass());
+            SubClassForm r = new SubClassForm(new SubClass()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += SubClassSaved;
             r.Show();
         }
@@ -384,7 +396,7 @@ namespace Character_Builder_Builder
         private void subclassList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (subclassList.SelectedItem == null) return;
-            SubClass selected = SubClass.Get((string)subclassList.SelectedItem, null);
+            SubClass selected = Program.Context.GetSubClass((string)subclassList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -397,7 +409,7 @@ namespace Character_Builder_Builder
         private void editSubClass(object sender, EventArgs e)
         {
             if (subclassList.SelectedItem == null) return;
-            SubClass selected = SubClass.Get((string)subclassList.SelectedItem, null);
+            SubClass selected = Program.Context.GetSubClass((string)subclassList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -410,13 +422,16 @@ namespace Character_Builder_Builder
 
         private void SubClassSaved(object sender, string id)
         {
-            ImportExtensions.ImportSubClasses();
-            fill(subclassList, SubClass.subclasses.Keys, id);
+            Program.Context.ImportSubClasses();
+            fill(subclassList, Program.Context.SubClasses.Keys, id);
         }
 
         private void NewLang_Click(object sender, EventArgs e)
         {
-            LanguageForm r = new LanguageForm(new Language());
+            LanguageForm r = new LanguageForm(new Language()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += LangSaved;
             r.Show();
         }
@@ -424,7 +439,7 @@ namespace Character_Builder_Builder
         private void langList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (langBox.SelectedItem == null) return;
-            Language selected = Language.Get((string)langBox.SelectedItem, null);
+            Language selected = Program.Context.GetLanguage((string)langBox.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -437,7 +452,7 @@ namespace Character_Builder_Builder
         private void editLang(object sender, EventArgs e)
         {
             if (langBox.SelectedItem == null) return;
-            Language selected = Language.Get((string)langBox.SelectedItem, null);
+            Language selected = Program.Context.GetLanguage((string)langBox.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -450,13 +465,16 @@ namespace Character_Builder_Builder
 
         private void LangSaved(object sender, string id)
         {
-            ImportExtensions.ImportLanguages();
-            fill(langBox, Language.languages.Keys, id);
+            Program.Context.ImportLanguages();
+            fill(langBox, Program.Context.Languages.Keys, id);
         }
 
         private void NewBack_Click(object sender, EventArgs e)
         {
-            BackgroundForm r = new BackgroundForm(new Background());
+            BackgroundForm r = new BackgroundForm(new Background()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += BackSaved;
             r.Show();
         }
@@ -464,7 +482,7 @@ namespace Character_Builder_Builder
         private void backList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (backBox.SelectedItem == null) return;
-            Background selected = Background.Get((string)backBox.SelectedItem, null);
+            Background selected = Program.Context.GetBackground((string)backBox.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -477,7 +495,7 @@ namespace Character_Builder_Builder
         private void editBackground(object sender, EventArgs e)
         {
             if (backBox.SelectedItem == null) return;
-            Background selected = Background.Get((string)backBox.SelectedItem, null);
+            Background selected = Program.Context.GetBackground((string)backBox.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -490,8 +508,8 @@ namespace Character_Builder_Builder
 
         private void BackSaved(object sender, string id)
         {
-            ImportExtensions.ImportBackgrounds();
-            fill(backBox, Background.backgrounds.Keys, id);
+            Program.Context.ImportBackgrounds();
+            fill(backBox, Program.Context.Backgrounds.Keys, id);
         }
 
         private void NewItem_Click(object sender, EventArgs e)
@@ -510,8 +528,8 @@ namespace Character_Builder_Builder
             {
                 NewItemCat.Enabled = true;
                 NewItem.Enabled = true;
-                Category category = ImportExtensions.Make(cat);
-                foreach (Item i in from i in Item.items.Values where category.Equals(i.Category) orderby i.Name select i) ItemBox.Items.Add(i);
+                Category category = ImportExtensions.Make(Program.Context, cat);
+                foreach (Item i in from i in Program.Context.Items.Values where category.Equals(i.Category) orderby i.Name select i) ItemBox.Items.Add(i);
             }
         }
 
@@ -520,7 +538,7 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)ItemCat.SelectedItem, cat));
+            SourceManager.GetDirectory(Program.Context.Config.DefaultSource, Path.Combine((string)ItemCat.SelectedItem, cat));
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
         }
@@ -587,7 +605,7 @@ namespace Character_Builder_Builder
         private void ItemSaved(object sender, string id)
         {
             string s = (string)ItemCat.SelectedItem;
-            ImportExtensions.ImportItems();
+            Program.Context.ImportItems();
             var scroll = savescroll(ItemBox);
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
@@ -601,7 +619,8 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Item i = new Item()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             ItemForm r = new ItemForm(i);
             r.Saved += ItemSaved;
@@ -613,7 +632,8 @@ namespace Character_Builder_Builder
             if(ItemCat.SelectedItem == null) return;
             Tool i = new Tool()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             ToolForm r = new ToolForm(i);
             r.Saved += ItemSaved;
@@ -625,7 +645,8 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Weapon i = new Weapon()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             WeaponForm r = new WeaponForm(i);
             r.Saved += ItemSaved;
@@ -637,7 +658,8 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Armor i = new Armor()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             ArmorForm r = new ArmorForm(i);
             r.Saved += ItemSaved;
@@ -649,7 +671,8 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Shield i = new Shield()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             ShieldForm r = new ShieldForm(i);
             r.Saved += ItemSaved;
@@ -661,7 +684,8 @@ namespace Character_Builder_Builder
             if (ItemCat.SelectedItem == null) return;
             Pack i = new Pack()
             {
-                Category = ImportExtensions.Make((string)ItemCat.SelectedItem)
+                Source = Program.Context.Config.DefaultSource,
+                Category = ImportExtensions.Make(Program.Context, (string)ItemCat.SelectedItem)
             };
             PackForm r = new PackForm(i);
             r.Saved += ItemSaved;
@@ -670,7 +694,10 @@ namespace Character_Builder_Builder
 
         private void NewSkill_Click(object sender, EventArgs e)
         {
-            SkillForm r = new SkillForm(new Skill());
+            SkillForm r = new SkillForm(new Skill()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += SkillSaved;
             r.Show();
         }
@@ -678,7 +705,7 @@ namespace Character_Builder_Builder
         private void skillList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (skillList.SelectedItem == null) return;
-            Skill selected = Skill.Get((string)skillList.SelectedItem, null);
+            Skill selected = Program.Context.GetSkill((string)skillList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -691,7 +718,7 @@ namespace Character_Builder_Builder
         private void editSkill(object sender, EventArgs e)
         {
             if (skillList.SelectedItem == null) return;
-            Skill selected = Skill.Get((string)skillList.SelectedItem, null);
+            Skill selected = Program.Context.GetSkill((string)skillList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -704,12 +731,15 @@ namespace Character_Builder_Builder
 
         private void SkillSaved(object sender, string id)
         {
-            ImportExtensions.ImportSkills();
-            fill(skillList, Skill.skills.Keys, id);
+            Program.Context.ImportSkills();
+            fill(skillList, Program.Context.Skills.Keys, id);
         }
         private void NewCond_Click(object sender, EventArgs e)
         {
-            ConditionForm r = new ConditionForm(new Condition());
+            ConditionForm r = new ConditionForm(new Condition()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
             r.Saved += ConditionSaved;
             r.Show();
         }
@@ -717,7 +747,7 @@ namespace Character_Builder_Builder
         private void condList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (condList.SelectedItem == null) return;
-            Condition selected = Condition.Get((string)condList.SelectedItem, null);
+            Condition selected = Program.Context.GetCondition((string)condList.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -730,7 +760,7 @@ namespace Character_Builder_Builder
         private void editCondition(object sender, EventArgs e)
         {
             if (condList.SelectedItem == null) return;
-            Condition selected = Condition.Get((string)condList.SelectedItem, null);
+            Condition selected = Program.Context.GetCondition((string)condList.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -743,13 +773,13 @@ namespace Character_Builder_Builder
 
         private void ConditionSaved(object sender, string id)
         {
-            ImportExtensions.ImportConditions();
-            fill(condList, Condition.conditions.Keys, id);
+            Program.Context.ImportConditions();
+            fill(condList, Program.Context.Conditions.Keys, id);
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-            Level.Current.Save(ConfigManager.Loaded.Levels);
+            Program.Context.Levels.Save(Program.Context.Config.Levels);
         }
 
         private void AbilitySave_Click(object sender, EventArgs e)
@@ -759,14 +789,15 @@ namespace Character_Builder_Builder
 
         private void SaveSettings_Click(object sender, EventArgs e)
         {
-            ConfigManager.Loaded.Save(Path.Combine(Application.StartupPath, "Config.xml"));
+            Program.Context.Config.Save(Path.Combine(Application.StartupPath, "Config.xml"));
         }
 
         private void NewSpell_Click(object sender, EventArgs e)
         {
             Spell s = new Spell()
             {
-                Level = 1
+                Level = 1,
+                Source = Program.Context.Config.DefaultSource
             };
             s.Keywords.Add(new Keyword("Verbal"));
             s.Keywords.Add(new Keyword("Somatic"));
@@ -778,7 +809,7 @@ namespace Character_Builder_Builder
         private void SpellList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (spellBox.SelectedItem == null) return;
-            Spell selected = Spell.Get((string)spellBox.SelectedItem, null);
+            Spell selected = Program.Context.GetSpell((string)spellBox.SelectedItem, null);
             if (selected != null)
             {
                 preview.Navigate("about:blank");
@@ -791,7 +822,7 @@ namespace Character_Builder_Builder
         private void editSpell(object sender, EventArgs e)
         {
             if (spellBox.SelectedItem == null) return;
-            Spell selected = Spell.Get((string)spellBox.SelectedItem, null);
+            Spell selected = Program.Context.GetSpell((string)spellBox.SelectedItem, null);
             if (selected != null)
             {
                 string sel = selected.Name;
@@ -804,15 +835,15 @@ namespace Character_Builder_Builder
 
         private void SpellSaved(object sender, string id)
         {
-            ImportExtensions.ImportSpells();
-            fill(spellBox, Spell.spells.Keys, id);
+            Program.Context.ImportSpells();
+            fill(spellBox, Program.Context.Spells.Keys, id);
         }
 
         private void ApplySpellsBtn_Click(object sender, EventArgs e)
         {
-            ImportExtensions.ImportSpells();
-            ImportExtensions.ImportClasses();
-            foreach (Spell s in Spell.spells.Values)
+            Program.Context.ImportSpells();
+            Program.Context.ImportClasses();
+            foreach (Spell s in Program.Context.Spells.Values)
             {
                 if (s.KWChanged) s.Save(false);
             }
@@ -820,9 +851,9 @@ namespace Character_Builder_Builder
 
         private void ApplyFeatsBtn_Click(object sender, EventArgs e)
         {
-            ImportExtensions.ImportStandaloneFeatures();
-            ImportExtensions.ImportClasses();
-            foreach (List<FeatureContainer> c in FeatureCollection.Container.Values)
+            Program.Context.ImportStandaloneFeatures();
+            Program.Context.ImportClasses();
+            foreach (List<FeatureContainer> c in Program.Context.FeatureContainers.Values)
             {
                 foreach (FeatureContainer s in c)
                 {
@@ -834,7 +865,10 @@ namespace Character_Builder_Builder
         private void NewMagicProp_Click(object sender, EventArgs e)
         {
             if (magicCatBox.SelectedItem == null) return;
-            MagicProperty i = new MagicProperty();
+            MagicProperty i = new MagicProperty()
+            {
+                Source = Program.Context.Config.DefaultSource
+            };
             string cat = (string)magicCatBox.SelectedItem;
             i.Category = cat;
             MagicForm r = new MagicForm(i);
@@ -853,7 +887,7 @@ namespace Character_Builder_Builder
             {
                 NewMagicCatBtn.Enabled = true;
                 newMagicBtn.Enabled = true;
-                if (MagicProperty.Categories.ContainsKey(cat)) foreach(MagicProperty i in from i in MagicProperty.Categories[cat].Contents orderby i.Name select i) magicBox.Items.Add(i);
+                if (Program.Context.MagicCategories.ContainsKey(cat)) foreach(MagicProperty i in from i in Program.Context.MagicCategories[cat].Contents orderby i.Name select i) magicBox.Items.Add(i);
             }
         }
 
@@ -862,7 +896,7 @@ namespace Character_Builder_Builder
             if (magicCatBox.SelectedItem == null) return;
             string cat = Interaction.InputBox("New category name", "New Sub Category");
             cat = string.Join("_", cat.Split(Path.GetInvalidFileNameChars()));
-            SourceManager.GetDirectory(ConfigManager.DefaultSource, Path.Combine((string)magicCatBox.SelectedItem, cat));
+            SourceManager.GetDirectory(Program.Context.Config.DefaultSource, Path.Combine((string)magicCatBox.SelectedItem, cat));
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
         }
@@ -893,7 +927,7 @@ namespace Character_Builder_Builder
         {
             string s = (string)magicCatBox.SelectedItem;
             var scroll = savescroll(magicBox);
-            ImportExtensions.ImportMagic();
+            Program.Context.ImportMagic();
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
             magicCatBox.SelectedItem = s;
@@ -905,12 +939,12 @@ namespace Character_Builder_Builder
         {
             if (textBox1.Text == null || textBox1.Text == "")
             {
-                fill(spellBox, Spell.spells.Keys, null);
+                fill(spellBox, Program.Context.Spells.Keys, null);
             } else
             {
                 try
                 {
-                    fill(spellBox, from s in Spell.Filter(textBox1.Text) select s.Name, null);
+                    fill(spellBox, from s in Program.Context.FilterSpells(textBox1.Text) select s.Name, null);
                 } catch(Exception)
                 {
                     spellBox.Items.Clear();

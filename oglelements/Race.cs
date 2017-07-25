@@ -22,25 +22,21 @@ namespace OGL
         XmlArrayItem(Type = typeof(TableDescription))]
         public List<Description> Descriptions { get; set; }
         [XmlIgnore]
-        static public Dictionary<String, Race> races = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, Race> simple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
         public string Filename { get; set; }
 
         public byte[] ImageData { get; set; }
-        public void Register(string file)
+        public void Register(OGLContext context, string file)
         {
             Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (races.ContainsKey(full)) throw new Exception("Duplicate Race: " + full);
-            races.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.Races.ContainsKey(full)) throw new Exception("Duplicate Race: " + full);
+            context.Races.Add(full, this);
+            if (context.RacesSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.RacesSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.RacesSimple.Add(Name, this);
 
         }
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
@@ -82,35 +78,18 @@ namespace OGL
         public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public static Race Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (races.ContainsKey(name)) return races[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && races.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return races[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown Race: " + name);
-            Race r = new Race(name)
-            {
-                Description = "Missing Entry"
-            };
-            return r;
-        }
+        
         public Race()
         {
             Features = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
         }
-        public Race(String name)
+        public Race(OGLContext context, String name)
         {
             Name=name;
             Features = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
-            Register(null);
+            Register(context, null);
         }
         public String ToXML()
         {
@@ -120,7 +99,6 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -136,13 +114,13 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public List<Feature> CollectFeatures(int level, IChoiceProvider choiceProvider)
+        public List<Feature> CollectFeatures(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in Features)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             return res;
         }

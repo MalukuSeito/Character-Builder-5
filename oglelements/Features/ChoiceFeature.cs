@@ -115,7 +115,7 @@ namespace OGL.Features
             Choices.Add(choice6);
         }
         
-        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider)
+        public override List<Feature> Collect(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             if (Level > level) return new List<Feature>();
             List<Feature> res= new List<Feature>() { this };
@@ -131,7 +131,7 @@ namespace OGL.Features
                 {
                     Feature feat = choices.Find(fe => fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source == cho.Value);
                     if (feat == null) feat = choices.Find(fe => ConfigManager.SourceInvariantComparer.Equals(fe.Name + " " + ConfigManager.SourceSeperator + " " + fe.Source, cho.Value));
-                    if (feat != null) res.AddRange(feat.Collect(level, choiceProvider));
+                    if (feat != null) res.AddRange(feat.Collect(level, choiceProvider, context));
                 }
             }
             return res;
@@ -143,7 +143,7 @@ namespace OGL.Features
             c--;
             while (c >= copies.Count)
             {
-                copies.Add(FeatureCollection.MakeCopy(Choices));
+                copies.Add(FeatureContainer.MakeCopy(Choices));
             }
             return copies[c];
         }

@@ -5,13 +5,15 @@ namespace Character_Builder
     public class AbilityFeatChoiceContainer
     {
         public AbilityScoreFeatFeature ASFF { get; set; }
-        public AbilityFeatChoiceContainer(AbilityScoreFeatFeature asff)
+        private Player Player;
+        public AbilityFeatChoiceContainer(Player player, AbilityScoreFeatFeature asff)
         {
+            Player = player;
             ASFF = asff;
         }
         public override string ToString()
         {
-            return Player.Current.GetAbilityFeatChoice(ASFF).ToString();
+            return Player.GetAbilityFeatChoice(ASFF).ToString();
         }
     }
 }

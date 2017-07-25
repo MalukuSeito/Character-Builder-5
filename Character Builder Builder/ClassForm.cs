@@ -26,12 +26,12 @@ namespace Character_Builder_Builder
             if (cls.MulticlassingCondition == null || cls.MulticlassingCondition.Length == 0)
             {
                 List<string> cond = new List<string>();
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Strength)) cond.Add("Strength >= " + ConfigManager.MultiClassTarget);
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Dexterity)) cond.Add("Dexterity >= " + ConfigManager.MultiClassTarget);
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Constitution)) cond.Add("Constitution >= " + ConfigManager.MultiClassTarget);
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Intelligence)) cond.Add("Intelligence >= " + ConfigManager.MultiClassTarget);
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Wisdom)) cond.Add("Wisdom >= " + ConfigManager.MultiClassTarget);
-                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Charisma)) cond.Add("Charisma >= " + ConfigManager.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Strength)) cond.Add("Strength >= " + Program.Context.Config.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Dexterity)) cond.Add("Dexterity >= " + Program.Context.Config.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Constitution)) cond.Add("Constitution >= " + Program.Context.Config.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Intelligence)) cond.Add("Intelligence >= " + Program.Context.Config.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Wisdom)) cond.Add("Wisdom >= " + Program.Context.Config.MultiClassTarget);
+                if (cls.MulticlassingAbilityScores.HasFlag(Ability.Charisma)) cond.Add("Charisma >= " + Program.Context.Config.MultiClassTarget);
                 if (cond.Count > 0) cls.MulticlassingCondition = String.Join(" and ", cond);
                 else cls.MulticlassingCondition = "true";
             }
@@ -46,13 +46,13 @@ namespace Character_Builder_Builder
             classSpells.HistoryManager = this;
             featuresFirstClass.HistoryManager = this;
             featuresMultiClass.HistoryManager = this;
-            ImportExtensions.ImportStandaloneFeatures();
+            Program.Context.ImportStandaloneFeatures();
             HashSet<string> feats = new HashSet<string>();
-            foreach (Feature f in FeatureCollection.Features) feats.Add(f.Name);
+            foreach (Feature f in Program.Context.Features) feats.Add(f.Name);
             classFeats.Suggestions = feats;
             MulticlassSpellLevels.Items = cls.MulticlassingSpellLevels;
-            ImportExtensions.ImportSpells();
-            classSpells.Suggestions = Spell.simple.Keys;
+            Program.Context.ImportSpells();
+            classSpells.Suggestions = Program.Context.SpellsSimple.Keys;
             
         }
 

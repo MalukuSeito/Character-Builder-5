@@ -16,8 +16,8 @@ namespace Character_Builder_Builder.FeatureForms
             basicFeature1.Feature = f;
 
             stringList1.Items = f.Languages;
-            ImportExtensions.ImportLanguages();
-            stringList1.Suggestions = Language.simple.Keys;
+            Program.Context.ImportLanguages();
+            stringList1.Suggestions = Program.Context.LanguagesSimple.Keys;
         }
 
         public LanguageProficiencyFeature edit(IHistoryManager history)

@@ -22,17 +22,17 @@ namespace CB_5e.ViewModels
 
     public class HitDieViewModel: HitDie, INotifyPropertyChanged
     {
-        public HitDieViewModel(HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
+        public HitDieViewModel(PlayerViewModel pvm, HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
         {
             Reduce = new Command(() =>
             {
                 if (Used < Count)
                 {
-                    PlayerViewModel.MakeHistory("");
-                    Player.Current.UseHitDie(Dice);
+                    pvm.MakeHistory("");
+                    pvm.Context.Player.UseHitDie(Dice);
                     Used++;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Current"));
-                    PlayerViewModel.Instance.Save();
+                    pvm.Save();
                 }
             });
         }
@@ -58,9 +58,9 @@ namespace CB_5e.ViewModels
         public AbilityScoreArray Current;
         public AbilityScoreArray Max;
         public Dictionary<Ability, int> Saves;
-        public ScoresModelViewModel()
+        public ScoresModelViewModel(BuilderContext Context)
         {
-            Update(Player.Current);
+            Update(Context.Player);
         }
         public void Update(Player p)
         {
@@ -176,34 +176,27 @@ namespace CB_5e.ViewModels
 
         public void FirePlayerChanged() => PlayerChanged?.Invoke(this, EventArgs.Empty);
 
-        public ScoresModelViewModel Scores { get; } = new ScoresModelViewModel();
+        public ScoresModelViewModel Scores { get; private set; } 
 
         private static PlayerViewModel instance = null;
-        public static PlayerViewModel Instance
-        {
-            get
-            {
-                if (instance == null) instance = new PlayerViewModel();
-                return instance;
-            }
-        }
         public INavigation Navigation { get; set; }
-        private PlayerViewModel()
+        public PlayerViewModel(BuilderContext context)
         {
-            
+            Context = context;
+            Scores = new ScoresModelViewModel(Context);
             PlayerChanged += PlayerViewModel_PlayerChanged;
             ResetHitDie = new Command(() => {
                 HDBusy = true;
                 MakeHistory();
-                Player.Current.UsedHitDice = new List<int>();
-                HitDice.ReplaceRange(from h in Player.Current.GetHitDie() orderby h select new HitDieViewModel(h));
+                Context.Player.UsedHitDice = new List<int>();
+                HitDice.ReplaceRange(from h in Context.Player.GetHitDie() orderby h select new HitDieViewModel(this, h));
                 Save();
                 HDBusy = false;
             });
             ResetHD = new Command(() => {
                 MakeHistory();
-                Player.Current.FailedDeathSaves = 0;
-                Player.Current.SuccessDeathSaves = 0;
+                Context.Player.FailedDeathSaves = 0;
+                Context.Player.SuccessDeathSaves = 0;
                 OnPropertyChanged("DeathSaveFail");
                 OnPropertyChanged("DeathSaveSuccess");
                 Save();
@@ -214,64 +207,65 @@ namespace CB_5e.ViewModels
                 SelectedSkill = null;
                 SkillBusy = false;
             });
-            Player.HistoryButtonChange += Player_HistoryButtonChange;
+            Context.HistoryButtonChange += Player_HistoryButtonChange;
             Undo = new Command(() =>
             {
-                Player.Undo();
+                Context.Undo();
                 FirePlayerChanged();
                 Save();
             }, () =>
             {
-                return Player.CanUndo();
+                return Context.CanUndo();
             });
             Redo = new Command(() =>
             {
-                Player.Redo();
+                Context.Redo();
                 FirePlayerChanged();
                 Save();
             }, () =>
             {
-                return Player.CanRedo();
+                return Context.CanRedo();
             });
             ShowImage = new Command(async (par) =>
             {
-                await Navigation.PushAsync(new ImageViewer(par as ImageSource, Player.Current?.Portrait, Player.Current?.Name));
+                await Navigation.PushAsync(new ImageViewer(par as ImageSource, Context.Player?.Portrait, Context.Player?.Name));
             });
             ShowClasses = new Command(async () =>
             {
                 List<IOGLElement> classes = new List<IOGLElement>();
-                foreach (PlayerClass pc in Player.Current.Classes)
+                foreach (PlayerClass pc in Context.Player.Classes)
                 {
-                    classes.Add(pc.Class);
-                    classes.Add(pc.SubClass);
+                    classes.Add(pc.GetClass(Context));
+                    classes.Add(pc.GetSubClass(Context));
                 }
                 await Navigation.PushAsync(InfoSelectPage.Show(classes));
             }, () => 
-                Player.Current?.Classes?.Count > 0);
+                Context.Player?.Classes?.Count > 0);
             ShowRace = new Command(async () => {
-                await Navigation.PushAsync(InfoSelectPage.Show(Player.Current.Race, Player.Current.SubRace));
-            }, () => Player.Current?.RaceName != null && Player.Current?.RaceName != "");
+                await Navigation.PushAsync(InfoSelectPage.Show(Context.Player.Race, Context.Player.SubRace));
+            }, () => Context.Player?.RaceName != null && Context.Player?.RaceName != "");
             ShowBackground = new Command(async () => {
-                await Navigation.PushAsync(InfoSelectPage.Show(Player.Current.Background));
-            }, () => Player.Current?.BackgroundName != null && Player.Current?.BackgroundName != "");
-            Skills.ReplaceRange(Player.Current.GetSkills());
-            
+                await Navigation.PushAsync(InfoSelectPage.Show(Context.Player.Background));
+            }, () => Context.Player?.BackgroundName != null && Context.Player?.BackgroundName != "");
+            Skills.ReplaceRange(Context.Player.GetSkills());
+            HitDice.ReplaceRange(from h in Context.Player.GetHitDie() orderby h select new HitDieViewModel(this, h));
+
         }
 
         public Color Accent { get { return Color.Accent; } }
 
         private void Player_HistoryButtonChange(object sender, bool CanUndo, bool CanRedo)
         {
-            Instance.Undo.ChangeCanExecute();
-            Instance.Redo.ChangeCanExecute();
+            Undo.ChangeCanExecute();
+            Redo.ChangeCanExecute();
         }
 
         public Command Undo { get; set; }
         public Command Redo { get; set; }
 
-        public static void MakeHistory(string h = null)
+        public void MakeHistory(string h = null)
         {
-            Player.MakeHistory(h);
+            Context.MakeHistory(h);
         }
         public virtual void Save()
         {
@@ -284,14 +278,14 @@ namespace CB_5e.ViewModels
         public void DoSave()
         {
             
-            if (Player.Current != null)
+            if (Context.Player != null)
             {
-                Player p = Player.Current;
+                Player p = Context.Player;
                 if (Saving.Enter())
                 {
                     if (p.FilePath is IFile file)
                     {
-                        Player.UnsavedChanges = 0;
+                        Context.UnsavedChanges = 0;
                         using (Stream s = file.OpenAsync(FileAccess.ReadAndWrite).Result)
                         {
 
@@ -307,27 +301,27 @@ namespace CB_5e.ViewModels
 
         private void PlayerViewModel_PlayerChanged(object sender, EventArgs e)
         {
-            HitDice.ReplaceRange(from h in Player.Current.GetHitDie() orderby h select new HitDieViewModel(h));
+            HitDice.ReplaceRange(from h in Context.Player.GetHitDie() orderby h select new HitDieViewModel(this, h));
             OnPropertyChanged(null);
-            Skills.ReplaceRange(Player.Current.GetSkills());
-            Scores.Update(Player.Current);
+            Skills.ReplaceRange(Context.Player.GetSkills());
+            Scores.Update(Context.Player);
             ShowClasses.ChangeCanExecute();
             ShowRace.ChangeCanExecute();
             ShowBackground.ChangeCanExecute();
         }
         public ImageSource Portrait
         {
-            get { if (Player.Current != null && Player.Current.Portrait != null) return ImageSource.FromStream(() => new MemoryStream(Player.Current.Portrait)); return null; }
+            get { if (Context.Player != null && Context.Player.Portrait != null) return ImageSource.FromStream(() => new MemoryStream(Context.Player.Portrait)); return null; }
         }
 
         public ImageSource FactionImage
         {
-            get { if (Player.Current != null && Player.Current.FactionImage != null) return ImageSource.FromStream(() => new MemoryStream(Player.Current.FactionImage)); return null; }
+            get { if (Context.Player != null && Context.Player.FactionImage != null) return ImageSource.FromStream(() => new MemoryStream(Context.Player.FactionImage)); return null; }
         }
 
         public string HP {
             get {
-                return (Player.Current.GetHitpointMax() + Player.Current.CurrentHPLoss).ToString();
+                return (Context.Player.GetHitpointMax() + Context.Player.CurrentHPLoss).ToString();
             }
             set
             {
@@ -336,9 +330,9 @@ namespace CB_5e.ViewModels
                 if (value == "" || value == "-"|| int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
                     MakeHistory("CurHP");
-                    int loss = parsedInt - Player.Current.GetHitpointMax();
+                    int loss = parsedInt - Context.Player.GetHitpointMax();
                     if (loss > 0) loss = 0;
-                    Player.Current.CurrentHPLoss = loss;
+                    Context.Player.CurrentHPLoss = loss;
                     Save();
                 }
                 if (value != "" && value != "-") OnPropertyChanged("HP");
@@ -349,14 +343,14 @@ namespace CB_5e.ViewModels
         {
             get
             {
-                return "Current: (Max " + Player.Current.GetHitpointMax() + ")";
+                return "Current: (Max " + Context.Player.GetHitpointMax() + ")";
             }
         }
         public string BonusHP
         {
             get
             {
-                return Player.Current.BonusMaxHP.ToString();
+                return Context.Player.BonusMaxHP.ToString();
             }
             set
             {
@@ -366,7 +360,7 @@ namespace CB_5e.ViewModels
                 {
                     if (parsedInt < 0) parsedInt = 0;
                     MakeHistory("CurHP");
-                    Player.Current.BonusMaxHP = parsedInt;
+                    Context.Player.BonusMaxHP = parsedInt;
                     OnPropertyChanged("HP");
                     OnPropertyChanged("HPMax");
                     Save();
@@ -379,7 +373,7 @@ namespace CB_5e.ViewModels
         {
             get
             {
-                return Player.Current.TempHP.ToString();
+                return Context.Player.TempHP.ToString();
             }
             set
             {
@@ -389,52 +383,53 @@ namespace CB_5e.ViewModels
                 {
                     if (parsedInt < 0) parsedInt = 0;
                     MakeHistory("TempHP");
-                    Player.Current.TempHP = parsedInt;
+                    Context.Player.TempHP = parsedInt;
                     Save();
                 }
                 if (value != "") OnPropertyChanged("TempHP");
             }
         }
 
-        public string Race { get { return Player.Current.GetRaceSubName(); } }
+        public string Race { get { return Context.Player.GetRaceSubName(); } }
         public string Classes {
             get {
-                return String.Join(" | ", Player.Current.Classes);
+                int level = Context.Player.GetLevel();
+                return String.Join(" | ", from pc in Context.Player.Classes select pc.ToString(Context, level));
                 /**int level = Level;
                 int total = 0;
-                foreach (PlayerClass pc in Player.Current.Classes) total += pc.getClassLevelUpToLevel(level);
+                foreach (PlayerClass pc in Context.Player.Classes) total += pc.getClassLevelUpToLevel(level);
                 if (total == level) return a;
                 return a.Length > 0 ? a + ", Total Level " + Level : "Level " + Level;*/
             }
         }
-        public string Name { get { return Player.Current.Name; } }
-        public int Level { get { return Player.Current.GetLevel(); } }
-        public string LevelText { get { return "(Level " + Player.Current.GetLevel().ToString() + ")"; } }
+        public string Name { get { return Context.Player.Name; } }
+        public int Level { get { return Context.Player.GetLevel(); } }
+        public string LevelText { get { return "(Level " + Context.Player.GetLevel().ToString() + ")"; } }
         public string RaceAndLevel { get { return Race + " (" + Level + ")"; } }
-        public string Background { get { return Player.Current?.Background?.Name; } }
-        public string Alignment { get { return Player.Current?.Alignment; } }
-        public int AC { get { return Player.Current.GetAC(); } }
-        public string Initiative { get { return Player.Current.GetInitiative().ToString("+#;-#;0"); } }
-        public string Proficiency { get { return Player.Current.GetProficiency().ToString("+#;-#;0"); } }
-        public int Speed { get { return Player.Current.GetSpeed(); } }
+        public string Background { get { return Context.Player?.Background?.Name; } }
+        public string Alignment { get { return Context.Player?.Alignment; } }
+        public int AC { get { return Context.Player.GetAC(); } }
+        public string Initiative { get { return Context.Player.GetInitiative().ToString("+#;-#;0"); } }
+        public string Proficiency { get { return Context.Player.GetProficiency().ToString("+#;-#;0"); } }
+        public int Speed { get { return Context.Player.GetSpeed(); } }
         public bool Inspiration {
             get {
-                return Player.Current.Inspiration;
+                return Context.Player.Inspiration;
             }
             set
             {
                 if (Inspiration == value) return;
-                Player.Current.Inspiration = value;
+                Context.Player.Inspiration = value;
                 MakeHistory("Inspiration");
                 OnPropertyChanged("Inspiration");
                 Save();
             }
         }
-        public int XP { get { return Player.Current.GetXP(); } }
+        public int XP { get { return Context.Player.GetXP(); } }
         public string Carried {
             get {
-                double carry = Player.Current.GetCarryCapacity();
-                double weight = Player.Current.GetWeight();
+                double carry = Context.Player.GetCarryCapacity();
+                double weight = Context.Player.GetWeight();
                 return weight.ToString("N") + " / " + carry.ToString("N0") + " lb";
             }
         }
@@ -443,13 +438,13 @@ namespace CB_5e.ViewModels
         {
             get
             {
-                return Player.Current.GetMoney().ToString();
+                return Context.Player.GetMoney().ToString();
             }
         }
 
         public string HDTotal {
             get {
-                List<HitDie> hd = Player.Current.GetHitDie();
+                List<HitDie> hd = Context.Player.GetHitDie();
                 hd.Sort();
                 return "Total: " + String.Join(", ", from h in hd select h.Total());
             }
@@ -463,40 +458,40 @@ namespace CB_5e.ViewModels
         public Command ResetHD { get; set; }
         public int DeathSaveSuccess {
             get {
-                return Player.Current.SuccessDeathSaves >= 0 && Player.Current.SuccessDeathSaves <= 3 ? Player.Current.SuccessDeathSaves : 0;
+                return Context.Player.SuccessDeathSaves >= 0 && Context.Player.SuccessDeathSaves <= 3 ? Context.Player.SuccessDeathSaves : 0;
             }
             set
             {
                 if (DeathSaveSuccess == value) return;
                 MakeHistory("SuccessDeathSaves");
-                Player.Current.SuccessDeathSaves = value;
+                Context.Player.SuccessDeathSaves = value;
                 Save();
             }
         }
         public int DeathSaveFail {
             get {
-                return Player.Current.FailedDeathSaves >= 0 && Player.Current.FailedDeathSaves <= 3 ? Player.Current.FailedDeathSaves : 0;
+                return Context.Player.FailedDeathSaves >= 0 && Context.Player.FailedDeathSaves <= 3 ? Context.Player.FailedDeathSaves : 0;
             }
             set
             {
                 if (DeathSaveFail == value) return;
                 MakeHistory("FailedDeathSaves");
-                Player.Current.FailedDeathSaves = value;
+                Context.Player.FailedDeathSaves = value;
                 Save();
             }
         }
         public string PP
         {
-            get { return Player.Current.GetMoney().pp.ToString(); }
+            get { return Context.Player.GetMoney().pp.ToString(); }
             set
             {
                 int parsedInt = 0;
                 if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
-                    Price p = Player.Current.GetMoney();
+                    Price p = Context.Player.GetMoney();
                     if (p.pp == parsedInt) return;
                     MakeHistory("MoneyPP");
-                    Player.Current.SetMoney(p.cp, p.sp, p.ep, p.gp, parsedInt);
+                    Context.Player.SetMoney(p.cp, p.sp, p.ep, p.gp, parsedInt);
                     OnPropertyChanged("Money");
                     Save();
                 }
@@ -505,16 +500,16 @@ namespace CB_5e.ViewModels
         }
         public string GP
         {
-            get { return Player.Current.GetMoney().gp.ToString(); }
+            get { return Context.Player.GetMoney().gp.ToString(); }
             set
             {
-                Price p = Player.Current.GetMoney();
+                Price p = Context.Player.GetMoney();
                 int parsedInt = 0;
                 if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
                     if (p.gp == parsedInt) return;
                     MakeHistory("MoneyGP");
-                    Player.Current.SetMoney(p.cp, p.sp, p.ep, parsedInt, p.pp);
+                    Context.Player.SetMoney(p.cp, p.sp, p.ep, parsedInt, p.pp);
                     OnPropertyChanged("Money");
                     Save();
                 }
@@ -523,16 +518,16 @@ namespace CB_5e.ViewModels
         }
         public string EP
         {
-            get { return Player.Current.GetMoney().ep.ToString(); }
+            get { return Context.Player.GetMoney().ep.ToString(); }
             set
             {
-                Price p = Player.Current.GetMoney();
+                Price p = Context.Player.GetMoney();
                 int parsedInt = 0;
                 if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
                     if (p.ep == parsedInt) return;
                     MakeHistory("MoneyEP");
-                    Player.Current.SetMoney(p.cp, p.sp, parsedInt, p.gp, p.pp);
+                    Context.Player.SetMoney(p.cp, p.sp, parsedInt, p.gp, p.pp);
                     OnPropertyChanged("Money");
                     Save();
                 }
@@ -541,16 +536,16 @@ namespace CB_5e.ViewModels
         }
         public string SP
         {
-            get { return Player.Current.GetMoney().sp.ToString(); }
+            get { return Context.Player.GetMoney().sp.ToString(); }
             set
             {
                 int parsedInt = 0;
                 if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
-                    Price p = Player.Current.GetMoney();
+                    Price p = Context.Player.GetMoney();
                     if (p.sp == parsedInt) return;
                     MakeHistory("MoneySP");
-                    Player.Current.SetMoney(p.cp, parsedInt, p.ep, p.gp, p.pp);
+                    Context.Player.SetMoney(p.cp, parsedInt, p.ep, p.gp, p.pp);
                     OnPropertyChanged("Money");
                     Save();
                 }
@@ -559,16 +554,16 @@ namespace CB_5e.ViewModels
         }
         public string CP
         {
-            get { return Player.Current.GetMoney().cp.ToString(); }
+            get { return Context.Player.GetMoney().cp.ToString(); }
             set
             {
                 int parsedInt = 0;
                 if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
-                    Price p = Player.Current.GetMoney();
+                    Price p = Context.Player.GetMoney();
                     if (p.cp == parsedInt) return;
                     MakeHistory("MoneyCP");
-                    Player.Current.SetMoney(parsedInt, p.sp, p.ep, p.gp, p.pp);
+                    Context.Player.SetMoney(parsedInt, p.sp, p.ep, p.gp, p.pp);
                     OnPropertyChanged("Money");
                     Save();
                 }
@@ -583,7 +578,7 @@ namespace CB_5e.ViewModels
         public ObservableRangeCollection<SkillInfo> Skills { get; set; } = new ObservableRangeCollection<SkillInfo>();
         public String SkillValue {
             get {
-                if (SelectedSkill != null) return ": " + Player.Current.GetSkill(SelectedSkill.Skill, _baseAbility).ToString("+#;-#;0");
+                if (SelectedSkill != null) return ": " + Context.Player.GetSkill(SelectedSkill.Skill, _baseAbility).ToString("+#;-#;0");
                 return ": 0";
             }
         }
@@ -597,6 +592,7 @@ namespace CB_5e.ViewModels
         public Command ShowClasses { get; private set; }
         public Command ShowRace { get; private set; }
         public Command ShowBackground { get; private set; }
+        public BuilderContext Context { get; private set; }
     }
 
 }

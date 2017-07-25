@@ -16,6 +16,9 @@ namespace Character_Builder_5
 {
     public static class Program
     {
+
+        public static BuilderContext Context = new BuilderContext();
+
         public static void Exit()
         {
             Application.Exit();
@@ -52,28 +55,29 @@ namespace Character_Builder_5
         public static void ReloadData()
         {
             Config.LoadConfig(Application.StartupPath);
-            SourceManager.Init(Application.StartupPath, true);
+            SourceManager.Init(Program.Context, Application.StartupPath, true);
             LoadData();
-            Player.Current.ChoiceCounter.Clear();
-            Player.Current.ChoiceTotal.Clear();
+            Context.Player.ChoiceCounter.Clear();
+            Context.Player.ChoiceTotal.Clear();
+            Context.Player.Context = Context;
             MainWindow.BuildSources();
         }
 
         public static void LoadData() {
-            PlayerExtensions.LoadPluginManager(Path.Combine(Application.StartupPath, ConfigManager.Directory_Plugins));
-            ImportExtensions.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, ConfigManager.Loaded.Levels));
-            ImportExtensions.ImportSkills();
-            ImportExtensions.ImportLanguages();
-            ImportExtensions.ImportSpells();
-            ImportExtensions.ImportItems();
-            ImportExtensions.ImportBackgrounds();
-            ImportExtensions.ImportRaces();
-            ImportExtensions.ImportSubRaces();
-            ImportExtensions.ImportStandaloneFeatures();
-            ImportExtensions.ImportConditions();
-            ImportExtensions.ImportMagic();
-            ImportExtensions.ImportClasses(true);
-            ImportExtensions.ImportSubClasses(true);
+            Context.LoadPluginManager(Path.Combine(Application.StartupPath, Context.Config.Plugins_Directory));
+            Context.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, "Levels.xml"));
+            Context.ImportSkills();
+            Context.ImportLanguages();
+            Context.ImportSpells();
+            Context.ImportItems();
+            Context.ImportBackgrounds();
+            Context.ImportRaces();
+            Context.ImportSubRaces();
+            Context.ImportStandaloneFeatures();
+            Context.ImportConditions();
+            Context.ImportMagic();
+            Context.ImportClasses(true);
+            Context.ImportSubClasses(true);
         }
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace Character_Builder_5
             Config.LoadConfig(Application.StartupPath);
             HTMLExtensions.LoadTransform += (t, o) => { if (o is Possession) t.Load(HTMLExtensions.Transform_Possession.FullName); };
             ConfigManager.LicenseProvider = new LicenseProvider();
-            if (SourceManager.Init(Application.StartupPath, true))
+            if (SourceManager.Init(Context, Application.StartupPath, true))
             {
                 if (args.Count() > 1)
                 {
@@ -109,7 +113,7 @@ namespace Character_Builder_5
                 Exit();
                 return;
             }
-            Player.SourcesChangedEvent += Player_SourcesChangedEvent;
+            Context.SourcesChangedEvent += Player_SourcesChangedEvent;
             MainWindow = new Form1();
             if (args.Count() > 1)
             {
@@ -121,7 +125,7 @@ namespace Character_Builder_5
                     {
                         try
                         {
-                            Player.Current = PlayerExtensions.Load(fs);
+                            Context.Player = PlayerExtensions.Load(Context, fs);
                             MainWindow.UpdateLayout();
                         }
                         catch (Exception e)

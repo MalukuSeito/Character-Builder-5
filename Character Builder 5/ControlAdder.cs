@@ -60,9 +60,9 @@ namespace Character_Builder_5
 
         public static void AddControls(PlayerClass p, List<System.Windows.Forms.Control> control, int level, Player player)
         {
-            AddControls(p.Class, control, level);
+            AddControls(p.GetClass(Program.Context), control, level);
             int classlevel = p.getClassLevelUpToLevel(level);
-            foreach (Feature f in p.GetFeatures(level, player).OrderBy(a => a.Level)) AddControl(control, classlevel, f);
+            foreach (Feature f in p.GetFeatures(level, player, Program.Context).OrderBy(a => a.Level)) AddControl(control, classlevel, f);
         }
 
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, Feature f)
@@ -88,19 +88,19 @@ namespace Character_Builder_5
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, BonusSpellKeywordChoiceFeature f)
         {
 
-            if (!bskcfSpells.ContainsKey(f)) bskcfSpells.Add(f, Utils.FilterSpell(f.Condition, null));
+            if (!bskcfSpells.ContainsKey(f)) bskcfSpells.Add(f, Utils.FilterSpell(Program.Context, f.Condition, null));
             if (!bskcfboxes.ContainsKey(f)) bskcfboxes.Add(f, new List<System.Windows.Forms.ListBox>(f.Amount));
             if (!bskcflabels.ContainsKey(f)) bskcflabels.Add(f, new List<System.Windows.Forms.Label>(f.Amount));
             List<System.Windows.Forms.ListBox> choiceboxes = bskcfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = bskcflabels[f];
             List<Spell> spells = bskcfSpells[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -131,7 +131,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -139,7 +139,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Spell.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetSpell(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -152,12 +152,12 @@ namespace Character_Builder_5
             List<System.Windows.Forms.ListBox> choiceboxes = cfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = cflabels[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -188,7 +188,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -211,13 +211,13 @@ namespace Character_Builder_5
             List<System.Windows.Forms.ListBox> choiceboxes = ccfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = ccflabels[f];
             List<String> taken = new List<string>();
-            if (f.Collection == null || f.Collection == "") taken.AddRange(Player.Current.GetFeatNames());
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            if (f.Collection == null || f.Collection == "") taken.AddRange(Program.Context.Player.GetFeatNames());
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + (c).ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -248,17 +248,17 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
-                List<Feature> fl = FeatureCollection.Get(f.Collection);
+                List<Feature> fl = Program.Context.GetFeatureCollection(f.Collection);
                 if (cho == null || cho.Value == "" || !fl.Exists(feat => ConfigManager.SourceInvariantComparer.Equals(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source, cho.Value))) cbox.Items.AddRange(fl.FindAll(e => f.AllowSameChoice || !taken.Exists(t => ConfigManager.SourceInvariantComparer.Equals(t, e.Name + " " + ConfigManager.SourceSeperator + " " + e.Source)) && e.Level <= level).ToArray());
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    Feature res = FeatureCollection.Get(f.Collection).Find(feat => feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source == cho.Value);
-                    if (res == null) res = FeatureCollection.Get(f.Collection).Find(feat => ConfigManager.SourceInvariantComparer.Equals(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source, cho.Value));
+                    Feature res = Program.Context.GetFeatureCollection(f.Collection).Find(feat => feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source == cho.Value);
+                    if (res == null) res = Program.Context.GetFeatureCollection(f.Collection).Find(feat => ConfigManager.SourceInvariantComparer.Equals(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source, cho.Value));
                     cbox.Items.Add(res);
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
@@ -271,15 +271,15 @@ namespace Character_Builder_5
             if (!iccflabels.ContainsKey(f)) iccflabels.Add(f, new List<System.Windows.Forms.Label>(f.Amount));
             List<System.Windows.Forms.ListBox> choiceboxes = iccfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = iccflabels[f];
-            if (!iccfitems.ContainsKey(f)) iccfitems.Add(f, Utils.Filter(f.Condition));
+            if (!iccfitems.ContainsKey(f)) iccfitems.Add(f, Utils.Filter(Program.Context, f.Condition));
             List<Item> items = iccfitems[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -310,7 +310,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -318,7 +318,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Item.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetItem(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -330,20 +330,20 @@ namespace Character_Builder_5
             if (!icflabels.ContainsKey(f)) icflabels.Add(f, new List<System.Windows.Forms.Label>(f.Amount));
             List<System.Windows.Forms.ListBox> choiceboxes = icfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = icflabels[f];
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
             if (!icfitems.ContainsKey(f))
             {
                 List<Item> it = new List<Item>();
-                foreach (String s in f.Items) it.Add(Item.Get(s, f.Source));
+                foreach (String s in f.Items) it.Add(Program.Context.GetItem(s, f.Source));
                 icfitems.Add(f, it);
             }
             List<Item> items = icfitems[f];
             List<String> taken = new List<string>();
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -374,7 +374,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -382,7 +382,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Item.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetItem(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -392,7 +392,7 @@ namespace Character_Builder_5
         {
             if (langs == null)
             {
-                langs = new List<Language>(Language.languages.Values);
+                langs = new List<Language>(Program.Context.Languages.Values);
                 langs.Sort();
             }
             if (!lcfboxes.ContainsKey(f)) lcfboxes.Add(f, new List<System.Windows.Forms.ListBox>(f.Amount));
@@ -400,12 +400,12 @@ namespace Character_Builder_5
             List<System.Windows.Forms.ListBox> choiceboxes = lcfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = lcflabels[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -438,7 +438,7 @@ namespace Character_Builder_5
                     choicelabel.Text = name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -446,7 +446,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Language.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetLanguage(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -455,11 +455,11 @@ namespace Character_Builder_5
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, SkillProficiencyChoiceFeature f)
         {
             List<Skill> shown;
-            if (f.Skills.Count == 0) shown = (from s in Skill.skills.Values orderby s select s).ToList();
-            else shown = new List<Skill>(from s in f.Skills select Skill.Get(s, f.Source));
+            if (f.Skills.Count == 0) shown = (from s in Program.Context.Skills.Values orderby s select s).ToList();
+            else shown = new List<Skill>(from s in f.Skills select Program.Context.GetSkill(s, f.Source));
             if (f.OnlyAlreadyKnownSkills)
             {
-                IEnumerable<Skill> known = Player.Current.GetSkillProficiencies();
+                IEnumerable<Skill> known = Program.Context.Player.GetSkillProficiencies();
                 shown.RemoveAll(e => !known.Any(s => s == e));
             }
             if (!spcfboxes.ContainsKey(f)) spcfboxes.Add(f, new List<System.Windows.Forms.ListBox>(f.Amount));
@@ -467,12 +467,12 @@ namespace Character_Builder_5
             List<System.Windows.Forms.ListBox> choiceboxes = spcfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = spcflabels[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -503,7 +503,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -511,7 +511,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Skill.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetSkill(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -519,19 +519,19 @@ namespace Character_Builder_5
         }
         public static void AddControl(List<System.Windows.Forms.Control> control, int level, ToolProficiencyChoiceConditionFeature f)
         {
-            if (!tpccfitems.ContainsKey(f)) tpccfitems.Add(f, Utils.Filter(f.Condition));
+            if (!tpccfitems.ContainsKey(f)) tpccfitems.Add(f, Utils.Filter(Program.Context, f.Condition));
             List<Item> items = tpccfitems[f];
             if (!tpccfboxes.ContainsKey(f)) tpccfboxes.Add(f, new List<System.Windows.Forms.ListBox>(f.Amount));
             if (!tpccflabels.ContainsKey(f)) tpccflabels.Add(f, new List<System.Windows.Forms.Label>(f.Amount));
             List<System.Windows.Forms.ListBox> choiceboxes = tpccfboxes[f];
             List<System.Windows.Forms.Label> choicelabels = tpccflabels[f];
             List<String> taken = new List<string>();
-            int offset = Player.Current.GetChoiceOffset(f, f.UniqueID, f.Amount);
-            for (int c = 0; c < Player.Current.GetChoiceTotal(f.UniqueID); c++)
+            int offset = Program.Context.Player.GetChoiceOffset(f, f.UniqueID, f.Amount);
+            for (int c = 0; c < Program.Context.Player.GetChoiceTotal(f.UniqueID); c++)
             {
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < f.Amount; c++)
@@ -562,7 +562,7 @@ namespace Character_Builder_5
                     choicelabel.Text = f.Name + (f.Amount > 1 ? " (" + (c + 1) + "/" + f.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(f.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(f.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -570,7 +570,7 @@ namespace Character_Builder_5
                 else
                 {
                     cbox.ForeColor = Config.SelectColor;
-                    cbox.Items.Add(Item.Get(cho.Value, f.Source));
+                    cbox.Items.Add(Program.Context.GetItem(cho.Value, f.Source));
                 }
                 cbox.Height = cbox.Items.Count * cbox.ItemHeight + 10;
                 control.Add(cbox);
@@ -594,7 +594,7 @@ namespace Character_Builder_5
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Player.Current.GetChoice(desc.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(desc.UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             for (int c = 0; c < desc.Amount; c++)
@@ -624,7 +624,7 @@ namespace Character_Builder_5
                     choicelabel.Text = desc.Name + (desc.Amount > 1 ? " (" + (c + 1) + "/" + desc.Amount + ")" : "");
                 }
                 control.Add(choicelabels[c]);
-                Choice cho = Player.Current.GetChoice(desc.UniqueID + counter);
+                Choice cho = Program.Context.Player.GetChoice(desc.UniqueID + counter);
                 System.Windows.Forms.ListBox cbox = choiceboxes[c];
                 cbox.Items.Clear();
                 cbox.ForeColor = System.Drawing.SystemColors.WindowText;

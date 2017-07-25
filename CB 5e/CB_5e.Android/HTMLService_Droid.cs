@@ -26,8 +26,9 @@ namespace CB_5e.Droid
             return obj.ToHTML();
         }
 
-        public void Reset()
+        public void Reset(ConfigManager config)
         {
+            HTMLExtensions.Config = config;
             HTMLExtensions.Transforms.Clear();
             HTMLExtensions.Transform = new System.Xml.Xsl.XslCompiledTransform();
         }

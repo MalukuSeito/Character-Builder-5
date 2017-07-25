@@ -19,24 +19,24 @@ namespace CB_5e.Services
             return true;
         }
 
-        public static async Task<Dictionary<IFolder, string>> GetAllDirectoriesAsync(string type)
+        public static async Task<Dictionary<IFolder, string>> GetAllDirectoriesAsync(OGLContext context, string type)
         {
             Dictionary<IFolder, string> result = new Dictionary<IFolder, string>();
             foreach (IFolder s in Sources)
             {
-                if (ConfigManager.ExcludedSources.Contains(s.Name, StringComparer.OrdinalIgnoreCase)) continue;
+                if (context.ExcludedSources.Contains(s.Name, StringComparer.OrdinalIgnoreCase)) continue;
                 ExistenceCheckResult res = await s.CheckExistsAsync(type);
                 if (res == ExistenceCheckResult.FolderExists) result.Add(await s.GetFolderAsync(type), s.Name);
             }
             return result;
         }
 
-        public static async Task<Dictionary<IFile, string>> EnumerateFilesAsync(string type, bool recurse = false, string pattern = ".xml")
+        public static async Task<Dictionary<IFile, string>> EnumerateFilesAsync(OGLContext context, string type, bool recurse = false, string pattern = ".xml")
         {
             Dictionary<IFile, string> result = new Dictionary<IFile, string>();
             try
             {
-                foreach (var f in await GetAllDirectoriesAsync(type))
+                foreach (var f in await GetAllDirectoriesAsync(context, type))
                 {
                     foreach (IFile file in await GetAllFilesAsync(f.Key, recurse, pattern)) result.Add(file, f.Value);
                 }

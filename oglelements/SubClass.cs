@@ -131,48 +131,43 @@ namespace OGL
         public String ClassName { get; set; }
 
         public byte[] ImageData { get; set; }
-        [XmlIgnore]
-        public ClassDefinition ParentClass
-        {
-            get
-            {
-                if (ClassName == null || ClassName == "" || ClassName == "*") return null;
-                return ClassDefinition.Get(ClassName, Source);
-            }
-            set
-            {
-                if (value == null) ClassName = "";
-                else ClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
-            }
-        }
-        [XmlIgnore]
-        static public Dictionary<String, SubClass> subclasses = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
-        [XmlIgnore]
-        static public Dictionary<String, SubClass> simple = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
+        //[XmlIgnore]
+        //public ClassDefinition ParentClass
+        //{
+        //    get
+        //    {
+        //        if (ClassName == null || ClassName == "" || ClassName == "*") return null;
+        //        return ClassDefinition.Get(ClassName, Source);
+        //    }
+        //    set
+        //    {
+        //        if (value == null) ClassName = "";
+        //        else ClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
+        //    }
+        //}
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
-        public void Register(string file, bool applyKeywords)
+        public void Register(OGLContext context, string file, bool applyKeywords)
         {
             this.Filename = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
-            if (subclasses.ContainsKey(full)) throw new Exception("Duplicate Subclass: " + full);
-            subclasses.Add(full, this);
-            if (simple.ContainsKey(Name))
+            if (context.SubClasses.ContainsKey(full)) throw new Exception("Duplicate Subclass: " + full);
+            context.SubClasses.Add(full, this);
+            if (context.SubClassesSimple.ContainsKey(Name))
             {
-                simple[Name].ShowSource = true;
+                context.SubClassesSimple[Name].ShowSource = true;
                 ShowSource = true;
             }
-            else simple.Add(Name, this);
+            else context.SubClassesSimple.Add(Name, this);
         }
         public SubClass() : base() {
             Features = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
             MulticlassingSpellLevels = new List<int>();
             MulticlassingFeatures = new List<Feature>();
             FirstClassFeatures = new List<Feature>();
         }
-        public SubClass(String name, ClassDefinition classdefinition)
+        public SubClass(OGLContext context, String name, ClassDefinition classdefinition)
         {
             Name = name;
             if (classdefinition != null) ClassName = classdefinition.Name;
@@ -181,24 +176,8 @@ namespace OGL
             MulticlassingFeatures = new List<Feature>();
             FirstClassFeatures = new List<Feature>();
             Descriptions = new List<Description>();
-            Source = ConfigManager.DefaultSource;
-            Register(null, false);
-        }
-          public static SubClass Get(String name, string sourcehint)
-        {
-            if (name.Contains(ConfigManager.SourceSeperatorString))
-            {
-                if (subclasses.ContainsKey(name)) return subclasses[name];
-                name = SourceInvariantComparer.NoSource(name);
-            }
-            if (sourcehint != null && subclasses.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return subclasses[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
-            if (simple.ContainsKey(name)) return simple[name];
-            ConfigManager.LogError("Unknown subclass: " + name);
-            SubClass sc = new SubClass(name, null)
-            {
-                Description = "Missing Entry"
-            };
-            return sc;
+            Source = context.Config.DefaultSource;
+            Register(context, null, false);
         }
         public String ToXML()
         {
@@ -224,29 +203,25 @@ namespace OGL
         {
             return Name.CompareTo(other.Name);
         }
-        public List<Feature> CollectFeatures(int level, bool secondClass, IChoiceProvider choiceProvider)
+        public List<Feature> CollectFeatures(int level, bool secondClass, IChoiceProvider choiceProvider, OGLContext context)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in Features)
             {
                 f.Source = Source;
-                res.AddRange(f.Collect(level, choiceProvider));
+                res.AddRange(f.Collect(level, choiceProvider, context));
             }
             if (secondClass) foreach (Feature f in MulticlassingFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             else foreach (Feature f in FirstClassFeatures)
                 {
                     f.Source = Source;
-                    res.AddRange(f.Collect(level, choiceProvider));
+                    res.AddRange(f.Collect(level, choiceProvider, context));
                 }
             return res;
-        }
-        public static IEnumerable<SubClass> For(string classdefinition)
-        {
-            return (from s in subclasses.Values where ConfigManager.SourceInvariantComparer.Equals(s.ClassName, classdefinition) || s.ClassName == "*" select s);
         }
         public SubClass Clone()
         {

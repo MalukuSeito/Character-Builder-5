@@ -17,18 +17,13 @@ namespace CB_5e.Views
     {
 
         public CancellationTokenSource Cancel = new CancellationTokenSource();
-        public LoadingPage()
+
+        public LoadingPage(LoadingProgress loader)
         {
             InitializeComponent();
-            BindingContext = LoadingProgress.Instance;
-            //Task.Run(async () =>
-            //{
-            //    await LoadingProgress.Instance.Load(worker.Token).ConfigureAwait(false);
-            //    Device.BeginInvokeOnMainThread(async () => {
-            //        await Navigation.PopModalAsync(false);
-            //    });
-            //}).Forget();
+            BindingContext = loader;
         }
+
         protected override bool OnBackButtonPressed()
         {
             Cancel.Cancel();

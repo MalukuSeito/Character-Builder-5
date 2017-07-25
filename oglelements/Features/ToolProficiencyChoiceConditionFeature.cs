@@ -23,7 +23,7 @@ namespace OGL.Features
             UniqueID = uniqueID;
             Condition = condition;
         }
-        public List<Tool> getTools(IChoiceProvider provider)
+        public List<Tool> getTools(IChoiceProvider provider, OGLContext context)
         {
             List<Tool> res = new List<Tool>();
             int offset = provider.GetChoiceOffset(this, UniqueID, Amount);
@@ -32,7 +32,7 @@ namespace OGL.Features
                 String counter = "";
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
                 Choice cho = provider.GetChoice(UniqueID + counter);
-                if (cho != null && cho.Value != "") res.Add(Item.Get(cho.Value, Source).AsTool());
+                if (cho != null && cho.Value != "") res.Add(context.GetItem(cho.Value, Source).AsTool());
             }
             return res;
         }
