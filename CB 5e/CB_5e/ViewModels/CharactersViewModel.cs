@@ -12,12 +12,14 @@ using OGL;
 using PCLStorage;
 using Character_Builder;
 using System.Collections.Generic;
+using System.Linq;
+using System.Globalization;
 
 namespace CB_5e.ViewModels
 {
     public class CharactersViewModel : BaseViewModel
     {
-
+        private static CultureInfo culture = CultureInfo.InvariantCulture;
         private static CharactersViewModel instance = null;
         public static CharactersViewModel Instance {
             get {
@@ -26,9 +28,29 @@ namespace CB_5e.ViewModels
             }
         }
 
+        private List<Character> items = new List<Character>();
         public ObservableRangeCollection<Character> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
+        private string search;
+        public string Search {
+            get { return search; }
+            set
+            {
+                search = value;
+                UpdateItems();
+            }
+        }
+
+        private void UpdateItems()
+        {
+            
+            if (search == null || search == "") Items.ReplaceRange(items);
+            else
+            {
+                Items.ReplaceRange(from c in items where culture.CompareInfo.IndexOf(c.Text, search, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Description, search, CompareOptions.IgnoreCase) >= 0 select c) ;
+            }
+        }
         private CharactersViewModel()
         {
             Title = "Characters";
@@ -59,7 +81,7 @@ namespace CB_5e.ViewModels
                 await TinyContext.ImportClassesAsync(false).ConfigureAwait(true);
                 await TinyContext.ImportSubClassesAsync(false).ConfigureAwait(true);
                 IFolder characters = await App.Storage.CreateFolderAsync("Characters", CreationCollisionOption.OpenIfExists);
-                var items = new List<Character>();
+                items.Clear();
                 foreach (IFile c in await characters.GetFilesAsync().ConfigureAwait(false))
                 {
                     if (!c.Name.EndsWith(".cb5", StringComparison.OrdinalIgnoreCase)) continue;
@@ -75,7 +97,7 @@ namespace CB_5e.ViewModels
                         ConfigManager.LogError(e);
                     }
                 }
-                Items.ReplaceRange(items);
+                UpdateItems();
             }
             catch (Exception ex)
             {

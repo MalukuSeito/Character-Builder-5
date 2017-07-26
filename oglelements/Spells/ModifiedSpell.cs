@@ -174,5 +174,19 @@ namespace OGL.Spells
                 ^ RechargeModifier.GetHashCode()
                 ^ (Source != null ? Source.GetHashCode() : 0);
         }
+
+        public string Text
+        {
+            get => displayShort ? Name : Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "");
+        }
+        public string Desc
+        {
+            get
+            {
+                if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
+                if ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill) return "";
+                return (includeResources && RechargeModifier != RechargeModifier.Charges ? ((count - used) + "/" + count + " ") : "") + recharge(RechargeModifier);
+            }
+        }
     }
 }

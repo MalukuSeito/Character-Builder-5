@@ -6,7 +6,8 @@
              x:Name="BrowseItemsPage">
     <ContentPage.Content>
     <StackLayout>
-      <ListView x:Name="ItemsListView"
+            <SearchBar Text="{Binding Search}" Placeholder="Search"/>
+            <ListView x:Name="ItemsListView"
 				ItemsSource="{Binding Items}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
@@ -15,7 +16,7 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
 				ItemSelected="OnItemSelected">
-        <ListView.ItemTemplate>
+            <ListView.ItemTemplate>
           <DataTemplate>
              <ImageCell Text="{Binding Text}" Detail="{Binding Description}" ImageSource="{Binding Portrait}"/>
           </DataTemplate>

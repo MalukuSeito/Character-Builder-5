@@ -1,6 +1,9 @@
 ﻿using CB_5e.Helpers;
 using CB_5e.ViewModels;
 using Character_Builder;
+using OGL.Common;
+using OGL.Features;
+using OGL.Spells;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,7 @@ namespace CB_5e.Views
 	public partial class PlayerOverview : CarouselPage
 	{
         public static IntToStringConverter IntConverter = PlayerViewModel.IntConverter;
+        private object old;
 
         public PlayerViewModel Model { get; private set; }
 
@@ -95,6 +99,72 @@ namespace CB_5e.Views
         private async void SkillInfo(object sender, EventArgs e)
         {
             if ((sender as Xamarin.Forms.MenuItem).BindingContext is SkillInfo obj) await Navigation.PushAsync(InfoPage.Show(obj.Skill));
+        }
+
+        private async void Info(object sender, EventArgs e)
+        {
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is IXML obj) await Navigation.PushAsync(InfoPage.Show(obj));
+        }
+
+        private async void ResourceInfo(object sender, EventArgs e)
+        {
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Resource rs)
+            {
+                if (rs.Value is ModifiedSpell ms)
+                {
+                    ms.Info = Model.Context.Player.GetAttack(ms, ms.differentAbility);
+                    ms.Modifikations.AddRange(from f in Model.Context.Player.GetFeatures() where f is SpellModifyFeature && Utils.Matches(Model.Context, ms, ((SpellModifyFeature)f).Spells, null) select f);
+                    ms.Modifikations = ms.Modifikations.Distinct().ToList();
+                    await Navigation.PushAsync(InfoPage.Show(ms));
+                }
+                if (rs.Value is ResourceInfo r)
+                {
+                    await Navigation.PushAsync(InfoPage.Show(Model.Context.Player.GetResourceFeatures(r.ResourceID)));
+                }
+            }
+        }
+
+        private async void InfoSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is IXML obj) await Navigation.PushAsync(InfoPage.Show(obj));
+            ((ListView)sender).SelectedItem = null;
+        }
+
+        private void ShowOnSheet(object sender, EventArgs e)
+        {
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Feature f)
+            {
+                Model.MakeHistory();
+                Model.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                //Model.Context.Player.HiddenFeatures.Add(f.Name);
+                Model.Save();
+            };
+        }
+        private void HideOnSheet(object sender, EventArgs e)
+        {
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Feature f)
+            {
+                Model.MakeHistory();
+                Model.Context.Player.HiddenFeatures.Add(f.Name);
+                Model.Save();
+            };
+        }
+
+        private void AddCondition(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is OGL.Condition c)
+            {
+                Model.AddCondition.Execute(c);
+            }
+            (sender as ListView).SelectedItem = null;
+        }
+        private void RemoveCondition(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is OGL.Condition c)
+            {
+                Model.RemoveCondition.Execute(c);
+            }
+            (sender as ListView).SelectedItem = null;
         }
     }
 }

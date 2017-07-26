@@ -45,7 +45,7 @@ namespace OGL
         {
             Name = name;
             Description = description;
-            Source = context.Config.DefaultSource;
+            Source = "Custom Condition";
             Register(context, null);
         }
         public String ToXML()

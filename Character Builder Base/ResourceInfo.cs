@@ -31,12 +31,26 @@ namespace Character_Builder
             if (DisplayUsed) return Name + ": " + (Max - Used) + "/" + Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
             return Name + ": " + Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
         }
-       
+
 
         public int CompareTo(ResourceInfo other)
         {
             if (Max == other.Max) return Recharge.CompareTo(other.Recharge);
             return Max.CompareTo(other.Max);
+        }
+
+        public string Text
+        {
+            get => Name;
+        }
+        public string Desc
+        {
+            get
+            {
+                if (Recharge >= RechargeModifier.AtWill) return "";
+                if (DisplayUsed) return (Max - Used) + "/" + Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
+                return  Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
+            }
         }
     }
 }

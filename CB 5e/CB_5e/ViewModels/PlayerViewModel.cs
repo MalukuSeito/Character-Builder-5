@@ -4,6 +4,8 @@ using Character_Builder;
 using OGL;
 using OGL.Base;
 using OGL.Common;
+using OGL.Features;
+using OGL.Spells;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -166,7 +168,7 @@ namespace CB_5e.ViewModels
 
     public class PlayerViewModel : BaseViewModel
     {
-        //private static int waiting;
+        private static CultureInfo culture = CultureInfo.InvariantCulture;
 
         public static IntToStringConverter IntConverter { get; set; } = new IntToStringConverter();
 
@@ -178,7 +180,6 @@ namespace CB_5e.ViewModels
 
         public ScoresModelViewModel Scores { get; private set; } 
 
-        private static PlayerViewModel instance = null;
         public INavigation Navigation { get; set; }
         public PlayerViewModel(BuilderContext context)
         {
@@ -201,11 +202,14 @@ namespace CB_5e.ViewModels
                 OnPropertyChanged("DeathSaveSuccess");
                 Save();
             });
-            DeselectSkill = new Command(() =>
+            DeselectSkill = new Command(async () =>
             {
                 SkillBusy = true;
+                SkillSearch = null;
                 SelectedSkill = null;
+                await Task.Delay(500); //Stupid Refereshindicator
                 SkillBusy = false;
+
             });
             Context.HistoryButtonChange += Player_HistoryButtonChange;
             Undo = new Command(() =>
@@ -247,9 +251,107 @@ namespace CB_5e.ViewModels
             ShowBackground = new Command(async () => {
                 await Navigation.PushAsync(InfoSelectPage.Show(Context.Player.Background));
             }, () => Context.Player?.BackgroundName != null && Context.Player?.BackgroundName != "");
-            Skills.ReplaceRange(Context.Player.GetSkills());
+            skills = Context.Player.GetSkills();
+            Skills.ReplaceRange(skills);
+            skillSearch = null;
             HitDice.ReplaceRange(from h in Context.Player.GetHitDie() orderby h select new HitDieViewModel(this, h));
+            UpdateAllConditions();
+            UpdateCondtions();
 
+            resources = new List<Resource>();
+            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
+            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+            UpdateResources();
+
+            features = (from f in Context.Player.GetFeatures() where f.Name != "" && !f.Hidden select f).ToList();
+            UpdateFeatures();
+
+            proficiencies = new List<IXML>();
+            proficiencies.AddRange(Context.Player.GetLanguages());
+            proficiencies.AddRange(Context.Player.GetToolProficiencies());
+            proficiencies.AddRange(from p in Context.Player.GetToolKWProficiencies() select new Feature(p, "Proficiency"));
+            proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
+            UpdateProficiencies();
+
+
+            AddCustomCondition = new Command(() =>
+            {
+                if (CustomCondition != null && CustomCondition != "")
+                {
+                    MakeHistory();
+                    Context.Player.Conditions.Add(CustomCondition);
+                    UpdateCondtions();
+                    Save();
+                }
+            }, () => CustomCondition != null && CustomCondition != "");
+            AddCondition = new Command((par) =>
+            {
+                if (par is OGL.Condition p)
+                {
+                    MakeHistory();
+                    Context.Player.Conditions.Add(p.Name + " " + ConfigManager.SourceSeperator + " " + p.Source);
+                    UpdateCondtions();
+                    Save();
+                }
+            });
+            RemoveCondition = new Command((par) =>
+            {
+                if (par is OGL.Condition p)
+                {
+                    MakeHistory();
+                    Context.Player.Conditions.RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, p.Name + " " + ConfigManager.SourceSeperator + " " + p.Source));
+                    UpdateCondtions();
+                    Save();
+                }
+            });
+            ResetConditions = new Command((par) =>
+            {
+                ConditionsBusy = true;
+                MakeHistory();
+                Context.Player.Conditions.Clear();
+                UpdateCondtions();
+                Save();
+                ConditionsBusy = false;
+            });
+            DeselectResource = new Command(async () =>
+            {
+                ResourceBusy = true;
+                SelectedResource = null;
+                Resources.ReplaceRange(new List<Resource> ());
+                resources.Clear();
+                resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
+                resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+                UpdateResources();
+                await Task.Delay(500); //Stupid Refereshindicator
+                ResourceBusy = false;
+
+            });
+            LongRest = new Command(() =>
+            {
+                MakeHistory("LongRest");
+                foreach (ResourceInfo r in Context.Player.GetResourceInfo(true).Values)
+                {
+                    if (r.Recharge >= RechargeModifier.LongRest) Context.Player.SetUsedResources(r.ResourceID, 0);
+                }
+                foreach (ModifiedSpell ms in Context.Player.GetBonusSpells())
+                {
+                    if (ms.RechargeModifier >= RechargeModifier.LongRest) Context.Player.SetUsedResources(ms.getResourceID(), 0);
+                }
+                DeselectResource.Execute(null);
+            });
+            ShortRest = new Command(() =>
+            {
+                MakeHistory("ShortRest");
+                foreach (ResourceInfo r in Context.Player.GetResourceInfo(true).Values)
+                {
+                    if (r.Recharge >= RechargeModifier.ShortRest) Context.Player.SetUsedResources(r.ResourceID, 0);
+                }
+                foreach (ModifiedSpell ms in Context.Player.GetBonusSpells())
+                {
+                    if (ms.RechargeModifier >= RechargeModifier.ShortRest) Context.Player.SetUsedResources(ms.getResourceID(), 0);
+                }
+                DeselectResource.Execute(null);
+            });
         }
 
         public Color Accent { get { return Color.Accent; } }
@@ -308,6 +410,24 @@ namespace CB_5e.ViewModels
             ShowClasses.ChangeCanExecute();
             ShowRace.ChangeCanExecute();
             ShowBackground.ChangeCanExecute();
+            UpdateAllConditions();
+            UpdateCondtions();
+
+            resources.Clear();
+            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
+            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+            UpdateResources();
+
+            features = (from f in Context.Player.GetFeatures() where f.Name != "" && !f.Hidden select f).ToList();
+            UpdateFeatures();
+
+            proficiencies = new List<IXML>();
+            proficiencies.AddRange(Context.Player.GetLanguages());
+            proficiencies.AddRange(Context.Player.GetToolProficiencies());
+            proficiencies.AddRange(from p in Context.Player.GetToolKWProficiencies() select new Feature(p, "Proficiency"));
+            proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
+            UpdateProficiencies();
+
         }
         public ImageSource Portrait
         {
@@ -575,6 +695,9 @@ namespace CB_5e.ViewModels
 
         private Ability _baseAbility;
         public int SkillBaseIndex { get { return Abilities.IndexOf(_baseAbility); } set { SetProperty(ref _baseAbility, Abilities[value]); OnPropertyChanged("SkillValue"); } }
+        private List<SkillInfo> skills;
+        private string skillSearch;
+        public string SkillSearch { get { return skillSearch; } set { SetProperty(ref skillSearch, value); UpdateSkills(); } }
         public ObservableRangeCollection<SkillInfo> Skills { get; set; } = new ObservableRangeCollection<SkillInfo>();
         public String SkillValue {
             get {
@@ -583,16 +706,243 @@ namespace CB_5e.ViewModels
             }
         }
 
+        private void UpdateSkills()
+        {
+
+            if (skillSearch == null || skillSearch == "") Skills.ReplaceRange(skills);
+            else
+            {
+                Skills.ReplaceRange(from c in skills where culture.CompareInfo.IndexOf(c.Desc, skillSearch, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Skill.Description, skillSearch, CompareOptions.IgnoreCase) >= 0 select c);
+            }
+        }
+
         private SkillInfo _selectedSkill = null;
         public SkillInfo SelectedSkill { get { return _selectedSkill; } set { SetProperty(ref _selectedSkill, value); if (value != null) SkillBaseIndex = Abilities.FindIndex(a => value.Base.HasFlag(a)); } }
 
         public Command DeselectSkill { get; private set; }
-        public bool SkillBusy { get; private set; }
+        private bool skillbusy = false;
+        public bool SkillBusy { get { return skillbusy; } set { SetProperty(ref skillbusy, value); } }
         public Command ShowImage { get; private set; }
         public Command ShowClasses { get; private set; }
         public Command ShowRace { get; private set; }
         public Command ShowBackground { get; private set; }
         public BuilderContext Context { get; private set; }
+
+        private string customCondition;
+        public string CustomCondition { get => customCondition; set
+            {
+                SetProperty(ref customCondition, value);
+                AddCustomCondition.ChangeCanExecute();
+            }
+        }
+
+        public object Nothing { get { return null; }  set { OnPropertyChanged("Nothing"); } }
+
+        private string condtionSearch;
+        public ObservableRangeCollection<OGL.Condition> ActiveConditions { get; set; } = new ObservableRangeCollection<OGL.Condition>();
+        public ObservableRangeCollection<OGL.Condition> AllConditions { get; set; } = new ObservableRangeCollection<OGL.Condition>();
+        public string ConditionSearch
+        {
+            get => condtionSearch;
+            set {
+                SetProperty(ref condtionSearch, value);
+                UpdateAllConditions();
+            }
+        }
+
+        public Command AddCustomCondition { get; private set; }
+        public Command AddCondition { get; private set; }
+        public Command RemoveCondition { get; private set; }
+        public Command ResetConditions { get; private set; }
+        private bool cbusy;
+        public bool ConditionsBusy { get => cbusy; private set => SetProperty(ref cbusy, value); }
+
+        public void UpdateAllConditions() => AllConditions.ReplaceRange(from c in Context.Conditions.Values where condtionSearch == null || condtionSearch == "" || culture.CompareInfo.IndexOf(c.Description, condtionSearch, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Name, condtionSearch, CompareOptions.IgnoreCase) >= 0 orderby c.Name select c);
+        public void UpdateCondtions() => ActiveConditions.ReplaceRange(from c in Context.Player.Conditions orderby c select Context.GetCondition(c, null));
+
+
+        private string resourceSearch;
+        public string ResourceSearch
+        {
+            get => resourceSearch;
+            set
+            {
+                SetProperty(ref resourceSearch, value);
+                UpdateResources();
+            }
+        }
+        private List<Resource> resources;
+        public ObservableRangeCollection<Resource> Resources { get; set; } = new ObservableRangeCollection<Resource>();
+
+        public void UpdateResources() => Resources.ReplaceRange(from r in resources where resourceSearch == null || resourceSearch == "" 
+             || culture.CompareInfo.IndexOf(r.Name, resourceSearch, CompareOptions.IgnoreCase) >= 0 orderby r.ToString() select r);
+
+        private Resource selectedResource;
+        public Resource SelectedResource { get => selectedResource; set
+            {
+                SetProperty(ref selectedResource, value);
+                if (value != null && value.IsChangeable)
+                {
+                    currentResourceValue = value.Used;
+                    OnPropertyChanged("CurrentResourceValue");
+                }
+                else {
+                    currentResourceValue = 0;
+                    OnPropertyChanged("CurrentResourceValue");
+                }
+            }
+        }        
+        private int currentResourceValue;
+        public int CurrentResourceValue { get => currentResourceValue; set {
+                if (value >= 0 && value != currentResourceValue && selectedResource != null && selectedResource.IsChangeable)
+                {
+                    Resource r = selectedResource;
+                    MakeHistory("Resource" + r.ResourceID);
+                    if (r.Max > 0 && value > r.Max) value = r.Max;
+                    r.Used = value;
+                    Context.Player.SetUsedResources(r.ResourceID, value);
+                    Save();
+                }
+                SetProperty(ref currentResourceValue, value);
+            } }
+
+        public bool ResourceBusy { get => resourceBusy; set => SetProperty(ref resourceBusy, value); }
+        public Command DeselectResource { get; private set; }
+        public Command LongRest { get; private set; }
+        public Command ShortRest { get; private set; }
+
+        bool resourceBusy = false;
+
+        private string featureSearch;
+        public string FeatureSearch
+        {
+            get => featureSearch;
+            set
+            {
+                SetProperty(ref featureSearch, value);
+                UpdateFeatures();
+            }
+        }
+        private List<Feature> features;
+        public ObservableRangeCollection<Feature> Features { get; set; } = new ObservableRangeCollection<Feature>();
+
+        public void UpdateFeatures() => Features.ReplaceRange(from f in features where featureSearch == null || featureSearch == "" 
+            || culture.CompareInfo.IndexOf(f.Name, featureSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Text, featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
+
+        private string proficiencySearch;
+        public string ProficiencySearch
+        {
+            get => proficiencySearch;
+            set
+            {
+                SetProperty(ref proficiencySearch, value);
+                UpdateProficiencies();
+            }
+        }
+        private List<IXML> proficiencies;
+        public ObservableRangeCollection<IXML> Proficiencies { get; set; } = new ObservableRangeCollection<IXML>();
+
+        public void UpdateProficiencies() => Proficiencies.ReplaceRange(from f in proficiencies where proficiencySearch == null || proficiencySearch == ""
+            || culture.CompareInfo.IndexOf(f.ToString(), proficiencySearch, CompareOptions.IgnoreCase) >= 0 orderby f.ToString() select f);
+
+
+    }
+
+    public class Resource: ObservableObject
+    {
+        private static string last;
+
+        public Object Value;
+
+        public Resource(object value, PlayerViewModel model)
+        {
+            Value = value;
+            Reduce = new Command(() =>
+            {
+                if (IsChangeable && last != null && last.Equals(ResourceID))
+                {
+                    Used++;
+                    model.MakeHistory("Resource" + ResourceID);
+                    if (Max > 0 && Used > Max) Used = Max;
+                    model.Context.Player.SetUsedResources(ResourceID, Used);
+                    model.Save();
+                }
+                last = ResourceID;
+            });
+        }
+
+        public int Max
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.Max;
+                else if (Value is ModifiedSpell ms) return ms.count;
+                return 0;
+            }
+        }
+
+        public int Used
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.Used;
+                else if (Value is ModifiedSpell ms) return ms.used;
+                return 0;
+            }
+            set
+            {
+                if (Value is ResourceInfo r) r.Used = value;
+                else if (Value is ModifiedSpell ms) ms.used = value;
+                OnPropertyChanged("Desc");
+            }
+        }
+
+        public String ResourceID
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.ResourceID;
+                else if (Value is ModifiedSpell ms) return ms.getResourceID();
+                return null;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.Name;
+                else if (Value is ModifiedSpell ms) return ms.Name;
+                return null;
+            }
+        }
+
+        public string Desc
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.Desc;
+                else if (Value is ModifiedSpell ms) return ms.Desc;
+                return null;
+            }
+        }
+        public string Text
+        {
+            get
+            {
+                if (Value is ResourceInfo r) return r.Text;
+                else if (Value is ModifiedSpell ms) return ms.Text;
+                return null;
+            }
+        }
+
+        public Command Reduce { get; private set; }
+        public bool IsChangeable { get
+            {
+                return Value is ResourceInfo || Value is ModifiedSpell ms && ((ms.Level > 0 && ms.RechargeModifier < RechargeModifier.AtWill) || (ms.Level == 0 && ms.RechargeModifier != RechargeModifier.Unmodified && ms.RechargeModifier < RechargeModifier.AtWill));
+            }
+        }
     }
 
 }
