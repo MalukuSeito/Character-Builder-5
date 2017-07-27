@@ -11,10 +11,9 @@ using System.Xml.Serialization;
 
 namespace Character_Builder
 {
-    public class Possession : IComparable<Possession>, IXML
+    public class Possession : IComparable<Possession>
     {
-        [XmlIgnore]
-        private static XmlSerializer Serializer = new XmlSerializer(typeof(DisplayPossession));
+        
         [XmlIgnore]
         public OGLContext Context;
 
@@ -156,6 +155,50 @@ namespace Character_Builder
             }
             return Weight;
         }
+
+        public string FullName { get
+            {
+                string name = Name;
+                if (name == null || name == "") name = Context.GetItem(BaseItem, null).Name;
+                foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
+                return name;
+            }
+        }
+
+        public string Amount
+        {
+            get {
+                if (Count > 1) return Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "");
+                else if (Count == 1 && Item != null && Item.SingleUnit != null) return Item.SingleUnit;
+                else if (Count == 1 && Item != null && Item.Unit != null) return Count + " " + Item.Unit;
+                if (Count == 0) return "lost";
+                return null;
+            }
+        }
+
+        public string Stats
+        {
+            get
+            {
+                List<string> stats = new List<string>();
+                OGL.Item i = Item;
+                if (i is Item)
+                {
+                    if (MagicProperties.Count > 0) stats.Add("Magic " + i.GetType().Name);
+                    else stats.Add(i.GetType().Name);
+                }
+                else if (MagicProperties.Count > 0) stats.Add("Wonderous Item");
+                else stats.Add("Custom Item");
+
+                if (string.Equals(Equipped, EquipSlot.Armor, StringComparison.OrdinalIgnoreCase)) stats.Add("Worn");
+                else if (string.Equals(Equipped, EquipSlot.MainHand, StringComparison.OrdinalIgnoreCase)) stats.Add("Main Hand");
+                else if (string.Equals(Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) stats.Add("Off Hand");
+                else if (!string.Equals(Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) stats.Add("Equipped");
+                if (ChargesUsed > 0) stats.Add(ChargesUsed + " Charges Used");
+                return String.Join(", ", stats);
+            }
+        }
+
         public override string ToString()
         {
             string name = Name;
@@ -174,21 +217,7 @@ namespace Character_Builder
             return name;
         }
 
-        public String ToXML()
-        {
-            using (StringWriter mem = new StringWriter())
-            {
-                Serializer.Serialize(mem, this);
-                return mem.ToString();
-            }
-        }
-
-        public MemoryStream ToXMLStream()
-        {
-            MemoryStream mem = new MemoryStream();
-            Serializer.Serialize(mem, this);
-            return mem;
-        }
+        
         public int CompareTo(Possession other) {
             return this.ToString().CompareTo(other.ToString());
         }

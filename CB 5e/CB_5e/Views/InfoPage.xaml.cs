@@ -1,4 +1,5 @@
-﻿using OGL;
+﻿using Character_Builder;
+using OGL;
 using OGL.Common;
 using OGL.Features;
 using System;
@@ -27,6 +28,7 @@ namespace CB_5e.Views
             Obj = obj;
             if (Obj is IOGLElement o) Title = o.Name;
             else if (Obj is Feature f) Title = f.Name;
+            else if (Obj is DisplayPossession dp) Title = dp.Name;
             else Title = "No Info";
         }
         private HtmlWebViewSource src = new HtmlWebViewSource();

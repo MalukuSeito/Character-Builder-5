@@ -356,6 +356,53 @@ namespace CB_5e.ViewModels
                 }
                 DeselectResource.Execute(null);
             });
+            EditItem = new Command(async (par) =>
+            {
+                if (par is InventoryViewModel ivm)
+                {
+                    if (ivm.Item != null) await Navigation.PushAsync(new AboutPage() { Title = par.ToString() });
+                    else await Navigation.PushAsync(InfoPage.Show(ivm.Boon));
+                }
+            });
+            ShowItemInfo = new Command(async (par) =>
+            {
+                if (par is InventoryViewModel ivm)
+                {
+                    if (ivm.Item is Possession p)
+                    {
+                        await Navigation.PushAsync(InfoPage.Show(new DisplayPossession(ivm.Item, Context.Player)));
+                    } else
+                    {
+                        await Navigation.PushAsync(InfoPage.Show(ivm.Boon));
+                    }
+                }
+            });
+            DeleteItem = new Command((par) =>
+            {
+                if (par is InventoryViewModel ivm)
+                {
+                    if (ivm.Item is Possession p)
+                    {
+                        Context.MakeHistory("");
+                        Context.Player.RemovePossessionAndItems(p);
+                        Save();
+                    }
+                    else if (ivm.Boon is Feature f)
+                    {
+                        Context.MakeHistory("");
+                        Context.Player.RemoveBoon(f);
+                        Save();
+                    }
+                    RefreshItems.Execute(null);
+                }
+            });
+            RefreshItems = new Command(() =>
+            {
+                ItemsBusy = true;
+                UpdateItems();
+                ItemsBusy = false;
+            });
+            UpdateItems();
         }
 
         public Color Accent { get { return Color.Accent; } }
@@ -439,10 +486,38 @@ namespace CB_5e.ViewModels
             proficiencies.AddRange(from p in Context.Player.GetToolKWProficiencies() select new Feature(p, "Proficiency"));
             proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
             UpdateProficiencies();
+            UpdateItems();
 
             UpdateSpellcasting();
 
         }
+
+        public void UpdateItems()
+        {
+            inventory.Clear();
+            foreach (Possession p in Context.Player.GetItemsAndPossessions())
+            {
+                inventory.Add(new InventoryViewModel
+                {
+                    Item = p,
+                    ShowInfo = ShowItemInfo,
+                    Edit = EditItem,
+                    Delete = DeleteItem
+                });
+            }
+            foreach (Feature f in Context.Player.GetBoons())
+            {
+                inventory.Add(new InventoryViewModel
+                {
+                    Boon = f,
+                    ShowInfo = ShowItemInfo,
+                    Edit = EditItem,
+                    Delete = DeleteItem
+                });
+            }
+            UpdateInventory();
+        }
+
         public ImageSource Portrait
         {
             get { if (Context.Player != null && Context.Player.Portrait != null) return ImageSource.FromStream(() => new MemoryStream(Context.Player.Portrait)); return null; }
@@ -920,6 +995,42 @@ namespace CB_5e.ViewModels
                 if (svm is SpellbookSpellsViewModel ssvm && svm != me) ssvm.UpdateSlots();
             }
         }
+        private List<InventoryViewModel> inventory = new List<InventoryViewModel>();
+        public ObservableRangeCollection<InventoryViewModel> Inventory { get; set; } = new ObservableRangeCollection<InventoryViewModel>();
+
+        public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory where inventorysearch == null || inventorysearch == "" 
+            || culture.CompareInfo.IndexOf(f.Name, featureSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Detail, featureSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Description, featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
+
+        private string inventorysearch;
+        public string InventorySearch
+        {
+            get => inventorysearch;
+            set
+            {
+                SetProperty(ref inventorysearch, value);
+                UpdateInventory();
+            }
+        }
+        private bool itemsBusy;
+        public bool ItemsBusy { get => itemsBusy; set => SetProperty(ref itemsBusy, value); }
+        public Command EditItem { get; private set; }
+        public Command ShowItemInfo { get; private set; }
+        public Command DeleteItem { get; private set; }
+        public Command RefreshItems { get; private set; }
+    }
+    
+    public class InventoryViewModel: ObservableObject
+    {
+        public Possession Item { get; set; }
+        public Feature Boon { get; set; }
+        public string Name { get => Item != null ? Item.FullName + (Item.Amount != null ? " (" + Item.Amount + ")" : "") : Boon.ToString(); }
+        public string Description { get => Item != null ? Item.Description : Boon.Text; }
+        public string Detail { get => Item != null ? Item.Stats : "Boon"; }
+        public Command ShowInfo { get; set; }
+        public Command Edit { get; set; }
+        public Command Delete { get; set; }
     }
 
     public class ResourceViewModel: ObservableObject

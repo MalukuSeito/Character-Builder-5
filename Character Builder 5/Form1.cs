@@ -2768,7 +2768,7 @@ namespace Character_Builder_5
                 }
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(((Possession)inventory2.SelectedItem).ToHTML());
+                displayElement.Document.Write(new DisplayPossession((Possession)inventory.SelectedItem, Program.Context.Player).ToHTML());
                 displayElement.Refresh();
             }
         }
@@ -2787,7 +2787,7 @@ namespace Character_Builder_5
             {
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(((Possession)inventory.SelectedItem).ToHTML());
+                displayElement.Document.Write(new DisplayPossession((Possession)inventory.SelectedItem, Program.Context.Player).ToHTML());
                 displayElement.Refresh();
             }
             else if (inventory.SelectedItem is Feature)
