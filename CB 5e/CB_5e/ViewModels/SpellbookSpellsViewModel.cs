@@ -65,7 +65,7 @@ namespace CB_5e.ViewModels
             });
             OnReset = new Command((par) =>
             {
-                if (par is SpellSlotInfo s && s.Used < s.Slots)
+                if (par is SpellSlotInfo s)
                 {
                     s.Used = 0;
                     Model.MakeHistory(s.SpellcastingID + "Slots" + s.Level);

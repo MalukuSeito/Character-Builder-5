@@ -120,20 +120,22 @@ namespace CB_5e.ViewModels
             }
             else if (SpellcastingFeature.Preparation == PreparationMode.Spellbook)
             {
-                spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
+                spells.AddRange(from s in Spellcasting.GetPrepared(Model.Context.Player, Model.Context)
                                 select new SpellViewModel(s)
                                 {
                                     Prepared = true,
                                     Prepare = OnPrepare,
                                     ShowInfo = ShowInfo
                                 });
-                spells.AddRange(from s in Spellcasting.GetPrepared(Model.Context.Player, Model.Context)
+                spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
+                                where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)
                                 {
-                                    Prepared = false,
+                                    Prepared = true,
                                     Prepare = OnPrepare,
                                     ShowInfo = ShowInfo
                                 });
+                
                 spells.AddRange(from s in Spellcasting.GetSpellbook(Model.Context.Player, Model.Context)
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)

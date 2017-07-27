@@ -24,14 +24,14 @@
                 <ContentPage Title="{Binding Title}">
                     <Grid Padding="10, 0" RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="21"/>
                             <RowDefinition Height="18"/>
                             <RowDefinition Height="15"/>
                             <RowDefinition Height="18"/>
                             <RowDefinition Height="43"/>
                             <RowDefinition Height="100*"/>
                             <RowDefinition Height="15"/>
-                            <RowDefinition Height="28"/>
+                            <RowDefinition Height="31"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
