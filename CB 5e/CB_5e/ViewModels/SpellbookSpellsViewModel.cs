@@ -49,7 +49,7 @@ namespace CB_5e.ViewModels
                     if (last == s.Level)
                     {
                         s.Used++;
-                        Model.MakeHistory();
+                        Model.MakeHistory(s.SpellcastingID + "Slots" + s.Level);
                         Model.Context.Player.SetSpellSlot(s.SpellcastingID, s.Level, s.Used);
                         Model.Save();
                         (s as SpellSlotViewModel)?.UpdateUsed();
@@ -190,7 +190,11 @@ namespace CB_5e.ViewModels
             {
                 SetProperty(ref selected, value);
                 if (selected != null) used = selected.Used;
-                else used = 0;
+                else
+                {
+                    used = 0;
+                    last = -1;
+                }
                 OnPropertyChanged("Used");
             }
         }

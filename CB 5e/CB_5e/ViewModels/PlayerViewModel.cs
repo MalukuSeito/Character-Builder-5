@@ -801,6 +801,7 @@ namespace CB_5e.ViewModels
                     OnPropertyChanged("CurrentResourceValue");
                 }
                 else {
+                    ResourceViewModel.last = null;
                     currentResourceValue = 0;
                     OnPropertyChanged("CurrentResourceValue");
                 }
@@ -923,7 +924,7 @@ namespace CB_5e.ViewModels
 
     public class ResourceViewModel: ObservableObject
     {
-        private static string last;
+        public static string last;
 
         public Object Value;
 
