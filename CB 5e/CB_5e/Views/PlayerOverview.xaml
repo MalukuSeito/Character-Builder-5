@@ -44,7 +44,7 @@
                         <TapGestureRecognizer Command="{Binding ShowImage}" CommandParameter="{Binding Portrait}"/>
                     </Image.GestureRecognizers>
                 </Image>
-                <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding Name}" />
+                <Label x:Name="TheLabel" Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding Name}" />
                 <Label Grid.Row="0" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Race}" TextColor="{Binding Accent}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowRace}"/>
@@ -206,14 +206,17 @@
                       RefreshCommand="{Binding DeselectSkill}"
                     IsRefreshing="{Binding SkillBusy, Mode=OneWay}"
                       CachingStrategy="RecycleElement"
-                      SelectedItem="{Binding SelectedSkill}" RowHeight="30">
+                      SelectedItem="{Binding SelectedSkill}" RowHeight="25">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Desc}" Height="30">
-                            <TextCell.ContextActions>
+                        <ViewCell>
+                            <StackLayout Padding="20, 0">
+                                <Label Text="{Binding Desc}" HeightRequest="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="NoWrap"/>
+                            </StackLayout>
+                            <ViewCell.ContextActions>
                                 <MenuItem Clicked="SkillInfo" Text="Description" />
-                            </TextCell.ContextActions>
-                        </TextCell>
+                            </ViewCell.ContextActions>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -289,15 +292,18 @@
                       IsPullToRefreshEnabled="true"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement"
-                      RowHeight="30">
+                      RowHeight="25">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Name}" Height="30" >
-                            <TextCell.ContextActions>
+                        <ViewCell>
+                            <StackLayout Padding="20, 0">
+                                <Label Text="{Binding Name}" HeightRequest="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <ViewCell.ContextActions>
                                 <MenuItem Clicked="ShowOnSheet" Text="Show On Sheet" />
                                 <MenuItem Clicked="HideOnSheet" Text="Hide On Sheet" />
-                            </TextCell.ContextActions>
-                        </TextCell>
+                            </ViewCell.ContextActions>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -323,10 +329,14 @@
                       IsPullToRefreshEnabled="true"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement"
-                      RowHeight="30">
+                      RowHeight="25">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Name}" Height="30" />
+                        <ViewCell>
+                            <StackLayout Padding="20, 0">
+                                <Label Text="{Binding Name}" HeightRequest="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

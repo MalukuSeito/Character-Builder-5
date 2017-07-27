@@ -27,7 +27,7 @@ namespace CB_5e.Views
                         Icon = Device.OnPlatform("tab_feed.png", null, null)
                     });
             Children.Add(
-                    new NavigationPage(new AboutPage())
+                    new NavigationPage(new SpellcastingPage(Model))
                     {
                         Title = "Spells",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
@@ -47,17 +47,22 @@ namespace CB_5e.Views
         }
         protected override bool OnBackButtonPressed()
         {
-            if (App.AutoSaveDuringPlay)
+            if (!Model.ChildModel)
             {
-                PlayerViewModel.Saving.WaitForAll();
-            } else if (Model.Context.UnsavedChanges > 0)
-            {
-                if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                if (App.AutoSaveDuringPlay)
                 {
-                    Model.DoSave();
+                    Model.Save();
+                    Model.Saving.WaitForAll();
                 }
+                else if (Model.Context.UnsavedChanges > 0)
+                {
+                    if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                    {
+                        Model.DoSave();
+                    }
+                }
+                CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             }
-            CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             return base.OnBackButtonPressed();
         }
     }

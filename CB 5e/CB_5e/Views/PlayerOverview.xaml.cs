@@ -64,19 +64,26 @@ namespace CB_5e.Views
         {
             if (IsBusy) return;
             IsBusy = true;
-            if (App.AutoSaveDuringPlay)
+            if (!Model.ChildModel)
             {
-                PlayerViewModel.Saving.WaitForAll();
-            }
-            else if (Model.Context.UnsavedChanges > 0)
-            {
-                if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                if (App.AutoSaveDuringPlay)
                 {
-                    Model.DoSave();
+                    Model.Save();
+                    Model.Saving.WaitForAll();
+                }
+                else if (Model.Context.UnsavedChanges > 0)
+                {
+                    if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
+                    {
+                        Model.DoSave();
+                    }
                 }
             }
             await Navigation.PopModalAsync();
-            CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
+            if (!Model.ChildModel)
+            {
+                CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
+            }
             IsBusy = false;
         }
 
@@ -108,7 +115,7 @@ namespace CB_5e.Views
 
         private async void ResourceInfo(object sender, EventArgs e)
         {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Resource rs)
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ResourceViewModel rs)
             {
                 if (rs.Value is ModifiedSpell ms)
                 {

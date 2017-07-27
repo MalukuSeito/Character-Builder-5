@@ -172,7 +172,8 @@ namespace CB_5e.ViewModels
 
         public static IntToStringConverter IntConverter { get; set; } = new IntToStringConverter();
 
-        public static QueuedLock Saving = new QueuedLock();
+        public QueuedLock Saving = new QueuedLock();
+        public Mutex SaveLock = new Mutex();
 
         public event EventHandler PlayerChanged;
 
@@ -181,6 +182,8 @@ namespace CB_5e.ViewModels
         public ScoresModelViewModel Scores { get; private set; } 
 
         public INavigation Navigation { get; set; }
+        public INavigation SpellNavigation { get; set; }
+        public bool ChildModel { get; set; } = false;
         public PlayerViewModel(BuilderContext context)
         {
             Context = context;
@@ -258,9 +261,9 @@ namespace CB_5e.ViewModels
             UpdateAllConditions();
             UpdateCondtions();
 
-            resources = new List<Resource>();
-            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
-            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+            resources = new List<ResourceViewModel>();
+            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new ResourceViewModel(r, this));
+            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new ResourceViewModel(r, this));
             UpdateResources();
 
             features = (from f in Context.Player.GetFeatures() where f.Name != "" && !f.Hidden select f).ToList();
@@ -273,6 +276,7 @@ namespace CB_5e.ViewModels
             proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
             UpdateProficiencies();
 
+            UpdateSpellcasting();
 
             AddCustomCondition = new Command(() =>
             {
@@ -317,10 +321,10 @@ namespace CB_5e.ViewModels
             {
                 ResourceBusy = true;
                 SelectedResource = null;
-                Resources.ReplaceRange(new List<Resource> ());
+                Resources.ReplaceRange(new List<ResourceViewModel> ());
                 resources.Clear();
-                resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
-                resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+                resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new ResourceViewModel(r, this));
+                resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new ResourceViewModel(r, this));
                 UpdateResources();
                 await Task.Delay(500); //Stupid Refereshindicator
                 ResourceBusy = false;
@@ -371,7 +375,7 @@ namespace CB_5e.ViewModels
         }
         public virtual void Save()
         {
-            if (App.AutoSaveDuringPlay)
+            if (App.AutoSaveDuringPlay && !ChildModel)
             {
                 Task.Run(() => DoSave()).Forget();
             }
@@ -385,16 +389,24 @@ namespace CB_5e.ViewModels
                 Player p = Context.Player;
                 if (Saving.Enter())
                 {
-                    if (p.FilePath is IFile file)
+                    SaveLock.WaitOne();
+                    try
                     {
-                        Context.UnsavedChanges = 0;
-                        using (Stream s = file.OpenAsync(FileAccess.ReadAndWrite).Result)
+                        if (p.FilePath is IFile file)
                         {
+                            Context.UnsavedChanges = 0;
+                            using (Stream s = file.OpenAsync(FileAccess.ReadAndWrite).Result)
+                            {
 
-                            Player.Serializer.Serialize(s, p);
-                            s.SetLength(s.Position);
+                                Player.Serializer.Serialize(s, p);
+                                s.SetLength(s.Position);
+                            }
                         }
+                    } catch (Exception e)
+                    {
+                        ConfigManager.LogError("Error Saving", e);
                     }
+                    SaveLock.ReleaseMutex();
                     Saving.Exit();
                 }
             }
@@ -414,8 +426,8 @@ namespace CB_5e.ViewModels
             UpdateCondtions();
 
             resources.Clear();
-            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new Resource(r, this));
-            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new Resource(r, this));
+            resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new ResourceViewModel(r, this));
+            resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new ResourceViewModel(r, this));
             UpdateResources();
 
             features = (from f in Context.Player.GetFeatures() where f.Name != "" && !f.Hidden select f).ToList();
@@ -427,6 +439,8 @@ namespace CB_5e.ViewModels
             proficiencies.AddRange(from p in Context.Player.GetToolKWProficiencies() select new Feature(p, "Proficiency"));
             proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
             UpdateProficiencies();
+
+            UpdateSpellcasting();
 
         }
         public ImageSource Portrait
@@ -771,14 +785,14 @@ namespace CB_5e.ViewModels
                 UpdateResources();
             }
         }
-        private List<Resource> resources;
-        public ObservableRangeCollection<Resource> Resources { get; set; } = new ObservableRangeCollection<Resource>();
+        private List<ResourceViewModel> resources;
+        public ObservableRangeCollection<ResourceViewModel> Resources { get; set; } = new ObservableRangeCollection<ResourceViewModel>();
 
         public void UpdateResources() => Resources.ReplaceRange(from r in resources where resourceSearch == null || resourceSearch == "" 
              || culture.CompareInfo.IndexOf(r.Name, resourceSearch, CompareOptions.IgnoreCase) >= 0 orderby r.ToString() select r);
 
-        private Resource selectedResource;
-        public Resource SelectedResource { get => selectedResource; set
+        private ResourceViewModel selectedResource;
+        public ResourceViewModel SelectedResource { get => selectedResource; set
             {
                 SetProperty(ref selectedResource, value);
                 if (value != null && value.IsChangeable)
@@ -796,7 +810,7 @@ namespace CB_5e.ViewModels
         public int CurrentResourceValue { get => currentResourceValue; set {
                 if (value >= 0 && value != currentResourceValue && selectedResource != null && selectedResource.IsChangeable)
                 {
-                    Resource r = selectedResource;
+                    ResourceViewModel r = selectedResource;
                     MakeHistory("Resource" + r.ResourceID);
                     if (r.Max > 0 && value > r.Max) value = r.Max;
                     r.Used = value;
@@ -806,6 +820,11 @@ namespace CB_5e.ViewModels
                 SetProperty(ref currentResourceValue, value);
             } }
 
+        public void UpdateUsed()
+        {
+            currentResourceValue = selectedResource.Used;
+            OnPropertyChanged("CurrentResourceValue");
+        }
         public bool ResourceBusy { get => resourceBusy; set => SetProperty(ref resourceBusy, value); }
         public Command DeselectResource { get; private set; }
         public Command LongRest { get; private set; }
@@ -846,16 +865,69 @@ namespace CB_5e.ViewModels
         public void UpdateProficiencies() => Proficiencies.ReplaceRange(from f in proficiencies where proficiencySearch == null || proficiencySearch == ""
             || culture.CompareInfo.IndexOf(f.ToString(), proficiencySearch, CompareOptions.IgnoreCase) >= 0 orderby f.ToString() select f);
 
+        public ObservableRangeCollection<SpellbookViewModel> Spellcasting { get; set; } = new ObservableRangeCollection<SpellbookViewModel>();
+        public void UpdateSpellcasting()
+        {
+            List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" orderby Context.Player.GetClassLevel(((SpellcastingFeature)f).SpellcastingID) descending, ((SpellcastingFeature)f).DisplayName, ((SpellcastingFeature)f).SpellcastingID select f as SpellcastingFeature);
+            if (spellcasts.Count == 0) Spellcasting.ReplaceRange(new List<SpellbookViewModel>() { new SpellbookViewModel(this, null) });
+            List<SpellbookViewModel> views = new List<SpellbookViewModel>();
+            List<SpellbookViewModel> oldviews = new List<SpellbookViewModel>(Spellcasting);
+            foreach (SpellcastingFeature sf in spellcasts)
+            {
+                SpellbookViewModel v = Spellcasting.FirstOrDefault(view => view is SpellbookSpellsViewModel && view.SpellcastingID == sf.SpellcastingID);
+                if (v != null)
+                {
+                    v.Refresh();
+                    views.Add(v);
+                }
+                else
+                {
+                    views.Add(new SpellbookSpellsViewModel(this, sf));
+                }
+                if (sf.Preparation != PreparationMode.LearnSpells)
+                {
+                    SpellbookViewModel v2 = Spellcasting.FirstOrDefault(view => view is SpellPrepareViewModel && view.SpellcastingID == sf.SpellcastingID);
+                    if (v2 != null)
+                    {
+                        v2.Refresh();
+                        if (v2 is SpellPrepareViewModel spvm && spvm.Able > 0) views.Add(spvm);
+                    }
+                    else
+                    {
+                        v2 = new SpellPrepareViewModel(this, sf);
+                        if (v2 is SpellPrepareViewModel spvm && spvm.Able > 0) views.Add(spvm);
+                    }
+                }   
+            }
+            if (!views.SequenceEqual(Spellcasting))
+            {
+                Spellcasting.ReplaceRange(views);
+            }
+        }
+        public void ChangedPreparedSpells(string id)
+        {
+            foreach (SpellbookViewModel svm in Spellcasting)
+            {
+                if (svm is SpellbookSpellsViewModel ssvm && ssvm.SpellcastingID == id) ssvm.Refresh();
+            }
+        }
 
+        public void UpdateSlots(SpellbookSpellsViewModel me)
+        {
+            foreach (SpellbookViewModel svm in Spellcasting)
+            {
+                if (svm is SpellbookSpellsViewModel ssvm && svm != me) ssvm.UpdateSlots();
+            }
+        }
     }
 
-    public class Resource: ObservableObject
+    public class ResourceViewModel: ObservableObject
     {
         private static string last;
 
         public Object Value;
 
-        public Resource(object value, PlayerViewModel model)
+        public ResourceViewModel(object value, PlayerViewModel model)
         {
             Value = value;
             Reduce = new Command(() =>
@@ -866,6 +938,8 @@ namespace CB_5e.ViewModels
                     model.MakeHistory("Resource" + ResourceID);
                     if (Max > 0 && Used > Max) Used = Max;
                     model.Context.Player.SetUsedResources(ResourceID, Used);
+                    model.UpdateUsed();
+
                     model.Save();
                 }
                 last = ResourceID;

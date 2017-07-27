@@ -7,30 +7,38 @@ namespace CB_5e.Models
 {
     public class Character : BaseDataObject
     {
-        public Player Player { get; set; }
 
-        public string Text
+        public Character(Player p)
         {
-            get { return Player?.Name; }
+            Player = p;
+            Description = p.GetRaceSubName() + " " + String.Join(" | ", p.GetClassesStrings());
+            Portrait = Player.Portrait != null ? ImageSource.FromStream(() => new MemoryStream(Player.Portrait)) : null;
+            Text = Player.Name;
         }
+        public Player Player { get; private set; }
 
-        public string Description
-        {
-            get {
-                if (Player == null) return null;
-                try
-                {
-                    return Player.GetRaceSubName() + " " + String.Join(" | ", Player.GetClassesStrings());
-                } catch (Exception e)
-                {
-                    return e.Message + e.StackTrace;
-                }
-                }
-        }
+        public string Text { get; private set; }
+        //{
+        //    get { return Player?.Name; }
+        //}
 
-        public ImageSource Portrait
-        {
-            get { if (Player != null && Player.Portrait != null) return ImageSource.FromStream(() => new MemoryStream(Player.Portrait)); return null; }
-        }
+        public string Description { get; private set; }
+        //{
+        //    get {
+        //        if (Player == null) return null;
+        //        try
+        //        {
+        //            return Player.GetRaceSubName() + " " + String.Join(" | ", Player.GetClassesStrings());
+        //        } catch (Exception e)
+        //        {
+        //            return e.Message + e.StackTrace;
+        //        }
+        //        }
+        //}
+
+        public ImageSource Portrait { get; private set; }
+        //{
+        //    get { if (Player != null && Player.Portrait != null) return ImageSource.FromStream(() => new MemoryStream(Player.Portrait)); return null; }
+        //}
     }
 }

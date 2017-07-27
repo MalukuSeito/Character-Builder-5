@@ -47,7 +47,7 @@ namespace Character_Builder
         {
             get
             {
-                if (Recharge >= RechargeModifier.AtWill) return "";
+                if (Recharge >= RechargeModifier.Charges) return RechargeModifier.AtWill == Recharge ? "" : ModifiedSpell.RechargeName(Recharge);
                 if (DisplayUsed) return (Max - Used) + "/" + Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
                 return  Max + " (" + ModifiedSpell.RechargeName(Recharge) + ")";
             }

@@ -42,6 +42,7 @@
     <Compile Include="Helpers\MessengingCenterAlert.cs" />
     <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="Helpers\ObservableRangeCollection.cs" />
+    <Compile Include="Helpers\SpellPageSelector.cs" />
     <Compile Include="Models\BaseDataObject.cs" />
     <Compile Include="Models\Character.cs" />
     <Compile Include="ViewModels\LoadingProgress.cs" />
@@ -54,6 +55,11 @@
     <Compile Include="ViewModels\NewFolderViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\SpellbookSpellsViewModel.cs" />
+    <Compile Include="ViewModels\SpellbookViewModel.cs" />
+    <Compile Include="ViewModels\SpellPrepareViewModel.cs" />
+    <Compile Include="ViewModels\SpellSlotViewModel.cs" />
+    <Compile Include="ViewModels\SpellViewModel.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -96,6 +102,9 @@
     </Compile>
     <Compile Include="Views\NewFolderPage.xaml.cs">
       <DependentUpon>NewFolderPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpellcastingPage.xaml.cs">
+      <DependentUpon>SpellcastingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ZoomImage.cs" />
   </ItemGroup>
@@ -222,6 +231,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\InfoSelectPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SpellcastingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -88,10 +88,10 @@ namespace CB_5e.ViewModels
                     try
                     {
                         Player p = await TinyContext.LoadPlayerAsync(c);
-                        items.Add(new Character()
-                        {
-                            Player = p
-                        });
+                        items.Add(new Character(p));
+                        //{
+                        //    Player = p
+                        //});
                     } catch (Exception e)
                     {
                         ConfigManager.LogError(e);

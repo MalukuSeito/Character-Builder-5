@@ -18,9 +18,10 @@ namespace Character_Builder
         public List<string> SpellbookAdditional = new List<string>();
         public List<int> UsedSlots = new List<int>();
         public string Highlight { get; set; }
+
         //[XmlIgnore]
         // public string Displayname { get; set; }
-        public IEnumerable<ModifiedSpell> getPrepared(Player player, OGLContext context, int level = 0)
+        public IEnumerable<ModifiedSpell> GetPrepared(Player player, OGLContext context, int level = 0)
         {
             CombinePrepared(player, context, level);
             List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(context.GetSpell(s, null), null, false, false));
@@ -39,7 +40,7 @@ namespace Character_Builder
             res.Sort();
             return res;
         }
-        public IEnumerable<ModifiedSpell> getLearned(Player player, OGLContext context, int level = 0)
+        public IEnumerable<ModifiedSpell> GetLearned(Player player, OGLContext context, int level = 0)
         {
             List<ModifiedSpell> res = new List<ModifiedSpell>();
             CombineSpellChoices(player, context, level);
@@ -58,7 +59,7 @@ namespace Character_Builder
             res.Sort();
             return res;
         }
-        public IEnumerable<Spell> getSpellbook(Player player, OGLContext context, int level = 0)
+        public IEnumerable<Spell> GetSpellbook(Player player, OGLContext context, int level = 0)
         {
             List<Spell> res = new List<Spell>();
             CombineSpellChoices(player, context, level);
@@ -82,7 +83,7 @@ namespace Character_Builder
             return res;
 
         }
-        public IEnumerable<Spell> getAdditionalClassSpells(Player player, OGLContext context, int level = 0)
+        public IEnumerable<Spell> GetAdditionalClassSpells(Player player, OGLContext context, int level = 0)
         {
             List<Spell> res = new List<Spell>();
             CombineSpellbookAdditional(player, context, level);
@@ -106,7 +107,7 @@ namespace Character_Builder
             return res;
         }
 
-        public List<string> getPreparedList(Player player, OGLContext context, int level = 0)
+        public List<string> GetPreparedList(Player player, OGLContext context, int level = 0)
         {
             if (level ==0) {
                 level = player.GetLevel();
@@ -127,7 +128,7 @@ namespace Character_Builder
             return result.Spells;
         }
 
-        public List<string> getAdditionalList(Player player, OGLContext context, int level = 0)
+        public List<string> GetAdditionalList(Player player, OGLContext context, int level = 0)
         {
             if (level == 0)
             {

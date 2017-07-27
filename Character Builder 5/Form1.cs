@@ -210,7 +210,7 @@ namespace Character_Builder_5
                 {
                     Choice_DisplaySpellScroll(sender, e);
                     if (spellbookFeaturesBox.SelectedItem != null && spellbookFeaturesBox.SelectedItem is SpellcastingCapsule)
-                        addspellbookButton.Enabled = Utils.Matches(Program.Context, ((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Program.Context.Player.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook(Program.Context.Player, Program.Context).Contains((Spell)listItems.SelectedItem);
+                        addspellbookButton.Enabled = Utils.Matches(Program.Context, ((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Program.Context.Player.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).GetSpellbook(Program.Context.Player, Program.Context).Contains((Spell)listItems.SelectedItem);
                 }
                 if (listItems.SelectedItem is Feature)
                 {
@@ -622,8 +622,8 @@ namespace Character_Builder_5
                             {
                                 ListBox spellbox = (ListBox)spells[0];
                                 List<ModifiedSpell> modspells = new List<ModifiedSpell>();
-                                modspells.AddRange(sc.getLearned(Program.Context.Player, Program.Context));
-                                modspells.AddRange(sc.getPrepared(Program.Context.Player, Program.Context));
+                                modspells.AddRange(sc.GetLearned(Program.Context.Player, Program.Context));
+                                modspells.AddRange(sc.GetPrepared(Program.Context.Player, Program.Context));
                                 foreach (ModifiedSpell ms in modspells)
                                 {
                                     //if (ms.differentAbility == Ability.None) ms.differentAbility = spellcastingability;
@@ -1132,10 +1132,10 @@ namespace Character_Builder_5
                 if (sf != null)
                 {
                     Spellcasting sc = Program.Context.Player.GetSpellcasting(sf.SpellcastingID);
-                    if (sc.getPreparedList(Program.Context.Player, Program.Context).Count < Utils.AvailableToPrepare(Program.Context, sf, Program.Context.Player.GetClassLevel(sf.SpellcastingID)))
+                    if (sc.GetPreparedList(Program.Context.Player, Program.Context).Count < Utils.AvailableToPrepare(Program.Context, sf, Program.Context.Player.GetClassLevel(sf.SpellcastingID)))
                     {
                         Program.Context.MakeHistory("");
-                        sc.getPreparedList(Program.Context.Player, Program.Context).Add(((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source);
+                        sc.GetPreparedList(Program.Context.Player, Program.Context).Add(((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source);
                     }
                     UpdateSpellcastingInner(true, spellfeatures);
                     UpdateInPlayInner();
@@ -1151,7 +1151,7 @@ namespace Character_Builder_5
                 Spellcasting sc = Program.Context.Player.GetSpellcasting(spellcontrol.SelectedTab.Name);
                 Program.Context.MakeHistory("");
                 string r = ((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source;
-                sc.getPreparedList(Program.Context.Player, Program.Context).RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
+                sc.GetPreparedList(Program.Context.Player, Program.Context).RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
                 UpdateSpellcastingInner();
                 UpdateInPlayInner();
             }
@@ -1184,9 +1184,9 @@ namespace Character_Builder_5
                                 Control[] preparebox = tab.Controls.Find(sf.SpellcastingID + "=preparedbox", true);
                                 if (preparebox.Count() > 0)
                                 {
-                                    preparebox[0].Text = "Prepared Spells (" + sc.getPreparedList(Program.Context.Player, Program.Context).Count + "/" + Utils.AvailableToPrepare(Program.Context, sf, classlevel) + ")";
+                                    preparebox[0].Text = "Prepared Spells (" + sc.GetPreparedList(Program.Context.Player, Program.Context).Count + "/" + Utils.AvailableToPrepare(Program.Context, sf, classlevel) + ")";
                                 }
-                                List<Spell> preparedspells = new List<Spell>(sc.getPrepared(Program.Context.Player, Program.Context));
+                                List<Spell> preparedspells = new List<Spell>(sc.GetPrepared(Program.Context.Player, Program.Context));
                                 //List<Spell> preparedspells = new List<Spell>(from s in sc.Prepared select Program.Context.GetSpell(s));
                                 prep.Items.Clear();
                                 prep.Items.AddRange(preparedspells.ToArray<Spell>());
@@ -1197,7 +1197,7 @@ namespace Character_Builder_5
                                     {
                                         ListBox prepable = (ListBox)prepareable[0];
                                         prepable.Items.Clear();
-                                        List<Spell> prepableSpells = new List<Spell>(sc.getAdditionalClassSpells(Program.Context.Player, Program.Context));
+                                        List<Spell> prepableSpells = new List<Spell>(sc.GetAdditionalClassSpells(Program.Context.Player, Program.Context));
                                         prepableSpells.AddRange(Utils.FilterSpell(Program.Context, sf.PrepareableSpells, sf.SpellcastingID, classlevel));
                                         prepableSpells.Sort();
                                         prepable.Items.AddRange(prepableSpells.Where(s => !preparedspells.Exists(t => t.Name == s.Name && s.Source == t.Source)).ToArray<Spell>());
@@ -1210,14 +1210,14 @@ namespace Character_Builder_5
                                     {
                                         ListBox prepable = (ListBox)prepareable[0];
                                         prepable.Items.Clear();
-                                        prepable.Items.AddRange(sc.getSpellbook(Program.Context.Player, Program.Context).Where(s => !preparedspells.Exists(t => t.Name == s.Name && s.Source == t.Source)).ToArray<Spell>());
+                                        prepable.Items.AddRange(sc.GetSpellbook(Program.Context.Player, Program.Context).Where(s => !preparedspells.Exists(t => t.Name == s.Name && s.Source == t.Source)).ToArray<Spell>());
                                     }
                                 }
                             }
-                        } else if (sc.getPrepared(Program.Context.Player, Program.Context).Count() > 0) {
+                        } else if (sc.GetPrepared(Program.Context.Player, Program.Context).Count() > 0) {
                             bonusprepared = new SpellChoiceCapsule(null)
                             {
-                                CalculatedChoices = sc.getPrepared(Program.Context.Player, Program.Context).ToList<Spell>()
+                                CalculatedChoices = sc.GetPrepared(Program.Context.Player, Program.Context).ToList<Spell>()
                             };
                             bonusprepared.CalculatedAmount = bonusprepared.CalculatedChoices.Count;
                         }
@@ -2670,7 +2670,7 @@ namespace Character_Builder_5
             {
                 Program.Context.MakeHistory("");
                 SpellcastingFeature sc = ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature;
-                Program.Context.Player.GetSpellcasting(sc.SpellcastingID).getAdditionalList(Program.Context.Player, Program.Context).Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
+                Program.Context.Player.GetSpellcasting(sc.SpellcastingID).GetAdditionalList(Program.Context.Player, Program.Context).Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
                 UpdateLayout();
             }
         }
@@ -2777,7 +2777,7 @@ namespace Character_Builder_5
         {
             if (spellbookFeaturesBox.SelectedItem != null && listItems.SelectedItem != null && listItems.SelectedItem is Spell)
             {
-                addspellbookButton.Enabled = Utils.Matches(Program.Context, ((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Program.Context.Player.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).getSpellbook(Program.Context.Player, Program.Context).Contains((Spell)listItems.SelectedItem);
+                addspellbookButton.Enabled = Utils.Matches(Program.Context, ((Spell)listItems.SelectedItem), ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.PrepareableSpells, ((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID) && !Program.Context.Player.GetSpellcasting(((SpellcastingCapsule)spellbookFeaturesBox.SelectedItem).Spellcastingfeature.SpellcastingID).GetSpellbook(Program.Context.Player, Program.Context).Contains((Spell)listItems.SelectedItem);
             }
         }
 

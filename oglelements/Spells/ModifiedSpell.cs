@@ -110,10 +110,10 @@ namespace OGL.Spells
             includeRecharge = includeResources;
             count = 1;
         }
-        public string recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)
+        public string Recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)
         {
             if (!includeRecharge) return "";
-            if (r == RechargeModifier.Unmodified) return recharge(defaultRecharge);
+            if (r == RechargeModifier.Unmodified) return Recharge(defaultRecharge);
             return "(" + RechargeName(r) + ")";
             //if (r.HasFlag(RechargeModifier.AtWill)) return "";
             //if (r == RechargeModifier.Ritual) return "Ritual";
@@ -131,11 +131,12 @@ namespace OGL.Spells
             if (Recharge == RechargeModifier.Special) return "Special";
             if (Recharge == RechargeModifier.Charges) return "Used with Charges";
             if (Recharge == RechargeModifier.NoRecharge) return "No Recharge";
+            if (Recharge == RechargeModifier.Ritual) return "Ritual";
             return "Other";
         }
         public override string ToString() {
-            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
-            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
+            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier));
+            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier));
         }
         public override List<Keyword> GetKeywords()
         {
@@ -183,9 +184,9 @@ namespace OGL.Spells
         {
             get
             {
-                if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + recharge(RechargeModifier));
+                if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier < RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier));
                 if ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill) return "";
-                return (includeResources && RechargeModifier != RechargeModifier.Charges ? ((count - used) + "/" + count + " ") : "") + recharge(RechargeModifier);
+                return (includeResources && RechargeModifier < RechargeModifier.Charges ? ((count - used) + "/" + count + " ") : "") + Recharge(RechargeModifier);
             }
         }
     }

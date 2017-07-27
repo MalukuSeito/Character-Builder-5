@@ -221,7 +221,7 @@ namespace Character_Builder_5
                             Spellcasting sc = Program.Context.Player.GetSpellcasting(scf.SpellcastingID);
                             if (sc.Highlight != null && sc.Highlight != "")
                             {
-                                foreach (Spell s in sc.getLearned(Program.Context.Player, Program.Context))
+                                foreach (Spell s in sc.GetLearned(Program.Context.Player, Program.Context))
                                 {
                                     if (s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
                                     {
@@ -384,20 +384,20 @@ namespace Character_Builder_5
                             List<Spell> Prepared = new List<Spell>();
                             if (scf.Preparation == PreparationMode.ClassList)
                             {
-                                Available.AddRange(sc.getAdditionalClassSpells(Program.Context.Player, Program.Context));
+                                Available.AddRange(sc.GetAdditionalClassSpells(Program.Context.Player, Program.Context));
                                 Available.AddRange(Utils.FilterSpell(Program.Context, scf.PrepareableSpells, scf.SpellcastingID, classlevel));
-                                Prepared.AddRange(sc.getPrepared(Program.Context.Player, Program.Context));
+                                Prepared.AddRange(sc.GetPrepared(Program.Context.Player, Program.Context));
                             }
                             else if (scf.Preparation == PreparationMode.Spellbook)
                             {
-                                Available.AddRange(sc.getSpellbook(Program.Context.Player, Program.Context));
-                                Prepared.AddRange(sc.getPrepared(Program.Context.Player, Program.Context));
+                                Available.AddRange(sc.GetSpellbook(Program.Context.Player, Program.Context));
+                                Prepared.AddRange(sc.GetPrepared(Program.Context.Player, Program.Context));
                             }
                             else
                             {
-                                Prepared.AddRange(sc.getPrepared(Program.Context.Player, Program.Context));
+                                Prepared.AddRange(sc.GetPrepared(Program.Context.Player, Program.Context));
                             }
-                            Prepared.AddRange(sc.getLearned(Program.Context.Player, Program.Context));
+                            Prepared.AddRange(sc.GetLearned(Program.Context.Player, Program.Context));
                             Available.AddRange(Prepared);
                             spellbook.AddRange(Available);
                             List<Spell> Shown = new List<Spell>(Available.Distinct());

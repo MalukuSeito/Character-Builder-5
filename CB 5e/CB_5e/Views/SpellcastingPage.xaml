@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              x:Class="CB_5e.Views.SpellcastingPage"
+              xmlns:local="clr-namespace:CB_5e.Helpers"
+              ItemsSource="{Binding Spellcasting}"
+              ItemTemplate="{StaticResource SpellPageSelector}">
+    <CarouselPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="OnExit" />
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+    </CarouselPage.ToolbarItems>
+    <CarouselPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key ="NoSpells">
+                <ContentPage Title="{Binding Title}">
+                    <StackLayout>
+                        <Label Text="This character has no spellcasting features right now"/>
+                        <Label Text="If you are looking for your bonus spells, check out the Resources page in the Info tab"/>
+                    </StackLayout>
+                </ContentPage>
+            </DataTemplate>
+            <DataTemplate x:Key ="Spellcasting">
+                <ContentPage Title="{Binding Title}">
+                    <Grid Padding="10, 0" RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="18"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="18"/>
+                            <RowDefinition Height="43"/>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="28"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="6*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Ability:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Ability}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+                        <Label Grid.Row="2" Grid.Column="0" Text="Attack:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Attack}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="DC:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                        <Label Grid.Row="3" Grid.Column="1" Text="{Binding DC}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+                        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Text="Spell Slots, tap to edit, tap again to reduce by one" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                        
+                        <SearchBar Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{Binding SpellSearch}" Placeholder="Search Spells" />
+                        <ListView Grid.Row="2" Grid.Column="2" Grid.RowSpan="4"  ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
+                                  IsPullToRefreshEnabled="false"
+                                  CachingStrategy="RecycleElement">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding ShowInfo}" CommandParameter="{Binding .}">
+                                        <TextCell.ContextActions>
+                                            <MenuItem Command="{Binding Highlight}" Text="Highlight on Sheet" CommandParameter="{Binding .}"/>
+                                        </TextCell.ContextActions>
+                                    </TextCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <ListView VerticalOptions="FillAndExpand" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding SpellSlots}" SelectedItem="{Binding Selected}" 
+                                  IsPullToRefreshEnabled="true"
+                                  RefreshCommand="{Binding ResetAll}"
+                                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                  CachingStrategy="RecycleElement"
+                                  RowHeight="30">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Height="30" Text="{Binding Text}" Command="{Binding Reduce}" CommandParameter="{Binding .}" >
+                                        <TextCell.ContextActions>
+                                            <MenuItem Command="{Binding Reset}" Text="Reset" CommandParameter="{Binding .}"/>
+                                        </TextCell.ContextActions>
+                                    </TextCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <Entry Keyboard="Numeric" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Used}"/>
+                        <Label Grid.Row="6" Grid.Column="2" Text="Spell on Sheet" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                        <Label Grid.Row="7" Grid.Column="2" Text="{Binding Highlight}" FontSize="Small" LineBreakMode="NoWrap" TextColor="{Binding Accent}" HorizontalTextAlignment="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RemoveHighlight}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </ContentPage>
+            </DataTemplate>
+            <DataTemplate x:Key ="Preparation">
+                <ContentPage Title="{Binding Title}">
+                    <Grid Padding="0, 20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="2" Text="{Binding Prepared}" HorizontalTextAlignment="Center"/>
+                        <SearchBar Grid.Row="0" Text="{Binding SpellSearch}" Placeholder="Search Preparable Spells" />
+                        <ListView Grid.Row="1" ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
+                                  IsPullToRefreshEnabled="true"
+                                  RefreshCommand="{Binding ResetPrepared}"
+                                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                  CachingStrategy="RecycleElement">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding Prepare}" CommandParameter="{Binding .}" TextColor="{Binding PreparedColor}" >
+                                        <TextCell.ContextActions>
+                                            <MenuItem Command="{Binding ShowInfo}" Text="Spell Info" CommandParameter="{Binding .}"/>
+                                        </TextCell.ContextActions>
+                                    </TextCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </ContentPage>
+            </DataTemplate>
+            <local:SpellPageSelector x:Key="SpellPageSelector"
+                                     Spellcasting="{StaticResource Spellcasting}"
+                                     Preparation="{StaticResource Preparation}"
+                                     NoSpells="{StaticResource NoSpells}" />
+            
+        </ResourceDictionary>
+    </CarouselPage.Resources>
+</CarouselPage>
