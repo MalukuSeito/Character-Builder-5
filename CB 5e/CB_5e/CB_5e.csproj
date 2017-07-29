@@ -45,6 +45,7 @@
     <Compile Include="Helpers\SpellPageSelector.cs" />
     <Compile Include="Models\BaseDataObject.cs" />
     <Compile Include="Models\Character.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\LoadingProgress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PCLImport.cs" />
@@ -79,14 +80,17 @@
     <Compile Include="Views\InfoSelectPage.xaml.cs">
       <DependentUpon>InfoSelectPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemDetailPage.xaml.cs">
-      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CharactersPlayPage.xaml.cs">
       <DependentUpon>CharactersPlayPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DownloadFilePage.xaml.cs">
       <DependentUpon>DownloadFilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewItemPage .xaml.cs">
+      <DependentUpon>NewItemPage .xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemPage.xaml.cs">
+      <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
@@ -109,6 +113,9 @@
     <Compile Include="Views\SpellcastingPage.xaml.cs">
       <DependentUpon>SpellcastingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SplitPage.xaml.cs">
+      <DependentUpon>SplitPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ZoomImage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,10 +124,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AboutPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ItemDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -246,6 +249,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\ShopPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SplitPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\NewItemPage .xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

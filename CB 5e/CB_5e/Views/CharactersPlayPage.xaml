@@ -5,8 +5,7 @@
               Title="{Binding Title}"
              x:Name="BrowseItemsPage">
     <ContentPage.Content>
-    <StackLayout>
-            <SearchBar Text="{Binding Search}" Placeholder="Search"/>
+        <StackLayout>
             <ListView x:Name="ItemsListView"
 				ItemsSource="{Binding Items}"
                 VerticalOptions="FillAndExpand"
@@ -16,12 +15,17 @@
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
 				ItemSelected="OnItemSelected">
-            <ListView.ItemTemplate>
-          <DataTemplate>
-             <ImageCell Text="{Binding Text}" Detail="{Binding Description}" ImageSource="{Binding Portrait}"/>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
-    </StackLayout> 
-  </ContentPage.Content>
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding Search}" Placeholder="Search"/>
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell Text="{Binding Text}" Detail="{Binding Description}" ImageSource="{Binding Portrait}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

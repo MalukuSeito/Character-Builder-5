@@ -1,25 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.ShopPage" >
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="CB_5e.Views.ShopPage" >
     <ContentPage Title="Inventory">
         <ContentPage.ToolbarItems>
             <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="New" Clicked="ToolbarItem_Clicked" />
             <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
             <ToolbarItem Text="Redo" Command="{Binding Redo}" />
             <ToolbarItem Text="Shop &gt;&gt;" Clicked="OnNext" />
         </ContentPage.ToolbarItems>
-        <Grid Padding="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <SearchBar Grid.Row="0" Text="{Binding InventorySearch}" Placeholder="Search Inventory" />
-            <ListView Grid.Row="1" ItemsSource="{Binding Inventory}" ItemSelected="ListView_ItemSelected"
-                                  IsPullToRefreshEnabled="true"
-                                  RefreshCommand="{Binding RefreshItems}"
-                                  IsRefreshing="{Binding ItemsBusy, Mode=OneWay}"
-                                  CachingStrategy="RecycleElement">
+        <StackLayout>
+            <ListView ItemsSource="{Binding Inventory}" ItemSelected="ListView_ItemSelected"
+                                    IsPullToRefreshEnabled="true"
+                                    RefreshCommand="{Binding RefreshItems}"
+                                    IsRefreshing="{Binding ItemsBusy, Mode=OneWay}"
+                                    CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding InventorySearch}" Placeholder="Search Inventory" />
+                    </StackLayout>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Name}" Detail="{Binding Detail}" Command="{Binding Edit}" CommandParameter="{Binding .}">
@@ -31,7 +32,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </Grid>
+        </StackLayout>
     </ContentPage>
     <ContentPage Title="Shop">
     </ContentPage>

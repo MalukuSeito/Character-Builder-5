@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
-              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-              x:Class="CB_5e.Views.SpellcastingPage"
-              xmlns:local="clr-namespace:CB_5e.Helpers"
-              ItemsSource="{Binding Spellcasting}"
-              ItemTemplate="{StaticResource SpellPageSelector}">
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="CB_5e.Views.SpellcastingPage"
+                  xmlns:local="clr-namespace:CB_5e.Helpers"
+                  ItemsSource="{Binding Spellcasting}"
+                  ItemTemplate="{StaticResource SpellPageSelector}">
     <CarouselPage.ToolbarItems>
         <ToolbarItem Text="Exit" Clicked="OnExit" />
         <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
@@ -24,7 +24,7 @@
                 <ContentPage Title="{Binding Title}">
                     <Grid Padding="10, 0" RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="21"/>
+                            <RowDefinition Height="15"/>
                             <RowDefinition Height="18"/>
                             <RowDefinition Height="15"/>
                             <RowDefinition Height="18"/>
@@ -46,11 +46,16 @@
                         <Label Grid.Row="2" Grid.Column="1" Text="DC:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
                         <Label Grid.Row="3" Grid.Column="1" Text="{Binding DC}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
                         <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Text="Spell Slots, tap to edit, tap again to reduce by one" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
-                        
-                        <SearchBar Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="{Binding SpellSearch}" Placeholder="Search Spells" />
-                        <ListView Grid.Row="2" Grid.Column="2" Grid.RowSpan="4"  ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
-                                  IsPullToRefreshEnabled="false"
-                                  CachingStrategy="RecycleElement">
+
+
+                        <ListView Grid.Row="0" Grid.Column="2" Grid.RowSpan="6"  ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
+                                      IsPullToRefreshEnabled="false"
+                                      CachingStrategy="RecycleElement">
+                            <ListView.Header>
+                                <StackLayout>
+                                    <SearchBar Text="{Binding SpellSearch}" Placeholder="Search Spells" />
+                                </StackLayout>
+                            </ListView.Header>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding ShowInfo}" CommandParameter="{Binding .}">
@@ -63,11 +68,11 @@
                         </ListView>
 
                         <ListView VerticalOptions="FillAndExpand" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding SpellSlots}" SelectedItem="{Binding Selected}" 
-                                  IsPullToRefreshEnabled="true"
-                                  RefreshCommand="{Binding ResetAll}"
-                                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                                  CachingStrategy="RecycleElement"
-                                  RowHeight="30">
+                                      IsPullToRefreshEnabled="true"
+                                      RefreshCommand="{Binding ResetAll}"
+                                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                      CachingStrategy="RecycleElement"
+                                      RowHeight="30">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <TextCell Height="30" Text="{Binding Text}" Command="{Binding Reduce}" CommandParameter="{Binding .}" >
@@ -92,17 +97,20 @@
                 <ContentPage Title="{Binding Title}">
                     <Grid Padding="0, 20">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="2" Text="{Binding Prepared}" HorizontalTextAlignment="Center"/>
-                        <SearchBar Grid.Row="0" Text="{Binding SpellSearch}" Placeholder="Search Preparable Spells" />
+                        <Label Grid.Row="1" Text="{Binding Prepared}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
                         <ListView Grid.Row="1" ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
-                                  IsPullToRefreshEnabled="true"
-                                  RefreshCommand="{Binding ResetPrepared}"
-                                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                                  CachingStrategy="RecycleElement">
+                                      IsPullToRefreshEnabled="true"
+                                      RefreshCommand="{Binding ResetPrepared}"
+                                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                      CachingStrategy="RecycleElement">
+                            <ListView.Header>
+                                <StackLayout>
+                                    <SearchBar Text="{Binding SpellSearch}" Placeholder="Search Spells" />
+                                </StackLayout>
+                            </ListView.Header>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding Prepare}" CommandParameter="{Binding .}" TextColor="{Binding PreparedColor}" >
@@ -117,10 +125,10 @@
                 </ContentPage>
             </DataTemplate>
             <local:SpellPageSelector x:Key="SpellPageSelector"
-                                     Spellcasting="{StaticResource Spellcasting}"
-                                     Preparation="{StaticResource Preparation}"
-                                     NoSpells="{StaticResource NoSpells}" />
-            
+                                         Spellcasting="{StaticResource Spellcasting}"
+                                         Preparation="{StaticResource Preparation}"
+                                         NoSpells="{StaticResource NoSpells}" />
+
         </ResourceDictionary>
     </CarouselPage.Resources>
 </CarouselPage>

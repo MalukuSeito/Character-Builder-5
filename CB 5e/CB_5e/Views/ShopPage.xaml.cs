@@ -23,7 +23,7 @@ namespace CB_5e.Views
         public ShopPage(PlayerViewModel model)
 		{
             BindingContext = Model = model;
-            Model.Navigation = Navigation;
+            Model.ShopNavigation = Navigation;
             InitializeComponent ();
             CurrentPageChanged += CarouselPage_CurrentPageChanged; 
             Title = CurrentPage.Title;
@@ -75,6 +75,11 @@ namespace CB_5e.Views
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (sender is ListView lv) lv.SelectedItem = null;
+        }
+
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage(new ItemViewModel(Model))));
         }
     }
 }

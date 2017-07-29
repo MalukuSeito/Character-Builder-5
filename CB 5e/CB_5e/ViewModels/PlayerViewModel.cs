@@ -183,6 +183,7 @@ namespace CB_5e.ViewModels
 
         public INavigation Navigation { get; set; }
         public INavigation SpellNavigation { get; set; }
+        public INavigation ShopNavigation { get; set; }
         public bool ChildModel { get; set; } = false;
         public PlayerViewModel(BuilderContext context)
         {
@@ -360,8 +361,8 @@ namespace CB_5e.ViewModels
             {
                 if (par is InventoryViewModel ivm)
                 {
-                    if (ivm.Item != null) await Navigation.PushAsync(new AboutPage() { Title = par.ToString() });
-                    else await Navigation.PushAsync(InfoPage.Show(ivm.Boon));
+                    if (ivm.Item != null) await ShopNavigation.PushAsync(new ItemPage(new ItemViewModel(this, ivm.Item)));
+                    else await ShopNavigation.PushAsync(InfoPage.Show(ivm.Boon));
                 }
             });
             ShowItemInfo = new Command(async (par) =>
@@ -370,10 +371,10 @@ namespace CB_5e.ViewModels
                 {
                     if (ivm.Item is Possession p)
                     {
-                        await Navigation.PushAsync(InfoPage.Show(new DisplayPossession(ivm.Item, Context.Player)));
+                        await ShopNavigation.PushAsync(InfoPage.Show(new DisplayPossession(ivm.Item, Context.Player)));
                     } else
                     {
-                        await Navigation.PushAsync(InfoPage.Show(ivm.Boon));
+                        await ShopNavigation.PushAsync(InfoPage.Show(ivm.Boon));
                     }
                 }
             });
@@ -495,6 +496,7 @@ namespace CB_5e.ViewModels
         public void UpdateItems()
         {
             inventory.Clear();
+            Inventory.ReplaceRange(inventory);
             foreach (Possession p in Context.Player.GetItemsAndPossessions())
             {
                 inventory.Add(new InventoryViewModel
