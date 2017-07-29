@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OGL.Items
 {
@@ -23,6 +24,12 @@ namespace OGL.Items
         public int CompareTo(MagicCategory other)
         {
             return Name.CompareTo(other.Name);
+        }
+
+        public IEnumerable<MagicProperty> SubSection(string search)
+        {
+            string st = search.ToLowerInvariant();
+            return from mp in Contents where mp.Name.ToLowerInvariant().Contains(st) || mp.Description.ToLowerInvariant().Contains(st) select mp;
         }
     }
 }

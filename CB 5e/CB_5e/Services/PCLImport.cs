@@ -298,7 +298,7 @@ namespace CB_5e.Services
                             feat.ShowSource = true;
                         }
                         context.FeatureCategories[cat].Add(feat);
-                        if (cat.Equals("Boons", StringComparison.OrdinalIgnoreCase))
+                        if (cat.Equals("Feats/Boons", StringComparison.OrdinalIgnoreCase))
                         {
                             if (context.BoonsSimple.ContainsKey(feat.Name))
                             {

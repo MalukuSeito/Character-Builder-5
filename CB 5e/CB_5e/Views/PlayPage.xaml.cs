@@ -35,7 +35,7 @@ namespace CB_5e.Views
             Children.Add(
                     new NavigationPage(new ShopPage(Model))
                     {
-                        Title = "Shop",
+                        Title = "Items",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
             Children.Add(

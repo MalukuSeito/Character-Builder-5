@@ -123,7 +123,7 @@ namespace Character_Builder_Forms
                             feat.ShowSource = true;
                         }
                         context.FeatureCategories[cat].Add(feat);
-                        if (cat.Equals("Boons", StringComparison.InvariantCultureIgnoreCase))
+                        if (cat.Equals("Feats/Boons", StringComparison.InvariantCultureIgnoreCase))
                         {
                             if (context.BoonsSimple.ContainsKey(feat.Name))
                             {

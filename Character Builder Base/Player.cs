@@ -145,7 +145,7 @@ namespace Character_Builder
 
         public List<Possession> GetItemsAndPossessions()
         {
-            Dictionary<string, int> items = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, int> items = new Dictionary<string, int>(ConfigManager.SourceInvariantComparer);
             foreach (Item i in GetFreeItems())
             {
                 if (!items.ContainsKey(i.Name)) items.Add(i.Name, 1);
@@ -195,14 +195,21 @@ namespace Character_Builder
                     int pcount = (int)Math.Ceiling((double)p.Count / (double)stacksize);
                     p.Count = count;
                     count = (int)Math.Ceiling((double)count / (double)stacksize);
+                    Item b = p.Item;
+                    string s = b?.Name + " " + ConfigManager.SourceSeperator + " " + b?.Source;
                     while (count != pcount) if (count < pcount)
                         {
-                            Items.Remove(p.BaseItem);
+                            if (b != null) {
+                                int i = Items.FindIndex(j => ConfigManager.SourceInvariantComparer.Equals(j, s));
+                                if (i >= 0) Items.RemoveAt(i);
+                            }
+                            else Items.Remove(p.BaseItem);
                             pcount--;
                         }
                         else
                         {
-                            Items.Add(p.BaseItem);
+                            if (b != null) Items.Add(s);
+                            else Items.Add(p.BaseItem);
                             pcount++;
                         }
                 }
@@ -217,14 +224,22 @@ namespace Character_Builder
                     int pcount = (int)Math.Ceiling((double)p.Count / (double)stacksize);
                     p.Count = count;
                     count = (int)Math.Ceiling((double)count / (double)stacksize);
+                    Item b = p.Item;
+                    string s = b?.Name + " " + ConfigManager.SourceSeperator + " " + b?.Source;
                     while (count != pcount) if (count < pcount)
                         {
-                            Items.Remove(p.BaseItem);
+                            if (b != null)
+                            {
+                                int i = Items.FindIndex(j => ConfigManager.SourceInvariantComparer.Equals(j, s));
+                                if (i >= 0) Items.RemoveAt(i);
+                            }
+                            else Items.Remove(p.BaseItem);
                             pcount--;
                         }
                         else
                         {
-                            Items.Add(p.BaseItem);
+                            if (b != null) Items.Add(s);
+                            else Items.Add(p.BaseItem);
                             pcount++;
                         }
                 }
@@ -237,13 +252,21 @@ namespace Character_Builder
             bool worked = true;
             if (p.BaseItem != null && p.BaseItem != "")
             {
+                Item b = p.Item;
+                string s = b?.Name + " " + ConfigManager.SourceSeperator + " " + b?.Source;
                 int stacksize = Context.GetItem(p.BaseItem, null).StackSize;
                 if (stacksize < 0) stacksize = 1;
                 int count = (int)Math.Ceiling((double)p.Count / (double)stacksize);
                 for (int i = 0; i < count; i++)
                 {
                     worked = false;
-                    if (!Items.Remove(p.BaseItem)) break;
+                    if (b != null)
+                    {
+                        int k = Items.FindIndex(j => ConfigManager.SourceInvariantComparer.Equals(j, s));
+                        if (k >= 0) Items.RemoveAt(i);
+                        else break;
+                    }
+                    else if (!Items.Remove(p.BaseItem)) break;
                     worked = true;
                 }
             }

@@ -36,9 +36,18 @@ namespace CB_5e.Views
 
         public IXML Obj { get; private set; }
 
-        public static InfoPage Show(IXML obj)
+        public static InfoPage Show(IXML obj, Command cmd = null, string cmdText = "Do")
         {
             InfoPage Instance = new InfoPage(obj);
+            if (cmd != null)
+            {
+                Instance.ToolbarItems.Add(new ToolbarItem()
+                {
+                    Command = cmd,
+                    CommandParameter = obj,
+                    Text = cmdText
+                });
+            }
             return Instance;
         }
 

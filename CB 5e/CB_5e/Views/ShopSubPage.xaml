@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.ShopSubPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Money}" HorizontalTextAlignment="Center"/>
+            <ListView ItemsSource="{Binding Shop}" 
+                      IsPullToRefreshEnabled="false"
+                      CachingStrategy="RecycleElement"
+                      ItemSelected="ListView_ItemSelected">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding ShopSearch}" Placeholder="Search Shops" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" Detail="{Binding Desc}">
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

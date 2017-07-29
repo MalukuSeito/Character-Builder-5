@@ -35,6 +35,33 @@
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Shop">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="&lt; &lt; Inventory" Clicked="OnExit" />
+            <ToolbarItem Text="Item Options &gt;&gt;" Clicked="OnNext" />
+        </ContentPage.ToolbarItems>
+        <StackLayout>
+            <ListView ItemsSource="{Binding Shops}" 
+                      ItemSelected="ListView_ItemSelected"
+                      IsPullToRefreshEnabled="false"
+                      CachingStrategy="RecycleElement"
+                      IsGroupingEnabled="True"
+                      GroupDisplayBinding="{Binding Type}"
+                      GroupShortNameBinding="{Binding SType}"
+                      RowHeight="30">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding ShopSearch}" Placeholder="Search Shops" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height ="30" Text="{Binding Name}" Command="{Binding Open}" CommandParameter="{Binding .}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage>
+    <ContentPage Title="Item Options">
     </ContentPage>
 </CarouselPage>
     

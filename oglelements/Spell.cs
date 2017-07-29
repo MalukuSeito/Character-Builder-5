@@ -238,5 +238,7 @@ namespace OGL
                 return r;
             }
         }
+        [XmlIgnore]
+        public string Desc { get => String.Join(", ", GetKeywords()); }
     }
 }

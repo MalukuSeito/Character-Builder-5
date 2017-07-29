@@ -159,5 +159,7 @@ namespace OGL
                 return r;
             }
         }
+        [XmlIgnore]
+        public string Desc { get => Price.ToString(); }
     }
 }

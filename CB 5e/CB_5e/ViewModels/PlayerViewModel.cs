@@ -5,6 +5,7 @@ using OGL;
 using OGL.Base;
 using OGL.Common;
 using OGL.Features;
+using OGL.Items;
 using OGL.Spells;
 using PCLStorage;
 using System;
@@ -22,7 +23,7 @@ using Xamarin.Forms;
 namespace CB_5e.ViewModels
 {
 
-    public class HitDieViewModel: HitDie, INotifyPropertyChanged
+    public class HitDieViewModel : HitDie, INotifyPropertyChanged
     {
         public HitDieViewModel(PlayerViewModel pvm, HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
         {
@@ -41,7 +42,7 @@ namespace CB_5e.ViewModels
 
         public string Current {
             get {
-                return ToString() + " (" + Count + " Total)";  
+                return ToString() + " (" + Count + " Total)";
             }
         }
         public string TotalText
@@ -125,7 +126,7 @@ namespace CB_5e.ViewModels
                 if (myTicket == ticketToRide)
                 {
                     return true;
-                } 
+                }
                 else if (myTicket + MAX_WAITING < ticketsCount)
                 {
                     Exit();
@@ -179,7 +180,7 @@ namespace CB_5e.ViewModels
 
         public void FirePlayerChanged() => PlayerChanged?.Invoke(this, EventArgs.Empty);
 
-        public ScoresModelViewModel Scores { get; private set; } 
+        public ScoresModelViewModel Scores { get; private set; }
 
         public INavigation Navigation { get; set; }
         public INavigation SpellNavigation { get; set; }
@@ -247,7 +248,7 @@ namespace CB_5e.ViewModels
                     classes.Add(pc.GetSubClass(Context));
                 }
                 await Navigation.PushAsync(InfoSelectPage.Show(classes));
-            }, () => 
+            }, () =>
                 Context.Player?.Classes?.Count > 0);
             ShowRace = new Command(async () => {
                 await Navigation.PushAsync(InfoSelectPage.Show(Context.Player.Race, Context.Player.SubRace));
@@ -322,7 +323,7 @@ namespace CB_5e.ViewModels
             {
                 ResourceBusy = true;
                 SelectedResource = null;
-                Resources.ReplaceRange(new List<ResourceViewModel> ());
+                Resources.ReplaceRange(new List<ResourceViewModel>());
                 resources.Clear();
                 resources.AddRange(from r in Context.Player.GetResourceInfo(true).Values select new ResourceViewModel(r, this));
                 resources.AddRange(from r in Context.Player.GetBonusSpells(false) select new ResourceViewModel(r, this));
@@ -405,6 +406,11 @@ namespace CB_5e.ViewModels
                 ItemsBusy = false;
             });
             UpdateItems();
+            OnOpenShop = new Command(async (par) =>
+            {
+                if (par is ShopViewModel svm) await ShopNavigation.PushAsync(new ShopSubPage(svm));
+            });
+            UpdateShops();
         }
 
         public Color Accent { get { return Color.Accent; } }
@@ -432,7 +438,7 @@ namespace CB_5e.ViewModels
 
         public void DoSave()
         {
-            
+
             if (Context.Player != null)
             {
                 Player p = Context.Player;
@@ -459,7 +465,7 @@ namespace CB_5e.ViewModels
                     Saving.Exit();
                 }
             }
-           
+
         }
 
         private void PlayerViewModel_PlayerChanged(object sender, EventArgs e)
@@ -489,7 +495,6 @@ namespace CB_5e.ViewModels
             proficiencies.AddRange(from p in Context.Player.GetOtherProficiencies() select new Feature(p, "Proficiency"));
             UpdateProficiencies();
             UpdateItems();
-
             UpdateSpellcasting();
 
         }
@@ -508,7 +513,7 @@ namespace CB_5e.ViewModels
                     Delete = DeleteItem
                 });
             }
-            foreach (Feature f in Context.Player.GetBoons())
+            foreach (Feature f in from b in Context.Player.Boons select Context.GetBoon(b ,null))
             {
                 inventory.Add(new InventoryViewModel
                 {
@@ -539,7 +544,7 @@ namespace CB_5e.ViewModels
             {
                 if (HP == value) return;
                 int parsedInt = 0;
-                if (value == "" || value == "-"|| int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
                     MakeHistory("CurHP");
                     int loss = parsedInt - Context.Player.GetHitpointMax();
@@ -828,7 +833,7 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public object Nothing { get { return null; }  set { OnPropertyChanged("Nothing"); } }
+        public object Nothing { get { return null; } set { OnPropertyChanged("Nothing"); } }
 
         private string condtionSearch;
         public ObservableRangeCollection<OGL.Condition> ActiveConditions { get; set; } = new ObservableRangeCollection<OGL.Condition>();
@@ -866,7 +871,7 @@ namespace CB_5e.ViewModels
         private List<ResourceViewModel> resources;
         public ObservableRangeCollection<ResourceViewModel> Resources { get; set; } = new ObservableRangeCollection<ResourceViewModel>();
 
-        public void UpdateResources() => Resources.ReplaceRange(from r in resources where resourceSearch == null || resourceSearch == "" 
+        public void UpdateResources() => Resources.ReplaceRange(from r in resources where resourceSearch == null || resourceSearch == ""
              || culture.CompareInfo.IndexOf(r.Name, resourceSearch, CompareOptions.IgnoreCase) >= 0 orderby r.ToString() select r);
 
         private ResourceViewModel selectedResource;
@@ -884,7 +889,7 @@ namespace CB_5e.ViewModels
                     OnPropertyChanged("CurrentResourceValue");
                 }
             }
-        }        
+        }
         private int currentResourceValue;
         public int CurrentResourceValue { get => currentResourceValue; set {
                 if (value >= 0 && value != currentResourceValue && selectedResource != null && selectedResource.IsChangeable)
@@ -924,7 +929,7 @@ namespace CB_5e.ViewModels
         private List<Feature> features;
         public ObservableRangeCollection<Feature> Features { get; set; } = new ObservableRangeCollection<Feature>();
 
-        public void UpdateFeatures() => Features.ReplaceRange(from f in features where featureSearch == null || featureSearch == "" 
+        public void UpdateFeatures() => Features.ReplaceRange(from f in features where featureSearch == null || featureSearch == ""
             || culture.CompareInfo.IndexOf(f.Name, featureSearch, CompareOptions.IgnoreCase) >= 0
             || culture.CompareInfo.IndexOf(f.Text, featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
 
@@ -976,7 +981,7 @@ namespace CB_5e.ViewModels
                         v2 = new SpellPrepareViewModel(this, sf);
                         if (v2 is SpellPrepareViewModel spvm && spvm.Able > 0) views.Add(spvm);
                     }
-                }   
+                }
             }
             if (!views.SequenceEqual(Spellcasting))
             {
@@ -1001,10 +1006,10 @@ namespace CB_5e.ViewModels
         private List<InventoryViewModel> inventory = new List<InventoryViewModel>();
         public ObservableRangeCollection<InventoryViewModel> Inventory { get; set; } = new ObservableRangeCollection<InventoryViewModel>();
 
-        public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory where inventorysearch == null || inventorysearch == "" 
-            || culture.CompareInfo.IndexOf(f.Name, featureSearch, CompareOptions.IgnoreCase) >= 0
-            || culture.CompareInfo.IndexOf(f.Detail, featureSearch, CompareOptions.IgnoreCase) >= 0
-            || culture.CompareInfo.IndexOf(f.Description, featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
+        public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory where inventorysearch == null || inventorysearch == ""
+            || culture.CompareInfo.IndexOf(f.Name, inventorysearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Detail, inventorysearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Description, inventorysearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
 
         private string inventorysearch;
         public string InventorySearch
@@ -1022,9 +1027,74 @@ namespace CB_5e.ViewModels
         public Command ShowItemInfo { get; private set; }
         public Command DeleteItem { get; private set; }
         public Command RefreshItems { get; private set; }
+
+        public ObservableRangeCollection<ShopGroupModel> Shops { get; set; } = new ObservableRangeCollection<ShopGroupModel>();
+        public string ShopSearch
+        {
+            get => Context.Search;
+            set
+            {
+                SetProperty(ref Context.Search, value);
+                UpdateShops();
+            }
+        }
+        public Command OnOpenShop { get; private set; }
+
+        public void UpdateShops() => Shops.ReplaceRange(GetShops());
+
+        private IEnumerable<ShopGroupModel> GetShops()
+        {
+            List<ShopGroupModel> res = new List<ShopGroupModel>();
+            res.Add(new ShopGroupModel("Items", from i in Context.Section()
+                                                where i.ToString() != ""
+                                                select new ShopViewModel(this)
+                                                {
+                                                    Name = i.ToString(),
+                                                    ItemCategory = i,
+                                                    Type = "Items",
+                                                    Open = OnOpenShop
+                                                }));
+            res.Add(new ShopGroupModel("Magic", from m in Context.MagicSection()
+                                                select new ShopViewModel(this)
+                                                {
+                                                    Name = m.ToString(),
+                                                    MagicCategory = m,
+                                                    Type = "Magic",
+                                                    Open = OnOpenShop
+                                                }));
+            if (Context.SpellSubsection().Count() > 0)
+            {
+                List<ShopViewModel> s = new List<ShopViewModel>() {
+                    new ShopViewModel(this)
+                    {
+                        Name = "Spell Scrolls",
+                        Type = "Spells",
+                        Open = OnOpenShop
+
+                    },
+                    new ShopViewModel(this)
+                    {
+                        Name = "Spellbook Spells",
+                        Type = "Spells",
+                        Open = OnOpenShop
+
+                    }
+                };
+                res.Add(new ShopGroupModel("Spells", s));
+            }
+
+            res.Add(new ShopGroupModel("Boon", from f in Context.FeatureSection()
+                                               select new ShopViewModel(this)
+                                               {
+                                                   Name = f,
+                                                   Type = "Boon",
+                                                   Open = OnOpenShop
+                                               }));
+            return res;
+        }
     }
-    
-    public class InventoryViewModel: ObservableObject
+
+    public class InventoryViewModel : ObservableObject
     {
         public Possession Item { get; set; }
         public Feature Boon { get; set; }
@@ -1036,7 +1106,7 @@ namespace CB_5e.ViewModels
         public Command Delete { get; set; }
     }
 
-    public class ResourceViewModel: ObservableObject
+    public class ResourceViewModel : ObservableObject
     {
         public static string last;
 
@@ -1134,4 +1204,120 @@ namespace CB_5e.ViewModels
         }
     }
 
+    public class ShopViewModel
+    {
+        public PlayerViewModel Model {get; private set;}
+
+        public ShopViewModel(PlayerViewModel playerViewModel)
+        {
+            Model = playerViewModel;
+            Select = new Command(async (par) =>
+            {
+                if (par is Item i)
+                {
+                    await Model.ShopNavigation.PushAsync(new BuyAddPage(this, i));
+                } else if (par is MagicProperty mp)
+                {
+                    if (mp.Base == null || mp.Base =="")
+                    {
+                        Model.MakeHistory();
+                        Model.Context.Player.Possessions.Add(new Possession(Model.Context, (Item)null, mp));
+                        Model.Save();
+                        Model.FirePlayerChanged();
+                        await Model.ShopNavigation.PopAsync();
+                    }
+                    else
+                    {
+                        await Model.ShopNavigation.PushAsync(new AddToItemPage(this, mp));
+                    }
+                } else if (par is Feature f)
+                {
+                    if (!Model.Context.Player.Boons.Exists(b => ConfigManager.SourceInvariantComparer.Equals(b, f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source)))
+                    {
+                        Model.MakeHistory();
+                        Model.Context.Player.Boons.Add(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source);
+                        Model.Save();
+                        Model.FirePlayerChanged();
+                        Select.ChangeCanExecute();
+                        await Model.ShopNavigation.PopAsync();
+                    }
+                } else if (par is Spell s)
+                {
+                    if (Name == "Spell Scrolls")
+                    {
+                        Model.MakeHistory();
+                        Model.Context.Player.Items.Add(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source);
+                        Model.Save();
+                        Model.RefreshItems.Execute(null);
+                        await Model.ShopNavigation.PopAsync();
+                    }
+                    else
+                    {
+                        await Model.ShopNavigation.PushAsync(new AddToSpellbookPage(this, s));
+                    }
+                }
+            }, (par) =>
+            {
+                if (par is Feature f)
+                {
+                    return !Model.Context.Player.Boons.Exists(b => ConfigManager.SourceInvariantComparer.Equals(b, f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source));
+                }
+                else if (par is Spell s)
+                {
+                    if (Name != "Spell Scrolls")
+                    {
+                        return (from sc
+                        in Model.Context.Player.GetFeatures()
+                        where sc is SpellcastingFeature
+                        && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook
+                        && Utils.Matches(Model.Context, s, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) && !Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Context.Player, Model.Context).Contains(s)
+                        select ((SpellcastingFeature)sc)).Count() > 0;
+                    }
+                }
+                return true;
+            });
+        }
+
+        public string Name { get; set; }
+        public Category ItemCategory { get; set; }
+        public MagicCategory MagicCategory { get; set; }
+        private string type;
+        public string Type { get => type; set => type = value; }
+        public Command Open { get; set; }
+        public string SType { get => Type.Substring(0, 1); }
+        public Command Select { get; set; }
+
+        public string CommandName { get => Type == "Items" ? "Add/Buy" : "Add"; }
+
+        public string ShopSearch
+        {
+            get => Model.ShopSearch;
+            set
+            {
+                Model.ShopSearch = value;
+                UpdateShop();
+            }
+        }
+        public ObservableRangeCollection<IXML> Shop { get; set; } = new ObservableRangeCollection<IXML>();
+        public void UpdateShop()
+        {
+            if (Type == "Items") Shop.ReplaceRange(Model.Context.Subsection(ItemCategory));
+            else if (Type == "Magic") Shop.ReplaceRange(MagicCategory.SubSection(Model.Context.Search));
+            else if (Type == "Spells") Shop.ReplaceRange(Model.Context.SpellSubsection());
+            else if (Model.Context.FeatureCategories.ContainsKey(Name)) Shop.ReplaceRange(Model.Context.FeatureSubsection(Name));
+            else Shop.ReplaceRange(new List<IXML>());
+        }
+
+        public string Money { get => Model.Money; }
+    }
+
+    public class ShopGroupModel : List<ShopViewModel>
+    {
+        public string Type { get; set; }
+        public string SType { get => Type.Substring(0, 1); }
+        public ShopGroupModel(string t, IEnumerable<ShopViewModel> c) : base(c)
+        {
+            Type = t;
+        }
+    }
 }

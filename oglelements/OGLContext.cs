@@ -332,11 +332,7 @@ namespace OGL
             List<MagicCategory> res = new List<MagicCategory>();
             foreach (MagicCategory mc in MagicCategories.Values)
             {
-                MagicCategory copy = new MagicCategory(mc.Name, mc.DisplayName, mc.Indent)
-                {
-                    Contents = new List<MagicProperty>(from mp in mc.Contents where mp.Test(this) orderby mp select mp)
-                };
-                res.Add(copy);
+                if (mc.Contents.Exists(mp => mp.Test(this))) res.Add(mc);
             }
             return res;
         }

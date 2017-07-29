@@ -241,7 +241,7 @@ namespace Character_Builder_5
                 }
                 else if (itemCategories.SelectedItem is MagicCategory)
                 {
-                    listItems.Items.AddRange(((MagicCategory)itemCategories.SelectedItem).Contents.ToArray<MagicProperty>());
+                    listItems.Items.AddRange(((MagicCategory)itemCategories.SelectedItem).SubSection(Program.Context.Search).ToArray<MagicProperty>());
                     //inventorySplit.Panel2Collapsed = false;
                     inventory2.Enabled = true;
                     actionBox.Controls.Clear();
@@ -367,7 +367,7 @@ namespace Character_Builder_5
                 inventory2.Items.Clear();
                 Possession[] pos = Program.Context.Player.GetItemsAndPossessions().ToArray<Possession>();
                 inventory.Items.AddRange(pos);
-                inventory.Items.AddRange(Program.Context.Player.GetBoons().ToArray<Feature>());
+                inventory.Items.AddRange((from b in Program.Context.Player.Boons select Program.Context.GetBoon(b, null)).ToArray<Feature>());
                 inventory2.Items.AddRange(pos);
                 if (iindex >= 0 && iindex < inventory.Items.Count) inventory.SelectedIndex = iindex;
                 int index = 0;
@@ -2713,7 +2713,7 @@ namespace Character_Builder_5
             if (listItems.SelectedItem != null && listItems.SelectedItem is Spell)
             {
                 Program.Context.MakeHistory("");
-                Program.Context.Player.Items.Add(((Spell)listItems.SelectedItem).Name);
+                Program.Context.Player.Items.Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
                 UpdateEquipmentLayout();
             }
         }
@@ -2726,7 +2726,7 @@ namespace Character_Builder_5
                 Item i=(Item)listItems.SelectedItem;
                 int count = (int)ItemCounter.Value;
                 for (int c = 0; c < count; c++)
-                    Program.Context.Player.Items.Add(i.Name);
+                    Program.Context.Player.Items.Add(i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source);
                 //Program.Context.Player.Pay(new Price(i.Price,count));
                 if (count > 1)
                 {

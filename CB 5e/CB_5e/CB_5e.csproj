@@ -64,6 +64,12 @@
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddToSpellbookPage.xaml.cs">
+      <DependentUpon>AddToSpellbookPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddToItemPage.xaml.cs">
+      <DependentUpon>AddToItemPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CharactersBuildPage.xaml.cs">
       <DependentUpon>CharactersBuildPage.xaml</DependentUpon>
     </Compile>
@@ -95,6 +101,9 @@
     <Compile Include="Views\LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ShopSubPage.xaml.cs">
+      <DependentUpon>ShopSubPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
@@ -112,6 +121,9 @@
     </Compile>
     <Compile Include="Views\SpellcastingPage.xaml.cs">
       <DependentUpon>SpellcastingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BuyAddPage.xaml.cs">
+      <DependentUpon>BuyAddPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SplitPage.xaml.cs">
       <DependentUpon>SplitPage.xaml</DependentUpon>
@@ -267,6 +279,30 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\NewItemPage .xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ShopSubPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\BuyAddPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AddToItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AddToSpellbookPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

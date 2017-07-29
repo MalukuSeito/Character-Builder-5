@@ -60,7 +60,8 @@ namespace OGL.Items
         }
         public override string ToString()
         {
-            return new String(' ', CategoryPath.Count - 1) + CategoryPath.Last<String>();
+            if (CategoryPath.Count < 2) return "";
+            return new String(' ', CategoryPath.Count - 2) + CategoryPath.Last<String>();
         }
         public static IOrderedEnumerable<Category> Section()
         {

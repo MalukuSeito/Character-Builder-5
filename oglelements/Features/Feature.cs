@@ -114,5 +114,7 @@ namespace OGL.Features
             this.Prerequisite = v;
             return this;
         }
+        [XmlIgnore]
+        public string Desc { get => Prerequisite; }
     }
 }
