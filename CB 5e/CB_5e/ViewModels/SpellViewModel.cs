@@ -52,7 +52,7 @@ namespace CB_5e.ViewModels
             }
         }
         public string FullName { get => Spell.ToString(); }
-        public string School { get => Spell.Level > 0 ? SpellSlotInfo.AddOrdinal(Spell.Level) + " Level " + GetSchool() : GetSchool() + " Cantrip"; }
+        public string School { get => Spell.Level > 0 ? SpellSlotInfo.AddOrdinal(Spell.Level) + " level " + GetSchool(false) + GetRitual() : GetSchool(true) + " cantrip" + GetRitual(); }
 
 
         private static List<Keyword> Schools = new List<Keyword>()
@@ -60,21 +60,30 @@ namespace CB_5e.ViewModels
             new Keyword("Abjuration"), new Keyword("Conjuration"), new Keyword("Divination"), new Keyword("Enchantment"), new Keyword("Evocation"), new Keyword("Illusion"), new Keyword("Necromancy"), new Keyword("Transmutation")
         };
 
-        private string GetSchool()
+        private string GetSchool(bool upper)
         {
             List<string> s = new List<string>();
             foreach (Keyword k in Schools) if (Spell.Keywords.Contains(k)) s.Add(k.Name.ToLowerInvariant());
             foreach (Keyword k in Schools) if (Spell is ModifiedSpell ms && ms.AdditionalKeywords.Contains(k)) s.Add(k.Name.ToLowerInvariant());
             string res = string.Join(", ", s);
-            return char.ToUpper(res[0]) + res.Substring(1);
+            if (upper) return char.ToUpper(res[0]) + res.Substring(1);
+            return res;
+        }
+
+        private string GetRitual()
+        {
+            if (Spell.Keywords.Contains(new Keyword("Ritual"))) return ", ritual";
+            if (Spell is ModifiedSpell ms && ms.AdditionalKeywords.Contains(new Keyword("Ritual"))) return ", ritual";
+            return "";
         }
 
         public int CompareTo(SpellViewModel other)
         {
             return Spell.CompareTo(other.Spell);
         }
-
+        public bool RitualOnly { get => (Spell is ModifiedSpell ms) && ms.OnlyAsRitual; }
         public Color PreparedColor { get => Prepared ? Color.DarkBlue : Color.Default; }
+        public Color DisplayColor { get => RitualOnly ? Color.LightGray : Color.Default; }
         public bool AddAlwaysPreparedToName {
             get => Spell is ModifiedSpell && ((ModifiedSpell)Spell).AddAlwaysPreparedToName;
             set

@@ -7,7 +7,6 @@
         <Grid Padding="0">
             <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Values}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="false"
                       CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>

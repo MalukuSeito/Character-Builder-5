@@ -58,7 +58,7 @@
                             </ListView.Header>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding ShowInfo}" CommandParameter="{Binding .}">
+                                    <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding ShowInfo}" CommandParameter="{Binding .}" TextColor="{Binding DisplayColor}">
                                         <TextCell.ContextActions>
                                             <MenuItem Command="{Binding Highlight}" Text="Highlight on Sheet" CommandParameter="{Binding .}"/>
                                         </TextCell.ContextActions>
@@ -95,13 +95,13 @@
             </DataTemplate>
             <DataTemplate x:Key ="Preparation">
                 <ContentPage Title="{Binding Title}">
-                    <Grid Padding="0, 20">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="1" Text="{Binding Prepared}" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"/>
-                        <ListView Grid.Row="1" ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
+                        <ListView Grid.Row="0" ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
                                       IsPullToRefreshEnabled="true"
                                       RefreshCommand="{Binding ResetPrepared}"
                                       IsRefreshing="{Binding IsBusy, Mode=OneWay}"

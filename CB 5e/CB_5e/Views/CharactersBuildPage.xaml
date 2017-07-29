@@ -12,7 +12,6 @@
             <ListView x:Name="ItemsListView"
 				    ItemsSource="{Binding Items}"
                     VerticalOptions="FillAndExpand"
-                    HasUnevenRows="true"
                     RefreshCommand="{Binding LoadItemsCommand}"
                     IsPullToRefreshEnabled="true"
                     IsRefreshing="{Binding IsBusy, Mode=OneWay}"

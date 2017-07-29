@@ -394,13 +394,14 @@ namespace CB_5e.ViewModels
                         Context.Player.RemoveBoon(f);
                         Save();
                     }
-                    RefreshItems.Execute(null);
+                    FirePlayerChanged();
                 }
             });
             RefreshItems = new Command(() =>
             {
                 ItemsBusy = true;
                 UpdateItems();
+                OnPropertyChanged("Carried");
                 ItemsBusy = false;
             });
             UpdateItems();

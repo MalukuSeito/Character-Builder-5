@@ -608,12 +608,16 @@ namespace Character_Builder_5
                 availableConditions.Items.Clear();
                 availableConditions.Items.AddRange(possible.ToArray());
                 availableConditions.Items.Add("- Custom -");
+                List<Feature> spellfeatures = new List<Feature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature select f);
+                List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>();
+                foreach (Feature f in spellfeatures) if (f is SpellcastingFeature) spellcasts.Add((SpellcastingFeature)f);
                 for (int i = 4; i < inplayflow.Controls.Count; i++)
                 {
                     if (inplayflow.Controls[i] is GroupBox box)
                     {
                         string spellcasting = box.Name;
                         Spellcasting sc = Program.Context.Player.GetSpellcasting(spellcasting);
+                        SpellcastingFeature sf = spellcasts.FirstOrDefault(f => f.SpellcastingID == spellcasting);
                         if (box.Controls[0] is Label)
                         {
                             Ability spellcastingability = (Ability)int.Parse(box.Controls[0].Name);
@@ -624,6 +628,14 @@ namespace Character_Builder_5
                                 List<ModifiedSpell> modspells = new List<ModifiedSpell>();
                                 modspells.AddRange(sc.GetLearned(Program.Context.Player, Program.Context));
                                 modspells.AddRange(sc.GetPrepared(Program.Context.Player, Program.Context));
+                                modspells.Sort();
+                                if (sf?.Preparation == PreparationMode.ClassList)
+                                {
+                                    modspells.AddRange(sc.GetCLassListRituals(sf?.PrepareableSpells ?? "false", Program.Context.Player, Program.Context));
+                                } else if (sf?.Preparation == PreparationMode.Spellbook)
+                                {
+                                    modspells.AddRange(sc.GetSpellbookRituals(Program.Context.Player, Program.Context));
+                                }
                                 foreach (ModifiedSpell ms in modspells)
                                 {
                                     //if (ms.differentAbility == Ability.None) ms.differentAbility = spellcastingability;
@@ -631,7 +643,6 @@ namespace Character_Builder_5
                                     ms.includeRecharge = false;
                                     ms.includeResources = false;
                                 }
-                                modspells.Sort();
                                 spellbox.Items.Clear();
                                 spellbox.Items.AddRange(modspells.ToArray());
                             }

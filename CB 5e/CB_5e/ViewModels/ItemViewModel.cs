@@ -44,6 +44,7 @@ namespace CB_5e.ViewModels
                     Magic.ReplaceRange(new List<MagicViewModel>());
                     UpdateMagic();
                     IsChanged = true;
+                    Context.FirePlayerChanged();
                 }
             });
             UpdateMagic();
@@ -146,11 +147,12 @@ namespace CB_5e.ViewModels
                 if (value != Equipped)
                 {
                     IsChanged = true;
-                    Value.Equipped = value;
                     foreach (Possession pos in Context.Context.Player.Possessions)
                     {
                         if (string.Equals(pos.Equipped, value, StringComparison.OrdinalIgnoreCase)) pos.Equipped = EquipSlot.None;
                     }
+                    Value.Equipped = value;
+                    Context.FirePlayerChanged();
                 }
                 OnPropertyChanged("Equipped");
             }
@@ -192,6 +194,7 @@ namespace CB_5e.ViewModels
                 {
                     IsChanged = true;
                     Value.Attuned = value;
+                    Context.FirePlayerChanged();
                 }
                 OnPropertyChanged("Attuned");
             }

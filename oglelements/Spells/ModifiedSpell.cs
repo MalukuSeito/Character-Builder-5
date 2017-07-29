@@ -56,6 +56,8 @@ namespace OGL.Spells
         public bool includeResources = true;
         [XmlIgnore]
         public bool includeRecharge = true;
+        [XmlIgnore]
+        public bool OnlyAsRitual = false;
         public AttackInfo Info;
         public ModifiedSpell()
         {
@@ -110,6 +112,31 @@ namespace OGL.Spells
             includeRecharge = includeResources;
             count = 1;
         }
+        public ModifiedSpell(Spell s, bool onlyAsRitual)
+        {
+            Name = s.Name;
+            Keywords = s.Keywords;
+            AdditionalKeywords = new List<Keyword>();
+            Level = s.Level;
+            CastingTime = s.CastingTime;
+            Range = s.Range;
+            Duration = s.Duration;
+            Description = s.Description;
+            Descriptions = s.Descriptions;
+            differentAbility = Ability.None;
+            RechargeModifier = RechargeModifier.Unmodified;
+            AdditionalKeywords.RemoveAll(k => Keywords.Contains(k));
+            AddAlwaysPreparedToName = false;
+            Source = s.Source;
+            CantripDamage = s.CantripDamage;
+            used = 0;
+            displayShort = false;
+            Modifikations = new List<Feature>();
+            this.includeResources = false;
+            includeRecharge = includeResources;
+            OnlyAsRitual = true;
+            count = 1;
+        }
         public string Recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)
         {
             if (!includeRecharge) return "";
@@ -135,8 +162,8 @@ namespace OGL.Spells
             return "Other";
         }
         public override string ToString() {
-            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier));
-            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier));
+            if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)": "");
+            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)" : "");
         }
         public override List<Keyword> GetKeywords()
         {

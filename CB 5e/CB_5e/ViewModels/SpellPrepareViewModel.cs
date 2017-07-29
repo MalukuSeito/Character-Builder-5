@@ -95,13 +95,6 @@ namespace CB_5e.ViewModels
                                     ShowInfo = ShowInfo
                                 });
                 spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
-                                select new SpellViewModel(s)
-                                {
-                                    Prepared = false,
-                                    Prepare = OnPrepare,
-                                    ShowInfo = ShowInfo
-                                });
-                spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)
                                 {

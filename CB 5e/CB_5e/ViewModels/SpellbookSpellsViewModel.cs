@@ -119,6 +119,24 @@ namespace CB_5e.ViewModels
                 AddAlwaysPreparedToName = false
             });
             spells.Sort();
+            if (SpellcastingFeature.Preparation == OGL.Base.PreparationMode.ClassList)
+            {
+                spells.AddRange(from s in Spellcasting.GetCLassListRituals(SpellcastingFeature.PrepareableSpells ?? "false", Model.Context.Player, Model.Context) select new SpellViewModel(s)
+                {
+                    Highlight = OnHighlight,
+                    ShowInfo = ShowInfo,
+                    AddAlwaysPreparedToName = false
+                });
+            } else if (SpellcastingFeature.Preparation == OGL.Base.PreparationMode.Spellbook)
+            {
+                spells.AddRange(from s in Spellcasting.GetSpellbookRituals(Model.Context.Player, Model.Context) select new SpellViewModel(s)
+                {
+                    Highlight = OnHighlight,
+                    ShowInfo = ShowInfo,
+                    AddAlwaysPreparedToName = false
+                });
+            }
+            
             UpdateSlots();
             UpdateSpells();
         }
@@ -152,6 +170,24 @@ namespace CB_5e.ViewModels
                 AddAlwaysPreparedToName = false
             });
             spells.Sort();
+            if (SpellcastingFeature.Preparation == OGL.Base.PreparationMode.ClassList)
+            {
+                spells.AddRange(from s in Spellcasting.GetCLassListRituals(SpellcastingFeature.PrepareableSpells ?? "false", Model.Context.Player, Model.Context) select new SpellViewModel(s)
+                {
+                    Highlight = OnHighlight,
+                    ShowInfo = ShowInfo,
+                    AddAlwaysPreparedToName = false
+                });
+            } else if (SpellcastingFeature.Preparation == OGL.Base.PreparationMode.Spellbook)
+            {
+                spells.AddRange(from s in Spellcasting.GetSpellbookRituals(Model.Context.Player, Model.Context) select new SpellViewModel(s)
+                {
+                    Highlight = OnHighlight,
+                    ShowInfo = ShowInfo,
+                    AddAlwaysPreparedToName = false
+                });
+            }
+            
             UpdateSpells();
             base.Refresh();
         }
@@ -182,7 +218,7 @@ namespace CB_5e.ViewModels
             || culture.CompareInfo.IndexOf(f.Spell.Description, spellSearch, CompareOptions.IgnoreCase) >= 0
             || f.Spell.GetKeywords().Exists(k=>culture.CompareInfo.IndexOf(k.Name, spellSearch, CompareOptions.IgnoreCase) >= 0)
             || f.Spell.Descriptions.Exists(k=>culture.CompareInfo.IndexOf(k.Text, spellSearch, CompareOptions.IgnoreCase) >= 0)
-            orderby f.Name select f);
+            orderby f.RitualOnly, f.Name select f);
 
         private SpellSlotViewModel selected;
         public SpellSlotViewModel Selected {

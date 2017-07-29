@@ -138,7 +138,6 @@
                 <ListView Grid.Row="15" Grid.RowSpan="3" Grid.Column="2" Grid.ColumnSpan="2"  ItemsSource="{Binding HitDice}"
                     x:Name="HitDice"
                     VerticalOptions="FillAndExpand"
-                    HasUnevenRows="true"
                     IsPullToRefreshEnabled="true"
                     RefreshCommand="{Binding ResetHitDie}"
                     IsRefreshing="{Binding HDBusy, Mode=OneWay}"
@@ -200,7 +199,6 @@
             
             <ListView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Skills}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       RefreshCommand="{Binding DeselectSkill}"
                     IsRefreshing="{Binding SkillBusy, Mode=OneWay}"
@@ -252,7 +250,6 @@
             <Label Grid.Row="0" Grid.Column ="0" Grid.ColumnSpan="3"  Text="Tap to select, Tap again to use" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
             <ListView Grid.Row="1" Grid.Column ="0" Grid.ColumnSpan="3"  HorizontalOptions="FillAndExpand" ItemsSource="{Binding Resources}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       SelectedItem="{Binding SelectedResource}"
                       CachingStrategy="RecycleElement"
@@ -290,7 +287,6 @@
         <StackLayout>
             <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Features}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement"
@@ -327,7 +323,6 @@
         <StackLayout>
             <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Proficiencies}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement"
@@ -371,7 +366,6 @@
             <Label Grid.Row="0" Grid.Column ="0" Grid.ColumnSpan="2"  Text="Current Condtions" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
             <ListView Grid.Row="1" Grid.Column ="0" Grid.ColumnSpan="2"  HorizontalOptions="FillAndExpand" ItemsSource="{Binding ActiveConditions}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       RefreshCommand="{Binding ResetConditions}"
                       IsRefreshing="{Binding ConditionsBusy, Mode=OneWay}"
@@ -391,7 +385,6 @@
             <Label Grid.Row="2" Grid.Column ="0" Grid.ColumnSpan="2"  Text="Add a condition" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
             <ListView Grid.Row="3" Grid.Column ="0" Grid.ColumnSpan="2"  HorizontalOptions="FillAndExpand" ItemsSource="{Binding AllConditions}"
                       VerticalOptions="FillAndExpand"
-                      HasUnevenRows="true"
                       IsPullToRefreshEnabled="true"
                       ItemSelected="AddCondition"
                       CachingStrategy="RecycleElement"

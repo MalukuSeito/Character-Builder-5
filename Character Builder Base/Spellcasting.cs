@@ -1,6 +1,7 @@
 ﻿using OGL;
 using OGL.Base;
 using OGL.Features;
+using OGL.Keywords;
 using OGL.Spells;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Character_Builder
 
         //[XmlIgnore]
         // public string Displayname { get; set; }
-        public IEnumerable<ModifiedSpell> GetPrepared(Player player, OGLContext context, int level = 0)
+        public List<ModifiedSpell> GetPrepared(Player player, OGLContext context, int level = 0)
         {
             CombinePrepared(player, context, level);
             List<ModifiedSpell> res = new List<ModifiedSpell>(from s in Prepared select new ModifiedSpell(context.GetSpell(s, null), null, false, false));
@@ -103,6 +104,33 @@ namespace Character_Builder
                     }
                 }
             res.AddRange(from s in SpellbookAdditional select context.GetSpell(s, sourcehint));
+            res.Sort();
+            return res;
+        }
+
+        public IEnumerable<ModifiedSpell> GetSpellbookRituals(Player player, OGLContext context, int level = 0)
+        {
+            List<ModifiedSpell> res = new List<ModifiedSpell>();
+            List<ModifiedSpell> excluded = GetPrepared(player, context, level);
+            foreach (Spell s in GetSpellbook(player, context, level)) {
+                if (s.GetKeywords().Contains(new Keyword("Ritual")) && !excluded.Exists(e => e.Name == s.Name && e.Source == s.Source)) res.Add(new ModifiedSpell(s, true));
+            }
+            res.Sort();
+            return res;
+        }
+
+        public IEnumerable<ModifiedSpell> GetCLassListRituals(string classlist, Player player, BuilderContext context, int level = 0)
+        {
+            List<ModifiedSpell> res = new List<ModifiedSpell>();
+            List<ModifiedSpell> excluded = GetPrepared(player, context, level);
+            foreach (Spell s in Utils.FilterSpell(context, classlist, SpellcastingID, player.GetClassLevel(SpellcastingID, level)))
+            {
+                if (s.GetKeywords().Contains(new Keyword("Ritual")) && !excluded.Exists(e => e.Name == s.Name && e.Source == s.Source)) res.Add(new ModifiedSpell(s, true));
+            }
+            foreach (Spell s in GetAdditionalClassSpells(player, context, level))
+            {
+                if (s.GetKeywords().Contains(new Keyword("Ritual")) && !excluded.Exists(e => e.Name == s.Name && e.Source == s.Source)) res.Add(new ModifiedSpell(s, true));
+            }
             res.Sort();
             return res;
         }
