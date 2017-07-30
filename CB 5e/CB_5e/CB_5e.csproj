@@ -201,6 +201,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Data.zip" />
+    <EmbeddedResource Include="Ex Ample.cb5" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

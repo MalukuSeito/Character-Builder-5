@@ -63,7 +63,6 @@ namespace CB_5e.Views
             Model.Model.Save();
             Model.Model.RefreshItems.Execute(null);
             await Navigation.PopAsync();
-            await Navigation.PopAsync();
         }
 
         public string Price { get => "Total: " + new Price(Item.Price, Count).ToString(); }

@@ -14,6 +14,8 @@ using Character_Builder;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 
 namespace CB_5e.ViewModels
 {
@@ -56,12 +58,6 @@ namespace CB_5e.ViewModels
             Title = "Characters";
             Items = new ObservableRangeCollection<Character>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NewFolderPage, Character>(this, "AddCharacter", (obj, item) =>
-            {
-                var _item = item as Character;
-                Items.Add(_item);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -80,7 +76,20 @@ namespace CB_5e.ViewModels
                 await TinyContext.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels).ConfigureAwait(false)).ConfigureAwait(false);
                 await TinyContext.ImportClassesAsync(false).ConfigureAwait(true);
                 await TinyContext.ImportSubClassesAsync(false).ConfigureAwait(true);
+                ExistenceCheckResult res = await App.Storage.CheckExistsAsync("Characters");
                 IFolder characters = await App.Storage.CreateFolderAsync("Characters", CreationCollisionOption.OpenIfExists);
+                if (res == ExistenceCheckResult.NotFound)
+                {
+                    IFile example = await characters.CreateFileAsync("Ex Ample.cb5", CreationCollisionOption.ReplaceExisting);
+                    var assembly = typeof(PCLSourceManager).GetTypeInfo().Assembly;
+                    using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Ex Ample.cb5"))
+                    {
+                        using (Stream ex = await example.OpenAsync(FileAccess.ReadAndWrite))
+                        {
+                            await stream.CopyToAsync(ex);
+                        }
+                    }
+                }
                 items.Clear();
                 foreach (IFile c in await characters.GetFilesAsync().ConfigureAwait(false))
                 {

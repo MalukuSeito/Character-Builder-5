@@ -23,7 +23,6 @@ namespace CB_5e.Views
         public JournalPage(PlayerViewModel model)
 		{
             BindingContext = Model = model;
-            Model.ShopNavigation = Navigation;
             InitializeComponent ();
             CurrentPageChanged += CarouselPage_CurrentPageChanged; 
             Title = CurrentPage.Title;

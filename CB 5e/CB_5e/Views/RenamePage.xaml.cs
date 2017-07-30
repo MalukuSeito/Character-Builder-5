@@ -21,10 +21,10 @@ namespace CB_5e.Views
             this.model = model;
             this.source = source;
             InitializeComponent();
-            BindingContext = this;
             Title = model.Title;
             if (source is IFile file) Name = Title = file.Name;
             if (source is IFolder f) Name = Title = f.Name;
+            BindingContext = this;
         }
 
         async void Save_Clicked(object sender, EventArgs e)

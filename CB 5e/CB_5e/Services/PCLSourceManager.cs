@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using PCLStorage;
 using OGL;
+using ICSharpCode.SharpZipLib.Zip;
+using System.Reflection;
+using System.IO;
 
 namespace CB_5e.Services
 {
@@ -12,9 +15,57 @@ namespace CB_5e.Services
     {
         public static IFolder Data;
         private static IList<IFolder> Sources;
+
+        private static async Task Extract(Stream stream, IFolder target, string path)
+        {
+            IFile file = await GetFile(target, path);
+            if (file == null) return;
+            using (Stream s = await file.OpenAsync(FileAccess.ReadAndWrite))
+            {
+                stream.CopyTo(s);
+            }
+        }
+
+        private static async Task<IFile> GetFile(IFolder target, string path)
+        {
+            if (path == null || path == "" || path.StartsWith(".") || path.EndsWith("/")) return null;
+            int i = path.IndexOf('/');
+            if (i >= 0)
+            {
+                string folder = path.Substring(0, i);
+                if (folder != "" && !folder.StartsWith(".") && !folder.StartsWith("/"))
+                {
+                    return await GetFile(await target.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists), path.Substring(i + 1));
+                }
+                return null;
+            }
+            else
+            {
+                return await target.CreateFileAsync(path, CreationCollisionOption.GenerateUniqueName);
+            }
+        }
+
         public static async Task<bool> InitAsync(bool skipInsteadOfExit = true)
         {
+            ExistenceCheckResult res = await App.Storage.CheckExistsAsync("Data");
             Data = await App.Storage.CreateFolderAsync("Data", CreationCollisionOption.OpenIfExists);
+            if (res == ExistenceCheckResult.NotFound)
+            {
+                var assembly = typeof(PCLSourceManager).GetTypeInfo().Assembly;
+                using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Data.zip"))
+                {
+                    using (ZipFile zf = new ZipFile(stream))
+                    {
+                        zf.IsStreamOwner = true;
+                        foreach (ZipEntry entry in zf)
+                        {
+                            if (!entry.IsFile) continue;
+
+                            using (Stream ss = zf.GetInputStream(entry)) await Extract(ss, Data, entry.Name);
+                        }
+                    }
+                }
+            }
             Sources = await Data.GetFoldersAsync();
             return true;
         }
