@@ -12,13 +12,14 @@ namespace CB_5e.ViewModels
 {
     public class SpellbookViewModel: BaseViewModel
     {
-        public SpellcastingFeature SpellcastingFeature { get; private set; }
+        public SpellcastingFeature SpellcastingFeature { get; protected set; }
         public string SpellcastingID { get => SpellcastingFeature.SpellcastingID; }
         public PlayerViewModel Model { get; private set; }
         public INavigation Navigation { get => Model.SpellNavigation; }
         
-        public virtual void Refresh()
+        public virtual void Refresh(SpellcastingFeature feature)
         {
+            SpellcastingFeature = feature;
             OnPropertyChanged(null);
         }
 

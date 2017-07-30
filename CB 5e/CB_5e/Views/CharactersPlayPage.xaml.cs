@@ -77,7 +77,6 @@ namespace CB_5e.Views
                 });
             }
             catch (OperationCanceledException) {
-                CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             }
             finally
             {

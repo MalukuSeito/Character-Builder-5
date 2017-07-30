@@ -52,7 +52,7 @@ namespace CB_5e.Views
         }
         private void CarouselPage_CurrentPageChanged(object sender, EventArgs e)
         {
-            Title = CurrentPage.Title;
+            Title = CurrentPage?.Title ?? "";
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

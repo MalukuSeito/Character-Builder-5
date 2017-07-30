@@ -142,11 +142,12 @@ namespace CB_5e.ViewModels
             UpdateSpells();
         }
 
-        public override void Refresh()
+        public override void Refresh(SpellcastingFeature feature)
         {
+            SpellcastingFeature = feature;
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             AddSpells();
-            base.Refresh();
+            OnPropertyChanged(null);
         }
 
         private List<SpellViewModel> spells = new List<SpellViewModel>();

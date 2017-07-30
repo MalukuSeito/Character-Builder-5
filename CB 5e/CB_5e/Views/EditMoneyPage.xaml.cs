@@ -14,7 +14,6 @@ namespace CB_5e.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditMoneyPage : ContentPage
 	{
-        public static IntToStringConverter IntConverter = PlayerViewModel.IntConverter;
         public EditMoneyPage (PlayerViewModel model)
 		{
             BindingContext = model;

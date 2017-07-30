@@ -9,6 +9,8 @@ namespace OGL.Common
 {
     public interface IXML
     {
+        String Name { get; }
+        String Source { get; }
         String ToXML();
         MemoryStream ToXMLStream();
     }

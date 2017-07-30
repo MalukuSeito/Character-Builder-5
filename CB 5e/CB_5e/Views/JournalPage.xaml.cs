@@ -16,11 +16,11 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ShopPage : CarouselPage
+	public partial class JournalPage : CarouselPage
 	{
         public PlayerViewModel Model { get; private set; }
 
-        public ShopPage(PlayerViewModel model)
+        public JournalPage(PlayerViewModel model)
 		{
             BindingContext = Model = model;
             Model.ShopNavigation = Navigation;
@@ -72,24 +72,38 @@ namespace CB_5e.Views
         {
             Title = CurrentPage.Title;
         }
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (sender is ListView lv) lv.SelectedItem = null;
-        }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage(new ItemViewModel(Model))));
+            await Navigation.PushAsync(new JournalEntryPage(new JournalViewModel(Model)));
         }
 
-        private async void MenuItem_Clicked(object sender, EventArgs e)
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Value));
+            if (e.SelectedItem is JournalViewModel je) await Navigation.PushAsync(new JournalEntryPage(je));
+            ((ListView)sender).SelectedItem = null;
         }
 
-        private async void MenuItem_Clicked_1(object sender, EventArgs e)
+        private void MenuItem_Clicked(object sender, EventArgs e)
         {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Feature));
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is JournalViewModel obj)
+            {
+                Model.MakeHistory();
+                Model.Context.Player.ComplexJournal.Remove(obj.Journal);
+                Model.Save();
+                Model.FirePlayerChanged();
+            }
+        }
+
+        private void MenuItem_Clicked_1(object sender, EventArgs e)
+        {
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is string obj)
+            {
+                Model.MakeHistory();
+                Model.Context.Player.Journal.Remove(obj);
+                Model.Save();
+                Model.RefreshNotes.Execute(null);
+            }
         }
     }
 }

@@ -18,9 +18,6 @@ namespace CB_5e.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class PlayerOverview : CarouselPage
 	{
-        public static IntToStringConverter IntConverter = PlayerViewModel.IntConverter;
-        private object old;
-
         public PlayerViewModel Model { get; private set; }
 
         public PlayerOverview(PlayerViewModel model)

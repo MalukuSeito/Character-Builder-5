@@ -22,173 +22,18 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-
-    public class HitDieViewModel : HitDie, INotifyPropertyChanged
-    {
-        public HitDieViewModel(PlayerViewModel pvm, HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
-        {
-            Reduce = new Command(() =>
-            {
-                if (Used < Count)
-                {
-                    pvm.MakeHistory("");
-                    pvm.Context.Player.UseHitDie(Dice);
-                    Used++;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Current"));
-                    pvm.Save();
-                }
-            });
-        }
-
-        public string Current {
-            get {
-                return ToString() + " (" + Count + " Total)";
-            }
-        }
-        public string TotalText
-        {
-            get
-            {
-                return Total() + " Total";
-            }
-        }
-        public Command Reduce { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public class ScoresModelViewModel : BaseViewModel
-    {
-        public AbilityScoreArray Current;
-        public AbilityScoreArray Max;
-        public Dictionary<Ability, int> Saves;
-        public ScoresModelViewModel(BuilderContext Context)
-        {
-            Update(Context.Player);
-        }
-        public void Update(Player p)
-        {
-            Saves = p.GetSaves();
-            Current = p.GetFinalAbilityScores(out Max);
-            OnPropertyChanged(null);
-        }
-
-        public int StrengthValue { get { return Current.Strength; } }
-        public int StrengthMax { get { return Max.Strength; } }
-        public string StrengthMod { get { return Current.StrMod.ToString("+#;-#;0"); } }
-        public string StrengthSave { get { return Saves[Ability.Strength].ToString("+#;-#;0"); } }
-
-        public int DexterityValue { get { return Current.Dexterity; } }
-        public int DexterityMax { get { return Max.Dexterity; } }
-        public string DexterityMod { get { return Current.DexMod.ToString("+#;-#;0"); } }
-        public string DexteritySave { get { return Saves[Ability.Dexterity].ToString("+#;-#;0"); } }
-
-        public int ConstitutionValue { get { return Current.Constitution; } }
-        public int ConstitutionMax { get { return Max.Constitution; } }
-        public string ConstitutionMod { get { return Current.ConMod.ToString("+#;-#;0"); } }
-        public string ConstitutionSave { get { return Saves[Ability.Constitution].ToString("+#;-#;0"); } }
-
-        public int IntelligenceValue { get { return Current.Intelligence; } }
-        public int IntelligenceMax { get { return Max.Intelligence; } }
-        public string IntelligenceMod { get { return Current.IntMod.ToString("+#;-#;0"); } }
-        public string IntelligenceSave { get { return Saves[Ability.Intelligence].ToString("+#;-#;0"); } }
-
-        public int WisdomValue { get { return Current.Wisdom; } }
-        public int WisdomMax { get { return Max.Wisdom; } }
-        public string WisdomMod { get { return Current.WisMod.ToString("+#;-#;0"); } }
-        public string WisdomSave { get { return Saves[Ability.Wisdom].ToString("+#;-#;0"); } }
-
-        public int CharismaValue { get { return Current.Charisma; } }
-        public int CharismaMax { get { return Max.Charisma; } }
-        public string CharismaMod { get { return Current.ChaMod.ToString("+#;-#;0"); } }
-        public string CharismaSave { get { return Saves[Ability.Charisma].ToString("+#;-#;0"); } }
-    }
-
-
-    public sealed class QueuedLock
-    {
-        private object innerLock;
-        private volatile int ticketsCount = 0;
-        private volatile int ticketToRide = 1;
-        private int MAX_WAITING = 3;
-
-        public QueuedLock()
-        {
-            innerLock = new Object();
-        }
-
-        public bool Enter()
-        {
-            int myTicket = Interlocked.Increment(ref ticketsCount);
-            Monitor.Enter(innerLock);
-            while (true)
-            {
-
-                if (myTicket == ticketToRide)
-                {
-                    return true;
-                }
-                else if (myTicket + MAX_WAITING < ticketsCount)
-                {
-                    Exit();
-                    return false;
-                }
-                else
-                {
-                    Monitor.Wait(innerLock);
-                }
-            }
-        }
-
-        public void WaitForAll()
-        {
-
-            int myTicket = Interlocked.Increment(ref ticketsCount);
-            Monitor.Enter(innerLock);
-            while (true)
-            {
-
-                if (myTicket == ticketToRide)
-                {
-                    Exit();
-                    return;
-                }
-                else
-                {
-                    Monitor.Wait(innerLock);
-                }
-            }
-        }
-
-        public void Exit()
-        {
-            Interlocked.Increment(ref ticketToRide);
-            Monitor.PulseAll(innerLock);
-            Monitor.Exit(innerLock);
-        }
-    }
-
-    public class PlayerViewModel : BaseViewModel
+    public class PlayerViewModel : PlayerModel
     {
         private static CultureInfo culture = CultureInfo.InvariantCulture;
-
-        public static IntToStringConverter IntConverter { get; set; } = new IntToStringConverter();
-
         public QueuedLock Saving = new QueuedLock();
         public Mutex SaveLock = new Mutex();
-
-        public event EventHandler PlayerChanged;
-
-        public void FirePlayerChanged() => PlayerChanged?.Invoke(this, EventArgs.Empty);
-
         public ScoresModelViewModel Scores { get; private set; }
-
         public INavigation Navigation { get; set; }
         public INavigation SpellNavigation { get; set; }
         public INavigation ShopNavigation { get; set; }
         public bool ChildModel { get; set; } = false;
-        public PlayerViewModel(BuilderContext context)
+        public PlayerViewModel(BuilderContext context) : base(context)
         {
-            Context = context;
             Scores = new ScoresModelViewModel(Context);
             PlayerChanged += PlayerViewModel_PlayerChanged;
             ResetHitDie = new Command(() => {
@@ -411,6 +256,47 @@ namespace CB_5e.ViewModels
                 if (par is ShopViewModel svm) await ShopNavigation.PushAsync(new ShopSubPage(svm));
             });
             UpdateShops();
+            UpdateInventoryChoices();
+            UpdateJournal();
+            UpdateNotes();
+            NewNote = new Command(() =>
+            {
+                if (Note != null)
+                {
+                    MakeHistory();
+                    Context.Player.Journal.Add(Note);
+                    RefreshNotes.Execute(null);
+                    Save();
+                }
+            }, () => Note!= null && Note != "");
+            SaveNote = new Command(() =>
+            {
+                if (selectedNote >= 0)
+                {
+                    MakeHistory();
+                    if (Note != null && Note != "")
+                    {
+                        Context.Player.Journal[selectedNote] = Note;
+                    } else
+                    {
+                        Context.Player.Journal.RemoveAt(selectedNote);
+                    }
+                    RefreshNotes.Execute(null);
+                    Save();
+                }
+            }, () => selectedNote >= 0);
+            RefreshNotes = new Command(() =>
+            {
+                NotesBusy = true;
+                UpdateNotes();
+                NotesBusy = false;
+            });
+            RefreshJournal = new Command(() =>
+            {
+                JournalBusy = true;
+                UpdateJournal();
+                JournalBusy = false;
+            });
         }
 
         public Color Accent { get { return Color.Accent; } }
@@ -421,14 +307,12 @@ namespace CB_5e.ViewModels
             Redo.ChangeCanExecute();
         }
 
-        public Command Undo { get; set; }
-        public Command Redo { get; set; }
 
-        public void MakeHistory(string h = null)
+        public override void MakeHistory(string h = null)
         {
             Context.MakeHistory(h);
         }
-        public virtual void Save()
+        public override void Save()
         {
             if (App.AutoSaveDuringPlay && !ChildModel)
             {
@@ -436,7 +320,7 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public void DoSave()
+        public override void DoSave()
         {
 
             if (Context.Player != null)
@@ -496,6 +380,9 @@ namespace CB_5e.ViewModels
             UpdateProficiencies();
             UpdateItems();
             UpdateSpellcasting();
+            UpdateInventoryChoices();
+            UpdateJournal();
+            UpdateNotes();
 
         }
 
@@ -823,7 +710,7 @@ namespace CB_5e.ViewModels
         public Command ShowClasses { get; private set; }
         public Command ShowRace { get; private set; }
         public Command ShowBackground { get; private set; }
-        public BuilderContext Context { get; private set; }
+        
 
         private string customCondition;
         public string CustomCondition { get => customCondition; set
@@ -833,7 +720,6 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public object Nothing { get { return null; } set { OnPropertyChanged("Nothing"); } }
 
         private string condtionSearch;
         public ObservableRangeCollection<OGL.Condition> ActiveConditions { get; set; } = new ObservableRangeCollection<OGL.Condition>();
@@ -961,7 +847,7 @@ namespace CB_5e.ViewModels
                 SpellbookViewModel v = Spellcasting.FirstOrDefault(view => view is SpellbookSpellsViewModel && view.SpellcastingID == sf.SpellcastingID);
                 if (v != null)
                 {
-                    v.Refresh();
+                    v.Refresh(sf);
                     views.Add(v);
                 }
                 else
@@ -973,7 +859,7 @@ namespace CB_5e.ViewModels
                     SpellbookViewModel v2 = Spellcasting.FirstOrDefault(view => view is SpellPrepareViewModel && view.SpellcastingID == sf.SpellcastingID);
                     if (v2 != null)
                     {
-                        v2.Refresh();
+                        v2.Refresh(sf);
                         if (v2 is SpellPrepareViewModel spvm && spvm.Able > 0) views.Add(spvm);
                     }
                     else
@@ -992,7 +878,7 @@ namespace CB_5e.ViewModels
         {
             foreach (SpellbookViewModel svm in Spellcasting)
             {
-                if (svm is SpellbookSpellsViewModel ssvm && ssvm.SpellcastingID == id) ssvm.Refresh();
+                if (svm is SpellbookSpellsViewModel ssvm && ssvm.SpellcastingID == id) ssvm.Refresh(ssvm.SpellcastingFeature);
             }
         }
 
@@ -1092,232 +978,118 @@ namespace CB_5e.ViewModels
                                                }));
             return res;
         }
-    }
-
-    public class InventoryViewModel : ObservableObject
-    {
-        public Possession Item { get; set; }
-        public Feature Boon { get; set; }
-        public string Name { get => Item != null ? Item.FullName + (Item.Amount != null ? " (" + Item.Amount + ")" : "") : Boon.ToString(); }
-        public string Description { get => Item != null ? Item.Description : Boon.Text; }
-        public string Detail { get => Item != null ? Item.Stats : "Boon"; }
-        public Command ShowInfo { get; set; }
-        public Command Edit { get; set; }
-        public Command Delete { get; set; }
-    }
-
-    public class ResourceViewModel : ObservableObject
-    {
-        public static string last;
-
-        public Object Value;
-
-        public ResourceViewModel(object value, PlayerViewModel model)
+        public ObservableRangeCollection<ChoiceViewModel> InventoryChoices { get; set; } = new ObservableRangeCollection<ChoiceViewModel>();
+        public void UpdateInventoryChoices()
         {
-            Value = value;
-            Reduce = new Command(() =>
+            List<ChoiceViewModel> choices = new List<ChoiceViewModel>();
+            foreach (Feature f in Context.Player.GetPossessionFeatures())
             {
-                if (IsChangeable && last != null && last.Equals(ResourceID))
-                {
-                    Used++;
-                    model.MakeHistory("Resource" + ResourceID);
-                    if (Max > 0 && Used > Max) Used = Max;
-                    model.Context.Player.SetUsedResources(ResourceID, Used);
-                    model.UpdateUsed();
-
-                    model.Save();
-                }
-                last = ResourceID;
-            });
+                ChoiceViewModel c = ChoiceViewModel.GetChoice(this, f);
+                if (c != null) choices.Add(c);
+            }
+            InventoryChoices.ReplaceRange(choices);
         }
 
-        public int Max
+        public ObservableRangeCollection<JournalViewModel> JournalEntries { get; set; } = new ObservableRangeCollection<JournalViewModel>();
+        public ObservableRangeCollection<string> Notes { get; set; } = new ObservableRangeCollection<string>();
+        private string journalSearch;
+        public string JournalSearch
         {
-            get
-            {
-                if (Value is ResourceInfo r) return r.Max;
-                else if (Value is ModifiedSpell ms) return ms.count;
-                return 0;
-            }
-        }
-
-        public int Used
-        {
-            get
-            {
-                if (Value is ResourceInfo r) return r.Used;
-                else if (Value is ModifiedSpell ms) return ms.used;
-                return 0;
-            }
+            get => journalSearch;
             set
             {
-                if (Value is ResourceInfo r) r.Used = value;
-                else if (Value is ModifiedSpell ms) ms.used = value;
-                OnPropertyChanged("Desc");
+                SetProperty(ref journalSearch, value);
+                UpdateJournal();
             }
         }
 
-        public String ResourceID
+        private string notesSearch;
+        public string NotesSearch
         {
-            get
-            {
-                if (Value is ResourceInfo r) return r.ResourceID;
-                else if (Value is ModifiedSpell ms) return ms.getResourceID();
-                return null;
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                if (Value is ResourceInfo r) return r.Name;
-                else if (Value is ModifiedSpell ms) return ms.Name;
-                return null;
-            }
-        }
-
-        public string Desc
-        {
-            get
-            {
-                if (Value is ResourceInfo r) return r.Desc;
-                else if (Value is ModifiedSpell ms) return ms.Desc;
-                return null;
-            }
-        }
-        public string Text
-        {
-            get
-            {
-                if (Value is ResourceInfo r) return r.Text;
-                else if (Value is ModifiedSpell ms) return ms.Text;
-                return null;
-            }
-        }
-
-        public Command Reduce { get; private set; }
-        public bool IsChangeable { get
-            {
-                return Value is ResourceInfo || Value is ModifiedSpell ms && ((ms.Level > 0 && ms.RechargeModifier < RechargeModifier.AtWill) || (ms.Level == 0 && ms.RechargeModifier != RechargeModifier.Unmodified && ms.RechargeModifier < RechargeModifier.AtWill));
-            }
-        }
-    }
-
-    public class ShopViewModel
-    {
-        public PlayerViewModel Model {get; private set;}
-
-        public ShopViewModel(PlayerViewModel playerViewModel)
-        {
-            Model = playerViewModel;
-            Select = new Command(async (par) =>
-            {
-                if (par is Item i)
-                {
-                    await Model.ShopNavigation.PushAsync(new BuyAddPage(this, i));
-                } else if (par is MagicProperty mp)
-                {
-                    if (mp.Base == null || mp.Base =="")
-                    {
-                        Model.MakeHistory();
-                        Model.Context.Player.Possessions.Add(new Possession(Model.Context, (Item)null, mp));
-                        Model.Save();
-                        Model.FirePlayerChanged();
-                        await Model.ShopNavigation.PopAsync();
-                    }
-                    else
-                    {
-                        await Model.ShopNavigation.PushAsync(new AddToItemPage(this, mp));
-                    }
-                } else if (par is Feature f)
-                {
-                    if (!Model.Context.Player.Boons.Exists(b => ConfigManager.SourceInvariantComparer.Equals(b, f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source)))
-                    {
-                        Model.MakeHistory();
-                        Model.Context.Player.Boons.Add(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source);
-                        Model.Save();
-                        Model.FirePlayerChanged();
-                        Select.ChangeCanExecute();
-                        await Model.ShopNavigation.PopAsync();
-                    }
-                } else if (par is Spell s)
-                {
-                    if (Name == "Spell Scrolls")
-                    {
-                        Model.MakeHistory();
-                        Model.Context.Player.Items.Add(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source);
-                        Model.Save();
-                        Model.RefreshItems.Execute(null);
-                        await Model.ShopNavigation.PopAsync();
-                    }
-                    else
-                    {
-                        await Model.ShopNavigation.PushAsync(new AddToSpellbookPage(this, s));
-                    }
-                }
-            }, (par) =>
-            {
-                if (par is Feature f)
-                {
-                    return !Model.Context.Player.Boons.Exists(b => ConfigManager.SourceInvariantComparer.Equals(b, f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source));
-                }
-                else if (par is Spell s)
-                {
-                    if (Name != "Spell Scrolls")
-                    {
-                        return (from sc
-                        in Model.Context.Player.GetFeatures()
-                        where sc is SpellcastingFeature
-                        && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook
-                        && Utils.Matches(Model.Context, s, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) && !Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Context.Player, Model.Context).Contains(s)
-                        select ((SpellcastingFeature)sc)).Count() > 0;
-                    }
-                }
-                return true;
-            });
-        }
-
-        public string Name { get; set; }
-        public Category ItemCategory { get; set; }
-        public MagicCategory MagicCategory { get; set; }
-        private string type;
-        public string Type { get => type; set => type = value; }
-        public Command Open { get; set; }
-        public string SType { get => Type.Substring(0, 1); }
-        public Command Select { get; set; }
-
-        public string CommandName { get => Type == "Items" ? "Add/Buy" : "Add"; }
-
-        public string ShopSearch
-        {
-            get => Model.ShopSearch;
+            get => notesSearch;
             set
             {
-                Model.ShopSearch = value;
-                UpdateShop();
+                SetProperty(ref notesSearch, value);
+                UpdateNotes();
             }
         }
-        public ObservableRangeCollection<IXML> Shop { get; set; } = new ObservableRangeCollection<IXML>();
-        public void UpdateShop()
-        {
-            if (Type == "Items") Shop.ReplaceRange(Model.Context.Subsection(ItemCategory));
-            else if (Type == "Magic") Shop.ReplaceRange(MagicCategory.SubSection(Model.Context.Search));
-            else if (Type == "Spells") Shop.ReplaceRange(Model.Context.SpellSubsection());
-            else if (Model.Context.FeatureCategories.ContainsKey(Name)) Shop.ReplaceRange(Model.Context.FeatureSubsection(Name));
-            else Shop.ReplaceRange(new List<IXML>());
+
+        public void UpdateJournal() {
+            JournalEntries.ReplaceRange(from j in Context.Player.ComplexJournal where journalSearch == null || journalSearch == ""
+            || culture.CompareInfo.IndexOf(j.Title, journalSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(j.Time, journalSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(j.Session, journalSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(j.DM, journalSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(j.Text, journalSearch, CompareOptions.IgnoreCase) >= 0 orderby j.Added select new JournalViewModel(this, j));
+        }
+        public void UpdateNotes() => Notes.ReplaceRange(from t in Context.Player.Journal where notesSearch == null || notesSearch == "" || culture.CompareInfo.IndexOf(t, notesSearch, CompareOptions.IgnoreCase) >= 0 select t);
+
+        private int selectedNote = 0;
+        public String SelectedNote {
+            get => selectedNote >= 0 && selectedNote < Notes.Count ? Notes[selectedNote] : null;
+            set
+            {
+                SetProperty(ref selectedNote, Notes.IndexOf(value));
+                SaveNote.ChangeCanExecute();
+                if (selectedNote >= 0)
+                {
+                    note = value;
+                } else
+                {
+                    note = null;
+                }
+                OnPropertyChanged("Note");
+            }
+        }
+        private string note;
+        public string Note {
+            get => note;
+            set {
+                SetProperty(ref note, value);
+                NewNote.ChangeCanExecute();
+            }
         }
 
-        public string Money { get => Model.Money; }
-    }
-
-    public class ShopGroupModel : List<ShopViewModel>
-    {
-        public string Type { get; set; }
-        public string SType { get => Type.Substring(0, 1); }
-        public ShopGroupModel(string t, IEnumerable<ShopViewModel> c) : base(c)
+        public Command NewNote { get; set; }
+        public Command SaveNote { get; set; }
+        public Command RefreshNotes { get; set; }
+        public Command RefreshJournal { get; set; }
+        private bool journalBusy;
+        public bool JournalBusy { get => journalBusy; set => SetProperty(ref journalBusy, value); }
+        private bool notesBusy;
+        public bool NotesBusy { get => notesBusy; set => SetProperty(ref notesBusy, value); }
+        public void MoneyChanged()
         {
-            Type = t;
+            OnPropertyChanged("Money");
+            OnPropertyChanged("EP");
+            OnPropertyChanged("CP");
+            OnPropertyChanged("SP");
+            OnPropertyChanged("GP");
+            OnPropertyChanged("PP");
+        }
+
+        public void StatsChanged()
+        {
+            OnPropertyChanged("JournalStats");
+        }
+
+        public string JournalStats
+        {
+            get
+            {
+                int down = 0;
+                int renown = 0;
+                int magic = 0;
+                foreach (JournalEntry je in Context.Player.ComplexJournal)
+                {
+                    down += je.Downtime;
+                    renown += je.Renown;
+                    magic += je.MagicItems;
+                }
+                return "Total Downtime: " + down + ", Renown : " + renown + ", magic items: " + magic;
+            }
         }
     }
+    
+
 }

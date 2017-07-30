@@ -43,10 +43,10 @@ namespace Character_Builder
 
         public override string ToString()
         {
-            return Added.ToString("d") + ": " + Title + getChanges();
+            return Added.ToString("d") + ": " + Title + GetChanges();
         }
 
-        private string getChanges()
+        public string GetChanges()
         {
             List<string> c = new List<string>();
             if (XP > 0) c.Add("+" + XP + " XP");
@@ -72,7 +72,7 @@ namespace Character_Builder
             return "";
         }
 
-        public string getMoney()
+        public string GetMoney()
         {
             List<string> c = new List<string>();
             if (PP > 0) c.Add("+" + PP + " pp");

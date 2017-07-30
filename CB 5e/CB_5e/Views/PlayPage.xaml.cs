@@ -29,19 +29,25 @@ namespace CB_5e.Views
             Children.Add(
                     new NavigationPage(new SpellcastingPage(Model))
                     {
-                        Title = "Spells",
+                        Title = "Spell",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
             Children.Add(
                     new NavigationPage(new ShopPage(Model))
                     {
-                        Title = "Items",
+                        Title = "Item",
+                        Icon = Device.OnPlatform("tab_about.png", null, null)
+                    });
+            Children.Add(
+                    new NavigationPage(new JournalPage(Model))
+                    {
+                        Title = "Notes",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
             Children.Add(
                     new NavigationPage(new AboutPage())
                     {
-                        Title = "Journal",
+                        Title = "...",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
         }

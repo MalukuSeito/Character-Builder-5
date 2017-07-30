@@ -16,6 +16,11 @@ namespace OGL
         XmlArrayItem(Type = typeof(TableDescription)),
         XmlArrayItem(Type = typeof(ListDescription))]
         public List<Description> Descriptions;
+
+        public string Name { get => "Descriptions"; }
+
+        public string Source { get => "No Source"; }
+
         public DescriptionContainer()
         {
             Descriptions = new List<Description>();

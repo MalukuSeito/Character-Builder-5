@@ -549,7 +549,7 @@ namespace Character_Builder_5
                                                 if (logtrans.ContainsKey("MagicItemsStart" + counter)) lp.AcroFields.SetField(logtrans["MagicItemsStart" + counter], magic.ToString());
 
                                                 if (logtrans.ContainsKey("XP" + counter)) lp.AcroFields.SetField(logtrans["XP" + counter], entry.XP.ToString());
-                                                if (logtrans.ContainsKey("Gold" + counter)) lp.AcroFields.SetField(logtrans["Gold" + counter], entry.getMoney());
+                                                if (logtrans.ContainsKey("Gold" + counter)) lp.AcroFields.SetField(logtrans["Gold" + counter], entry.GetMoney());
                                                 if (logtrans.ContainsKey("Downtime" + counter)) lp.AcroFields.SetField(logtrans["Downtime" + counter], plusMinus(entry.Downtime));
                                                 if (logtrans.ContainsKey("Renown" + counter)) lp.AcroFields.SetField(logtrans["Renown" + counter], plusMinus(entry.Renown));
                                                 if (logtrans.ContainsKey("MagicItems" + counter)) lp.AcroFields.SetField(logtrans["MagicItems" + counter], plusMinus(entry.MagicItems));

@@ -152,8 +152,9 @@ namespace CB_5e.ViewModels
             .UpdateUsed());
         }
 
-        public override void Refresh()
+        public override void Refresh(SpellcastingFeature feature)
         {
+            SpellcastingFeature = feature;
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             UpdateSlots();
             spells.Clear();
@@ -189,7 +190,7 @@ namespace CB_5e.ViewModels
             }
             
             UpdateSpells();
-            base.Refresh();
+            OnPropertyChanged(null);
         }
 
         public string Highlight { get => Spellcasting.Highlight; }

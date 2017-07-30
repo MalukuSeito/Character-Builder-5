@@ -13,6 +13,7 @@ namespace Character_Builder
         [XmlIgnore]
         private static XmlSerializer Serializer = new XmlSerializer(typeof(DisplayPossession));
         public String Name { get; set; }
+        public String Source { get => "Player File"; }
         public int Count { get; set; }
         public String Description { get; set; }
         public double Weight { get; set; }

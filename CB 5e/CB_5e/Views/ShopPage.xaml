@@ -36,7 +36,8 @@
     </ContentPage>
     <ContentPage Title="Shop">
         <ContentPage.ToolbarItems>
-            <ToolbarItem Text="&lt; &lt; Inventory" Clicked="OnExit" />
+            <ToolbarItem Text="&lt; &lt; Inventory" Clicked="OnPrev" />
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
             <ToolbarItem Text="Item Options &gt;&gt;" Clicked="OnNext" />
         </ContentPage.ToolbarItems>
         <StackLayout>
@@ -62,6 +63,37 @@
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Item Options">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="&lt; &lt; Shop" Clicked="OnPrev" />
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+        </ContentPage.ToolbarItems>
+        <StackLayout>
+            <ListView ItemsSource="{Binding InventoryChoices}" 
+                      ItemSelected="ListView_ItemSelected"
+                      IsPullToRefreshEnabled="false"
+                      CachingStrategy="RecycleElement"
+                      IsGroupingEnabled="True"
+                      GroupDisplayBinding="{Binding DisplayName}"
+                      RowHeight="30">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height ="30" Text="{Binding Name}" Command="{Binding Select}" CommandParameter="{Binding .}" TextColor="{Binding SelectedColor}" >
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="MenuItem_Clicked_1" Text="Show Choice"/>
+                                <MenuItem Clicked="MenuItem_Clicked" Text="Show Info"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <StackLayout>
+                        <Label HorizontalTextAlignment="Center" Text="This page contains all choices required by Items. If for example you add a Robe of Useful Items to your character, you can configure the patches on the robe here"/>
+                    </StackLayout>
+                </ListView.Footer>
+            </ListView>
+        </StackLayout>
     </ContentPage>
 </CarouselPage>
     
