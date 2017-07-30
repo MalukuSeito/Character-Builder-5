@@ -12,15 +12,10 @@ using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using CB_5e.Services;
 
 namespace CB_5e.Views
 {
-
-    public interface IDocumentViewer
-    {
-        void ShowDocumentFile(string name, Stream content, string mimeType);
-    }
-
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FileBrowser : ContentPage
     {

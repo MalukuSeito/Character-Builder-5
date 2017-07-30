@@ -48,6 +48,9 @@
     <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51803, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpZipLib.Portable.0.86.0.0003\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid+Xamarin.iOS10\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
     </Reference>
+    <Reference Include="iTextSharpLGPL-MonoForAndroid, Version=4.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\iTextSharpLGPL-MonoForAndroid.dll</HintPath>
+    </Reference>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.dll</HintPath>
     </Reference>
@@ -95,12 +98,16 @@
     <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.247\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="XamiTextSharpLGPL.Droid, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xam.iTextSharpLGPL.0.1.0\lib\MonoAndroid10\XamiTextSharpLGPL.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentViewer_Droid.cs" />
     <Compile Include="HTMLExtensions.cs" />
     <Compile Include="HTMLService_Droid.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="PDF_Droid.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

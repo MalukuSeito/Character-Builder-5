@@ -799,7 +799,7 @@ namespace Character_Builder_5
             if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Program.Context.Player.GetCharismaMod().ToString());
             if (trans.ContainsKey("CharacterName")) p.AcroFields.SetField(trans["CharacterName"], Program.Context.Player.Name);
             if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Program.Context.Player.Name);
-            if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Program.Context.Player.Classes));
+            if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Program.Context.Player.GetClassesStrings()));
             if (trans.ContainsKey("DCI")) p.AcroFields.SetField(trans["DCI"], Program.Context.Player.DCI);
         }
 

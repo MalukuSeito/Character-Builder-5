@@ -15,6 +15,7 @@ using CB_5e.Views;
 using OGL;
 using System.IO;
 using OGL.Common;
+using CB_5e.Services;
 
 [assembly: Dependency(typeof(HTMLService_Droid))]
 namespace CB_5e.Droid

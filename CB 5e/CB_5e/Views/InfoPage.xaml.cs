@@ -1,4 +1,5 @@
-﻿using Character_Builder;
+﻿using CB_5e.Services;
+using Character_Builder;
 using OGL;
 using OGL.Common;
 using OGL.Features;
@@ -13,11 +14,7 @@ using Xamarin.Forms.Xaml;
 
 namespace CB_5e.Views
 {
-    public interface IHTMLService
-    {
-        string Convert(IXML obj);
-        void Reset(ConfigManager config);
-    }
+    
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class InfoPage : ContentPage
     {

@@ -43,7 +43,7 @@ namespace CB_5e.Models
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
             ConfigManager config = await Context.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml").ConfigureAwait(false)).ConfigureAwait(false);
-            DependencyService.Get<Views.IHTMLService>().Reset(config);
+            DependencyService.Get<IHTMLService>().Reset(config);
 
             Text = "Levels";
             Percentage = cur++ / count;

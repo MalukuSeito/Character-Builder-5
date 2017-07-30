@@ -46,6 +46,9 @@
     <Compile Include="Helpers\SpellPageSelector.cs" />
     <Compile Include="Models\BaseDataObject.cs" />
     <Compile Include="Models\Character.cs" />
+    <Compile Include="Services\IDocumentViewer.cs" />
+    <Compile Include="Services\IPDFService.cs" />
+    <Compile Include="Services\IHTMLService.cs" />
     <Compile Include="ViewModels\BonusSpellKeywordChoice.cs" />
     <Compile Include="ViewModels\ChoiceFeatureChoice.cs" />
     <Compile Include="ViewModels\ChoiceOption.cs" />
@@ -114,6 +117,9 @@
     </Compile>
     <Compile Include="Views\JournalEntryPage.xaml.cs">
       <DependentUpon>JournalEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MorePlayPage.xaml.cs">
+      <DependentUpon>MorePlayPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewItemPage .xaml.cs">
       <DependentUpon>NewItemPage .xaml</DependentUpon>
@@ -341,6 +347,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\JournalEntryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MorePlayPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -26,9 +26,11 @@ namespace CB_5e.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::iTextSharpLGPLMonoForAndroid.Resource.String.library_name = global::CB_5e.Droid.Resource.String.library_name;
 			global::PCLStorage.Resource.String.ApplicationName = global::CB_5e.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::CB_5e.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::CB_5e.Droid.Resource.Attribute.actionBarSize;
+			global::XamiTextSharpLGPL.Droid.Resource.String.library_name = global::CB_5e.Droid.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -3005,8 +3007,8 @@ namespace CB_5e.Droid
 			// aapt resource value: 0x7f080021
 			public const int abc_toolbar_collapse_description = 2131230753;
 			
-			// aapt resource value: 0x7f080028
-			public const int app_name = 2131230760;
+			// aapt resource value: 0x7f080029
+			public const int app_name = 2131230761;
 			
 			// aapt resource value: 0x7f080023
 			public const int appbar_scrolling_view_behavior = 2131230755;
@@ -3016,6 +3018,9 @@ namespace CB_5e.Droid
 			
 			// aapt resource value: 0x7f080025
 			public const int character_counter_pattern = 2131230757;
+			
+			// aapt resource value: 0x7f080028
+			public const int library_name = 2131230760;
 			
 			// aapt resource value: 0x7f080000
 			public const int mr_button_content_description = 2131230720;

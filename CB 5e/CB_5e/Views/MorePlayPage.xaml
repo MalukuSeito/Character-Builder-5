@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.MorePlayPage">
+    <ContentPage.Content>
+        <Grid Padding="20, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Picker Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Exporters}" SelectedItem="{Binding Exporter}"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Include Resources"/>
+            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding IncludeResources}"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Include Journal"/>
+            <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding Log}"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="Include Spellbook"/>
+            <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding Book}"/>
+            <Label Grid.Row="4" Grid.Column="0" Text="Preserve Edit"/>
+            <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding Edit}"/>
+            <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Make PDF" Clicked="Button_Clicked"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

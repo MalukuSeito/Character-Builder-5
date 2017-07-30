@@ -474,9 +474,14 @@ namespace CB_5e.Services
         }
 
 
-        private static string MakeRelative(string dir)
+        public static string MakeRelative(string dir)
         {
             return System.IO.Path.GetDirectoryName(dir);
+        }
+
+        public static string MakeRelativeFile(string dir)
+        {
+            return System.IO.Path.GetFileName(dir);
         }
 
         public async static Task<ConfigManager> LoadConfigManagerAsync(IFile file)

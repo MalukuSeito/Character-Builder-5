@@ -14,6 +14,7 @@ using CB_5e.Droid;
 using CB_5e.Views;
 using OGL;
 using System.IO;
+using CB_5e.Services;
 
 [assembly: Dependency(typeof(DocumentViewer_Droid))]
 namespace CB_5e.Droid

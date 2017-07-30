@@ -45,7 +45,7 @@ namespace CB_5e.Views
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
             Children.Add(
-                    new NavigationPage(new AboutPage())
+                    new NavigationPage(new MorePlayPage(Model))
                     {
                         Title = "...",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
