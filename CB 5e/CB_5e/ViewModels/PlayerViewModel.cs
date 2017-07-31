@@ -30,8 +30,7 @@ namespace CB_5e.ViewModels
         public ScoresModelViewModel Scores { get; private set; }
         public INavigation Navigation { get; set; }
         public INavigation SpellNavigation { get; set; }
-        public INavigation ShopNavigation { get; set; }
-        public bool ChildModel { get; set; } = false;
+        
         public PlayerViewModel(BuilderContext context) : base(context)
         {
             Scores = new ScoresModelViewModel(Context);
@@ -203,60 +202,6 @@ namespace CB_5e.ViewModels
                 }
                 DeselectResource.Execute(null);
             });
-            EditItem = new Command(async (par) =>
-            {
-                if (par is InventoryViewModel ivm)
-                {
-                    if (ivm.Item != null) await ShopNavigation.PushAsync(new ItemPage(new ItemViewModel(this, ivm.Item)));
-                    else await ShopNavigation.PushAsync(InfoPage.Show(ivm.Boon));
-                }
-            });
-            ShowItemInfo = new Command(async (par) =>
-            {
-                if (par is InventoryViewModel ivm)
-                {
-                    if (ivm.Item is Possession p)
-                    {
-                        await ShopNavigation.PushAsync(InfoPage.Show(new DisplayPossession(ivm.Item, Context.Player)));
-                    } else
-                    {
-                        await ShopNavigation.PushAsync(InfoPage.Show(ivm.Boon));
-                    }
-                }
-            });
-            DeleteItem = new Command((par) =>
-            {
-                if (par is InventoryViewModel ivm)
-                {
-                    if (ivm.Item is Possession p)
-                    {
-                        Context.MakeHistory("");
-                        Context.Player.RemovePossessionAndItems(p);
-                        Save();
-                    }
-                    else if (ivm.Boon is Feature f)
-                    {
-                        Context.MakeHistory("");
-                        Context.Player.RemoveBoon(f);
-                        Save();
-                    }
-                    FirePlayerChanged();
-                }
-            });
-            RefreshItems = new Command(() =>
-            {
-                ItemsBusy = true;
-                UpdateItems();
-                OnPropertyChanged("Carried");
-                ItemsBusy = false;
-            });
-            UpdateItems();
-            OnOpenShop = new Command(async (par) =>
-            {
-                if (par is ShopViewModel svm) await ShopNavigation.PushAsync(new ShopSubPage(svm));
-            });
-            UpdateShops();
-            UpdateInventoryChoices();
             UpdateJournal();
             UpdateNotes();
             NewNote = new Command(() =>
@@ -323,7 +268,7 @@ namespace CB_5e.ViewModels
         public override void DoSave()
         {
 
-            if (Context.Player != null)
+            if (Context.Player != null && !ChildModel)
             {
                 Player p = Context.Player;
                 if (Saving.Enter())
@@ -384,33 +329,6 @@ namespace CB_5e.ViewModels
             UpdateJournal();
             UpdateNotes();
 
-        }
-
-        public void UpdateItems()
-        {
-            inventory.Clear();
-            Inventory.ReplaceRange(inventory);
-            foreach (Possession p in Context.Player.GetItemsAndPossessions())
-            {
-                inventory.Add(new InventoryViewModel
-                {
-                    Item = p,
-                    ShowInfo = ShowItemInfo,
-                    Edit = EditItem,
-                    Delete = DeleteItem
-                });
-            }
-            foreach (Feature f in from b in Context.Player.Boons select Context.GetBoon(b ,null))
-            {
-                inventory.Add(new InventoryViewModel
-                {
-                    Boon = f,
-                    ShowInfo = ShowItemInfo,
-                    Edit = EditItem,
-                    Delete = DeleteItem
-                });
-            }
-            UpdateInventory();
         }
 
         public ImageSource Portrait
@@ -836,7 +754,7 @@ namespace CB_5e.ViewModels
             || culture.CompareInfo.IndexOf(f.ToString(), proficiencySearch, CompareOptions.IgnoreCase) >= 0 orderby f.ToString() select f);
 
         public ObservableRangeCollection<SpellbookViewModel> Spellcasting { get; set; } = new ObservableRangeCollection<SpellbookViewModel>();
-        public void UpdateSpellcasting()
+        public override void UpdateSpellcasting()
         {
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" orderby Context.Player.GetClassLevel(((SpellcastingFeature)f).SpellcastingID) descending, ((SpellcastingFeature)f).DisplayName, ((SpellcastingFeature)f).SpellcastingID select f as SpellcastingFeature);
             if (spellcasts.Count == 0) Spellcasting.ReplaceRange(new List<SpellbookViewModel>() { new SpellbookViewModel(this, null) });
@@ -889,107 +807,6 @@ namespace CB_5e.ViewModels
                 if (svm is SpellbookSpellsViewModel ssvm && svm != me) ssvm.UpdateSlots();
             }
         }
-        private List<InventoryViewModel> inventory = new List<InventoryViewModel>();
-        public ObservableRangeCollection<InventoryViewModel> Inventory { get; set; } = new ObservableRangeCollection<InventoryViewModel>();
-
-        public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory where inventorysearch == null || inventorysearch == ""
-            || culture.CompareInfo.IndexOf(f.Name, inventorysearch, CompareOptions.IgnoreCase) >= 0
-            || culture.CompareInfo.IndexOf(f.Detail, inventorysearch, CompareOptions.IgnoreCase) >= 0
-            || culture.CompareInfo.IndexOf(f.Description, inventorysearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
-
-        private string inventorysearch;
-        public string InventorySearch
-        {
-            get => inventorysearch;
-            set
-            {
-                SetProperty(ref inventorysearch, value);
-                UpdateInventory();
-            }
-        }
-        private bool itemsBusy;
-        public bool ItemsBusy { get => itemsBusy; set => SetProperty(ref itemsBusy, value); }
-        public Command EditItem { get; private set; }
-        public Command ShowItemInfo { get; private set; }
-        public Command DeleteItem { get; private set; }
-        public Command RefreshItems { get; private set; }
-
-        public ObservableRangeCollection<ShopGroupModel> Shops { get; set; } = new ObservableRangeCollection<ShopGroupModel>();
-        public string ShopSearch
-        {
-            get => Context.Search;
-            set
-            {
-                SetProperty(ref Context.Search, value);
-                UpdateShops();
-            }
-        }
-        public Command OnOpenShop { get; private set; }
-
-        public void UpdateShops() => Shops.ReplaceRange(GetShops());
-
-        private IEnumerable<ShopGroupModel> GetShops()
-        {
-            List<ShopGroupModel> res = new List<ShopGroupModel>();
-            res.Add(new ShopGroupModel("Items", from i in Context.Section()
-                                                where i.ToString() != ""
-                                                select new ShopViewModel(this)
-                                                {
-                                                    Name = i.ToString(),
-                                                    ItemCategory = i,
-                                                    Type = "Items",
-                                                    Open = OnOpenShop
-                                                }));
-            res.Add(new ShopGroupModel("Magic", from m in Context.MagicSection()
-                                                select new ShopViewModel(this)
-                                                {
-                                                    Name = m.ToString(),
-                                                    MagicCategory = m,
-                                                    Type = "Magic",
-                                                    Open = OnOpenShop
-                                                }));
-            if (Context.SpellSubsection().Count() > 0)
-            {
-                List<ShopViewModel> s = new List<ShopViewModel>() {
-                    new ShopViewModel(this)
-                    {
-                        Name = "Spell Scrolls",
-                        Type = "Spells",
-                        Open = OnOpenShop
-
-                    },
-                    new ShopViewModel(this)
-                    {
-                        Name = "Spellbook Spells",
-                        Type = "Spells",
-                        Open = OnOpenShop
-
-                    }
-                };
-                res.Add(new ShopGroupModel("Spells", s));
-            }
-
-            res.Add(new ShopGroupModel("Boon", from f in Context.FeatureSection()
-                                               select new ShopViewModel(this)
-                                               {
-                                                   Name = f,
-                                                   Type = "Boon",
-                                                   Open = OnOpenShop
-                                               }));
-            return res;
-        }
-        public ObservableRangeCollection<ChoiceViewModel> InventoryChoices { get; set; } = new ObservableRangeCollection<ChoiceViewModel>();
-        public void UpdateInventoryChoices()
-        {
-            List<ChoiceViewModel> choices = new List<ChoiceViewModel>();
-            foreach (Feature f in Context.Player.GetPossessionFeatures())
-            {
-                ChoiceViewModel c = ChoiceViewModel.GetChoice(this, f);
-                if (c != null) choices.Add(c);
-            }
-            InventoryChoices.ReplaceRange(choices);
-        }
-
         public ObservableRangeCollection<JournalViewModel> JournalEntries { get; set; } = new ObservableRangeCollection<JournalViewModel>();
         public ObservableRangeCollection<string> Notes { get; set; } = new ObservableRangeCollection<string>();
         private string journalSearch;

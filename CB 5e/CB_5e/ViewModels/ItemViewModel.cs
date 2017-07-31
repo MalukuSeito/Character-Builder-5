@@ -16,12 +16,12 @@ namespace CB_5e.ViewModels
     public class ItemViewModel: BaseViewModel
     {
 
-        public ItemViewModel(PlayerViewModel context): this (context, new Possession(context.Context, "", 1))
+        public ItemViewModel(PlayerModel context): this (context, new Possession(context.Context, "", 1))
         {
             IsNew = true;
         }
 
-        public ItemViewModel(PlayerViewModel context, Possession possession)
+        public ItemViewModel(PlayerModel context, Possession possession)
         {
             Context = context;
             Value = possession;
@@ -68,7 +68,7 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public PlayerViewModel Context { get; set; }
+        public PlayerModel Context { get; set; }
         public Possession Value { get; set; }
 
         public string Name {

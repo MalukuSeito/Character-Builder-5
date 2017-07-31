@@ -4,6 +4,12 @@ using CB_5e.Models;
 using CB_5e.ViewModels;
 
 using Xamarin.Forms;
+using Character_Builder;
+using PluginDMG;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using PCLStorage;
+using System.IO;
 
 namespace CB_5e.Views
 {
@@ -20,27 +26,103 @@ namespace CB_5e.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            viewModel.Items.Clear();
             var item = args.SelectedItem as Character;
             if (item == null)
                 return;
+            BuilderContext Context = new BuilderContext(item.Player);
+            PluginManager manager = new PluginManager();
+            manager.plugins.Add(new SpellPoints());
+            manager.plugins.Add(new SingleLanguage());
+            Context.Plugins = manager;
 
-            //await Navigation.PushAsync(new ItemDetailPage(new NewFolderViewModel(item)));
-
-            // Manually deselect item
+            Task.Run(async () =>
+                 {
+                     if (Context.Player.FilePath is IFile file)
+                     {
+                         string name = file.Name;
+                         IFile target = await (await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false)).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
+                         using (Stream fout = await target.OpenAsync(FileAccess.ReadAndWrite))
+                         {
+                             using (Stream fin = await file.OpenAsync(FileAccess.Read))
+                             {
+                                 await fin.CopyToAsync(fout);
+                             }
+                         };
+                     }
+                 }).Forget();
+            Context.UndoBuffer = new LinkedList<Player>();
+            Context.RedoBuffer = new LinkedList<Player>();
+            Context.UnsavedChanges = 0;
             ItemsListView.SelectedItem = null;
+            LoadingProgress loader = new LoadingProgress(Context);
+            LoadingPage l = new LoadingPage(loader);
+            await Navigation.PushModalAsync(l);
+            var t = l.Cancel.Token;
+            try
+            {
+                await loader.Load(t).ConfigureAwait(false);
+                t.ThrowIfCancellationRequested();
+                PlayerBuildModel model = new PlayerBuildModel(Context);
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync(false);
+                    await Navigation.PushModalAsync(new BuildPage(model));
+                });
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            // Manually deselect item
+
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new NewFolderPage());
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            if (IsBusy) return;
+            IsBusy = true;
+            viewModel.Items.Clear();
+            BuilderContext Context = new BuilderContext(new Player()
+            {
+                Name = "New Player"
+            });
+            PluginManager manager = new PluginManager();
+            manager.plugins.Add(new SpellPoints());
+            manager.plugins.Add(new SingleLanguage());
+            Context.Plugins = manager;
+            Context.UndoBuffer = new LinkedList<Player>();
+            Context.RedoBuffer = new LinkedList<Player>();
+            Context.UnsavedChanges = 0;
+            ItemsListView.SelectedItem = null;
+            LoadingProgress loader = new LoadingProgress(Context);
+            LoadingPage l = new LoadingPage(loader);
+            await Navigation.PushModalAsync(l);
+            var t = l.Cancel.Token;
+            try
+            {
+                await loader.Load(t).ConfigureAwait(false);
+                t.ThrowIfCancellationRequested();
+                PlayerBuildModel model = new PlayerBuildModel(Context);
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync(false);
+                    await Navigation.PushModalAsync(new BuildPage(model));
+                });
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            // Manually deselect item
         }
     }
 }

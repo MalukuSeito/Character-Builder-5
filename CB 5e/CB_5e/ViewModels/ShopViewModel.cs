@@ -17,9 +17,9 @@ namespace CB_5e.ViewModels
 {
     public class ShopViewModel
     {
-        public PlayerViewModel Model { get; private set; }
+        public PlayerModel Model { get; private set; }
 
-        public ShopViewModel(PlayerViewModel playerViewModel)
+        public ShopViewModel(PlayerModel playerViewModel)
         {
             Model = playerViewModel;
             Select = new Command(async (par) =>
@@ -122,6 +122,6 @@ namespace CB_5e.ViewModels
             else Shop.ReplaceRange(new List<IXML>());
         }
 
-        public string Money { get => Model.Money; }
+        public string Money { get => Model.Context.Player.GetMoney().ToString(); }
     }
 }

@@ -16,14 +16,13 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ShopPage : CarouselPage
+	public partial class BasePage : CarouselPage
 	{
-        public PlayerModel Model { get; private set; }
+        public PlayerBuildModel Model { get; private set; }
 
-        public ShopPage(PlayerModel model)
+        public BasePage(PlayerBuildModel model)
 		{
             BindingContext = Model = model;
-            Model.ShopNavigation = Navigation;
             InitializeComponent ();
             CurrentPageChanged += CarouselPage_CurrentPageChanged; 
             Title = CurrentPage.Title;
@@ -35,12 +34,7 @@ namespace CB_5e.Views
             IsBusy = true;
             if (!Model.ChildModel)
             {
-                if (Model is PlayerViewModel pvm && App.AutoSaveDuringPlay)
-                {
-                    Model.Save();
-                    pvm.Saving.WaitForAll();
-                }
-                else if (Model.Context.UnsavedChanges > 0)
+                if (Model.Context.UnsavedChanges > 0)
                 {
                     if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
                     {
@@ -76,12 +70,6 @@ namespace CB_5e.Views
         {
             if (sender is ListView lv) lv.SelectedItem = null;
         }
-
-        private async void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage(new ItemViewModel(Model))));
-        }
-
         private async void MenuItem_Clicked(object sender, EventArgs e)
         {
             if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Value));

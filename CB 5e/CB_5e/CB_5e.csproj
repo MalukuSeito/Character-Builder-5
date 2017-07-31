@@ -70,8 +70,11 @@
     <Compile Include="ViewModels\CharactersViewModel.cs" />
     <Compile Include="ViewModels\NewFolderViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerBuildModel.cs" />
     <Compile Include="ViewModels\PlayerModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\SubRaceChoice.cs" />
+    <Compile Include="ViewModels\RaceChoice.cs" />
     <Compile Include="ViewModels\ResourceViewModel.cs" />
     <Compile Include="ViewModels\ScoresModelViewModel.cs" />
     <Compile Include="ViewModels\ShopGroupModel.cs" />
@@ -132,6 +135,12 @@
     </Compile>
     <Compile Include="Views\JournalPage.xaml.cs">
       <DependentUpon>JournalPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BasePage.xaml.cs">
+      <DependentUpon>BasePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BuildPage.xaml.cs">
+      <DependentUpon>BuildPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShopSubPage.xaml.cs">
       <DependentUpon>ShopSubPage.xaml</DependentUpon>
@@ -355,6 +364,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MorePlayPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\BasePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\BuildPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

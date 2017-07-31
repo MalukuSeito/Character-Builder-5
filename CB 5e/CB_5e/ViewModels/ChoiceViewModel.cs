@@ -21,7 +21,7 @@ namespace CB_5e.ViewModels
             Feature = feature;
             Options = options;
             Multiple = multiple;
-            Name = Feature.Name;
+            Name = Feature?.Name;
 
             OnSelect = new Command((par) =>
             {
@@ -149,7 +149,7 @@ namespace CB_5e.ViewModels
             }
             List<ChoiceOption> options = new List<ChoiceOption>();
             bool allMade = Amount == m.Count;
-            foreach (IXML opt in from o in Options orderby o.Name, prio.Contains(o.Name + " " + ConfigManager.SourceSeperator + o.Source) descending select o)
+            foreach (IXML opt in from o in Options orderby o.Name, prio.Contains(o.Name + " " + ConfigManager.SourceSeperator + " " + o.Source) descending select o)
             {
                 ChoiceOption co = new ChoiceOption()
                 {
