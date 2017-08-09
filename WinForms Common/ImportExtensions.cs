@@ -439,7 +439,7 @@ namespace Character_Builder_Forms
             HTMLExtensions.Transform_Skills = new FileInfo(Fullpath(path, context.Config.Skills_Transform));
             context.Config.Languages_Directory = MakeRelative(context.Config.Languages_Directory);
             HTMLExtensions.Transform_Languages = new FileInfo(Fullpath(path, context.Config.Languages_Transform));
-            context.Config.Languages_Transform = MakeRelative(context.Config.Features_Directory);
+            context.Config.Features_Directory = MakeRelative(context.Config.Features_Directory);
             HTMLExtensions.Transform_Features = new FileInfo(Fullpath(path, context.Config.Features_Transform));
             context.Config.Backgrounds_Directory = MakeRelative(context.Config.Backgrounds_Directory);
             HTMLExtensions.Transform_Backgrounds = new FileInfo(Fullpath(path, context.Config.Backgrounds_Transform));
