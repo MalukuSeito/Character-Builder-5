@@ -44,7 +44,7 @@ namespace CB_5e.ViewModels
                         if (svm.BadChoice) spells.Remove(svm);
                     }
                     OnPropertyChanged("Count");
-                    OnPropertyChanged("Selected");
+                    OnPropertyChanged("Prepared");
                     ChangedSelectedSpells(SpellcastingID);
                 }
             }, (par) => par is SpellViewModel svm && choice != null);
