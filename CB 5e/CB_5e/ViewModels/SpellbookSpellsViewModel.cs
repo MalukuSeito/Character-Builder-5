@@ -258,6 +258,5 @@ namespace CB_5e.ViewModels
         }
 
         public Command RemoveHighlight { get; private set; }
-        public Color Accent { get => Color.Accent; }
     }
 }

@@ -196,7 +196,7 @@ namespace CB_5e.ViewModels
 
         public override void MoneyChanged()
         {
-            playerInfo.MoneyChanged();
+            playerInfo.DoMoneyChanged();
         }
 
         public ObservableRangeCollection<SubModel> SubPages { get; set; } = new ObservableRangeCollection<SubModel>();

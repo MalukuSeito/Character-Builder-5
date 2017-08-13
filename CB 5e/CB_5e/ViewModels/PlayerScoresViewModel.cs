@@ -33,9 +33,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.StrengthMax) value = Scores.StrengthMax;
                 if (value == Context.Player.BaseStrength) return;
+                MakeHistory("BaseStrength");
                 Context.Player.BaseStrength = value;
                 OnPropertyChanged("Str");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
         public int Dex
@@ -46,9 +48,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.DexterityMax) value = Scores.DexterityMax;
                 if (value == Context.Player.BaseDexterity) return;
+                MakeHistory("BaseDexterity");
                 Context.Player.BaseDexterity = value;
                 OnPropertyChanged("Dex");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
         public int Con
@@ -59,9 +63,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.ConstitutionMax) value = Scores.ConstitutionMax;
                 if (value == Context.Player.BaseConstitution) return;
+                MakeHistory("BaseConstitution");
                 Context.Player.BaseConstitution = value;
                 OnPropertyChanged("Con");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
         public int Int
@@ -72,9 +78,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.IntelligenceMax) value = Scores.IntelligenceMax;
                 if (value == Context.Player.BaseIntelligence) return;
+                MakeHistory("BaseIntelligence");
                 Context.Player.BaseIntelligence = value;
                 OnPropertyChanged("Int");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
         public int Wis
@@ -85,9 +93,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.WisdomMax) value = Scores.WisdomMax;
                 if (value == Context.Player.BaseWisdom) return;
+                MakeHistory("BaseWisdom");
                 Context.Player.BaseWisdom = value;
                 OnPropertyChanged("Wis");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
         public int Cha
@@ -98,9 +108,11 @@ namespace CB_5e.ViewModels
                 if (value <= 0) value = 0;
                 if (value > Scores.CharismaMax) value = Scores.CharismaMax;
                 if (value == Context.Player.BaseCharisma) return;
+                MakeHistory("BaseCharisma");
                 Context.Player.BaseCharisma = value;
                 OnPropertyChanged("Cha");
                 Parent.FirePlayerChanged();
+                Save();
             }
         }
 

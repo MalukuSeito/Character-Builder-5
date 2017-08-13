@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using CB_5e.Helpers;
+using CB_5e.Views;
 
 namespace CB_5e.ViewModels
 {
@@ -12,6 +14,28 @@ namespace CB_5e.ViewModels
     {
         public PlayerPersonalViewModel(PlayerModel parent) : base(parent, "Personal")
         {
+            ShowImagePortrait = new Command(async () =>
+            {
+                await Navigation.PushAsync(new ImageEditor(Portrait, Context.Player.Portrait, SavePortrait, "Portrait"));
+            });
+            SavePortrait = new Command(async (par) =>
+            {
+                MakeHistory();
+                Context.Player.Portrait = par as byte[];
+                OnPropertyChanged("Portrait");
+                await Navigation.PopAsync();
+            });
+            ShowImageFaction = new Command(async () =>
+            {
+                await Navigation.PushAsync(new ImageEditor(FactionImage, Context.Player.FactionImage, SaveFaction, "Faction Insignia"));
+            });
+            SaveFaction = new Command(async (par) =>
+            {
+                MakeHistory();
+                Context.Player.FactionImage = par as byte[];
+                OnPropertyChanged("FactionImage");
+                await Navigation.PopAsync();
+            });
         }
 
         public string CharacterName
@@ -20,10 +44,12 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Name) return;
+                MakeHistory("Name");
                 Context.Player.Name = value;
                 FirePropertyChanged("Name");
                 FirePropertyChanged("CharacterName");
                 FirePropertyChanged("PlayerName");
+                Save();
             }
         }
 
@@ -32,9 +58,12 @@ namespace CB_5e.ViewModels
             get => Context.Player.Alignment;
             set
             {
+                if (value == null) return;
                 if (value == Alignment) return;
+                MakeHistory("Alignment");
                 Context.Player.Alignment = value;
                 FirePropertyChanged("Alignment");
+                Save();
             }
         }
 
@@ -45,14 +74,16 @@ namespace CB_5e.ViewModels
             {
                 if (value == XP) return;
                 if (value < Context.Player.GetXP(true)) value = Context.Player.GetXP(true);
+                MakeHistory("XP");
                 Context.Player.SetXP(value);
                 FirePlayerChanged();
+                Save();
             }
         }
 
         public int XPToLevel
         {
-            get=> Context.Levels.XpToLevelUp(XP);
+            get => Context.Levels.XpToLevelUp(XP);
         }
 
         public string Player
@@ -61,8 +92,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Player) return;
+                MakeHistory("PlayerName");
                 Context.Player.PlayerName = value;
                 FirePropertyChanged("Player");
+                Save();
             }
         }
 
@@ -72,8 +105,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == DCI) return;
+                MakeHistory("DCI");
                 Context.Player.DCI = value;
                 FirePropertyChanged("DCI");
+                Save();
             }
         }
 
@@ -83,8 +118,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Age) return;
+                MakeHistory("Age");
                 Context.Player.Age = value;
                 FirePropertyChanged("Age");
+                Save();
             }
         }
 
@@ -94,8 +131,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Weight) return;
+                MakeHistory("Weight");
                 Context.Player.Weight = value;
                 FirePropertyChanged("Weight");
+                Save();
             }
         }
 
@@ -105,8 +144,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Height) return;
+                MakeHistory("Height");
                 Context.Player.Height = value;
                 FirePropertyChanged("Height");
+                Save();
             }
         }
 
@@ -116,8 +157,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Eyes) return;
+                MakeHistory("Eyes");
                 Context.Player.Eyes = value;
                 FirePropertyChanged("Eyes");
+                Save();
             }
         }
 
@@ -127,8 +170,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Skin) return;
+                MakeHistory("Skin");
                 Context.Player.Skin = value;
                 FirePropertyChanged("Skin");
+                Save();
             }
         }
 
@@ -138,8 +183,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Hair) return;
+                MakeHistory("Hair");
                 Context.Player.Hair = value;
                 FirePropertyChanged("Hair");
+                Save();
             }
         }
 
@@ -149,8 +196,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Faction) return;
+                MakeHistory("Faction");
                 Context.Player.FactionName = value;
                 FirePropertyChanged("Faction");
+                Save();
             }
         }
 
@@ -170,8 +219,10 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Backstory) return;
+                MakeHistory("Backstory");
                 Context.Player.Backstory = value;
                 FirePropertyChanged("Backstory");
+                Save();
             }
         }
 
@@ -181,9 +232,25 @@ namespace CB_5e.ViewModels
             set
             {
                 if (value == Allies) return;
+                MakeHistory("Allies");
                 Context.Player.Allies = value;
                 FirePropertyChanged("Allies");
+                Save();
             }
         }
+        public ObservableRangeCollection<string> Alignments {get; set;} = new ObservableRangeCollection<string>(new List<string>() {
+            "Lawful good",
+            "Neutral good",
+            "Chaotic good",
+            "Lawful neutral",
+            "Neutral",
+            "Chaotic neutral",
+            "Lawful evil",
+            "Neutral evil",
+            "Chaotic evil"});
+        public Command SavePortrait { get; private set; }
+        public Command ShowImagePortrait { get; private set; }
+        public Command ShowImageFaction { get; private set; }
+        public Command SaveFaction { get; private set; }
     }
 }

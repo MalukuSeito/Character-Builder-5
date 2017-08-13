@@ -92,6 +92,7 @@ namespace CB_5e.ViewModels
                 });
                 FirePlayerChanged();
                 IsBusy = false;
+                Save();
             }, () => !ActivePlugins.SetEquals(Context.Player.ActiveHouseRules) || !Excluded.SetEquals(Context.Player.ExcludedSources));
             OnSelect = new Command((par) =>
             {

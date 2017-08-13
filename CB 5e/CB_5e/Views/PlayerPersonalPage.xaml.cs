@@ -16,6 +16,7 @@ namespace CB_5e.Views
         public PlayerPersonalPage(PlayerPersonalViewModel model)
         {
             InitializeComponent();
+            model.Navigation = Navigation;
             BindingContext = model;
             MakeBinding(XP, new Binding("XP"));
         }

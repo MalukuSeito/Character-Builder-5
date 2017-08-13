@@ -17,7 +17,8 @@
                       
                       IsGroupingEnabled="True">
                 <ListView.Header>
-                    <Label Text="Reducing the amount of sourcebooks improves loading times" HorizontalTextAlignment="Center" Margin="20, 0"/>
+                    <StackLayout>
+                        <Label Text="Reducing the amount of sourcebooks improves loading times" HorizontalTextAlignment="Center" Margin="20, 0"/>
                         <SearchBar Text="{Binding SourceSearch}" Placeholder="Search" />
                     </StackLayout>
                 </ListView.Header>

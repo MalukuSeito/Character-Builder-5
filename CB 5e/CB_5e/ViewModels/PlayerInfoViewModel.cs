@@ -351,7 +351,7 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public void MoneyChanged()
+        public void DoMoneyChanged()
         {
             OnPropertyChanged("Money");
             OnPropertyChanged("EP");

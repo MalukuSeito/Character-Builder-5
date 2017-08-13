@@ -147,6 +147,8 @@
     <Compile Include="Views\FlowPage.xaml.cs">
       <DependentUpon>FlowPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IClipboardService.cs" />
+    <Compile Include="Views\ImageEditor.cs" />
     <Compile Include="Views\ImageViewer.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
@@ -160,6 +162,7 @@
     <Compile Include="Views\DownloadFilePage.xaml.cs">
       <DependentUpon>DownloadFilePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IPhotoService.cs" />
     <Compile Include="Views\JournalEntryPage.xaml.cs">
       <DependentUpon>JournalEntryPage.xaml</DependentUpon>
     </Compile>
