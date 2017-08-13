@@ -11,6 +11,7 @@ namespace CB_5e.Views
 	{
         public ImageViewer(ImageSource image, byte[] data, string name = null)
         {
+            Title = name;
             Content = new Grid
             {
                 Padding = new Thickness(20),

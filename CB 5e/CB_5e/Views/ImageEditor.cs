@@ -11,6 +11,7 @@ namespace CB_5e.Views
 	{
         public ImageEditor(ImageSource image, byte[] data, Command Save, string name = null)
         {
+            Title = name;
             Grid g = new Grid
             {
                 Padding = new Thickness(20),
