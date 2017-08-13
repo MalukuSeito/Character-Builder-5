@@ -321,14 +321,14 @@ namespace CB_5e.Views
             foreach (IFolder f in await source.GetFoldersAsync().ConfigureAwait(false))
             {
                 if (f.Name.StartsWith(".")) continue;
-                await PackFolder(f, z, (path != null && path.Length > 0 ? "/" : "") + f.Name);
+                await PackFolder(f, z, (path != null && path.Length > 0 ? path + "/" : "") + f.Name);
             }
             foreach (IFile f in await source.GetFilesAsync().ConfigureAwait(false))
             {
                 if (f.Name.StartsWith(".")) continue;
                 using (Stream s = await f.OpenAsync(FileAccess.Read).ConfigureAwait(false))
                 {
-                    ZipEntry entry = new ZipEntry((path != null && path.Length > 0 ? "/" : "") + f.Name)
+                    ZipEntry entry = new ZipEntry((path != null && path.Length > 0 ? path + "/" : "") + f.Name)
                     {
                         DateTime = DateTime.Now,
                         Size = s.Length

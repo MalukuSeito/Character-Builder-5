@@ -39,23 +39,7 @@ namespace CB_5e.Views
         //    IsBusy = false;
         //}
 
-        private void HitDice_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            HitDice.SelectedItem = null;
-        }
-
-        private void ResetHitDie(object sender, EventArgs e)
-        {
-            Model.ResetHitDie.Execute(null);
-        }
-
-        private async void Money_Clicked(object sender, EventArgs e)
-        {
-            if (IsBusy) return;
-            IsBusy = true;
-            await Navigation.PushAsync(new EditMoneyPage(Model));
-            IsBusy = false;
-        }
+        
 
         private async void OnExit(object sender, EventArgs e)
         {
@@ -100,75 +84,12 @@ namespace CB_5e.Views
         {
             Title = CurrentPage.Title;
         }
-        private async void SkillInfo(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is SkillInfo obj) await Navigation.PushAsync(InfoPage.Show(obj.Skill));
-        }
+        
 
-        private async void Info(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is IXML obj) await Navigation.PushAsync(InfoPage.Show(obj));
-        }
+        
 
-        private async void ResourceInfo(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ResourceViewModel rs)
-            {
-                if (rs.Value is ModifiedSpell ms)
-                {
-                    ms.Info = Model.Context.Player.GetAttack(ms, ms.differentAbility);
-                    ms.Modifikations.AddRange(from f in Model.Context.Player.GetFeatures() where f is SpellModifyFeature && Utils.Matches(Model.Context, ms, ((SpellModifyFeature)f).Spells, null) select f);
-                    ms.Modifikations = ms.Modifikations.Distinct().ToList();
-                    await Navigation.PushAsync(InfoPage.Show(ms));
-                }
-                if (rs.Value is ResourceInfo r)
-                {
-                    await Navigation.PushAsync(InfoPage.Show(Model.Context.Player.GetResourceFeatures(r.ResourceID)));
-                }
-            }
-        }
+        
 
-        private async void InfoSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem is IXML obj) await Navigation.PushAsync(InfoPage.Show(obj));
-            ((ListView)sender).SelectedItem = null;
-        }
-
-        private void ShowOnSheet(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Feature f)
-            {
-                Model.MakeHistory();
-                Model.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
-                //Model.Context.Player.HiddenFeatures.Add(f.Name);
-                Model.Save();
-            };
-        }
-        private void HideOnSheet(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is Feature f)
-            {
-                Model.MakeHistory();
-                Model.Context.Player.HiddenFeatures.Add(f.Name);
-                Model.Save();
-            };
-        }
-
-        private void AddCondition(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem is OGL.Condition c)
-            {
-                Model.AddCondition.Execute(c);
-            }
-            (sender as ListView).SelectedItem = null;
-        }
-        private void RemoveCondition(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem is OGL.Condition c)
-            {
-                Model.RemoveCondition.Execute(c);
-            }
-            (sender as ListView).SelectedItem = null;
-        }
+        
     }
 }

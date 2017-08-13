@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerInventoryPage"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New Item" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding Inventory}" ItemSelected="ListView_ItemSelected"
+                                    IsPullToRefreshEnabled="true"
+                                    RefreshCommand="{Binding RefreshItems}"
+                                    IsRefreshing="{Binding ItemsBusy, Mode=OneWay}"
+                                    CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding InventorySearch}" Placeholder="Search Inventory" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" Detail="{Binding Detail}" Command="{Binding Edit}" CommandParameter="{Binding .}">
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding ShowInfo}" Text="Show Info" CommandParameter="{Binding .}"/>
+                                <MenuItem Command="{Binding Delete}" Text="Delete" CommandParameter="{Binding .}" IsDestructive="True"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

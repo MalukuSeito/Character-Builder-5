@@ -8,19 +8,27 @@ using OGL.Features;
 
 namespace CB_5e.ViewModels
 {
-    public class ItemChoice : ChoiceViewModel
+    public class ItemChoice : ChoiceViewModel<ItemChoiceFeature>
     {
-        public ItemChoice(PlayerModel model, ItemChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, (from i in feature.Items select model.Context.GetItem(i, feature.Source)).ToList())
+        public ItemChoice(PlayerModel model, ItemChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature)
         {
         }
 
-        public override void Refresh(Feature feature)
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetItem(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(ItemChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((ItemChoiceFeature)feature).Amount;
-            Options = (from i in ((ItemChoiceFeature)feature).Items select Model.Context.GetItem(i, feature.Source)).ToList();
-            UpdateOptions();
+            Amount = feature.Amount;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return (from i in Feature.Items select Model.Context.GetItem(i, Feature.Source)).ToList();
         }
     }
 }

@@ -17,16 +17,16 @@ namespace CB_5e.ViewModels
 {
     public class ShopViewModel
     {
-        public PlayerModel Model { get; private set; }
+        public PlayerShopViewModel Model { get; private set; }
 
-        public ShopViewModel(PlayerModel playerViewModel)
+        public ShopViewModel(PlayerShopViewModel playerViewModel)
         {
             Model = playerViewModel;
             Select = new Command(async (par) =>
             {
                 if (par is Item i)
                 {
-                    await Model.ShopNavigation.PushAsync(new BuyAddPage(this, i));
+                    await Model.Navigation.PushAsync(new BuyAddPage(this, i));
                 }
                 else if (par is MagicProperty mp)
                 {
@@ -36,11 +36,11 @@ namespace CB_5e.ViewModels
                         Model.Context.Player.Possessions.Add(new Possession(Model.Context, (Item)null, mp));
                         Model.Save();
                         Model.FirePlayerChanged();
-                        await Model.ShopNavigation.PopAsync();
+                        await Model.Navigation.PopAsync();
                     }
                     else
                     {
-                        await Model.ShopNavigation.PushAsync(new AddToItemPage(this, mp));
+                        await Model.Navigation.PushAsync(new AddToItemPage(this, mp));
                     }
                 }
                 else if (par is Feature f)
@@ -52,7 +52,7 @@ namespace CB_5e.ViewModels
                         Model.Save();
                         Model.FirePlayerChanged();
                         Select.ChangeCanExecute();
-                        await Model.ShopNavigation.PopAsync();
+                        await Model.Navigation.PopAsync();
                     }
                 }
                 else if (par is Spell s)
@@ -62,12 +62,12 @@ namespace CB_5e.ViewModels
                         Model.MakeHistory();
                         Model.Context.Player.Items.Add(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source);
                         Model.Save();
-                        Model.RefreshItems.Execute(null);
-                        await Model.ShopNavigation.PopAsync();
+                        Model.RefreshInventory.Execute(null);
+                        await Model.Navigation.PopAsync();
                     }
                     else
                     {
-                        await Model.ShopNavigation.PushAsync(new AddToSpellbookPage(this, s));
+                        await Model.Navigation.PushAsync(new AddToSpellbookPage(this, s));
                     }
                 }
             }, (par) =>

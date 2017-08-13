@@ -5,22 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using OGL.Common;
 using OGL.Features;
+using OGL;
 
 namespace CB_5e.ViewModels
 {
-    public class ChoiceFeatureChoice : ChoiceViewModel
+    public class ChoiceFeatureChoice : ChoiceViewModel<ChoiceFeature>
     {
-        public ChoiceFeatureChoice(PlayerModel model, ChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, feature.Choices, feature.AllowSameChoice)
+        public ChoiceFeatureChoice(PlayerModel model, ChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, feature.AllowSameChoice)
         {
         }
-        public override void Refresh(Feature feature)
+
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Feature.Choices.FirstOrDefault(s => ConfigManager.SourceInvariantComparer.Equals(nameWithSource, s));
+        }
+
+        public override void Refresh(ChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((ChoiceFeature)feature).Amount;
-            Multiple = ((ChoiceFeature)feature).AllowSameChoice;
-            Options = ((ChoiceFeature)feature).Choices;
-            UpdateOptions();
+            Amount = feature.Amount;
+            Multiple = feature.AllowSameChoice;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return Feature.Choices;
         }
     }
 }

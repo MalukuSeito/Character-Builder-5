@@ -14,14 +14,14 @@ namespace CB_5e.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MorePlayPage : ContentPage
     {
-        public PlayerModel Model { get; private set; }
+        public PlayerPDFViewModel Model { get; private set; }
         public bool Editable { get; set; } = false;
         public bool Log { get; set; } = true;
         public bool Book { get; set; } = true;
         public bool IncludeResources { get; set; } = true;
         public string Exporter { get; set; }
         public List<string> Exporters { get => Model.Context.Config.PDF; }
-        public MorePlayPage(PlayerModel model)
+        public MorePlayPage(PlayerPDFViewModel model)
         {
             InitializeComponent();
             Model = model;

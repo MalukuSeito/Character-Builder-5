@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerFeaturesPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Features}"
+                      VerticalOptions="FillAndExpand"
+                      IsPullToRefreshEnabled="true"
+                      ItemSelected="InfoSelected"
+                      CachingStrategy="RecycleElement"
+                      RowHeight="25">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding FeatureSearch}" Placeholder="Search Features &amp; Traits" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="20, 0">
+                                <Label Text="{Binding Name}" HeightRequest="25" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                            <ViewCell.ContextActions>
+                                <MenuItem Clicked="ShowOnSheet" Text="Show On Sheet" />
+                                <MenuItem Clicked="HideOnSheet" Text="Hide On Sheet" />
+                            </ViewCell.ContextActions>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

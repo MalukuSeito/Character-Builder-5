@@ -16,7 +16,7 @@ namespace CB_5e.Views
 		public SpellcastingPage (PlayerViewModel model)
 		{
             BindingContext = Model = model;
-            model.SpellNavigation = Navigation;
+            model.Navigation = Navigation;
             CurrentPageChanged += CarouselPage_CurrentPageChanged;
             InitializeComponent ();
 

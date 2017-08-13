@@ -38,12 +38,12 @@ namespace CB_5e.Views
                         Title = "Spell",
                         Icon = Device.OnPlatform("tab_about.png", null, null)
                     });
-            Children.Add(
-                    new NavigationPage(new ShopPage(Model))
-                    {
-                        Title = "Item",
-                        Icon = Device.OnPlatform("tab_about.png", null, null)
-                    });
+            //Children.Add(
+            //        new NavigationPage(new ShopPage(Model))
+            //        {
+            //            Title = "Item",
+            //            Icon = Device.OnPlatform("tab_about.png", null, null)
+            //        });
             Children.Add(
                     new NavigationPage(new AboutPage())
                     {

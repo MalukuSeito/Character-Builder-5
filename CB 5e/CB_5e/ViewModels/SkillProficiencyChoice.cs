@@ -9,28 +9,31 @@ using OGL;
 
 namespace CB_5e.ViewModels
 {
-    public class SkillProficiencyChoice : ChoiceViewModel
+    public class SkillProficiencyChoice : ChoiceViewModel<SkillProficiencyChoiceFeature>
     {
-        public SkillProficiencyChoice(PlayerModel model, SkillProficiencyChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, GetChoices(feature, model))
+        public SkillProficiencyChoice(PlayerModel model, SkillProficiencyChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature)
         {
         }
 
-        public override void Refresh(Feature feature)
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetSkill(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(SkillProficiencyChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((SkillProficiencyChoiceFeature)feature).Amount;
-            Options = GetChoices((SkillProficiencyChoiceFeature)feature, Model);
-            UpdateOptions();
+            Amount = feature.Amount;
         }
-        private static List<Skill> GetChoices(SkillProficiencyChoiceFeature f, PlayerModel model)
+        protected override IEnumerable<IXML> GetOptions()
         {
-            List<Skill> shown;
-            if (f.Skills.Count == 0) shown = (from s in model.Context.Skills.Values orderby s select s).ToList();
-            else shown = new List<Skill>(from s in f.Skills select model.Context.GetSkill(s, f.Source));
-            if (f.OnlyAlreadyKnownSkills)
+            List<IXML> shown;
+            if (Feature.Skills.Count == 0) shown = (from s in Model.Context.Skills.Values orderby s select s).ToList<IXML>();
+            else shown = new List<IXML>(from s in Feature.Skills select Model.Context.GetSkill(s, Feature.Source));
+            if (Feature.OnlyAlreadyKnownSkills)
             {
-                IEnumerable<Skill> known = model.Context.Player.GetSkillProficiencies();
+                IEnumerable<Skill> known = Model.Context.Player.GetSkillProficiencies();
                 shown.RemoveAll(e => !known.Any(s => s == e));
             }
             return shown;

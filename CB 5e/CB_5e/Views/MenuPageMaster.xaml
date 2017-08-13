@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.MenuPageMaster"
+             Title="Master">
+  <StackLayout>
+        <ListView x:Name="MenuItemsListView"
+              SeparatorVisibility="None"
+              ItemsSource="{Binding SubPages}"
+              RowHeight="30">
+            <ListView.Header>
+                <Grid Padding="10,30,10,10" BackgroundColor="#03A9F4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label
+              Grid.Column="0"
+                        Grid.ColumnSpan="2"
+              Grid.Row="0"
+              Text="{Binding Name}"
+              Style="{DynamicResource SubtitleStyle}"/>
+                    <Button Text="Undo" Grid.Row="1" Grid.Column="0" Command="{Binding Undo}" FontSize="Small" />
+                    <Button Text="Redo" Grid.Row="1" Grid.Column="1" Command="{Binding Redo}" FontSize="Small" />
+                </Grid>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Title}" Height="30" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Grid Padding="10">
+                    <Button Text="Save &amp; Exit" Clicked="Button_Clicked"/>
+                </Grid>
+            </ListView.Footer>
+        </ListView>
+    </StackLayout>
+</ContentPage>

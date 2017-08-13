@@ -128,5 +128,10 @@ namespace Character_Builder
         {
             Player = new Player();
         }
+
+        public void FireUndoChanged()
+        {
+            HistoryButtonChange?.Invoke(Player, UndoBuffer.Count > 0, RedoBuffer.Count > 0);
+        }
     }
 }

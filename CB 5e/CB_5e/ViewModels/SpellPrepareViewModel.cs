@@ -19,10 +19,8 @@ namespace CB_5e.ViewModels
     {
         private static CultureInfo culture = CultureInfo.InvariantCulture;
         public Spellcasting Spellcasting { get; private set; }
-        public SpellPrepareViewModel(PlayerViewModel model, SpellcastingFeature spellcasting) : base(model, spellcasting)
+        public SpellPrepareViewModel(PlayerModel model, SpellcastingFeature spellcasting) : base(model, spellcasting, "Prepare " + (spellcasting.DisplayName ?? spellcasting.SpellcastingID) + " Spells")
         {
-            Title = spellcasting.DisplayName;
-            if (Title == null || Title == "") Title = SpellcastingID;
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             OnPrepare = new Command((par) =>
             {
@@ -44,10 +42,12 @@ namespace CB_5e.ViewModels
                         string r = svm.Name + " " + ConfigManager.SourceSeperator + " " + svm.Source;
                         Spellcasting.GetPreparedList(Model.Context.Player, Model.Context).RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
                         Model.Save();
+                        if (svm.BadChoice) Spells.Remove(svm);
+                        if (svm.BadChoice) spells.Remove(svm);
                     }
                     OnPropertyChanged("Count");
                     OnPropertyChanged("Prepared");
-                    Model.ChangedPreparedSpells(SpellcastingID);
+                    (model as PlayerViewModel)?.ChangedPreparedSpells(SpellcastingID);
                 }
             }, (par) => par is SpellViewModel svm && !svm.AddAlwaysPreparedToName);
             ShowInfo = new Command(async (par) =>
@@ -73,10 +73,11 @@ namespace CB_5e.ViewModels
                 {
                     s.Prepared = s.AddAlwaysPreparedToName;
                 }
+                spells.RemoveAll(s => s.BadChoice);
                 UpdateSpells();
                 OnPropertyChanged("Count");
                 OnPropertyChanged("Prepared");
-                Model.ChangedPreparedSpells(SpellcastingID);
+                (model as PlayerViewModel)?.ChangedPreparedSpells(SpellcastingID);
                 IsBusy = false;
             });
             AddSpells();
@@ -87,14 +88,17 @@ namespace CB_5e.ViewModels
             Spells.ReplaceRange(spells);
             if (SpellcastingFeature.Preparation == PreparationMode.ClassList)
             {
+                List<Spell> filtered = Utils.FilterSpell(Model.Context, SpellcastingFeature.PrepareableSpells, SpellcastingID, Model.Context.Player.GetClassLevel(SpellcastingID));
+                List<Spell> additional = Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context).ToList();
                 spells.AddRange(from s in Spellcasting.GetPrepared(Model.Context.Player, Model.Context)
                                 select new SpellViewModel(s)
                                 {
                                     Prepared = true,
                                     Prepare = OnPrepare,
-                                    ShowInfo = ShowInfo
+                                    ShowInfo = ShowInfo,
+                                    BadChoice = !filtered.Exists(t => t.Name == s.Name && s.Source == t.Source) && !additional.Exists(t => t.Name == s.Name && s.Source == t.Source)
                                 });
-                spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
+                spells.AddRange(from s in additional
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)
                                 {
@@ -102,7 +106,7 @@ namespace CB_5e.ViewModels
                                     Prepare = OnPrepare,
                                     ShowInfo = ShowInfo
                                 });
-                spells.AddRange(from s in Utils.FilterSpell(Model.Context, SpellcastingFeature.PrepareableSpells, SpellcastingID, Model.Context.Player.GetClassLevel(SpellcastingID))
+                spells.AddRange(from s in filtered
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)
                                 {
@@ -113,23 +117,17 @@ namespace CB_5e.ViewModels
             }
             else if (SpellcastingFeature.Preparation == PreparationMode.Spellbook)
             {
+                List<Spell> spellbook = Spellcasting.GetSpellbook(Model.Context.Player, Model.Context).ToList();
                 spells.AddRange(from s in Spellcasting.GetPrepared(Model.Context.Player, Model.Context)
                                 select new SpellViewModel(s)
                                 {
                                     Prepared = true,
                                     Prepare = OnPrepare,
-                                    ShowInfo = ShowInfo
-                                });
-                spells.AddRange(from s in Spellcasting.GetAdditionalClassSpells(Model.Context.Player, Model.Context)
-                                where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
-                                select new SpellViewModel(s)
-                                {
-                                    Prepared = true,
-                                    Prepare = OnPrepare,
-                                    ShowInfo = ShowInfo
+                                    ShowInfo = ShowInfo,
+                                    BadChoice = !spellbook.Exists(t => t.Name == s.Name && s.Source == t.Source)
                                 });
                 
-                spells.AddRange(from s in Spellcasting.GetSpellbook(Model.Context.Player, Model.Context)
+                spells.AddRange(from s in spellbook
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
                                 select new SpellViewModel(s)
                                 {

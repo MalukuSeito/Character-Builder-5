@@ -5,24 +5,36 @@ using System.Text;
 using System.Threading.Tasks;
 using OGL.Common;
 using OGL.Features;
+using OGL;
 
 namespace CB_5e.ViewModels
 {
-    public class CollectionChoice : ChoiceViewModel
+    public class CollectionChoice : ChoiceViewModel<CollectionChoiceFeature>
     {
-        public CollectionChoice(PlayerModel model, CollectionChoiceFeature feature, int level) : base(model, feature.UniqueID, feature.Amount, feature, from f in model.Context.GetFeatureCollection(((CollectionChoiceFeature)feature).Collection) where f.Level <= level select f, feature.AllowSameChoice)
+        public CollectionChoice(PlayerModel model, CollectionChoiceFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, feature.AllowSameChoice)
         {
         }
 
-        public override void Refresh(Feature feature)
+        public override IXML GetValue(string nameWithSource)
+        {
+            Feature res = Model.Context.GetFeatureCollection(Feature.Collection).Find(feat => feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source == nameWithSource);
+            if (res == null) res = Model.Context.GetFeatureCollection(Feature.Collection).Find(feat => ConfigManager.SourceInvariantComparer.Equals(feat, nameWithSource));
+            return res;
+        }
+
+        public override void Refresh(CollectionChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((CollectionChoiceFeature)feature).Amount;
-            Multiple = ((CollectionChoiceFeature)feature).AllowSameChoice;
+            Amount = feature.Amount;
+            Multiple = feature.AllowSameChoice;
             int level = Model.Context.Player.GetLevel();
-            Options = from f in Model.Context.GetFeatureCollection(((CollectionChoiceFeature)feature).Collection) where f.Level <= level select f;
-            UpdateOptions();
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            int level = Model.Context.Player.GetLevel();
+            return from f in Model.Context.GetFeatureCollection(Feature.Collection) where f.Level <= level select f;
         }
     }
 }

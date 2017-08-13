@@ -529,6 +529,30 @@ namespace Character_Builder
             }
             return null;
         }
+
+        public string GetClassName(int atLevel)
+        {
+            foreach (PlayerClass p in Classes)
+            {
+                if (p.getClassLevelAtLevel(atLevel) > 0)
+                {
+                    return p.ClassName;
+                }
+            }
+            return null;
+        }
+
+        public int GetClassLevel(int atLevel)
+        {
+            foreach (PlayerClass p in Classes)
+            {
+                if (p.getClassLevelAtLevel(atLevel) > 0)
+                {
+                    return p.getClassLevelUpToLevel(atLevel);
+                }
+            }
+            return 0;
+        }
         public bool DeleteClass(int atLevel)
         {
             PlayerClass todelete=null;
@@ -552,6 +576,17 @@ namespace Character_Builder
                     p.setHPRollAtLevel(atLevel, hproll);
                 }
             }
+        }
+        public int GetHPRoll(int atLevel)
+        {
+            foreach (PlayerClass p in Classes)
+            {
+                if (p.getClassLevelAtLevel(atLevel) > 0)
+                {
+                    return p.HPRollAtLevel(atLevel);
+                }
+            }
+            return 0;
         }
         public List<ClassDefinition> GetClassesByLevel()
         {
@@ -663,6 +698,16 @@ namespace Character_Builder
             fl.AddRange(GetPossessionFeatures(level, false));
             return fl;
         }
+
+        public List<Feature> GetOnlyBackgroundFeatures(int level = 0, bool reset = false)
+        {
+            //if (reset) ChoiceCounter.Clear();
+            if (reset) ResetChoices();
+            if (level == 0) level = GetLevel();
+            List<Feature> fl = new List<Feature>();
+            if (Background != null) fl.AddRange(Context.Plugins.FilterBackgroundFeatures(Background, Background.CollectFeatures(level, this, Context), level, this, Context));
+            return fl;
+        }
         public bool CanMulticlass(ClassDefinition c, int level)
         {
             List<string> skills = new List<string>();
@@ -753,6 +798,11 @@ namespace Character_Builder
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) return p.GetSubClass(Context);
             return null;
         }
+        public string GetSubclassName(string cd)
+        {
+            foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) return p.SubClassName;
+            return null;
+        }
         public void RemoveSubclass(string cd)
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) p.SetSubClass(null);
@@ -793,7 +843,7 @@ namespace Character_Builder
             List<string> res = new List<string>();
             if (level==0) level = GetLevel();
             List<Feature> feats = Context.GetFeatureCollection("");
-            foreach (AbilityFeatChoice s in GetAbilityFeatChoices(level)) if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.Add(s.Feat);
+            foreach (AbilityFeatChoice s in GetAbilityFeatChoices(level)) if (s.Ability1 == Ability.None && s.Ability2 == Ability.None && s.Feat != null && s.Feat != "") res.Add(SourceInvariantComparer.NoSource(s.Feat));
             return res;
         }
         public IEnumerable<AbilityScoreFeatFeature> GetAbilityIncreases(int level = 0)

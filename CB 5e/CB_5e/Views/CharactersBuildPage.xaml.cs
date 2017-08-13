@@ -28,31 +28,31 @@ namespace CB_5e.Views
         {
             if (IsBusy) return;
             IsBusy = true;
-            viewModel.Items.Clear();
+            //viewModel.Items.Clear();
             var item = args.SelectedItem as Character;
             if (item == null)
                 return;
             BuilderContext Context = new BuilderContext(item.Player);
             PluginManager manager = new PluginManager();
-            manager.plugins.Add(new SpellPoints());
-            manager.plugins.Add(new SingleLanguage());
+            manager.Add(new SpellPoints());
+            manager.Add(new SingleLanguage());
             Context.Plugins = manager;
 
-            Task.Run(async () =>
-                 {
-                     if (Context.Player.FilePath is IFile file)
-                     {
-                         string name = file.Name;
-                         IFile target = await (await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false)).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
-                         using (Stream fout = await target.OpenAsync(FileAccess.ReadAndWrite))
-                         {
-                             using (Stream fin = await file.OpenAsync(FileAccess.Read))
-                             {
-                                 await fin.CopyToAsync(fout);
-                             }
-                         };
-                     }
-                 }).Forget();
+            //Task.Run(async () =>
+            //     {
+            //         if (Context.Player.FilePath is IFile file)
+            //         {
+            //             string name = file.Name;
+            //             IFile target = await (await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false)).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
+            //             using (Stream fout = await target.OpenAsync(FileAccess.ReadAndWrite))
+            //             {
+            //                 using (Stream fin = await file.OpenAsync(FileAccess.Read))
+            //                 {
+            //                     await fin.CopyToAsync(fout);
+            //                 }
+            //             };
+            //         }
+            //     }).Forget();
             Context.UndoBuffer = new LinkedList<Player>();
             Context.RedoBuffer = new LinkedList<Player>();
             Context.UnsavedChanges = 0;
@@ -69,7 +69,7 @@ namespace CB_5e.Views
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopModalAsync(false);
-                    await Navigation.PushModalAsync(new BuildPage(model));
+                    await Navigation.PushModalAsync(new NavigationPage(new FlowPage(model)));
                 });
             }
             catch (OperationCanceledException)
@@ -78,6 +78,7 @@ namespace CB_5e.Views
             finally
             {
                 IsBusy = false;
+                (sender as ListView).SelectedItem = null;
             }
             // Manually deselect item
 
@@ -112,7 +113,7 @@ namespace CB_5e.Views
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopModalAsync(false);
-                    await Navigation.PushModalAsync(new BuildPage(model));
+                    await Navigation.PushModalAsync(new NavigationPage(new FlowPage(model)));
                 });
             }
             catch (OperationCanceledException)

@@ -1,4 +1,5 @@
 ﻿using CB_5e;
+using CB_5e.ViewModels;
 using Character_Builder;
 using OGL;
 using OGL.Common;
@@ -63,6 +64,8 @@ namespace CB_5e.Droid
         {
             LoadTransform += (t, o) => { if (o is Background) t.Load(App.Storage.Path + "/Data/" + Config.Backgrounds_Transform); };
             LoadTransform += (t, o) => { if (o is Feature) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
+            LoadTransform += (t, o) => { if (o is TableValue) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
+            LoadTransform += (t, o) => { if (o is AbilityChoice) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
             LoadTransform += (t, o) => { if (o is FeatureContainer) t.Load(App.Storage.Path + "/Data/" + Config.Features_Transform); };
             LoadTransform += (t, o) => { if (o is ClassDefinition) t.Load(App.Storage.Path + "/Data/" + Config.Classes_Transform); };
             LoadTransform += (t, o) => { if (o is Condition) t.Load(App.Storage.Path + "/Data/" + Config.Conditions_Transform); };

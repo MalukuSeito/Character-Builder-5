@@ -1,45 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                x:Class="CB_5e.Views.ShopPage" >
-    <ContentPage Title="Inventory">
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Exit" Clicked="OnExit" />
-            <ToolbarItem Text="New" Clicked="ToolbarItem_Clicked" />
-            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
-            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
-            <ToolbarItem Text="Shop &gt;&gt;" Clicked="OnNext" />
-        </ContentPage.ToolbarItems>
-        <StackLayout>
-            <ListView ItemsSource="{Binding Inventory}" ItemSelected="ListView_ItemSelected"
-                                    IsPullToRefreshEnabled="true"
-                                    RefreshCommand="{Binding RefreshItems}"
-                                    IsRefreshing="{Binding ItemsBusy, Mode=OneWay}"
-                                    CachingStrategy="RecycleElement">
-                <ListView.Header>
-                    <StackLayout>
-                        <SearchBar Text="{Binding InventorySearch}" Placeholder="Search Inventory" />
-                    </StackLayout>
-                </ListView.Header>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Name}" Detail="{Binding Detail}" Command="{Binding Edit}" CommandParameter="{Binding .}">
-                            <TextCell.ContextActions>
-                                <MenuItem Command="{Binding ShowInfo}" Text="Show Info" CommandParameter="{Binding .}"/>
-                                <MenuItem Command="{Binding Delete}" Text="Delete" CommandParameter="{Binding .}" IsDestructive="True"/>
-                            </TextCell.ContextActions>
-                        </TextCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
-    </ContentPage>
-    <ContentPage Title="Shop">
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Text="&lt; &lt; Inventory" Clicked="OnPrev" />
-            <ToolbarItem Text="Exit" Clicked="OnExit" />
-            <ToolbarItem Text="Item Options &gt;&gt;" Clicked="OnNext" />
-        </ContentPage.ToolbarItems>
+                x:Class="CB_5e.Views.ShopPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
         <StackLayout>
             <ListView ItemsSource="{Binding Shops}" 
                       ItemSelected="ListView_ItemSelected"
@@ -61,39 +25,6 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-    </ContentPage>
-    <ContentPage Title="Item Options">
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Text="&lt; &lt; Shop" Clicked="OnPrev" />
-            <ToolbarItem Text="Exit" Clicked="OnExit" />
-            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
-            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
-        </ContentPage.ToolbarItems>
-        <StackLayout>
-            <ListView ItemsSource="{Binding InventoryChoices}" 
-                      ItemSelected="ListView_ItemSelected"
-                      IsPullToRefreshEnabled="false"
-                      CachingStrategy="RecycleElement"
-                      IsGroupingEnabled="True"
-                      GroupDisplayBinding="{Binding DisplayName}"
-                      RowHeight="30">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Height ="30" Text="{Binding Name}" Command="{Binding Select}" CommandParameter="{Binding .}" TextColor="{Binding SelectedColor}" >
-                            <TextCell.ContextActions>
-                                <MenuItem Clicked="MenuItem_Clicked_1" Text="Show Choice"/>
-                                <MenuItem Clicked="MenuItem_Clicked" Text="Show Info"/>
-                            </TextCell.ContextActions>
-                        </TextCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Footer>
-                    <StackLayout>
-                        <Label HorizontalTextAlignment="Center" Text="This page contains all choices required by Items. If for example you add a Robe of Useful Items to your character, you can configure the patches on the robe here"/>
-                    </StackLayout>
-                </ListView.Footer>
-            </ListView>
-        </StackLayout>
-    </ContentPage>
-</CarouselPage>
+    </ContentPage.Content>
+</ContentPage>
     

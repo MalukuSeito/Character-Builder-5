@@ -49,12 +49,24 @@
     <Compile Include="Services\IDocumentViewer.cs" />
     <Compile Include="Services\IPDFService.cs" />
     <Compile Include="Services\IHTMLService.cs" />
+    <Compile Include="ViewModels\AbilityFeatChoiceModel.cs" />
+    <Compile Include="ViewModels\BackgroundChoice.cs" />
+    <Compile Include="ViewModels\BackgroundViewModel.cs" />
+    <Compile Include="ViewModels\BondChoice.cs" />
     <Compile Include="ViewModels\BonusSpellKeywordChoice.cs" />
     <Compile Include="ViewModels\ChoiceFeatureChoice.cs" />
     <Compile Include="ViewModels\ChoiceOption.cs" />
     <Compile Include="ViewModels\ChoiceViewModel.cs" />
+    <Compile Include="ViewModels\ClassChoice.cs" />
+    <Compile Include="ViewModels\ClassesViewModel.cs" />
+    <Compile Include="ViewModels\ClassHPChoice.cs" />
     <Compile Include="ViewModels\CollectionChoice.cs" />
+    <Compile Include="ViewModels\CustomChoiceOption.cs" />
+    <Compile Include="ViewModels\DescriptionChoice.cs" />
+    <Compile Include="ViewModels\FlawChoice.cs" />
     <Compile Include="ViewModels\HitDieViewModel.cs" />
+    <Compile Include="ViewModels\HP.cs" />
+    <Compile Include="ViewModels\IdealChoice.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\ItemChoice.cs" />
     <Compile Include="ViewModels\ItemChoiceConditionFeature.cs" />
@@ -70,21 +82,42 @@
     <Compile Include="ViewModels\CharactersViewModel.cs" />
     <Compile Include="ViewModels\NewFolderViewModel.cs" />
     <Compile Include="ViewModels\FilesViewModel.cs" />
+    <Compile Include="ViewModels\PersonalityTraitChoice.cs" />
     <Compile Include="ViewModels\PlayerBuildModel.cs" />
+    <Compile Include="ViewModels\PlayerConditionViewModel.cs" />
+    <Compile Include="ViewModels\PlayerFeaturesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerInfoViewModel.cs" />
+    <Compile Include="ViewModels\PlayerInventoryChoicesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerInventoryViewModel.cs" />
+    <Compile Include="ViewModels\PlayerJournalViewModel.cs" />
     <Compile Include="ViewModels\PlayerModel.cs" />
+    <Compile Include="ViewModels\PlayerNotesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerPDFViewModel.cs" />
+    <Compile Include="ViewModels\PlayerPersonalViewModel.cs" />
+    <Compile Include="ViewModels\PlayerProficiencyViewModel.cs" />
+    <Compile Include="ViewModels\PlayerResourcesViewModel.cs" />
+    <Compile Include="ViewModels\PlayerScoresViewModel.cs" />
+    <Compile Include="ViewModels\PlayerShopViewModel.cs" />
+    <Compile Include="ViewModels\PlayerSkillViewModel.cs" />
     <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\SubRaceChoice.cs" />
     <Compile Include="ViewModels\RaceChoice.cs" />
+    <Compile Include="ViewModels\RaceViewModel.cs" />
     <Compile Include="ViewModels\ResourceViewModel.cs" />
     <Compile Include="ViewModels\ScoresModelViewModel.cs" />
     <Compile Include="ViewModels\ShopGroupModel.cs" />
     <Compile Include="ViewModels\ShopViewModel.cs" />
     <Compile Include="ViewModels\SkillProficiencyChoice.cs" />
+    <Compile Include="ViewModels\SourcesViewModel.cs" />
     <Compile Include="ViewModels\SpellbookSpellsViewModel.cs" />
     <Compile Include="ViewModels\SpellbookViewModel.cs" />
+    <Compile Include="ViewModels\SpellChoiceViewModel.cs" />
     <Compile Include="ViewModels\SpellPrepareViewModel.cs" />
     <Compile Include="ViewModels\SpellSlotViewModel.cs" />
     <Compile Include="ViewModels\SpellViewModel.cs" />
+    <Compile Include="ViewModels\SubClassChoice.cs" />
+    <Compile Include="ViewModels\SubModel.cs" />
+    <Compile Include="ViewModels\SubRaceChoice.cs" />
+    <Compile Include="ViewModels\TableValue.cs" />
     <Compile Include="ViewModels\ToolProficiencyChoice.cs" />
     <Compile Include="ViewModels\WrongChoiceOption.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
@@ -99,11 +132,20 @@
     <Compile Include="Views\CharactersBuildPage.xaml.cs">
       <DependentUpon>CharactersBuildPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ClassesPage.xaml.cs">
+      <DependentUpon>ClassesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomTextEntryPage.xaml.cs">
+      <DependentUpon>CustomTextEntryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditMoneyPage.xaml.cs">
       <DependentUpon>EditMoneyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FileBrowser.xaml.cs">
       <DependentUpon>FileBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FlowPage.xaml.cs">
+      <DependentUpon>FlowPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImageViewer.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
@@ -120,6 +162,12 @@
     </Compile>
     <Compile Include="Views\JournalEntryPage.xaml.cs">
       <DependentUpon>JournalEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuPage.xaml.cs">
+      <DependentUpon>MenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MenuPageMaster.xaml.cs">
+      <DependentUpon>MenuPageMaster.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MorePlayPage.xaml.cs">
       <DependentUpon>MorePlayPage.xaml</DependentUpon>
@@ -142,6 +190,51 @@
     <Compile Include="Views\BuildPage.xaml.cs">
       <DependentUpon>BuildPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlayerConditionPage.xaml.cs">
+      <DependentUpon>PlayerConditionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerFeaturesPage.xaml.cs">
+      <DependentUpon>PlayerFeaturesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerInfoPage.xaml.cs">
+      <DependentUpon>PlayerInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerInventoryOptionsPage.xaml.cs">
+      <DependentUpon>PlayerInventoryOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerInventoryPage.xaml.cs">
+      <DependentUpon>PlayerInventoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerNotesPage.xaml.cs">
+      <DependentUpon>PlayerNotesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerPersonalPage.xaml.cs">
+      <DependentUpon>PlayerPersonalPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerPreparePage.xaml.cs">
+      <DependentUpon>PlayerPreparePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerProficiencyPage.xaml.cs">
+      <DependentUpon>PlayerProficiencyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerResourcesPage.xaml.cs">
+      <DependentUpon>PlayerResourcesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerScoresPage.xaml.cs">
+      <DependentUpon>PlayerScoresPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerSkillPage.xaml.cs">
+      <DependentUpon>PlayerSkillPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlayerSpellsPage.xaml.cs">
+      <DependentUpon>PlayerSpellsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BackgroundPage.xaml.cs">
+      <DependentUpon>BackgroundPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RacePage.xaml.cs">
+      <DependentUpon>RacePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ShopSubPage.xaml.cs">
       <DependentUpon>ShopSubPage.xaml</DependentUpon>
     </Compile>
@@ -159,6 +252,9 @@
     </Compile>
     <Compile Include="Views\NewFolderPage.xaml.cs">
       <DependentUpon>NewFolderPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SourcesPage.xaml.cs">
+      <DependentUpon>SourcesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SpellcastingPage.xaml.cs">
       <DependentUpon>SpellcastingPage.xaml</DependentUpon>
@@ -190,6 +286,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DLToolkit.Forms.Controls.FlowListView, Version=1.0.6237.31064, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DLToolkit.Forms.Controls.FlowListView.2.0.4\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\DLToolkit.Forms.Controls.FlowListView.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51803, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpZipLib.Portable.0.86.0.0003\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid+Xamarin.iOS10\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
     </Reference>
@@ -376,6 +475,132 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\BuildPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerInfoPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerSkillPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerResourcesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerFeaturesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerConditionPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerProficiencyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerInventoryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerInventoryOptionsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerNotesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MenuPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MenuPageMaster.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerSpellsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerPreparePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\FlowPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CustomTextEntryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ClassesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\RacePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\BackgroundPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerScoresPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\PlayerPersonalPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SourcesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

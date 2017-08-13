@@ -14,7 +14,7 @@ namespace CB_5e.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditMoneyPage : ContentPage
 	{
-        public EditMoneyPage (PlayerViewModel model)
+        public EditMoneyPage (PlayerInfoViewModel model)
 		{
             BindingContext = model;
 			InitializeComponent ();

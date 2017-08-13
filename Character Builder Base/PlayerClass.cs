@@ -54,7 +54,7 @@ namespace Character_Builder
 
         public void SetSubClass(SubClass value)
         {
-            if (value == null) SubClassName = "";
+            if (value == null) SubClassName = null;
             else SubClassName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
         }
 

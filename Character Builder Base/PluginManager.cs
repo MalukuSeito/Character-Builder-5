@@ -31,6 +31,12 @@ namespace Character_Builder
             if (rules != null) foreach (string p in rules) if (available.ContainsKey(p)) plugins.Add(available[p]);
             FireEvent(this, EventArgs.Empty);
         }
+
+        public void Add(IPlugin p)
+        {
+            available.Add(p.Name, p);
+        }
+
         public List<Feature> FilterBackgroundFeatures(Background background, List<Feature> features, int level, IChoiceProvider provider, OGLContext context)
         {
             foreach (IPlugin i in plugins)

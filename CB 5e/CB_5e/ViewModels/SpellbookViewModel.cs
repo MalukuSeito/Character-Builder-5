@@ -10,12 +10,11 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class SpellbookViewModel: BaseViewModel
+    public class SpellbookViewModel: SubModel
     {
         public SpellcastingFeature SpellcastingFeature { get; protected set; }
         public string SpellcastingID { get => SpellcastingFeature.SpellcastingID; }
-        public PlayerViewModel Model { get; private set; }
-        public INavigation Navigation { get => Model.SpellNavigation; }
+        public PlayerModel Model { get => Parent; }
         
         public virtual void Refresh(SpellcastingFeature feature)
         {
@@ -23,10 +22,9 @@ namespace CB_5e.ViewModels
             OnPropertyChanged(null);
         }
 
-        public SpellbookViewModel(PlayerViewModel model, SpellcastingFeature spellcasting)
+        public SpellbookViewModel(PlayerModel model, SpellcastingFeature spellcasting, string title): base(model, title)
         {
             SpellcastingFeature = spellcasting;
-            Model = model;
         }
     }
 }

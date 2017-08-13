@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerPersonalPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="Character Name:" />
+                <Entry Text="{Binding CharacterName}" TextColor="{Binding Accent}"/>
+                <Label Text="Alignment:"/>
+                <Entry Text="{Binding Alignment}" TextColor="{Binding Accent}"/>
+                <Label Text="XP (also see Journal):" />
+                <Entry x:Name="XP" TextColor="{Binding Accent}"/>
+                <Label Text="XP to Level UP:" />
+                <Entry IsEnabled="False" Text="{Binding XPToLevel, Mode=OneWay}"/>
+                <Label Text="Portrait:" />
+                <Image HeightRequest="200" HorizontalOptions="Fill" Aspect="AspectFit" VerticalOptions="Start" Source="{Binding Portrait}" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowImage}" CommandParameter="{Binding Portrait}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Player:"/>
+                <Entry Text="{Binding Player}" TextColor="{Binding Accent}"/>
+                <Label Text="DCI #:"/>
+                <Entry Text="{Binding DCI}" TextColor="{Binding Accent}"/>
+                <Label Text="Age:"/>
+                <Entry Keyboard="Numeric" Text="{Binding Age}" TextColor="{Binding Accent}"/>
+                <Label Text="Weight (lb):"/>
+                <Entry Keyboard="Numeric" Text="{Binding Weight}" TextColor="{Binding Accent}"/>
+                <Label Text="Height:"/>
+                <Entry Text="{Binding Height}" TextColor="{Binding Accent}"/>
+                <Label Text="Eyes:"/>
+                <Entry Text="{Binding Eyes}" TextColor="{Binding Accent}"/>
+                <Label Text="Skin:"/>
+                <Entry Text="{Binding Skin}" TextColor="{Binding Accent}"/>
+                <Label Text="Hair:"/>
+                <Entry Text="{Binding Hair}" TextColor="{Binding Accent}"/>
+                <Label Text="Faction:"/>
+                <Entry Text="{Binding Faction}" TextColor="{Binding Accent}"/>
+                <Label Text="Faction Insignia:"/>
+                <Image HeightRequest="200" HorizontalOptions="Fill" Aspect="AspectFit" VerticalOptions="Start" Source="{Binding FactionImage}" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowImage}" CommandParameter="{Binding FactionImage}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="Backstory:"/>
+                <Editor HeightRequest="200" Text="{Binding Backstory}" TextColor="{Binding Accent}"/>
+                <Label Text="Allies:"/>
+                <Editor HeightRequest="200" Text="{Binding Allies}" TextColor="{Binding Accent}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
+    

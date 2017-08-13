@@ -29,6 +29,7 @@ namespace CB_5e.ViewModels
         public Command Highlight { get; set; }
         public Command Prepare { get; set; }
         public Command ShowInfo { get; set; }
+        public bool BadChoice { get; set; }
         public bool prep;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -82,7 +83,7 @@ namespace CB_5e.ViewModels
             return Spell.CompareTo(other.Spell);
         }
         public bool RitualOnly { get => (Spell is ModifiedSpell ms) && ms.OnlyAsRitual; }
-        public Color PreparedColor { get => Prepared ? Color.DarkBlue : Color.Default; }
+        public Color PreparedColor { get => BadChoice ? Color.DarkRed : Prepared ? Color.DarkBlue : Color.Default; }
         public Color DisplayColor { get => RitualOnly ? Color.LightGray : Color.Default; }
         public bool AddAlwaysPreparedToName {
             get => Spell is ModifiedSpell && ((ModifiedSpell)Spell).AddAlwaysPreparedToName;

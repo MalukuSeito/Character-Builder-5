@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,21 @@ namespace OGL
             if (x != null && x.Contains(ConfigManager.SourceSeperatorString)) x = x.Split(ConfigManager.SourceSeperator)[0].TrimEnd(' ');
             if (y != null && y.Contains(ConfigManager.SourceSeperatorString)) y = y.Split(ConfigManager.SourceSeperator)[0].TrimEnd(' ');
             return s.Equals(x, y);
+        }
+
+        public bool Equals(string x, IXML y)
+        {
+            return Equals(x, y.Name);
+        }
+
+        public bool Equals(IXML x, IXML y)
+        {
+            return s.Equals(x.Name, y.Name);
+        }
+
+        public bool Equals(IXML x, string y)
+        {
+            return Equals(x.Name, y);
         }
 
         public override int GetHashCode(string obj)

@@ -16,80 +16,20 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ShopPage : CarouselPage
+	public partial class ShopPage : ContentPage
 	{
-        public PlayerModel Model { get; private set; }
 
-        public ShopPage(PlayerModel model)
+        public ShopPage(PlayerShopViewModel model)
 		{
-            BindingContext = Model = model;
-            Model.ShopNavigation = Navigation;
+            BindingContext = model;
+            model.Navigation = Navigation;
             InitializeComponent ();
-            CurrentPageChanged += CarouselPage_CurrentPageChanged; 
-            Title = CurrentPage.Title;
         }
 
-        private async void OnExit(object sender, EventArgs e)
-        {
-            if (IsBusy) return;
-            IsBusy = true;
-            if (!Model.ChildModel)
-            {
-                if (Model is PlayerViewModel pvm && App.AutoSaveDuringPlay)
-                {
-                    Model.Save();
-                    pvm.Saving.WaitForAll();
-                }
-                else if (Model.Context.UnsavedChanges > 0)
-                {
-                    if (DisplayAlert("Unsaved Changes", "You have " + Model.Context.UnsavedChanges + " unsaved changes. Do you want to save them before leaving?", "Yes", "No").Result)
-                    {
-                        Model.DoSave();
-                    }
-                }
-            }
-            await Navigation.PopModalAsync();
-            if (!Model.ChildModel)
-            {
-                CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
-            }
-            IsBusy = false;
-        }
 
-        private void OnNext(object sender, EventArgs e)
-        {
-            int i = Children.IndexOf(CurrentPage) + 1;
-            if (i < Children.Count) CurrentPage = Children[i];
-        }
-
-        private void OnPrev(object sender, EventArgs e)
-        {
-            int i = Children.IndexOf(CurrentPage) - 1;
-            if (i >= 0) CurrentPage = Children[i];
-        }
-
-        private void CarouselPage_CurrentPageChanged(object sender, EventArgs e)
-        {
-            Title = CurrentPage.Title;
-        }
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (sender is ListView lv) lv.SelectedItem = null;
-        }
-
-        private async void ToolbarItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage(new ItemViewModel(Model))));
-        }
-
-        private async void MenuItem_Clicked(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Value));
-        }
-
-        private async void MenuItem_Clicked_1(object sender, EventArgs e)
-        {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Feature));
         }
     }
 }

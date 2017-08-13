@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerSpellsPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <Grid Padding="10, 0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="43"/>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="31"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Ability:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Ability}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="Attack:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="{Binding Attack}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="DC:" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding DC}" HorizontalTextAlignment="Center" VerticalOptions="Start" VerticalTextAlignment="Start"/>
+            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Text="Spell Slots, tap to edit, tap again to reduce by one" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+
+
+            <ListView Grid.Row="0" Grid.Column="2" Grid.RowSpan="6"  ItemsSource="{Binding Spells}" ItemSelected="ListView_ItemSelected"
+                                      IsPullToRefreshEnabled="false"
+                                      CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding SpellSearch}" Placeholder="Search Spells" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding FullName}" Detail="{Binding School}" Command="{Binding ShowInfo}" CommandParameter="{Binding .}" TextColor="{Binding DisplayColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding Highlight}" Text="Highlight on Sheet" CommandParameter="{Binding .}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView VerticalOptions="FillAndExpand" Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding SpellSlots}" SelectedItem="{Binding Selected}" 
+                                      IsPullToRefreshEnabled="true"
+                                      RefreshCommand="{Binding ResetAll}"
+                                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                      CachingStrategy="RecycleElement"
+                                      RowHeight="30">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height="30" Text="{Binding Text}" Command="{Binding Reduce}" CommandParameter="{Binding .}" >
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding Reset}" Text="Reset" CommandParameter="{Binding .}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Entry Keyboard="Numeric" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Used}"/>
+            <Label Grid.Row="6" Grid.Column="2" Text="Spell on Sheet" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+            <Label Grid.Row="7" Grid.Column="2" Text="{Binding Highlight}" FontSize="Small" LineBreakMode="NoWrap" TextColor="{Binding Accent}" HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RemoveHighlight}"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

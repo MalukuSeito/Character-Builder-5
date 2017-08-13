@@ -13,7 +13,7 @@ namespace CB_5e.ViewModels
         public WrongChoiceOption(string choice)
         {
             Choice = choice;
-            Value = new Feature("choice", "Does not exist or is not valid");
+            Value = new Feature(choice, "Does not exist or is not valid");
         }
         public string Choice { get; set; }
         public override string NameWithSource => Choice;

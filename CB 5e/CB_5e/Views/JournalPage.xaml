@@ -1,15 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                x:Class="CB_5e.Views.JournalPage" >
-    <ContentPage Title="Journal">
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Exit" Clicked="OnExit" />
-            <ToolbarItem Text="New" Clicked="ToolbarItem_Clicked" />
-            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
-            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
-            <ToolbarItem Text="Notes &gt;&gt;" Clicked="OnNext" />
-        </ContentPage.ToolbarItems>
+                x:Class="CB_5e.Views.JournalPage"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New Entry" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
         <StackLayout>
             <ListView ItemsSource="{Binding JournalEntries}" ItemSelected="ListView_ItemSelected"
                       IsPullToRefreshEnabled="true"
@@ -37,44 +34,6 @@
                 </ListView.Footer>
             </ListView>
         </StackLayout>
-    </ContentPage>
-    <ContentPage Title="Notes1">
-        <ContentPage.ToolbarItems>
-            <ToolbarItem Text="&lt; &lt; Inventory" Clicked="OnPrev" />
-            <ToolbarItem Text="Add" Command="{Binding NewNote}" />
-            <ToolbarItem Text="Save" Command="{Binding SaveNote}" />
-            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
-            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
-        </ContentPage.ToolbarItems>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <ListView Grid.Row="0" ItemsSource="{Binding Notes}"
-                      IsPullToRefreshEnabled="true"
-                      SelectedItem="{Binding SelectedNote}"
-                      RefreshCommand="{Binding RefreshNotes}"
-                      IsRefreshing="{Binding NotesBusy, Mode=OneWay}" 
-                      CachingStrategy="RecycleElement"
-                      RowHeight="30">
-                <ListView.Header>
-                    <StackLayout>
-                        <SearchBar Text="{Binding NotesSearch}" Placeholder="Search Notes" />
-                    </StackLayout>
-                </ListView.Header>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Height="30" Text="{Binding .}">
-                            <TextCell.ContextActions>
-                                <MenuItem Clicked="MenuItem_Clicked_1" Text="Delete" IsDestructive="True"/>
-                            </TextCell.ContextActions>
-                        </TextCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Editor Grid.Row="1" Text="{Binding Note}"/>
-        </Grid>
-    </ContentPage>
-</CarouselPage>
+    </ContentPage.Content>
+</ContentPage>
     

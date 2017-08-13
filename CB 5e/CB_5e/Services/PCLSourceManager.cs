@@ -14,7 +14,7 @@ namespace CB_5e.Services
     public class PCLSourceManager
     {
         public static IFolder Data;
-        private static IList<IFolder> Sources;
+        public static IList<IFolder> Sources;
 
         private static async Task Extract(Stream stream, IFolder target, string path)
         {

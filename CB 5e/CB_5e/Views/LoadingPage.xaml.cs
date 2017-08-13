@@ -18,14 +18,18 @@ namespace CB_5e.Views
 
         public CancellationTokenSource Cancel = new CancellationTokenSource();
 
-        public LoadingPage(LoadingProgress loader)
+        public LoadingPage(LoadingProgress loader, bool canCancel = true)
         {
             InitializeComponent();
             BindingContext = loader;
+            CanCancel = canCancel;
         }
+
+        public bool CanCancel { get; private set; }
 
         protected override bool OnBackButtonPressed()
         {
+            if (!CanCancel) return true;
             Cancel.Cancel();
             return base.OnBackButtonPressed();
         }

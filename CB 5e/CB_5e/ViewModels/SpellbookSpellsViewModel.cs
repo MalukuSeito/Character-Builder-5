@@ -19,10 +19,10 @@ namespace CB_5e.ViewModels
         private static CultureInfo culture = CultureInfo.InvariantCulture;
         private int last = -1;
         public Spellcasting Spellcasting { get; private set; }
-        public SpellbookSpellsViewModel(PlayerViewModel model, SpellcastingFeature spellcastingFeature) : base(model, spellcastingFeature)
+        public PlayerViewModel ViewModel;
+        public SpellbookSpellsViewModel(PlayerViewModel model, SpellcastingFeature spellcastingFeature) : base(model, spellcastingFeature, spellcastingFeature.DisplayName??spellcastingFeature.SpellcastingID)
         {
-            Title = spellcastingFeature.DisplayName;
-            if (Title == null || Title == "") Title = SpellcastingID;
+            ViewModel = model;
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             OnHighlight = new Command((par) =>
             {
@@ -58,7 +58,7 @@ namespace CB_5e.ViewModels
                             used = s.Used;
                             OnPropertyChanged("Used");
                         }
-                        Model.UpdateSlots(this);
+                        model.UpdateSlots(this);
                     }
                     last = s.Level;
                 }
@@ -77,7 +77,7 @@ namespace CB_5e.ViewModels
                         used = s.Used;
                         OnPropertyChanged("Used");
                     }
-                    Model.UpdateSlots(this);
+                    model.UpdateSlots(this);
                 }
             });
             ResetAll = new Command(() =>
@@ -89,7 +89,7 @@ namespace CB_5e.ViewModels
                 UpdateSlots();
                 used = 0;
                 OnPropertyChanged("Used");
-                Model.UpdateSlots(this);
+                model.UpdateSlots(this);
                 IsBusy = false;
             });
             ShowInfo = new Command(async (par) =>
@@ -250,7 +250,7 @@ namespace CB_5e.ViewModels
                     Model.MakeHistory(selected.SpellcastingID + "Slots" + selected.Level);
                     Model.Context.Player.SetSpellSlot(selected.SpellcastingID, selected.Level, selected.Used);
                     Model.Save();
-                    Model.UpdateSlots(this);
+                    ViewModel.UpdateSlots(this);
                     selected.UpdateUsed();
                 }
                 OnPropertyChanged("Used");

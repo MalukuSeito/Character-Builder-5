@@ -5,22 +5,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OGL.Common;
 
 namespace CB_5e.ViewModels
 {
-    public class ToolProficiencyChoice: ChoiceViewModel
+    public class ToolProficiencyChoice: ChoiceViewModel<ToolProficiencyChoiceConditionFeature>
     {
-        public ToolProficiencyChoice(PlayerModel model, ToolProficiencyChoiceConditionFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, Utils.Filter(model.Context, feature.Condition))
+        public ToolProficiencyChoice(PlayerModel model, ToolProficiencyChoiceConditionFeature feature) : base(model, feature.UniqueID, feature.Amount, feature)
         {
         }
 
-        public override void Refresh(Feature feature)
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetItem(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(ToolProficiencyChoiceConditionFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((ToolProficiencyChoiceConditionFeature)feature).Amount;
-            Options = Utils.Filter(Model.Context, ((ToolProficiencyChoiceConditionFeature)feature).Condition);
-            UpdateOptions();
+            Amount = feature.Amount;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return Utils.Filter(Model.Context, Feature.Condition);
         }
     }
 }

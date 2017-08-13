@@ -20,36 +20,36 @@ namespace CB_5e.Views
         {
             BindingContext = Model = model;
             InitializeComponent();
-            Children.Add(
-                    new NavigationPage(new PlayerOverview(Model))
-                    {
-                        Title = "Stats",
-                        Icon = Device.OnPlatform("tab_feed.png", null, null)
-                    });
-            Children.Add(
-                    new NavigationPage(new SpellcastingPage(Model))
-                    {
-                        Title = "Spell",
-                        Icon = Device.OnPlatform("tab_about.png", null, null)
-                    });
-            Children.Add(
-                    new NavigationPage(new ShopPage(Model))
-                    {
-                        Title = "Item",
-                        Icon = Device.OnPlatform("tab_about.png", null, null)
-                    });
-            Children.Add(
-                    new NavigationPage(new JournalPage(Model))
-                    {
-                        Title = "Notes",
-                        Icon = Device.OnPlatform("tab_about.png", null, null)
-                    });
-            Children.Add(
-                    new NavigationPage(new MorePlayPage(Model))
-                    {
-                        Title = "...",
-                        Icon = Device.OnPlatform("tab_about.png", null, null)
-                    });
+            //Children.Add(
+            //        new NavigationPage(new PlayerOverview(Model))
+            //        {
+            //            Title = "Stats",
+            //            Icon = Device.OnPlatform("tab_feed.png", null, null)
+            //        });
+            //Children.Add(
+            //        new NavigationPage(new SpellcastingPage(Model))
+            //        {
+            //            Title = "Spell",
+            //            Icon = Device.OnPlatform("tab_about.png", null, null)
+            //        });
+            //Children.Add(
+            //        new NavigationPage(new ShopPage(Model))
+            //        {
+            //            Title = "Item",
+            //            Icon = Device.OnPlatform("tab_about.png", null, null)
+            //        });
+            //Children.Add(
+            //        new NavigationPage(new JournalPage(Model))
+            //        {
+            //            Title = "Notes",
+            //            Icon = Device.OnPlatform("tab_about.png", null, null)
+            //        });
+            //Children.Add(
+            //        new NavigationPage(new MorePlayPage(Model))
+            //        {
+            //            Title = "...",
+            //            Icon = Device.OnPlatform("tab_about.png", null, null)
+            //        });
         }
         protected override bool OnBackButtonPressed()
         {
@@ -67,7 +67,7 @@ namespace CB_5e.Views
                         Model.DoSave();
                     }
                 }
-                CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
+                if (Model.Modified) CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
             }
             return base.OnBackButtonPressed();
         }

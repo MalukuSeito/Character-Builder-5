@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.MorePlayPage">
+             x:Class="CB_5e.Views.MorePlayPage"
+             Title="{Binding Title}">
     <ContentPage.Content>
         <Grid Padding="20, 0">
             <Grid.RowDefinitions>

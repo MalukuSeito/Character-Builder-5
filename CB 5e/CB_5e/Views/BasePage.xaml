@@ -31,6 +31,34 @@
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Class">
+        <ContentPage.ToolbarItems>
+            <ToolbarItem Text="Exit" Clicked="OnExit" />
+            <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+            <ToolbarItem Text="Redo" Command="{Binding Redo}" />
+            <ToolbarItem Text="Background &gt;&gt;" Clicked="OnNext" />
+        </ContentPage.ToolbarItems>
+        <StackLayout>
+            <ListView ItemsSource="{Binding ClassChoices}" 
+                      ItemSelected="ListView_ItemSelected"
+                      IsPullToRefreshEnabled="false"
+                      CachingStrategy="RecycleElement"
+                      IsGroupingEnabled="True"
+                      GroupDisplayBinding="{Binding DisplayName}"
+                      RowHeight="30">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height ="30" Text="{Binding Name}" Command="{Binding Select}" CommandParameter="{Binding .}" TextColor="{Binding SelectedColor}" >
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="MenuItem_Clicked_1" Text="Show Choice"/>
+                                <MenuItem Clicked="MenuItem_Clicked" Text="Show Info"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage>
+    <ContentPage Title="Background">
     </ContentPage>
 </CarouselPage>
     

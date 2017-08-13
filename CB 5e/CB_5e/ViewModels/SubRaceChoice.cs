@@ -9,11 +9,12 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class RaceChoice : ChoiceViewModel
+    public class SubRaceChoice : ChoiceViewModel<Feature>
     {
-        public RaceChoice(PlayerModel model) : base(model, null, 1, null, model.Context.Races.Values.OrderBy(r=>r.Name).ToList(), false)
+        public SubRaceChoice(PlayerModel model, List<string> races) : base(model, null, 1, null, false)
         {
-            Name = "Select a Race (Tap to choose, " + Device.OnPlatform("swipe", "hold", "hold") + " for info)";
+            Races = races;
+            Name = "Subrace";
             OnSelect = new Command((par) =>
             {
                 if (par is ChoiceOption co)
@@ -21,36 +22,58 @@ namespace CB_5e.ViewModels
                     Model.MakeHistory();
                     if (co.Selected)
                     {
-                        Model.Context.Player.RaceName = null;
+                        Model.Context.Player.SubRaceName = null;
                     } 
                     else
                     {
-                        Model.Context.Player.RaceName = co.NameWithSource;
+                        Model.Context.Player.SubRaceName = co.NameWithSource;
                     }
                     Model.Save();
                     Model.FirePlayerChanged();
                 } 
             });
+
+            UpdateOptions();
         }
 
         public override List<string> GetMyTakenChoices()
         {
-            return Model.Context.Player.RaceName == null ? new List<string>() : new List<string>()
+            return Model.Context.Player.SubRaceName == null ? new List<string>() : new List<string>()
             {
-                Model.Context.Player.RaceName
+                Model.Context.Player.SubRaceName
             };
         }
         public override List<string> GetAllTakenChoices()
         {
-            return Model.Context.Player.RaceName == null ? new List<string>() : new List<string>()
+            return Model.Context.Player.SubRaceName == null ? new List<string>() : new List<string>()
             {
-                Model.Context.Player.RaceName
+                Model.Context.Player.SubRaceName
             };
         }
 
-        public override int Taken => Model.Context.Player.RaceName == null ? 0 : 1;
+        public override int Taken => Model.Context.Player.SubRaceName == null ? 0 : 1;
+
+        public List<string> Races { get; private set; }
 
         public override void Refresh(Feature feature)
+        {
+        }
+
+        public void Refresh(List<string> races)
+        {
+            Races = races;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return Model.Context.SubRaceFor(Races).OrderBy(r => r.Name).ToList();
+        }
+
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetSubRace(nameWithSource, null);
+        }
+        protected override void UpdateOptionsImmediately()
         {
         }
     }

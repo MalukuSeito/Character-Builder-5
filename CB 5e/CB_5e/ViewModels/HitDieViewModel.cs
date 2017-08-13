@@ -11,7 +11,7 @@ namespace CB_5e.ViewModels
 {
     public class HitDieViewModel : HitDie, INotifyPropertyChanged
     {
-        public HitDieViewModel(PlayerViewModel pvm, HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
+        public HitDieViewModel(PlayerModel pvm, HitDie hd) : base(hd.Dice, hd.Count, hd.Used)
         {
             Reduce = new Command(() =>
             {

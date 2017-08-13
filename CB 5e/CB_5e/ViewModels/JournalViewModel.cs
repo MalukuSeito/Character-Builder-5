@@ -13,20 +13,20 @@ namespace CB_5e.ViewModels
     public class JournalViewModel: ObservableObject
     {
 
-        public JournalViewModel(PlayerViewModel model)
+        public JournalViewModel(PlayerJournalViewModel model)
         {
             IsNew = true;
             Context = model;
             Journal = new JournalEntry();
         }
 
-        public JournalViewModel(PlayerViewModel model, JournalEntry entry)
+        public JournalViewModel(PlayerJournalViewModel model, JournalEntry entry)
         {
             Context = model;
             Journal = entry;
         }
 
-        public PlayerViewModel Context { get; set; }
+        public PlayerJournalViewModel Context { get; set; }
         public Color Accent { get => Color.Accent; }
         public bool IsNew { get; set; }
         public bool XPChanged { get; set; }

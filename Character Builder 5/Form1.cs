@@ -1387,7 +1387,8 @@ namespace Character_Builder_5
                     AbilityScoreFeatFeature asff = ((AbilityFeatChoiceContainer)AbilityFeatChoiceBox.SelectedItem).ASFF;
                     List<string> taken = new List<string>(Program.Context.Player.GetFeatNames());
                     foreach (Feature f in Program.Context.Player.GetFeatures()) if (f is CollectionChoiceFeature && (((CollectionChoiceFeature)f).Collection == null || ((CollectionChoiceFeature)f).Collection == "")) taken.AddRange(((CollectionChoiceFeature)f).Choices(Program.Context.Player));
-                    taken.RemoveAll(s => s == Program.Context.Player.GetAbilityFeatChoice(asff).Feat);
+                    string ff = Program.Context.Player.GetAbilityFeatChoice(asff).Feat;
+                    taken.RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, ff));
                     AbilityFeatBox.Items.Clear();
                     AbilityFeatBox.Items.Add("+1 Strength");
                     AbilityFeatBox.Items.Add("+1 Dexterity");
@@ -1542,7 +1543,7 @@ namespace Character_Builder_5
         {
             ListBox l = (ListBox)sender;
             Program.Context.MakeHistory("");
-            if (Program.Context.Player.GetSubclass(l.Name) == null) Program.Context.Player.AddSubclass(l.Name, ((SubClass)l.SelectedItem).Name);
+            if (Program.Context.Player.GetSubclass(l.Name) == null) Program.Context.Player.AddSubclass(l.Name, ((SubClass)l.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((SubClass)l.SelectedItem).Source);
             else Program.Context.Player.RemoveSubclass(l.Name);
             UpdateLayout();
         }
@@ -2779,7 +2780,7 @@ namespace Character_Builder_5
                 }
                 displayElement.Navigate("about:blank");
                 displayElement.Document.OpenNew(true);
-                displayElement.Document.Write(new DisplayPossession((Possession)inventory.SelectedItem, Program.Context.Player).ToHTML());
+                displayElement.Document.Write(new DisplayPossession((Possession)inventory2.SelectedItem, Program.Context.Player).ToHTML());
                 displayElement.Refresh();
             }
         }

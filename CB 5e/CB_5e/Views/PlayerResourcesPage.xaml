@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.PlayerResourcesPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="18"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column ="0" Grid.ColumnSpan="3"  Text="Tap to select, Tap again to use" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+            <ListView Grid.Row="1" Grid.Column ="0" Grid.ColumnSpan="3"  HorizontalOptions="FillAndExpand" ItemsSource="{Binding Resources}"
+                      VerticalOptions="FillAndExpand"
+                      IsPullToRefreshEnabled="true"
+                      SelectedItem="{Binding SelectedResource}"
+                      CachingStrategy="RecycleElement"
+                      RefreshCommand="{Binding DeselectResource}"
+                      IsRefreshing="{Binding ResourceBusy}">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding ResourceSearch}" Placeholder="Search Resources" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Text}" Detail="{Binding Desc}" Command="{Binding Reduce}">
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="ResourceInfo" Text="Description"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Grid.Row="2" Grid.Column ="0" Text="Used:" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
+            <Entry Keyboard="Numeric" Grid.Row="3" Grid.Column="0" Text="{Binding CurrentResourceValue}"/>
+            <Button Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Text="Short Rest" Command="{Binding ShortRest}" />
+            <Button Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Text="Long Rest" Command="{Binding LongRest}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

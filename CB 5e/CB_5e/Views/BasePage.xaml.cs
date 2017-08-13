@@ -77,7 +77,7 @@ namespace CB_5e.Views
 
         private async void MenuItem_Clicked_1(object sender, EventArgs e)
         {
-            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj) await Navigation.PushAsync(InfoPage.Show(obj.Feature));
+            if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj && obj.Feature is IXML) await Navigation.PushAsync(InfoPage.Show(obj.Feature));
         }
     }
 }

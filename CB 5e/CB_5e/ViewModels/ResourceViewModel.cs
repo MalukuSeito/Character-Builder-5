@@ -17,7 +17,7 @@ namespace CB_5e.ViewModels
 
         public Object Value;
 
-        public ResourceViewModel(object value, PlayerViewModel model)
+        public ResourceViewModel(object value, PlayerResourcesViewModel model)
         {
             Value = value;
             Reduce = new Command(() =>

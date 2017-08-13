@@ -9,19 +9,28 @@ using System.Threading.Tasks;
 
 namespace CB_5e.ViewModels
 {
-    public class BonusSpellKeywordChoice : ChoiceViewModel
+    public class BonusSpellKeywordChoice : ChoiceViewModel<BonusSpellKeywordChoiceFeature>
     {
         public BonusSpellKeywordChoice(PlayerModel model, BonusSpellKeywordChoiceFeature feature) 
-            : base(model, feature.UniqueID, feature.Amount, feature, Utils.FilterSpell(model.Context, feature.Condition, null), false)
+            : base(model, feature.UniqueID, feature.Amount, feature, false)
         {
         }
-        public override void Refresh(Feature feature)
+
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetSpell(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(BonusSpellKeywordChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((BonusSpellKeywordChoiceFeature)feature).Amount;
-            Options = Utils.FilterSpell(Model.Context, ((BonusSpellKeywordChoiceFeature)feature).Condition, null);
-            UpdateOptions();
+            Amount = feature.Amount;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return Utils.FilterSpell(Model.Context, Feature.Condition, null);
         }
     }
 }

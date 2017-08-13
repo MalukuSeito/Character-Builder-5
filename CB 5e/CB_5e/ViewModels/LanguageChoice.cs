@@ -4,22 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OGL.Common;
 
 namespace CB_5e.ViewModels
 {
-    public class LanguageChoice : ChoiceViewModel
+    public class LanguageChoice : ChoiceViewModel<LanguageChoiceFeature>
     {
         public LanguageChoice(PlayerModel model, LanguageChoiceFeature feature) 
-            : base(model, feature.UniqueID, feature.Amount, feature, model.Context.Languages.Values.OrderBy(s=>s.Name).ToList(), false)
+            : base(model, feature.UniqueID, feature.Amount, feature, false)
         {
         }
-        public override void Refresh(Feature feature)
+
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetLanguage(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(LanguageChoiceFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((LanguageChoiceFeature)feature).Amount;
-            Options = Model.Context.Languages.Values.OrderBy(s => s.Name).ToList();
-            UpdateOptions();
+            Amount = feature.Amount;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return 
+                Model.Context.Languages.Values.OrderBy(s => s.Name).ToList();
         }
     }
 }

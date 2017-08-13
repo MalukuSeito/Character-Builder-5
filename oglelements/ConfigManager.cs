@@ -16,7 +16,7 @@ namespace OGL
     public class ConfigManager
     {
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
-        public static StringComparer SourceInvariantComparer = new SourceInvariantComparer(); 
+        public static SourceInvariantComparer SourceInvariantComparer = new SourceInvariantComparer(); 
         public static Boolean AlwaysShowSource = false;
 
         public static char SourceSeperator = '\u2014';

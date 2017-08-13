@@ -9,19 +9,27 @@ using Character_Builder;
 
 namespace CB_5e.ViewModels
 {
-    public class ItemConditionChoice : ChoiceViewModel
+    public class ItemConditionChoice : ChoiceViewModel<ItemChoiceConditionFeature>
     {
-        public ItemConditionChoice(PlayerModel model, ItemChoiceConditionFeature feature) : base(model, feature.UniqueID, feature.Amount, feature, Utils.Filter(model.Context, feature.Condition))
+        public ItemConditionChoice(PlayerModel model, ItemChoiceConditionFeature feature) : base(model, feature.UniqueID, feature.Amount, feature)
         {
         }
 
-        public override void Refresh(Feature feature)
+        public override IXML GetValue(string nameWithSource)
+        {
+            return Model.Context.GetItem(nameWithSource, Feature.Source);
+        }
+
+        public override void Refresh(ItemChoiceConditionFeature feature)
         {
             Feature = feature;
             Name = feature.Name;
-            Amount = ((ItemChoiceConditionFeature)feature).Amount;
-            Options = Utils.Filter(Model.Context, ((ItemChoiceConditionFeature)feature).Condition);
-            UpdateOptions();
+            Amount = feature.Amount;
+        }
+
+        protected override IEnumerable<IXML> GetOptions()
+        {
+            return Utils.Filter(Model.Context, Feature.Condition);
         }
     }
 }

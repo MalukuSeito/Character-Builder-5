@@ -40,7 +40,7 @@ namespace CB_5e.Views
             }
             else Model.Model.Context.Player.ComplexJournal.Add(new JournalEntry(Item.ToString(), new Price(Item.Price, Count)));
             Model.Model.Save();
-            Model.Model.RefreshItems.Execute(null);
+            Model.Model.RefreshInventory.Execute(null);
             await Navigation.PopAsync();
         }
 
@@ -61,7 +61,7 @@ namespace CB_5e.Views
             for (int c = 0; c < Count; c++)
                 Model.Model.Context.Player.Items.Add(Item.Name + " " + ConfigManager.SourceSeperator + " " + Item.Source);
             Model.Model.Save();
-            Model.Model.RefreshItems.Execute(null);
+            Model.Model.RefreshInventory.Execute(null);
             await Navigation.PopAsync();
         }
 

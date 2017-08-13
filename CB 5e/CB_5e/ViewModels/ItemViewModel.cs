@@ -16,25 +16,25 @@ namespace CB_5e.ViewModels
     public class ItemViewModel: BaseViewModel
     {
 
-        public ItemViewModel(PlayerModel context): this (context, new Possession(context.Context, "", 1))
+        public ItemViewModel(PlayerInventoryViewModel context): this (context, new Possession(context.Context, "", 1))
         {
             IsNew = true;
         }
 
-        public ItemViewModel(PlayerModel context, Possession possession)
+        public ItemViewModel(PlayerInventoryViewModel context, Possession possession)
         {
             Context = context;
             Value = possession;
             BaseItemInfo = new Command(async () =>
             {
 
-                await Context.ShopNavigation.PushAsync(InfoPage.Show(Value.Item));
+                await Context.Navigation.PushAsync(InfoPage.Show(Value.Item));
             }, () => Value.BaseItem != null);
 
             ShowInfo = new Command(async (par) =>
             {
                 if (par is MagicViewModel m)
-                    await Context.ShopNavigation.PushAsync(InfoPage.Show(m.Magic));
+                    await Context.Navigation.PushAsync(InfoPage.Show(m.Magic));
             });
             OnDelete = new Command((par) =>
             {
@@ -68,7 +68,7 @@ namespace CB_5e.ViewModels
             }
         }
 
-        public PlayerModel Context { get; set; }
+        public PlayerInventoryViewModel Context { get; set; }
         public Possession Value { get; set; }
 
         public string Name {
