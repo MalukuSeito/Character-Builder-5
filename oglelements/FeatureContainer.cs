@@ -10,7 +10,7 @@ namespace OGL
     public class FeatureContainer: IXML, IOGLElement<FeatureContainer>, IOGLElement
     {
         [XmlIgnore]
-        public string filename;
+        public string FileName { get; set; }
         [XmlIgnore]
         public string category;
         [XmlIgnore]
@@ -82,7 +82,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -116,7 +119,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 FeatureContainer r = (FeatureContainer)Serializer.Deserialize(mem);
-                r.filename = filename;
+                r.FileName = FileName;
                 r.category = category;
                 r.Name = Name;
                 return r;

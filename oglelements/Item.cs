@@ -24,7 +24,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(Range))]
         public List<Keyword> Keywords = new List<Keyword>();
         [XmlIgnore]
-        public string filename;
+        public string FileName { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Item));
         [XmlIgnore]
@@ -47,7 +47,7 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, String file)
         {
-            filename = file;
+            FileName = file;
             foreach (Keyword kw in Keywords) kw.check();
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Items.ContainsKey(full)) throw new Exception("Duplicate Item: " + full);
@@ -125,7 +125,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -153,7 +156,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Item r = (Item)Serializer.Deserialize(mem);
-                r.filename = filename;
+                r.FileName = FileName;
                 r.Category = Category;
                 r.Name = Name;
                 return r;

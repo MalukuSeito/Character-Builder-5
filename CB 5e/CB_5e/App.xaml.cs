@@ -46,7 +46,7 @@ namespace CB_5e
                         Title = "Build",
                         Icon = Device.OnPlatform("tab_about.png",null,null)
                     },
-                    new NavigationPage(new AboutPage())
+                    new NavigationPage(new Compendium())
                     {
                         Title = "Edit",
                         Icon = Device.OnPlatform("tab_about.png",null,null)

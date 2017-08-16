@@ -215,10 +215,10 @@ namespace CB_5e.ViewModels
         public Command ShowInfo { get; private set; }
 
         public void UpdateSpells() => Spells.ReplaceRange(from f in spells where spellSearch == null || spellSearch == ""
-            || culture.CompareInfo.IndexOf(f.Spell.Name, spellSearch, CompareOptions.IgnoreCase) >= 0
-            || culture.CompareInfo.IndexOf(f.Spell.Description, spellSearch, CompareOptions.IgnoreCase) >= 0
-            || f.Spell.GetKeywords().Exists(k=>culture.CompareInfo.IndexOf(k.Name, spellSearch, CompareOptions.IgnoreCase) >= 0)
-            || f.Spell.Descriptions.Exists(k=>culture.CompareInfo.IndexOf(k.Text, spellSearch, CompareOptions.IgnoreCase) >= 0)
+            || culture.CompareInfo.IndexOf(f.Spell.Name ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0
+            || culture.CompareInfo.IndexOf(f.Spell.Description ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0
+            || f.Spell.GetKeywords().Exists(k=>culture.CompareInfo.IndexOf(k.Name ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0)
+            || f.Spell.Descriptions.Exists(k=>culture.CompareInfo.IndexOf(k.Text ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0)
             orderby f.RitualOnly, f.Name select f);
 
         private SpellSlotViewModel selected;

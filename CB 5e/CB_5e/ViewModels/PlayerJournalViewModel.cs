@@ -50,11 +50,11 @@ namespace CB_5e.ViewModels
 
         public void UpdateJournal() {
             JournalEntries.ReplaceRange(from j in Context.Player.ComplexJournal where journalSearch == null || journalSearch == ""
-            || Culture.CompareInfo.IndexOf(j.Title, journalSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(j.Time, journalSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(j.Session, journalSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(j.DM, journalSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(j.Text, journalSearch, CompareOptions.IgnoreCase) >= 0 orderby j.Added select new JournalViewModel(this, j));
+            || Culture.CompareInfo.IndexOf(j.Title ?? "", journalSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(j.Time ?? "", journalSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(j.Session ?? "", journalSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(j.DM ?? "", journalSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(j.Text ?? "", journalSearch, CompareOptions.IgnoreCase) >= 0 orderby j.Added select new JournalViewModel(this, j));
         }
         
         public Command RefreshJournal { get; set; }

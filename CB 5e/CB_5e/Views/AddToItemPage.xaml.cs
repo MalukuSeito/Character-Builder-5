@@ -34,9 +34,9 @@ namespace CB_5e.Views
 
         public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory
                                                                 where inventorysearch == null || inventorysearch == ""
-                                                                || culture.CompareInfo.IndexOf(f.Name, inventorysearch, CompareOptions.IgnoreCase) >= 0
-                                                                || culture.CompareInfo.IndexOf(f.Detail, inventorysearch, CompareOptions.IgnoreCase) >= 0
-                                                                || culture.CompareInfo.IndexOf(f.Description, inventorysearch, CompareOptions.IgnoreCase) >= 0
+                                                                || culture.CompareInfo.IndexOf(f.Name ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0
+                                                                || culture.CompareInfo.IndexOf(f.Detail ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0
+                                                                || culture.CompareInfo.IndexOf(f.Description ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0
                                                                 orderby f.Name
                                                                 select f);
 

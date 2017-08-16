@@ -22,7 +22,7 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Spell));
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         public string Name { get; set; }
         public string CastingTime { get; set; }
         public string Range { get; set; }
@@ -139,7 +139,7 @@ namespace OGL
         }
         public void Register(OGLContext context, String file)
         {
-            Filename = file;
+            FileName = file;
             if (this is ModifiedSpell) return;
             foreach (Keyword kw in Keywords) kw.check();
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
@@ -234,10 +234,16 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Spell r = (Spell)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }
+
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
+
         [XmlIgnore]
         public string Desc { get => String.Join(", ", GetKeywords()); }
     }

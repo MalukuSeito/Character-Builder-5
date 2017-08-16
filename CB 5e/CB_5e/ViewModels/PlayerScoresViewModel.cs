@@ -24,6 +24,7 @@ namespace CB_5e.ViewModels
             Scores = new ScoresModelViewModel(Context);
             UpdateAbilityChoices();
             OnPropertyChanged("Scores");
+            OnPropertyChanged("PointsLeft");
         }
 
         public int Str {
@@ -36,7 +37,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseStrength");
                 Context.Player.BaseStrength = value;
                 OnPropertyChanged("Str");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }
@@ -51,7 +53,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseDexterity");
                 Context.Player.BaseDexterity = value;
                 OnPropertyChanged("Dex");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }
@@ -66,7 +69,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseConstitution");
                 Context.Player.BaseConstitution = value;
                 OnPropertyChanged("Con");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }
@@ -81,7 +85,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseIntelligence");
                 Context.Player.BaseIntelligence = value;
                 OnPropertyChanged("Int");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }
@@ -96,7 +101,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseWisdom");
                 Context.Player.BaseWisdom = value;
                 OnPropertyChanged("Wis");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }
@@ -111,7 +117,8 @@ namespace CB_5e.ViewModels
                 MakeHistory("BaseCharisma");
                 Context.Player.BaseCharisma = value;
                 OnPropertyChanged("Cha");
-                Parent.FirePlayerChanged();
+                Parent_PlayerChanged(null, null);
+                //Parent.FirePlayerChanged();
                 Save();
             }
         }

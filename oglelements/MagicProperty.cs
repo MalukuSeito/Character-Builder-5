@@ -17,7 +17,7 @@ namespace OGL
         [XmlIgnore]
         public string Category;
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         public String Requirement { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
@@ -271,7 +271,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -332,7 +335,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 MagicProperty r = (MagicProperty)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 r.Category = Category;
                 r.Name = Name;
                 return r;

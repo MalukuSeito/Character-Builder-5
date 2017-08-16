@@ -84,7 +84,7 @@ namespace CB_5e.ViewModels
         public ObservableRangeCollection<ResourceViewModel> Resources { get; set; } = new ObservableRangeCollection<ResourceViewModel>();
 
         public void UpdateResources() => Resources.ReplaceRange(from r in resources where resourceSearch == null || resourceSearch == ""
-             || Culture.CompareInfo.IndexOf(r.Name, resourceSearch, CompareOptions.IgnoreCase) >= 0 orderby r.ToString() select r);
+             || Culture.CompareInfo.IndexOf(r.Name ?? "", resourceSearch, CompareOptions.IgnoreCase) >= 0 orderby r.ToString() select r);
 
         private ResourceViewModel selectedResource;
         public ResourceViewModel SelectedResource { get => selectedResource; set

@@ -22,12 +22,12 @@ namespace OGL
         XmlArrayItem(Type = typeof(TableDescription))]
         public List<Description> Descriptions { get; set; }
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
 
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, string file)
         {
-            Filename = file;
+            FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Races.ContainsKey(full)) throw new Exception("Duplicate Race: " + full);
             context.Races.Add(full, this);
@@ -99,6 +99,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -132,7 +136,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Race r = (Race)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }

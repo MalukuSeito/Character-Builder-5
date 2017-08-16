@@ -124,9 +124,9 @@
                 <Label Grid.Row="15" Grid.Column ="0" Text="{Binding HPMax}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="WordWrap"/>
                 <Label Grid.Row="16" Grid.Column ="0" Text="Temp" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
                 <Label Grid.Row="17" Grid.Column ="0" Text="Bonus Max" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                <Entry Grid.Row="15" Grid.Column ="1" Keyboard="Default" Text="{Binding HP}"  TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="15" Grid.Column ="1" Keyboard="Telephone" Text="{Binding HP}"  TextColor="{Binding Accent}"/>
                 <Entry Grid.Row="16" Grid.Column ="1" Keyboard="Numeric" Text="{Binding TempHP}" TextColor="{Binding Accent}"/>
-                <Entry Grid.Row="17" Grid.Column ="1" Keyboard="Numeric" Text="{Binding BonusHP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="17" Grid.Column ="1" Keyboard="Telephone" Text="{Binding BonusHP}" TextColor="{Binding Accent}"/>
 
                 <Label Grid.Row="14" Grid.Column ="2" Grid.ColumnSpan="2" Text="Hit Die" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
                 <!-- <Label Grid.Row="15" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding HDTotal}}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>-->

@@ -12,7 +12,7 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public Ability Base { get; set; }
@@ -21,7 +21,7 @@ namespace OGL
         public bool ShowSource { get; set; } = false;
         public void Register(OGLContext context, String file)
         {
-            Filename = file;
+            FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Skills.ContainsKey(full)) throw new Exception("Duplicate Skill: " + full);
             context.Skills.Add(full, this);
@@ -52,7 +52,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -76,7 +79,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Skill r = (Skill)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }

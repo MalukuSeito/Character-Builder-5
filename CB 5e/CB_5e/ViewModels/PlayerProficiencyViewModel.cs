@@ -47,7 +47,7 @@ namespace CB_5e.ViewModels
         public ObservableRangeCollection<IXML> Proficiencies { get; set; } = new ObservableRangeCollection<IXML>();
 
         public void UpdateProficiencies() => Proficiencies.ReplaceRange(from f in proficiencies where proficiencySearch == null || proficiencySearch == ""
-            || Culture.CompareInfo.IndexOf(f.ToString(), proficiencySearch, CompareOptions.IgnoreCase) >= 0 orderby f.ToString() select f);
+            || Culture.CompareInfo.IndexOf(f.ToString() ?? "", proficiencySearch, CompareOptions.IgnoreCase) >= 0 orderby f.ToString() select f);
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace OGL.Common
 {
@@ -6,6 +7,8 @@ namespace OGL.Common
     {
         bool ShowSource { get; set; }
         T Clone();
+        string FileName { get; set; }
+        void Write(Stream stream);
     }
 
     public interface IOGLElement : IXML

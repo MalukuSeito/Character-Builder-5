@@ -50,7 +50,7 @@ namespace CB_5e.ViewModels
             if (search == null || search == "") Items.ReplaceRange(items);
             else
             {
-                Items.ReplaceRange(from c in items where culture.CompareInfo.IndexOf(c.Text, search, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Description, search, CompareOptions.IgnoreCase) >= 0 select c) ;
+                Items.ReplaceRange(from c in items where culture.CompareInfo.IndexOf(c.Text ?? "", search, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Description ?? "", search, CompareOptions.IgnoreCase) >= 0 select c) ;
             }
         }
         private CharactersViewModel()

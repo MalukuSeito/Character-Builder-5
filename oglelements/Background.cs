@@ -11,7 +11,7 @@ namespace OGL
     public class Background : IComparable<Background>, IXML, IOGLElement<Background>, IOGLElement
     {
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Background));
         [XmlElement(Order = 1)] 
@@ -76,7 +76,7 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, string file)
         {
-            Filename = file;
+            FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Backgrounds.ContainsKey(full)) throw new Exception("Duplicate Background: " + full);
             context.Backgrounds.Add(full, this);
@@ -118,7 +118,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -150,7 +153,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Background r = (Background)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }

@@ -65,7 +65,7 @@ namespace CB_5e.ViewModels
                 UpdateNotes();
             }
         }
-        public void UpdateNotes() => Notes.ReplaceRange(from t in Context.Player.Journal where notesSearch == null || notesSearch == "" || Culture.CompareInfo.IndexOf(t, notesSearch, CompareOptions.IgnoreCase) >= 0 select t);
+        public void UpdateNotes() => Notes.ReplaceRange(from t in Context.Player.Journal where notesSearch == null || notesSearch == "" || Culture.CompareInfo.IndexOf(t ?? "", notesSearch, CompareOptions.IgnoreCase) >= 0 select t);
 
         private int selectedNote = 0;
         public String SelectedNote

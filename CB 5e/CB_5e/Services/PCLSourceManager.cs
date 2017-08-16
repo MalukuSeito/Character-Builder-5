@@ -26,7 +26,7 @@ namespace CB_5e.Services
             }
         }
 
-        private static async Task<IFile> GetFile(IFolder target, string path)
+        public static async Task<IFile> GetFile(IFolder target, string path, CreationCollisionOption options = CreationCollisionOption.GenerateUniqueName)
         {
             if (path == null || path == "" || path.StartsWith(".") || path.EndsWith("/")) return null;
             int i = path.IndexOf('/');
@@ -35,13 +35,32 @@ namespace CB_5e.Services
                 string folder = path.Substring(0, i);
                 if (folder != "" && !folder.StartsWith(".") && !folder.StartsWith("/"))
                 {
-                    return await GetFile(await target.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists), path.Substring(i + 1));
+                    return await GetFile(await target.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists), path.Substring(i + 1), options);
                 }
                 return null;
             }
             else
             {
-                return await target.CreateFileAsync(path, CreationCollisionOption.GenerateUniqueName);
+                return await target.CreateFileAsync(path, options);
+            }
+        }
+
+        public static async Task<IFolder> GetFolder(IFolder target, string path, CreationCollisionOption options = CreationCollisionOption.GenerateUniqueName)
+        {
+            if (path == null || path == "" || path.StartsWith(".") || path.EndsWith("/")) return null;
+            int i = path.IndexOf('/');
+            if (i >= 0)
+            {
+                string folder = path.Substring(0, i);
+                if (folder != "" && !folder.StartsWith(".") && !folder.StartsWith("/"))
+                {
+                    return await GetFolder(await target.CreateFolderAsync(folder, CreationCollisionOption.OpenIfExists), path.Substring(i + 1), options);
+                }
+                return null;
+            }
+            else
+            {
+                return await target.CreateFolderAsync(path, options);
             }
         }
 

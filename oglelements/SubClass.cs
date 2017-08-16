@@ -12,7 +12,7 @@ namespace OGL
     public class SubClass: IComparable<SubClass>, IXML, IOGLElement<SubClass>, IOGLElement
     {
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubClass));
         [XmlArrayItem(Type = typeof(Description)),
@@ -149,7 +149,7 @@ namespace OGL
         public bool ShowSource { get; set; } = false;
         public void Register(OGLContext context, string file, bool applyKeywords)
         {
-            this.Filename = file;
+            this.FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.SubClasses.ContainsKey(full)) throw new Exception("Duplicate Subclass: " + full);
             context.SubClasses.Add(full, this);
@@ -187,7 +187,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -230,7 +233,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 SubClass r = (SubClass)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }

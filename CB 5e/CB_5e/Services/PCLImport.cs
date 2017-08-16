@@ -275,7 +275,7 @@ namespace CB_5e.Services
                     List<Feature> feats = cont.Features;
                     string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
-                    cont.filename = f.Key.Path;
+                    cont.FileName = f.Key.Path;
                     cont.category = cat;
                     cont.Name = f.Key.Name;
                     int i = cont.Name.LastIndexOf('.');
@@ -395,7 +395,7 @@ namespace CB_5e.Services
                     using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
                     {
                         MagicProperty mp = ((MagicProperty)MagicProperty.Serializer.Deserialize(reader));
-                        mp.Filename = f.Key.Path;
+                        mp.FileName = f.Key.Path;
                         mp.Source = f.Value;
                         foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
                         foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
@@ -531,6 +531,28 @@ namespace CB_5e.Services
             using (Stream fs = await file.OpenAsync(FileAccess.Read).ConfigureAwait(false)) context.Levels = (Level)Level.Serializer.Deserialize(fs);
             context.Levels.Sort();
             return context.Levels;
+        }
+
+        public static async Task<IEnumerable<string>> EnumerateCategories(this OGLContext context, string type)
+        {
+            HashSet<string> result = new HashSet<string>();
+            foreach (var f in await PCLSourceManager.GetAllDirectoriesAsync(context, type))
+            {
+                result.UnionWith(await GetSubDirectoriesAsync(f.Key, type).ConfigureAwait(false));
+            }
+            return from s in result orderby s select s;
+        }
+
+        private static async Task<IEnumerable<string>> GetSubDirectoriesAsync(IFolder key, string path = "")
+        {
+            List<string> res = new List<string>();
+            foreach (var f in await key.GetFoldersAsync().ConfigureAwait(false) )
+            {
+                string p = path == "" ? f.Name : path + "/" + f.Name;
+                res.Add(p);
+                res.AddRange(await GetSubDirectoriesAsync(f, p).ConfigureAwait(false));
+            }
+            return res;
         }
     }
 }

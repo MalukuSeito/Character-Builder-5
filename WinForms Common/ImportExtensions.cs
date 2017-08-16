@@ -105,7 +105,7 @@ namespace Character_Builder_Forms
                     List<Feature> feats = cont.Features;
                     string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
-                    cont.filename = f.Key.FullName;
+                    cont.FileName = f.Key.FullName;
                     cont.category = cat;
                     cont.Name = Path.GetFileNameWithoutExtension(f.Key.FullName);
                     cont.Source = f.Value;
@@ -167,7 +167,7 @@ namespace Character_Builder_Forms
             foreach (var f in SourceManager.GetAllDirectories(context, type))
             {
                 Uri source = new Uri(f.Key.FullName);
-                context.ImportStandaloneFeatures();
+                //context.ImportStandaloneFeatures();
                 var cats = f.Key.EnumerateDirectories("*", SearchOption.AllDirectories);
                 foreach (DirectoryInfo d in cats) result.Add(SourceManager.Cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(new Uri(d.FullName)).ToString()), type));
             }
@@ -261,7 +261,7 @@ namespace Character_Builder_Forms
                     using (TextReader reader = new StreamReader(f.Key.FullName))
                     {
                         MagicProperty mp = ((MagicProperty)MagicProperty.Serializer.Deserialize(reader));
-                        mp.Filename = f.Key.FullName;
+                        mp.FileName = f.Key.FullName;
                         mp.Source = f.Value;
                         foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
                         foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;

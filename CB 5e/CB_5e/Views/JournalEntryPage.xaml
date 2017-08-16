@@ -41,25 +41,25 @@
                 <Switch  Grid.Row="4" Grid.Column="5" IsToggled="{Binding InSheet}" HorizontalOptions="Start" VerticalOptions="Center"/>
 
                 <Label Grid.Row="5" Grid.Column="0" Text="XP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="5" Grid.Column="1" Text="{Binding XP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="5" Grid.Column="1" Text="{Binding XP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="5" Grid.Column="2" Text="PP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="5" Grid.Column="3" Text="{Binding PP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="5" Grid.Column="3" Text="{Binding PP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="5" Grid.Column="4" Text="GP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="5" Grid.Column="5" Text="{Binding GP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="5" Grid.Column="5" Text="{Binding GP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
 
                 <Label Grid.Row="6" Grid.Column="0" Text="EP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="6" Grid.Column="1" Text="{Binding EP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="6" Grid.Column="1" Text="{Binding EP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="6" Grid.Column="2" Text="SP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="6" Grid.Column="3" Text="{Binding SP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="6" Grid.Column="3" Text="{Binding SP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="6" Grid.Column="4" Text="CP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="6" Grid.Column="5" Text="{Binding CP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="6" Grid.Column="5" Text="{Binding CP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
 
                 <Label Grid.Row="7" Grid.Column="0" Text="Magic Items" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="7" Grid.Column="1" Text="{Binding MagicItems}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="7" Grid.Column="1" Text="{Binding MagicItems}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="7" Grid.Column="2" Text="Renown" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="7" Grid.Column="3" Text="{Binding Renown}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="7" Grid.Column="3" Text="{Binding Renown}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="7" Grid.Column="4" Text="Downtime" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="7" Grid.Column="5" Text="{Binding Downtime}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="7" Grid.Column="5" Text="{Binding Downtime}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
 
             </Grid>
         </ScrollView>

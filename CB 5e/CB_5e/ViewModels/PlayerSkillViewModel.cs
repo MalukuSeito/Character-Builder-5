@@ -58,7 +58,7 @@ namespace CB_5e.ViewModels
             if (skillSearch == null || skillSearch == "") Skills.ReplaceRange(skills);
             else
             {
-                Skills.ReplaceRange(from c in skills where Culture.CompareInfo.IndexOf(c.Desc, skillSearch, CompareOptions.IgnoreCase) >= 0 || Culture.CompareInfo.IndexOf(c.Skill.Description, skillSearch, CompareOptions.IgnoreCase) >= 0 select c);
+                Skills.ReplaceRange(from c in skills where Culture.CompareInfo.IndexOf(c.Desc ?? "", skillSearch, CompareOptions.IgnoreCase) >= 0 || Culture.CompareInfo.IndexOf(c.Skill?.Description ?? "", skillSearch, CompareOptions.IgnoreCase) >= 0 select c);
             }
         }
 

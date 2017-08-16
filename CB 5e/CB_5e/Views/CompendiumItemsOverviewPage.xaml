@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.CompendiumItemsOverviewPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding Entries}" ItemSelected="ListView_ItemSelected"
+                      IsPullToRefreshEnabled="true"
+                      RefreshCommand="{Binding Refresh}" 
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding}">
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="MenuItem_Clicked"  Text="Add Category"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

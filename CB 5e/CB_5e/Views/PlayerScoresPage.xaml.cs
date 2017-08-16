@@ -14,17 +14,19 @@ namespace CB_5e.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlayerScoresPage : ContentPage
     {
+        public PlayerScoresViewModel Model { get; private set; }
+
         public PlayerScoresPage(PlayerScoresViewModel model)
         {
-            BindingContext = model;
+            BindingContext = Model = model;
             model.Navigation = Navigation;
             InitializeComponent();
-            MakeBinding(Str, new Binding("Str"));
-            MakeBinding(Dex, new Binding("Dex"));
-            MakeBinding(Con, new Binding("Con"));
-            MakeBinding(Int, new Binding("Int"));
-            MakeBinding(Cha, new Binding("Cha"));
-            MakeBinding(Wis, new Binding("Wis"));
+            //MakeBinding(Str, new Binding("Str"));
+            //MakeBinding(Dex, new Binding("Dex"));
+            //MakeBinding(Con, new Binding("Con"));
+            //MakeBinding(Int, new Binding("Int"));
+            //MakeBinding(Cha, new Binding("Cha"));
+            //MakeBinding(Wis, new Binding("Wis"));
         }
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
@@ -40,15 +42,58 @@ namespace CB_5e.Views
             if ((sender as Xamarin.Forms.MenuItem).BindingContext is ChoiceOption obj && obj.Feature is IXML) await Navigation.PushAsync(InfoPage.Show(obj.Feature));
         }
 
-        private static void MakeBinding(Entry entry, Binding b)
-        {
-            entry.SetBinding(Entry.TextProperty, b);
-            entry.Focused+= (s, e) => { entry.RemoveBinding(Entry.TextProperty); };
-            entry.Unfocused += (s, e) => {
-                string tmp = entry.Text;
-                entry.SetBinding(Entry.TextProperty, b);
-                entry.SetValue(Entry.TextProperty, tmp);
-            };
-        }
+        //private static void MakeBinding(Entry entry, Binding b)
+        //{
+        //    entry.SetBinding(Entry.TextProperty, b);
+        //    entry.Focused += (s, e) => {
+        //        if (s is Entry ee)
+        //        {
+        //            ee.RemoveBinding(Entry.TextProperty);
+        //        }
+        //    };
+        //    entry.Unfocused += (s, e) => {
+        //        if (s is Entry ee)
+        //        {
+        //            string tmp = entry.Text;
+        //            ee.RemoveBinding(Entry.TextProperty);
+        //            ee.SetBinding(Entry.TextProperty, b);
+        //            ee.SetValue(Entry.TextProperty, tmp);
+        //        }
+        //    };
+        //}
+
+        //private void Str_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Str.Text, out int v)) Model.Str = v;
+        //}
+
+        //private void Dex_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Dex.Text, out int v)) Model.Dex = v;
+        //}
+
+        //private void Con_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Con.Text, out int v)) Model.Con = v;
+        //}
+
+        //private void Int_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Int.Text, out int v)) Model.Int = v;
+        //}
+
+        //private void Wis_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Wis.Text, out int v)) Model.Wis = v;
+        //}
+
+        //private void Cha_Unfocused(object sender, FocusEventArgs e)
+        //{
+        //    //if (int.TryParse(Cha.Text, out int v)) Model.Cha = v;
+        //}
+        //protected override void OnDisappearing()
+        //{
+        //    Model.FirePlayerChanged();
+        //}
     }
 }

@@ -77,9 +77,9 @@ namespace CB_5e.ViewModels
         public ObservableRangeCollection<InventoryViewModel> Inventory { get; set; } = new ObservableRangeCollection<InventoryViewModel>();
 
         public void UpdateInventory() => Inventory.ReplaceRange(from f in inventory where inventorysearch == null || inventorysearch == ""
-            || Culture.CompareInfo.IndexOf(f.Name, inventorysearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(f.Detail, inventorysearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(f.Description, inventorysearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
+            || Culture.CompareInfo.IndexOf(f.Name ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(f.Detail ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(f.Description ?? "", inventorysearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
 
         private string inventorysearch;
         public string InventorySearch

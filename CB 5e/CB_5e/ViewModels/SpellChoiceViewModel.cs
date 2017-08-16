@@ -153,10 +153,10 @@ namespace CB_5e.ViewModels
         public Command OnPrepare { get; private set; }
 
         public void UpdateSpells() => Spells.ReplaceRange(from f in spells where spellSearch == null || spellSearch == ""
-            || Culture.CompareInfo.IndexOf(f.Spell.Name, spellSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(f.Spell.Description, spellSearch, CompareOptions.IgnoreCase) >= 0
-            || f.Spell.GetKeywords().Exists(k => Culture.CompareInfo.IndexOf(k.Name, spellSearch, CompareOptions.IgnoreCase) >= 0)
-            || f.Spell.Descriptions.Exists(k => Culture.CompareInfo.IndexOf(k.Text, spellSearch, CompareOptions.IgnoreCase) >= 0)
+            || Culture.CompareInfo.IndexOf(f.Spell.Name ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(f.Spell.Description ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0
+            || f.Spell.GetKeywords().Exists(k => Culture.CompareInfo.IndexOf(k.Name ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0)
+            || f.Spell.Descriptions.Exists(k => Culture.CompareInfo.IndexOf(k.Text ?? "", spellSearch, CompareOptions.IgnoreCase) >= 0)
             orderby f.Name select f);
 
         public int Count { get => Choice == null ? spells.Count : Model.Context.Player.GetSpellChoice(SpellcastingID, UniqueID).Choices.Count; }

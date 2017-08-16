@@ -498,6 +498,7 @@ namespace Character_Builder_5
                 if (curhploss > 0) curhploss = 0;
                 CurHP.Maximum = hp;
                 CurHP.Value = hp + curhploss;
+                bonusMaxHP.Minimum = -CurHP.Maximum;
                 sidePortrait.Image = Program.Context.Player.GetPortrait();
                 int level = Program.Context.Player.GetLevel();
                 SideName.Text = Program.Context.Player.Name + "\n" + String.Join(" | ", from pc in Program.Context.Player.Classes select pc.ToString(Program.Context, level)) + "\n(Level " + Program.Context.Player.GetLevel() + ")\n" + Program.Context.Player.GetRaceSubName();

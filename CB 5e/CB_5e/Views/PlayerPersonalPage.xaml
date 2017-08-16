@@ -5,7 +5,7 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout Padding="10">
                 <Label Text="Character Name:" />
                 <Entry Text="{Binding CharacterName}" TextColor="{Binding Accent}"/>
                 <Label Text="Alignment:"/>

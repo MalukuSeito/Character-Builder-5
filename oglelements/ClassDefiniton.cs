@@ -16,7 +16,7 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));
         [XmlIgnore]
-        public string filename;
+        public string FileName { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public String Flavour { get; set; }
@@ -143,7 +143,7 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, string filename, bool applyKeywords)
         {
-            this.filename = filename;
+            this.FileName = filename;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Classes.ContainsKey(full)) throw new Exception("Duplicate Class: " + full);
             context.Classes.Add(full, this);
@@ -216,7 +216,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -261,7 +264,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 ClassDefinition r = (ClassDefinition)Serializer.Deserialize(mem);
-                r.filename = filename;
+                r.FileName = FileName;
                 return r;
             }
         }

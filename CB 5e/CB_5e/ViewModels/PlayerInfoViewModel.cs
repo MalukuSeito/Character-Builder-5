@@ -122,7 +122,8 @@ namespace CB_5e.ViewModels
                 int parsedInt = 0;
                 if (value == "" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
                 {
-                    if (parsedInt < 0) parsedInt = 0;
+                    int min = -Context.Player.GetHitpointMax();
+                    if (parsedInt < min) parsedInt = min;
                     MakeHistory("CurHP");
                     Context.Player.BonusMaxHP = parsedInt;
                     OnPropertyChanged("HP");

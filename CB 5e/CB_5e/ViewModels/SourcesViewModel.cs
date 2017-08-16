@@ -214,7 +214,7 @@ namespace CB_5e.ViewModels
         private void UpdateSources()
         {
             Sources.ReplaceRange(from s in PCLSourceManager.Sources
-                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s.Name, sourceSearch, CompareOptions.IgnoreCase) >= 0
+                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s.Name ?? "", sourceSearch, CompareOptions.IgnoreCase) >= 0
                                  select new Source()
                                  {
                                      Name = s.Name,
@@ -227,7 +227,7 @@ namespace CB_5e.ViewModels
         private void UpdatePlugins()
         {
             Plugins.ReplaceRange(from s in Context.Plugins.available.Keys
-                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s, sourceSearch, CompareOptions.IgnoreCase) >= 0
+                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s ?? "", sourceSearch, CompareOptions.IgnoreCase) >= 0
                                  select new Source()
                                  {
                                      Name = s,

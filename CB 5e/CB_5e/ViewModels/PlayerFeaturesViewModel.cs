@@ -37,7 +37,7 @@ namespace CB_5e.ViewModels
         public ObservableRangeCollection<Feature> Features { get; set; } = new ObservableRangeCollection<Feature>();
 
         public void UpdateFeatures() => Features.ReplaceRange(from f in features where featureSearch == null || featureSearch == ""
-            || Culture.CompareInfo.IndexOf(f.Name, featureSearch, CompareOptions.IgnoreCase) >= 0
-            || Culture.CompareInfo.IndexOf(f.Text, featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
+            || Culture.CompareInfo.IndexOf(f.Name ?? "", featureSearch, CompareOptions.IgnoreCase) >= 0
+            || Culture.CompareInfo.IndexOf(f.Text ?? "", featureSearch, CompareOptions.IgnoreCase) >= 0 orderby f.Name select f);
     }
 }

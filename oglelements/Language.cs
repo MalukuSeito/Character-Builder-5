@@ -9,7 +9,7 @@ namespace OGL
     public class Language : IComparable<Language>, IXML, IOGLElement<Language>, IOGLElement
     {
         [XmlIgnore]
-        public string filename;
+        public string FileName { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Language));
         public String Name { get; set; }
@@ -23,7 +23,7 @@ namespace OGL
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, string file)
         {
-            filename = file;
+            FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.Languages.ContainsKey(full)) throw new Exception("Duplicate Language: " + full);
             context.Languages.Add(full, this);
@@ -56,7 +56,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -79,7 +82,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 Language r = (Language)Serializer.Deserialize(mem);
-                r.filename = filename;
+                r.FileName = FileName;
                 return r;
             }
         }

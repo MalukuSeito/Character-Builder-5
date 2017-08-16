@@ -95,7 +95,7 @@ namespace CB_5e.ViewModels
         private bool cbusy;
         public bool ConditionsBusy { get => cbusy; private set => SetProperty(ref cbusy, value); }
 
-        public void UpdateAllConditions() => AllConditions.ReplaceRange(from c in Context.Conditions.Values where condtionSearch == null || condtionSearch == "" || Culture.CompareInfo.IndexOf(c.Description, condtionSearch, CompareOptions.IgnoreCase) >= 0 || Culture.CompareInfo.IndexOf(c.Name, condtionSearch, CompareOptions.IgnoreCase) >= 0 orderby c.Name select c);
+        public void UpdateAllConditions() => AllConditions.ReplaceRange(from c in Context.Conditions.Values where condtionSearch == null || condtionSearch == "" || Culture.CompareInfo.IndexOf(c.Description ?? "", condtionSearch, CompareOptions.IgnoreCase) >= 0 || Culture.CompareInfo.IndexOf(c.Name ?? "", condtionSearch, CompareOptions.IgnoreCase) >= 0 orderby c.Name select c);
         public void UpdateCondtions() => ActiveConditions.ReplaceRange(from c in Context.Player.Conditions orderby c select Context.GetCondition(c, null));
     }
 }

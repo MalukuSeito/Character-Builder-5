@@ -16,7 +16,7 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubRace));
         [XmlIgnore]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(ListDescription)),
         XmlArrayItem(Type = typeof(TableDescription))]
@@ -82,7 +82,7 @@ namespace OGL
 
         public void Register(OGLContext context, string file)
         {
-            Filename = file;
+            FileName = file;
             string full = Name + " " + ConfigManager.SourceSeperator + " " + Source;
             if (context.SubRaces.ContainsKey(full)) throw new Exception("Duplicate Subrace: " + full);
             context.SubRaces.Add(full, this);
@@ -114,7 +114,10 @@ namespace OGL
                 return mem.ToString();
             }
         }
-
+        public void Write(Stream stream)
+        {
+            Serializer.Serialize(stream, this);
+        }
         public MemoryStream ToXMLStream()
         {
             MemoryStream mem = new MemoryStream();
@@ -149,7 +152,7 @@ namespace OGL
                 Serializer.Serialize(mem, this);
                 mem.Seek(0, SeekOrigin.Begin);
                 SubRace r = (SubRace)Serializer.Deserialize(mem);
-                r.Filename = Filename;
+                r.FileName = FileName;
                 return r;
             }
         }
