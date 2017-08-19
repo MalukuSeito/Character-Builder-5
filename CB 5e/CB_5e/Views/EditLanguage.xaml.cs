@@ -11,10 +11,10 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditCondition : ContentPage
+    public partial class EditLanguage : ContentPage
     {
-        public ConditionEditModel Model { get; private set; }
-        public EditCondition(ConditionEditModel model)
+        public LanguageEditModel Model { get; private set; }
+        public EditLanguage(LanguageEditModel model)
         {
             BindingContext = Model = model;
             Model.Navigation = Navigation;

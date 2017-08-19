@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.EditLanguage"
+             Title="Edit">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Preview" Command="{Binding Preview}"/>
+        <ToolbarItem Text="Save" Command="{Binding Save}"/>
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid Padding="10" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
+            <Label Grid.Row="1" Text="Name:" />
+            <Entry Grid.Row="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Label Grid.Row="3" Text="Source:" />
+            <Entry Grid.Row="4" Text="{Binding Source}" TextColor="{Binding Accent}"/>
+            <Label Grid.Row="5" Text="Script:" />
+            <Entry Grid.Row="6" Text="{Binding Script}" TextColor="{Binding Accent}"/>
+            <Label Grid.Row="7" Text="Typical Speakers:" />
+            <Entry Grid.Row="8" Text="{Binding Speakers}" TextColor="{Binding Accent}"/>
+            <Label Grid.Row="9" Text="Description:"/>
+            <Editor Grid.Row="10" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{Binding Accent}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

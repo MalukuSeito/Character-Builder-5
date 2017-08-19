@@ -5,6 +5,7 @@ using OGL.Common;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,16 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public abstract class EditModel<T> : BaseViewModel where T: IOGLElement<T>
+    public interface IEditModel: INotifyPropertyChanged
+    {
+        Command Undo { get; }
+        Command Redo { get;  }
+        bool TrackChanges { get; set; }
+        OGLContext Context { get; }
+        void MakeHistory(string id = "");
+    }
+
+    public abstract class EditModel<T> : BaseViewModel, IEditModel where T: IOGLElement<T>
     {
         public LinkedList<T> UndoBuffer = new LinkedList<T>();
         public LinkedList<T> RedoBuffer = new LinkedList<T>();
@@ -31,7 +41,6 @@ namespace CB_5e.ViewModels
         public Command Undo { get; private set; }
         public Command Redo { get; private set; }
         public INavigation Navigation { get; set; }
-        public object Program { get; private set; }
         public Command Save { get; private set; }
         public Command Preview { get; private set; }
         public OGLContext Context { get; private set; }
@@ -54,8 +63,11 @@ namespace CB_5e.ViewModels
                     Undo.ChangeCanExecute();
                     Redo.ChangeCanExecute();
                     Save.ChangeCanExecute();
-                    ModelChanged();
-                    OnPropertyChanged();
+                    bool old = TrackChanges;
+                    TrackChanges = false;
+                    FireModelChanged();
+                    OnPropertyChanged("");
+                    TrackChanges = old;
                 }
             },
             () => UndoBuffer.Count > 0);
@@ -71,8 +83,11 @@ namespace CB_5e.ViewModels
                     Undo.ChangeCanExecute();
                     Redo.ChangeCanExecute();
                     Save.ChangeCanExecute();
-                    ModelChanged();
-                    OnPropertyChanged();
+                    bool old = TrackChanges;
+                    FireModelChanged();
+                    TrackChanges = false;
+                    OnPropertyChanged("");
+                    TrackChanges = old;
                 }
             },
             () => RedoBuffer.Count > 0);
@@ -134,8 +149,9 @@ namespace CB_5e.ViewModels
             }
             lastid = id;
         }
-        public abstract void ModelChanged();
         public abstract string GetPath(T obj);
+        public void FireModelChanged() => ModelChanged?.Invoke(this, Model);
+        public event EventHandler<T> ModelChanged;
 
     }
 }

@@ -12,10 +12,10 @@ using PCLStorage;
 
 namespace CB_5e.ViewModels
 {
-    public class ConditionViewModel : EditModel<OGL.Condition>
+    public class ConditionEditModel : EditModel<OGL.Condition>
     {
         
-        public ConditionViewModel(OGL.Condition cond, OGLContext context): base(cond, context)
+        public ConditionEditModel(OGL.Condition cond, OGLContext context): base(cond, context)
         {
             
             ShowImage = new Command(async () =>
@@ -31,9 +31,9 @@ namespace CB_5e.ViewModels
             });
         }
 
-        public string Name { get => Model.Name; set { MakeHistory("Name"); Model.Name = value; OnPropertyChanged("Name"); } }
-        public string Source { get => Model.Source; set { MakeHistory("Source"); Model.Source = value; OnPropertyChanged("Source"); } }
-        public string Description { get => Model.Description; set { MakeHistory("Description"); Model.Description = value ; OnPropertyChanged("Description"); } }
+        public string Name { get => Model.Name; set { if (value == Name) return; MakeHistory("Name"); Model.Name = value; OnPropertyChanged("Name"); } }
+        public string Source { get => Model.Source; set { if (value == Source) return; MakeHistory("Source"); Model.Source = value; OnPropertyChanged("Source"); } }
+        public string Description { get => Model.Description; set { if (value == Description) return; MakeHistory("Description"); Model.Description = value ; OnPropertyChanged("Description"); } }
 
         public ImageSource Image
         {
@@ -46,10 +46,6 @@ namespace CB_5e.ViewModels
         public override string GetPath(OGL.Condition obj)
         {
             return PortablePath.Combine(obj.Source, Context.Config.Conditions_Directory);
-        }
-
-        public override void ModelChanged()
-        {
         }
     }
 }

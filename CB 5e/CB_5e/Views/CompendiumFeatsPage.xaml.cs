@@ -1,5 +1,6 @@
 ﻿using CB_5e.Helpers;
 using CB_5e.Services;
+using CB_5e.ViewModels;
 using OGL;
 using OGL.Common;
 using OGL.Items;
@@ -79,14 +80,33 @@ namespace CB_5e.Views
             if (Entries.Count == 0) Refresh.Execute(null);
         }
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
+            if (e.SelectedItem is FeatureContainer obj)
+            {
+                if (IsBusy) return;
+                IsBusy = true;
+                await Navigation.PushModalAsync(MakePage(new FeatureEditModel(obj, Context)));
+                Entries.Clear();
+                IsBusy = false;
+            }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            await Navigation.PushModalAsync(MakePage(new FeatureEditModel(new FeatureContainer() { Source = Context.Config.DefaultSource, category = category }, Context)));
+            Entries.Clear();
+            IsBusy = false;
+        }
 
+        private Page MakePage(FeatureEditModel m)
+        {
+            TabbedPage t = new TabbedPage();
+            t.Children.Add(new NavigationPage(new EditFeatureContainer(m)) { Title = "Edit" });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
+            return t;
         }
     }
 }

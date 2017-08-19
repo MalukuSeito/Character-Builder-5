@@ -11,10 +11,10 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditCondition : ContentPage
+    public partial class EditSkill : ContentPage
     {
-        public ConditionEditModel Model { get; private set; }
-        public EditCondition(ConditionEditModel model)
+        public SkillEditModel Model { get; private set; }
+        public EditSkill(SkillEditModel model)
         {
             BindingContext = Model = model;
             Model.Navigation = Navigation;

@@ -60,5 +60,16 @@ namespace CB_5e.Droid
             }
             return p;
         }
+        public string GetTextData()
+        {
+            ClipboardManager clipboard = (ClipboardManager)Forms.Context.GetSystemService(Context.ClipboardService);
+            return clipboard.Text;
+        }
+
+        public void PutTextData(string text, string label = "Text")
+        {
+            ClipboardManager clipboard = (ClipboardManager)Forms.Context.GetSystemService(Context.ClipboardService);
+            clipboard.PrimaryClip = ClipData.NewPlainText(label, text);
+        }
     }
 }
