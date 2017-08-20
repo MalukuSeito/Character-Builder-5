@@ -10,28 +10,27 @@ using CB_5e.Views;
 using OGL;
 using PCLStorage;
 using OGL.Base;
+using OGL.Features;
 
 namespace CB_5e.ViewModels
 {
-    public class SkillEditModel : EditModel<Skill>
+    public class FeatureEditModel : EditModel<FeatureContainer>
     {
         
-        public SkillEditModel(Skill obj, OGLContext context): base(obj, context)
+        public FeatureEditModel(FeatureContainer obj, OGLContext context): base(obj, context)
         {
             
         }
 
         public string Name { get => Model.Name; set { if (value == Name) return; MakeHistory("Name"); Model.Name = value; OnPropertyChanged("Name"); } }
         public string Source { get => Model.Source; set { if (value == Source) return; MakeHistory("Source"); Model.Source = value; OnPropertyChanged("Source"); } }
-        public string Description { get => Model.Description; set { if (value == Description) return; MakeHistory("Description"); Model.Description = value ; OnPropertyChanged("Description"); } }
-        public string Base { get => Model.Base != Ability.None ? Model.Base.ToString() : null; set { if (value == Base) return; MakeHistory("Base"); if (Enum.TryParse(value, out Ability a)) Model.Base = a; else Model.Base = Ability.None ; OnPropertyChanged("Base"); } }
 
 
-        public override string GetPath(Skill obj)
+        public override string GetPath(FeatureContainer obj)
         {
-            return PortablePath.Combine(obj.Source, Context.Config.Skills_Directory);
+            return PortablePath.Combine(obj.Source, obj.category == null || obj.category == "" ? Context.Config.Features_Directory : obj.category);
         }
 
-        public List<string> Abilities { get; set; } = Enum.GetNames(typeof(Ability)).ToList();
+        public List<Feature> Features { get => Model.Features; }
     }
 }

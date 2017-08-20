@@ -4,11 +4,6 @@
              x:Class="CB_5e.Views.FlowPage"
              xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              Title="{Binding Name}">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked" />
-        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
-        <ToolbarItem Text="Redo" Command="{Binding Redo}" />
-    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <flv:FlowListView FlowColumnMinWidth="150" SeparatorVisibility="Default" HasUnevenRows="false"

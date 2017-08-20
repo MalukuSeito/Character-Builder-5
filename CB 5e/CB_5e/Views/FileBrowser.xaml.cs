@@ -44,6 +44,10 @@ namespace CB_5e.Views
             {
                 await Navigation.PushAsync(new FileBrowser(f));
             }
+            else if (e.SelectedItem is IFile file)
+            {
+                await Navigation.PushAsync(new EditFilePage(file));
+            }
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;

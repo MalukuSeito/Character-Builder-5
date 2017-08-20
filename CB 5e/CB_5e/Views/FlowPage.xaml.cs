@@ -20,7 +20,29 @@ namespace CB_5e.Views
             model.Navigation = Navigation;
             FlowListView.Init();
             InitializeComponent();
+            if (!model.ChildModel)
+            {
+                ToolbarItem exit = new ToolbarItem()
+                {
+                    Text = "Exit"
+                };
+                exit.Clicked += ToolbarItem_Clicked;
+                ToolbarItems.Add(exit);
+                ToolbarItem undo = new ToolbarItem()
+                {
+                    Text = "Undo"
+                };
+                undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
+                ToolbarItems.Add(undo);
+                ToolbarItem redo = new ToolbarItem()
+                {
+                    Text = "Redo"
+                };
+                redo.SetBinding(MenuItem.CommandProperty, new Binding("Redo"));
+                ToolbarItems.Add(redo);
+            }
             BindingContext = Model = model;
+            
         }
 
         private async void FlowListView_FlowItemTapped(object sender, ItemTappedEventArgs e)

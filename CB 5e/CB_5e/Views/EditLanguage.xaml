@@ -23,18 +23,18 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
-            <Label Grid.Row="1" Text="Name:" />
+            <Label Grid.Row="1" Text="Name:" FontSize="Micro"/>
             <Entry Grid.Row="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
-            <Label Grid.Row="3" Text="Source:" />
+            <Label Grid.Row="3" Text="Source:" FontSize="Micro"/>
             <Entry Grid.Row="4" Text="{Binding Source}" TextColor="{Binding Accent}"/>
-            <Label Grid.Row="5" Text="Script:" />
+            <Label Grid.Row="5" Text="Script:" FontSize="Micro"/>
             <Entry Grid.Row="6" Text="{Binding Script}" TextColor="{Binding Accent}"/>
-            <Label Grid.Row="7" Text="Typical Speakers:" />
+            <Label Grid.Row="7" Text="Typical Speakers:" FontSize="Micro"/>
             <Entry Grid.Row="8" Text="{Binding Speakers}" TextColor="{Binding Accent}"/>
-            <Label Grid.Row="9" Text="Description:"/>
+            <Label Grid.Row="9" Text="Description:" FontSize="Micro"/>
             <Editor Grid.Row="10" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{Binding Accent}"/>
         </Grid>
     </ContentPage.Content>

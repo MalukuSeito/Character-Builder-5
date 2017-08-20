@@ -61,10 +61,13 @@
     <Compile Include="ViewModels\ClassesViewModel.cs" />
     <Compile Include="ViewModels\ClassHPChoice.cs" />
     <Compile Include="ViewModels\CollectionChoice.cs" />
+    <Compile Include="ViewModels\FeatureEditModel.cs" />
+    <Compile Include="ViewModels\SubRaceEditModel.cs" />
+    <Compile Include="ViewModels\RaceEditModel.cs" />
+    <Compile Include="ViewModels\ConditionEditModel.cs" />
+    <Compile Include="ViewModels\DescriptionViewModel.cs" />
     <Compile Include="ViewModels\FeatureViewModel.cs" />
     <Compile Include="ViewModels\LanguageViewModel.cs" />
-    <Compile Include="ViewModels\FeatureEditModel.cs" />
-    <Compile Include="ViewModels\SkillViewModel.cs" />
     <Compile Include="ViewModels\CustomChoiceOption.cs" />
     <Compile Include="ViewModels\DescriptionChoice.cs" />
     <Compile Include="ViewModels\EditModel.cs" />
@@ -98,7 +101,6 @@
     <Compile Include="ViewModels\PlayerModel.cs" />
     <Compile Include="ViewModels\PlayerNotesViewModel.cs" />
     <Compile Include="ViewModels\PlayerPDFViewModel.cs" />
-    <Compile Include="ViewModels\CondtionViewModel.cs" />
     <Compile Include="ViewModels\PlayerPersonalViewModel.cs" />
     <Compile Include="ViewModels\PlayerProficiencyViewModel.cs" />
     <Compile Include="ViewModels\PlayerResourcesViewModel.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="ViewModels\ScoresModelViewModel.cs" />
     <Compile Include="ViewModels\ShopGroupModel.cs" />
     <Compile Include="ViewModels\ShopViewModel.cs" />
+    <Compile Include="ViewModels\SkillEditModel.cs" />
     <Compile Include="ViewModels\SkillProficiencyChoice.cs" />
     <Compile Include="ViewModels\SourcesViewModel.cs" />
     <Compile Include="ViewModels\SpellbookSpellsViewModel.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="ViewModels\SubClassChoice.cs" />
     <Compile Include="ViewModels\SubModel.cs" />
     <Compile Include="ViewModels\SubRaceChoice.cs" />
+    <Compile Include="ViewModels\SwitchToPlayModel.cs" />
     <Compile Include="ViewModels\TableValue.cs" />
     <Compile Include="ViewModels\ToolProficiencyChoice.cs" />
     <Compile Include="ViewModels\WrongChoiceOption.cs" />
@@ -192,6 +196,15 @@
     <Compile Include="Views\CustomTextEntryPage.xaml.cs">
       <DependentUpon>CustomTextEntryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditFilePage.xaml.cs">
+      <DependentUpon>EditFilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditSubRace.xaml.cs">
+      <DependentUpon>EditSubRace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditRace.xaml.cs">
+      <DependentUpon>EditRace.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditFeatureContainer.xaml.cs">
       <DependentUpon>EditFeatureContainer.xaml</DependentUpon>
     </Compile>
@@ -208,6 +221,9 @@
       <DependentUpon>EditMoneyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EntryListView.cs" />
+    <Compile Include="Views\DescriptionListPage.xaml.cs">
+      <DependentUpon>DescriptionListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FeatureListPage.xaml.cs">
       <DependentUpon>FeatureListPage.xaml</DependentUpon>
     </Compile>
@@ -800,6 +816,30 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\EditFeatureContainer.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\DescriptionListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditRace.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditSubRace.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditFilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

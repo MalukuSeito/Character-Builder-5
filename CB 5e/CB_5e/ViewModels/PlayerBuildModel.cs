@@ -22,6 +22,7 @@ namespace CB_5e.ViewModels
     public class PlayerBuildModel : PlayerModel
     {
         public Mutex SaveLock = new Mutex();
+        public PlayerModel Parent;
         public PlayerBuildModel(BuilderContext context) : base(context)
         {
             PlayerChanged += PlayerBuildModel_PlayerChanged;
@@ -45,6 +46,29 @@ namespace CB_5e.ViewModels
             {
                 return Context.CanRedo();
             });
+            race = new RaceViewModel(this);
+            classes = new ClassesViewModel(this);
+            background = new BackgroundViewModel(this);
+            playerInventory = new PlayerInventoryViewModel(this);
+            playerShops = new PlayerShopViewModel(this);
+            playerInventoryChoices = new PlayerInventoryChoicesViewModel(this);
+            playerScores = new PlayerScoresViewModel(this);
+            playerPersonal = new PlayerPersonalViewModel(this);
+            playerJournal = new PlayerJournalViewModel(this);
+            playerFeatures = new PlayerFeaturesViewModel(this);
+            playerSources = new SourcesViewModel(this);
+            playerInfo = new PlayerInfoViewModel(this);
+            play = new SwitchToPlayModel(this);
+            UpdateSpellcasting();
+        }
+
+        public PlayerBuildModel(PlayerModel parent) : base(parent.Context)
+        {
+            Parent = parent;
+            ChildModel = true;
+            PlayerChanged += PlayerBuildModel_PlayerChanged;
+            Undo = Parent.Undo;
+            Redo = Parent.Redo;
             race = new RaceViewModel(this);
             classes = new ClassesViewModel(this);
             background = new BackgroundViewModel(this);
@@ -92,7 +116,8 @@ namespace CB_5e.ViewModels
 
         public override void DoSave()
         {
-            if (Context.Player != null && !ChildModel)
+            if (Parent != null) Parent.DoSave();
+            else if (Context.Player != null)
             {
                 Modified = true;
                 Player p = Context.Player;
@@ -120,12 +145,13 @@ namespace CB_5e.ViewModels
 
         public override void MakeHistory(string h = null)
         {
-            Context.MakeHistory(h);
+            if (Parent != null) Parent.MakeHistory(h);
+            else Context.MakeHistory(h);
         }
 
         public override void Save()
         {
-            
+            if (Parent != null) Parent.Save();
         }
 
         private void Player_HistoryButtonChange(object sender, bool CanUndo, bool CanRedo)
@@ -224,12 +250,14 @@ namespace CB_5e.ViewModels
             pages.Add(playerInfo);
             pages.Add(playerFeatures);
             pages.Add(playerSources);
+            if (play != null) pages.Add(play);
             SubPages.ReplaceRange(pages);
 
         }
 
         public override void MoneyChanged()
         {
+            if (Parent != null) Parent.MoneyChanged();
             playerInfo.DoMoneyChanged();
         }
 
@@ -258,6 +286,7 @@ namespace CB_5e.ViewModels
         private PlayerFeaturesViewModel playerFeatures;
         private SourcesViewModel playerSources;
         private PlayerInfoViewModel playerInfo;
+        private SwitchToPlayModel play;
 
     }
 }
