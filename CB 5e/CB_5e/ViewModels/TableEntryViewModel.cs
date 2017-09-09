@@ -9,15 +9,16 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class DescriptionViewModel : BaseViewModel
+    public class TableEntryViewModel : BaseViewModel
     {
-        public Description Description { get; private set; }
-        public DescriptionViewModel(Description d) => Description = d;
+        public TableEntry Entry { get; private set; }
+        public TableEntryViewModel(TableEntry te) => Entry = te;
         public void Refresh() => OnPropertyChanged("");
-        public string Text { get => Description.Name; }
-        public string Detail { get => Description.GetType().Name; }
+        public string Text { get => Entry.MinRoll + "-" + Entry.MaxRoll + ":" + (Entry.Title ?? ""); }
+        public string Detail { get => Entry.Text; }
         private bool moving = false;
         public bool Moving { get => moving; set => SetProperty(ref moving, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Moving ? Color.Orange : Color.Default; }
+        public Color Accent { get => Color.Accent; }
     }
 }

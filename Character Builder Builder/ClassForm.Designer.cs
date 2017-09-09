@@ -37,6 +37,8 @@
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.flavour = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
+            this.Prestige = new System.Windows.Forms.CheckBox();
             this.splitContainer10 = new System.Windows.Forms.SplitContainer();
             this.label19 = new System.Windows.Forms.Label();
             this.HDCount = new System.Windows.Forms.NumericUpDown();
@@ -83,8 +85,6 @@
             this.classFeats = new Character_Builder_Builder.StringList();
             this.label10 = new System.Windows.Forms.Label();
             this.userControl11 = new Character_Builder_Builder.UserControl1();
-            this.Prestige = new System.Windows.Forms.CheckBox();
-            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -253,6 +253,29 @@
             this.label2.Size = new System.Drawing.Size(69, 13);
             this.label2.TabIndex = 21;
             this.label2.Text = "Flavour Text:";
+            // 
+            // imageChooser1
+            // 
+            this.imageChooser1.AllowDrop = true;
+            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageChooser1.History = null;
+            this.imageChooser1.Image = null;
+            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
+            this.imageChooser1.Name = "imageChooser1";
+            this.imageChooser1.Size = new System.Drawing.Size(128, 136);
+            this.imageChooser1.TabIndex = 1;
+            // 
+            // Prestige
+            // 
+            this.Prestige.AutoSize = true;
+            this.Prestige.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.Prestige.Location = new System.Drawing.Point(0, 136);
+            this.Prestige.Name = "Prestige";
+            this.Prestige.Size = new System.Drawing.Size(128, 17);
+            this.Prestige.TabIndex = 0;
+            this.Prestige.Text = "Available at 1st Level";
+            this.Prestige.UseVisualStyleBackColor = true;
+            this.Prestige.CheckedChanged += new System.EventHandler(this.Prestige_CheckedChanged);
             // 
             // splitContainer10
             // 
@@ -797,29 +820,6 @@
             this.userControl11.Name = "userControl11";
             this.userControl11.Size = new System.Drawing.Size(1206, 24);
             this.userControl11.TabIndex = 9;
-            // 
-            // Prestige
-            // 
-            this.Prestige.AutoSize = true;
-            this.Prestige.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Prestige.Location = new System.Drawing.Point(0, 136);
-            this.Prestige.Name = "Prestige";
-            this.Prestige.Size = new System.Drawing.Size(128, 17);
-            this.Prestige.TabIndex = 0;
-            this.Prestige.Text = "Available at 1st Level";
-            this.Prestige.UseVisualStyleBackColor = true;
-            this.Prestige.CheckedChanged += new System.EventHandler(this.Prestige_CheckedChanged);
-            // 
-            // imageChooser1
-            // 
-            this.imageChooser1.AllowDrop = true;
-            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageChooser1.History = null;
-            this.imageChooser1.Image = null;
-            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
-            this.imageChooser1.Name = "imageChooser1";
-            this.imageChooser1.Size = new System.Drawing.Size(128, 136);
-            this.imageChooser1.TabIndex = 1;
             // 
             // ClassForm
             // 

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.KeywordListPage"
+             Title="{Binding Property}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement"
+                      RowHeight="30"
+                      x:Name="ListViewComponent"
+                      x:FieldModifier="public">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

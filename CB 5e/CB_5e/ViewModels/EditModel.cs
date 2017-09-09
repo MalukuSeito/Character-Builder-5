@@ -21,6 +21,9 @@ namespace CB_5e.ViewModels
         bool TrackChanges { get; set; }
         OGLContext Context { get; }
         void MakeHistory(string id = "");
+        int UnsavedChanges { get; }
+        Task<bool> SaveAsync(bool overwrite);
+        INavigation Navigation { get; set; }
     }
 
     public abstract class EditModel<T> : BaseViewModel, IEditModel where T: IOGLElement<T>
@@ -28,7 +31,7 @@ namespace CB_5e.ViewModels
         public LinkedList<T> UndoBuffer = new LinkedList<T>();
         public LinkedList<T> RedoBuffer = new LinkedList<T>();
         private string lastid = null;
-        public int UnsavedChanges;
+        public int UnsavedChanges { get; set; }
         private static int MaxBuffer = 100;
         private bool overwrite = false;
         public bool Overwrite

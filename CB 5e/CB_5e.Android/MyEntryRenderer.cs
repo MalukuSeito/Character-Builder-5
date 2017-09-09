@@ -14,7 +14,7 @@ namespace CB_5e.Droid
 
             var native = Control as EditText;
             if (e.NewElement.Keyboard == Keyboard.Telephone)
-                native.InputType = Android.Text.InputTypes.ClassNumber | Android.Text.InputTypes.NumberFlagSigned;
+                native.InputType = Android.Text.InputTypes.ClassNumber | Android.Text.InputTypes.NumberFlagSigned | Android.Text.InputTypes.NumberFlagDecimal;
         }
     }
 }

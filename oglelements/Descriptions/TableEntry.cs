@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OGL.Descriptions
 {
@@ -44,6 +45,11 @@ namespace OGL.Descriptions
                 return MinRoll + ": ";
             }
             return "";
+        }
+
+        public string Save()
+        {
+            return new TableDescription(null, null, null, null, new List<TableEntry>() { this }).Save();
         }
     }
 }

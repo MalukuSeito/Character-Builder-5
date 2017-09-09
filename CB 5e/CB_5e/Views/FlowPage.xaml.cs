@@ -85,10 +85,10 @@ namespace CB_5e.Views
                         }
                     }
                     if (Model.Modified) CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
+                    await Navigation.PopModalAsync();
                 }
-                await Navigation.PopModalAsync();
             });
-            return true;
+            return !Model.ChildModel;
         }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)

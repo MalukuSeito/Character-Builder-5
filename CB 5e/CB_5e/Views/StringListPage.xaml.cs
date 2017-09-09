@@ -9,31 +9,32 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using CB_5e.ViewModels;
 using OGL.Features;
-
+using OGL.Descriptions;
+using OGL;
 
 namespace CB_5e.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class FeatureListPage : ContentPage
+	public partial class StringListPage : ContentPage
 	{
-        private List<Feature> features;
-        public ObservableRangeCollection<FeatureViewModel> Features { get; set; } = new ObservableRangeCollection<FeatureViewModel>();
+        private List<string> entries;
+        public ObservableRangeCollection<StringViewModel> Entries { get; set; } = new ObservableRangeCollection<StringViewModel>();
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
         private int move = -1;
         private bool Modal = true;
 
-        public FeatureListPage (IEditModel parent, string property, bool modal = true)
-		{
+        public StringListPage(IEditModel parent, string property, bool modal = true)
+        {
             Model = parent;
             Modal = modal;
             parent.PropertyChanged += Parent_PropertyChanged;
             Property = property;
-            UpdateFeatures();
+            UpdateEntries();
 			InitializeComponent ();
             InitToolbar(Modal);
             BindingContext = this;
-        }
+		}
 
         private void InitToolbar(bool modal)
         {
@@ -52,106 +53,155 @@ namespace CB_5e.Views
             ToolbarItem paste = new ToolbarItem() { Text = "Paste" };
             paste.Clicked += Paste_Clicked;
             ToolbarItems.Add(paste);
+            ToolbarItem paste2 = new ToolbarItem() { Text = "Paste CSV" };
+            paste2.Clicked += Paste2_Clicked;
+            ToolbarItems.Add(paste2);
         }
 
         private void Parent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == Property) UpdateFeatures();
+            if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == Property) UpdateEntries();
         }
 
-        private void UpdateFeatures()
+        private void UpdateEntries()
         {
-            features = (List<Feature>)Model.GetType().GetRuntimeProperty(Property).GetValue(Model);
+            entries = (List<string>)Model.GetType().GetRuntimeProperty(Property).GetValue(Model);
             Fill();
         }
-        private void Fill() => Features.ReplaceRange(features.Select(f => new FeatureViewModel(f)));
+        private void Fill() => Entries.ReplaceRange(entries.Select(f => new StringViewModel(f)));
 
-        private void Paste_Clicked(object sender, EventArgs e)
+        private void Paste2_Clicked(object sender, EventArgs e)
         {
             try
             {
                 Model.MakeHistory();
-                foreach (Feature f in Feature.LoadString(DependencyService.Get<IClipboardService>().GetTextData())) features.Add(f);
-                Fill();
+                string clip = DependencyService.Get<IClipboardService>().GetTextData();
+                if (clip != null)
+                {
+                    foreach (string s in clip.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        string r = s.Trim();
+                        if (r != "") entries.Add(r);
+                    }
+                    Fill();
+                }
             } catch (Exception ex)
             {
                 DisplayAlert("Error", ex.Message, "Ok");
             }
         }
 
-        private void Add_Clicked(object sender, EventArgs e)
+        private void Paste_Clicked(object sender, EventArgs e)
         {
-
+            try
+            {
+                Model.MakeHistory();
+                string clip = DependencyService.Get<IClipboardService>().GetTextData();
+                if (clip != null)
+                {
+                    entries.Add(clip);
+                    Fill();
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", ex.Message, "Ok");
+            }
         }
 
-        private void Features_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void Add_Clicked(object sender, EventArgs e)
         {
-            if (e.SelectedItem is FeatureViewModel fvm) {
+            await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+            {
+                if (par is string s)
+                {
+                    Model.MakeHistory();
+                    StringViewModel vm = new StringViewModel(s);
+                    entries.Add(s);
+                    Entries.Add(vm);
+                }
+            })));
+        }
+
+        private async void Entries_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is StringViewModel fvm) {
                 if (move >= 0)
                 {
                     Model.MakeHistory();
-                    foreach (FeatureViewModel ff in Features) ff.Moving = false;
-                    int target = features.FindIndex(ff => fvm.Feature == ff);
+                    foreach (StringViewModel ff in Entries) ff.Moving = false;
+                    int target = Entries.ToList().FindIndex(ff => fvm == ff);
                     if (target >= 0 && move != target)
                     {
-                        features.Insert(target, features[move]);
+                        entries.Insert(target, entries[move]);
                         if (target < move) move++;
-                        features.RemoveAt(move);
+                        entries.RemoveAt(move);
                         Fill();
                         (sender as ListView).SelectedItem = null;
                     }
                     move = -1;
                 } else
                 {
-
+                    int i = Entries.ToList().FindIndex(ff => fvm == ff);
+                    if (i >= 0) await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+                    {
+                        if (par is string s)
+                        {
+                            Model.MakeHistory();
+                            entries[i] = s;
+                            fvm.Text = s;
+                            fvm.Refresh();
+                        }
+                    }), null, fvm.Text));
+                    (sender as ListView).SelectedItem = null;
                 }
             }
         }
 
         private void Delete_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is FeatureViewModel f)
+            if (((MenuItem)sender).BindingContext is StringViewModel f)
             {
                 Model.MakeHistory();
-                int i = features.FindIndex(ff => f.Feature == ff);
-                features.RemoveAt(i);
+                int i = Entries.ToList().FindIndex(ff => f == ff);
+                entries.RemoveAt(i);
                 Fill();
             }
         }
 
         private async void Info_Clicked(object sender, EventArgs e)
         {
-            if ((sender as MenuItem).BindingContext is FeatureViewModel f) await Navigation.PushAsync(InfoPage.Show(f.Feature));
+            if ((sender as MenuItem).BindingContext is StringViewModel f) await Navigation.PushAsync(InfoPage.Show(new Feature("Text", f.Text)));
         }
 
         private void Move_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is FeatureViewModel f)
+            if (((MenuItem)sender).BindingContext is StringViewModel f)
             {
-                foreach (FeatureViewModel ff in Features) ff.Moving = false;
+                foreach (StringViewModel ff in Entries) ff.Moving = false;
                 f.Moving = true;
-                move = features.FindIndex(ff => f.Feature == ff);
+                move = Entries.ToList().FindIndex(ff => f == ff);
             }
             
         }
 
         private void Cut_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is FeatureViewModel f)
+            if (((MenuItem)sender).BindingContext is StringViewModel f)
             {
                 Model.MakeHistory();
-                DependencyService.Get<IClipboardService>().PutTextData(f.Feature.Save(), f.Detail);
-                int i = features.FindIndex(ff => f.Feature == ff);
-                features.RemoveAt(i);
+                DependencyService.Get<IClipboardService>().PutTextData(f.Text, "String");
+                int i = Entries.ToList().FindIndex(ff => f == ff);
+                entries.RemoveAt(i);
                 Fill();
             }
         }
 
         private void Copy_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is FeatureViewModel f)
+            if (((MenuItem)sender).BindingContext is StringViewModel f)
             {
-                DependencyService.Get<IClipboardService>().PutTextData(f.Feature.Save(), f.Detail);
+                DependencyService.Get<IClipboardService>().PutTextData(f.Text, "String");
             }
         }
 

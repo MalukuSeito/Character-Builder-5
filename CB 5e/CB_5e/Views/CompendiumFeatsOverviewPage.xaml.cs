@@ -20,7 +20,6 @@ namespace CB_5e.Views
     public partial class CompendiumFeatsOverviewPage : ContentPage
     {
         private OGLContext Context = new OGLContext();
-        private Category category = null;
         public CompendiumFeatsOverviewPage()
         {
             InitializeComponent();
@@ -70,6 +69,7 @@ namespace CB_5e.Views
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             await Navigation.PushAsync(new CompendiumFeatsPage(e.SelectedItem as string));
+            (sender as ListView).SelectedItem = null;
         }
     }
 }

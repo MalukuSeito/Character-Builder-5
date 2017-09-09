@@ -14,7 +14,7 @@
                     <Picker SelectedItem="{Binding Alignment, Mode=OneWayToSource}" ItemsSource="{Binding Alignments}" Title="Select Alignment"/>
                 </StackLayout>
                 <Label Text="XP (also see Journal):" />
-                <Entry x:Name="XP" TextColor="{Binding Accent}"/>
+                <Entry x:Name="XP" TextColor="{Binding Accent}" Keyboard="Telephone"/>
                 <Label Text="XP to Level UP:" />
                 <Entry IsEnabled="False" Text="{Binding XPToLevel, Mode=OneWay}"/>
                 <Label Text="Portrait:" />

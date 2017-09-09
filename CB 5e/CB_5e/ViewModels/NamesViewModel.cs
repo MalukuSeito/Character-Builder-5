@@ -9,15 +9,21 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class DescriptionViewModel : BaseViewModel
+    public class NamesViewModel : BaseViewModel
     {
-        public Description Description { get; private set; }
-        public DescriptionViewModel(Description d) => Description = d;
+        public Names Entry { get; private set; }
+        public NamesViewModel(Names te) => Entry = te;
         public void Refresh() => OnPropertyChanged("");
-        public string Text { get => Description.Name; }
-        public string Detail { get => Description.GetType().Name; }
+        public string Text { get => Entry.Title; }
+        public string Detail { get => String.Join(", ", Entry.ListOfNames); }
         private bool moving = false;
         public bool Moving { get => moving; set => SetProperty(ref moving, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Moving ? Color.Orange : Color.Default; }
+        public Color Accent { get => Color.Accent; }
+
+        public string Save()
+        {
+            return new ListDescription("", "", new List<Names>() { Entry }).Save();
+        }
     }
 }

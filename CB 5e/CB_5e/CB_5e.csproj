@@ -51,6 +51,7 @@
     <Compile Include="Services\IHTMLService.cs" />
     <Compile Include="ViewModels\AbilityFeatChoiceModel.cs" />
     <Compile Include="ViewModels\BackgroundChoice.cs" />
+    <Compile Include="ViewModels\BackgroundEditModel.cs" />
     <Compile Include="ViewModels\BackgroundViewModel.cs" />
     <Compile Include="ViewModels\BondChoice.cs" />
     <Compile Include="ViewModels\BonusSpellKeywordChoice.cs" />
@@ -61,12 +62,16 @@
     <Compile Include="ViewModels\ClassesViewModel.cs" />
     <Compile Include="ViewModels\ClassHPChoice.cs" />
     <Compile Include="ViewModels\CollectionChoice.cs" />
+    <Compile Include="ViewModels\DescriptionViewModel.cs" />
     <Compile Include="ViewModels\FeatureEditModel.cs" />
+    <Compile Include="ViewModels\FeatureViewModel.cs" />
+    <Compile Include="ViewModels\IntViewModel.cs" />
+    <Compile Include="ViewModels\KeywordViewModel.cs" />
+    <Compile Include="ViewModels\ProxyModel.cs" />
+    <Compile Include="ViewModels\StringViewModel.cs" />
     <Compile Include="ViewModels\SubRaceEditModel.cs" />
     <Compile Include="ViewModels\RaceEditModel.cs" />
     <Compile Include="ViewModels\ConditionEditModel.cs" />
-    <Compile Include="ViewModels\DescriptionViewModel.cs" />
-    <Compile Include="ViewModels\FeatureViewModel.cs" />
     <Compile Include="ViewModels\LanguageViewModel.cs" />
     <Compile Include="ViewModels\CustomChoiceOption.cs" />
     <Compile Include="ViewModels\DescriptionChoice.cs" />
@@ -127,6 +132,8 @@
     <Compile Include="ViewModels\SubModel.cs" />
     <Compile Include="ViewModels\SubRaceChoice.cs" />
     <Compile Include="ViewModels\SwitchToPlayModel.cs" />
+    <Compile Include="ViewModels\NamesViewModel.cs" />
+    <Compile Include="ViewModels\TableEntryViewModel.cs" />
     <Compile Include="ViewModels\TableValue.cs" />
     <Compile Include="ViewModels\ToolProficiencyChoice.cs" />
     <Compile Include="ViewModels\WrongChoiceOption.cs" />
@@ -193,8 +200,17 @@
     <Compile Include="Views\CompendiumRacesPage.xaml.cs">
       <DependentUpon>CompendiumRacesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomDualTextEntryPage.xaml.cs">
+      <DependentUpon>CustomDualTextEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomPickerPage.xaml.cs">
+      <DependentUpon>CustomPickerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomTextEntryPage.xaml.cs">
       <DependentUpon>CustomTextEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditDescription.xaml.cs">
+      <DependentUpon>EditDescription.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditFilePage.xaml.cs">
       <DependentUpon>EditFilePage.xaml</DependentUpon>
@@ -214,15 +230,40 @@
     <Compile Include="Views\EditSkill.xaml.cs">
       <DependentUpon>EditSkill.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditCondition.xaml.cs">
-      <DependentUpon>EditCondition.xaml</DependentUpon>
+    <Compile Include="Views\EditCommon.xaml.cs">
+      <DependentUpon>EditCommon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditMoneyPage.xaml.cs">
       <DependentUpon>EditMoneyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditListDescription.xaml.cs">
+      <DependentUpon>EditListDescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditTableDescription.xaml.cs">
+      <DependentUpon>EditTableDescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IntListPage.xaml.cs">
+      <DependentUpon>IntListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KeywordListPage.xaml.cs">
+      <DependentUpon>KeywordListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NamesEditPage.xaml.cs">
+      <DependentUpon>NamesEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectOption.cs" />
+    <Compile Include="Views\SelectPage.xaml.cs">
+      <DependentUpon>SelectPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StringListPage.xaml.cs">
+      <DependentUpon>StringListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EntryListView.cs" />
     <Compile Include="Views\DescriptionListPage.xaml.cs">
       <DependentUpon>DescriptionListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntryListPage.xaml.cs">
+      <DependentUpon>EntryListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FeatureListPage.xaml.cs">
       <DependentUpon>FeatureListPage.xaml</DependentUpon>
@@ -353,6 +394,9 @@
     </Compile>
     <Compile Include="Views\SplitPage.xaml.cs">
       <DependentUpon>SplitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TableEntryEditPage.xaml.cs">
+      <DependentUpon>TableEntryEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ZoomImage.cs" />
   </ItemGroup>
@@ -791,7 +835,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditCondition.xaml">
+    <EmbeddedResource Include="Views\EditCommon.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -840,6 +884,78 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\EditFilePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EntryListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TableEntryEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\StringListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\IntListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\KeywordListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CustomDualTextEntryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CustomPickerPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditDescription.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditTableDescription.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\EditListDescription.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\NamesEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SelectPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

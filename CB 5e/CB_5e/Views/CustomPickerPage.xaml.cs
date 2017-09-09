@@ -10,14 +10,14 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CustomTextEntryPage : ContentPage
+	public partial class CustomPickerPage : ContentPage
 	{
         public ICommand SaveCommand { get; set; }
         public string Text { get; set; }
-        public Keyboard Keyboard { get; set; } = Keyboard.Default;
-        public CustomTextEntryPage (string title, ICommand saveCommand, Keyboard keyboard = null, string initial = null)
+        public List<string> Items { get; set; }
+        public CustomPickerPage(string title, ICommand saveCommand, List<string> items, string initial = null)
 		{
-            if (keyboard != null) Keyboard = keyboard;
+            Items = items;
             SaveCommand = saveCommand;
             Title = title;
             Text = initial;
@@ -27,8 +27,11 @@ namespace CB_5e.Views
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            SaveCommand.Execute(Text);
-            await Navigation.PopAsync();
+            if (Text != null)
+            {
+                SaveCommand.Execute(Text);
+                await Navigation.PopAsync();
+            }
         }
     }
 }

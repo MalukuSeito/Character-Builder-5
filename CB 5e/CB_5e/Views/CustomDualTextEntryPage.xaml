@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.CustomTextEntryPage"
+             x:Class="CB_5e.Views.CustomDualTextEntryPage"
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Custom Value" />
-            <Entry Text="{Binding Text}" Keyboard="{Binding Keyboard}"/>
+            <Label Text="{Binding Title1}" />
+            <Entry Text="{Binding Text1}" Keyboard="{Binding Keyboard1}"/>
+            <Label Text="{Binding Title2}" />
+            <Entry Text="{Binding Text2}" Keyboard="{Binding Keyboard2}"/>
             <Button Text="Add" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>

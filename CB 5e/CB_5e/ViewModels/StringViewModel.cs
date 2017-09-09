@@ -9,15 +9,14 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class DescriptionViewModel : BaseViewModel
+    public class StringViewModel : BaseViewModel
     {
-        public Description Description { get; private set; }
-        public DescriptionViewModel(Description d) => Description = d;
+        public string Text { get; set; }
+        public StringViewModel(string te) => Text = te;
         public void Refresh() => OnPropertyChanged("");
-        public string Text { get => Description.Name; }
-        public string Detail { get => Description.GetType().Name; }
         private bool moving = false;
         public bool Moving { get => moving; set => SetProperty(ref moving, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Moving ? Color.Orange : Color.Default; }
+        public Color Accent { get => Color.Accent; }
     }
 }

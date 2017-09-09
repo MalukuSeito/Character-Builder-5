@@ -83,7 +83,7 @@ namespace CB_5e.Views
             {
                 if (IsBusy) return;
                 IsBusy = true;
-                await Navigation.PushModalAsync(new NavigationPage(new EditCondition(new ConditionEditModel(obj, Context))));
+                await Navigation.PushModalAsync(new NavigationPage(new EditCommon(new ConditionEditModel(obj, Context))));
                 Entries.Clear();
                 IsBusy = false;
             }
@@ -93,7 +93,7 @@ namespace CB_5e.Views
         {
             if (IsBusy) return;
             IsBusy = true;
-            await Navigation.PushModalAsync(new NavigationPage(new EditCondition(new ConditionEditModel(new OGL.Condition() { Source = Context.Config.DefaultSource }, Context))));
+            await Navigation.PushModalAsync(new NavigationPage(new EditCommon(new ConditionEditModel(new OGL.Condition() { Source = Context.Config.DefaultSource }, Context))));
             Entries.Clear();
             IsBusy = false;
         }

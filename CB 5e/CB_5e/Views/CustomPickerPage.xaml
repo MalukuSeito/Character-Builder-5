@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.CustomTextEntryPage"
+             x:Class="CB_5e.Views.CustomPickerPage"
              Title="{Binding Title}">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Custom Value" />
-            <Entry Text="{Binding Text}" Keyboard="{Binding Keyboard}"/>
+            <Picker ItemsSource="{Binding Items}" SelectedItem="{Binding Text}"/>
             <Button Text="Add" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>

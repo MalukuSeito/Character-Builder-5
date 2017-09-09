@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.DescriptionListPage"
+             x:Class="CB_5e.Views.StringListPage"
              Title="{Binding Property}">
     <ContentPage.Content>
         <StackLayout>
-            <ListView ItemSelected="Descriptions_ItemSelected"
-                      ItemsSource="{Binding Descriptions}"
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
                       IsPullToRefreshEnabled="False"
-                      CachingStrategy="RecycleElement">
+                      CachingStrategy="RecycleElement"
+                      RowHeight="30"
+                      x:Name="ListViewComponent"
+                      x:FieldModifier="public">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Text}" Detail="{Binding Detail}" TextColor="{Binding TextColor}">
+                        <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}">
                             <TextCell.ContextActions>
                                 <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
                                 <MenuItem Text="Info" Clicked="Info_Clicked"/>

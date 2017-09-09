@@ -1,5 +1,4 @@
-﻿using OGL.Descriptions;
-using OGL.Features;
+﻿using OGL.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,13 @@ using Xamarin.Forms;
 
 namespace CB_5e.ViewModels
 {
-    public class DescriptionViewModel : BaseViewModel
+    public class FeatureViewModel: BaseViewModel
     {
-        public Description Description { get; private set; }
-        public DescriptionViewModel(Description d) => Description = d;
+        public Feature Feature { get; private set; }
+        public FeatureViewModel(Feature f) => Feature = f;
         public void Refresh() => OnPropertyChanged("");
-        public string Text { get => Description.Name; }
-        public string Detail { get => Description.GetType().Name; }
+        public string Text { get => Feature.Name + (Feature.Level > 0 ? " (Level " + Feature.Level + ")" : ""); }
+        public string Detail { get => Feature.Displayname(); }
         private bool moving = false;
         public bool Moving { get => moving; set => SetProperty(ref moving, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Moving ? Color.Orange : Color.Default; }
