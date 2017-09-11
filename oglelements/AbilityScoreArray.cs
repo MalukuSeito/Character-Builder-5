@@ -134,23 +134,24 @@ namespace OGL
         }
         public int Apply(Ability ab)
         {
-            if (ab.HasFlag(Ability.Charisma)) return Charisma;
-            if (ab.HasFlag(Ability.Constitution)) return Constitution;
-            if (ab.HasFlag(Ability.Dexterity)) return Dexterity;
-            if (ab.HasFlag(Ability.Intelligence)) return Intelligence;
-            if (ab.HasFlag(Ability.Strength)) return Strength;
-            if (ab.HasFlag(Ability.Wisdom)) return Wisdom;
-            return 0;
+            int value = 0;
+            if (ab.HasFlag(Ability.Charisma)) value = Math.Max(value, Charisma);
+            if (ab.HasFlag(Ability.Constitution)) value = Math.Max(value, Constitution);
+            if (ab.HasFlag(Ability.Dexterity)) value = Math.Max(value, Dexterity);
+            if (ab.HasFlag(Ability.Intelligence)) value = Math.Max(value, Intelligence);
+            if (ab.HasFlag(Ability.Strength)) value = Math.Max(value, Strength);
+            if (ab.HasFlag(Ability.Wisdom)) value = Math.Max(value, Wisdom);
+            return value;
         }
         public int ApplyMod(Ability ab)
         {
             int value = 0;
-            if (ab.HasFlag(Ability.Charisma)) value += ChaMod;
-            if (ab.HasFlag(Ability.Constitution)) value += ConMod;
-            if (ab.HasFlag(Ability.Dexterity)) value += DexMod;
-            if (ab.HasFlag(Ability.Intelligence)) value += IntMod;
-            if (ab.HasFlag(Ability.Strength)) value += StrMod;
-            if (ab.HasFlag(Ability.Wisdom)) value += WisMod;
+            if (ab.HasFlag(Ability.Charisma)) value = Math.Max(value, ChaMod);
+            if (ab.HasFlag(Ability.Constitution)) value = Math.Max(value, ConMod);
+            if (ab.HasFlag(Ability.Dexterity)) value = Math.Max(value, DexMod);
+            if (ab.HasFlag(Ability.Intelligence)) value = Math.Max(value, IntMod);
+            if (ab.HasFlag(Ability.Strength)) value = Math.Max(value, StrMod);
+            if (ab.HasFlag(Ability.Wisdom)) value = Math.Max(value, WisMod);
             return value;
         }
         public Ability Highest(Ability ab)

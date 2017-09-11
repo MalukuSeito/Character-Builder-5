@@ -15,12 +15,14 @@ namespace Character_Builder_Forms
         
         public static AbilityScores LoadAbilityScores(this OGLContext context, String file)
         {
+            if (context == null || context.Config == null) return null;
             using (TextReader reader = new StreamReader(file)) context.Scores = (AbilityScores)AbilityScores.Serializer.Deserialize(reader);
             context.Scores.Filename = file;
             return context.Scores;
         }
         public static void ImportBackgrounds(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Backgrounds.Clear();
             context.BackgroundsSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Backgrounds_Directory, SearchOption.TopDirectoryOnly);
@@ -44,6 +46,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportClasses(this OGLContext context, bool applyKeywords = false)
         {
+            if (context == null || context.Config == null) return;
             context.Classes.Clear();
             context.ClassesSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Classes_Directory, SearchOption.TopDirectoryOnly);
@@ -66,6 +69,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportConditions(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Conditions.Clear();
             context.ConditionsSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Conditions_Directory, SearchOption.TopDirectoryOnly);
@@ -88,6 +92,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportStandaloneFeatures(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.FeatureCollections.Clear();
             context.FeatureContainers.Clear();
             context.FeatureCategories.Clear();
@@ -175,6 +180,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportItems(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Items.Clear();
             context.ItemLists.Clear();
             context.ItemsSimple.Clear();
@@ -202,6 +208,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportLanguages(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Languages.Clear();
             context.LanguagesSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Languages_Directory, SearchOption.TopDirectoryOnly);
@@ -224,6 +231,7 @@ namespace Character_Builder_Forms
         }
         public static Level LoadLevel(this OGLContext context, String file)
         {
+            if (context == null || context.Config == null) return null;
             using (TextReader reader = new StreamReader(file)) context.Levels = (Level)Level.Serializer.Deserialize(reader);
             context.Levels.Sort();
             return context.Levels;
@@ -239,6 +247,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportMagic(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Magic.Clear();
             context.MagicCategories.Clear();
             context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
@@ -306,6 +315,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportRaces(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Races.Clear();
             context.RacesSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Races_Directory, SearchOption.TopDirectoryOnly);
@@ -328,6 +338,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportSkills(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Skills.Clear();
             context.SkillsSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.Skills_Directory, SearchOption.TopDirectoryOnly);
@@ -350,6 +361,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportSpells(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.Spells.Clear();
             context.SpellLists.Clear();
             context.SpellsSimple.Clear();
@@ -373,6 +385,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportSubClasses(this OGLContext context, bool applyKeywords = false)
         {
+            if (context == null || context.Config == null) return;
             context.SubClasses.Clear();
             context.SubClassesSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.SubClasses_Directory, SearchOption.TopDirectoryOnly);
@@ -395,6 +408,7 @@ namespace Character_Builder_Forms
         }
         public static void ImportSubRaces(this OGLContext context)
         {
+            if (context == null || context.Config == null) return;
             context.SubRaces.Clear();
             context.SubRacesSimple.Clear();
             var files = SourceManager.EnumerateFiles(context, context.Config.SubRaces_Directory, SearchOption.TopDirectoryOnly);
@@ -417,6 +431,7 @@ namespace Character_Builder_Forms
         }
         public static ConfigManager LoadConfig(this OGLContext context, string path)
         {
+            if (context == null || context.Config == null) return null;
             if (!File.Exists(Path.Combine(path, "Config.xml")))
             {
                 context.Config = new ConfigManager()

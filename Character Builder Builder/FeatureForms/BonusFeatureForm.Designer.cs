@@ -35,6 +35,8 @@
             this.Condition = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.BonusSize = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
             this.profBonus = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.saveBonus = new System.Windows.Forms.TextBox();
@@ -76,8 +78,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
-            this.label25 = new System.Windows.Forms.Label();
-            this.BonusSize = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -86,6 +86,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
@@ -95,7 +96,6 @@
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -189,6 +189,24 @@
             this.splitContainer2.Size = new System.Drawing.Size(368, 298);
             this.splitContainer2.SplitterDistance = 185;
             this.splitContainer2.TabIndex = 54;
+            // 
+            // BonusSize
+            // 
+            this.BonusSize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BonusSize.Location = new System.Drawing.Point(0, 277);
+            this.BonusSize.Name = "BonusSize";
+            this.BonusSize.Size = new System.Drawing.Size(185, 20);
+            this.BonusSize.TabIndex = 76;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label25.Location = new System.Drawing.Point(0, 264);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(152, 13);
+            this.label25.TabIndex = 75;
+            this.label25.Text = "Bonus to Size (Carry Capacity):";
             // 
             // profBonus
             // 
@@ -626,24 +644,6 @@
             this.basicFeature1.Size = new System.Drawing.Size(743, 298);
             this.basicFeature1.TabIndex = 57;
             // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label25.Location = new System.Drawing.Point(0, 264);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(152, 13);
-            this.label25.TabIndex = 75;
-            this.label25.Text = "Bonus to Size (Carry Capacity):";
-            // 
-            // BonusSize
-            // 
-            this.BonusSize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BonusSize.Location = new System.Drawing.Point(0, 277);
-            this.BonusSize.Name = "BonusSize";
-            this.BonusSize.Size = new System.Drawing.Size(185, 20);
-            this.BonusSize.TabIndex = 76;
-            // 
             // BonusFeatureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -679,6 +679,7 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).EndInit();
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
@@ -693,7 +694,6 @@
             this.splitContainer4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BonusSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

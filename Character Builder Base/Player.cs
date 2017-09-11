@@ -1966,7 +1966,7 @@ namespace Character_Builder
             Ability baseAbility = Ability.Strength;
             
 
-            if (weapon.Keywords.Exists(kw => kw.Name == "finesse") && asa.ApplyMod(Ability.Dexterity) > asa.ApplyMod(baseAbility)) baseAbility = Ability.Dexterity;
+            if (weapon.Keywords.Exists(kw => kw.Name == "finesse")) baseAbility = baseAbility | Ability.Dexterity;
             if (weapon.Keywords.Exists(kw => kw.Name == "ranged"))
             {
                 baseAbility = Ability.Dexterity;
@@ -1989,7 +1989,7 @@ namespace Character_Builder
                             attackbonus += Utils.Evaluate(Context, b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
                             damagebonus += Utils.Evaluate(Context, b, asa, additionalKW, fc.classlevel, level, weapon);
                             if (b.DamageBonusText != null && b.DamageBonusText != "") damage += " " + b.DamageBonusText;
-                            if (b.BaseAbility != Ability.None) baseAbility = asa.Highest(baseAbility | b.BaseAbility);
+                            if (b.BaseAbility != Ability.None) baseAbility = baseAbility | b.BaseAbility;
                         }
                     }
                 }
