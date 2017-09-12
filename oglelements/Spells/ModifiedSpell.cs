@@ -163,7 +163,7 @@ namespace OGL.Spells
         }
         public override string ToString() {
             if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)": "");
-            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)" : "");
+            return Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + String.Join(", ",differentAbility.GetIndividualFlags()) + ")" : "") + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)" : "");
         }
         public override List<Keyword> GetKeywords()
         {
@@ -174,7 +174,7 @@ namespace OGL.Spells
 
         public string getResourceID()
         {
-            return ConfigManager.SourceSeperator + "BONUS_SPELL " + Name + " " + ConfigManager.SourceSeperator + " " + Source + "|" + differentAbility + RechargeModifier;
+            return ConfigManager.SourceSeperator + "BONUS_SPELL " + Name + " " + ConfigManager.SourceSeperator + " " + Source + "|" + String.Join(",", differentAbility.GetIndividualFlags()) + RechargeModifier;
         }
 
         // override object.Equals
@@ -205,9 +205,9 @@ namespace OGL.Spells
 
         public string Text
         {
-            get => displayShort ? Name : Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + Enum.GetName(typeof(Ability), differentAbility) + ")" : "");
+            get => displayShort ? Name : Name + (AddAlwaysPreparedToName ? " (always prepared)" : "") + (differentAbility != Ability.None ? " (" + String.Join(", ", differentAbility.GetIndividualFlags()) + ")" : "");
         }
-        public string Desc
+        public override string Desc
         {
             get
             {

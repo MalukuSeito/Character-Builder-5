@@ -245,6 +245,6 @@ namespace OGL
         }
 
         [XmlIgnore]
-        public string Desc { get => String.Join(", ", GetKeywords()); }
+        public virtual string Desc { get => String.Join(", ", GetKeywords()); }
     }
 }
