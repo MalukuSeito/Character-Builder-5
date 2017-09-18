@@ -1,5 +1,8 @@
 ﻿using CB_5e.Services;
 using CB_5e.Views;
+using CB_5e.Views.Character;
+using CB_5e.Views.Files;
+using CB_5e.Views.Modify;
 using Character_Builder;
 using OGL;
 using PCLStorage;

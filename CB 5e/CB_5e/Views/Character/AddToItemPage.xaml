@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.AddToItemPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Add to which Item?" HorizontalTextAlignment="Center" />
+            <ListView ItemsSource="{Binding Inventory}" ItemSelected="ListView_ItemSelected"
+                                    IsPullToRefreshEnabled="false"
+                                    CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding InventorySearch}" Placeholder="Search Inventory" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" Detail="{Binding Detail}">
+                            <TextCell.ContextActions>
+                                <MenuItem Command="{Binding ShowInfo}" Text="Show Info" CommandParameter="{Binding .}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <StackLayout>
+                        <Label Text="If you see no Items here, make sure to buy a matching base item. For example a property that says Sword (any) requires a sword or similar weapon to be applied to." />
+                    </StackLayout>
+                </ListView.Footer>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

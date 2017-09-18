@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System;
 using Android.Database;
+using CB_5e.Services;
 
 [assembly: Dependency(typeof(ClipboardService_Droid))]
 namespace CB_5e.Droid

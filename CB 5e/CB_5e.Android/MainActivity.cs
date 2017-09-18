@@ -9,6 +9,7 @@ using PCLStorage;
 using CB_5e.Views;
 using System.IO;
 using Android.Runtime;
+using CB_5e.Views.Files;
 
 namespace CB_5e.Droid
 {

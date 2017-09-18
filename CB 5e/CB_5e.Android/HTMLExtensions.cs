@@ -1,5 +1,6 @@
 ﻿using CB_5e;
 using CB_5e.ViewModels;
+using CB_5e.ViewModels.Character.ChoiceOptions;
 using Character_Builder;
 using OGL;
 using OGL.Common;

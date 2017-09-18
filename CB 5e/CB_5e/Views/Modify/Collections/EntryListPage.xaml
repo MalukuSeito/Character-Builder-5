@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Collections.EntryListPage"
+             Title="{Binding Property}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Text}" Detail="{Binding Detail}" TextColor="{Binding TextColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Info" Clicked="Info_Clicked"/>
+                                <MenuItem Text="Move" Clicked="Move_Clicked"/>
+                                <MenuItem Text="Cut" Clicked="Cut_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Copy" Clicked="Copy_Clicked"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

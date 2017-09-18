@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Descriptions.EditTableDescription"
+             Title="Table">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="Add_Clicked"/>
+        <ToolbarItem Text="Paste" Clicked="Paste_Clicked"/>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout Padding="20">
+                        <Label Text="Amount of Choices" FontSize="Micro"/>
+                        <Entry Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                        <Label Text="Unique ID of the Choice (Amount > 0)" FontSize="Micro"/>
+                        <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                        <Label Text="Name of the Table" FontSize="Micro"/>
+                        <Entry Text="{Binding Name}" TextColor="{Binding Accent}"/>
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Text}" Detail="{Binding Detail}" TextColor="{Binding TextColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Info" Clicked="Info_Clicked"/>
+                                <MenuItem Text="Move" Clicked="Move_Clicked"/>
+                                <MenuItem Text="Cut" Clicked="Cut_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Copy" Clicked="Copy_Clicked"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <Grid Padding="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Text="Add Entries as Options to:" FontSize="Micro"/>
+                        <Label Grid.Column="0" Grid.Row="1" Text="Bond" />
+                        <Switch Grid.Column="1" Grid.Row="1" IsToggled="{Binding Bond}" />
+                        <Label Grid.Column="2" Grid.Row="1" Text="Ideal" />
+                        <Switch Grid.Column="3" Grid.Row="1" IsToggled="{Binding Ideal}" />
+                        <Label Grid.Column="0" Grid.Row="2" Text="Flaw" />
+                        <Switch Grid.Column="1" Grid.Row="2" IsToggled="{Binding Flaw}" />
+                        <Label Grid.Column="2" Grid.Row="2" Text="Trait" />
+                        <Switch Grid.Column="3" Grid.Row="2" IsToggled="{Binding Trait}" />
+                    </Grid>
+                </ListView.Footer>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

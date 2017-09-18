@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="CB_5e.Views.Character.ShopPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemsSource="{Binding Shops}" 
+                      ItemSelected="ListView_ItemSelected"
+                      IsPullToRefreshEnabled="false"
+                      CachingStrategy="RecycleElement"
+                      IsGroupingEnabled="True"
+                      GroupDisplayBinding="{Binding Type}"
+                      GroupShortNameBinding="{Binding SType}"
+                      RowHeight="30">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding ShopSearch}" Placeholder="Search Shops" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height ="30" Text="{Binding Name}" Command="{Binding Open}" CommandParameter="{Binding .}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+    

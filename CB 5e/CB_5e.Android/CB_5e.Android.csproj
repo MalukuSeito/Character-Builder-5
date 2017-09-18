@@ -105,7 +105,6 @@
   <ItemGroup>
     <Compile Include="ClipboardService_Droid.cs" />
     <Compile Include="DocumentViewer_Droid.cs" />
-    <Compile Include="EntryListViewRenderer.cs" />
     <Compile Include="HTMLExtensions.cs" />
     <Compile Include="HTMLService_Droid.cs" />
     <Compile Include="MainActivity.cs" />

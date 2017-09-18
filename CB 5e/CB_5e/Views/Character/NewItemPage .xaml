@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.NewItemPage"
+             Title="Custom Item">
+    <ContentPage.ToolbarItems>
+            <ToolbarItem Text="Save Custom Item" Clicked="ToolbarItem_Clicked" />
+            <ToolbarItem Text="Abort" Clicked="ToolbarItem_Clicked_1" />
+        </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView >
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="13"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Name" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                <Entry Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}"/>
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Description" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Editor Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" VerticalOptions="FillAndExpand"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Text="Amount" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                <Entry Grid.Row="5" Grid.Column="0" Text="{Binding Count}" Keyboard="Numeric" />
+                <Label Grid.Row="4" Grid.Column="1" Text="Weight" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                <Entry Grid.Row="5" Grid.Column="1" Text="{Binding Weight}" TextColor="{Binding CustomWeightColor}" />
+
+                <Picker Grid.Row="7" Grid.Column="0" ItemsSource="{Binding EquipSlots}" SelectedItem="{Binding Equipped}" />
+                <Label Grid.Row="6" Grid.Column="0" Text="Equipped" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                <Entry Grid.Row="7" Grid.Column="1" Text="{Binding Charges}" Keyboard="Numeric"/>
+                <Label Grid.Row="6" Grid.Column="1" Text="Charges Used" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Grid.Row="8" Grid.Column="0">
+                    <Label Text="Attuned:" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                    <Switch IsToggled="{Binding Attuned}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  HorizontalOptions="End" Grid.Row="8" Grid.Column="1">
+                    <Label Text="Rolls On Sheet:" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                    <Switch IsToggled="{Binding RollsOnSheet}" />
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -49,155 +49,165 @@
     <Compile Include="Services\IDocumentViewer.cs" />
     <Compile Include="Services\IPDFService.cs" />
     <Compile Include="Services\IHTMLService.cs" />
-    <Compile Include="ViewModels\AbilityFeatChoiceModel.cs" />
-    <Compile Include="ViewModels\BackgroundChoice.cs" />
-    <Compile Include="ViewModels\BackgroundEditModel.cs" />
-    <Compile Include="ViewModels\BackgroundViewModel.cs" />
-    <Compile Include="ViewModels\BondChoice.cs" />
-    <Compile Include="ViewModels\BonusSpellKeywordChoice.cs" />
-    <Compile Include="ViewModels\ChoiceFeatureChoice.cs" />
-    <Compile Include="ViewModels\ChoiceOption.cs" />
-    <Compile Include="ViewModels\ChoiceViewModel.cs" />
-    <Compile Include="ViewModels\ClassChoice.cs" />
-    <Compile Include="ViewModels\ClassesViewModel.cs" />
-    <Compile Include="ViewModels\ClassHPChoice.cs" />
-    <Compile Include="ViewModels\CollectionChoice.cs" />
-    <Compile Include="ViewModels\DescriptionViewModel.cs" />
-    <Compile Include="ViewModels\FeatureEditModel.cs" />
-    <Compile Include="ViewModels\FeatureViewModel.cs" />
-    <Compile Include="ViewModels\IntViewModel.cs" />
-    <Compile Include="ViewModels\KeywordViewModel.cs" />
-    <Compile Include="ViewModels\ProxyModel.cs" />
-    <Compile Include="ViewModels\StringViewModel.cs" />
-    <Compile Include="ViewModels\SubRaceEditModel.cs" />
-    <Compile Include="ViewModels\RaceEditModel.cs" />
-    <Compile Include="ViewModels\ConditionEditModel.cs" />
-    <Compile Include="ViewModels\LanguageViewModel.cs" />
-    <Compile Include="ViewModels\CustomChoiceOption.cs" />
-    <Compile Include="ViewModels\DescriptionChoice.cs" />
-    <Compile Include="ViewModels\EditModel.cs" />
-    <Compile Include="ViewModels\FlawChoice.cs" />
-    <Compile Include="ViewModels\HitDieViewModel.cs" />
-    <Compile Include="ViewModels\HP.cs" />
-    <Compile Include="ViewModels\IdealChoice.cs" />
-    <Compile Include="ViewModels\InventoryViewModel.cs" />
-    <Compile Include="ViewModels\ItemChoice.cs" />
-    <Compile Include="ViewModels\ItemChoiceConditionFeature.cs" />
-    <Compile Include="ViewModels\ItemViewModel.cs" />
-    <Compile Include="ViewModels\JournalViewModel.cs" />
-    <Compile Include="ViewModels\LanguageChoice.cs" />
-    <Compile Include="ViewModels\LoadingProgress.cs" />
+    <Compile Include="ViewModels\Character\HitDieViewModel.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\AbilityChoice.cs" />
+    <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
+    <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
+    <Compile Include="ViewModels\Modify\FeatureContainerEditModel.cs" />
+    <Compile Include="ViewModels\Modify\BackgroundEditModel.cs" />
+    <Compile Include="ViewModels\Character\Build\BackgroundViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\BondChoice.cs" />
+    <Compile Include="ViewModels\Character\Choices\BonusSpellKeywordChoice.cs" />
+    <Compile Include="ViewModels\Character\Choices\ChoiceFeatureChoice.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\ChoiceOption.cs" />
+    <Compile Include="ViewModels\Character\Choices\ChoiceViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\ClassChoice.cs" />
+    <Compile Include="ViewModels\Character\Build\ClassesViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\ClassHPChoice.cs" />
+    <Compile Include="ViewModels\Character\Choices\CollectionChoice.cs" />
+    <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FeatureViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\IntViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\KeywordViewModel.cs" />
+    <Compile Include="ViewModels\Modify\ProxyModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\StringViewModel.cs" />
+    <Compile Include="ViewModels\Modify\SubRaceEditModel.cs" />
+    <Compile Include="ViewModels\Modify\RaceEditModel.cs" />
+    <Compile Include="ViewModels\Modify\ConditionEditModel.cs" />
+    <Compile Include="ViewModels\Modify\LanguageViewModel.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\CustomChoiceOption.cs" />
+    <Compile Include="ViewModels\Character\Choices\DescriptionChoice.cs" />
+    <Compile Include="ViewModels\Modify\EditModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\FlawChoice.cs" />
+    <Compile Include="ViewModels\Character\Play\HitDieViewModel.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\HP.cs" />
+    <Compile Include="ViewModels\Character\Choices\IdealChoice.cs" />
+    <Compile Include="ViewModels\Character\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\ItemChoice.cs" />
+    <Compile Include="ViewModels\Character\ItemViewModel.cs" />
+    <Compile Include="ViewModels\Character\JournalViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\LanguageChoice.cs" />
+    <Compile Include="ViewModels\Character\LoadingProgress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PCLImport.cs" />
     <Compile Include="Services\PCLSourceManager.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\CharactersViewModel.cs" />
-    <Compile Include="ViewModels\NewFolderViewModel.cs" />
-    <Compile Include="ViewModels\FilesViewModel.cs" />
-    <Compile Include="ViewModels\PersonalityTraitChoice.cs" />
-    <Compile Include="ViewModels\PlayerBuildModel.cs" />
-    <Compile Include="ViewModels\PlayerConditionViewModel.cs" />
-    <Compile Include="ViewModels\PlayerFeaturesViewModel.cs" />
-    <Compile Include="ViewModels\PlayerInfoViewModel.cs" />
-    <Compile Include="ViewModels\PlayerInventoryChoicesViewModel.cs" />
-    <Compile Include="ViewModels\PlayerInventoryViewModel.cs" />
-    <Compile Include="ViewModels\PlayerJournalViewModel.cs" />
-    <Compile Include="ViewModels\PlayerModel.cs" />
-    <Compile Include="ViewModels\PlayerNotesViewModel.cs" />
-    <Compile Include="ViewModels\PlayerPDFViewModel.cs" />
-    <Compile Include="ViewModels\PlayerPersonalViewModel.cs" />
-    <Compile Include="ViewModels\PlayerProficiencyViewModel.cs" />
-    <Compile Include="ViewModels\PlayerResourcesViewModel.cs" />
-    <Compile Include="ViewModels\PlayerScoresViewModel.cs" />
-    <Compile Include="ViewModels\PlayerShopViewModel.cs" />
-    <Compile Include="ViewModels\PlayerSkillViewModel.cs" />
-    <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\RaceChoice.cs" />
-    <Compile Include="ViewModels\RaceViewModel.cs" />
-    <Compile Include="ViewModels\ResourceViewModel.cs" />
-    <Compile Include="ViewModels\ScoresModelViewModel.cs" />
-    <Compile Include="ViewModels\ShopGroupModel.cs" />
-    <Compile Include="ViewModels\ShopViewModel.cs" />
-    <Compile Include="ViewModels\SkillEditModel.cs" />
-    <Compile Include="ViewModels\SkillProficiencyChoice.cs" />
-    <Compile Include="ViewModels\SourcesViewModel.cs" />
-    <Compile Include="ViewModels\SpellbookSpellsViewModel.cs" />
-    <Compile Include="ViewModels\SpellbookViewModel.cs" />
-    <Compile Include="ViewModels\SpellChoiceViewModel.cs" />
-    <Compile Include="ViewModels\SpellPrepareViewModel.cs" />
-    <Compile Include="ViewModels\SpellSlotViewModel.cs" />
-    <Compile Include="ViewModels\SpellViewModel.cs" />
-    <Compile Include="ViewModels\SubClassChoice.cs" />
-    <Compile Include="ViewModels\SubModel.cs" />
-    <Compile Include="ViewModels\SubRaceChoice.cs" />
-    <Compile Include="ViewModels\SwitchToPlayModel.cs" />
-    <Compile Include="ViewModels\NamesViewModel.cs" />
-    <Compile Include="ViewModels\TableEntryViewModel.cs" />
-    <Compile Include="ViewModels\TableValue.cs" />
-    <Compile Include="ViewModels\ToolProficiencyChoice.cs" />
-    <Compile Include="ViewModels\WrongChoiceOption.cs" />
+    <Compile Include="ViewModels\Character\CharactersViewModel.cs" />
+    <Compile Include="ViewModels\Files\NewFolderViewModel.cs" />
+    <Compile Include="ViewModels\Files\FilesViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\PersonalityTraitChoice.cs" />
+    <Compile Include="ViewModels\Character\Build\PlayerBuildModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerConditionViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerFeaturesViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerInfoViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerInventoryChoicesViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerInventoryViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerJournalViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerNotesViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerPDFViewModel.cs" />
+    <Compile Include="ViewModels\Character\Build\PlayerPersonalViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerProficiencyViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerResourcesViewModel.cs" />
+    <Compile Include="ViewModels\Character\Build\PlayerScoresViewModel.cs" />
+    <Compile Include="ViewModels\Character\PlayerShopViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerSkillViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\RaceChoice.cs" />
+    <Compile Include="ViewModels\Character\Build\RaceViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\ResourceViewModel.cs" />
+    <Compile Include="ViewModels\Character\ScoresModelViewModel.cs" />
+    <Compile Include="ViewModels\Character\ShopGroupModel.cs" />
+    <Compile Include="ViewModels\Character\ShopViewModel.cs" />
+    <Compile Include="ViewModels\Modify\SkillEditModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\SkillProficiencyChoice.cs" />
+    <Compile Include="ViewModels\Character\Build\SourcesViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\SpellbookSpellsViewModel.cs" />
+    <Compile Include="ViewModels\Character\SpellbookViewModel.cs" />
+    <Compile Include="ViewModels\Character\Build\SpellChoiceViewModel.cs" />
+    <Compile Include="ViewModels\Character\SpellPrepareViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\SpellSlotViewModel.cs" />
+    <Compile Include="ViewModels\Character\SpellViewModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\SubClassChoice.cs" />
+    <Compile Include="ViewModels\Character\SubModel.cs" />
+    <Compile Include="ViewModels\Character\Choices\SubRaceChoice.cs" />
+    <Compile Include="ViewModels\Character\SwitchToPlayModel.cs" />
+    <Compile Include="ViewModels\Modify\Descriptions\NamesViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\TableEntryViewModel.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\TableValue.cs" />
+    <Compile Include="ViewModels\Character\Choices\ToolProficiencyChoice.cs" />
+    <Compile Include="ViewModels\Character\ChoiceOptions\WrongChoiceOption.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddToSpellbookPage.xaml.cs">
+    <Compile Include="Views\Character\AddToSpellbookPage.xaml.cs">
       <DependentUpon>AddToSpellbookPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddToItemPage.xaml.cs">
+    <Compile Include="Views\Character\AddToItemPage.xaml.cs">
       <DependentUpon>AddToItemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CharactersBuildPage.xaml.cs">
+    <Compile Include="Views\Character\CharactersBuildPage.xaml.cs">
       <DependentUpon>CharactersBuildPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassesPage.xaml.cs">
+    <Compile Include="Views\Character\Build\ClassesPage.xaml.cs">
       <DependentUpon>ClassesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Compendium.xaml.cs">
+    <Compile Include="Views\Modify\Features\EditFeature.xaml.cs">
+      <DependentUpon>EditFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\FeatureKeywords.xaml.cs">
+      <DependentUpon>FeatureKeywords.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TaskExtensions.cs" />
+    <Compile Include="Views\Modify\Compendium.xaml.cs">
       <DependentUpon>Compendium.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumFeatsOverviewPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumFeatsOverviewPage.xaml.cs">
       <DependentUpon>CompendiumFeatsOverviewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumFeatsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumFeatsPage.xaml.cs">
       <DependentUpon>CompendiumFeatsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumMagicPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumMagicPage.xaml.cs">
       <DependentUpon>CompendiumMagicPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumMagicOverviewPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumMagicOverviewPage.xaml.cs">
       <DependentUpon>CompendiumMagicOverviewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumItemsOverviewPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumItemsOverviewPage.xaml.cs">
       <DependentUpon>CompendiumItemsOverviewPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumItemsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumItemsPage.xaml.cs">
       <DependentUpon>CompendiumItemsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumClassesPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumClassesPage.xaml.cs">
       <DependentUpon>CompendiumClassesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumBackgroundsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumBackgroundsPage.xaml.cs">
       <DependentUpon>CompendiumBackgroundsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumConditionsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumConditionsPage.xaml.cs">
       <DependentUpon>CompendiumConditionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumLanguagesPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumLanguagesPage.xaml.cs">
       <DependentUpon>CompendiumLanguagesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumSpellsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumSpellsPage.xaml.cs">
       <DependentUpon>CompendiumSpellsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumSkillsPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumSkillsPage.xaml.cs">
       <DependentUpon>CompendiumSkillsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumSubClassPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumSubClassPage.xaml.cs">
       <DependentUpon>CompendiumSubClassPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumSubRacesPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumSubRacesPage.xaml.cs">
       <DependentUpon>CompendiumSubRacesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CompendiumRacesPage.xaml.cs">
+    <Compile Include="Views\Modify\CompendiumRacesPage.xaml.cs">
       <DependentUpon>CompendiumRacesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomDualTextEntryPage.xaml.cs">
@@ -209,72 +219,71 @@
     <Compile Include="Views\CustomTextEntryPage.xaml.cs">
       <DependentUpon>CustomTextEntryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditDescription.xaml.cs">
+    <Compile Include="Views\Modify\Descriptions\EditDescription.xaml.cs">
       <DependentUpon>EditDescription.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditFilePage.xaml.cs">
+    <Compile Include="Views\Files\EditFilePage.xaml.cs">
       <DependentUpon>EditFilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditSubRace.xaml.cs">
+    <Compile Include="Views\Modify\EditSubRace.xaml.cs">
       <DependentUpon>EditSubRace.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditRace.xaml.cs">
+    <Compile Include="Views\Modify\EditRace.xaml.cs">
       <DependentUpon>EditRace.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditFeatureContainer.xaml.cs">
+    <Compile Include="Views\Modify\EditFeatureContainer.xaml.cs">
       <DependentUpon>EditFeatureContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditLanguage.xaml.cs">
+    <Compile Include="Views\Modify\EditLanguage.xaml.cs">
       <DependentUpon>EditLanguage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditSkill.xaml.cs">
+    <Compile Include="Views\Modify\EditSkill.xaml.cs">
       <DependentUpon>EditSkill.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditCommon.xaml.cs">
+    <Compile Include="Views\Modify\EditCommon.xaml.cs">
       <DependentUpon>EditCommon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditMoneyPage.xaml.cs">
+    <Compile Include="Views\Character\EditMoneyPage.xaml.cs">
       <DependentUpon>EditMoneyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditListDescription.xaml.cs">
+    <Compile Include="Views\Modify\Descriptions\EditListDescription.xaml.cs">
       <DependentUpon>EditListDescription.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditTableDescription.xaml.cs">
+    <Compile Include="Views\Modify\Descriptions\EditTableDescription.xaml.cs">
       <DependentUpon>EditTableDescription.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IntListPage.xaml.cs">
+    <Compile Include="Views\Modify\Collections\IntListPage.xaml.cs">
       <DependentUpon>IntListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\KeywordListPage.xaml.cs">
+    <Compile Include="Views\Modify\Collections\KeywordListPage.xaml.cs">
       <DependentUpon>KeywordListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NamesEditPage.xaml.cs">
+    <Compile Include="Views\Modify\Descriptions\NamesEditPage.xaml.cs">
       <DependentUpon>NamesEditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectOption.cs" />
-    <Compile Include="Views\SelectPage.xaml.cs">
+    <Compile Include="Views\Modify\SelectOption.cs" />
+    <Compile Include="Views\Modify\SelectPage.xaml.cs">
       <DependentUpon>SelectPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StringListPage.xaml.cs">
+    <Compile Include="Views\Modify\Collections\StringListPage.xaml.cs">
       <DependentUpon>StringListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EntryListView.cs" />
-    <Compile Include="Views\DescriptionListPage.xaml.cs">
+    <Compile Include="Views\Modify\Descriptions\DescriptionListPage.xaml.cs">
       <DependentUpon>DescriptionListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EntryListPage.xaml.cs">
+    <Compile Include="Views\Modify\Collections\EntryListPage.xaml.cs">
       <DependentUpon>EntryListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FeatureListPage.xaml.cs">
+    <Compile Include="Views\Modify\Features\FeatureListPage.xaml.cs">
       <DependentUpon>FeatureListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FileBrowser.xaml.cs">
+    <Compile Include="Views\Files\FileBrowser.xaml.cs">
       <DependentUpon>FileBrowser.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FlowPage.xaml.cs">
+    <Compile Include="Views\Character\FlowPage.xaml.cs">
       <DependentUpon>FlowPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IClipboardService.cs" />
+    <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Views\ImageEditor.cs" />
     <Compile Include="Views\ImageViewer.cs" />
     <Compile Include="Views\InfoPage.xaml.cs">
@@ -283,119 +292,101 @@
     <Compile Include="Views\InfoSelectPage.xaml.cs">
       <DependentUpon>InfoSelectPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CharactersPlayPage.xaml.cs">
+    <Compile Include="Views\Character\CharactersPlayPage.xaml.cs">
       <DependentUpon>CharactersPlayPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadFilePage.xaml.cs">
+    <Compile Include="Views\Files\DownloadFilePage.xaml.cs">
       <DependentUpon>DownloadFilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IPhotoService.cs" />
-    <Compile Include="Views\JournalEntryPage.xaml.cs">
+    <Compile Include="Services\IPhotoService.cs" />
+    <Compile Include="Views\Character\JournalEntryPage.xaml.cs">
       <DependentUpon>JournalEntryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MenuPage.xaml.cs">
-      <DependentUpon>MenuPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MenuPageMaster.xaml.cs">
-      <DependentUpon>MenuPageMaster.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MorePlayPage.xaml.cs">
+    <Compile Include="Views\Character\MorePlayPage.xaml.cs">
       <DependentUpon>MorePlayPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewItemPage .xaml.cs">
+    <Compile Include="Views\Character\NewItemPage .xaml.cs">
       <DependentUpon>NewItemPage .xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemPage.xaml.cs">
+    <Compile Include="Views\Character\ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoadingPage.xaml.cs">
+    <Compile Include="Views\Character\LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\JournalPage.xaml.cs">
+    <Compile Include="Views\Character\JournalPage.xaml.cs">
       <DependentUpon>JournalPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BasePage.xaml.cs">
-      <DependentUpon>BasePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BuildPage.xaml.cs">
-      <DependentUpon>BuildPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlayerConditionPage.xaml.cs">
+    <Compile Include="Views\Character\Play\PlayerConditionPage.xaml.cs">
       <DependentUpon>PlayerConditionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerFeaturesPage.xaml.cs">
+    <Compile Include="Views\Character\Play\PlayerFeaturesPage.xaml.cs">
       <DependentUpon>PlayerFeaturesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerInfoPage.xaml.cs">
+    <Compile Include="Views\Character\PlayerInfoPage.xaml.cs">
       <DependentUpon>PlayerInfoPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerInventoryOptionsPage.xaml.cs">
+    <Compile Include="Views\Character\PlayerInventoryOptionsPage.xaml.cs">
       <DependentUpon>PlayerInventoryOptionsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerInventoryPage.xaml.cs">
+    <Compile Include="Views\Character\PlayerInventoryPage.xaml.cs">
       <DependentUpon>PlayerInventoryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerNotesPage.xaml.cs">
+    <Compile Include="Views\Character\PlayerNotesPage.xaml.cs">
       <DependentUpon>PlayerNotesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerPersonalPage.xaml.cs">
+    <Compile Include="Views\Character\Build\PlayerPersonalPage.xaml.cs">
       <DependentUpon>PlayerPersonalPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerPreparePage.xaml.cs">
+    <Compile Include="Views\Character\PlayerPreparePage.xaml.cs">
       <DependentUpon>PlayerPreparePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerProficiencyPage.xaml.cs">
+    <Compile Include="Views\Character\Play\PlayerProficiencyPage.xaml.cs">
       <DependentUpon>PlayerProficiencyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerResourcesPage.xaml.cs">
+    <Compile Include="Views\Character\Play\PlayerResourcesPage.xaml.cs">
       <DependentUpon>PlayerResourcesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerScoresPage.xaml.cs">
+    <Compile Include="Views\Character\Build\PlayerScoresPage.xaml.cs">
       <DependentUpon>PlayerScoresPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerSkillPage.xaml.cs">
+    <Compile Include="Views\Character\Play\PlayerSkillPage.xaml.cs">
       <DependentUpon>PlayerSkillPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerSpellsPage.xaml.cs">
+    <Compile Include="Views\Character\PlayerSpellsPage.xaml.cs">
       <DependentUpon>PlayerSpellsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BackgroundPage.xaml.cs">
+    <Compile Include="Views\Character\Build\BackgroundPage.xaml.cs">
       <DependentUpon>BackgroundPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RacePage.xaml.cs">
+    <Compile Include="Views\Character\Build\RacePage.xaml.cs">
       <DependentUpon>RacePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ShopSubPage.xaml.cs">
+    <Compile Include="Views\Character\ShopSubPage.xaml.cs">
       <DependentUpon>ShopSubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ShopPage.xaml.cs">
+    <Compile Include="Views\Character\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlayerOverview.xaml.cs">
-      <DependentUpon>PlayerOverview.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlayPage.xaml.cs">
-      <DependentUpon>PlayPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RenamePage.xaml.cs">
+    <Compile Include="Views\Files\RenamePage.xaml.cs">
       <DependentUpon>RenamePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewFolderPage.xaml.cs">
+    <Compile Include="Views\Files\NewFolderPage.xaml.cs">
       <DependentUpon>NewFolderPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SourcesPage.xaml.cs">
+    <Compile Include="Views\Character\Build\SourcesPage.xaml.cs">
       <DependentUpon>SourcesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SpellcastingPage.xaml.cs">
+    <Compile Include="Views\Character\SpellcastingPage.xaml.cs">
       <DependentUpon>SpellcastingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuyAddPage.xaml.cs">
+    <Compile Include="Views\Character\BuyAddPage.xaml.cs">
       <DependentUpon>BuyAddPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SplitPage.xaml.cs">
+    <Compile Include="Views\Character\SplitPage.xaml.cs">
       <DependentUpon>SplitPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TableEntryEditPage.xaml.cs">
+    <Compile Include="Views\Modify\Collections\TableEntryEditPage.xaml.cs">
       <DependentUpon>TableEntryEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ZoomImage.cs" />
@@ -409,11 +400,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\CharactersPlayPage.xaml">
+    <EmbeddedResource Include="Views\Character\CharactersPlayPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\NewFolderPage.xaml">
+    <EmbeddedResource Include="Views\Files\NewFolderPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -469,49 +460,37 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CharactersBuildPage.xaml">
+    <EmbeddedResource Include="Views\Character\CharactersBuildPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\FileBrowser.xaml">
+    <EmbeddedResource Include="Views\Files\FileBrowser.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\DownloadFilePage.xaml">
+    <EmbeddedResource Include="Views\Files\DownloadFilePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\RenamePage.xaml">
+    <EmbeddedResource Include="Views\Files\RenamePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayPage.xaml">
+    <EmbeddedResource Include="Views\Character\LoadingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\LoadingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerOverview.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\EditMoneyPage.xaml">
+    <EmbeddedResource Include="Views\Character\EditMoneyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -529,169 +508,145 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SpellcastingPage.xaml">
+    <EmbeddedResource Include="Views\Character\SpellcastingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ShopPage.xaml">
+    <EmbeddedResource Include="Views\Character\ShopPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ItemPage.xaml">
+    <EmbeddedResource Include="Views\Character\ItemPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SplitPage.xaml">
+    <EmbeddedResource Include="Views\Character\SplitPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\NewItemPage .xaml">
+    <EmbeddedResource Include="Views\Character\NewItemPage .xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ShopSubPage.xaml">
+    <EmbeddedResource Include="Views\Character\ShopSubPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\BuyAddPage.xaml">
+    <EmbeddedResource Include="Views\Character\BuyAddPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\AddToItemPage.xaml">
+    <EmbeddedResource Include="Views\Character\AddToItemPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\AddToSpellbookPage.xaml">
+    <EmbeddedResource Include="Views\Character\AddToSpellbookPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\JournalPage.xaml">
+    <EmbeddedResource Include="Views\Character\JournalPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\JournalEntryPage.xaml">
+    <EmbeddedResource Include="Views\Character\JournalEntryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\MorePlayPage.xaml">
+    <EmbeddedResource Include="Views\Character\MorePlayPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\BasePage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerInfoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\BuildPage.xaml">
+    <EmbeddedResource Include="Views\Character\Play\PlayerSkillPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerInfoPage.xaml">
+    <EmbeddedResource Include="Views\Character\Play\PlayerResourcesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerSkillPage.xaml">
+    <EmbeddedResource Include="Views\Character\Play\PlayerFeaturesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerResourcesPage.xaml">
+    <EmbeddedResource Include="Views\Character\Play\PlayerConditionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerFeaturesPage.xaml">
+    <EmbeddedResource Include="Views\Character\Play\PlayerProficiencyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerConditionPage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerInventoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerProficiencyPage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerInventoryOptionsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerInventoryPage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerNotesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerInventoryOptionsPage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerSpellsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerNotesPage.xaml">
+    <EmbeddedResource Include="Views\Character\PlayerPreparePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\MenuPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\MenuPageMaster.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerSpellsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerPreparePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\FlowPage.xaml">
+    <EmbeddedResource Include="Views\Character\FlowPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -703,217 +658,217 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ClassesPage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\ClassesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\RacePage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\RacePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\BackgroundPage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\BackgroundPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerScoresPage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\PlayerScoresPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\PlayerPersonalPage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\PlayerPersonalPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SourcesPage.xaml">
+    <EmbeddedResource Include="Views\Character\Build\SourcesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Compendium.xaml">
+    <EmbeddedResource Include="Views\Modify\Compendium.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumRacesPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumRacesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumSubRacesPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumSubRacesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumClassesPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumClassesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumSubClassPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumSubClassPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumSkillsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumSkillsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumSpellsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumSpellsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumLanguagesPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumLanguagesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumConditionsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumConditionsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumBackgroundsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumBackgroundsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumItemsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumItemsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumItemsOverviewPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumItemsOverviewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumMagicOverviewPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumMagicOverviewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumFeatsOverviewPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumFeatsOverviewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumMagicPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumMagicPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CompendiumFeatsPage.xaml">
+    <EmbeddedResource Include="Views\Modify\CompendiumFeatsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditCommon.xaml">
+    <EmbeddedResource Include="Views\Modify\EditCommon.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditSkill.xaml">
+    <EmbeddedResource Include="Views\Modify\EditSkill.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditLanguage.xaml">
+    <EmbeddedResource Include="Views\Modify\EditLanguage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\FeatureListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Features\FeatureListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditFeatureContainer.xaml">
+    <EmbeddedResource Include="Views\Modify\EditFeatureContainer.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\DescriptionListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Descriptions\DescriptionListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditRace.xaml">
+    <EmbeddedResource Include="Views\Modify\EditRace.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditSubRace.xaml">
+    <EmbeddedResource Include="Views\Modify\EditSubRace.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditFilePage.xaml">
+    <EmbeddedResource Include="Views\Files\EditFilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EntryListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Collections\EntryListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\TableEntryEditPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Collections\TableEntryEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\StringListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Collections\StringListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\IntListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Collections\IntListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\KeywordListPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Collections\KeywordListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -931,31 +886,46 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditDescription.xaml">
+    <EmbeddedResource Include="Views\Modify\Descriptions\EditDescription.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditTableDescription.xaml">
+    <EmbeddedResource Include="Views\Modify\Descriptions\EditTableDescription.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\EditListDescription.xaml">
+    <EmbeddedResource Include="Views\Modify\Descriptions\EditListDescription.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\NamesEditPage.xaml">
+    <EmbeddedResource Include="Views\Modify\Descriptions\NamesEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SelectPage.xaml">
+    <EmbeddedResource Include="Views\Modify\SelectPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\Character\Both\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\FeatureKeywords.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

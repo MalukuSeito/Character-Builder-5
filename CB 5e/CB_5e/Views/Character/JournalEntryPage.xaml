@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.JournalEntryPage"
+             Title="{Binding Added}">
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="Title: " HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Text="{Binding Title}" TextColor="{Binding Accent}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Text="Description: " HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Editor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Text="{Binding Text}" VerticalOptions="FillAndExpand" TextColor="{Binding Accent}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="Session" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Session}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="3" Grid.Column="3" Text="Time" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Time}" TextColor="{Binding Accent}"/>
+
+                <Label Grid.Row="4" Grid.Column="0" Text="DM + DCI" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding DM}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="4" Grid.Column="4" Text="On Sheet" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Switch  Grid.Row="4" Grid.Column="5" IsToggled="{Binding InSheet}" HorizontalOptions="Start" VerticalOptions="Center"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Text="XP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="5" Grid.Column="1" Text="{Binding XP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="5" Grid.Column="2" Text="PP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="5" Grid.Column="3" Text="{Binding PP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="5" Grid.Column="4" Text="GP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="5" Grid.Column="5" Text="{Binding GP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+
+                <Label Grid.Row="6" Grid.Column="0" Text="EP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="6" Grid.Column="1" Text="{Binding EP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="6" Grid.Column="2" Text="SP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="6" Grid.Column="3" Text="{Binding SP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="6" Grid.Column="4" Text="CP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="6" Grid.Column="5" Text="{Binding CP}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+
+                <Label Grid.Row="7" Grid.Column="0" Text="Magic Items" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="7" Grid.Column="1" Text="{Binding MagicItems}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="7" Grid.Column="2" Text="Renown" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="7" Grid.Column="3" Text="{Binding Renown}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="7" Grid.Column="4" Text="Downtime" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="7" Grid.Column="5" Text="{Binding Downtime}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

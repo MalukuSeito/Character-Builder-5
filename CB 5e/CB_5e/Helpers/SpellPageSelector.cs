@@ -1,4 +1,6 @@
 ﻿using CB_5e.ViewModels;
+using CB_5e.ViewModels.Character;
+using CB_5e.ViewModels.Character.Play;
 using System;
 using System.Collections.Generic;
 using System.Linq;

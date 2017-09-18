@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.BuyAddPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="{Binding Money}" />
+            <Label Text="How Many?" />
+            <Entry Keyboard="Numeric" Text="{Binding Count}" />
+            <Label Text="{Binding Price}" />
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Buy" Clicked="Buy"/>
+                <Button Text="Add" Clicked="Add"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

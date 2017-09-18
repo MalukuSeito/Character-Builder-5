@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using CB_5e.Droid;
+using CB_5e.Services;
 using CB_5e.Views;
 using System.Threading.Tasks;
 using Xamarin.Forms;
