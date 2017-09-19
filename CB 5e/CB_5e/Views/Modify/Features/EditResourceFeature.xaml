@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditResourceFeature">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Amount: (NCalc expression, must evaluate to a number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Value}" TextColor="{Binding Accent}"/>
+                <Label Text="Resource ID: (Must be unique for each resource, resource with the same Resource ID stack)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding ResourceID}" TextColor="{Binding Accent}"/>
+                <Picker ItemsSource="{Binding ResourceIDValues}" SelectedItem="{Binding ResourceID, Mode=OneWayToSource}"/>
+                <Label Text="Exclusion ID: (If two resources with the same Exclusion ID exist, only the highest is displayed)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding ExclusionID}" TextColor="{Binding Accent}"/>
+                <Picker ItemsSource="{Binding ExclusionIDValues}" SelectedItem="{Binding ExclusionID, Mode=OneWayToSource}"/>
+                <Label Text="Recharge:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Picker ItemsSource="{Binding RechargeValues}" SelectedItem="{Binding Recharge}"/>
+                <Label TextColor="LightSlateGray" Text="Variables for NCalc: Attributes - Dex, Str, Wis, ...; Modifiers - DexMod, StrMod, WisMod,...; PlayerLevel; ClassLevel (=PlayerLevel, unless used in a class or subclass)" FontSize="Micro" LineBreakMode="WordWrap"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

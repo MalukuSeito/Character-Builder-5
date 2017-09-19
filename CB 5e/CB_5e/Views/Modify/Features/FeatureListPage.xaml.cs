@@ -25,6 +25,9 @@ namespace CB_5e.Views.Modify.Features
         private int move = -1;
         private bool Modal = true;
 
+        public Command Undo { get => Model.Undo; }
+        public Command Redo { get => Model.Redo; }
+
         public FeatureListPage (IEditModel parent, string property, bool modal = true)
 		{
             Model = parent;
@@ -85,7 +88,8 @@ namespace CB_5e.Views.Modify.Features
         {
             await Navigation.PushAsync(new SelectPage(new List<SelectOption>()
                 {
-                    new SelectOption("Basic Feature", "Text and Description", new Feature())
+                    new SelectOption("Basic Feature", "Text and description", new Feature()),
+                    new SelectOption("Resource Feature", "Defines or modifies a trackable resource", new ResourceFeature())
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -118,6 +122,7 @@ namespace CB_5e.Views.Modify.Features
                 } else
                 {
                     await Edit(fvm);
+                    (sender as ListView).SelectedItem = null;
                 }
             }
         }
@@ -200,9 +205,20 @@ namespace CB_5e.Views.Modify.Features
 
         private async Task Edit(FeatureViewModel fvm)
         {
-
-            IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
-            TabbedPage p = Tab(model);
+            TabbedPage p;
+            if (fvm.Feature is ResourceFeature rf)
+            {
+                ResourceFeatureEditModel model = new ResourceFeatureEditModel(rf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditResourceFeature(model))
+                {
+                    Title = "Resource"
+                });
+            }
+            else {
+                IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
+                p = Tab(model);
+            }
             await Navigation.PushModalAsync(p);
         }
 

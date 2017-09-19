@@ -26,6 +26,8 @@ namespace CB_5e.Views.Modify.Collections
         public string Property { get; private set; }
         private int move = -1;
         private bool Modal = true;
+        public Command Undo { get => Model.Undo; }
+        public Command Redo { get => Model.Redo; }
 
         public StringListPage(IEditModel parent, string property, bool modal = true)
         {

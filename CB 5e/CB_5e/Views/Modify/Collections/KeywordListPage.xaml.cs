@@ -21,6 +21,8 @@ namespace CB_5e.Views.Modify.Collections
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class KeywordListPage : ContentPage
     {
+        public Command Undo { get => Model.Undo; }
+        public Command Redo { get => Model.Redo; }
         public enum KeywordGroup
         {
             NONE, FEAT, ITEM, SPELL

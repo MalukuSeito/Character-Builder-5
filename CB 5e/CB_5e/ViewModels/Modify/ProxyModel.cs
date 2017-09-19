@@ -26,7 +26,7 @@ namespace CB_5e.ViewModels.Modify
         public bool TrackChanges { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IEditModel Parent { get; private set; }
         public OGLContext Context { get; set; }
-
+        public Color Accent { get => Color.Accent; }
         public bool Changed { get; set; } = false;
 
         public int UnsavedChanges => throw new NotImplementedException();

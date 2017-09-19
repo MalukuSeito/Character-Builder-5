@@ -29,6 +29,8 @@ namespace CB_5e.Views.Modify.Collections
         private int move = -1;
         private bool Modal = true;
         public Keyboard Keyboard = Keyboard.Numeric;
+        public Command Undo { get => Model.Undo; }
+        public Command Redo { get => Model.Redo; }
 
         public IntListPage(IEditModel parent, string property, string prepend = "Level ", Keyboard keyboard = null, bool modal = true)
         {
