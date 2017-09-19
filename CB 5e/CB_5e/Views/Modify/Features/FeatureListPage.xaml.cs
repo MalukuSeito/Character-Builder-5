@@ -89,7 +89,9 @@ namespace CB_5e.Views.Modify.Features
             await Navigation.PushAsync(new SelectPage(new List<SelectOption>()
                 {
                     new SelectOption("Basic Feature", "Text and description", new Feature()),
-                    new SelectOption("Resource Feature", "Defines or modifies a trackable resource", new ResourceFeature())
+                    new SelectOption("Resource Feature", "Defines or modifies a trackable resource", new ResourceFeature()),
+                    new SelectOption("Ability Score Feature", "Modifies ability scores or their maximum values", new AbilityScoreFeature()),
+                    new SelectOption("Ability Score Increase / Feat Feature", "Option to increase 2 ability scores or gain a feat", new AbilityScoreFeatFeature(null, 4))
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -213,6 +215,28 @@ namespace CB_5e.Views.Modify.Features
                 p.Children.Add(new NavigationPage(new EditResourceFeature(model))
                 {
                     Title = "Resource"
+                });
+            }
+            else if (fvm.Feature is AbilityScoreFeature asf)
+            {
+                AbilityFeatureEditModel model = new AbilityFeatureEditModel(asf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditAbilityFeature(model))
+                {
+                    Title = "Abilities"
+                });
+            }
+            else if (fvm.Feature is AbilityScoreFeatFeature aff)
+            {
+                AbilityFeatFeatureEditModel model = new AbilityFeatFeatureEditModel(aff, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditAbilityFeatFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                {
+                    Title = "Standalone"
                 });
             }
             else {

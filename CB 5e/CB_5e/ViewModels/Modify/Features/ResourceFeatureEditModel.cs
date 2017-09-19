@@ -84,7 +84,7 @@ namespace CB_5e.ViewModels.Modify.Features
         }
 
         public List<String> RechargeValues { get => Enum.GetNames(typeof(RechargeModifier)).ToList(); }
-        public List<String> ResourceIDValues { get => ResourceIDs.OrderBy(s => s).ToList(); }
-        public List<String> ExclusionIDValues { get => ResourceIDs.OrderBy(s => s).ToList(); }
+        public List<String> ResourceIDValues { get => ResourceIDs.Where(s => s != null && s != "").OrderBy(s => s).ToList(); }
+        public List<String> ExclusionIDValues { get => ResourceIDs.Where(s => s != null && s != "").OrderBy(s => s).ToList(); }
     }
 }

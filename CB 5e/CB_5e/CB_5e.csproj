@@ -67,6 +67,8 @@
     <Compile Include="ViewModels\Character\Choices\ClassHPChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\CollectionChoice.cs" />
     <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\AbilityFeatFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\AbilityFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\FeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\FeatureViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\IntViewModel.cs" />
@@ -156,8 +158,14 @@
     <Compile Include="Views\Character\Build\ClassesPage.xaml.cs">
       <DependentUpon>ClassesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modify\Features\EditAbilityFeatFeature.xaml.cs">
+      <DependentUpon>EditAbilityFeatFeature.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modify\Features\EditFeature.xaml.cs">
       <DependentUpon>EditFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditAbilityFeature.xaml.cs">
+      <DependentUpon>EditAbilityFeature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditResourceFeature.xaml.cs">
       <DependentUpon>EditResourceFeature.xaml</DependentUpon>
@@ -920,7 +928,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Character\Both\" />
+    <EmbeddedResource Include="Views\Modify\Features\EditAbilityFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditFeature.xaml">
@@ -936,6 +947,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditResourceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditAbilityFeatFeature.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

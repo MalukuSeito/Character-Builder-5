@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditAbilityFeature"
+             Title="Abilities">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Mode:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Picker ItemsSource="{Binding ModifierValues}" SelectedItem="{Binding Modifier}"/>
+                <Label Text="Strength:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Strength}" Keyboard="Telephone"/>
+                <Label Text="Dexterity:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Dexterity}" Keyboard="Telephone"/>
+                <Label Text="Constitution:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Constitution}" Keyboard="Telephone"/>
+                <Label Text="Intelligence:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Intelligence}" Keyboard="Telephone"/>
+                <Label Text="Wisdom:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Wisdom}" Keyboard="Telephone"/>
+                <Label Text="Charisma:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Charisma}" Keyboard="Telephone"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
