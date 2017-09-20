@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditExpression">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+            <Label Text="{Binding Header}" FontSize="Micro" LineBreakMode="WordWrap"/>
+            <Editor Text="{Binding Text}" TextColor="{Binding Accent}" VerticalOptions="FillAndExpand"/>
+            <Label TextColor="LightSlateGray" Text="{Binding Notes}" FontSize="Micro" LineBreakMode="WordWrap"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

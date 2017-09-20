@@ -23,7 +23,7 @@
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
             <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
             <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
             <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
             <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>

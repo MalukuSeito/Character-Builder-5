@@ -24,7 +24,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Strength == parsedInt) return;
                     MakeHistory("Strength");
                     Feature.Strength = parsedInt;
-                    OnPropertyChanged("Strength");
+                    if (value != "" && value != "-") OnPropertyChanged("Strength");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Strength");
             }
@@ -40,7 +40,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Dexterity == parsedInt) return;
                     MakeHistory("Dexterity");
                     Feature.Dexterity = parsedInt;
-                    OnPropertyChanged("Dexterity");
+                    if (value != "" && value != "-") OnPropertyChanged("Dexterity");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Dexterity");
             }
@@ -56,7 +56,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Constitution == parsedInt) return;
                     MakeHistory("Constitution");
                     Feature.Constitution = parsedInt;
-                    OnPropertyChanged("Constitution");
+                    if (value != "" && value != "-") OnPropertyChanged("Constitution");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Constitution");
             }
@@ -72,7 +72,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Intelligence == parsedInt) return;
                     MakeHistory("Intelligence");
                     Feature.Intelligence = parsedInt;
-                    OnPropertyChanged("Intelligence");
+                    if (value != "" && value != "-") OnPropertyChanged("Intelligence");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Intelligence");
             }
@@ -88,7 +88,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Wisdom == parsedInt) return;
                     MakeHistory("Wisdom");
                     Feature.Wisdom = parsedInt;
-                    OnPropertyChanged("Wisdom");
+                    if (value != "" && value != "-") OnPropertyChanged("Wisdom");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Wisdom");
             }
@@ -104,7 +104,7 @@ namespace CB_5e.ViewModels.Modify.Features
                     if (Feature.Charisma == parsedInt) return;
                     MakeHistory("Charisma");
                     Feature.Charisma = parsedInt;
-                    OnPropertyChanged("Charisma");
+                    if (value != "" && value != "-") OnPropertyChanged("Charisma");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Charisma");
             }
@@ -119,7 +119,7 @@ namespace CB_5e.ViewModels.Modify.Features
                 {
                     MakeHistory("Modifier");
                     Feature.Modifier = (AbilityScoreModifikation)values.IndexOf(value);
-                    OnPropertyChanged("Modifier");
+                    if (value != "" && value != "-") OnPropertyChanged("Modifier");
                 }
             }
         }

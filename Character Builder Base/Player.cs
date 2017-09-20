@@ -1638,8 +1638,9 @@ namespace Character_Builder
                 }
                 else if (f is BonusFeature bf && !bf.SkillPassive && bf.SkillBonus != null && bf.SkillBonus.Trim() != "" && bf.SkillBonus.Trim() != "0" && Utils.Matches(Context, bf, armor, fc.classlevel, additionalKW, asa, true))
                 { 
-                    if (bf.Skills.Count == 0) generalBonus+= Utils.Evaluate(Context, bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
-                    foreach (string s in bf.Skills) res[Context.GetSkill(s, f.Source)]+= Utils.Evaluate(Context, bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    int v = Utils.Evaluate(Context, bf.SkillBonus, asa, additionalKW, fc.classlevel, 0);
+                    if (bf.Skills.Count == 0) generalBonus += v;
+                    foreach (string s in bf.Skills) res[Context.GetSkill(s, f.Source)] += v;
                 }
             }
             int prof = GetProficiency();

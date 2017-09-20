@@ -61,7 +61,7 @@
             this.label1.Size = new System.Drawing.Size(768, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "The following string values are available: Category (Category of the equipped Arm" +
-    "or), Name (Name of the Feature).";
+    "or), Name (Name of the Armor).";
             // 
             // label2
             // 

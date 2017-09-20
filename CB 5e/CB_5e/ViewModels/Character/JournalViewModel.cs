@@ -125,7 +125,7 @@ namespace CB_5e.ViewModels.Character
                     IsChanged = true;
                     XPChanged = true;
                     Journal.XP = parsedInt;
-                    OnPropertyChanged("Desc");
+                    if (value != "" && value != "-") OnPropertyChanged("XP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("XP");
             }
@@ -142,7 +142,7 @@ namespace CB_5e.ViewModels.Character
                     IsChanged = true;
                     MoneyChanged = true;
                     Journal.PP = parsedInt;
-                    OnPropertyChanged("Desc");
+                    if (value != "" && value != "-") OnPropertyChanged("PP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("PP");
             }
@@ -159,7 +159,7 @@ namespace CB_5e.ViewModels.Character
                     IsChanged = true;
                     MoneyChanged = true;
                     Journal.GP = parsedInt;
-                    OnPropertyChanged("Desc");
+                    if (value != "" && value != "-") OnPropertyChanged("GP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("GP");
             }
@@ -176,7 +176,7 @@ namespace CB_5e.ViewModels.Character
                     IsChanged = true;
                     MoneyChanged = true;
                     Journal.SP = parsedInt;
-                    OnPropertyChanged("Desc");
+                    if (value != "" && value != "-") OnPropertyChanged("SP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("SP");
             }
@@ -192,8 +192,8 @@ namespace CB_5e.ViewModels.Character
                     if (Journal.EP == parsedInt) return;
                     IsChanged = true;
                     MoneyChanged = true;
-                    OnPropertyChanged("Desc");
                     Journal.EP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("EP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("EP");
             }
@@ -209,8 +209,8 @@ namespace CB_5e.ViewModels.Character
                     if (Journal.CP == parsedInt) return;
                     IsChanged = true;
                     MoneyChanged = true;
-                    OnPropertyChanged("Desc");
                     Journal.CP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("CP");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("CP");
             }
@@ -226,8 +226,8 @@ namespace CB_5e.ViewModels.Character
                     if (Journal.Downtime == parsedInt) return;
                     IsChanged = true;
                     StatsChanged = true;
-                    OnPropertyChanged("Desc");
                     Journal.Downtime = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("Downtime");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Downtime");
             }
@@ -243,8 +243,8 @@ namespace CB_5e.ViewModels.Character
                     if (Journal.MagicItems == parsedInt) return;
                     IsChanged = true;
                     StatsChanged = true;
-                    OnPropertyChanged("Desc");
                     Journal.MagicItems = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("MagicItems");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("MagicItems");
             }
@@ -261,8 +261,8 @@ namespace CB_5e.ViewModels.Character
                     if (Journal.Renown == parsedInt) return;
                     IsChanged = true;
                     StatsChanged = true;
-                    OnPropertyChanged("Desc");
                     Journal.Renown = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("Renown");
                 }
                 if (value != "" && value != "-") OnPropertyChanged("Renown");
             }

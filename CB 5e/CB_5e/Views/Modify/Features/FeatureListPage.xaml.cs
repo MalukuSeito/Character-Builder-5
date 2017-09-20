@@ -91,7 +91,13 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Basic Feature", "Text and description", new Feature()),
                     new SelectOption("Resource Feature", "Defines or modifies a trackable resource", new ResourceFeature()),
                     new SelectOption("Ability Score Feature", "Modifies ability scores or their maximum values", new AbilityScoreFeature()),
-                    new SelectOption("Ability Score Increase / Feat Feature", "Option to increase 2 ability scores or gain a feat", new AbilityScoreFeatFeature(null, 4))
+                    new SelectOption("Ability Score Increase / Feat Feature", "Option to increase 2 ability scores or gain a feat", new AbilityScoreFeatFeature(null, 4)),
+                    new SelectOption("AC Calculation Feature", "Adds a new way to calculate AC", new ACFeature() { Expression = "if(Armor, if(Light, BaseAC + DexMod, if(Medium, BaseAC + Min(DexMod, 2), BaseAC)), 10 + DexMod) + ShieldBonus"}),
+                    new SelectOption("Extra Attack Feature", "Sets the amount of extra attacks when attacking", new ExtraAttackFeature()),
+                    new SelectOption("Hitpoint Feature", "Defines a bonus to hitpoints", new HitPointsFeature()),
+                    new SelectOption("Stat Bonus Feature", "Defines various conditional stat boni, i.e. attack, AC, skills, damage", new BonusFeature()),
+                    new SelectOption("Speed Feature", "Defines the base speed or a stacking speed bonus", new SpeedFeature()),
+                    new SelectOption("Vision Feature", "Defines the range of darkvision a character has", new VisionFeature() {Range = 60 })
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -226,6 +232,50 @@ namespace CB_5e.Views.Modify.Features
                     Title = "Abilities"
                 });
             }
+            else if (fvm.Feature is ACFeature acf)
+            {
+                IFeatureEditModel model = new ACFeatureEditModel(acf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditExpression(model,"AC Calculation", "AC Calculation Expression: (NCalc)", "Expression", "Note: The expression must result in a number. If there are multiple AC Calculation features, the one returning the highest AC is taken.\nThe following values are available: BaseAC(of Armor), ShieldBonus(if equiped), ACBonus(Bonus that will be added due to other features), Str, Dex, Con, Int, Wis, Cha(Total value), StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod(Modifier).\nThe following boolean flags are available: Unarmored, Armor, OffHand(weapon in off - Hand), Shield, Two - Handed(weapon), FreeHand as well as any Keywords of the Armor.\nThe following string values are available: Category(Category of the equipped Armor), Name(Name of the Armor)."))
+                {
+                    Title = "AC"
+                });
+            }
+            else if (fvm.Feature is HitPointsFeature hpf)
+            {
+                IFeatureEditModel model = new HitpointsFeatureEditModel(hpf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditExpression(model, "Hitpoints", "Hitpoints Expression: (NCalc)", "Expression", "Note: The expression must result in a number. The following number values are available: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier), PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel(\"classname\") (function for classlevel)"))
+                {
+                    Title = "HP"
+                });
+            }
+            else if (fvm.Feature is VisionFeature vf)
+            {
+                IFeatureEditModel model = new VisionFeatureEditModel(vf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditIntFeature(model, "Vision Feature", "Darkvision Range: (doesn't stack, highest counts)", "Value", 5))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                {
+                    Title = "Standalone"
+                });
+            }
+            else if (fvm.Feature is ExtraAttackFeature eaf)
+            {
+                IFeatureEditModel model = new ExtraAttackFeatureEditModel(eaf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditIntFeature(model, "Extra Attack Feature", "Additional Attacks: (doesn't stack, highest counts)", "Value"))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                {
+                    Title = "Standalone"
+                });
+            }
             else if (fvm.Feature is AbilityScoreFeatFeature aff)
             {
                 AbilityFeatFeatureEditModel model = new AbilityFeatFeatureEditModel(aff, Model, fvm);
@@ -238,6 +288,33 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Standalone"
                 });
+            }
+            else if (fvm.Feature is SpeedFeature sf)
+            {
+                SpeedFeatureEditModel model = new SpeedFeatureEditModel(sf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditSpeedFeature(model))
+                {
+                    Title = "Speed"
+                });
+            }
+            else if (fvm.Feature is BonusFeature bf)
+            {
+                BonusFeatureEditModel model = new BonusFeatureEditModel(bf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditBonusFeature(model))
+                {
+                    Title = "Bonus"
+                });
+                p.Children.Add(new NavigationPage(new BonusFeatureSkillsPage(model))
+                {
+                    Title = "Skills"
+                });
+                p.Children.Add(new NavigationPage(new BonusFeatureWeaponPage(model))
+                {
+                    Title = "Weapon"
+                });
+
             }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);

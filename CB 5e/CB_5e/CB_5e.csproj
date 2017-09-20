@@ -69,6 +69,12 @@
     <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\HitpointsFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ACFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\BonusFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SpeedFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\VisionFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ExtraAttackFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\FeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\FeatureViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\IntViewModel.cs" />
@@ -158,6 +164,15 @@
     <Compile Include="Views\Character\Build\ClassesPage.xaml.cs">
       <DependentUpon>ClassesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
+      <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\BonusFeatureWeaponPage.xaml.cs">
+      <DependentUpon>BonusFeatureWeaponPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditIntFeature.xaml.cs">
+      <DependentUpon>EditIntFeature.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modify\Features\EditAbilityFeatFeature.xaml.cs">
       <DependentUpon>EditAbilityFeatFeature.xaml</DependentUpon>
     </Compile>
@@ -167,11 +182,23 @@
     <Compile Include="Views\Modify\Features\EditAbilityFeature.xaml.cs">
       <DependentUpon>EditAbilityFeature.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modify\Features\EditExpression.xaml.cs">
+      <DependentUpon>EditExpression.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditBonusFeature.xaml.cs">
+      <DependentUpon>EditBonusFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSpeedFeature.xaml.cs">
+      <DependentUpon>EditSpeedFeature.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modify\Features\EditResourceFeature.xaml.cs">
       <DependentUpon>EditResourceFeature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\FeatureKeywords.xaml.cs">
       <DependentUpon>FeatureKeywords.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\BonusFeatureSkillsPage.xaml.cs">
+      <DependentUpon>BonusFeatureSkillsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TaskExtensions.cs" />
     <Compile Include="Views\Modify\Compendium.xaml.cs">
@@ -953,6 +980,48 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditAbilityFeatFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditExpression.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditIntFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSpeedFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditBonusFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CustomTextEntrySuggestionsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\BonusFeatureSkillsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\BonusFeatureWeaponPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

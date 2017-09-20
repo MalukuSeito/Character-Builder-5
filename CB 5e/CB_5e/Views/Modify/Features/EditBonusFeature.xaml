@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditBonusFeature"
+             Title="Boni">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="20" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Condtion for Activation: (NCalc, must evaluate to true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="2" Grid.ColumnSpan="6" Text="Bonus to Attack Rolls: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="3" Grid.ColumnSpan="6" Text="{Binding AttackBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="4" Grid.ColumnSpan="6" Text="Bonus to Spell Save DC: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="5" Grid.ColumnSpan="6" Text="{Binding SaveDCBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="6" Grid.ColumnSpan="6" Text="Bonus to Damage: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="7" Grid.ColumnSpan="6" Text="{Binding DamageBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="8" Grid.ColumnSpan="6" Text="Bonus to Damage: (text)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="9" Grid.ColumnSpan="6" Text="{Binding DamageBonusText}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="10" Grid.ColumnSpan="6" Text="Base Ability for Weapon-Attack/Damage:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Label Grid.Row="11" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="11" Grid.Column="1" IsToggled="{Binding BaseStrength}" HorizontalOptions="Start"/>
+                <Label Grid.Row="11" Grid.Column="2" Text="Dexterity" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="11" Grid.Column="3" IsToggled="{Binding BaseDexterity}" HorizontalOptions="Start"/>
+                <Label Grid.Row="11" Grid.Column="4" Text="Constitution" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="11" Grid.Column="5" IsToggled="{Binding BaseConstitution}" HorizontalOptions="Start"/>
+                <Label Grid.Row="12" Grid.Column="0" Text="Intelligence" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="12" Grid.Column="1" IsToggled="{Binding BaseIntelligence}" HorizontalOptions="Start"/>
+                <Label Grid.Row="12" Grid.Column="2" Text="Wisdom" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="12" Grid.Column="3" IsToggled="{Binding BaseWisdom}" HorizontalOptions="Start"/>
+                <Label Grid.Row="12" Grid.Column="4" Text="Charisma" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="12" Grid.Column="5" IsToggled="{Binding BaseCharisma}" HorizontalOptions="Start"/>
+                
+                <Label Grid.Row="13" Grid.ColumnSpan="6" Text="Bonus to AC: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="14" Grid.ColumnSpan="6" Text="{Binding ACBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="15" Grid.ColumnSpan="6" Text="Bonus to Initiative: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="16" Grid.ColumnSpan="6" Text="{Binding InitiativeBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="17" Grid.ColumnSpan="6" Text="Bonus to Selected Saving Throws: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="18" Grid.ColumnSpan="6" Text="{Binding SavingThrowBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="19" Grid.ColumnSpan="6" Text="Applicable Saving Throws:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Label Grid.Row="20" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="20" Grid.Column="1" IsToggled="{Binding SaveStrength}" HorizontalOptions="Start"/>
+                <Label Grid.Row="20" Grid.Column="2" Text="Dexterity" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="20" Grid.Column="3" IsToggled="{Binding SaveDexterity}" HorizontalOptions="Start"/>
+                <Label Grid.Row="20" Grid.Column="4" Text="Constitution" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="20" Grid.Column="5" IsToggled="{Binding SaveConstitution}" HorizontalOptions="Start"/>
+                <Label Grid.Row="21" Grid.Column="0" Text="Intelligence" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="21" Grid.Column="1" IsToggled="{Binding SaveIntelligence}" HorizontalOptions="Start"/>
+                <Label Grid.Row="21" Grid.Column="2" Text="Wisdom" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="21" Grid.Column="3" IsToggled="{Binding SaveWisdom}" HorizontalOptions="Start"/>
+                <Label Grid.Row="21" Grid.Column="4" Text="Charisma" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="21" Grid.Column="5" IsToggled="{Binding SaveCharisma}" HorizontalOptions="Start"/>
+                <Label Grid.Row="22" Grid.ColumnSpan="6" Text="Bonus to Proficiency: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="23" Grid.ColumnSpan="6" Text="{Binding ProficiencyBonus}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="24" Grid.ColumnSpan="6" Text="Size-Change (Carry Capacity):" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="25" Grid.ColumnSpan="6" Text="{Binding SizeChange}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+
+                <Label Grid.Row="26" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The condition results in a true value if the bonus should be applied and false otherwise.
+For Weapon Attacks and AC Bonus:
+The following string values are available: Category (of the item), Name (of the item), Damageroll, Damagetype
+The following number values are available: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier)
+The following boolean values are available: All Keywords of the Item (Ranged, Melee, Simple, Martial, Finesse, Light, Heavy, Armor, Weapon), Unarmored, Two_Handed (wielding two-handed weapon), Offhand (wielding offhand weapon), FreeHand, Shield (wielding shield).
+
+For Spells only the name of the spell (as Name) and the following boolean values are available: 
+Str, Dex, Con, Int, Wis, Cha (spellcasting ability), Spell, the internal name of the spellcasting feature and all keywords of the spell.
+
+Any other case:
+The following number values are available: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier)
+The following boolean values are available: Unarmored, Two_Handed (wielding two-handed weapon), Offhand (wielding offhand weapon), FreeHand, Shield (wielding shield).
+
+The numeric values PlayerLevel, ClassLevel (==PlayerLevel unless in a class), ClassSpellLevel(ClassLevel/2+1), maxspellslot and the classlevel('classname') function are always available, as are the string values Race, SubRace and the subclass('Classname') function 
+
+The bonus values have similar inputs, but must result in a numerical value.</Label.Text>
+                </Label>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

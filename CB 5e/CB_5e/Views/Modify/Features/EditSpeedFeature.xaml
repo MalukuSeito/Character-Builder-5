@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditSpeedFeature"
+             Title="Speed">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Condtion for Activation: (NCalc, must evaluate to true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Label Text="Base Speed:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding BaseSpeed}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Switch IsToggled="{Binding IgnoreArmor}"/>
+                    <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"  Text="Base Speed Ignores Armor Penalty" FontSize="Micro" LineBreakMode="WordWrap"/>
+                </StackLayout>
+                <Label Text="Bonus Speed: (NCalc, must evaluate to number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding ExtraSpeed}" TextColor="{Binding Accent}"/>
+                <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The condition results in a true value if the bonus should be applied and false otherwise.
+The following string values are known: Category (of the worn armor), Name (of the worn armor)
+The following number values are known: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier), PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel("classname") (function for classlevel)
+The following boolean values are known: All Keywords of the worn Armor (Armor, Light, Heavy, Medium), Unarmored, Two_Handed (wielding two-handed weapon), Offhand (wielding offhand weapon), FreeHand, Shield (wielding shield).</Label.Text>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
