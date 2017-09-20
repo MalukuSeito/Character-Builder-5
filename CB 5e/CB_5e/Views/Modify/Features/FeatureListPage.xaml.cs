@@ -97,7 +97,9 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Hitpoint Feature", "Defines a bonus to hitpoints", new HitPointsFeature()),
                     new SelectOption("Stat Bonus Feature", "Defines various conditional stat boni, i.e. attack, AC, skills, damage", new BonusFeature()),
                     new SelectOption("Speed Feature", "Defines the base speed or a stacking speed bonus", new SpeedFeature()),
-                    new SelectOption("Vision Feature", "Defines the range of darkvision a character has", new VisionFeature() {Range = 60 })
+                    new SelectOption("Vision Feature", "Defines the range of darkvision a character has", new VisionFeature() {Range = 60 }),
+                    new SelectOption("Skill Proficiency Feature", "Adds proficiency to skills", new SkillProficiencyFeature()),
+                    new SelectOption("Skill Proficiency Choice Feature", "Allows for a choice of skills to add proficiency to", new SkillProficiencyChoiceFeature())
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -315,6 +317,24 @@ namespace CB_5e.Views.Modify.Features
                     Title = "Weapon"
                 });
 
+            }
+            else if (fvm.Feature is SkillProficiencyFeature spf)
+            {
+                SkillProficiencyFeatureEditModel model = new SkillProficiencyFeatureEditModel(spf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new SkillProficiencyFeaturePage(model))
+                {
+                    Title = "Skills"
+                });
+            }
+            else if (fvm.Feature is SkillProficiencyChoiceFeature spcf)
+            {
+                SkillProficiencyChoiceFeatureEditModel model = new SkillProficiencyChoiceFeatureEditModel(spcf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new SkillProficiencyChoiceFeaturePage(model))
+                {
+                    Title = "Skills"
+                });
             }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);

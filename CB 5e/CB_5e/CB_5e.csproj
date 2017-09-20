@@ -72,6 +72,8 @@
     <Compile Include="ViewModels\Modify\Features\HitpointsFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ACFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\BonusFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SkillProficiencyChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SkillProficiencyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SpeedFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\VisionFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ExtraAttackFeatureEditModel.cs" />
@@ -166,6 +168,12 @@
     </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\SkillProficiencyChoiceFeaturePage.xaml.cs">
+      <DependentUpon>SkillProficiencyChoiceFeaturePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\SkillProficiencyFeaturePage.xaml.cs">
+      <DependentUpon>SkillProficiencyFeaturePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\BonusFeatureWeaponPage.xaml.cs">
       <DependentUpon>BonusFeatureWeaponPage.xaml</DependentUpon>
@@ -1022,6 +1030,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\BonusFeatureWeaponPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\SkillProficiencyFeaturePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\SkillProficiencyChoiceFeaturePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
