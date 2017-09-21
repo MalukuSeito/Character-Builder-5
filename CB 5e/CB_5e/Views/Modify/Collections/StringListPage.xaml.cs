@@ -25,25 +25,28 @@ namespace CB_5e.Views.Modify.Collections
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
         private int move = -1;
-        private bool Modal = true;
+        private bool TopLevelPage = true;
         public Command Undo { get => Model.Undo; }
         public Command Redo { get => Model.Redo; }
+        private Task<IEnumerable<string>> suggestionsTask;
+        private List<string> Suggestions = new List<string>();
 
-        public StringListPage(IEditModel parent, string property, bool modal = true)
+        public StringListPage(IEditModel parent, string property, Task<IEnumerable<string>> suggestions, bool toplevelpage = true)
         {
+            suggestionsTask = suggestions;
             Model = parent;
-            Modal = modal;
+            TopLevelPage = toplevelpage;
             parent.PropertyChanged += Parent_PropertyChanged;
             Property = property;
             UpdateEntries();
 			InitializeComponent ();
-            InitToolbar(Modal);
+            InitToolbar(TopLevelPage);
             BindingContext = this;
 		}
 
         private void InitToolbar(bool modal)
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 ToolbarItem undo = new ToolbarItem() { Text = "Undo" };
                 undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
@@ -51,6 +54,11 @@ namespace CB_5e.Views.Modify.Collections
                 ToolbarItem redo = new ToolbarItem() { Text = "Redo" };
                 redo.SetBinding(MenuItem.CommandProperty, new Binding("Redo"));
                 ToolbarItems.Add(redo);
+            } else
+            {
+                ToolbarItem back = new ToolbarItem() { Text = "back" };
+                back.Clicked += Back_Clicked;
+                ToolbarItems.Add(back);
             }
             ToolbarItem add = new ToolbarItem() { Text = "Add" };
             add.Clicked += Add_Clicked;
@@ -61,6 +69,12 @@ namespace CB_5e.Views.Modify.Collections
             ToolbarItem paste2 = new ToolbarItem() { Text = "Paste CSV" };
             paste2.Clicked += Paste2_Clicked;
             ToolbarItems.Add(paste2);
+        }
+
+        private async void Back_Clicked(object sender, EventArgs e)
+        {
+            await Model.SaveAsync(true);
+            await Navigation.PopModalAsync();
         }
 
         private void Parent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -116,16 +130,31 @@ namespace CB_5e.Views.Modify.Collections
 
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+            if (Suggestions.Count() > 0)
             {
-                if (par is string s)
+                await Navigation.PushAsync(new CustomTextEntrySuggestionsPage(Title, new Command((par) =>
                 {
-                    Model.MakeHistory();
-                    StringViewModel vm = new StringViewModel(s);
-                    entries.Add(s);
-                    Entries.Add(vm);
-                }
-            })));
+                    if (par is string s)
+                    {
+                        Model.MakeHistory();
+                        StringViewModel vm = new StringViewModel(s);
+                        entries.Add(s);
+                        Entries.Add(vm);
+                    }
+                }), Suggestions));
+            }
+            else { 
+                await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+                {
+                    if (par is string s)
+                    {
+                        Model.MakeHistory();
+                        StringViewModel vm = new StringViewModel(s);
+                        entries.Add(s);
+                        Entries.Add(vm);
+                    }
+                })));
+            }
         }
 
         private async void Entries_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -212,7 +241,7 @@ namespace CB_5e.Views.Modify.Collections
 
         protected override bool OnBackButtonPressed()
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -236,7 +265,23 @@ namespace CB_5e.Views.Modify.Collections
                     else await Navigation.PopModalAsync();
                 });
             }
-            return Modal;
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await Model.SaveAsync(true);
+                    await Navigation.PopModalAsync();
+                });
+            }
+            return true;
+        }
+
+        protected override async void OnAppearing()
+        {
+            if (suggestionsTask != null)
+            {
+                Suggestions = (await suggestionsTask).ToList();
+            }
         }
     }
 }

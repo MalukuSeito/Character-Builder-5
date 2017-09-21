@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditSpellcasting"
+             Title="Boni">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="20" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Spellcasting Internal ID: (other features reference this id)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding SpellcastingID}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Text="Ignore Multiclassing (Spellslots will not be overridden)" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="2" Grid.Column="0" IsToggled="{Binding IgnoreMulticlassing}" HorizontalOptions="End"/>
+                <Label Grid.Row="3" Grid.ColumnSpan="6" Text="Displayed Spellcasting Name: (Builder and Sheet)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="4" Grid.ColumnSpan="6" Text="{Binding DisplayName}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="5" Grid.ColumnSpan="6" Text="Spellcasting Ability: (takes highest modifier)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Label Grid.Row="6" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="6" Grid.Column="1" IsToggled="{Binding BaseStrength}" HorizontalOptions="Start"/>
+                <Label Grid.Row="6" Grid.Column="2" Text="Dexterity" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="6" Grid.Column="3" IsToggled="{Binding BaseDexterity}" HorizontalOptions="Start"/>
+                <Label Grid.Row="6" Grid.Column="4" Text="Constitution" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="6" Grid.Column="5" IsToggled="{Binding BaseConstitution}" HorizontalOptions="Start"/>
+                <Label Grid.Row="7" Grid.Column="0" Text="Intelligence" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="1" IsToggled="{Binding BaseIntelligence}" HorizontalOptions="Start"/>
+                <Label Grid.Row="7" Grid.Column="2" Text="Wisdom" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="3" IsToggled="{Binding BaseWisdom}" HorizontalOptions="Start"/>
+                <Label Grid.Row="7" Grid.Column="4" Text="Charisma" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="5" IsToggled="{Binding BaseCharisma}" HorizontalOptions="Start"/>
+                <Label Grid.Row="8" Grid.ColumnSpan="6" Text="Preperation Mode:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Picker Grid.Row="9" Grid.ColumnSpan="6" ItemsSource="{Binding PreparationTypes}" SelectedItem="{Binding Preparation}"/>
+                <Label Grid.Row="10" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Spellbook allows adding spells to a spellbook from which spells are prepared, any spell matching the condition below can be added using the shop.
+ClassList allows preparation of any spell matching the condition below or that has been added to the classlist using a spellchoice feature.
+LearnSpells disables spell preparation completely.</Label.Text>
+                </Label>
+                <Label Grid.Row="11" Grid.ColumnSpan="6" Text="Amount of prepared spells: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="12" Grid.ColumnSpan="6" Text="{Binding PrepareCount}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="13" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The Amount expression must result in a number:
+The following number values are known: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier), PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel('classname') (function for classlevel)</Label.Text>
+                </Label>
+                <Label Grid.Row="14" Grid.ColumnSpan="6" Text="Condition for ClassList/Shop: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="15" Grid.ColumnSpan="6" Text="{Binding PrepareableSpells}" TextColor="{Binding Accent}"/>
+                <Label Grid.Row="16" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Only spells matching the condition can be prepared / bought.
+The same variables as for the amount are available, in addition the Name (string) and Level (number) of the checked spell can be used as well as all the keywords of the spell (Cold, Ranged, Concentration, the name of the class, and many more)</Label.Text>
+                </Label>
+                <Label Grid.Row="17" Grid.ColumnSpan="6" Text="Recharge Spells after: (unused for now)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Picker Grid.Row="18" Grid.ColumnSpan="6" ItemsSource="{Binding RechargeTypes}" SelectedItem="{Binding PreparationChange}"/>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

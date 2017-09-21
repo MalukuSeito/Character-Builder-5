@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditSaveProficiencyFeature"
+             Title="Save Proficiency Feature">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid Padding="10" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Text="Title:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Text="Level:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+            <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="Hidden (Sheet):" FontSize="Micro"/>
+            <Switch Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  IsToggled="{Binding Hidden}"/>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Label Grid.Row="6" Grid.ColumnSpan="6" Text="Saving Throws:" FontSize="Micro" LineBreakMode="WordWrap"/>
+            <Label Grid.Row="7" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="7" Grid.Column="1" IsToggled="{Binding SaveStrength}" HorizontalOptions="Start"/>
+            <Label Grid.Row="7" Grid.Column="2" Text="Dexterity" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="7" Grid.Column="3" IsToggled="{Binding SaveDexterity}" HorizontalOptions="Start"/>
+            <Label Grid.Row="7" Grid.Column="4" Text="Constitution" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="7" Grid.Column="5" IsToggled="{Binding SaveConstitution}" HorizontalOptions="Start"/>
+            <Label Grid.Row="8" Grid.Column="0" Text="Intelligence" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="8" Grid.Column="1" IsToggled="{Binding SaveIntelligence}" HorizontalOptions="Start"/>
+            <Label Grid.Row="8" Grid.Column="2" Text="Wisdom" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="8" Grid.Column="3" IsToggled="{Binding SaveWisdom}" HorizontalOptions="Start"/>
+            <Label Grid.Row="8" Grid.Column="4" Text="Charisma" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+            <Switch Grid.Row="8" Grid.Column="5" IsToggled="{Binding SaveCharisma}" HorizontalOptions="Start"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

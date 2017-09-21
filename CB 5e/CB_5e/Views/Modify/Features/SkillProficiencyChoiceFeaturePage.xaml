@@ -24,7 +24,10 @@
                         <Label Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
                         <Label Text="Amount: (Number of skills allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
+                        </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                             <Switch IsToggled="{Binding OnlyAlreadyKnownSkills}"/>
                             <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center" Text="Restrict choices to already proficient skills (useful for modes that add to existing proficiency or values > 1)" FontSize="Micro" LineBreakMode="WordWrap"/>

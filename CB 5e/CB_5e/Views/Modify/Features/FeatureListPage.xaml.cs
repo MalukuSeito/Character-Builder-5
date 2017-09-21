@@ -12,6 +12,9 @@ using OGL.Features;
 using CB_5e.ViewModels.Modify;
 using CB_5e.ViewModels.Modify.Features;
 using CB_5e.Services;
+using CB_5e.Views.Modify.Collections;
+using OGL;
+using OGL.Items;
 
 namespace CB_5e.Views.Modify.Features
 {
@@ -99,7 +102,15 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Speed Feature", "Defines the base speed or a stacking speed bonus", new SpeedFeature()),
                     new SelectOption("Vision Feature", "Defines the range of darkvision a character has", new VisionFeature() {Range = 60 }),
                     new SelectOption("Skill Proficiency Feature", "Adds proficiency to skills", new SkillProficiencyFeature()),
-                    new SelectOption("Skill Proficiency Choice Feature", "Allows for a choice of skills to add proficiency to", new SkillProficiencyChoiceFeature())
+                    new SelectOption("Skill Proficiency Choice Feature", "Allows for a choice of skills to add proficiency to", new SkillProficiencyChoiceFeature()),
+                    new SelectOption("Language Proficiency Feature", "Adds proficiency with specific languages", new LanguageProficiencyFeature()),
+                    new SelectOption("Language Proficiency Choice Feature", "Adds proficiency with chosen languages", new LanguageChoiceFeature()),
+                    new SelectOption("Tool Proficiency Feature", "Adds proficiency with specific tools", new ToolProficiencyFeature()),
+                    new SelectOption("Tool Proficiency Choice Feature", "Adds proficiency with chosen tools", new ToolProficiencyChoiceConditionFeature()),
+                    new SelectOption("Tool Proficiency by Expression Feature", "Adds proficiency with a category of tools", new ToolKWProficiencyFeature()),
+                    new SelectOption("Save Proficiency Feature", "Adds proficiency to saving throws", new SaveProficiencyFeature()),
+                    new SelectOption("Other Proficiency Feature", "Basic feature whose description is shown as proficiency", new OtherProficiencyFeature()),
+                    new SelectOption("Spellcasting Feature", "Sets up Spellcasting, required by non-bonusspell spellcasting features", new SpellcastingFeature()),
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -238,7 +249,7 @@ namespace CB_5e.Views.Modify.Features
             {
                 IFeatureEditModel model = new ACFeatureEditModel(acf, Model, fvm);
                 p = Tab(model);
-                p.Children.Add(new NavigationPage(new EditExpression(model,"AC Calculation", "AC Calculation Expression: (NCalc)", "Expression", "Note: The expression must result in a number. If there are multiple AC Calculation features, the one returning the highest AC is taken.\nThe following values are available: BaseAC(of Armor), ShieldBonus(if equiped), ACBonus(Bonus that will be added due to other features), Str, Dex, Con, Int, Wis, Cha(Total value), StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod(Modifier).\nThe following boolean flags are available: Unarmored, Armor, OffHand(weapon in off - Hand), Shield, Two - Handed(weapon), FreeHand as well as any Keywords of the Armor.\nThe following string values are available: Category(Category of the equipped Armor), Name(Name of the Armor)."))
+                p.Children.Add(new NavigationPage(new EditExpression(model, "AC Calculation", "AC Calculation Expression: (NCalc)", "Expression", "Note: The expression must result in a number. If there are multiple AC Calculation features, the one returning the highest AC is taken.\nThe following values are available: BaseAC(of Armor), ShieldBonus(if equiped), ACBonus(Bonus that will be added due to other features), Str, Dex, Con, Int, Wis, Cha(Total value), StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod(Modifier).\nThe following boolean flags are available: Unarmored, Armor, OffHand(weapon in off - Hand), Shield, Two - Handed(weapon), FreeHand as well as any Keywords of the Armor.\nThe following string values are available: Category(Category of the equipped Armor), Name(Name of the Armor)."))
                 {
                     Title = "AC"
                 });
@@ -336,11 +347,100 @@ namespace CB_5e.Views.Modify.Features
                     Title = "Skills"
                 });
             }
+            else if (fvm.Feature is LanguageProficiencyFeature lpf)
+            {
+                LanguageProficiencyFeatureEditModel model = new LanguageProficiencyFeatureEditModel(lpf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Languages", GetLanguagesAsync(Model.Context), false))
+                {
+                    Title = "Languages"
+                });
+            }
+            else if (fvm.Feature is LanguageChoiceFeature lcf)
+            {
+                LanguageProficiencyChoiceFeatureEditModel model = new LanguageProficiencyChoiceFeatureEditModel(lcf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditLanguageChoiceFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                {
+                    Title = "Standalone"
+                });
+            }
+            else if (fvm.Feature is ToolProficiencyFeature tpf)
+            {
+                ToolProficiencyFeatureEditModel model = new ToolProficiencyFeatureEditModel(tpf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Tools", GetToolsAsync(Model.Context), false))
+                {
+                    Title = "Tools"
+                });
+            }
+            else if (fvm.Feature is ToolProficiencyChoiceConditionFeature tpcf)
+            {
+                ToolProficiencyChoiceFeatureEditModel model = new ToolProficiencyChoiceFeatureEditModel(tpcf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new ToolProficiencyChoicePage(model))
+                {
+                    Title = "Tools"
+                });
+            }
+            else if (fvm.Feature is ToolKWProficiencyFeature tkpf)
+            {
+                ToolProficiencyExpressionFeatureEditModel model = new ToolProficiencyExpressionFeatureEditModel(tkpf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new ToolProficiencyExpressionPage(model))
+                {
+                    Title = "Tools"
+                });
+            }
+            else if (fvm.Feature is SaveProficiencyFeature saf)
+            {
+                SaveProficiencyFeatureEditModel model = new SaveProficiencyFeatureEditModel(saf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditSaveProficiencyFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                {
+                    Title = "Standalone"
+                });
+            }
+            else if (fvm.Feature is SpellcastingFeature scf)
+            {
+                SpellcastingFeatureEditModel model = new SpellcastingFeatureEditModel(scf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditSpellcasting(model))
+                {
+                    Title = "Spellcasting"
+                });
+            }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
                 p = Tab(model);
             }
             await Navigation.PushModalAsync(p);
+        }
+
+        private async Task<IEnumerable<string>> GetLanguagesAsync(OGLContext context)
+        {
+            if (context.LanguagesSimple.Count == 0)
+            {
+                await context.ImportLanguagesAsync();
+            }
+            return context.LanguagesSimple.Keys.OrderBy(s => s);
+        }
+
+        private async Task<IEnumerable<string>> GetToolsAsync(OGLContext context)
+        {
+            if (context.ItemsSimple.Count == 0)
+            {
+                await context.ImportItemsAsync();
+            }
+            return context.ItemsSimple.Values.Where(s=>s is Tool).Select(s=>s.Name).OrderBy(s => s);
         }
 
         private TabbedPage Tab(IFeatureEditModel model)

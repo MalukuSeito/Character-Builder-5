@@ -36,6 +36,7 @@ namespace CB_5e.Views.Modify
                 DependencyService.Get<IHTMLService>().Reset(config);
                 await PCLImport.ImportSubRacesAsync(Context);
                 UpdateEntries();
+                await PCLImport.ImportRacesAsync(Context);
                 IsBusy = false;
             });
             Title = "Subraces";
@@ -78,16 +79,27 @@ namespace CB_5e.Views.Modify
 
         protected override void OnAppearing()
         {
-            if (Entries.Count == 0) Refresh.Execute(null);
+            if (Entries.Count == 0)
+            {
+                Refresh.Execute(null);
+            }
+
         }
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is SubRace obj)
             {
-                if (IsBusy) return;
+                if (IsBusy)
+                {
+                    (sender as ListView).SelectedItem = null;
+                    return;
+                }
                 IsBusy = true;
-                await Context.ImportRacesAsync().ConfigureAwait(true);
+                if (Context.RacesSimple.Count == 0)
+                {
+                    await Context.ImportRacesAsync().ConfigureAwait(true);
+                }
                 await Navigation.PushModalAsync(MakePage(new SubRaceEditModel(obj, Context)));
                 Entries.Clear();
                 IsBusy = false;
@@ -98,7 +110,10 @@ namespace CB_5e.Views.Modify
         {
             if (IsBusy) return;
             IsBusy = true;
-            await Context.ImportRacesAsync().ConfigureAwait(true);
+            if (Context.RacesSimple.Count == 0)
+            {
+                await Context.ImportRacesAsync().ConfigureAwait(true);
+            }
             await Navigation.PushModalAsync(MakePage(new SubRaceEditModel(new SubRace() { Source = Context.Config.DefaultSource }, Context)));
             Entries.Clear();
             IsBusy = false;

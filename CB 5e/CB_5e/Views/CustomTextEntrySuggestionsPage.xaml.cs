@@ -16,8 +16,8 @@ namespace CB_5e.Views
         private string text;
         public string Text { get => text; set { text = value; OnPropertyChanged("Text"); } }
         public Keyboard Keyboard { get; set; } = Keyboard.Default;
-        public IEnumerable<string> Suggestions { get; set; }
-        public CustomTextEntrySuggestionsPage(string title, ICommand saveCommand, IEnumerable<String> suggestions)
+        public IList<string> Suggestions { get; set; }
+        public CustomTextEntrySuggestionsPage(string title, ICommand saveCommand, IList<String> suggestions)
 		{
             SaveCommand = saveCommand;
             Title = title;

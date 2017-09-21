@@ -32,6 +32,7 @@ namespace CB_5e.Views.Modify
                 DependencyService.Get<IHTMLService>().Reset(config);
                 await PCLImport.ImportSubClassesAsync(Context);
                 UpdateEntries();
+                await PCLImport.ImportClassesAsync(Context);
                 IsBusy = false;
             });
             Title = "Subclasses";

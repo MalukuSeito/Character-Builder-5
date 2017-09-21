@@ -69,10 +69,17 @@
     <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SpellcastingFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SaveProficiencyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\HitpointsFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ACFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\BonusFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\LanguageProficiencyChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ToolProficiencyChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ToolProficiencyExpressionFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ToolProficiencyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SkillProficiencyChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\LanguageProficiencyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SkillProficiencyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SpeedFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\VisionFeatureEditModel.cs" />
@@ -168,6 +175,21 @@
     </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSpellcasting.xaml.cs">
+      <DependentUpon>EditSpellcasting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSaveProficiencyFeature.xaml.cs">
+      <DependentUpon>EditSaveProficiencyFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditLanguageChoiceFeature.xaml.cs">
+      <DependentUpon>EditLanguageChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\ToolProficiencyExpressionPage.xaml.cs">
+      <DependentUpon>ToolProficiencyExpressionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\ToolProficiencyChoicePage.xaml.cs">
+      <DependentUpon>ToolProficiencyChoicePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\SkillProficiencyChoiceFeaturePage.xaml.cs">
       <DependentUpon>SkillProficiencyChoiceFeaturePage.xaml</DependentUpon>
@@ -1042,6 +1064,36 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\SkillProficiencyChoiceFeaturePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditLanguageChoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\ToolProficiencyChoicePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\ToolProficiencyExpressionPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSaveProficiencyFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSpellcasting.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

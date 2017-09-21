@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.ToolProficiencyExpressionPage"
+             Title="Resource">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Tools: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Editor Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Label Text="Description: (shown in the sheet)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding Description}" TextColor="{Binding Accent}"/>
+                <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The Condition is evaluated for each item and must result in a boolean value. The following values can be used: Category, Name (lowercase) of the item.
+The following can be used to differentiate types: Armor, Tool, Weapon, Shield. All are boolean values.
+In addition all keywords (Light, Heavy, Medium, Two_Handed, Ranged, Melee, Artisan, Arcane, Divine, Druidic, Focus, ...) of the item can be used as a boolean value as well.</Label.Text>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
