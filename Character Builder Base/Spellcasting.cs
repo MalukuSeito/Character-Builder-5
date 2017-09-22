@@ -29,13 +29,13 @@ namespace Character_Builder
             
             foreach (Feature f in player.GetFeatures(level))
             {
-                if (f is BonusSpellPrepareFeature && ((BonusSpellPrepareFeature)f).SpellcastingID == SpellcastingID)
+                if (f is BonusSpellPrepareFeature bspf && bspf.SpellcastingID == SpellcastingID && bspf.AddTo == PreparationMode.LearnSpells)
                 {
-                    BonusSpellPrepareFeature bspf = (BonusSpellPrepareFeature)f;
                     foreach (string s in bspf.Spells)
                     {
                         res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, true, false));
                     }
+                    res.AddRange(Utils.FilterSpell(player.Context, bspf.Condition, bspf.SpellcastingID).Select(s=>new ModifiedSpell(s, bspf.KeywordsToAdd, true, false)));
                 }
             }
             res.Sort();
@@ -67,6 +67,7 @@ namespace Character_Builder
             CombineSpellbookAdditional(player, context, level);
             string sourcehint = null;
             foreach (Feature f in player.GetFeatures(level))
+            {
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -79,6 +80,15 @@ namespace Character_Builder
                         }
                     }
                 }
+                else if (f is BonusSpellPrepareFeature bspf && bspf.SpellcastingID == SpellcastingID && bspf.AddTo == PreparationMode.Spellbook)
+                {
+                    foreach (string s in bspf.Spells)
+                    {
+                        res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, true, false));
+                    }
+                    res.AddRange(Utils.FilterSpell(player.Context, bspf.Condition, bspf.SpellcastingID).Select(s => new ModifiedSpell(s, bspf.KeywordsToAdd, false, false)));
+                }
+            }
             res.AddRange(from s in SpellbookAdditional select context.GetSpell(s, sourcehint));
             res.Sort();
             return res;
@@ -91,6 +101,7 @@ namespace Character_Builder
             CombineSpellChoices(player, context, level);
             string sourcehint = null;
             foreach (Feature f in player.GetFeatures(level))
+            {
                 if (f is SpellChoiceFeature && ((SpellChoiceFeature)f).SpellcastingID == SpellcastingID)
                 {
                     sourcehint = f.Source;
@@ -103,6 +114,15 @@ namespace Character_Builder
                         }
                     }
                 }
+                else if (f is BonusSpellPrepareFeature bspf && bspf.SpellcastingID == SpellcastingID && bspf.AddTo == PreparationMode.ClassList)
+                {
+                    foreach (string s in bspf.Spells)
+                    {
+                        res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, true, false));
+                    }
+                    res.AddRange(Utils.FilterSpell(player.Context, bspf.Condition, bspf.SpellcastingID).Select(s => new ModifiedSpell(s, bspf.KeywordsToAdd, false, false)));
+                }
+            }
             res.AddRange(from s in SpellbookAdditional select context.GetSpell(s, sourcehint));
             res.Sort();
             return res;

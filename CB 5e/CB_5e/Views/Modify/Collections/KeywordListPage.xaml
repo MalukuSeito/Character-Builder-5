@@ -12,6 +12,11 @@
                       RowHeight="30"
                       x:Name="ListViewComponent"
                       x:FieldModifier="public">
+                <ListView.Header>
+                    <StackLayout Padding="20, 0">
+                        <Label FontSize="Micro" Text="{Binding Text}"/>
+                    </StackLayout>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}"/>

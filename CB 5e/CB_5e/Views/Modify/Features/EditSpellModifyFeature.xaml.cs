@@ -11,21 +11,15 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views.Modify.Features
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditResourceFeature : ContentPage
+    public partial class EditSpellModifyFeature : ContentPage
     {
-        public EditResourceFeature(ResourceFeatureEditModel model)
+        public EditSpellModifyFeature(SpellModifyFeatureEditModel model)
         {
-            BindingContext = Model = model;
             InitializeComponent();
+            BindingContext = Model = model;
         }
 
-        public ResourceFeatureEditModel Model { get; private set; }
-
-        protected override void OnDisappearing()
-        {
-            if (Model.ExclusionID != null && Model.ExclusionID.Trim() != "") ResourceFeatureEditModel.ExclusionIDs.Add(Model.ExclusionID);
-            if (Model.ResourceID != null && Model.ResourceID.Trim() != "") ResourceFeatureEditModel.ResourceIDs.Add(Model.ResourceID);
-        }
+        public SpellModifyFeatureEditModel Model { get; set; }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {

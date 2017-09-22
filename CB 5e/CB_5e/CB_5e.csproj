@@ -67,6 +67,13 @@
     <Compile Include="ViewModels\Character\Choices\ClassHPChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\CollectionChoice.cs" />
     <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\AddSpellsFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\IDualSpellListFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ModifySpellchoiceEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SpellchoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SpellModifyFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\IncreaseSpellchoiceEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SpellslotFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AbilityFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SpellcastingFeatureEditModel.cs" />
@@ -175,6 +182,27 @@
     </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\DualSpellListPage.xaml.cs">
+      <DependentUpon>DualSpellListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditAddSpellsFeature.xaml.cs">
+      <DependentUpon>EditAddSpellsFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditModifySpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditModifySpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditSpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSpellModifyFeature.xaml.cs">
+      <DependentUpon>EditSpellModifyFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditIncreaseSpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditIncreaseSpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditSpellslotFeature.xaml.cs">
+      <DependentUpon>EditSpellslotFeature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditSpellcasting.xaml.cs">
       <DependentUpon>EditSpellcasting.xaml</DependentUpon>
@@ -1094,6 +1122,48 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditSpellcasting.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSpellslotFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\DualSpellListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditAddSpellsFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSpellModifyFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSpellchoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditIncreaseSpellchoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditModifySpellchoiceFeature.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -396,49 +396,49 @@
             // spellcastingFeatureToolStripMenuItem
             // 
             this.spellcastingFeatureToolStripMenuItem.Name = "spellcastingFeatureToolStripMenuItem";
-            this.spellcastingFeatureToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.spellcastingFeatureToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.spellcastingFeatureToolStripMenuItem.Text = "Spellcasting Feature";
             this.spellcastingFeatureToolStripMenuItem.Click += new System.EventHandler(this.spellcastingFeatureToolStripMenuItem_Click);
             // 
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(267, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(227, 22);
             this.toolStripMenuItem8.Text = "Spellslot Feature";
             this.toolStripMenuItem8.Click += new System.EventHandler(this.toolStripMenuItem8_Click);
             // 
             // bonusAlwaysPreparedSpellsToolStripMenuItem
             // 
             this.bonusAlwaysPreparedSpellsToolStripMenuItem.Name = "bonusAlwaysPreparedSpellsToolStripMenuItem";
-            this.bonusAlwaysPreparedSpellsToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
-            this.bonusAlwaysPreparedSpellsToolStripMenuItem.Text = "Bonus Always Prepared Spell Feature";
+            this.bonusAlwaysPreparedSpellsToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.bonusAlwaysPreparedSpellsToolStripMenuItem.Text = "Add Spells Feature";
             this.bonusAlwaysPreparedSpellsToolStripMenuItem.Click += new System.EventHandler(this.bonusAlwaysPreparedSpellsToolStripMenuItem_Click);
             // 
             // modifySpellFeatureToolStripMenuItem
             // 
             this.modifySpellFeatureToolStripMenuItem.Name = "modifySpellFeatureToolStripMenuItem";
-            this.modifySpellFeatureToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.modifySpellFeatureToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.modifySpellFeatureToolStripMenuItem.Text = "Modify Spell Feature";
             this.modifySpellFeatureToolStripMenuItem.Click += new System.EventHandler(this.modifySpellFeatureToolStripMenuItem_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(267, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(227, 22);
             this.toolStripMenuItem7.Text = "Spellchoice Feature";
             this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // increaseSpellchoicesFeatureToolStripMenuItem
             // 
             this.increaseSpellchoicesFeatureToolStripMenuItem.Name = "increaseSpellchoicesFeatureToolStripMenuItem";
-            this.increaseSpellchoicesFeatureToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.increaseSpellchoicesFeatureToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.increaseSpellchoicesFeatureToolStripMenuItem.Text = "Increase Spellchoices Feature";
             this.increaseSpellchoicesFeatureToolStripMenuItem.Click += new System.EventHandler(this.increaseSpellchoicesFeatureToolStripMenuItem_Click);
             // 
             // modifySpellchoiceFeatureToolStripMenuItem
             // 
             this.modifySpellchoiceFeatureToolStripMenuItem.Name = "modifySpellchoiceFeatureToolStripMenuItem";
-            this.modifySpellchoiceFeatureToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.modifySpellchoiceFeatureToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.modifySpellchoiceFeatureToolStripMenuItem.Text = "Modify Spellchoice Feature";
             this.modifySpellchoiceFeatureToolStripMenuItem.Click += new System.EventHandler(this.modifySpellchoiceFeatureToolStripMenuItem_Click);
             // 

@@ -31,52 +31,31 @@ namespace CB_5e.Views.Modify.Collections
         public ObservableRangeCollection<KeywordViewModel> Entries { get; set; } = new ObservableRangeCollection<KeywordViewModel>();
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
-        private bool Modal = true;
-        private Dictionary<KeywordGroup, List<Keyword>> Groups = new Dictionary<KeywordGroup, List<Keyword>>();
-
+        private bool TopLevelPage = true;
+        public List<Keyword> Examples = new List<Keyword>();
+        private Task<IEnumerable<string>> LoadClasses = null;
         private static HashSet<String> userAdded = new HashSet<string>();
         private KeywordGroup group = KeywordGroup.NONE;
-
-        public KeywordListPage(IEditModel parent, string property, KeywordGroup keywords = KeywordGroup.NONE, bool modal = true)
+        public string Text { get; set; }
+        public KeywordListPage(IEditModel parent, string property, string text, KeywordGroup keywords = KeywordGroup.NONE, Task<IEnumerable<string>> loadClasses = null, bool topLevel = true)
         {
-            if (Groups.Count == 0)
-            {
-                List<Keyword> none = new List<Keyword>();
-                Groups.Add(KeywordGroup.NONE, none);
-
-                List<Keyword> feat = new List<Keyword>();
-                foreach (ClassDefinition c in parent.Context.ClassesSimple?.Values) feat.Add(new Keyword(c.Name));
-                Groups.Add(KeywordGroup.FEAT, feat);
-                List<Keyword> item = new List<Keyword>();
-                foreach (String s in "Unarmed, Simple, Martial, Finesse, Thrown, Loading, Reach, Melee, Ranged, Bludgeoning, Piercing, Slashing".Split(',')) item.Add(new Keyword(s.Trim()));
-                item.Add(new Range(0, 0));
-                item.Add(new Versatile("0"));
-                foreach (String s in "Ammunition, Two-handed, Special, Light, Medium, Heavy, Instrument, Trinket, Game, Artisan, Focus, Arcane, Divine, Druidic".Split(',')) item.Add(new Keyword(s.Trim()));
-                Groups.Add(KeywordGroup.ITEM, item);
-
-                List<Keyword> spell = new List<Keyword>();
-                foreach (String s in "Abjuration, Conjuration, Divination, Evocation, Enchantment, Illusion, Necromancy, Transmutation".Split(',')) spell.Add(new Keyword(s.Trim()));
-                spell.Add(new Material(""));
-                foreach (String s in "Somatic, Verbal, Attack".Split(',')) spell.Add(new Keyword(s.Trim()));
-                spell.Add(new Save(Ability.None));
-                foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) spell.Add(new Keyword(s.Trim()));
-                foreach (String s in "Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder".Split(',')) spell.Add(new Keyword(s.Trim()));
-                foreach (ClassDefinition c in parent.Context.ClassesSimple.Values) spell.Add(new Keyword(c.Name));
-                Groups.Add(KeywordGroup.SPELL, spell);
-            }
+            
             Model = parent;
-            Modal = modal;
+            Text = text;
+            group = keywords;
+            TopLevelPage = topLevel;
             parent.PropertyChanged += Parent_PropertyChanged;
             Property = property;
             UpdateEntries();
             InitializeComponent();
-            InitToolbar(Modal);
+            InitToolbar();
+            LoadClasses = loadClasses;
             BindingContext = this;
         }
 
-        private void InitToolbar(bool modal)
+        private void InitToolbar()
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 ToolbarItem undo = new ToolbarItem() { Text = "Undo" };
                 undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
@@ -84,6 +63,12 @@ namespace CB_5e.Views.Modify.Collections
                 ToolbarItem redo = new ToolbarItem() { Text = "Redo" };
                 redo.SetBinding(MenuItem.CommandProperty, new Binding("Redo"));
                 ToolbarItems.Add(redo);
+            }
+            else
+            {
+                ToolbarItem back = new ToolbarItem() { Text = "back" };
+                back.Clicked += Back_Clicked;
+                ToolbarItems.Add(back);
             }
             ToolbarItem add = new ToolbarItem() { Text = "Custom" };
             add.Clicked += Add_Clicked;
@@ -101,9 +86,9 @@ namespace CB_5e.Views.Modify.Collections
             Fill();
         }
         private void Fill() {
-            List<KeywordViewModel> res = new List<KeywordViewModel>(entries.Select(f => new KeywordViewModel(f)));
+            List<KeywordViewModel> res = new List<KeywordViewModel>(entries.Select(f => new KeywordViewModel(f) { Selected = true }));
             res.AddRange(userAdded.Where(f => !entries.Exists(ff=>StringComparer.OrdinalIgnoreCase.Equals(ff.Name, f))).Select(f => new KeywordViewModel(new Keyword(f))));
-            res.AddRange(Groups[group].Where(f=>!entries.Contains(f)).Select(f => new KeywordViewModel(f)));
+            res.AddRange(Examples.Where(f=>!entries.Contains(f)).Select(f => new KeywordViewModel(f)));
             Entries.ReplaceRange(res);
         }
 
@@ -119,6 +104,7 @@ namespace CB_5e.Views.Modify.Collections
                     KeywordViewModel vm = new KeywordViewModel(kw);
                     entries.Add(kw);
                     Entries.Add(vm);
+                    Fill();
                 }
             })));
         }
@@ -183,15 +169,50 @@ namespace CB_5e.Views.Modify.Collections
                     {
                         entries.Add(fvm.Value);
                         fvm.Selected = !fvm.Selected;
+                        Fill();
                     }
                 }
                 (sender as ListView).SelectedItem = null;
             }
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            if (Examples.Count > 0) return;
+            switch (group) { 
+                case KeywordGroup.FEAT:
+                    if (LoadClasses != null) foreach (string c in await LoadClasses) Examples.Add(new Keyword(c));
+                    break;
+                case KeywordGroup.ITEM:
+                    foreach (String s in "Unarmed, Simple, Martial, Finesse, Thrown, Loading, Reach, Melee, Ranged, Bludgeoning, Piercing, Slashing".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    Examples.Add(new Range(0, 0));
+                    Examples.Add(new Versatile("0"));
+                    foreach (String s in "Ammunition, Two-handed, Special, Light, Medium, Heavy, Instrument, Trinket, Game, Artisan, Focus, Arcane, Divine, Druidic".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    break;
+                case KeywordGroup.SPELL:
+                    foreach (String s in "Abjuration, Conjuration, Divination, Evocation, Enchantment, Illusion, Necromancy, Transmutation".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    Examples.Add(new Material(""));
+                    foreach (String s in "Somatic, Verbal, Attack".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    Examples.Add(new Save(Ability.None));
+                    foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    foreach (String s in "Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder".Split(',')) Examples.Add(new Keyword(s.Trim()));
+                    if (LoadClasses != null) foreach (string c in await LoadClasses) Examples.Add(new Keyword(c));
+                    break;
+                default:
+                    break;
+            }
+            Fill();
+        }
+        private async void Back_Clicked(object sender, EventArgs e)
+        {
+            await Model.SaveAsync(true);
+            await Navigation.PopModalAsync();
+        }
+
         protected override bool OnBackButtonPressed()
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -215,7 +236,15 @@ namespace CB_5e.Views.Modify.Collections
                     else await Navigation.PopModalAsync();
                 });
             }
-            return Modal;
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await Model.SaveAsync(true);
+                    await Navigation.PopModalAsync();
+                });
+            }
+            return true;
         }
     }
 }

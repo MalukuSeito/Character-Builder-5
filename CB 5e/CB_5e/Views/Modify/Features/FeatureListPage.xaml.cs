@@ -111,6 +111,12 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Save Proficiency Feature", "Adds proficiency to saving throws", new SaveProficiencyFeature()),
                     new SelectOption("Other Proficiency Feature", "Basic feature whose description is shown as proficiency", new OtherProficiencyFeature()),
                     new SelectOption("Spellcasting Feature", "Sets up Spellcasting, required by non-bonusspell spellcasting features", new SpellcastingFeature()),
+                    new SelectOption("Spellslot Feature", "Defines the total amount of spellslots for one level and spellcasting", new SpellSlotsFeature() { Name = "Spellslots" }),
+                    new SelectOption("Add Spells Feature", "Adds spells to a spellcasting feature", new BonusSpellPrepareFeature()),
+                    new SelectOption("Spell Modify Feature", "Modifies spells and is displayed with them", new SpellModifyFeature() {Spells = "(Fire or Cold) and Melee and Attack and Level >= 3" }),
+                    new SelectOption("Spellchoice Feature", "Sets up spellchoices to be added to a spellcasting feature", new SpellChoiceFeature()),
+                    new SelectOption("Increase Spellchoice Feature", "Increases the amount of spells selectable for a spellchoice", new IncreaseSpellChoiceAmountFeature()),
+                    new SelectOption("Modify Spellchoice Feature", "Adds more spells as options for a spellchoice", new ModifySpellChoiceFeature()),
                 }, new Command(async (par) => {
                     if (par is SelectOption o && o.Value is Feature d)
                     {
@@ -271,7 +277,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Feature"
                 });
-                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
                     Title = "Standalone"
                 });
@@ -284,7 +290,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Feature"
                 });
-                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
                     Title = "Standalone"
                 });
@@ -297,7 +303,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Feature"
                 });
-                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
                     Title = "Standalone"
                 });
@@ -364,7 +370,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Feature"
                 });
-                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
                     Title = "Standalone"
                 });
@@ -404,7 +410,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Feature"
                 });
-                p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
                     Title = "Standalone"
                 });
@@ -416,6 +422,115 @@ namespace CB_5e.Views.Modify.Features
                 p.Children.Add(new NavigationPage(new EditSpellcasting(model))
                 {
                     Title = "Spellcasting"
+                });
+            }
+            else if (fvm.Feature is SpellSlotsFeature ssf)
+            {
+                SpellSlotsFeatureEditModel model = new SpellSlotsFeatureEditModel(ssf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditSpellslotFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new IntListPage(model, "Slots", "Spellslot(s) Level ", Keyboard.Numeric, false))
+                {
+                    Title = "Slots"
+                });
+            }
+            else if (fvm.Feature is BonusSpellPrepareFeature bspf)
+            {
+                AddSpellsFeatureEditModel model = new AddSpellsFeatureEditModel(bspf, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditAddSpellsFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new DualSpellListPage(model))
+                {
+                    Title = "Spells"
+                });
+                p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
+                {
+                    Title = "Keywords"
+                });
+            }
+            else if (fvm.Feature is SpellModifyFeature smf)
+            {
+                SpellModifyFeatureEditModel model = new SpellModifyFeatureEditModel(smf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditSpellModifyFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
+                {
+                    Title = "Standalone"
+                });
+            }
+            else if (fvm.Feature is SpellChoiceFeature sof)
+            {
+                SpellchoiceFeatureEditModel model = new SpellchoiceFeatureEditModel(sof, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new EditSpellchoiceFeature(model))
+                {
+                    Title = "Spellchoice"
+                });
+                p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
+                {
+                    Title = "Keywords"
+                });
+            }
+            else if (fvm.Feature is ModifySpellChoiceFeature msf)
+            {
+                ModifySpellchoiceEditModel model = new ModifySpellchoiceEditModel(msf, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditModifySpellchoiceFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new DualSpellListPage(model))
+                {
+                    Title = "Spells"
+                });
+                p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
+                {
+                    Title = "Keywords"
+                });
+            }
+            else if (fvm.Feature is IncreaseSpellChoiceAmountFeature imf)
+            {
+                IncreaseSpellchoiceEditModel model = new IncreaseSpellchoiceEditModel(imf, Model, fvm);
+                p = new TabbedPage();
+                p.Children.Add(new NavigationPage(new EditIncreaseSpellchoiceFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
+                {
+                    Title = "Standalone"
                 });
             }
             else {
@@ -443,6 +558,15 @@ namespace CB_5e.Views.Modify.Features
             return context.ItemsSimple.Values.Where(s=>s is Tool).Select(s=>s.Name).OrderBy(s => s);
         }
 
+        private async Task<IEnumerable<string>> GetClassesAsync(OGLContext context)
+        {
+            if (context.ClassesSimple.Count == 0)
+            {
+                await context.ImportClassesAsync();
+            }
+            return context.ClassesSimple.Keys.OrderBy(s => s).ToList();
+        }
+
         private TabbedPage Tab(IFeatureEditModel model)
         {
             TabbedPage p = new TabbedPage();
@@ -451,7 +575,7 @@ namespace CB_5e.Views.Modify.Features
             {
                 Title = "Feature"
             });
-            p.Children.Add(new NavigationPage(new FeatureKeywords(model))
+            p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(model.Context)))
             {
                 Title = "Standalone"
             });

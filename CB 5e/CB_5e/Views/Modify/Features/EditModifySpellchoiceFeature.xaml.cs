@@ -11,21 +11,15 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views.Modify.Features
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditResourceFeature : ContentPage
+    public partial class EditModifySpellchoiceFeature : ContentPage
     {
-        public EditResourceFeature(ResourceFeatureEditModel model)
+        public EditModifySpellchoiceFeature(ModifySpellchoiceEditModel model)
         {
-            BindingContext = Model = model;
             InitializeComponent();
+            BindingContext = Model = model;
         }
 
-        public ResourceFeatureEditModel Model { get; private set; }
-
-        protected override void OnDisappearing()
-        {
-            if (Model.ExclusionID != null && Model.ExclusionID.Trim() != "") ResourceFeatureEditModel.ExclusionIDs.Add(Model.ExclusionID);
-            if (Model.ResourceID != null && Model.ResourceID.Trim() != "") ResourceFeatureEditModel.ResourceIDs.Add(Model.ResourceID);
-        }
+        public ModifySpellchoiceEditModel Model { get; set; }
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
@@ -41,6 +35,10 @@ namespace CB_5e.Views.Modify.Features
                 await Navigation.PopModalAsync();
             });
             return true;
+        }
+        protected override void OnDisappearing()
+        {
+            SpellchoiceFeatureEditModel.UniqueIDs.Add(Model.UniqueID);
         }
     }
 }

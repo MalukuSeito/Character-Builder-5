@@ -1,4 +1,5 @@
-﻿using OGL.Keywords;
+﻿using OGL.Base;
+using OGL.Keywords;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -8,11 +9,13 @@ namespace OGL.Features
     public class BonusSpellPrepareFeature : Feature
     {
         public List<string> Spells { get; set; }
+        public string Condition { get; set; } = "false";
         public string SpellcastingID { get; set; }
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
         XmlArrayItem(Type = typeof(Material))]
         public List<Keyword> KeywordsToAdd { get; set; }
+        public PreparationMode AddTo { get; set; } = PreparationMode.LearnSpells;
         public BonusSpellPrepareFeature()
             : base()
         {
@@ -30,7 +33,7 @@ namespace OGL.Features
         }
         public override string Displayname()
         {
-            return "Bonus Always Prepared Spell Feature";
+            return "Add Spells Feature";
         }
     }
 }

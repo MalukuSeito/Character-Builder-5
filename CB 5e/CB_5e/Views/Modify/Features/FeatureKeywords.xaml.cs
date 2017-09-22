@@ -30,8 +30,10 @@ namespace CB_5e.Views.Modify.Features
         public string Prerequisite { get => Model.Prerequisite; set => Model.Prerequisite = value; }
 
         private static HashSet<String> userAdded = new HashSet<string>();
+        private Task<IEnumerable<string>> LoadClasses;
+        private List<Keyword> Classes = new List<Keyword>();
 
-        public FeatureKeywords(IFeatureEditModel parent)
+        public FeatureKeywords(IFeatureEditModel parent, Task<IEnumerable<string>> loadClasses)
         {
             Model = parent;
             parent.PropertyChanged += Parent_PropertyChanged;
@@ -39,6 +41,7 @@ namespace CB_5e.Views.Modify.Features
             InitializeComponent();
             InitToolbar();
             BindingContext = this;
+            LoadClasses = loadClasses;
         }
 
         private void InitToolbar()
@@ -59,9 +62,9 @@ namespace CB_5e.Views.Modify.Features
             Fill();
         }
         private void Fill() {
-            List<KeywordViewModel> res = new List<KeywordViewModel>(entries.Select(f => new KeywordViewModel(f)));
-            res.AddRange(userAdded.Where(f => !entries.Exists(ff=>StringComparer.OrdinalIgnoreCase.Equals(ff.Name, f))).Select(f => new KeywordViewModel(new Keyword(f))));
-            if (Model?.Context?.ClassesSimple != null) res.AddRange(Model.Context.ClassesSimple.Keys.Select(f => new KeywordViewModel(new Keyword(f))));
+            List<KeywordViewModel> res = new List<KeywordViewModel>(entries.Select(f => new KeywordViewModel(f) { Selected = true }));
+            res.AddRange(userAdded.Where(f => !entries.Exists(ff => StringComparer.OrdinalIgnoreCase.Equals(ff.Name, f))).Select(f => new KeywordViewModel(new Keyword(f))));
+            res.AddRange(Classes.Where(f => !entries.Contains(f)).Select(f => new KeywordViewModel(f)));
             Entries.ReplaceRange(res);
         }
 
@@ -96,6 +99,7 @@ namespace CB_5e.Views.Modify.Features
                     entries.Add(fvm.Value);
                     fvm.Selected = !fvm.Selected;
                 }
+                Fill();
                 (sender as ListView).SelectedItem = null;
             }
         }
@@ -116,11 +120,8 @@ namespace CB_5e.Views.Modify.Features
 
         protected override async void OnAppearing()
         {
-            if (Model?.Context?.ClassesSimple == null || Model.Context.ClassesSimple.Count == 0)
-            {
-                await Model.Context.ImportClassesAsync(false);
-                Fill();
-            }
+            Classes.AddRange((await LoadClasses).Select(f => new Keyword(f)));
+            Fill();
         }
     }
 }

@@ -13,9 +13,10 @@
                       x:Name="ListViewComponent"
                       x:FieldModifier="public">
                 <ListView.Header>
-                    <StackLayout Padding="20">
-                        <Label Text="Prerequisite"/>
+                    <StackLayout Padding="20, 0">
+                        <Label Text="Prerequisite:" FontSize="Micro"/>
                         <Entry TextColor="{Binding TextColor}" Text="{Binding Prerequisite}"/>
+                        <Label Text="Keywords to add to the feature: (used in Feature Collection Features)" LineBreakMode="WordWrap" FontSize="Micro"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>

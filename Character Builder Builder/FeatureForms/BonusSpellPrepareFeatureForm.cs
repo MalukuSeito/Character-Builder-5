@@ -1,7 +1,9 @@
 ﻿using Character_Builder_Forms;
 using OGL;
+using OGL.Base;
 using OGL.Common;
 using OGL.Features;
+using System;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder.FeatureForms
@@ -22,6 +24,9 @@ namespace Character_Builder_Builder.FeatureForms
                 SpellcastingID.Items.Add(s);
             }
             SpellcastingID.DataBindings.Add("Text", bf, "SpellcastingID", true, DataSourceUpdateMode.OnPropertyChanged);
+            Condition.DataBindings.Add("Text", f, "AdditionalSpellChoices", true, DataSourceUpdateMode.OnPropertyChanged);
+            foreach (PreparationMode s in Enum.GetValues(typeof(PreparationMode))) AddTo.Items.Add(s);
+            AddTo.DataBindings.Add("SelectedItem", f, "AddTo", true, DataSourceUpdateMode.OnPropertyChanged);
             keywordControl1.Keywords = bf.KeywordsToAdd;
             stringList1.Items = bf.Spells;
         }

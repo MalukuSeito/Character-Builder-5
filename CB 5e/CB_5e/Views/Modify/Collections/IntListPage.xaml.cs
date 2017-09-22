@@ -27,28 +27,28 @@ namespace CB_5e.Views.Modify.Collections
         public string Prepend { get; private set; }
 
         private int move = -1;
-        private bool Modal = true;
+        private bool TopLevelPage = true;
         public Keyboard Keyboard = Keyboard.Numeric;
         public Command Undo { get => Model.Undo; }
         public Command Redo { get => Model.Redo; }
 
-        public IntListPage(IEditModel parent, string property, string prepend = "Level ", Keyboard keyboard = null, bool modal = true)
+        public IntListPage(IEditModel parent, string property, string prepend = "Level ", Keyboard keyboard = null, bool toplevel = true)
         {
             Model = parent;
-            Modal = modal;
+            Prepend = prepend;
+            TopLevelPage = toplevel;
             parent.PropertyChanged += Parent_PropertyChanged;
             Property = property;
             UpdateEntries();
 			InitializeComponent ();
-            InitToolbar(Modal);
+            InitToolbar();
             BindingContext = this;
-            Prepend = prepend;
             Keyboard = keyboard;
 		}
 
-        private void InitToolbar(bool modal)
+        private void InitToolbar()
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 ToolbarItem undo = new ToolbarItem() { Text = "Undo" };
                 undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
@@ -56,6 +56,12 @@ namespace CB_5e.Views.Modify.Collections
                 ToolbarItem redo = new ToolbarItem() { Text = "Redo" };
                 redo.SetBinding(MenuItem.CommandProperty, new Binding("Redo"));
                 ToolbarItems.Add(redo);
+            }
+            else
+            {
+                ToolbarItem back = new ToolbarItem() { Text = "back" };
+                back.Clicked += Back_Clicked;
+                ToolbarItems.Add(back);
             }
             ToolbarItem add = new ToolbarItem() { Text = "Add" };
             add.Clicked += Add_Clicked;
@@ -224,7 +230,7 @@ namespace CB_5e.Views.Modify.Collections
 
         protected override bool OnBackButtonPressed()
         {
-            if (Modal)
+            if (TopLevelPage)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -248,7 +254,20 @@ namespace CB_5e.Views.Modify.Collections
                     else await Navigation.PopModalAsync();
                 });
             }
-            return Modal;
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await Model.SaveAsync(true);
+                    await Navigation.PopModalAsync();
+                });
+            }
+            return true;
+        }
+        private async void Back_Clicked(object sender, EventArgs e)
+        {
+            await Model.SaveAsync(true);
+            await Navigation.PopModalAsync();
         }
     }
 }

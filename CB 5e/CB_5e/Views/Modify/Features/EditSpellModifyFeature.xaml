@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditSpellModifyFeature"
+             Title="Spell Modify Feature">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid Padding="10" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="15"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+            <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
+            <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="Spells to attach this feature to: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding Spells}" TextColor="{Binding Accent}"/>
+            <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" TextColor="LightSlateGray" Text="Variables: Name (spell: string, lowercase), Level (spell: number) and the Keywords of the spells as boolean" FontSize="Micro" LineBreakMode="WordWrap"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
