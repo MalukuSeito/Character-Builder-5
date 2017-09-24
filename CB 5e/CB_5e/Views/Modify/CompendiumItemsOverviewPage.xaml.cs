@@ -68,8 +68,11 @@ namespace CB_5e.Views.Modify
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            await Navigation.PushAsync(new CompendiumItemsPage(e.SelectedItem as string));
-            (sender as ListView).SelectedItem = null;
+            if (e.SelectedItem is string)
+            {
+                await Navigation.PushAsync(new CompendiumItemsPage(e.SelectedItem as string));
+                (sender as ListView).SelectedItem = null;
+            }
         }
     }
 }

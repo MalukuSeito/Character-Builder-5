@@ -65,7 +65,7 @@ namespace OGL.Items
         }
         public static IOrderedEnumerable<Category> Section()
         {
-            return (from c in Categories.Values where c.ToString() != "Items" orderby c select c);
+            return (from c in Categories.Values where c.ToString() != "Items" && c.ToString() != "" orderby c select c);
         }
     }
 }
