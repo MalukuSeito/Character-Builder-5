@@ -431,7 +431,6 @@ namespace Character_Builder_Forms
         }
         public static ConfigManager LoadConfig(this OGLContext context, string path)
         {
-            if (context == null || context.Config == null) return null;
             if (!File.Exists(Path.Combine(path, "Config.xml")))
             {
                 context.Config = new ConfigManager()
