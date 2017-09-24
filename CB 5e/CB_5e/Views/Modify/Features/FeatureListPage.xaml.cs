@@ -26,26 +26,26 @@ namespace CB_5e.Views.Modify.Features
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
         private int move = -1;
-        private bool Modal = true;
+        private bool TopLevel = true;
 
         public Command Undo { get => Model.Undo; }
         public Command Redo { get => Model.Redo; }
 
-        public FeatureListPage (IEditModel parent, string property, bool modal = true)
+        public FeatureListPage (IEditModel parent, string property, bool topLevel = true)
 		{
             Model = parent;
-            Modal = modal;
+            TopLevel = topLevel;
             parent.PropertyChanged += Parent_PropertyChanged;
             Property = property;
             UpdateFeatures();
 			InitializeComponent ();
-            InitToolbar(Modal);
+            InitToolbar();
             BindingContext = this;
         }
 
-        private void InitToolbar(bool modal)
+        private void InitToolbar()
         {
-            if (Modal)
+            if (TopLevel)
             {
                 ToolbarItem undo = new ToolbarItem() { Text = "Undo" };
                 undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
@@ -54,6 +54,12 @@ namespace CB_5e.Views.Modify.Features
                 redo.SetBinding(MenuItem.CommandProperty, new Binding("Redo"));
                 ToolbarItems.Add(redo);
             }
+            else
+            {
+                ToolbarItem back = new ToolbarItem() { Text = "back" };
+                back.Clicked += Back_Clicked;
+                ToolbarItems.Add(back);
+            }
             ToolbarItem add = new ToolbarItem() { Text = "Add" };
             add.Clicked += Add_Clicked;
             ToolbarItems.Add(add);
@@ -61,7 +67,11 @@ namespace CB_5e.Views.Modify.Features
             paste.Clicked += Paste_Clicked;
             ToolbarItems.Add(paste);
         }
-
+        private async void Back_Clicked(object sender, EventArgs e)
+        {
+            await Model.SaveAsync(true);
+            await Navigation.PopModalAsync();
+        }
         private void Parent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == Property) UpdateFeatures();
@@ -89,7 +99,21 @@ namespace CB_5e.Views.Modify.Features
 
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SelectPage(new List<SelectOption>()
+            await Navigation.PushAsync(new SelectPage(GetOptions(), new Command(async (par) => {
+                    if (par is SelectOption o && o.Value is Feature d)
+                    {
+                        FeatureViewModel fvm = new FeatureViewModel(d);
+                        Model.MakeHistory();
+                        features.Add(d);
+                        Features.Add(fvm);
+                        await Navigation.PushModalAsync(Edit(fvm, Model));
+                }
+                })));
+        }
+
+        public static IEnumerable<SelectOption> GetOptions()
+        {
+            return new List<SelectOption>()
                 {
                     new SelectOption("Basic Feature", "Text and description", new Feature()),
                     new SelectOption("Resource Feature", "Defines or modifies a trackable resource", new ResourceFeature()),
@@ -117,16 +141,17 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Spellchoice Feature", "Sets up spellchoices to be added to a spellcasting feature", new SpellChoiceFeature()),
                     new SelectOption("Increase Spellchoice Feature", "Increases the amount of spells selectable for a spellchoice", new IncreaseSpellChoiceAmountFeature()),
                     new SelectOption("Modify Spellchoice Feature", "Adds more spells as options for a spellchoice", new ModifySpellChoiceFeature()),
-                }, new Command(async (par) => {
-                    if (par is SelectOption o && o.Value is Feature d)
-                    {
-                        FeatureViewModel fvm = new FeatureViewModel(d);
-                        Model.MakeHistory();
-                        features.Add(d);
-                        Features.Add(fvm);
-                        await Edit(fvm);
-                    }
-                })));
+                    new SelectOption("Bonus Spell Feature", "Adds a spell as a resource outside of a spellcasting system", new BonusSpellFeature()),
+                    new SelectOption("Bonus Spell Choice Feature", "Adds selectable spells as a resource", new BonusSpellKeywordChoiceFeature()),
+                    new SelectOption("Free Item Gold Feature", "Adds items and/or gold", new FreeItemAndGoldFeature()),
+                    new SelectOption("Free Item Choice Feature", "Adds a choice of items and/or gold", new ItemChoiceFeature()),
+                    new SelectOption("Free Item Choice by Condition Feature", "Adds a choice of items matching an expression", new ItemChoiceConditionFeature() { Condition="Armor and Heavy" }),
+                    new SelectOption("Multi Feature", "Contains other features with an optional activation condition. Also used in Feature Choice Features and Standalone Features", new MultiFeature()),
+                    new SelectOption("Feature Choice Feature", "Adds a choice of contained features", new ChoiceFeature()),
+                    new SelectOption("Collection Feature Choice Feature", "Adds a choice of standalone features using a condition", new CollectionChoiceFeature() { Collection = "Category = 'Feats'" }),
+                    new SelectOption("Subclass Feature", "Adds a parent to the list classes used to generate available subclasses", new SubClassFeature()),
+                    new SelectOption("Subrace Feature", "Adds parents to the list of races used to generate available subraces", new SubRaceFeature())
+                };
         }
 
         private async void Features_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -148,7 +173,7 @@ namespace CB_5e.Views.Modify.Features
                     move = -1;
                 } else
                 {
-                    await Edit(fvm);
+                    await Navigation.PushModalAsync(Edit(fvm, Model));
                     (sender as ListView).SelectedItem = null;
                 }
             }
@@ -203,7 +228,7 @@ namespace CB_5e.Views.Modify.Features
 
         protected override bool OnBackButtonPressed()
         {
-            if (Modal)
+            if (TopLevel)
             {
                 Device.BeginInvokeOnMainThread(async () =>
                 {
@@ -227,10 +252,18 @@ namespace CB_5e.Views.Modify.Features
                     else await Navigation.PopModalAsync();
                 });
             }
-            return Modal;
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await Model.SaveAsync(true);
+                    await Navigation.PopModalAsync();
+                });
+            }
+            return true;
         }
 
-        private async Task Edit(FeatureViewModel fvm)
+        public static Page Edit(FeatureViewModel fvm, IEditModel Model)
         {
             TabbedPage p;
             if (fvm.Feature is ResourceFeature rf)
@@ -456,7 +489,7 @@ namespace CB_5e.Views.Modify.Features
                 });
                 p.Children.Add(new NavigationPage(new DualSpellListPage(model))
                 {
-                    Title = "Spells"
+                    Title = "Spell"
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
@@ -533,14 +566,143 @@ namespace CB_5e.Views.Modify.Features
                     Title = "Standalone"
                 });
             }
+            else if (fvm.Feature is BonusSpellFeature bsf)
+            {
+                BonusSpellFeatureEditModel model = new BonusSpellFeatureEditModel(bsf, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new EditBonusSpellFeature(model))
+                {
+                    Title = "Spells"
+                });
+                p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the bonus spell:", KeywordListPage.KeywordGroup.SPELL, load, false))
+                {
+                    Title = "Keywords"
+                });
+            }
+            else if (fvm.Feature is BonusSpellKeywordChoiceFeature bskcf)
+            {
+                BonusSpellChoiceFeatureEditModel model = new BonusSpellChoiceFeatureEditModel(bskcf, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditFeature(model))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+                p.Children.Add(new NavigationPage(new EditBonusSpellChoiceFeature(model))
+                {
+                    Title = "Spells"
+                });
+                p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the bonus spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
+                {
+                    Title = "Keywords"
+                });
+            }
+            else if (fvm.Feature is ItemChoiceFeature icf)
+            {
+                ItemChoiceEditModel model = new ItemChoiceEditModel(icf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new FreeItemChoicePage(model))
+                {
+                    Title = "Items"
+                });
+            }
+            else if (fvm.Feature is FreeItemAndGoldFeature figf)
+            {
+                FreeItemGoldFeatureEditModel model = new FreeItemGoldFeatureEditModel(figf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new FreeItemPage(model))
+                {
+                    Title = "Items"
+                });
+            }
+            else if (fvm.Feature is ItemChoiceConditionFeature iccf)
+            {
+                ItemChoiceCondtionEditModel model = new ItemChoiceCondtionEditModel(iccf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditItemChoiceConditionFeature(model))
+                {
+                    Title = "Items"
+                });
+            }
+            else if (fvm.Feature is MultiFeature mf)
+            {
+                MultiFeatureEditModel model = new MultiFeatureEditModel(mf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditExpression(model, "Condition", "Condition:", "Condition", "Note: If no condition is set or the condtion evaluates to true, the features are added to the character (The stats are before boni are added from features)\nThe following number values are known: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier)\nPlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel('classname') (function for classlevel)\nThe following text values are known: Race, SubRace, SubClass('classname'): names of the subrace, race and subclasses respectively."))
+                {
+                    Title = "Condition"
+                });
+                p.Children.Add(new NavigationPage(new FeatureListPage(model, "Features", false))
+                {
+                    Title = "Features"
+                });
+            }
+            else if (fvm.Feature is ChoiceFeature cf)
+            {
+                ChoiceFeatureEditModel model = new ChoiceFeatureEditModel(cf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditFeatureChoiceFeature(model))
+                {
+                    Title = "Choice"
+                });
+                p.Children.Add(new NavigationPage(new FeatureListPage(model, "Choices", false))
+                {
+                    Title = "Choices"
+                });
+            }
+            else if (fvm.Feature is CollectionChoiceFeature ccf)
+            {
+                CollectionChoiceFeatureEditModel model = new CollectionChoiceFeatureEditModel(ccf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditFeatureCollectionChoice(model))
+                {
+                    Title = "Choice"
+                });
+            }
+            else if (fvm.Feature is SubClassFeature sclf)
+            {
+                SubClassFeatureEditModel model = new SubClassFeatureEditModel(sclf, Model, fvm);
+                p = new TabbedPage();
+                var load = GetClassesAsync(Model.Context);
+                p.Children.Add(new NavigationPage(new EditSubClassFeature(model, load))
+                {
+                    Title = "Feature"
+                });
+                p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
+                {
+                    Title = "Standalone"
+                });
+            }
+            else if (fvm.Feature is SubRaceFeature srf)
+            {
+                SubRaceFeatureEditModel model = new SubRaceFeatureEditModel(srf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new StringListPage(model, "ParentRaces", GetRacesAsync(Model.Context), false))
+                {
+                    Title = "Races"
+                });
+            }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
                 p = Tab(model);
             }
-            await Navigation.PushModalAsync(p);
+            return p;
         }
 
-        private async Task<IEnumerable<string>> GetLanguagesAsync(OGLContext context)
+        public static async Task<IEnumerable<string>> GetLanguagesAsync(OGLContext context)
         {
             if (context.LanguagesSimple.Count == 0)
             {
@@ -549,7 +711,7 @@ namespace CB_5e.Views.Modify.Features
             return context.LanguagesSimple.Keys.OrderBy(s => s);
         }
 
-        private async Task<IEnumerable<string>> GetToolsAsync(OGLContext context)
+        public static async Task<IEnumerable<string>> GetToolsAsync(OGLContext context)
         {
             if (context.ItemsSimple.Count == 0)
             {
@@ -558,7 +720,7 @@ namespace CB_5e.Views.Modify.Features
             return context.ItemsSimple.Values.Where(s=>s is Tool).Select(s=>s.Name).OrderBy(s => s);
         }
 
-        private async Task<IEnumerable<string>> GetClassesAsync(OGLContext context)
+        public static async Task<IEnumerable<string>> GetClassesAsync(OGLContext context)
         {
             if (context.ClassesSimple.Count == 0)
             {
@@ -567,7 +729,16 @@ namespace CB_5e.Views.Modify.Features
             return context.ClassesSimple.Keys.OrderBy(s => s).ToList();
         }
 
-        private TabbedPage Tab(IFeatureEditModel model)
+        public static async Task<IEnumerable<string>> GetRacesAsync(OGLContext context)
+        {
+            if (context.RacesSimple.Count == 0)
+            {
+                await context.ImportRacesAsync();
+            }
+            return context.RacesSimple.Keys.OrderBy(s => s).ToList();
+        }
+
+        public static TabbedPage Tab(IFeatureEditModel model)
         {
             TabbedPage p = new TabbedPage();
 

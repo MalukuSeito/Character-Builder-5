@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditItemChoiceConditionFeature"
+             Title="Items">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Condtion for Items: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Editor Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Label Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                <Label Text="Amount: (Number of free items allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
+                </StackLayout>
+                <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The Condition is evaluated for each item and must result in a boolean value. The following values can be used: Category, Name (lowercase) of the item.
+The following can be used to differentiate types: Armor, Tool, Weapon, Shield. All are boolean values.
+In addition all keywords (Light, Heavy, Medium, Two_Handed, Ranged, Melee, Artisan, Arcane, Divine, Druidic, Focus, ...) of the item can be used as a boolean value as well.</Label.Text>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

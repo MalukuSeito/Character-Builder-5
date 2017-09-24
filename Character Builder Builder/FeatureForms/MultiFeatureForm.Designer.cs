@@ -32,15 +32,15 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
+            this.features1 = new Character_Builder_Builder.Features();
             this.preview = new System.Windows.Forms.WebBrowser();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.Amount = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.features1 = new Character_Builder_Builder.Features();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -114,6 +114,18 @@
             this.basicFeature1.Size = new System.Drawing.Size(761, 260);
             this.basicFeature1.TabIndex = 0;
             // 
+            // features1
+            // 
+            this.features1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.features1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.features1.features = null;
+            this.features1.HistoryManager = null;
+            this.features1.Location = new System.Drawing.Point(0, 46);
+            this.features1.Name = "features1";
+            this.features1.preview = this.preview;
+            this.features1.Size = new System.Drawing.Size(761, 177);
+            this.features1.TabIndex = 140;
+            // 
             // preview
             // 
             this.preview.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -124,17 +136,15 @@
             this.preview.TabIndex = 0;
             this.preview.Url = new System.Uri("about:blank", System.UriKind.Absolute);
             // 
-            // label2
+            // label1
             // 
-            this.label2.AutoEllipsis = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label2.Location = new System.Drawing.Point(0, 262);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
-            this.label2.Size = new System.Drawing.Size(761, 13);
-            this.label2.TabIndex = 132;
-            this.label2.Text = "The following text values are known: Race, SubRace, SubClass(\"classname\"): names " +
-    "of the subrace, race and subclasses respectively";
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(0, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 13);
+            this.label1.TabIndex = 139;
+            this.label1.Text = "Features:";
             // 
             // Amount
             // 
@@ -189,27 +199,17 @@
             this.label8.Text = "PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel o" +
     "therwise), ClassLevel(\"classname\") , function for classlevel";
             // 
-            // features1
+            // label2
             // 
-            this.features1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.features1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.features1.features = null;
-            this.features1.HistoryManager = null;
-            this.features1.Location = new System.Drawing.Point(0, 46);
-            this.features1.Name = "features1";
-            this.features1.preview = this.preview;
-            this.features1.Size = new System.Drawing.Size(761, 177);
-            this.features1.TabIndex = 140;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 13);
-            this.label1.TabIndex = 139;
-            this.label1.Text = "Features:";
+            this.label2.AutoEllipsis = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label2.Location = new System.Drawing.Point(0, 262);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
+            this.label2.Size = new System.Drawing.Size(761, 13);
+            this.label2.TabIndex = 132;
+            this.label2.Text = "The following text values are known: Race, SubRace, SubClass(\"classname\"): names " +
+    "of the subrace, race and subclasses respectively";
             // 
             // MultiFeatureForm
             // 

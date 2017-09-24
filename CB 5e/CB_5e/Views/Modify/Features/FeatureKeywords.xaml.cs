@@ -55,7 +55,7 @@ namespace CB_5e.Views.Modify.Features
         {
             if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == "Keywords") UpdateEntries();
         }
-
+        public Color TextColor { get => Color.Accent; }
         private void UpdateEntries()
         {
             entries = Model.Keywords;

@@ -68,8 +68,15 @@
     <Compile Include="ViewModels\Character\Choices\CollectionChoice.cs" />
     <Compile Include="ViewModels\Modify\Descriptions\DescriptionViewModel.cs" />
     <Compile Include="ViewModels\Modify\Features\AddSpellsFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FreeItemGoldFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\BonusSpellChoiceFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\IDualSpellListFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ItemChoiceCondtionEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ItemChoiceEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ModifySpellchoiceEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\BonusSpellFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\MultiFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SpellchoiceFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\SpellModifyFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\IncreaseSpellchoiceEditModel.cs" />
@@ -82,6 +89,9 @@
     <Compile Include="ViewModels\Modify\Features\ACFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\BonusFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\LanguageProficiencyChoiceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FeatureCollectionChoiceFeature.cs" />
+    <Compile Include="ViewModels\Modify\Features\SubRaceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\SubClassFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ToolProficiencyChoiceFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ToolProficiencyExpressionFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\Features\ToolProficiencyFeatureEditModel.cs" />
@@ -183,11 +193,32 @@
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modify\Features\EditSubClassFeature.xaml.cs">
+      <DependentUpon>EditSubClassFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditFeatureChoiceFeature.xaml.cs">
+      <DependentUpon>EditFeatureChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditItemChoiceConditionFeature.xaml.cs">
+      <DependentUpon>EditItemChoiceConditionFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\FreeItemChoicePage.xaml.cs">
+      <DependentUpon>FreeItemChoicePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\FreeItemPage.xaml.cs">
+      <DependentUpon>FreeItemPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modify\Features\DualSpellListPage.xaml.cs">
       <DependentUpon>DualSpellListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditAddSpellsFeature.xaml.cs">
       <DependentUpon>EditAddSpellsFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditBonusSpellChoiceFeature.xaml.cs">
+      <DependentUpon>EditBonusSpellChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditBonusSpellFeature.xaml.cs">
+      <DependentUpon>EditBonusSpellFeature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditModifySpellchoiceFeature.xaml.cs">
       <DependentUpon>EditModifySpellchoiceFeature.xaml</DependentUpon>
@@ -212,6 +243,9 @@
     </Compile>
     <Compile Include="Views\Modify\Features\EditLanguageChoiceFeature.xaml.cs">
       <DependentUpon>EditLanguageChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditFeatureCollectionChoice.xaml.cs">
+      <DependentUpon>EditFeatureCollectionChoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\ToolProficiencyExpressionPage.xaml.cs">
       <DependentUpon>ToolProficiencyExpressionPage.xaml</DependentUpon>
@@ -1164,6 +1198,54 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditModifySpellchoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditBonusSpellFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditBonusSpellChoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\FreeItemPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\FreeItemChoicePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditItemChoiceConditionFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditFeatureChoiceFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditFeatureCollectionChoice.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditSubClassFeature.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

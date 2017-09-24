@@ -24,14 +24,14 @@ namespace OGL.Features
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyFeature)),
-        XmlArrayItem(Type = typeof(SubRaceFeature)),XmlArrayItem(Type = typeof(SubClassFeature)),
+        XmlArrayItem(Type = typeof(SubRaceFeature)), XmlArrayItem(Type = typeof(SubClassFeature)),
         XmlArrayItem(Type = typeof(ToolProficiencyFeature)),
         XmlArrayItem(Type = typeof(ToolKWProficiencyFeature)),
         XmlArrayItem(Type = typeof(ToolProficiencyChoiceConditionFeature)),
-         XmlArrayItem(Type = typeof(BonusFeature)),
+        XmlArrayItem(Type = typeof(BonusFeature)),
         XmlArrayItem(Type = typeof(SpellcastingFeature)),
-        XmlArrayItem(Type = typeof(IncreaseSpellChoiceAmountFeature)),XmlArrayItem(Type = typeof(ModifySpellChoiceFeature)),
-        XmlArrayItem(Type = typeof(SpellChoiceFeature)),XmlArrayItem(Type = typeof(SpellSlotsFeature)),
+        XmlArrayItem(Type = typeof(IncreaseSpellChoiceAmountFeature)), XmlArrayItem(Type = typeof(ModifySpellChoiceFeature)),
+        XmlArrayItem(Type = typeof(SpellChoiceFeature)), XmlArrayItem(Type = typeof(SpellSlotsFeature)),
         XmlArrayItem(Type = typeof(BonusSpellPrepareFeature)),
         XmlArrayItem(Type = typeof(BonusSpellFeature)),
         XmlArrayItem(Type = typeof(ACFeature)),
@@ -44,39 +44,44 @@ namespace OGL.Features
 
         public String Condition { get; set; }
 
-            public MultiFeature()
-            : base()
+        public MultiFeature() : base()
         {
             Features = new List<Feature>();
         }
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, int level = 1, bool hidden = false)
-        : base(name, text, level, hidden)
+            : base(name, text, level, hidden)
         {
-            Features = new List<Feature>();
-            Features.Add(feature1);
-            Features.Add(feature2);
+            Features = new List<Feature>
+            {
+                feature1,
+                feature2
+            };
         }
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, Feature feature3, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
-            Features = new List<Feature>();
-            Features.Add(feature1);
-            Features.Add(feature2);
-            Features.Add(feature3);
+            Features = new List<Feature>
+            {
+                feature1,
+                feature2,
+                feature3
+            };
         }
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, Feature feature3, Feature feature4, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
-            Features = new List<Feature>();
-            Features.Add(feature1);
-            Features.Add(feature2);
-            Features.Add(feature3);
-            Features.Add(feature4);
+            Features = new List<Feature>
+            {
+                feature1,
+                feature2,
+                feature3,
+                feature4
+            };
         }
         public override List<Feature> Collect(int level, IChoiceProvider choiceProvider, OGLContext context)
         {
             if (Level > level) return new List<Feature>();
-            List<Feature> res = new List<Feature>() {this};
+            List<Feature> res = new List<Feature>() { this };
             if (Condition != null && Condition.Length > 0 && !choiceProvider.Matches(Condition, null, level)) return res;
             foreach (Feature f in Features)
             {

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditFeatureChoiceFeature"
+             Title="Choice">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                <Label Text="Amount: (Number of free items allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Switch IsToggled="{Binding AllowSameChoice}"/>
+                    <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"  Text="Allow the same choice multiple times" FontSize="Micro" LineBreakMode="WordWrap"/>
+                </StackLayout>
+                <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: Only a single feature can be selected each time. Features can be put into a Multi Feature to allow a single choice select multiple features at once.
+If this choice is made multiple times at different levels, it is often better to put the options as standalone features in their own category and use Feature Collection Choice Features.</Label.Text>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

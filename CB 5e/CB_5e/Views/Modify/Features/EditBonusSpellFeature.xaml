@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditBonusSpellFeature"
+             Title="Bonus Spell">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="20" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Spell:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Spell}" TextColor="{Binding Accent}"/>
+                <Picker Grid.Row="2" Grid.ColumnSpan="6" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding Spell, Mode=OneWayToSource}"/>
+                <Label Grid.Row="4" Grid.ColumnSpan="6" Text="Recharge: (each bonus spell generates a resource)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Picker Grid.Row="5" Grid.ColumnSpan="6" ItemsSource="{Binding RechargeTypes}" SelectedItem="{Binding Recharge}"/>
+                <Label Grid.Row="6" Grid.ColumnSpan="6" Text="Spellcasting Ability:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Label Grid.Row="7" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="1" IsToggled="{Binding BaseStrength}" HorizontalOptions="Start"/>
+                <Label Grid.Row="7" Grid.Column="2" Text="Dexterity" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="3" IsToggled="{Binding BaseDexterity}" HorizontalOptions="Start"/>
+                <Label Grid.Row="7" Grid.Column="4" Text="Constitution" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="7" Grid.Column="5" IsToggled="{Binding BaseConstitution}" HorizontalOptions="Start"/>
+                <Label Grid.Row="8" Grid.Column="0" Text="Intelligence" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="8" Grid.Column="1" IsToggled="{Binding BaseIntelligence}" HorizontalOptions="Start"/>
+                <Label Grid.Row="8" Grid.Column="2" Text="Wisdom" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="8" Grid.Column="3" IsToggled="{Binding BaseWisdom}" HorizontalOptions="Start"/>
+                <Label Grid.Row="8" Grid.Column="4" Text="Charisma" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
+                <Switch Grid.Row="8" Grid.Column="5" IsToggled="{Binding BaseCharisma}" HorizontalOptions="Start"/>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

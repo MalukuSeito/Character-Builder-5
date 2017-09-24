@@ -39,6 +39,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Spellcasting Internal ID: (other features reference this id)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding SpellcastingID}" TextColor="{Binding Accent}"/>

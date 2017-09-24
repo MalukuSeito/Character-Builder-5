@@ -49,6 +49,7 @@
                     <RowDefinition Height="auto"/>
 
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Condtion for Activation: (NCalc, must evaluate to true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Condition}" TextColor="{Binding Accent}"/>

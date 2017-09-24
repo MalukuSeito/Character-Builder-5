@@ -9,6 +9,11 @@
                       ItemsSource="{Binding Options}"
                       IsPullToRefreshEnabled="False"
                       CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding Search}" Placeholder="Search" />
+                    </StackLayout>
+                </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextCell Text="{Binding Text}" Detail="{Binding Detail}" TextColor="{Binding TextColor}"/>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.FreeItemChoicePage"
+             Title="Items / Gold">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement"
+                      RowHeight="30"
+                      x:Name="ListViewComponent"
+                      x:FieldModifier="public">
+                <ListView.Header>
+                    <StackLayout Padding="20, 0">
+                        <Label Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                        <Label Text="Amount: (Number of free items allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
+                        </StackLayout>
+                        <Label Text="GP:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding GP}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding GPStep}"/>
+                        </StackLayout>
+                        <Label Text="SP:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding SP}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding SPStep}"/>
+                        </StackLayout>
+                        <Label Text="CP:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding CP}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding CPStep}"/>
+                        </StackLayout>
+                        <Label Text="Items:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Info" Clicked="Info_Clicked"/>
+                                <MenuItem Text="Move" Clicked="Move_Clicked"/>
+                                <MenuItem Text="Cut" Clicked="Cut_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Copy" Clicked="Copy_Clicked"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
