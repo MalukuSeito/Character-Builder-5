@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditMulticlassing"
+             Title="Skills">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement"
+                      RowHeight="30"
+                      x:Name="ListViewComponent"
+                      x:FieldModifier="public">
+                <ListView.Header>
+                    <StackLayout Padding="20, 0">
+                        <Label Text="Multiclassing Condition (after first level) " FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Text="{Binding MulticlassingCondition}" TextColor="{Binding Accent}"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Switch IsToggled="{Binding AvailableAtFirstLevel}"/>
+                            <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center" Text="Class available at Level 1" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        </StackLayout>
+                        <Label Text="Spell levels gained by multiclassing: (usually 1:1 for caster classes, 1:2 for half caster classes and none for martial classes. Can also be defined for subclasses which overwrites the parent)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Info" Clicked="Info_Clicked"/>
+                                <MenuItem Text="Move" Clicked="Move_Clicked"/>
+                                <MenuItem Text="Cut" Clicked="Cut_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Copy" Clicked="Copy_Clicked"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <StackLayout Padding="20">
+                        <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                            <Label.Text>Note: The condition must be fulfilled in order for the class to be chosen at a level higher than 1, unless the class was already chosen before.
+The following number values are available: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier)
+The numeric value PlayerLevel and the classlevel('classname') function are also available, as are the string values Race, SubRace and the subclass('Classname') function</Label.Text>
+                        </Label>
+                    </StackLayout>
+                </ListView.Footer>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

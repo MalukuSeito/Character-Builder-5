@@ -1,5 +1,9 @@
 ﻿using CB_5e.Helpers;
 using CB_5e.Services;
+using CB_5e.ViewModels.Modify;
+using CB_5e.Views.Modify.Collections;
+using CB_5e.Views.Modify.Descriptions;
+using CB_5e.Views.Modify.Features;
 using OGL;
 using OGL.Common;
 using System;
@@ -78,14 +82,37 @@ namespace CB_5e.Views.Modify
             if (Entries.Count == 0) Refresh.Execute(null);
         }
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
+            if (e.SelectedItem is SubClass obj)
+            {
+                if (IsBusy) return;
+                IsBusy = true;
+                await Navigation.PushModalAsync(MakePage(new SubClassEditModel(obj, Context)));
+                Entries.Clear();
+                IsBusy = false;
+            }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            await Navigation.PushModalAsync(MakePage(new SubClassEditModel(new SubClass() { Source = Context.Config.DefaultSource }, Context)));
+            Entries.Clear();
+            IsBusy = false;
+        }
 
+        private Page MakePage(SubClassEditModel m)
+        {
+            TabbedPage t = new TabbedPage();
+            t.Children.Add(new NavigationPage(new EditSubClass(m)) { Title = "Edit" });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features" });
+            t.Children.Add(new NavigationPage(new IntListPage(m, "MulticlassingSpellLevels", "Level ", Keyboard.Numeric)) { Title = "Multiclassing" });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features" });
+            return t;
         }
     }
 }

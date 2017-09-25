@@ -11,14 +11,14 @@ using OGL;
 using PCLStorage;
 using OGL.Descriptions;
 using OGL.Features;
-using CB_5e.Services;
+using OGL.Base;
 
 namespace CB_5e.ViewModels.Modify
 {
-    public class SubRaceEditModel : EditModel<SubRace>
+    public class SubClassEditModel : EditModel<SubClass>
     {
-        private static string CUSTOM = ConfigManager.SourceSeperator + " Custom " + ConfigManager.SourceSeperator;
-        public SubRaceEditModel(SubRace cond, OGLContext context): base(cond, context)
+        
+        public SubClassEditModel(SubClass cls, OGLContext context): base(cls, context)
         {
             ShowImage = new Command(async () =>
             {
@@ -31,27 +31,26 @@ namespace CB_5e.ViewModels.Modify
                 OnPropertyChanged("Image");
                 await Navigation.PopAsync();
             });
-            SaveCostumRace = new Command((par) =>
+            SaveCostumClass = new Command((par) =>
             {
                 if (par is string s)
                 {
-                    Races.Add(s);
-                    ParentRace = s;
+                    Classes.Add(s);
+                    ClassName = s;
                 }
             });
-            Races.AddRange(context.RacesSimple.Keys);
-            Races.Add("*");
-            if (!Races.Contains(cond.RaceName)) Races.Add(cond.RaceName);
-            Races.Add(CUSTOM);
+            Classes.AddRange(context.ClassesSimple.Keys);
+            if (!Classes.Contains(cls.ClassName)) Classes.Add(cls.ClassName);
+            Classes.Add(CUSTOM);
         }
 
+        private static string CUSTOM = ConfigManager.SourceSeperator + " Custom " + ConfigManager.SourceSeperator;
         public string Name { get => Model.Name; set { if (value == Name) return; MakeHistory("Name"); Model.Name = value; OnPropertyChanged("Name"); } }
+        public string SheetName { get => Model.SheetName; set { if (value == SheetName) return; MakeHistory("SheetName"); Model.SheetName = value; OnPropertyChanged("SheetName"); } }
         public string Source { get => Model.Source; set { if (value == Source) return; MakeHistory("Source"); Model.Source = value; OnPropertyChanged("Source"); } }
         public string Description { get => Model.Description; set { if (value == Description) return; MakeHistory("Description"); Model.Description = value ; OnPropertyChanged("Description"); } }
         public string Flavour { get => Model.Flavour; set { if (value == Flavour) return; MakeHistory("Flavour"); Model.Flavour = value; OnPropertyChanged("Flavour"); } }
-        public string ParentRace { get => Model.RaceName; set { if (value == ParentRace) return; MakeHistory("ParentRace"); if (value == CUSTOM) Device.BeginInvokeOnMainThread(async () => await Navigation.PushAsync(new CustomTextEntryPage("Parent Race", SaveCostumRace))); else Model.RaceName = value; OnPropertyChanged("ParentRace"); } }
-
-
+        public string ClassName { get => Model.ClassName; set { if (value == ClassName) return; MakeHistory("ClassName"); if (value == CUSTOM) Device.BeginInvokeOnMainThread(async () => await Navigation.PushAsync(new CustomTextEntryPage("Parent Class", SaveCostumClass))); else Model.ClassName = value; OnPropertyChanged("ClassName"); } }
 
         public ImageSource Image
         {
@@ -61,15 +60,17 @@ namespace CB_5e.ViewModels.Modify
         public Command ShowImage { get; private set; }
         public Command SaveImage { get; private set; }
 
-        public override string GetPath(SubRace obj)
+        public override string GetPath(SubClass obj)
         {
-            return PortablePath.Combine(obj.Source, Context.Config.SubRaces_Directory);
+            return PortablePath.Combine(obj.Source, Context.Config.SubClasses_Directory);
         }
-
-        public ObservableRangeCollection<string> Races { get; set; } = new ObservableRangeCollection<string>();
-
         public List<Description> Descriptions { get => Model.Descriptions; }
         public List<Feature> Features { get => Model.Features; }
-        public Command SaveCostumRace { get; private set; }
+        public List<Feature> MulticlassingFeatures { get => Model.MulticlassingFeatures; }
+        public List<Feature> FirstClassFeatures { get => Model.FirstClassFeatures; }
+        public List<int> MulticlassingSpellLevels { get => Model.MulticlassingSpellLevels; }
+        public Command SaveCostumClass { get; private set; }
+        public ObservableRangeCollection<string> Classes { get; set; } = new ObservableRangeCollection<string>();
     }
 }
+

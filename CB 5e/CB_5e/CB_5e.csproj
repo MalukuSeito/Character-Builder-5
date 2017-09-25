@@ -54,6 +54,7 @@
     <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
     <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
+    <Compile Include="ViewModels\Modify\SubClassEditModel.cs" />
     <Compile Include="ViewModels\Modify\FeatureContainerEditModel.cs" />
     <Compile Include="ViewModels\Modify\BackgroundEditModel.cs" />
     <Compile Include="ViewModels\Character\Build\BackgroundViewModel.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="ViewModels\Modify\Features\ResourceFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\ProxyModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\StringViewModel.cs" />
+    <Compile Include="ViewModels\Modify\ClassEditModel.cs" />
     <Compile Include="ViewModels\Modify\SubRaceEditModel.cs" />
     <Compile Include="ViewModels\Modify\RaceEditModel.cs" />
     <Compile Include="ViewModels\Modify\ConditionEditModel.cs" />
@@ -192,6 +194,15 @@
     </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditMulticlassing.xaml.cs">
+      <DependentUpon>EditMulticlassing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditHitDie.xaml.cs">
+      <DependentUpon>EditHitDie.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditSubClass.xaml.cs">
+      <DependentUpon>EditSubClass.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditSubClassFeature.xaml.cs">
       <DependentUpon>EditSubClassFeature.xaml</DependentUpon>
@@ -1246,6 +1257,24 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Features\EditSubClassFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditHitDie.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditMulticlassing.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditSubClass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
