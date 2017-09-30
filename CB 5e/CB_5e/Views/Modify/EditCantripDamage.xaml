@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.EditCantripDamage"
+             Title="Spell">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView ItemSelected="Entries_ItemSelected"
+                      ItemsSource="{Binding Entries}"
+                      IsPullToRefreshEnabled="False"
+                      CachingStrategy="RecycleElement"
+                      RowHeight="30"
+                      x:Name="ListViewComponent"
+                      x:FieldModifier="public">
+                <ListView.Header>
+                    <Grid Padding="20, 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Text="Level: (updates keywords)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Level}" TextColor="{Binding Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding Level}"/>
+                        </StackLayout>
+
+                        <Label Grid.Row="2" Grid.Column="0" Text="Casting Time:" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Grid.Row="3" Grid.Column="0" Text="{Binding CastingTime}"/>
+                        <Picker Grid.Row="4" Grid.Column="0" ItemsSource="{Binding CastingTimes}"  SelectedItem="{Binding CastingTime, Mode=OneWayToSource}"/>
+
+                        <Label Grid.Row="5" Grid.Column="0" Text="Range: (updates keywords)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Grid.Row="6" Grid.Column="0" Text="{Binding Range}"/>
+                        <Picker Grid.Row="7" Grid.Column="0" ItemsSource="{Binding Ranges}"  SelectedItem="{Binding Range, Mode=OneWayToSource}"/>
+
+                        <Label Grid.Row="8" Grid.Column="0" Text="Duration: (updates keywords)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Grid.Row="9" Grid.Column="0" Text="{Binding Duration}"/>
+                        <Picker Grid.Row="10" Grid.Column="0" ItemsSource="{Binding Durations}"  SelectedItem="{Binding Duration, Mode=OneWayToSource}"/>
+
+                        <Label Grid.Row="11" Grid.Column="0" Text="Spell Damage at Level: (cantrips)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Height="30" Text="{Binding Text}" TextColor="{Binding TextColor}">
+                            <TextCell.ContextActions>
+                                <MenuItem Text="Delete" Clicked="Delete_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Info" Clicked="Info_Clicked"/>
+                                <MenuItem Text="Move" Clicked="Move_Clicked"/>
+                                <MenuItem Text="Cut" Clicked="Cut_Clicked" IsDestructive="True"/>
+                                <MenuItem Text="Copy" Clicked="Copy_Clicked"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

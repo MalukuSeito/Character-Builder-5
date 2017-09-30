@@ -28,7 +28,7 @@ namespace CB_5e.Views
             Title1 = title1;
             Title2 = title2;
             Text1 = initial1;
-            Text2 = initial1;
+            Text2 = initial2;
             BindingContext = this;
 			InitializeComponent ();
 		}

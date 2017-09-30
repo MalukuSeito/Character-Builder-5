@@ -14,30 +14,54 @@ using OGL;
 using CB_5e.ViewModels.Modify.Collections;
 using CB_5e.Services;
 using CB_5e.ViewModels.Modify;
+using OGL.Spells;
 
 namespace CB_5e.Views.Modify
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditMulticlassing : ContentPage
+	public partial class EditCantripDamage : ContentPage
 	{
-        private List<string> suggestions = new List<string>();
-        public ObservableRangeCollection<IntViewModel> Entries { get; set; } = new ObservableRangeCollection<IntViewModel>();
-        public ClassEditModel Model { get; private set; }
+        public ObservableRangeCollection<CantripDamageViewModel> Entries { get; set; } = new ObservableRangeCollection<CantripDamageViewModel>();
+        public SpellEditModel Model { get; private set; }
         private int move = -1;
-        public string MulticlassingCondition
+        public List<string> CastingTimes { get => Model.CastingTimes; }
+        public List<string> Ranges { get => Model.Ranges; }
+        public List<string> Durations { get => Model.Durations; }
+        public string CastingTime
         {
-            get => Model.MulticlassingCondition;
-            set => Model.MulticlassingCondition = value;
+            get => Model.CastingTime;
+            set
+            {
+                if (value == null) return;
+                Model.CastingTime = value;
+            }
+        }
+        public string Range
+        {
+            get => Model.Range;
+            set
+            {
+                if (value == null) return;
+                Model.Range = value;
+            }
+        }
+        public string Duration
+        {
+            get => Model.Duration;
+            set
+            {
+                if (value == null) return;
+                Model.Duration = value;
+            }
+        }
+        public int Level
+        {
+            get => Model.Level;
+            set => Model.Level = value;
         }
 
-        public bool AvailableAtFirstLevel
-        {
-            get => Model.AvailableAtFirstLevel;
-            set => Model.AvailableAtFirstLevel = value;
-        }
-        public string Prepend { get; private set; } = "Level ";
         public Keyboard Keyboard { get; private set; } = Keyboard.Numeric;
-        public EditMulticlassing(ClassEditModel parent)
+        public EditCantripDamage(SpellEditModel parent)
         {
             Model = parent;
             parent.PropertyChanged += Parent_PropertyChanged;
@@ -61,46 +85,22 @@ namespace CB_5e.Views.Modify
             ToolbarItem paste = new ToolbarItem() { Text = "Paste" };
             paste.Clicked += Paste_Clicked;
             ToolbarItems.Add(paste);
-            ToolbarItem paste2 = new ToolbarItem() { Text = "Paste CSV" };
-            paste2.Clicked += Paste2_Clicked;
-            ToolbarItems.Add(paste2);
         }
 
         private void Parent_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == "MulticlassingSpellLevels") Fill();
+            if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == "CantripDamage") Fill();
             OnPropertyChanged(e.PropertyName);
         }
 
         private void Fill()
         {
-            List<IntViewModel> res = new List<IntViewModel>(Model.MulticlassingSpellLevels.Count);
-            for (int i = 0; i < Model.MulticlassingSpellLevels.Count; i++)
+            List<CantripDamageViewModel> res = new List<CantripDamageViewModel>(Model.CantripDamage.Count);
+            for (int i = 0; i < Model.CantripDamage.Count; i++)
             {
-                res.Add(new IntViewModel(i + 1, Model.MulticlassingSpellLevels[i], Prepend));
+                res.Add(new CantripDamageViewModel(Model.CantripDamage[i]));
             }
             Entries.ReplaceRange(res);
-        }
-        private void Paste2_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                Model.MakeHistory();
-                string clip = DependencyService.Get<IClipboardService>().GetTextData();
-                if (clip != null)
-                {
-                    foreach (string s in clip.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        string r = s.Trim();
-                        if (r != "" && int.TryParse(r, out int i)) Model.MulticlassingSpellLevels.Add(i);
-                    }
-                    Fill();
-                }
-            }
-            catch (Exception ex)
-            {
-                DisplayAlert("Error", ex.Message, "Ok");
-            }
         }
 
         private void Paste_Clicked(object sender, EventArgs e)
@@ -109,10 +109,13 @@ namespace CB_5e.Views.Modify
             {
                 Model.MakeHistory();
                 string clip = DependencyService.Get<IClipboardService>().GetTextData();
-                if (clip != null && int.TryParse(clip, out int i))
+                if (clip != null)
                 {
-                    Model.MulticlassingSpellLevels.Add(i);
-                    Fill();
+                    string[] s = clip.Split(new char[] { ':' }, 2);
+                    if (s.Length == 2 &&  int.TryParse(s[0], out int i)) {
+                        Model.CantripDamage.Add(new CantripDamage(i, s[1].Trim()));
+                        Fill();
+                    }
                 }
             }
             catch (Exception ex)
@@ -123,32 +126,32 @@ namespace CB_5e.Views.Modify
 
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+            await Navigation.PushAsync(new CustomDualTextEntryPage("Cantrip Damage", new Command((par) =>
             {
-                if (par is string s && int.TryParse(s, out int i))
+                if (par is string[] s && int.TryParse(s[0], out int i))
                 {
                     Model.MakeHistory();
-                    IntViewModel vm = new IntViewModel(Model.MulticlassingSpellLevels.Count + 1, i, Prepend);
-                    Model.MulticlassingSpellLevels.Add(i);
-                    Entries.Add(vm);
+                    CantripDamage d = new CantripDamage(i, s[1]);
+                    Model.CantripDamage.Add(d);
+                    Entries.Add(new CantripDamageViewModel(d));
                 }
-            }), Keyboard));
+            }), "Level: ", "Damage: ", Keyboard.Numeric, Keyboard.Default, "1", "1d6"));
         }
 
         private async void Entries_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (e.SelectedItem is IntViewModel fvm)
+            if (e.SelectedItem is CantripDamageViewModel fvm)
             {
                 if (move >= 0)
                 {
                     Model.MakeHistory();
-                    foreach (IntViewModel ff in Entries) ff.Moving = false;
+                    foreach (CantripDamageViewModel ff in Entries) ff.Moving = false;
                     int target = Entries.ToList().FindIndex(ff => fvm == ff);
                     if (target >= 0 && move != target)
                     {
-                        Model.MulticlassingSpellLevels.Insert(target, Model.MulticlassingSpellLevels[move]);
+                        Model.CantripDamage.Insert(target, Model.CantripDamage[move]);
                         if (target < move) move++;
-                        Model.MulticlassingSpellLevels.RemoveAt(move);
+                        Model.CantripDamage.RemoveAt(move);
                         Fill();
                         (sender as ListView).SelectedItem = null;
                     }
@@ -157,16 +160,16 @@ namespace CB_5e.Views.Modify
                 else
                 {
                     int i = Entries.ToList().FindIndex(ff => fvm == ff);
-                    if (i >= 0) await Navigation.PushAsync(new CustomTextEntryPage(Title, new Command((par) =>
+                    if (i >= 0) await Navigation.PushAsync(new CustomDualTextEntryPage("Cantrip Damage", new Command((par) =>
                     {
-                        if (par is string s && int.TryParse(s, out int ii))
+                        if (par is string[] s && int.TryParse(s[0], out int ii))
                         {
                             Model.MakeHistory();
-                            Model.MulticlassingSpellLevels[i] = ii;
-                            fvm.Value = ii;
+                            fvm.Entry.Damage = s[1];
+                            fvm.Entry.Level = ii;
                             fvm.Refresh();
                         }
-                    }), Keyboard, fvm.Text));
+                    }), "Level: ", "Damage: ", Keyboard.Numeric, Keyboard.Default, fvm.Entry.Level.ToString(), fvm.Entry.Damage));
                     (sender as ListView).SelectedItem = null;
                 }
             }
@@ -174,25 +177,25 @@ namespace CB_5e.Views.Modify
 
         private void Delete_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is IntViewModel f)
+            if (((MenuItem)sender).BindingContext is CantripDamageViewModel f)
             {
                 Model.MakeHistory();
                 int i = Entries.ToList().FindIndex(ff => f == ff);
-                Model.MulticlassingSpellLevels.RemoveAt(i);
+                Model.CantripDamage.RemoveAt(i);
                 Fill();
             }
         }
 
         private async void Info_Clicked(object sender, EventArgs e)
         {
-            if ((sender as MenuItem).BindingContext is IntViewModel f) await Navigation.PushAsync(InfoPage.Show(new Feature("Text", f.Text)));
+            if ((sender as MenuItem).BindingContext is CantripDamageViewModel f) await Navigation.PushAsync(InfoPage.Show(new Feature("Text", f.Text)));
         }
 
         private void Move_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is IntViewModel f)
+            if (((MenuItem)sender).BindingContext is CantripDamageViewModel f)
             {
-                foreach (IntViewModel ff in Entries) ff.Moving = false;
+                foreach (CantripDamageViewModel ff in Entries) ff.Moving = false;
                 f.Moving = true;
                 move = Entries.ToList().FindIndex(ff => f == ff);
             }
@@ -201,12 +204,12 @@ namespace CB_5e.Views.Modify
 
         private void Cut_Clicked(object sender, EventArgs e)
         {
-            if (((MenuItem)sender).BindingContext is IntViewModel f)
+            if (((MenuItem)sender).BindingContext is CantripDamageViewModel f)
             {
                 Model.MakeHistory();
                 DependencyService.Get<IClipboardService>().PutTextData(f.Text, "String");
                 int i = Entries.ToList().FindIndex(ff => f == ff);
-                Model.MulticlassingSpellLevels.RemoveAt(i);
+                Model.CantripDamage.RemoveAt(i);
                 Fill();
             }
         }

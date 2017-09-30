@@ -1,5 +1,8 @@
 ﻿using CB_5e.Helpers;
 using CB_5e.Services;
+using CB_5e.ViewModels.Modify;
+using CB_5e.Views.Modify.Collections;
+using CB_5e.Views.Modify.Descriptions;
 using OGL;
 using OGL.Common;
 using System;
@@ -78,14 +81,44 @@ namespace CB_5e.Views.Modify
             if (Entries.Count == 0) Refresh.Execute(null);
         }
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
+            if (e.SelectedItem is Spell obj)
+            {
+                if (IsBusy) return;
+                IsBusy = true;
+                await Navigation.PushModalAsync(MakePage(new SpellEditModel(obj, Context)));
+                Entries.Clear();
+                IsBusy = false;
+            }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
+            if (IsBusy) return;
+            IsBusy = true;
+            await Navigation.PushModalAsync(MakePage(new SpellEditModel(new Spell() { Source = Context.Config.DefaultSource, Level = 1 }, Context)));
+            Entries.Clear();
+            IsBusy = false;
+        }
 
+        private Page MakePage(SpellEditModel m)
+        {
+            TabbedPage t = new TabbedPage();
+            t.Children.Add(new NavigationPage(new EditSpell(m)) { Title = "Edit" });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
+            t.Children.Add(new NavigationPage(new EditCantripDamage(m)) { Title = "Spell" });
+            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Spell Keywords", KeywordListPage.KeywordGroup.SPELL, LoadClassesAsync(m.Context))) { Title = "Keywords" });
+            return t;
+        }
+
+        private static async Task<IEnumerable<string>> LoadClassesAsync(OGLContext context)
+        {
+            if (context.ClassesSimple.Count == 0)
+            {
+                await context.ImportClassesAsync();
+            }
+            return context.ClassesSimple.Keys.OrderBy(s => s);
         }
     }
 }

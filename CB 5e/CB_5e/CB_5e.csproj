@@ -54,6 +54,8 @@
     <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
     <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
+    <Compile Include="ViewModels\Modify\Collections\CantripDamageViewModel.cs" />
+    <Compile Include="ViewModels\Modify\SpellEditModel.cs" />
     <Compile Include="ViewModels\Modify\SubClassEditModel.cs" />
     <Compile Include="ViewModels\Modify\FeatureContainerEditModel.cs" />
     <Compile Include="ViewModels\Modify\BackgroundEditModel.cs" />
@@ -194,6 +196,12 @@
     </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditCantripDamage.xaml.cs">
+      <DependentUpon>EditCantripDamage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditSpell.xaml.cs">
+      <DependentUpon>EditSpell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\EditMulticlassing.xaml.cs">
       <DependentUpon>EditMulticlassing.xaml</DependentUpon>
@@ -1275,6 +1283,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\EditSubClass.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditSpell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditCantripDamage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

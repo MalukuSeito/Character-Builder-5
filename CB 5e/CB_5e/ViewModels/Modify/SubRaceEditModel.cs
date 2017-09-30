@@ -20,6 +20,7 @@ namespace CB_5e.ViewModels.Modify
         private static string CUSTOM = ConfigManager.SourceSeperator + " Custom " + ConfigManager.SourceSeperator;
         public SubRaceEditModel(SubRace cond, OGLContext context): base(cond, context)
         {
+            if (cond.RaceName == null) cond.RaceName = "*";
             ShowImage = new Command(async () =>
             {
                 await Navigation.PushAsync(new ImageEditor(Image, Model.ImageData, SaveImage, "Image"));

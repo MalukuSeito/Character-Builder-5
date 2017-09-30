@@ -20,6 +20,7 @@ namespace CB_5e.ViewModels.Modify
         
         public SubClassEditModel(SubClass cls, OGLContext context): base(cls, context)
         {
+            if (cls.ClassName == null) cls.ClassName = "";
             ShowImage = new Command(async () =>
             {
                 await Navigation.PushAsync(new ImageEditor(Image, Model.ImageData, SaveImage, "Image"));
@@ -39,6 +40,7 @@ namespace CB_5e.ViewModels.Modify
                     ClassName = s;
                 }
             });
+            Classes.Add("");
             Classes.AddRange(context.ClassesSimple.Keys);
             if (!Classes.Contains(cls.ClassName)) Classes.Add(cls.ClassName);
             Classes.Add(CUSTOM);
