@@ -18,22 +18,22 @@
                         <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
                         <Label Text="Amount: (Number of free items allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
                         </StackLayout>
                         <Label Text="GP:" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding GP}" TextColor="{Binding Accent}"/>
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding GP}" TextColor="{Binding Accent}"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding GPStep}"/>
                         </StackLayout>
                         <Label Text="SP:" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding SP}" TextColor="{Binding Accent}"/>
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding SP}" TextColor="{Binding Accent}"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding SPStep}"/>
                         </StackLayout>
                         <Label Text="CP:" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding CP}" TextColor="{Binding Accent}"/>
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding CP}" TextColor="{Binding Accent}"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding CPStep}"/>
                         </StackLayout>
                         <Label Text="Items:" FontSize="Micro" LineBreakMode="WordWrap"/>

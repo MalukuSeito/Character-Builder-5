@@ -25,7 +25,7 @@
                         <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
                         <Label Text="Amount: (Number of skills allowed to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">

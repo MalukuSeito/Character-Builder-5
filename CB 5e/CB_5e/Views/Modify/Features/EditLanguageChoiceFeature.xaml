@@ -36,7 +36,7 @@
             <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
             <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Amount: (Number of languages allowed to be chosen)" FontSize="Micro" LineBreakMode="TailTruncation"/>
             <StackLayout Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
                 <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
             </StackLayout>
         </Grid>

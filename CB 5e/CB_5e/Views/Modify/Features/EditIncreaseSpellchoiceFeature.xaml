@@ -37,7 +37,7 @@
             <Picker Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding UniqueID, Mode=OneWayToSource}"/>
             <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Increase amount of selectable spells by:" FontSize="Micro" LineBreakMode="WordWrap"/>
             <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9">
-                <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
                 <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
             </StackLayout>
         </Grid>

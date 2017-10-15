@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Items.EditItem">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Save" Command="{Binding Save}"/>
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Stack size in shop and free items: (i.e. 20 arrows)" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding StackSize}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding StackSize}"/>
+                </StackLayout>
+                <Label Text="Weight of a single item:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Weight}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Weight}"/>
+                </StackLayout>
+                <Label Text="Unit of a multiple item: (pieces, vials, fl.oz.)" FontSize="Small"/>
+                <Entry Text="{Binding Unit}" TextColor="{Binding Accent}"/>
+                <Label Text="Unit of a single item: (piece, vial, fl.oz.)" FontSize="Small"/>
+                <Entry Text="{Binding SingleUnit}" TextColor="{Binding Accent}"/>
+                <Label Text="PP:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PP}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding PP}"/>
+                </StackLayout>
+                <Label Text="GP" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding GP}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding GP}"/>
+                </StackLayout>
+                <Label Text="EP" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding EP}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding EP}"/>
+                </StackLayout>
+                <Label Text="SP:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding SP}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding SP}"/>
+                </StackLayout>
+                <Label Text="CP:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding CP}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding CP}"/>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

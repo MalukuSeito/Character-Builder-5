@@ -1,5 +1,8 @@
 ﻿using CB_5e.Helpers;
 using CB_5e.Services;
+using CB_5e.ViewModels.Modify.Items;
+using CB_5e.Views.Modify.Collections;
+using CB_5e.Views.Modify.Items;
 using OGL;
 using OGL.Common;
 using OGL.Items;
@@ -80,14 +83,53 @@ namespace CB_5e.Views.Modify
             if (Entries.Count == 0) Refresh.Execute(null);
         }
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-
+            if (e.SelectedItem is Item obj)
+            {
+                if (IsBusy) return;
+                IsBusy = true;
+                await Navigation.PushModalAsync(MakePage(new ItemEditModel<Item>(obj, Context)));
+                Entries.Clear();
+                IsBusy = false;
+            }
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-
+            if (IsBusy) return;
+            IsBusy = true;
+            //MakePage(new ItemEditModel<Item>(new Item() { Source = Context.Config.DefaultSource, Category = category }, Context))
+            await Navigation.PushAsync(new SelectPage(new List<SelectOption>() {
+                new SelectOption("Item", "A simple item", new Item() { Source = Context.Config.DefaultSource, Category = category }),
+                new SelectOption("Tool", "An item that is also a tool", new Tool() { Source = Context.Config.DefaultSource, Category = category }),
+                new SelectOption("Weapon", "A weapon (also counts as a tool)", new Weapon() { Source = Context.Config.DefaultSource, Category = category }),
+                new SelectOption("Armor", "An armor (also counts as a tool)", new Armor() { Source = Context.Config.DefaultSource, Category = category }),
+                new SelectOption("Shield", "A shield (also counts as a tool)", new Shield() { Source = Context.Config.DefaultSource, Category = category }),
+                new SelectOption("Pack", "A pack of items (can be unpacked)", new Pack() { Source = Context.Config.DefaultSource, Category = category }),
+            }, new Command(async (par) => {
+                await ShowAsync(par);
+            })));
+            Entries.Clear();
+            IsBusy = false;
+        }
+        private async Task ShowAsync(object par)
+        {
+            if (par is SelectOption s)
+            {
+                if (s.Value is Item i)
+                {
+                    await Navigation.PushModalAsync(MakePage(new ItemEditModel<Item>(i, Context)));
+                }
+            }
+        }
+        private Page MakePage(IItemEditModel m)
+        {
+            TabbedPage t = new TabbedPage();
+            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
+            t.Children.Add(new NavigationPage(new EditItem(m)) { Title = "Item" });
+            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+            return t;
         }
     }
 }

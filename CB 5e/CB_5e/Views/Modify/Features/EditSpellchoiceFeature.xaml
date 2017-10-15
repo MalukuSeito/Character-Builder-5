@@ -18,7 +18,7 @@
                 <Picker Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" ItemsSource="{Binding PreparationTypes}" SelectedItem="{Binding AddTo}"/>
                 <Label Text="Amount of selectable spells: (can be modified by Increase Spellchoice Features)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
                 </StackLayout>
                 <Label Text="Selectable spells: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
