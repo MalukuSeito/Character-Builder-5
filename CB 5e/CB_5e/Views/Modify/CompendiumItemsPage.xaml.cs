@@ -89,7 +89,7 @@ namespace CB_5e.Views.Modify
             {
                 if (IsBusy) return;
                 IsBusy = true;
-                await Navigation.PushModalAsync(MakePage(new ItemEditModel<Item>(obj, Context)));
+                await ShowAsync(obj);
                 Entries.Clear();
                 IsBusy = false;
             }
@@ -108,22 +108,66 @@ namespace CB_5e.Views.Modify
                 new SelectOption("Shield", "A shield (also counts as a tool)", new Shield() { Source = Context.Config.DefaultSource, Category = category }),
                 new SelectOption("Pack", "A pack of items (can be unpacked)", new Pack() { Source = Context.Config.DefaultSource, Category = category }),
             }, new Command(async (par) => {
-                await ShowAsync(par);
+                if (par is SelectOption s)
+                {
+                    await ShowAsync(s.Value);
+                }
             })));
             Entries.Clear();
             IsBusy = false;
         }
-        private async Task ShowAsync(object par)
+        private async Task ShowAsync(object o)
         {
-            if (par is SelectOption s)
+            if (o is Pack p)
             {
-                if (s.Value is Item i)
-                {
-                    await Navigation.PushModalAsync(MakePage(new ItemEditModel<Item>(i, Context)));
-                }
+                IItemEditModel m = new PackEditModel(p, Context);
+                TabbedPage page = MakePage(m);
+                page.Children.Add(new NavigationPage(new StringListPage(m, "Contents", GetItemsAsync())) { Title = "Contents" });
+                await Navigation.PushModalAsync(page);
+            }
+            else  if (o is Weapon w)
+            {
+                WeaponEditModel m = new WeaponEditModel(w, Context);
+                TabbedPage t = new TabbedPage();
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
+                t.Children.Add(new NavigationPage(new EditWeapon(m)) { Title = "Weapon" });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                await Navigation.PushModalAsync(t);
+            }
+            else if (o is Shield s)
+            {
+                ShieldEditModel m = new ShieldEditModel(s, Context);
+                TabbedPage t = new TabbedPage();
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
+                t.Children.Add(new NavigationPage(new EditShield(m)) { Title = "Shield" });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                await Navigation.PushModalAsync(t);
+            }
+            else if (o is Armor a)
+            {
+                ArmorEditModel m = new ArmorEditModel(a, Context);
+                TabbedPage t = new TabbedPage();
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
+                t.Children.Add(new NavigationPage(new EditArmor(m)) { Title = "Armor" });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                await Navigation.PushModalAsync(t);
+            }
+            else if (o is Item i)
+            {
+                await Navigation.PushModalAsync(MakePage(new ItemEditModel<Item>(i, Context)));
             }
         }
-        private Page MakePage(IItemEditModel m)
+
+        private async Task<IEnumerable<string>> GetItemsAsync()
+        {
+            if (Context.ItemsSimple.Count == 0)
+            {
+                await Context.ImportItemsAsync();
+            }
+            return Context.ItemsSimple.Keys.OrderBy(s => s);
+        }
+
+        private TabbedPage MakePage(IItemEditModel m)
         {
             TabbedPage t = new TabbedPage();
             t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });

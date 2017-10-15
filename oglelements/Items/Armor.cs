@@ -1,10 +1,11 @@
 ﻿using OGL.Base;
+using OGL.Common;
 using OGL.Keywords;
 using System;
 
 namespace OGL.Items
 {
-    public class Armor: Tool
+    public class Armor: Tool, IOGLElement<Armor>
     {
         public int BaseAC { get; set; }
         public bool StealthDisadvantage { get; set; }
@@ -25,6 +26,11 @@ namespace OGL.Items
             BaseAC = baseAC;
             StrengthRequired = strengthrequired;
             StealthDisadvantage = stealthdisadvantage;
+        }
+
+        Armor IOGLElement<Armor>.Clone()
+        {
+            return base.Clone() as Armor;
         }
     }
 }

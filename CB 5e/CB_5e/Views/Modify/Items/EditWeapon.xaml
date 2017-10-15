@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.Modify.Items.EditItem"
-             Title="Item">
+             x:Class="CB_5e.Views.Modify.Items.EditWeapon"
+             Title="Weapon">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
         <ToolbarItem Text="Save" Command="{Binding Save}"/>
@@ -12,6 +12,14 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20">
+                <Label Text="Damage" FontSize="Small"/>
+                <Entry Text="{Binding Damage}" TextColor="{Binding Accent}"/>
+                <Label Text="Damagetype (changes keywords)" FontSize="Small"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand"  Text="{Binding DamageType}" TextColor="{Binding Accent}"/>
+                    <Picker HorizontalOptions="FillAndExpand" ItemsSource="{Binding DamageTypes}" SelectedItem="{Binding DamageType, Mode=OneWayToSource}" TextColor="{Binding Accent}"/>
+                </StackLayout>
                 <Label Text="Stack size in shop and free items: (i.e. 20 arrows)" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding StackSize}" TextColor="{Binding Accent}"/>

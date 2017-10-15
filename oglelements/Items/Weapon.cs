@@ -1,10 +1,11 @@
 ﻿using OGL.Base;
+using OGL.Common;
 using OGL.Keywords;
 using System;
 
 namespace OGL.Items
 {
-    public class Weapon: Tool
+    public class Weapon: Tool, IOGLElement<Weapon>
     {
         public String Damage { get; set; }
         public String DamageType { get; set; }
@@ -18,6 +19,11 @@ namespace OGL.Items
         {
             Damage = damage;
             DamageType = damageType.ToLowerInvariant();
+        }
+
+        Weapon IOGLElement<Weapon>.Clone()
+        {
+            return base.Clone() as Weapon;
         }
     }
 }

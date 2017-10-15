@@ -55,7 +55,11 @@
     <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
     <Compile Include="ViewModels\Modify\Collections\CantripDamageViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Items\ShieldEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\ItemEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Items\ArmorEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Items\WeaponEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Items\PackEditModel.cs" />
     <Compile Include="ViewModels\Modify\SpellEditModel.cs" />
     <Compile Include="ViewModels\Modify\SubClassEditModel.cs" />
     <Compile Include="ViewModels\Modify\FeatureContainerEditModel.cs" />
@@ -311,6 +315,15 @@
     </Compile>
     <Compile Include="Views\Modify\Features\BonusFeatureSkillsPage.xaml.cs">
       <DependentUpon>BonusFeatureSkillsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Items\EditShield.xaml.cs">
+      <DependentUpon>EditShield.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Items\EditArmor.xaml.cs">
+      <DependentUpon>EditArmor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Items\EditWeapon.xaml.cs">
+      <DependentUpon>EditWeapon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Items\EditItem.xaml.cs">
       <DependentUpon>EditItem.xaml</DependentUpon>
@@ -1303,9 +1316,26 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Items\EditWeapon.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Items\EditItem.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Items\EditArmor.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Items\EditShield.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

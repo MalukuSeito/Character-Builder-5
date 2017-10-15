@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CB_5e.Views.Modify.Items.EditItem"
-             Title="Item">
+             x:Class="CB_5e.Views.Modify.Items.EditShield"
+             Title="Shield">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
         <ToolbarItem Text="Save" Command="{Binding Save}"/>
@@ -12,6 +12,11 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20">
+                <Label Text="AC bonus:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding ACBonus}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding ACBonus}"/>
+                </StackLayout>
                 <Label Text="Stack size in shop and free items: (i.e. 20 arrows)" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding StackSize}" TextColor="{Binding Accent}"/>

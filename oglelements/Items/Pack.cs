@@ -1,11 +1,12 @@
 ﻿using OGL.Base;
+using OGL.Common;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
 
 namespace OGL.Items
 {
-    public class Pack: Item
+    public class Pack: Item, IOGLElement<Pack>
     {
         public List<string> Contents;
         public Pack(): base()
@@ -21,6 +22,11 @@ namespace OGL.Items
                 Contents.Add(i.Name);
                 Weight += i.Weight;
             }
+        }
+
+        Pack IOGLElement<Pack>.Clone()
+        {
+            return base.Clone() as Pack;
         }
     }
 }
