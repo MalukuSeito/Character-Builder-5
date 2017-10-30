@@ -1,5 +1,7 @@
 ﻿using CB_5e.ViewModels;
 using CB_5e.ViewModels.Modify;
+using OGL;
+using OGL.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,20 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views.Modify
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditHitDie : ContentPage
+    public partial class EditMagic : ContentPage
     {
-        public ClassEditModel Model { get; private set; }
-        public EditHitDie(ClassEditModel model)
+        public MagicEditModel Model { get; private set; }
+        public EditMagic(MagicEditModel model, Task items)
         {
             BindingContext = Model = model;
+            Model.Matches = new Command(async () =>
+            {
+                IsBusy = true;
+                await items;
+                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Model.Context.FilterPreview(Model.Base) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
+                await Navigation.PushAsync(InfoPage.Show(f));
+                IsBusy = false;
+            });
             InitializeComponent();
             Model.TrackChanges = true;
         }

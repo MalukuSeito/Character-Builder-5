@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.EditMagic"
+             Title="Magic Property">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Matches" Command="{Binding Matches}"/>
+        <ToolbarItem Text="Save" Command="{Binding Save}"/>
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
+                <Label Grid.Column="0" Grid.Row="1" Text="Requirement: (Base Item Description)" FontSize="Micro"/>
+                <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Requirement}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="3" Text="Base Item Condition (NCalc, empty = standalone item)" FontSize="Micro"/>
+                <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Base}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="5" Text="Base Item Modification, text before Base Item name:" FontSize="Micro"/>
+                <Entry Grid.Column="0" Grid.Row="6" Text="{Binding PrependName}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="7" Text="Base Item Modification, text after Base Item name:" FontSize="Micro"/>
+                <Entry Grid.Column="0" Grid.Row="8" Text="{Binding PostName}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="9" Text="Rarity:" FontSize="Micro"/>
+                <Picker Grid.Column="0" Grid.Row="10" ItemsSource="{Binding Rarities}"  SelectedItem="{Binding Rarity}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="11" Text="Slot: (unused for now)" FontSize="Micro"/>
+                <Picker Grid.Column="0" Grid.Row="12" ItemsSource="{Binding Slots}"  SelectedItem="{Binding Slot}" TextColor="{Binding Accent}"/>
+                <Label Grid.Column="0" Grid.Row="13" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
+                    <Label.Text>Note: The Base Item Condition is evaluated when trying to apply a magic property to an item in the shop. It must match that item (Base Item) for the property to be allowed on the item. 
+An empty condition means the property can not be applied to anything, instead the magic property can be added the inventory as is (i.e. wonderous items). To make a property applicable for anything, use "true" as a condition, this is useful for modificators like  Elven, Dwarven, Cursed,...
+The following values can be used: Category, Name (lowercase) of the item.
+The following can be used to differentiate types: Armor, Tool, Weapon, Shield. All are boolean values.
+In addition all keywords (Light, Heavy, Medium, Two_Handed, Ranged, Melee, Artisan, Arcane, Divine, Druidic, Focus, ...) of the item can be used as a boolean value as well.
+The list of matching items can be previewed by selecting "Matches".</Label.Text>
+                </Label>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

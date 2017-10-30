@@ -105,7 +105,7 @@ namespace CB_5e.Views.Modify
         private Page MakePage(ClassEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
+            t.Children.Add(new NavigationPage(new EditCommonFlavor(m)) { Title = "Edit" });
             t.Children.Add(new NavigationPage(new EditHitDie(m)) { Title = "HD" });
             t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
             t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });

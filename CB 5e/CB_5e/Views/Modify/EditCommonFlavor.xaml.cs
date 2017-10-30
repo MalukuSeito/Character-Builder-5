@@ -12,12 +12,13 @@ using Xamarin.Forms.Xaml;
 namespace CB_5e.Views.Modify
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditHitDie : ContentPage
+    public partial class EditCommonFlavor : ContentPage
     {
-        public ClassEditModel Model { get; private set; }
-        public EditHitDie(ClassEditModel model)
+        public IEditModel Model { get; private set; }
+        public EditCommonFlavor(IEditModel model)
         {
             BindingContext = Model = model;
+            Model.Navigation = Navigation;
             InitializeComponent();
             Model.TrackChanges = true;
         }

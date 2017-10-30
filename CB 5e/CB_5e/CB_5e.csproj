@@ -60,6 +60,7 @@
     <Compile Include="ViewModels\Modify\Items\ArmorEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\WeaponEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\PackEditModel.cs" />
+    <Compile Include="ViewModels\Modify\MagicEditModel.cs" />
     <Compile Include="ViewModels\Modify\SpellEditModel.cs" />
     <Compile Include="ViewModels\Modify\SubClassEditModel.cs" />
     <Compile Include="ViewModels\Modify\FeatureContainerEditModel.cs" />
@@ -204,6 +205,12 @@
     </Compile>
     <Compile Include="Views\Modify\EditCantripDamage.xaml.cs">
       <DependentUpon>EditCantripDamage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditCommonFlavor.xaml.cs">
+      <DependentUpon>EditCommonFlavor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditMagic.xaml.cs">
+      <DependentUpon>EditMagic.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\EditSpell.xaml.cs">
       <DependentUpon>EditSpell.xaml</DependentUpon>
@@ -1336,6 +1343,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Items\EditShield.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditCommonFlavor.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditMagic.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
