@@ -32,6 +32,18 @@ namespace OGL
             if (level >= Experience.Count) level = Experience.Count;
             return Experience[level - 1];
         }
+
+        public Level Clone()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                Serializer.Serialize(mem, this);
+                mem.Seek(0, SeekOrigin.Begin);
+                Level r = (Level)Serializer.Deserialize(mem);
+                return r;
+            }
+        }
+
         public int XpToLevelUp(int xp)
         {
             for (int level = 0; level < Experience.Count; level++) if (Experience[level] > xp) return Experience[level] - xp;

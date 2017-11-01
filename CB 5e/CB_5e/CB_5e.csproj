@@ -60,6 +60,7 @@
     <Compile Include="ViewModels\Modify\Items\ArmorEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\WeaponEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\PackEditModel.cs" />
+    <Compile Include="ViewModels\Modify\LevelEditModelcs.cs" />
     <Compile Include="ViewModels\Modify\MagicEditModel.cs" />
     <Compile Include="ViewModels\Modify\SpellEditModel.cs" />
     <Compile Include="ViewModels\Modify\SubClassEditModel.cs" />

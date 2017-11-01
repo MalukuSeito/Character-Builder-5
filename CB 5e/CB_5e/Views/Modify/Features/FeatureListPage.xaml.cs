@@ -469,7 +469,7 @@ namespace CB_5e.Views.Modify.Features
                 {
                     Title = "Standalone"
                 });
-                p.Children.Add(new NavigationPage(new IntListPage(model, "Slots", "Spellslot(s) Level ", Keyboard.Numeric, false))
+                p.Children.Add(new NavigationPage(new IntListPage(model, "Slots", "Spellslot Level ", "0 'slots'", Keyboard.Numeric, false))
                 {
                     Title = "Slots"
                 });

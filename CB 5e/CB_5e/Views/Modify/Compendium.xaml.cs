@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CB_5e.Services;
+using CB_5e.ViewModels.Modify;
+using CB_5e.Views.Modify.Collections;
+using OGL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +55,20 @@ namespace CB_5e.Views.Modify
                 else if (s == "Items") await Navigation.PushAsync(new CompendiumItemsOverviewPage());
                 else if (s == "Standalone Features") await Navigation.PushAsync(new CompendiumFeatsOverviewPage());
                 else if (s == "Magic Items") await Navigation.PushAsync(new CompendiumMagicOverviewPage());
+                else if (s == "Level")
+                {
+                    OGLContext context = new OGLContext();
+                    await PCLSourceManager.InitAsync();
+                    ConfigManager config = await context.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml"));
+                    DependencyService.Get<IHTMLService>().Reset(config);
+                    await context.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels));
+                    LevelEditModel m = new LevelEditModel(context);
+                    TabbedPage t = new TabbedPage();
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "Experience", "Level ", "0", Keyboard.Numeric, true, true)) { Title = "Experience" });
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "Proficiency", "Level ", "+#;-#;0", Keyboard.Telephone, true, true)) { Title = "Proficiency" });
+                    m.TrackChanges = true;
+                    await Navigation.PushModalAsync(t);
+                }
             }
             (sender as ListView).SelectedItem = null;
         }

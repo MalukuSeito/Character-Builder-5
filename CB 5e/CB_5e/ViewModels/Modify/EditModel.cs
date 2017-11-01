@@ -17,7 +17,8 @@ namespace CB_5e.ViewModels.Modify
     public interface IEditModel: INotifyPropertyChanged
     {
         Command Undo { get; }
-        Command Redo { get;  }
+        Command Redo { get; }
+        Command Save { get; }
         bool TrackChanges { get; set; }
         OGLContext Context { get; }
         void MakeHistory(string id = "");

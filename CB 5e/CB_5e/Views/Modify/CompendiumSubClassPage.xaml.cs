@@ -110,7 +110,7 @@ namespace CB_5e.Views.Modify
             t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
             t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
             t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features" });
-            t.Children.Add(new NavigationPage(new IntListPage(m, "MulticlassingSpellLevels", "Level ", Keyboard.Numeric)) { Title = "Multiclassing" });
+            t.Children.Add(new NavigationPage(new IntListPage(m, "MulticlassingSpellLevels", "Level ", "0 'levels'", Keyboard.Numeric)) { Title = "Multiclassing" });
             t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features" });
             return t;
         }

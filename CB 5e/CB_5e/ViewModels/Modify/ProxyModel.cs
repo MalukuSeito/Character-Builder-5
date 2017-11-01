@@ -17,11 +17,16 @@ namespace CB_5e.ViewModels.Modify
             Parent = parent;
             Context = parent?.Context;
             Navigation = parent?.Navigation;
+            Save = new Command(async () => {
+                await SaveAsync(false);                
+            }, () => Changed);
         }
 
         public Command Undo => new Command(() => throw new NotImplementedException(), () => false);
 
         public Command Redo => new Command(() => throw new NotImplementedException(), () => false);
+
+        public Command Save { get; set; }
 
         public bool TrackChanges { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IEditModel Parent { get; private set; }

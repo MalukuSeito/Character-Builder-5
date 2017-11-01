@@ -22,6 +22,7 @@ namespace CB_5e.Views.Modify.Collections
 	{
         private List<int> entries;
         public ObservableRangeCollection<IntViewModel> Entries { get; set; } = new ObservableRangeCollection<IntViewModel>();
+        public string Format { get; private set; }
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
         public string Prepend { get; private set; }
@@ -30,10 +31,12 @@ namespace CB_5e.Views.Modify.Collections
         private bool TopLevelPage = true;
         public Keyboard Keyboard = Keyboard.Numeric;
         public Command Undo { get => Model.Undo; }
+        public Command Save { get => Model.Save; }
         public Command Redo { get => Model.Redo; }
 
-        public IntListPage(IEditModel parent, string property, string prepend = "Level ", Keyboard keyboard = null, bool toplevel = true)
+        public IntListPage(IEditModel parent, string property, string prepend = "Level ", string format = "0", Keyboard keyboard = null, bool toplevel = true, bool save = false)
         {
+            Format = format;
             Model = parent;
             Prepend = prepend;
             TopLevelPage = toplevel;
@@ -41,15 +44,21 @@ namespace CB_5e.Views.Modify.Collections
             Property = property;
             UpdateEntries();
 			InitializeComponent ();
-            InitToolbar();
+            InitToolbar(save);
             BindingContext = this;
             Keyboard = keyboard;
 		}
 
-        private void InitToolbar()
+        private void InitToolbar(bool save)
         {
             if (TopLevelPage)
             {
+                if (save)
+                {
+                    ToolbarItem s = new ToolbarItem() { Text = "Save" };
+                    s.SetBinding(MenuItem.CommandProperty, new Binding("Save"));
+                    ToolbarItems.Add(s);
+                }
                 ToolbarItem undo = new ToolbarItem() { Text = "Undo" };
                 undo.SetBinding(MenuItem.CommandProperty, new Binding("Undo"));
                 ToolbarItems.Add(undo);
@@ -89,7 +98,7 @@ namespace CB_5e.Views.Modify.Collections
             List<IntViewModel> res = new List<IntViewModel>(entries.Count);
             for (int i = 0; i < entries.Count; i++)
             {
-                res.Add(new IntViewModel(i + 1, entries[i], Prepend));
+                res.Add(new IntViewModel(i + 1, entries[i], Prepend, Format));
             }
             Entries.ReplaceRange(res);
         }
