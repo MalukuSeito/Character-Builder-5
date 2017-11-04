@@ -34,6 +34,18 @@ namespace OGL
         {
             return PointBuyPoints;
         }
+
+        public AbilityScores Clone()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                Serializer.Serialize(mem, this);
+                mem.Seek(0, SeekOrigin.Begin);
+                AbilityScores r = (AbilityScores)Serializer.Deserialize(mem);
+                return r;
+            }
+        }
+
         public List<AbilityScoreArray> GetArrays()
         {
             List<AbilityScoreArray> res = new List<AbilityScoreArray>();

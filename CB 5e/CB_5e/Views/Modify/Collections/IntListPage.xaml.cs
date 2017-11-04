@@ -184,7 +184,7 @@ namespace CB_5e.Views.Modify.Collections
                             fvm.Value = ii;
                             fvm.Refresh();
                         }
-                    }), Keyboard, fvm.Text));
+                    }), Keyboard, fvm.Value.ToString()));
                     (sender as ListView).SelectedItem = null;
                 }
             }

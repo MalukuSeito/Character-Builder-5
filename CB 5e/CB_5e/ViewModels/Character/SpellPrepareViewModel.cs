@@ -97,7 +97,7 @@ namespace CB_5e.ViewModels.Character
                                     Prepared = true,
                                     Prepare = OnPrepare,
                                     ShowInfo = ShowInfo,
-                                    BadChoice = !filtered.Exists(t => t.Name == s.Name && s.Source == t.Source) && !additional.Exists(t => t.Name == s.Name && s.Source == t.Source)
+                                    BadChoice = !s.AddAlwaysPreparedToName && !filtered.Exists(t => t.Name == s.Name && s.Source == t.Source) && !additional.Exists(t => t.Name == s.Name && s.Source == t.Source)
                                 });
                 spells.AddRange(from s in additional
                                 where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)

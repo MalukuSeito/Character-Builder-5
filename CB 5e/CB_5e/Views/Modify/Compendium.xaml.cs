@@ -69,6 +69,21 @@ namespace CB_5e.Views.Modify
                     m.TrackChanges = true;
                     await Navigation.PushModalAsync(t);
                 }
+                else if (s == "Ability Scores")
+                {
+                    OGLContext context = new OGLContext();
+                    await PCLSourceManager.InitAsync();
+                    ConfigManager config = await context.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml"));
+                    DependencyService.Get<IHTMLService>().Reset(config);
+                    await context.LoadAbilityScoresAsync(await PCLSourceManager.Data.GetFileAsync(config.AbilityScores));
+                    ScoresEditModel m = new ScoresEditModel(context);
+                    TabbedPage t = new TabbedPage();
+                    t.Children.Add(new NavigationPage(new EditScores(m)) { Title = "Scores" });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "Arrays", null, true)) { Title = "Arrays" });
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "PointBuyCost", "Minimum -1+", "0 points", Keyboard.Telephone, true, false)) { Title = "Point Buy Cost" });
+                    m.TrackChanges = true;
+                    await Navigation.PushModalAsync(t);
+                }
             }
             (sender as ListView).SelectedItem = null;
         }
