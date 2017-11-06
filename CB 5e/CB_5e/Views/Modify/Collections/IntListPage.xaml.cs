@@ -22,11 +22,12 @@ namespace CB_5e.Views.Modify.Collections
 	{
         private List<int> entries;
         public ObservableRangeCollection<IntViewModel> Entries { get; set; } = new ObservableRangeCollection<IntViewModel>();
+        public int Offset { get => off; set { off = value; Fill(); } }
         public string Format { get; private set; }
         public IEditModel Model { get; private set; }
         public string Property { get; private set; }
         public string Prepend { get; private set; }
-
+        private int off = 1;
         private int move = -1;
         private bool TopLevelPage = true;
         public Keyboard Keyboard = Keyboard.Numeric;
@@ -34,8 +35,9 @@ namespace CB_5e.Views.Modify.Collections
         public Command Save { get => Model.Save; }
         public Command Redo { get => Model.Redo; }
 
-        public IntListPage(IEditModel parent, string property, string prepend = "Level ", string format = "0", Keyboard keyboard = null, bool toplevel = true, bool save = false)
+        public IntListPage(IEditModel parent, string property, string prepend = "Level ", string format = "0", Keyboard keyboard = null, bool toplevel = true, bool save = false, int offset = 1)
         {
+            off = offset;
             Format = format;
             Model = parent;
             Prepend = prepend;
@@ -88,17 +90,18 @@ namespace CB_5e.Views.Modify.Collections
             if (e.PropertyName == "" || e.PropertyName == null || e.PropertyName == Property) UpdateEntries();
         }
 
-        private void UpdateEntries()
+        public void UpdateEntries()
         {
             entries = (List<int>)Model.GetType().GetRuntimeProperty(Property).GetValue(Model);
             Fill();
         }
         private void Fill()
         {
+            if (entries == null) return;
             List<IntViewModel> res = new List<IntViewModel>(entries.Count);
             for (int i = 0; i < entries.Count; i++)
             {
-                res.Add(new IntViewModel(i + 1, entries[i], Prepend, Format));
+                res.Add(new IntViewModel(i + Offset, entries[i], Prepend, Format));
             }
             Entries.ReplaceRange(res);
         }
@@ -148,7 +151,7 @@ namespace CB_5e.Views.Modify.Collections
                 if (par is string s && int.TryParse(s, out int i))
                 {
                     Model.MakeHistory();
-                    IntViewModel vm = new IntViewModel(entries.Count + 1, i, Prepend);
+                    IntViewModel vm = new IntViewModel(entries.Count + Offset, i, Prepend);
                     entries.Add(i);
                     Entries.Add(vm);
                 }

@@ -1,6 +1,7 @@
 ﻿using CB_5e.Services;
 using CB_5e.ViewModels.Modify;
 using CB_5e.Views.Modify.Collections;
+using CB_5e.Views.Modify.Features;
 using OGL;
 using System;
 using System.Collections.Generic;
@@ -80,8 +81,27 @@ namespace CB_5e.Views.Modify
                     TabbedPage t = new TabbedPage();
                     t.Children.Add(new NavigationPage(new EditScores(m)) { Title = "Scores" });
                     t.Children.Add(new NavigationPage(new StringListPage(m, "Arrays", null, true)) { Title = "Arrays" });
-                    t.Children.Add(new NavigationPage(new IntListPage(m, "PointBuyCost", "Minimum -1+", "0 points", Keyboard.Telephone, true, false)) { Title = "Point Buy Cost" });
-                    m.TrackChanges = true;
+                    IntListPage p = new IntListPage(m, "PointBuyCost", "", "0 points", Keyboard.Telephone, true, false, m.PointBuyMinScore);
+                    t.Children.Add(new NavigationPage(p) { Title = "Point Buy Cost" });
+                    m.PropertyChanged += (o, ee) =>
+                    {
+                        if (ee.PropertyName == "" || ee.PropertyName == null || ee.PropertyName == "PointBuyMinScore") p.Offset = m.PointBuyMinScore;
+                    };
+                    await Navigation.PushModalAsync(t);
+                }
+                else if (s == "Settings")
+                {
+                    OGLContext context = new OGLContext();
+                    await PCLSourceManager.InitAsync();
+                    ConfigManager config = await context.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml"));
+                    DependencyService.Get<IHTMLService>().Reset(config);
+                    SettingsEditModel m = new SettingsEditModel(context);
+                    TabbedPage t = new TabbedPage();
+                    t.Children.Add(new NavigationPage(new EditSettings(m)) { Title = "Settings" });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "EqiupmentSlots", null, true)) { Title = "Slots" });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "PDFExporters", null, true)) { Title = "PDF" });
+                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "CommonFeatures")) { Title = "Common Features" });
+                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "Features (Multiclassing)" });
                     await Navigation.PushModalAsync(t);
                 }
             }

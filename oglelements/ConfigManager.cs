@@ -35,6 +35,18 @@ namespace OGL
                 MultiClassingAbilityScoreRequirement = value;
             }
         }
+
+        public ConfigManager Clone()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                Serializer.Serialize(mem, this);
+                mem.Seek(0, SeekOrigin.Begin);
+                ConfigManager r = (ConfigManager)Serializer.Deserialize(mem);
+                return r;
+            }
+        }
+
         public string DefaultSource
         {
             get

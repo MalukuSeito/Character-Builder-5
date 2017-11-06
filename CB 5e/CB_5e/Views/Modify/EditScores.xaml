@@ -10,27 +10,29 @@
         <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Default Maximum Ability Score" FontSize="Small"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding DefaultMax}" TextColor="{Binding Accent}"/>
-                <Stepper HorizontalOptions="Fill" Value="{Binding DefaultMax}"/>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="Default Maximum Ability Score" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding DefaultMax}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding DefaultMax}"/>
+                </StackLayout>
+                <Label Text="Point Buy Points:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyPoints}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyPoints}"/>
+                </StackLayout>
+                <Label Text="Point Buy Minimum Score:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyMinScore}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyMinScore}"/>
+                </StackLayout>
+                <Label Text="Point Buy Maximum Score:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyMaxScore}" TextColor="{Binding Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyMaxScore}"/>
+                </StackLayout>
             </StackLayout>
-            <Label Text="Point Buy Points:" FontSize="Small"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyPoints}" TextColor="{Binding Accent}"/>
-                <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyPoints}"/>
-            </StackLayout>
-            <Label Text="Point Buy Minimum Score:" FontSize="Small"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyMinScore}" TextColor="{Binding Accent}"/>
-                <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyMinScore}"/>
-            </StackLayout>
-            <Label Text="Point Buy Maximum Score:" FontSize="Small"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PointBuyMaxScore}" TextColor="{Binding Accent}"/>
-                <Stepper HorizontalOptions="Fill" Value="{Binding PointBuyMaxScore}"/>
-            </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
