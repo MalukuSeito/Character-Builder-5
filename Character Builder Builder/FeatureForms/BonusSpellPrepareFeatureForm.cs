@@ -24,7 +24,7 @@ namespace Character_Builder_Builder.FeatureForms
                 SpellcastingID.Items.Add(s);
             }
             SpellcastingID.DataBindings.Add("Text", bf, "SpellcastingID", true, DataSourceUpdateMode.OnPropertyChanged);
-            Condition.DataBindings.Add("Text", f, "AdditionalSpellChoices", true, DataSourceUpdateMode.OnPropertyChanged);
+            Condition.DataBindings.Add("Text", f, "Condition", true, DataSourceUpdateMode.OnPropertyChanged);
             foreach (PreparationMode s in Enum.GetValues(typeof(PreparationMode))) AddTo.Items.Add(s);
             AddTo.DataBindings.Add("SelectedItem", f, "AddTo", true, DataSourceUpdateMode.OnPropertyChanged);
             keywordControl1.Keywords = bf.KeywordsToAdd;
