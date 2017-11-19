@@ -126,7 +126,7 @@ namespace CB_5e.ViewModels.Modify
 
         public async Task SaveAsync()
         {
-            IFile file = await PCLSourceManager.Data.GetFileAsync(Context.Config.AbilityScores).ConfigureAwait(false);
+            IFile file = await PCLSourceManager.Data.GetFileAsync("Config.xml").ConfigureAwait(false);
             using (Stream fs = await file.OpenAsync(FileAccess.ReadAndWrite).ConfigureAwait(false)) {
                 ConfigManager.Serializer.Serialize(fs, Model);
                 fs.SetLength(fs.Position);

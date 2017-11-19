@@ -848,7 +848,7 @@ namespace CB_5e.Droid
             if (trans.ContainsKey("AC")) p.AcroFields.SetField(trans["AC"], Context.Player.GetAC().ToString());
             if (trans.ContainsKey("ProficiencyBonus")) p.AcroFields.SetField(trans["ProficiencyBonus"], PlusMinus(Context.Player.GetProficiency()));
             if (trans.ContainsKey("Initiative")) p.AcroFields.SetField(trans["Initiative"], PlusMinus(Context.Player.GetInitiative()));
-            if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Context.Player.GetCharismaMod().ToString());
+            if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], PlusMinus(Context.Player.GetCharismaMod()));
             if (trans.ContainsKey("CharacterName")) p.AcroFields.SetField(trans["CharacterName"], Context.Player.Name);
             if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Context.Player.Name);
             if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Context.Player.GetClassesStrings()));

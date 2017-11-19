@@ -796,7 +796,7 @@ namespace Character_Builder_5
             if (trans.ContainsKey("AC")) p.AcroFields.SetField(trans["AC"], Program.Context.Player.GetAC().ToString());
             if (trans.ContainsKey("ProficiencyBonus")) p.AcroFields.SetField(trans["ProficiencyBonus"], Form1.plusMinus(Program.Context.Player.GetProficiency()));
             if (trans.ContainsKey("Initiative")) p.AcroFields.SetField(trans["Initiative"], Form1.plusMinus(Program.Context.Player.GetInitiative()));
-            if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Program.Context.Player.GetCharismaMod().ToString());
+            if (trans.ContainsKey("CharismaModifier")) p.AcroFields.SetField(trans["CharismaModifier"], Form1.plusMinus(Program.Context.Player.GetCharismaMod()));
             if (trans.ContainsKey("CharacterName")) p.AcroFields.SetField(trans["CharacterName"], Program.Context.Player.Name);
             if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Program.Context.Player.Name);
             if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Program.Context.Player.GetClassesStrings()));
