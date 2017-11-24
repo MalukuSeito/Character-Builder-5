@@ -224,7 +224,7 @@ namespace CB_5e.Services
             p = p.Replace(PortablePath.DirectorySeparatorChar, '/');
             if (!Category.Categories.ContainsKey(p))
             {
-                Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { PortablePath.DirectorySeparatorChar }).ToList()));
+                Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { PortablePath.DirectorySeparatorChar }).ToList(), context));
             }
             String parent = PCLSourceManager.Parent(p);
             if (parent.StartsWith(context.Config.Items_Directory) && !parent.Equals(context.Config.Items_Directory)) Make(context, parent);
