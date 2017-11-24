@@ -180,6 +180,7 @@ namespace Character_Builder
                     else if (name == "damagetype" && i is Weapon) args.Result = ((Weapon)i).DamageType;
                     else if (name == "tool") args.Result = i is Tool;
                     else if (name == "maxspellslot" && SpellcastingID != null) args.Result = context.Player.GetSpellSlotsMax(SpellcastingID);
+                    else if (name == "source") args.Result = i?.Source?.ToLowerInvariant();
                     else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else if (i != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
@@ -283,6 +284,7 @@ namespace Character_Builder
                     else if (name == "level") args.Result = s.Level;
                     else if (name == "classlevel") args.Result = classlevel;
                     else if (name == "classspelllevel") args.Result = (classlevel + 1) / 2;
+                    else if (name == "source") args.Result = s.Source.ToLowerInvariant();
                     else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
@@ -534,6 +536,7 @@ namespace Character_Builder
                     else if (name == "race") args.Result = context.Player.RaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.RaceName.ToLowerInvariant());
                     else if (name == "subrace") args.Result = context.Player.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.SubRaceName.ToLowerInvariant());
                     else if (name == "classlevel") args.Result = classlevel;
+                    else if (name == "source") args.Result = i?.Source?.ToLowerInvariant();
                     else if (additionalKeywords.Exists(s => MatchesKW(name, s))) args.Result = true;
                     else if (i != null && i.Keywords != null && i.Keywords.Count > 0 && i.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
@@ -572,6 +575,7 @@ namespace Character_Builder
                     else if (name == "shield") args.Result = (current is Shield);
                     else if (name == "tool") args.Result = (current is Tool);
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
                     else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
@@ -621,6 +625,7 @@ namespace Character_Builder
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "level") args.Result = current.Level;
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
                     else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
@@ -667,6 +672,7 @@ namespace Character_Builder
                     else if (name == "race") args.Result = context.Player.RaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.RaceName.ToLowerInvariant());
                     else if (name == "subrace") args.Result = context.Player.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.SubRaceName.ToLowerInvariant());
                     else if (s.Keywords.Count > 0 && s.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else if (name == "source") args.Result = s.Source.ToLowerInvariant();
                     else if (s is ModifiedSpell && ((ModifiedSpell)s).AdditionalKeywords.Count > 0 && ((ModifiedSpell)s).AdditionalKeywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else if (additionalKeywords.Exists(k => MatchesKW(k, name))) args.Result = true;
                     else args.Result = false;

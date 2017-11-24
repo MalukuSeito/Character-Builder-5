@@ -144,6 +144,7 @@ namespace OGL
                     if (name == "category") args.Result = current.Category;
                     else if (name == "level") args.Result = current.Level;
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
                     else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => k.Name == name)) args.Result = true;
                     else args.Result = false;
                 };
@@ -260,6 +261,7 @@ namespace OGL
                     else if (name == "shield") args.Result = (current is Shield);
                     else if (name == "tool") args.Result = (current is Tool);
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
                     else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
                     else args.Result = false;
                 };
@@ -416,6 +418,7 @@ namespace OGL
                     else if (name == "classspelllevel") args.Result = int.MaxValue;
                     else if (name == "maxspellslot") args.Result = int.MaxValue;
                     else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
                     else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
                     else if (name == "level") args.Result = current.Level;
                     else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;

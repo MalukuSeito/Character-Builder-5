@@ -521,7 +521,7 @@ namespace Character_Builder_Forms
             p = p.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             if (!Category.Categories.ContainsKey(p))
             {
-                Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }).ToList()));
+                Category.Categories.Add(p.ToString(), new Category(p, path.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }).ToList(), context));
             }
             String parent = Path.GetDirectoryName(p);
             if (parent.IsSubPathOf(context.Config.Items_Directory)) Make(context, parent);
