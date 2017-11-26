@@ -125,6 +125,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Character Builder Base\Character Builder Base.csproj">
+      <Project>{07782F39-5E74-4400-AF78-93826D529B43}</Project>
+      <Name>Character Builder Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\oglelements\OGL Elements.csproj">
+      <Project>{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}</Project>
+      <Name>OGL Elements</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CB_5e\CB_5e.csproj">
       <Project>{afef8216-5e17-4e09-9ff9-61846864e437}</Project>
       <Name>CB_5e</Name>
@@ -139,8 +147,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardService_IOS.cs" />
+    <Compile Include="DocumentViewer_iOS.cs" />
+    <Compile Include="HTMLExtensions.cs" />
+    <Compile Include="HTMLService_Droid.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="MyEntryRenderer.cs" />
+    <Compile Include="PicturePicker_IOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\profile_generic.png" />
