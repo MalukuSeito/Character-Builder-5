@@ -54,11 +54,18 @@ namespace CB_5e.Views
             {
                 if (Obj != null)
                 {
-                    src.Html = DependencyService.Get<IHTMLService>().Convert(Obj);
+                    string loaded = DependencyService.Get<IHTMLService>().Convert(Obj);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        src.Html = loaded;
+                    });
                 }
                 else
                 {
-                    src.Html = "";
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        src.Html = "";
+                    });
                 }
             }).Forget();
         }

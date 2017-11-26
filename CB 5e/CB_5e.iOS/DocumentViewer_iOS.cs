@@ -25,17 +25,20 @@ namespace CB_5e.iOS
                 file.CopyTo(fs);
             }
             var fileinfo = new FileInfo(Path.Combine(tmp, name));
-            var previewController = new QLPreviewController
+            Device.BeginInvokeOnMainThread(() =>
             {
-                DataSource = new PreviewControllerDataSource(fileinfo.FullName, fileinfo.Name)
-            };
+                var previewController = new QLPreviewController
+                {
+                    DataSource = new PreviewControllerDataSource(fileinfo.FullName, fileinfo.Name)
+                };
 
-            UINavigationController controller = FindNavigationController();
+                UINavigationController controller = FindNavigationController();
 
-            if (controller != null)
-            {
-                controller.PresentViewController((UIViewController)previewController, true, (Action)null);
-            }
+                if (controller != null)
+                {
+                    controller.PresentViewController((UIViewController)previewController, true, (Action)null);
+                }
+            });
         }
 
         private UINavigationController FindNavigationController()

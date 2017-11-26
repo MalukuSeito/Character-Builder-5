@@ -34,7 +34,8 @@ namespace CB_5e.iOS
 
             // Present UIImagePickerController;
             UIWindow window = UIApplication.SharedApplication.KeyWindow;
-            var viewController = window.RootViewController;
+            //var viewController = window.RootViewController;
+            var viewController = TopViewController(UIApplication.SharedApplication.KeyWindow.RootViewController);
             viewController.PresentModalViewController(imagePicker, true);
 
             // Return Task object
@@ -75,6 +76,21 @@ namespace CB_5e.iOS
                 await s.CopyToAsync(ms);
                 return ms.ToArray();
             }
+        }
+
+        public UIViewController TopViewController(UIViewController b) {
+            if (b is UINavigationController nav) {
+                return TopViewController(nav.VisibleViewController);
+            }
+            if (b is UITabBarController tab) {
+                if (tab.SelectedViewController is UIViewController selected) {
+                    return TopViewController(selected);
+                }
+            }
+            if (b.PresentedViewController is UIViewController presented) {
+                return TopViewController(presented);
+            }
+            return b;
         }
     }
 }
