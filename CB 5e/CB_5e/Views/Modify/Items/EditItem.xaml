@@ -14,41 +14,41 @@
             <StackLayout Padding="20">
                 <Label Text="Stack size in shop and free items: (i.e. 20 arrows)" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding StackSize}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding StackSize}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding StackSize}"/>
                 </StackLayout>
                 <Label Text="Weight of a single item:" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Weight}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Weight}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding Weight}"/>
                 </StackLayout>
                 <Label Text="Unit of a multiple item: (pieces, vials, fl.oz.)" FontSize="Small"/>
-                <Entry Text="{Binding Unit}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding Unit}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Unit of a single item: (piece, vial, fl.oz.)" FontSize="Small"/>
-                <Entry Text="{Binding SingleUnit}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding SingleUnit}" TextColor="{StaticResource Accent}"/>
                 <Label Text="PP:" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PP}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding PP}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding PP}"/>
                 </StackLayout>
                 <Label Text="GP" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding GP}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding GP}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding GP}"/>
                 </StackLayout>
                 <Label Text="EP" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding EP}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding EP}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding EP}"/>
                 </StackLayout>
                 <Label Text="SP:" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding SP}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding SP}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding SP}"/>
                 </StackLayout>
                 <Label Text="CP:" FontSize="Small"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding CP}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding CP}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding CP}"/>
                 </StackLayout>
             </StackLayout>

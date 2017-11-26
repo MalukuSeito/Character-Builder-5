@@ -14,9 +14,9 @@
         <StackLayout Padding="10">
             <Label IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
             <Label Text="Name:" />
-            <Entry Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Text="Source:" />
-            <Entry Text="{Binding Source}" TextColor="{Binding Accent}"/>
+            <Entry Text="{Binding Source}" TextColor="{StaticResource Accent}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

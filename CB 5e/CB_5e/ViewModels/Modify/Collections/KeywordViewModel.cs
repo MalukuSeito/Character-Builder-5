@@ -19,6 +19,5 @@ namespace CB_5e.ViewModels.Modify.Collections
         private bool selected = false;
         public bool Selected { get => selected; set => SetProperty(ref selected, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Selected ? Color.DarkBlue : Color.Default; }
-        public Color Accent { get => Color.Accent; }
     }
 }

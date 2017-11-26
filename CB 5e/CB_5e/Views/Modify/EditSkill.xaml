@@ -25,13 +25,13 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
             <Label Grid.Row="1" Text="Name:" FontSize="Micro"/>
-            <Entry Grid.Row="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Row="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="3" Text="Source:" FontSize="Micro"/>
-            <Entry Grid.Row="4" Text="{Binding Source}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Row="4" Text="{Binding Source}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="5" Text="Base:" FontSize="Micro"/>
-            <Picker Grid.Row="6" ItemsSource="{Binding Abilities}" SelectedItem="{Binding Base}" TextColor="{Binding Accent}"/>
+            <Picker Grid.Row="6" ItemsSource="{Binding Abilities}" SelectedItem="{Binding Base}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="7" Text="Description:" FontSize="Micro"/>
-            <Editor Grid.Row="8" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Row="8" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{StaticResource Accent}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

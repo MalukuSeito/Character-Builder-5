@@ -25,18 +25,18 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
             <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
             <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
             <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="TailTruncation"/>
-            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Amount: (Number of languages allowed to be chosen)" FontSize="Micro" LineBreakMode="TailTruncation"/>
             <StackLayout Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{StaticResource Accent}"/>
                 <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
             </StackLayout>
         </Grid>

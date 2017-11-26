@@ -26,11 +26,11 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
             <Label Grid.Column="0" Grid.Row="1" Text="Name:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="3" Text="Source:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Source}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Source}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="5" Text="Description (updates keywords):" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="6" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="6" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{StaticResource Accent}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -28,13 +28,13 @@
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Text="Level:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+            <Entry Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
             <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="Hidden (Sheet):" FontSize="Micro"/>
             <Switch Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  IsToggled="{Binding Hidden}"/>
             <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="6" Grid.ColumnSpan="6" Text="Saving Throws:" FontSize="Micro" LineBreakMode="WordWrap"/>
             <Label Grid.Row="7" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
             <Switch Grid.Row="7" Grid.Column="1" IsToggled="{Binding SaveStrength}" HorizontalOptions="Start"/>

@@ -10,12 +10,12 @@
         <ScrollView>
             <StackLayout Padding="20">
                 <Label Text="Amount: (NCalc expression, must evaluate to a number)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding Value}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding Value}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Resource ID: (Must be unique for each resource, resource with the same Resource ID stack)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding ResourceID}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding ResourceID}" TextColor="{StaticResource Accent}"/>
                 <Picker ItemsSource="{Binding ResourceIDValues}" SelectedItem="{Binding ResourceID, Mode=OneWayToSource}"/>
                 <Label Text="Exclusion ID: (If two resources with the same Exclusion ID exist, only the highest is displayed)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding ExclusionID}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding ExclusionID}" TextColor="{StaticResource Accent}"/>
                 <Picker ItemsSource="{Binding ExclusionIDValues}" SelectedItem="{Binding ExclusionID, Mode=OneWayToSource}"/>
                 <Label Text="Recharge:" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Picker ItemsSource="{Binding RechargeValues}" SelectedItem="{Binding Recharge}"/>

@@ -40,17 +40,17 @@
                     </Image.GestureRecognizers>
                 </Image>
                 <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding PlayerName}" />
-                <Label Grid.Row="0" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Race}" TextColor="{Binding Accent}">
+                <Label Grid.Row="0" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Race}" TextColor="{StaticResource Accent}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowRace}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Grid.Row="1" Grid.Column ="2" Grid.ColumnSpan="4" Text="{Binding Classes}" LineBreakMode="WordWrap" TextColor="{Binding Accent}" >
+                <Label Grid.Row="1" Grid.Column ="2" Grid.ColumnSpan="4" Text="{Binding Classes}" LineBreakMode="WordWrap" TextColor="{StaticResource Accent}" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowClasses}"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Grid.Row="2" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Background}" TextColor="{Binding Accent}" >
+                <Label Grid.Row="2" Grid.Column ="4" Grid.ColumnSpan="2" Text="{Binding Background}" TextColor="{StaticResource Accent}" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ShowBackground}"/>
                     </Label.GestureRecognizers>
@@ -124,9 +124,9 @@
                 <Label Grid.Row="15" Grid.Column ="0" Text="{Binding HPMax}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End" LineBreakMode="WordWrap"/>
                 <Label Grid.Row="16" Grid.Column ="0" Text="Temp" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
                 <Label Grid.Row="17" Grid.Column ="0" Text="Bonus Max" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                <Entry Grid.Row="15" Grid.Column ="1" Keyboard="Telephone" Text="{Binding HP}"  TextColor="{Binding Accent}"/>
-                <Entry Grid.Row="16" Grid.Column ="1" Keyboard="Numeric" Text="{Binding TempHP}" TextColor="{Binding Accent}"/>
-                <Entry Grid.Row="17" Grid.Column ="1" Keyboard="Telephone" Text="{Binding BonusHP}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="15" Grid.Column ="1" Keyboard="Telephone" Text="{Binding HP}"  TextColor="{StaticResource Accent}"/>
+                <Entry Grid.Row="16" Grid.Column ="1" Keyboard="Numeric" Text="{Binding TempHP}" TextColor="{StaticResource Accent}"/>
+                <Entry Grid.Row="17" Grid.Column ="1" Keyboard="Telephone" Text="{Binding BonusHP}" TextColor="{StaticResource Accent}"/>
 
                 <Label Grid.Row="14" Grid.Column ="2" Grid.ColumnSpan="2" Text="Hit Die" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
                 <!-- <Label Grid.Row="15" Grid.Column ="2" Grid.ColumnSpan="2" Text="{Binding HDTotal}}" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>-->
@@ -153,7 +153,7 @@
                 <Label Grid.Row="14" Grid.Column ="4" Grid.ColumnSpan="2" Text="Death Saves" FontSize="Micro" VerticalTextAlignment="End" HorizontalTextAlignment="Center"/>
                 <Label Grid.Row="15" Grid.Column ="4" Text="Successes" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
                 <Label Grid.Row="16" Grid.Column ="4" Text="Fails" FontSize="Micro" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
-                <Picker Grid.Row="15" Grid.Column="5" SelectedIndex="{Binding DeathSaveSuccess}" TextColor="{Binding Accent}">
+                <Picker Grid.Row="15" Grid.Column="5" SelectedIndex="{Binding DeathSaveSuccess}" TextColor="{StaticResource Accent}">
                     <Picker.Items>
                         <x:String>0</x:String>
                         <x:String>1</x:String>
@@ -161,7 +161,7 @@
                         <x:String>3</x:String>
                     </Picker.Items>
                 </Picker>
-                <Picker Grid.Row="16" Grid.Column="5" SelectedIndex="{Binding DeathSaveFail}" TextColor="{Binding Accent}">
+                <Picker Grid.Row="16" Grid.Column="5" SelectedIndex="{Binding DeathSaveFail}" TextColor="{StaticResource Accent}">
                     <Picker.Items>
                         <x:String>0</x:String>
                         <x:String>1</x:String>

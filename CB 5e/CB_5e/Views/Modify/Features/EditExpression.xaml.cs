@@ -25,7 +25,6 @@ namespace CB_5e.Views.Modify.Features
                 OnPropertyChanged("Text");
             }
         }
-        public Color Accent { get => Color.Accent; }
         public string Notes { get; set; }
         public string Header { get; set; }
 

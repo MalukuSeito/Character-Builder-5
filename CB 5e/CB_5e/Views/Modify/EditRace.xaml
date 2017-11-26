@@ -29,9 +29,9 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
             <Label Grid.Column="0" Grid.Row="1" Text="Name:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Name}" TextColor="{Binding Accent}" Margin="0"/>
+            <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Name}" TextColor="{StaticResource Accent}" Margin="0"/>
             <Label Grid.Column="0" Grid.Row="3" Text="Source:"  FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Source}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Source}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="1" Grid.Row="1" Text="Image:"  FontSize="Micro"/>
             <Image Grid.Column="1" Grid.Row="2" VerticalOptions="Fill" HorizontalOptions="Fill" Aspect="AspectFit" Source="{Binding Image}" >
                 <Image.GestureRecognizers>
@@ -39,11 +39,11 @@
                 </Image.GestureRecognizers>
             </Image>
             <Label Grid.Column="1" Grid.Row="3" Text="Size:"  FontSize="Micro"/>
-            <Picker Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Sizes}" SelectedItem="{Binding Size}" TextColor="{Binding Accent}"/>
+            <Picker Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Sizes}" SelectedItem="{Binding Size}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Text="Flavor:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Flavour}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Flavour}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="Description:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Description}" TextColor="{StaticResource Accent}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -83,7 +83,7 @@ namespace CB_5e.ViewModels.Character
             }
         }
         public string Base { get => SourceInvariantComparer.NoSource(Value.BaseItem); }
-        public Color Accent { get => Color.Accent; }
+        
         public Command BaseItemInfo { get; set; }
 
         public string Description

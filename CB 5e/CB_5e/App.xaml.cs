@@ -16,7 +16,27 @@ namespace CB_5e
     public partial class App : Application
     {
         public static IFolder Storage = PCLStorage.FileSystem.Current.LocalStorage;
-        public static bool AutoSaveDuringPlay = true;
+        private static bool? autosave;
+        public static bool AutoSaveDuringPlay
+        {
+            get
+            {
+                if (autosave.HasValue) return autosave.Value;
+                if (Current.Properties.ContainsKey("AutoSaveDuringPlay"))
+                {
+                    object o = Current.Properties["AutoSaveDuringPlay"];
+                    autosave = o is bool b && b;
+                    return autosave.Value;
+                }
+                autosave = true;
+                return true;
+            }
+            set
+            {
+                autosave = value;
+                Current.Properties["AutoSaveDuringPlay"] = value;
+            }
+        }
         public static TabbedPage MainTab { get; private set; }
         public App()
         {

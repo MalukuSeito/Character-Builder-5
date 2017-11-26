@@ -10,19 +10,19 @@
         <ScrollView>
             <StackLayout Padding="20">
                 <Label Text="Spellcasting ID: (Spellcasting Feature to add spells to)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding SpellcastingID}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding SpellcastingID}" TextColor="{StaticResource Accent}"/>
                 <Picker ItemsSource="{Binding Suggestions}" SelectedItem="{Binding SpellcastingID, Mode=OneWayToSource}"/>
                 <Label Text="Unqiue ID: (Must be unique to identify the choice, other features reference this)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Add spells to: (LearnSpells = always prepared)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Picker Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" ItemsSource="{Binding PreparationTypes}" SelectedItem="{Binding AddTo}"/>
                 <Label Text="Amount of selectable spells: (can be modified by Increase Spellchoice Features)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
                 </StackLayout>
                 <Label Text="Selectable spells: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding AvailableSpellChoices}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding AvailableSpellChoices}" TextColor="{StaticResource Accent}"/>
                 <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Only spells matching this condition can be selected. More spells can be added with Modify Spellchoice Features.
 Variables: Name (spell: string, lowercase), Level (spell: number) and the Keywords of the spells as boolean (see the keywords tab for examples), PlayerLevel (number), ClassLevel (=PlayerLevel, if not in class), ClassSpellLevel ((Classlevel+1 /2))</Label.Text>

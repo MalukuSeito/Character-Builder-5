@@ -48,7 +48,6 @@ namespace CB_5e.ViewModels.Modify
         public Command Save { get; private set; }
         public Command Preview { get; private set; }
         public OGLContext Context { get; private set; }
-        public Color Accent { get => Color.Accent; }
         public bool TrackChanges { get; set; }
 
         public EditModel(T obj, OGLContext context)

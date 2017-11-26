@@ -16,11 +16,11 @@
                     <StackLayout Padding="20">
                         <Label Text="Proficiency Multiplier: (add proficiency that many times)" FontSize="Micro" LineBreakMode="WordWrap"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" >
-                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding ProficiencyMultiplier}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+                            <Entry HorizontalOptions="FillAndExpand" Text="{Binding ProficiencyMultiplier}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
                             <Stepper HorizontalOptions="Fill" Value="{Binding StepperValue}"/>
                         </StackLayout>
                         <Label Text="Stacking Mode:" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Picker ItemsSource="{Binding BonusTypes}" SelectedItem="{Binding BonusType}" TextColor="{Binding Accent}"/>
+                        <Picker ItemsSource="{Binding BonusTypes}" SelectedItem="{Binding BonusType}" TextColor="{StaticResource Accent}"/>
                         <Label Text="Skills:" FontSize="Micro" LineBreakMode="WordWrap"/>
                     </StackLayout>
                 </ListView.Header>

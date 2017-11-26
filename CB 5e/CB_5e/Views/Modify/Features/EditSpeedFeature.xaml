@@ -10,15 +10,15 @@
         <ScrollView>
             <StackLayout Padding="20">
                 <Label Text="Condtion for Activation: (NCalc, must evaluate to true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding Condition}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Base Speed:" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding BaseSpeed}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+                <Entry Text="{Binding BaseSpeed}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                     <Switch IsToggled="{Binding IgnoreArmor}"/>
                     <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"  Text="Base Speed Ignores Armor Penalty" FontSize="Micro" LineBreakMode="WordWrap"/>
                 </StackLayout>
                 <Label Text="Bonus Speed: (NCalc, must evaluate to number)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding ExtraSpeed}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding ExtraSpeed}" TextColor="{StaticResource Accent}"/>
                 <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Note: The condition results in a true value if the bonus should be applied and false otherwise.
 The following string values are known: Category (of the worn armor), Name (of the worn armor)

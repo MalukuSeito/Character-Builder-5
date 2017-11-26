@@ -23,15 +23,15 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{Binding Accent}" Keyboard="Numeric"/>
+            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
             <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
             <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
             <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="UniqueID: (Every class needs to have its own UniqueID)" FontSize="Micro" LineBreakMode="WordWrap"/>
-            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="1" Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="1" Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
             <Picker Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding UniqueID, Mode=OneWayToSource}"/>
         </Grid>
     </ContentPage.Content>

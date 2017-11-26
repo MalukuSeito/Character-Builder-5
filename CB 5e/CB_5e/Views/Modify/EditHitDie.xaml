@@ -29,13 +29,13 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
                 <Label Grid.Column="0" Grid.Row="1" Text="Amount of HitDie per Level (usually 1):" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="2" Text="{Binding HitDieCount}" TextColor="{Binding Accent}" Margin="0" Keyboard="Numeric"/>
+                <Entry Grid.Column="0" Grid.Row="2" Text="{Binding HitDieCount}" TextColor="{StaticResource Accent}" Margin="0" Keyboard="Numeric"/>
                 <Label Grid.Column="0" Grid.Row="3" Text="Size of the HitDie:" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="4" Text="{Binding HitDie}" TextColor="{Binding Accent}" Margin="0" Keyboard="Numeric"/>
+                <Entry Grid.Column="0" Grid.Row="4" Text="{Binding HitDie}" TextColor="{StaticResource Accent}" Margin="0" Keyboard="Numeric"/>
                 <Label Grid.Column="0" Grid.Row="5" Text="HP at first level (usually Amount x HitDieSize):" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="6" Text="{Binding HPFirstLevel}" TextColor="{Binding Accent}" Margin="0" Keyboard="Numeric"/>
+                <Entry Grid.Column="0" Grid.Row="6" Text="{Binding HPFirstLevel}" TextColor="{StaticResource Accent}" Margin="0" Keyboard="Numeric"/>
                 <Label Grid.Column="0" Grid.Row="7" Text="Average HP per Level (usually HPatFirstLevel / 2 + 1):" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="8" Text="{Binding AverageHPPerLevel}" TextColor="{Binding Accent}" Margin="0" Keyboard="Numeric"/>
+                <Entry Grid.Column="0" Grid.Row="8" Text="{Binding AverageHPPerLevel}" TextColor="{StaticResource Accent}" Margin="0" Keyboard="Numeric"/>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

@@ -15,7 +15,7 @@
                 <ListView.Header>
                     <StackLayout Padding="20, 0">
                         <Label Text="Multiclassing Condition (after first level) " FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Text="{Binding MulticlassingCondition}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding MulticlassingCondition}" TextColor="{StaticResource Accent}"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                             <Switch IsToggled="{Binding AvailableAtFirstLevel}"/>
                             <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center" Text="Class available at Level 1" FontSize="Micro" LineBreakMode="WordWrap"/>

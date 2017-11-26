@@ -30,7 +30,7 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Spell:" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Spell}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Spell}" TextColor="{StaticResource Accent}"/>
                 <Picker Grid.Row="2" Grid.ColumnSpan="6" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding Spell, Mode=OneWayToSource}"/>
                 <Label Grid.Row="4" Grid.ColumnSpan="6" Text="Recharge: (each bonus spell generates a resource)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Picker Grid.Row="5" Grid.ColumnSpan="6" ItemsSource="{Binding RechargeTypes}" SelectedItem="{Binding Recharge}"/>

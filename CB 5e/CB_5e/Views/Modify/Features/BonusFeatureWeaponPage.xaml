@@ -15,7 +15,7 @@
                 <ListView.Header>
                     <StackLayout Padding="20">
                         <Label Text="Weapon (or unarmed attack) counts as Weapon:" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Text="{Binding BaseItemChange}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding BaseItemChange}" TextColor="{StaticResource Accent}"/>
                         <Picker ItemsSource="{Binding Suggestions}" SelectedItem="{Binding BaseItemChange, Mode=OneWayToSource}"/>
                         <Label Text="Proficient with this weapon, if proficient with any of these weapons:" FontSize="Micro" LineBreakMode="WordWrap"/>
                     </StackLayout>

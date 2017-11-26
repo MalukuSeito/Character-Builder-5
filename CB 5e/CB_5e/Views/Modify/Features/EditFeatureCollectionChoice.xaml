@@ -10,16 +10,16 @@
         <ScrollView>
             <StackLayout Padding="20">
                 <Label Text="Standalone Features: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Editor Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Editor Text="{Binding Condition}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
                 <Picker ItemsSource="{Binding Suggestions}" SelectedItem="{Binding UniqueID, Mode=OneWayToSource}"/>
                 <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Note: The same feature in the same class (subclass, race, subrace, ...) with the same condition (at different levels) should have same unique ID. Otherwise multiple choices of the same feature are not prevented / handled correctly when allowed.</Label.Text>
                 </Label>
                 <Label Text="Amount: (Number of features to be chosen)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{StaticResource Accent}"/>
                     <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">

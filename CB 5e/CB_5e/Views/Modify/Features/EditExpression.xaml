@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout Padding="20">
             <Label Text="{Binding Header}" FontSize="Micro" LineBreakMode="WordWrap"/>
-            <Editor Text="{Binding Text}" TextColor="{Binding Accent}" VerticalOptions="FillAndExpand"/>
+            <Editor Text="{Binding Text}" TextColor="{StaticResource Accent}" VerticalOptions="FillAndExpand"/>
             <Label TextColor="LightSlateGray" Text="{Binding Notes}" FontSize="Micro" LineBreakMode="WordWrap"/>
         </StackLayout>
     </ContentPage.Content>

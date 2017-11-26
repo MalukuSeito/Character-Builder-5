@@ -17,6 +17,5 @@ namespace CB_5e.ViewModels.Modify.Collections
         private bool moving = false;
         public bool Moving { get => moving; set => SetProperty(ref moving, value, "", () => OnPropertyChanged("TextColor")); }
         public Color TextColor { get => Moving ? Color.Orange : Color.Default; }
-        public Color Accent { get => Color.Accent; }
     }
 }

@@ -27,8 +27,6 @@ namespace CB_5e.ViewModels.Character
         public INavigation Navigation { get; set; }
         public bool ChildModel { get; set; } = false;
 
-        public Color Accent { get { return Color.Accent; } }
-
         public PlayerModel(BuilderContext context)
         {
             Context = context;

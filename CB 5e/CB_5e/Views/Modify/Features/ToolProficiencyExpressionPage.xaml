@@ -10,9 +10,9 @@
         <ScrollView>
             <StackLayout Padding="20">
                 <Label Text="Tools: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Editor Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                <Editor Text="{Binding Condition}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Description: (shown in the sheet)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Text="{Binding Description}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding Description}" TextColor="{StaticResource Accent}"/>
                 <Label TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Note: The Condition is evaluated for each item and must result in a boolean value. The following values can be used: Category, Name (lowercase) of the item.
 The following can be used to differentiate types: Armor, Tool, Weapon, Shield. All are boolean values.

@@ -33,7 +33,6 @@ namespace CB_5e.Views.Modify.Descriptions
             BindingContext = this;
 		}
 
-        public Color Accent { get => Color.Accent; }
 
         public string Name
         {

@@ -27,7 +27,6 @@ namespace CB_5e.Views.Modify.Descriptions
         public bool Changed { get; private set; } = false;
         public TableDescription Desc { get; private set; }
 
-        public Color Accent { get => Color.Accent; }
         public int Amount
         {
             get => Desc.Amount;

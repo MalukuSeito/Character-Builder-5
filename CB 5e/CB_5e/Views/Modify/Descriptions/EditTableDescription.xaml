@@ -17,11 +17,11 @@
                 <ListView.Header>
                     <StackLayout Padding="20">
                         <Label Text="Amount of Choices" FontSize="Micro"/>
-                        <Entry Keyboard="Numeric" Text="{Binding Amount}" TextColor="{Binding Accent}"/>
+                        <Entry Keyboard="Numeric" Text="{Binding Amount}" TextColor="{StaticResource Accent}"/>
                         <Label Text="Unique ID of the Choice (Amount > 0)" FontSize="Micro"/>
-                        <Entry Text="{Binding UniqueID}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
                         <Label Text="Name of the Table" FontSize="Micro"/>
-                        <Entry Text="{Binding Name}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>

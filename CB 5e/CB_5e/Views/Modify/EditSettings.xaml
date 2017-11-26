@@ -13,9 +13,9 @@
         <ScrollView>
             <StackLayout>
                 <Label Text="Default Source: (for new elements)" FontSize="Small"/>
-                <Entry Text="{Binding DefaultSource}" TextColor="{Binding Accent}"/>
+                <Entry Text="{Binding DefaultSource}" TextColor="{StaticResource Accent}"/>
                 <Label Text="Weight of a single coin:" FontSize="Small"/>
-                <Entry Keyboard="Telephone" Text="{Binding WeightOfACoin}" TextColor="{Binding Accent}"/>
+                <Entry Keyboard="Telephone" Text="{Binding WeightOfACoin}" TextColor="{StaticResource Accent}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -42,11 +42,11 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.ColumnSpan="6" Text="Spellcasting Internal ID: (other features reference this id)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding SpellcastingID}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding SpellcastingID}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Text="Ignore Multiclassing (Spellslots will not be overridden)" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Micro"/>
                 <Switch Grid.Row="2" Grid.Column="0" IsToggled="{Binding IgnoreMulticlassing}" HorizontalOptions="End"/>
                 <Label Grid.Row="3" Grid.ColumnSpan="6" Text="Displayed Spellcasting Name: (Builder and Sheet)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Grid.Row="4" Grid.ColumnSpan="6" Text="{Binding DisplayName}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="4" Grid.ColumnSpan="6" Text="{Binding DisplayName}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Row="5" Grid.ColumnSpan="6" Text="Spellcasting Ability: (takes highest modifier)" FontSize="Micro" LineBreakMode="WordWrap"/>
                 <Label Grid.Row="6" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>
                 <Switch Grid.Row="6" Grid.Column="1" IsToggled="{Binding BaseStrength}" HorizontalOptions="Start"/>
@@ -68,13 +68,13 @@ ClassList allows preparation of any spell matching the condition below or that h
 LearnSpells disables spell preparation completely.</Label.Text>
                 </Label>
                 <Label Grid.Row="11" Grid.ColumnSpan="6" Text="Amount of prepared spells: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Grid.Row="12" Grid.ColumnSpan="6" Text="{Binding PrepareCount}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="12" Grid.ColumnSpan="6" Text="{Binding PrepareCount}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Row="13" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Note: The Amount expression must result in a number:
 The following number values are known: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier), PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel('classname') (function for classlevel)</Label.Text>
                 </Label>
                 <Label Grid.Row="14" Grid.ColumnSpan="6" Text="Condition for ClassList/Shop: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                <Entry Grid.Row="15" Grid.ColumnSpan="6" Text="{Binding PrepareableSpells}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Row="15" Grid.ColumnSpan="6" Text="{Binding PrepareableSpells}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Row="16" Grid.ColumnSpan="6" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Only spells matching the condition can be prepared / bought.
 The same variables as for the amount are available, in addition the Name (string) and Level (number) of the checked spell can be used as well as all the keywords of the spell (Cold, Ranged, Concentration, the name of the class, and many more)</Label.Text>

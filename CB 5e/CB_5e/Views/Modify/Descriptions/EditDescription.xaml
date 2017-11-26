@@ -18,9 +18,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Text="{Binding Name}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Column="0" Grid.Row="1" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="3" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Column="0" Grid.Row="3" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

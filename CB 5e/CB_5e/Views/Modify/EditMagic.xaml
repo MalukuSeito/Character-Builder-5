@@ -36,17 +36,17 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" IsVisible="{Binding Overwrite}" Text="File Exists, Press Save again to Overwrite" TextColor="OrangeRed"/>
                 <Label Grid.Column="0" Grid.Row="1" Text="Requirement: (Base Item Description)" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Requirement}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Column="0" Grid.Row="2" Text="{Binding Requirement}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="3" Text="Base Item Condition (NCalc, empty = standalone item)" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Base}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Column="0" Grid.Row="4" Text="{Binding Base}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="5" Text="Base Item Modification, text before Base Item name:" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="6" Text="{Binding PrependName}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Column="0" Grid.Row="6" Text="{Binding PrependName}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="7" Text="Base Item Modification, text after Base Item name:" FontSize="Micro"/>
-                <Entry Grid.Column="0" Grid.Row="8" Text="{Binding PostName}" TextColor="{Binding Accent}"/>
+                <Entry Grid.Column="0" Grid.Row="8" Text="{Binding PostName}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="9" Text="Rarity:" FontSize="Micro"/>
-                <Picker Grid.Column="0" Grid.Row="10" ItemsSource="{Binding Rarities}"  SelectedItem="{Binding Rarity}" TextColor="{Binding Accent}"/>
+                <Picker Grid.Column="0" Grid.Row="10" ItemsSource="{Binding Rarities}"  SelectedItem="{Binding Rarity}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="11" Text="Slot: (unused for now)" FontSize="Micro"/>
-                <Picker Grid.Column="0" Grid.Row="12" ItemsSource="{Binding Slots}"  SelectedItem="{Binding Slot}" TextColor="{Binding Accent}"/>
+                <Picker Grid.Column="0" Grid.Row="12" ItemsSource="{Binding Slots}"  SelectedItem="{Binding Slot}" TextColor="{StaticResource Accent}"/>
                 <Label Grid.Column="0" Grid.Row="13" TextColor="LightSlateGray" FontSize="Micro" LineBreakMode="WordWrap">
                     <Label.Text>Note: The Base Item Condition is evaluated when trying to apply a magic property to an item in the shop. It must match that item (Base Item) for the property to be allowed on the item. 
 An empty condition means the property can not be applied to anything, instead the magic property can be added the inventory as is (i.e. wonderous items). To make a property applicable for anything, use "true" as a condition, this is useful for modificators like  Elven, Dwarven, Cursed,...

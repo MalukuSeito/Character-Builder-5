@@ -15,7 +15,7 @@
                 <ListView.Header>
                     <StackLayout Padding="20, 10">
                         <Label Text="Spell Condition: (NCalc, true/false)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Text="{Binding Condition}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding Condition}" TextColor="{StaticResource Accent}"/>
                         <Label Text="Spells:" FontSize="Micro" LineBreakMode="WordWrap"/>
                     </StackLayout>
                 </ListView.Header>

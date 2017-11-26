@@ -85,7 +85,7 @@
                         </ListView>
                         <Entry Keyboard="Numeric" Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="0" Text="{Binding Used}"/>
                         <Label Grid.Row="6" Grid.Column="2" Text="Spell on Sheet" HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="End"/>
-                        <Label Grid.Row="7" Grid.Column="2" Text="{Binding Highlight}" FontSize="Small" LineBreakMode="NoWrap" TextColor="{Binding Accent}" HorizontalTextAlignment="Center">
+                        <Label Grid.Row="7" Grid.Column="2" Text="{Binding Highlight}" FontSize="Small" LineBreakMode="NoWrap" TextColor="{StaticResource Accent}" HorizontalTextAlignment="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding RemoveHighlight}"/>
                             </Label.GestureRecognizers>

@@ -27,7 +27,7 @@ namespace CB_5e.ViewModels.Character
         }
 
         public PlayerJournalViewModel Context { get; set; }
-        public Color Accent { get => Color.Accent; }
+        
         public bool IsNew { get; set; }
         public bool XPChanged { get; set; }
         public bool MoneyChanged { get; set; }

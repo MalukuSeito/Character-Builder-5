@@ -16,13 +16,13 @@
                 <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Text="From Roll:" FontSize="Micro"/>
-            <Entry Grid.Row="1" Text="{Binding Entry.MinRoll}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+            <Entry Grid.Row="1" Text="{Binding Entry.MinRoll}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
             <Label Grid.Row="2" Text="Till Roll:" FontSize="Micro"/>
-            <Entry Grid.Row="3" Text="{Binding Entry.MaxRoll}" TextColor="{Binding Accent}" Keyboard="Telephone"/>
+            <Entry Grid.Row="3" Text="{Binding Entry.MaxRoll}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
             <Label Grid.Row="4" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Row="5" Text="{Binding Entry.Title}" TextColor="{Binding Accent}"/>
+            <Entry Grid.Row="5" Text="{Binding Entry.Title}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="6" Text="Description:" FontSize="Micro"/>
-            <Editor Grid.Row="7" VerticalOptions="FillAndExpand" Text="{Binding Entry.Text}" TextColor="{Binding Accent}"/>
+            <Editor Grid.Row="7" VerticalOptions="FillAndExpand" Text="{Binding Entry.Text}" TextColor="{StaticResource Accent}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

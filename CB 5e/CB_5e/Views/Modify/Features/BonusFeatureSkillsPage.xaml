@@ -15,7 +15,7 @@
                 <ListView.Header>
                     <StackLayout Padding="20">
                         <Label Text="Bonus to Skills: (NCalc, number)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Text="{Binding SkillBonus}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding SkillBonus}" TextColor="{StaticResource Accent}"/>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                             <Switch IsToggled="{Binding SkillPassive}"/>
                             <Label HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center" Text="Applies only to passive values" FontSize="Micro" LineBreakMode="WordWrap"/>

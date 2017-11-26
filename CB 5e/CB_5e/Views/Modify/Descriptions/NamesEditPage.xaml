@@ -20,7 +20,7 @@
                 <ListView.Header>
                     <StackLayout Padding="20">
                         <Label Text="Title" FontSize="Micro"/>
-                        <Entry Text="{Binding Name}" TextColor="{Binding Accent}"/>
+                        <Entry Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
                     </StackLayout>
                 </ListView.Header>
                 <ListView.ItemTemplate>
