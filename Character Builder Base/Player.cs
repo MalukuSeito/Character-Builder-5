@@ -687,6 +687,9 @@ namespace Character_Builder
                 else SubRaceName = value.Name + " " + ConfigManager.SourceSeperator + " " + value.Source;
             }
         }
+
+        public bool AllRituals { get; set; }
+
         public List<Feature> GetBackgroundFeatures(int level=0, bool reset = false)
         {
             //if (reset) ChoiceCounter.Clear();

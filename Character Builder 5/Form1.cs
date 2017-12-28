@@ -229,7 +229,7 @@ namespace Character_Builder_5
                 {
                     listItems.Items.AddRange(Program.Context.Subsection((Category)itemCategories.SelectedItem).ToArray<Item>());
                     //inventorySplit.Panel2Collapsed = true;
-                    inventory2.Enabled = false;
+                    inventory2.Enabled = true;
                     addButton.Enabled = true;
                     buyButton.Enabled = true;
                     ItemCounter.Value = 1;
@@ -254,7 +254,7 @@ namespace Character_Builder_5
                 {
                     listItems.Items.AddRange(Program.Context.SpellSubsection().ToArray<Spell>());
                    // inventorySplit.Panel2Collapsed = true;
-                    inventory2.Enabled = false;
+                    inventory2.Enabled = true;
                     addspellbookButton.Enabled = false;
                     actionBox.Controls.Clear();
                     actionBox.Controls.Add(addspellbookButton);
@@ -265,7 +265,7 @@ namespace Character_Builder_5
                 {
                     listItems.Items.AddRange(Program.Context.FeatureSubsection(itemCategories.SelectedItem.ToString()).ToArray<Feature>());
                     //inventorySplit.Panel2Collapsed = true;
-                    inventory2.Enabled = false;
+                    inventory2.Enabled = true;
                     actionBox.Controls.Clear();
                     addButton.Enabled = false;
                     actionBox.Controls.Add(addButton);
@@ -537,6 +537,7 @@ namespace Character_Builder_5
             try
             {
                 layouting = true;
+                showAllKnownRitualsToolStripMenuItem.Checked = Program.Context.Player.AllRituals;
                 inspiration.Checked = Program.Context.Player.Inspiration;
                 int prof = Program.Context.Player.GetProficiency();
                 profval.Text = plusMinus(prof);
@@ -1415,13 +1416,22 @@ namespace Character_Builder_5
             if (classList.SelectedItem != null)
             {
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
-                classesBox.Items.AddRange(Program.Context.GetClasses(ci.Level, Program.Context.Player).OrderBy(s => s.Name).ToArray<ClassDefinition>());
+                var cls = Program.Context.GetClasses(ci.Level, Program.Context.Player).OrderBy(s => s.Name).ToArray<ClassDefinition>();
+                classesBox.Items.AddRange(cls);
                 if (ci.Class != null)
                 {
                     hpSpinner.Minimum = 0;
                     hpSpinner.Maximum = ci.Class.HitDieCount * Math.Max(1, ci.Class.HitDie);
                     hpSpinner.Value = ci.Hp;
                     hpSpinner.Enabled = true;
+                    //for( int i = 0; i < cls.Length; i++)
+                    //{
+                    //    if (cls[i] == ci.Class)
+                    //    {
+                    //        classesBox.SelectedIndex = i;
+                    //        break;
+                    //    }
+                    //}
                 }
             }
             if (!waslayouting) layouting = false;
@@ -2608,7 +2618,7 @@ namespace Character_Builder_5
         private void classList_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateClassesBox();
-            if (classList.SelectedItem != null && classesBox.SelectedItem != null)
+            if (classList.SelectedItem != null)
             {
                 ClassInfo ci = (ClassInfo)classList.SelectedItem;
                 if (ci.Class != null)
@@ -4106,6 +4116,12 @@ namespace Character_Builder_5
         private void showErrorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.Errorlog.Show();
+        }
+
+        private void showAllKnownRitualsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Context.Player.AllRituals = !Program.Context.Player.AllRituals;
+            UpdateLayout();
         }
     }
 }

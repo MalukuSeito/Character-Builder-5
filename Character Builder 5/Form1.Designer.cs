@@ -386,6 +386,7 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.showAllKnownRitualsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -670,7 +671,8 @@
             this.PDFspellbook,
             this.makeDefaultEditorForcb5FilesToolStripMenuItem,
             this.showDescriptionToolStripMenuItem,
-            this.alawaysShowTheSourcebookToolStripMenuItem});
+            this.alawaysShowTheSourcebookToolStripMenuItem,
+            this.showAllKnownRitualsToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -4826,6 +4828,13 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
+            // showAllKnownRitualsToolStripMenuItem
+            // 
+            this.showAllKnownRitualsToolStripMenuItem.Name = "showAllKnownRitualsToolStripMenuItem";
+            this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showAllKnownRitualsToolStripMenuItem.Text = "Show All Known Rituals";
+            this.showAllKnownRitualsToolStripMenuItem.Click += new System.EventHandler(this.showAllKnownRitualsToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5384,6 +5393,7 @@
         private System.Windows.Forms.ToolStripMenuItem showErrorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sourcesToolStrip;
         private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showAllKnownRitualsToolStripMenuItem;
     }
 }
 

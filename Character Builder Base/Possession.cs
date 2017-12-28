@@ -145,6 +145,7 @@ namespace Character_Builder
             {
                 int count = 1;
                 if (Count > 1) count = Count;
+                if (Count == 0) return 0;
                 if (BaseItem != null && BaseItem != "")
                 {
                     int stacksize = Item.StackSize;
