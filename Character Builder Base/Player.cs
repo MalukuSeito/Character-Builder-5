@@ -262,8 +262,9 @@ namespace Character_Builder
                     worked = false;
                     if (b != null)
                     {
-                        int k = Items.FindIndex(j => ConfigManager.SourceInvariantComparer.Equals(j, s));
-                        if (k >= 0) Items.RemoveAt(i);
+                        int k = Items.FindIndex(j => s.Equals(j, StringComparison.OrdinalIgnoreCase));
+                        if (k < 0) k = Items.FindIndex(j => ConfigManager.SourceInvariantComparer.Equals(j, s));
+                        if (k >= 0) Items.RemoveAt(k);
                         else break;
                     }
                     else if (!Items.Remove(p.BaseItem)) break;
