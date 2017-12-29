@@ -59,6 +59,7 @@
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showAllKnownRitualsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSpilt = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.MoneyButton = new System.Windows.Forms.Button();
@@ -386,7 +387,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.showAllKnownRitualsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -794,6 +794,13 @@
             this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.alawaysShowTheSourcebookToolStripMenuItem.Text = "&Always Show the Sourcebook";
             this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
+            // 
+            // showAllKnownRitualsToolStripMenuItem
+            // 
+            this.showAllKnownRitualsToolStripMenuItem.Name = "showAllKnownRitualsToolStripMenuItem";
+            this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showAllKnownRitualsToolStripMenuItem.Text = "Show All Known Rituals";
+            this.showAllKnownRitualsToolStripMenuItem.Click += new System.EventHandler(this.showAllKnownRitualsToolStripMenuItem_Click);
             // 
             // mainSpilt
             // 
@@ -4827,13 +4834,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // showAllKnownRitualsToolStripMenuItem
-            // 
-            this.showAllKnownRitualsToolStripMenuItem.Name = "showAllKnownRitualsToolStripMenuItem";
-            this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.showAllKnownRitualsToolStripMenuItem.Text = "Show All Known Rituals";
-            this.showAllKnownRitualsToolStripMenuItem.Click += new System.EventHandler(this.showAllKnownRitualsToolStripMenuItem_Click);
             // 
             // Form1
             // 

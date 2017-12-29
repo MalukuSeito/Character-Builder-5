@@ -165,7 +165,7 @@ namespace Character_Builder
                     int stacksize = Context.GetItem(p.BaseItem, null).StackSize;
                     if (stacksize < 0) stacksize = 1;
                     int stack = (int)Math.Ceiling((double)p.Count / (double)stacksize);
-                    if (items.ContainsKey(p.BaseItem) && items[p.BaseItem]>=stack)
+                    if (items.ContainsKey(p.BaseItem) && items[p.BaseItem] >= stack)
                     {
                         if (p.Count > 0)
                         {
@@ -176,6 +176,13 @@ namespace Character_Builder
                             items[p.BaseItem]--;
                         }
                         result.Add(p);
+                    }
+                    else
+                    {
+                        //The player had that item, but lost it without losing the possession. That is probably from switching classes, better unequip it as well
+                        p.Equipped = EquipSlot.None;
+                        p.Attuned = false;
+                        p.MagicProperties.Clear();
                     }
                 }
                 else result.Add(p);
@@ -257,6 +264,7 @@ namespace Character_Builder
                 int stacksize = Context.GetItem(p.BaseItem, null).StackSize;
                 if (stacksize < 0) stacksize = 1;
                 int count = (int)Math.Ceiling((double)p.Count / (double)stacksize);
+                worked = count > 0;
                 for (int i = 0; i < count; i++)
                 {
                     worked = false;
@@ -278,6 +286,8 @@ namespace Character_Builder
             else
             {
                 p.Count = 0;
+                p.Equipped = EquipSlot.None;
+                p.MagicProperties.Clear();
                 AddPossession(p);
             }
         }

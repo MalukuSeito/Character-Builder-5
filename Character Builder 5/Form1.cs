@@ -104,6 +104,21 @@ namespace Character_Builder_5
         public void BuildSources()
         {
             sourcesToolStrip.DropDownItems.Clear();
+            ToolStripMenuItem addall = new ToolStripMenuItem("Add all")
+            {
+                Name = "Add all",
+                Size = new System.Drawing.Size(152, 22)
+            };
+            addall.Click += Addall_Click;
+            sourcesToolStrip.DropDownItems.Add(addall);
+            ToolStripMenuItem remall = new ToolStripMenuItem("Remove all")
+            {
+                Name = "Remove all",
+                Size = new System.Drawing.Size(152, 22)
+            };
+            remall.Click += Remall_Click; ;
+            sourcesToolStrip.DropDownItems.Add(remall);
+            sourcesToolStrip.DropDownItems.Add(new ToolStripSeparator());
             foreach (string s in SourceManager.Sources)
             {
                 ToolStripMenuItem p = new ToolStripMenuItem(s)
@@ -115,6 +130,26 @@ namespace Character_Builder_5
                 p.Checked = !Program.Context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
                 sourcesToolStrip.DropDownItems.Add(p);
             }
+        }
+
+        private void Remall_Click(object sender, EventArgs e)
+        {
+            Program.Context.MakeHistory("Sources");
+            Program.Context.Player.ExcludedSources.AddRange(SourceManager.Sources);
+            Program.Context.ExcludedSources.Clear();
+            Program.Context.ExcludedSources.UnionWith(Program.Context.Player.ExcludedSources);
+            Program.ReloadData();
+            UpdateLayout();
+        }
+
+        private void Addall_Click(object sender, EventArgs e)
+        {
+            Program.Context.MakeHistory("Sources");
+            Program.Context.Player.ExcludedSources.Clear();
+            Program.Context.ExcludedSources.Clear();
+            Program.Context.ExcludedSources.UnionWith(Program.Context.Player.ExcludedSources);
+            Program.ReloadData();
+            UpdateLayout();
         }
 
         private void SourceClick(object sender, EventArgs e)
