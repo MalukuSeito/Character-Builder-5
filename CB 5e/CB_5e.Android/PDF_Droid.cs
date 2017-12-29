@@ -815,7 +815,7 @@ namespace CB_5e.Droid
 
         private void FillBasicFields(BuilderContext Context, Dictionary<string, string> trans, PdfStamper p)
         {
-            if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], Context.Player.BackgroundName);
+            if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], SourceInvariantComparer.NoSource(Context.Player.BackgroundName));
             if (trans.ContainsKey("Race")) p.AcroFields.SetField(trans["Race"], Context.Player.GetRaceSubName());
             if (trans.ContainsKey("PersonalityTrait")) p.AcroFields.SetField(trans["PersonalityTrait"], Context.Player.PersonalityTrait);
             if (trans.ContainsKey("Ideal")) p.AcroFields.SetField(trans["Ideal"], Context.Player.Ideal);

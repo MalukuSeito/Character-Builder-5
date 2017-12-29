@@ -765,7 +765,7 @@ namespace Character_Builder_5
 
         private void fillBasicFields(Dictionary<string, string> trans, PdfStamper p)
         {
-            if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], Program.Context.Player.BackgroundName);
+            if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], SourceInvariantComparer.NoSource(Program.Context.Player.BackgroundName));
             if (trans.ContainsKey("Race")) p.AcroFields.SetField(trans["Race"], Program.Context.Player.GetRaceSubName());
             if (trans.ContainsKey("PersonalityTrait")) p.AcroFields.SetField(trans["PersonalityTrait"], Program.Context.Player.PersonalityTrait);
             if (trans.ContainsKey("Ideal")) p.AcroFields.SetField(trans["Ideal"], Program.Context.Player.Ideal);
