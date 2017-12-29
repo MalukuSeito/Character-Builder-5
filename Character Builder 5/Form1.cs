@@ -2037,8 +2037,7 @@ namespace Character_Builder_5
                     Filter = "CB5 XML|*.cb5",
                     Title = "Save a Player File"
                 };
-                od.ShowDialog();
-                if (od.FileName != "")
+                if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
                 {
                     try
                     {
@@ -2091,8 +2090,7 @@ namespace Character_Builder_5
                 Filter = "CB5 XML|*.cb5",
                 Title = "Save a Player File"
             };
-            od.ShowDialog();
-            if (od.FileName != "")
+            if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
             {
                 try
                 {
@@ -2123,8 +2121,7 @@ namespace Character_Builder_5
             }
             od.Filter = "PDF|*.pdf";
             od.Title = "Save a PDF File";
-            od.ShowDialog();
-            if (od.FileName != "")
+            if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
             {
                 try
                 {

@@ -694,6 +694,7 @@ namespace Character_Builder_5
             List<string> s = new List<string>();
             foreach (Keyword k in Schools) if (kw.Remove(k)) s.Add(k.Name.ToLowerInvariant());
             string res = string.Join(", ", s);
+            if (res == null || res == "") return "";
             return char.ToUpper(res[0]) + res.Substring(1);
         }
 
@@ -723,6 +724,7 @@ namespace Character_Builder_5
             if (s) r.Add("S");
             if (m) r.Add("M(" + mat + ")");
             string res = string.Join(", ", r);
+            if (res == null || res == "") return "";
             return char.ToUpper(res[0]) + res.Substring(1);
         }
 
