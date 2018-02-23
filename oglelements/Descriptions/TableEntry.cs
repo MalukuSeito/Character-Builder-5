@@ -1,9 +1,11 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace OGL.Descriptions
 {
-    public class TableEntry
+    public class TableEntry: IMatchable
     {
         public int MinRoll { get; set; }
         public int MaxRoll { get; set; }
@@ -50,6 +52,14 @@ namespace OGL.Descriptions
         public string Save()
         {
             return new TableDescription(null, null, null, null, new List<TableEntry>() { this }).Save();
+        }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return false;
+            return Culture.CompareInfo.IndexOf(Title ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Text ?? "", text, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }

@@ -3,6 +3,7 @@ using OGL.Descriptions;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -139,6 +140,18 @@ namespace OGL
                 r.FileName = FileName;
                 return r;
             }
+        }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Flavour ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Features.Exists(s => s.Matches(text, nameOnly))
+                || Descriptions.Exists(s => s.Matches(text, nameOnly));
         }
     }
 }

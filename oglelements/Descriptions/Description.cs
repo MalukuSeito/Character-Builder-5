@@ -1,9 +1,11 @@
-﻿using System;
+﻿using OGL.Common;
+using System;
+using System.Globalization;
 using System.Linq;
 
 namespace OGL.Descriptions
 {
-    public class Description
+    public class Description: IMatchable
     {
         public string Name { get; set; }
         public string Text { get; set; }
@@ -28,6 +30,14 @@ namespace OGL.Descriptions
         public string Save()
         {
             return new DescriptionContainer(this).Save();
+        }
+
+        public virtual bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Text ?? "", text, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }

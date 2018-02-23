@@ -66,5 +66,10 @@ namespace OGL
                 return ((DescriptionContainer)Serializer.Deserialize(reader));
             }
         }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            return false;
+        }
     }
 }

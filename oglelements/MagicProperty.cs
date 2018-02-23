@@ -4,6 +4,7 @@ using OGL.Features;
 using OGL.Items;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -341,6 +342,23 @@ namespace OGL
                 return r;
             }
         }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Requirement ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || AttunedEquipFeatures.Exists(s => s.Matches(text, nameOnly))
+                || AttunedOnUseFeatures.Exists(s => s.Matches(text, nameOnly))
+                || AttunementFeatures.Exists(s => s.Matches(text, nameOnly))
+                || CarryFeatures.Exists(s => s.Matches(text, nameOnly))
+                || EquipFeatures.Exists(s => s.Matches(text, nameOnly))
+                || OnUseFeatures.Exists(s => s.Matches(text, nameOnly));
+        }
+
         [XmlIgnore]
         public string Desc { get => Requirement; }
     }

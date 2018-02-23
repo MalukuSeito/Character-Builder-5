@@ -1,6 +1,7 @@
 ﻿using OGL.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace OGL.Features
@@ -105,6 +106,18 @@ namespace OGL.Features
                 foreach (Feature f in Features) f.Source = value;
                 base.Source = value;
             }
+        }
+
+        public override bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Text ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Prerequisite ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Category ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Keywords.Exists(s => Culture.CompareInfo.IndexOf(s.Name ?? "", text, CompareOptions.IgnoreCase) >= 0)
+                || Features.Exists(f => f.Matches(text, nameOnly));
         }
     }
 }

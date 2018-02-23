@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace OGL.Descriptions
@@ -33,6 +34,15 @@ namespace OGL.Descriptions
             UniqueID = uniqueID;
             Amount = amount;
             BackgroundOption = BackgroundOption.None;
+        }
+
+        public override bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Text ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Entries.Exists(s => s.Matches(text, nameOnly));
         }
     }
 }

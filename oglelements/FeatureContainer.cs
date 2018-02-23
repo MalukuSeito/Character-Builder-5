@@ -130,5 +130,10 @@ namespace OGL
             FeatureContainer fc = new FeatureContainer(features);
             return fc.Clone().Features;
         }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            return Features.Exists(s => s.Matches(text, nameOnly));
+        }
     }
 }

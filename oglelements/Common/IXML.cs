@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OGL.Common
 {
-    public interface IXML
+    public interface IXML: IMatchable
     {
         String Name { get; }
         String Source { get; }

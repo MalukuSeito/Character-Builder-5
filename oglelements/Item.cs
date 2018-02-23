@@ -5,6 +5,7 @@ using OGL.Items;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -40,9 +41,11 @@ namespace OGL
         [XmlIgnore]
         public Category Category { get; set; }
         [XmlIgnore]
-        public Dictionary<string, bool> Matches;
+        public Dictionary<string, bool> CachedMatches;
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
+        [XmlIgnore]
+        public string Type { get => this.GetType().Name; }
 
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, String file)
@@ -164,5 +167,16 @@ namespace OGL
         }
         [XmlIgnore]
         public string Desc { get => Price.ToString(); }
+
+        public virtual bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Category?.ToString() ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Keywords.Exists(s => Culture.CompareInfo.IndexOf(s.Name ?? "", text, CompareOptions.IgnoreCase) >= 0);
+        }
     }
 }

@@ -52,6 +52,7 @@
     <Compile Include="Base\Rarity.cs" />
     <Compile Include="Common\IHistoryManager.cs" />
     <Compile Include="Common\ILicense.cs" />
+    <Compile Include="Common\IMatchable.cs" />
     <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
     <Compile Include="Items\Category.cs" />

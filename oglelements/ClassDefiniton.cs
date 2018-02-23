@@ -5,6 +5,7 @@ using OGL.Features;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -268,6 +269,18 @@ namespace OGL
                 return r;
             }
         }
-
+        public bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Flavour ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Features.Exists(s => s.Matches(text, nameOnly))
+                || MulticlassingFeatures.Exists(s => s.Matches(text, nameOnly))
+                || FirstClassFeatures.Exists(s => s.Matches(text, nameOnly))
+                || Descriptions.Exists(s => s.Matches(text, nameOnly));
+        }
     }
 }

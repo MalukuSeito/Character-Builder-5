@@ -9,6 +9,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using NCalc;
+using System.Globalization;
 
 namespace OGL
 {
@@ -242,6 +243,20 @@ namespace OGL
         public void Write(Stream stream)
         {
             Serializer.Serialize(stream, this);
+        }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(CastingTime ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Range ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Duration ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Descriptions.Exists(s => s.Matches(text, nameOnly))
+                || Keywords.Exists(s => Culture.CompareInfo.IndexOf(s.Name ?? "", text, CompareOptions.IgnoreCase) >= 0);
         }
 
         [XmlIgnore]

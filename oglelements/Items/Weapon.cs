@@ -2,6 +2,7 @@
 using OGL.Common;
 using OGL.Keywords;
 using System;
+using System.Globalization;
 
 namespace OGL.Items
 {
@@ -24,6 +25,18 @@ namespace OGL.Items
         Weapon IOGLElement<Weapon>.Clone()
         {
             return base.Clone() as Weapon;
+        }
+
+        public override bool Matches(string text, bool nameOnly)
+        {
+            CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
+            return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Source ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Description ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(DamageType ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Damage ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(Category?.ToString() ?? "", text, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }
