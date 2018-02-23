@@ -97,7 +97,7 @@ namespace Data_Browser
         {
             listView1.Items.Clear();
             foreach (ITable s in tables) {
-                s.Results = s.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked).Count();
+                s.Results = s.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked, checkBox2.Checked).Count();
             }
             for (int i = 0; i < comboBox1.Items.Count;i++ )
             {
@@ -110,7 +110,7 @@ namespace Data_Browser
                 listView1.SuspendLayout();
                 listView1.Items.Clear();
 
-                results = t.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked).ToList();
+                results = t.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked, checkBox2.Checked).ToList();
                 foreach (IXML o in results)
                 {
                     ListViewItem result = new ListViewItem(o.Name);
@@ -130,7 +130,7 @@ namespace Data_Browser
             {
                 listView1.SuspendLayout();
                 listView1.Items.Clear();
-                results = t.Refine(t.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked)).ToList();
+                results = t.Refine(t.GetValues(textBox1.ForeColor == SystemColors.WindowText ? textBox1.Text : null, checkBox1.Checked, checkBox2.Checked)).ToList();
                 foreach (IXML o in results)
                 {
                     ListViewItem result = new ListViewItem(o.Name);
@@ -159,16 +159,6 @@ namespace Data_Browser
                 t.ResetRefinements();
                 sortColumn = 0;
                 UpdateSearch(sender, e);
-            }
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!layouting)
-            {
-                layouting = true;
-                checkBox1.Checked = false;
-                layouting = false;
             }
         }
 

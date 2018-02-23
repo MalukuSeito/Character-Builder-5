@@ -36,6 +36,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // listView1
@@ -73,7 +74,7 @@
             this.textBox1.ForeColor = System.Drawing.SystemColors.GrayText;
             this.textBox1.Location = new System.Drawing.Point(231, 12);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(648, 20);
+            this.textBox1.Size = new System.Drawing.Size(558, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.Text = "Search";
             this.textBox1.Enter += new System.EventHandler(this.textBox1_Enter);
@@ -136,12 +137,23 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(795, 14);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(84, 17);
+            this.checkBox2.TabIndex = 11;
+            this.checkBox2.Text = "Exact words";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // Drowser
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1058, 537);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -167,7 +179,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 

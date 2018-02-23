@@ -17,7 +17,7 @@ namespace Data_Browser
         string Name { get; }
         int Results { get; set; }
         void GetDistinct();
-        IEnumerable<IXML> GetValues(string search = null, bool onlyName = false);
+        IEnumerable<IXML> GetValues(string search = null, bool onlyName = false, bool exactMatch = false);
         IEnumerable<IXML> Refine(IEnumerable<IXML> data);
         List<KeyValuePair<MemberInfo, string>> Columns { get; }
         void ResetRefinements();
@@ -186,67 +186,92 @@ namespace Data_Browser
             }
         }
 
-        public IEnumerable<IXML> GetValues(string search = null, bool onlyName = false)
+        private bool Match(IXML r, List<string> match, bool onlyName)
         {
+            foreach (string s in match)
+            {
+                if (!r.Matches(s, onlyName)) return false;
+            }
+            return true;
+        }
+
+        public IEnumerable<IXML> GetValues(string search = null, bool onlyName = false, bool exactMatch = false)
+        {
+            List<string> match;
+            if (!exactMatch && search != null)
+            {
+                match = search.Split('"')
+                     .Select((element, index) => index % 2 == 0  // If even index
+                                           ? element.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
+                                           : new string[] { element })  // Keep the entire item
+                     .SelectMany(element => element).ToList();
+            } else if (search != null && search != "")
+            {
+                match = new List<string>() { search };
+            } else
+            {
+                match = new List<string>();
+            }
+
             switch (typeof(T).Name)
             {
                 case "Skill":
                     return from r in Program.Context.Skills.Values
-                           where search == null || search == "" || r.Matches(search, onlyName) orderby r.Name, r.Source
+                           where search == null || search == "" || Match(r, match, onlyName) orderby r.Name, r.Source
                            select r;
                 case "Background":
                     return from r in Program.Context.Backgrounds.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "Condition":
                     return from r in Program.Context.Conditions.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "ClassDefinition":
                     return from r in Program.Context.Classes.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "SubClass":
                     return from r in Program.Context.SubClasses.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "Feature":
                     return from r in Program.Context.Features
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source, r.Category
                            select r;
                 case "Race":
                     return from r in Program.Context.Races.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "SubRace":
                     return from r in Program.Context.SubRaces.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "Item":
                     return from r in Program.Context.Items.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "Spell":
                     return from r in Program.Context.Spells.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "Language":
                     return from r in Program.Context.Languages.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source
                            select r;
                 case "MagicProperty":
                     return from r in Program.Context.Magic.Values
-                           where search == null || search == "" || r.Matches(search, onlyName)
+                           where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source, r.Category
                            select r;
                 default:

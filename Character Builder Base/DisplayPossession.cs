@@ -50,5 +50,9 @@ namespace Character_Builder
             return mem;
         }
 
+        public bool Matches(string text, bool nameOnly)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
