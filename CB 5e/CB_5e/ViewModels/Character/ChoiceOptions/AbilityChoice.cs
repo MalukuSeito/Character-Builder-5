@@ -30,5 +30,10 @@ namespace CB_5e.ViewModels.Character.ChoiceOptions
         {
             return Name;
         }
+
+        public bool Matches(string text, bool nameOnly)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

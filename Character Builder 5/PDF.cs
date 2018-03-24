@@ -69,6 +69,10 @@ namespace Character_Builder_5
                         fillBasicFields(trans, p);
                         String attacks = "";
                         String resources = "";
+                        if (trans.ContainsKey("Actions"))
+                        {
+                            p.AcroFields.SetField(trans["Actions"], String.Join("\n", Program.Context.Player.GetActions()));
+                        }
                         if (trans.ContainsKey("Resources"))
                         {
                             resources = String.Join("\n", Program.Context.Player.GetResourceInfo(includeResources).Values);

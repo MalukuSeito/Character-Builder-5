@@ -721,6 +721,8 @@ namespace Character_Builder_5
                 Proficiencies.Items.AddRange(Program.Context.Player.GetToolProficiencies().ToArray());
                 Proficiencies.Items.AddRange(Program.Context.Player.GetToolKWProficiencies().ToArray());
                 Proficiencies.Items.AddRange(Program.Context.Player.GetOtherProficiencies().ToArray());
+                actionsBox.Items.Clear();
+                actionsBox.Items.AddRange(Program.Context.Player.GetActions().ToArray());
                 layouting = false;
             }
             catch (Exception e)
@@ -861,6 +863,7 @@ namespace Character_Builder_5
                 inplayflow.Controls.Add(resourcebox);
                 inplayflow.Controls.Add(featurebox);
                 inplayflow.Controls.Add(conditionbox);
+                inplayflow.Controls.Add(combatBox);
                 foreach (SpellcastingFeature sf in spellcasts)
                 {
                     if (sf.SpellcastingID == "MULTICLASS") continue;
@@ -4154,6 +4157,21 @@ namespace Character_Builder_5
         {
             Program.Context.Player.AllRituals = !Program.Context.Player.AllRituals;
             UpdateLayout();
+        }
+
+        private void actionsBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (actionsBox.SelectedItem is ActionInfo ai)
+            {
+                Feature selected = ai.Feature;
+                if (selected != null)
+                {
+                    displayElement.Navigate("about:blank");
+                    displayElement.Document.OpenNew(true);
+                    displayElement.Document.Write(selected.ToHTML());
+                    displayElement.Refresh();
+                }
+            }
         }
     }
 }

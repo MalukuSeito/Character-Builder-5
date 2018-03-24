@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using NCalc;
 using System.Globalization;
+using OGL.Base;
 
 namespace OGL
 {
@@ -40,6 +41,17 @@ namespace OGL
         public bool KWChanged = false;
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
+        public ActionType Action
+        {
+            get
+            {
+                if ("1 action".Equals(CastingTime, StringComparison.OrdinalIgnoreCase)) return ActionType.Action;
+                if ("1 bonus action".Equals(CastingTime, StringComparison.OrdinalIgnoreCase)) return ActionType.BonusAction;
+                if ("1 move action".Equals(CastingTime, StringComparison.OrdinalIgnoreCase)) return ActionType.MoveAction;
+                if (CastingTime != null && CastingTime.Contains("1 reaction")) return ActionType.Reaction;
+                return ActionType.Other;
+            }
+        }
         public Spell()
         {
             Keywords = new List<Keyword>();

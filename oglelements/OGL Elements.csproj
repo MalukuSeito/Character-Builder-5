@@ -43,6 +43,7 @@
     <Compile Include="AbilityScores.cs" />
     <Compile Include="Background.cs" />
     <Compile Include="Base\Ability.cs" />
+    <Compile Include="Base\ActionType.cs" />
     <Compile Include="Base\AttackInfo.cs" />
     <Compile Include="Base\EnumExtensions.cs" />
     <Compile Include="Base\ProficiencyBonus.cs" />

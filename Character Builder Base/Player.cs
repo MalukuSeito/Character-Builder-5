@@ -7,6 +7,7 @@ using OGL.Items;
 using OGL.Spells;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -15,6 +16,9 @@ namespace Character_Builder
 {
     public class Player: IChoiceProvider
     {
+        [XmlIgnore]
+        public static CultureInfo Culture = CultureInfo.InvariantCulture;
+
         [XmlIgnore]
         public BuilderContext Context;
         [XmlIgnore]
@@ -2281,6 +2285,71 @@ namespace Character_Builder
         {
             int l = GetLevel();
             return from c in Classes select c.ToString(Context, l);
+        }
+        public virtual ActionType GetActualAction(Feature f)
+        {
+            if (f.Action != ActionType.DetectAction)
+            {
+                return f.Action;
+            }
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "as a bonus action", CompareOptions.IgnoreCase) >= 0) return ActionType.BonusAction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "take a bonus action", CompareOptions.IgnoreCase) >= 0) return ActionType.BonusAction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "as a reaction", CompareOptions.IgnoreCase) >= 0) return ActionType.Reaction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "take a reaction", CompareOptions.IgnoreCase) >= 0) return ActionType.Reaction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "as a move action", CompareOptions.IgnoreCase) >= 0) return ActionType.MoveAction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "take a move action", CompareOptions.IgnoreCase) >= 0) return ActionType.MoveAction;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "as an action", CompareOptions.IgnoreCase) >= 0) return ActionType.Action;
+            if (f.Text != null && Culture.CompareInfo.IndexOf(f.Text, "take an action", CompareOptions.IgnoreCase) >= 0) return ActionType.Action;
+            return ActionType.DetectAction;
+        }
+
+        public List<ActionInfo> GetActions()
+        {
+            var res = new List<ActionInfo>();
+            foreach (var f in GetFeatures())
+            {
+                if (f is BonusSpellFeature bsf)
+                {
+                    ActionType a = GetActualAction(bsf);
+                    if (a == ActionType.ForceHidden) continue;
+                    Spell s = Context.GetSpell(bsf.Spell, bsf.Source);
+                    res.Add(new ActionInfo()
+                    {
+                        Name = s.Name,
+                        Type = a == ActionType.DetectAction ? s.Action : a,
+                        Text = bsf.Text,
+                        Source = bsf.Name != "" && bsf.Name != null ? bsf.Name + " - " + bsf.Source : bsf.Source,
+                        Feature = f
+                    });
+                } else if (f is BonusSpellKeywordChoiceFeature bskcf)
+                {
+                    ActionType a = GetActualAction(bskcf);
+                    if (a == ActionType.ForceHidden) continue;
+                    foreach (var s in Utils.GetSpells(Context, bskcf)) {
+                        res.Add(new ActionInfo()
+                        {
+                            Name = s.Name,
+                            Type = a == ActionType.DetectAction ? s.Action : a,
+                            Text = bskcf.Text,
+                            Source = bskcf.Name != "" && bskcf.Name != null ? bskcf.Name + " - " + bskcf.Source : bskcf.Source,
+                            Feature = f
+                        });
+                    }
+                } else
+                {
+                    ActionType a = GetActualAction(f);
+                    if (a == ActionType.ForceHidden || a == ActionType.DetectAction) continue;
+                    res.Add(new ActionInfo()
+                    {
+                        Name = f.Name,
+                        Type = a,
+                        Text = f.Text,
+                        Source = f.Source,
+                        Feature = f
+                    });
+                }
+            }
+            return res;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using OGL.Common;
+﻿using OGL.Base;
+using OGL.Common;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace OGL.Features
         public String Category { get; set; }
         public int Level { get; set; }
         public bool Hidden { get; set; }
+        public bool NoDisplay { get; set; }
+        public ActionType Action { get; set; }
         public String Prerequisite { get; set; }
         [XmlIgnore]
         public bool KWChanged = false;

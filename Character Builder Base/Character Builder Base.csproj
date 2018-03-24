@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AbilityFeatChoice.cs" />
     <Compile Include="AbilityFeatChoiceContainer.cs" />
+    <Compile Include="ActionInfo.cs" />
     <Compile Include="BuilderContext.cs" />
     <Compile Include="ClassInfo.cs" />
     <Compile Include="DisplayPossession.cs" />

@@ -43,7 +43,7 @@
  </xsl:template>
 
  <xsl:template match="AbilityScoreFeature | BonusSpellKeywordChoiceFeature | ChoiceFeature | CollectionChoiceFeature | Feature | FreeItemAndGoldFeature | ItemChoiceConditionFeature | ItemChoiceFeature | HitPointsFeature | LanguageProficiencyFeature | LanguageChoiceFeature | OtherProficiencyFeature | SaveProficiencyFeature | SpeedFeature | SkillProficiencyChoiceFeature | SkillProficiencyFeature | SubRaceFeature | SubClassFeature | ToolProficiencyFeature | ToolKWProficiencyFeature | ToolProficiencyChoiceConditionFeature | BonusFeature | SpellcastingFeature | IncreaseSpellChoiceAmountFeature | ModifySpellChoiceFeature | SpellChoiceFeature | SpellSlotsFeature | BonusSpellPrepareFeature | BonusSpellFeature | ACFeature | AbilityScoreFeatFeature | ExtraAttackFeature | ResourceFeature | SpellModifyFeature | VisionFeature">
-	 <xsl:if test="boolean(Name/node())" ><div class="Feature">
+	 <xsl:if test="boolean(Name/node()) and (NoDisplay/text() != 'true' or name(../..)='FeatureContainer')" ><div class="Feature">
 		<xsl:choose>
             		<xsl:when test="contains(Text, '&#10;')">
 				<p><span class="Bold"><xsl:apply-templates select="Name" /><xsl:if test="Level > 1"> (Level <xsl:apply-templates select="Level" />)</xsl:if>: </span><xsl:if test="substring-before(Text, '&#10;') != ''"><xsl:copy-of select="substring-before(Text, '&#10;')" /></xsl:if></p>
@@ -61,7 +61,7 @@
 </xsl:template>
 
 <xsl:template match="MultiFeature">
-	<xsl:if test="boolean(Name/node())" ><div class="Feature">
+	<xsl:if test="boolean(Name/node()) and (NoDisplay/text() != 'true' or name(../..)='FeatureContainer')" ><div class="Feature">
 		<xsl:choose>
             		<xsl:when test="contains(Text, '&#10;')">
 				<p><span class="Bold"><xsl:apply-templates select="Name" /><xsl:if test="Level > 1"> (Level <xsl:apply-templates select="Level" />)</xsl:if>: </span><xsl:if test="substring-before(Text, '&#10;') != ''"><xsl:copy-of select="substring-before(Text, '&#10;')" /></xsl:if></p>

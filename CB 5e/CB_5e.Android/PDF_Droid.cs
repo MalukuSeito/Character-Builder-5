@@ -85,6 +85,10 @@ namespace CB_5e.Droid
                         PdfStamper p = new PdfStamper(sheet, ms);
                         if (p != null)
                         {
+                            if (trans.ContainsKey("Actions"))
+                            {
+                                p.AcroFields.SetField(trans["Actions"], String.Join("\n", Context.Player.GetActions()));
+                            }
                             FillBasicFields(Context, trans, p);
                             String attacks = "";
                             String resources = "";

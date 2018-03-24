@@ -1,4 +1,6 @@
-﻿using OGL.Features;
+﻿using OGL.Base;
+using OGL.Features;
+using System;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder.FeatureForms
@@ -21,10 +23,13 @@ namespace Character_Builder_Builder.FeatureForms
                 {
                     NameTF.DataBindings.Add("Text", value, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
                     Hidden.DataBindings.Add("Checked", value, "Hidden", true, DataSourceUpdateMode.OnPropertyChanged);
+                    NoPreview.DataBindings.Add("Checked", value, "NoDisplay", true, DataSourceUpdateMode.OnPropertyChanged);
                     Level.DataBindings.Add("Value", value, "Level", true, DataSourceUpdateMode.OnPropertyChanged);
                     Prereq.DataBindings.Add("Text", value, "Prerequisite", true, DataSourceUpdateMode.OnPropertyChanged);
                     Binding binding = new Binding("Text", value, "Text", true, DataSourceUpdateMode.OnPropertyChanged);
                     binding.Format += NewlineFormatter.Binding_Format;
+                    foreach (ActionType s in Enum.GetValues(typeof(ActionType))) Action.Items.Add(s);
+                    Action.DataBindings.Add("SelectedItem", value, "Action", true, DataSourceUpdateMode.OnPropertyChanged);
                     Description.DataBindings.Add(binding);
                     keywordControl1.Keywords = value.Keywords;
                 }
