@@ -27,10 +27,12 @@ namespace Character_Builder_5
         public String SpellFile { get; set; }
         public String LogFile { get; set; }
         public String SpellbookFile { get; set; }
+        public String ActionsFile { get; set; }
         public List<PDFField> Fields = new List<PDFField>();
         public List<PDFField> SpellFields = new List<PDFField>();
         public List<PDFField> LogFields = new List<PDFField>();
         public List<PDFField> SpellbookFields = new List<PDFField>();
+        public List<PDFField> ActionsFields = new List<PDFField>();
         public static PDF Load(String file)
         {
             using (TextReader reader = new StreamReader(file))
@@ -45,17 +47,19 @@ namespace Character_Builder_5
         {
             using (TextWriter writer = new StreamWriter(file)) serializer.Serialize(writer, this);
         }
-        public void export(FileStream fs, bool preserveEdit, bool includeResources, bool log, bool spell)
+        public void Export(FileStream fs, bool preserveEdit, bool includeResources, bool log, bool spell, bool actions)
         {
             Dictionary<String, String> trans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> spelltrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> logtrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> booktrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<String, String> actiontrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (PDFField pf in Fields) trans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellFields) spelltrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in LogFields) logtrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellbookFields) booktrans.Add(pf.Name, pf.Field);
+            foreach (PDFField pf in ActionsFields) actiontrans.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = Program.Context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
             List<Spell> spellbook = new List<Spell>();
@@ -496,7 +500,7 @@ namespace Character_Builder_5
 
                     }
 
-                    if (log && LogFile != null && LogFile != "")
+                    if (log && LogFile != null && LogFile != "" && (logtrans.ContainsKey("Title1") || logtrans.ContainsKey("XP1")))
                     {
                         Queue<JournalEntry> entries = new Queue<JournalEntry>(Program.Context.Player.ComplexJournal);
                         
@@ -596,7 +600,7 @@ namespace Character_Builder_5
 
                     }
 
-                    if (spell && SpellbookFile != null && SpellbookFile != "")
+                    if (spell && SpellbookFile != null && SpellbookFile != "" && (booktrans.ContainsKey("Name1") || booktrans.ContainsKey("Description1")))
                     {
                         List<SpellModifyFeature> mods = (from f in Program.Context.Player.GetFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
                         Queue<Spell> entries = new Queue<Spell>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
@@ -613,7 +617,7 @@ namespace Character_Builder_5
                                     using (PdfStamper sbp = new PdfStamper(spellbooksheet, sbms))
                                     {
                                         sheet++;
-                                        fillBasicFields(logtrans, sbp);
+                                        fillBasicFields(booktrans, sbp);
                                         if (booktrans.ContainsKey("Sheet")) sbp.AcroFields.SetField(booktrans["Sheet"], sheet.ToString());
                                         while (entries.Count > 0 && (booktrans.ContainsKey("Name" + counter) || booktrans.ContainsKey("Description" + counter)))
                                         {
@@ -683,8 +687,87 @@ namespace Character_Builder_5
                             }
                         }
                     }
+                    if (actions && ActionsFile != null && ActionsFile != "" && (actiontrans.ContainsKey("Action1Name") || actiontrans.ContainsKey("Action1Text")))
+                    {
+                        Queue<ActionInfo> entries = new Queue<ActionInfo>(Program.Context.Player.GetActions());
+                        int sheet = 0;
+                        while (entries.Count > 0)
+                        {
+                            using (PdfReader actionsheet = new PdfReader(ActionsFile))
+                            {
+                                if (preserveEdit) actionsheet.RemoveUsageRights();
+                                using (MemoryStream abms = new MemoryStream())
+                                {
+                                    int counter = 1;
+
+                                    using (PdfStamper abp = new PdfStamper(actionsheet, abms))
+                                    {
+                                        sheet++;
+                                        fillBasicFields(actiontrans, abp);
+                                        if (actiontrans.ContainsKey("Sheet")) abp.AcroFields.SetField(actiontrans["Sheet"], sheet.ToString());
+                                        foreach (var e in actiontrans.AsEnumerable())
+                                        {
+                                            if (e.Key.StartsWith("Condition"))
+                                            {
+                                                if (Program.Context.Player.Conditions.Exists(s => StringComparer.OrdinalIgnoreCase.Equals("Condition" + s, e.Key)))
+                                                {
+                                                    abp.AcroFields.SetField(actiontrans[e.Value], "Yes");
+                                                }
+                                            }
+                                        }
+                                        while (entries.Count > 0 && (actiontrans.ContainsKey("Action" + counter + "Name") || actiontrans.ContainsKey("Action" + counter + "Text")))
+                                        {
+                                            ActionInfo entry = entries.Dequeue();
+                                            StringBuilder name = new StringBuilder();
+                                            name.Append(entry.Name);
+
+                                            if (actiontrans.ContainsKey("Action" + counter + "Type")) abp.AcroFields.SetField(actiontrans["Action" + counter + "Type"], Type(entry.Type));
+                                            else name.Append(" - ").Append(entry.Type);
+                                            if (actiontrans.ContainsKey("Action" + counter + "Source")) abp.AcroFields.SetField(actiontrans["Action" + counter + "Source"], entry.Source);
+                                            else name.Append(" (").Append(entry.Source).Append(")");
+                                            if (actiontrans.ContainsKey("Action" + counter + "Name"))
+                                            {
+                                                abp.AcroFields.SetField(actiontrans["Action" + counter + "Name"], name.ToString());
+                                                name = new StringBuilder();
+                                            }
+                                            else name.Append(" ").Append(entry.Name);
+                                            if (actiontrans.ContainsKey("Action" + counter + "Text"))
+                                            {
+                                                if (name.Length > 0) abp.AcroFields.SetField(actiontrans["Action" + counter + "Text"], (name.ToString() + " " + entry.Text).Replace("\n", " "));
+                                                else abp.AcroFields.SetField(actiontrans["Action" + counter + "Text"], entry.Text.Replace("\n", " "));
+                                            }
+                                            counter++;
+                                        }
+                                        abp.FormFlattening = !preserveEdit;
+                                        abp.Writer.CloseStream = false;
+                                    }
+                                    if (counter > 1)
+                                    {
+                                        PdfReader lx = new PdfReader(abms.ToArray());
+                                        for (int li = 1; li <= lx.NumberOfPages; li++)
+                                        {
+                                            pdfCopy.SetPageSize(lx.GetPageSize(li));
+                                            pdfCopy.AddPage(pdfCopy.GetImportedPage(lx, li));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     sourceDocument.Close();
                 }
+            }
+        }
+
+        private static string Type(ActionType type)
+        {
+            switch(type)
+            {
+                case ActionType.Action: return "A";
+                case ActionType.BonusAction: return "B";
+                case ActionType.Reaction: return "R";
+                case ActionType.MoveAction: return "M";
+                default: return "O";
             }
         }
 

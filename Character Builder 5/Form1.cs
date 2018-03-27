@@ -2165,7 +2165,7 @@ namespace Character_Builder_5
                 {
                     using (FileStream fs = (FileStream)od.OpenFile())
                     {
-                        Config.PDFExporter.export(fs, preservePDFFormsToolStripMenuItem.Checked, includeResourcesInSheetToolStripMenuItem.Checked, PDFjournal.Checked, PDFspellbook.Checked);
+                        Config.PDFExporter.Export(fs, preservePDFFormsToolStripMenuItem.Checked, includeResourcesInSheetToolStripMenuItem.Checked, PDFjournal.Checked, PDFspellbook.Checked, includeActionsInPDFToolStripMenuItem.Checked);
                     }
                     if (MessageBox.Show("PDF exported to: " + od.FileName + " Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
@@ -4172,6 +4172,11 @@ namespace Character_Builder_5
                     displayElement.Refresh();
                 }
             }
+        }
+
+        private void includeActionsInPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            includeActionsInPDFToolStripMenuItem.Checked = !includeActionsInPDFToolStripMenuItem.Checked;
         }
     }
 }
