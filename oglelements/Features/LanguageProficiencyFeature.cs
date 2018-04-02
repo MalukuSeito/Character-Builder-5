@@ -9,17 +9,20 @@ namespace OGL.Features
         public LanguageProficiencyFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Languages = new List<string>();
         }
         public LanguageProficiencyFeature(string name, string text, Language lang, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Languages = new List<string>();
             Languages.Add(lang.Name);
         }
         public LanguageProficiencyFeature(string name, string text, Language lang, Language lang2, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Languages = new List<string>();
             Languages.Add(lang.Name);
             Languages.Add(lang2.Name);
@@ -27,6 +30,7 @@ namespace OGL.Features
         public LanguageProficiencyFeature(string name, string text, Language lang, Language lang2, Language lang3, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Languages = new List<string>();
             Languages.Add(lang.Name);
             Languages.Add(lang2.Name);
@@ -35,6 +39,7 @@ namespace OGL.Features
         public LanguageProficiencyFeature(string name, string text, Language lang, Language lang2, Language lang3, Language lang4, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Languages = new List<string>();
             Languages.Add(lang.Name);
             Languages.Add(lang2.Name);

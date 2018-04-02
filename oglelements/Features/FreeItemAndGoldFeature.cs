@@ -14,6 +14,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature()
             : base(null, null, 1, true)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             CP = 0;
             SP = 0;
@@ -22,6 +23,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature(string name, string text, int cp=0, int sp=0, int gp=0, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             CP = cp;
             SP = sp;
@@ -30,6 +32,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature(string name, string text, Item item, int cp = 0, int sp = 0, int gp = 0, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             Items.Add(item.Name);
             CP = cp;
@@ -39,6 +42,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature(string name, string text, Item item, Item item2, int cp = 0, int sp = 0, int gp = 0, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             Items.Add(item.Name);
             Items.Add(item2.Name);
@@ -49,6 +53,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature(string name, string text, Item item, Item item2, Item item3, int cp = 0, int sp = 0, int gp = 0, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             Items.Add(item.Name);
             Items.Add(item2.Name);
@@ -60,6 +65,7 @@ namespace OGL.Features
         public FreeItemAndGoldFeature(string name, string text, Item item, Item item2, Item item3, Item item4, int cp = 0, int sp = 0, int gp = 0, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Items = new List<string>();
             Items.Add(item.Name);
             Items.Add(item2.Name);

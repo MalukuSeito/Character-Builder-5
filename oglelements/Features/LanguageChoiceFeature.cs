@@ -11,11 +11,13 @@ namespace OGL.Features
         public LanguageChoiceFeature()
             : base(null, null, 1, true)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = 1;
         }
         public LanguageChoiceFeature(string name, string text, string uniqueID, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = amount;
             UniqueID = uniqueID;
         }

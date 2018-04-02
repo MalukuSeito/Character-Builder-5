@@ -12,23 +12,27 @@ namespace OGL.Features
             public ItemChoiceFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = 1;
         }
         public ItemChoiceFeature(string name, string text, string uniqueID, Item choice1, Item choice2, int cp = 0, int sp = 0, int gp = 0, int amount = 1, int level = 1, bool hidden = true)
         : base(name, text, choice1, choice2, cp, sp, gp, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = amount;
             UniqueID = uniqueID;
         }
         public ItemChoiceFeature(string name, string text, string uniqueID, Item choice1, Item choice2, Item choice3, int cp = 0, int sp = 0, int gp = 0, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, choice1, choice2, choice3, cp, sp, gp, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = amount;
             UniqueID = uniqueID;
         }
         public ItemChoiceFeature(string name, string text, string uniqueID, Item choice1, Item choice2, Item choice3, Item choice4, int cp = 0, int sp = 0, int gp = 0, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, choice1, choice2, choice3, choice4, cp, sp, gp, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = amount;
             UniqueID = uniqueID;
         }

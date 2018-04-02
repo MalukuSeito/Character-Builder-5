@@ -71,6 +71,7 @@ namespace Character_Builder
         public byte[] Portrait { get; set; }
         public String Name { get; set; }
         public String FactionName { get; set;}
+        public String FactionRank { get; set; }
         [XmlElement("FactionImage")]
         public string FactionImageLocation = null;
 
@@ -1168,6 +1169,23 @@ namespace Character_Builder
         public IEnumerable<string> GetOtherProficiencies()
         {
             return from f in GetFeatures() where f is OtherProficiencyFeature orderby f.Text select f.Text;
+        }
+
+        public IEnumerable<string> GetImmunities()
+        {
+            return GetFeatures().Where(f => f is OtherProficiencyFeature).SelectMany(f => (f as ResistanceFeature).Immunities).OrderBy(s=>s).Distinct();
+        }
+        public IEnumerable<string> GetVulnerabilities()
+        {
+            return GetFeatures().Where(f => f is OtherProficiencyFeature).SelectMany(f => (f as ResistanceFeature).Vulnerabilities).OrderBy(s => s).Distinct();
+        }
+        public IEnumerable<string> GetResistances()
+        {
+            return GetFeatures().Where(f => f is OtherProficiencyFeature).SelectMany(f => (f as ResistanceFeature).Resistances).OrderBy(s => s).Distinct();
+        }
+        public IEnumerable<string> GetSavingThrowAdvantages()
+        {
+            return GetFeatures().Where(f => f is OtherProficiencyFeature).SelectMany(f => (f as ResistanceFeature).SavingThrowAdvantages).OrderBy(s => s).Distinct();
         }
         public List<Item> GetFreeItems()
         {

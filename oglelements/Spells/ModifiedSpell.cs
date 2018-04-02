@@ -27,6 +27,7 @@ namespace OGL.Spells
         XmlArrayItem(Type = typeof(LanguageChoiceFeature)),
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
+        XmlArrayItem(Type = typeof(ResistanceFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),

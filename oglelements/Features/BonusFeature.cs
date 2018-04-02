@@ -31,6 +31,7 @@ namespace OGL.Features
         public List<String> ProficiencyOptions { get; set; } = new List<string>();
         public BonusFeature():base()
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             SkillBonus = "0";
             AttackBonus = "0";
@@ -44,6 +45,7 @@ namespace OGL.Features
         public BonusFeature(string name, string text, int skillbonus, List<String> skill, int attackBonus, int damageBonus, int saveDCBonus, int initiativeBonus, int acBonus, string expression, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = skill;
             SkillBonus = skillbonus.ToString();
             AttackBonus = attackBonus.ToString();
@@ -58,6 +60,7 @@ namespace OGL.Features
         public BonusFeature(string name, string text, int skillbonus, List<String> skill, int attackBonus, Ability damageBonusModifier, int saveDCBonus, int initiativeBonus, int acBonus, string expression, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = skill;
             SkillBonus = skillbonus.ToString();
             AttackBonus = attackBonus.ToString();

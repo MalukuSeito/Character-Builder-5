@@ -12,12 +12,14 @@ namespace OGL.Features
         public ItemChoiceConditionFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = 1;
             Condition = "";
         }
         public ItemChoiceConditionFeature(string name, string text, string uniqueID, String condition, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Amount = amount;
             UniqueID = uniqueID;
             Condition = condition;

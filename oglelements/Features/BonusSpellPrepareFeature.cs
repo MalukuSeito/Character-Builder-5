@@ -19,6 +19,7 @@ namespace OGL.Features
         public BonusSpellPrepareFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             SpellcastingID = "";
             Spells = new List<string>();
             KeywordsToAdd = new List<Keyword>();
@@ -26,6 +27,7 @@ namespace OGL.Features
         public BonusSpellPrepareFeature(string name, string text, string spellcastingID, List<Spell> spells, List<Keyword> kwToAdd = null, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             SpellcastingID = spellcastingID;
             Spells = new List<string>(from s in spells select s.Name);
             if (kwToAdd == null) KeywordsToAdd = new List<Keyword>();

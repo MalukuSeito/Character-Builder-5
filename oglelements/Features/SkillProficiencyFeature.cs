@@ -12,12 +12,14 @@ namespace OGL.Features
         public SkillProficiencyFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             ProficiencyMultiplier = 1.0;
         }
         public SkillProficiencyFeature(string name, string text, Skill skill, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Skills.Add(skill.Name);
             ProficiencyMultiplier = 1.0;
@@ -25,6 +27,7 @@ namespace OGL.Features
         public SkillProficiencyFeature(string name, string text, Skill skill, Skill skill2, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Skills.Add(skill.Name);
             Skills.Add(skill2.Name);
@@ -33,6 +36,7 @@ namespace OGL.Features
         public SkillProficiencyFeature(string name, string text, Skill skill, Skill skill2, Skill skill3, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Skills.Add(skill.Name);
             Skills.Add(skill2.Name);
@@ -42,6 +46,7 @@ namespace OGL.Features
         public SkillProficiencyFeature(string name, string text, Skill skill, Skill skill2, Skill skill3, Skill skill4, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Skills.Add(skill.Name);
             Skills.Add(skill2.Name);

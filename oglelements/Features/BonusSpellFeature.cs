@@ -17,12 +17,14 @@ namespace OGL.Features
         public BonusSpellFeature()
             : base()
         {
+            Action = Base.ActionType.DetectAction;
             KeywordsToAdd = new List<Keyword>();
             SpellCastingAbility = Ability.None;
         }
         public BonusSpellFeature(string name, string text, Ability spellability, Spell spell, RechargeModifier spellmodifier=RechargeModifier.Unmodified, List<Keyword> kwToAdd=null, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.DetectAction;
             Spell = spell.Name;
             KeywordsToAdd = new List<Keyword>();
             SpellCastingAbility = spellability;

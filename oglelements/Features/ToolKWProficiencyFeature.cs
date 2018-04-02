@@ -14,11 +14,13 @@ namespace OGL.Features
         public ToolKWProficiencyFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Keywords = new List<Keyword>();
         }
         public ToolKWProficiencyFeature(string name, string text, string condition, string description, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Condition = condition;
             Description = description;
         }

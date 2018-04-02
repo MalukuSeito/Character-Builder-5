@@ -56,6 +56,7 @@
     <Compile Include="Common\IMatchable.cs" />
     <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
+    <Compile Include="Features\ResistanceFeature.cs" />
     <Compile Include="Items\Category.cs" />
     <Compile Include="ClassDefiniton.cs" />
     <Compile Include="Condition.cs" />

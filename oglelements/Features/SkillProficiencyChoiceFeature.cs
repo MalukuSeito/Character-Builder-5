@@ -17,6 +17,7 @@ namespace OGL.Features
             public SkillProficiencyChoiceFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Amount = 1;
             ProficiencyMultiplier = 1.0;
@@ -24,6 +25,7 @@ namespace OGL.Features
         public SkillProficiencyChoiceFeature(string name, string text, string uniqueID, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -32,6 +34,7 @@ namespace OGL.Features
         public SkillProficiencyChoiceFeature(string name, string text, string uniqueID, List<Skill> choices, double multiplier=1.0, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>(from c in choices select c.Name);
             Amount = amount;
             UniqueID = uniqueID;
@@ -40,6 +43,7 @@ namespace OGL.Features
         public SkillProficiencyChoiceFeature(string name, string text, string uniqueID, Skill choice1, Skill choice2, int amount = 1, int level = 1, bool hidden = true)
         : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -50,6 +54,7 @@ namespace OGL.Features
         public SkillProficiencyChoiceFeature(string name, string text, string uniqueID, Skill choice1, Skill choice2, Skill choice3, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -61,6 +66,7 @@ namespace OGL.Features
         public SkillProficiencyChoiceFeature(string name, string text, string uniqueID, Skill choice1, Skill choice2, Skill choice3, Skill choice4, int amount = 1, int level = 1, bool hidden = true)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Skills = new List<string>();
             Amount = amount;
             UniqueID = uniqueID;

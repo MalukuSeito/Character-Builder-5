@@ -28,11 +28,13 @@ namespace Character_Builder_5
         public String LogFile { get; set; }
         public String SpellbookFile { get; set; }
         public String ActionsFile { get; set; }
+        public String ActionsFile2 { get; set; }
         public List<PDFField> Fields = new List<PDFField>();
         public List<PDFField> SpellFields = new List<PDFField>();
         public List<PDFField> LogFields = new List<PDFField>();
         public List<PDFField> SpellbookFields = new List<PDFField>();
         public List<PDFField> ActionsFields = new List<PDFField>();
+        public List<PDFField> ActionsFields2 = new List<PDFField>();
         public static PDF Load(String file)
         {
             using (TextReader reader = new StreamReader(file))
@@ -47,6 +49,16 @@ namespace Character_Builder_5
         {
             using (TextWriter writer = new StreamWriter(file)) serializer.Serialize(writer, this);
         }
+        public static string FirstCharToUpper(string input)
+        {
+            switch (input)
+            {
+                case null: throw new ArgumentNullException(nameof(input));
+                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                default: return input.First().ToString().ToUpper() + input.Substring(1);
+            }
+        }
+
         public void Export(FileStream fs, bool preserveEdit, bool includeResources, bool log, bool spell, bool actions)
         {
             Dictionary<String, String> trans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -54,15 +66,19 @@ namespace Character_Builder_5
             Dictionary<String, String> logtrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> booktrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> actiontrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<String, String> actiontrans2 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (PDFField pf in Fields) trans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellFields) spelltrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in LogFields) logtrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellbookFields) booktrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in ActionsFields) actiontrans.Add(pf.Name, pf.Field);
+            foreach (PDFField pf in ActionsFields2) actiontrans2.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = Program.Context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
             List<Spell> spellbook = new List<Spell>();
+            List<HitDie> hd = Program.Context.Player.GetHitDie();
+            int maxhp = Program.Context.Player.GetHitpointMax();
             using (MemoryStream ms = new MemoryStream())
             {
                 using (PdfReader sheet = new PdfReader(File))
@@ -123,10 +139,28 @@ namespace Character_Builder_5
                             p.AcroFields.SetField(trans["Resources"], resources);
                         }
                         if (trans.ContainsKey("Attacks")) p.AcroFields.SetField(trans["Attacks"], attacks);
-                        List<HitDie> hd = Program.Context.Player.GetHitDie();
                         if (trans.ContainsKey("HitDieTotal")) p.AcroFields.SetField(trans["HitDieTotal"], String.Join(", ", from h in hd select h.Total()));
-                        int maxhp=Program.Context.Player.GetHitpointMax();
                         if (trans.ContainsKey("MaxHP")) p.AcroFields.SetField(trans["MaxHP"], maxhp.ToString());
+                        if (trans.ContainsKey("Resistances")) p.AcroFields.SetField(trans["Resistances"], FirstCharToUpper(String.Join(", ", Program.Context.Player.GetResistances()).ToLowerInvariant()));
+                        if (trans.ContainsKey("Vulnerabilities")) p.AcroFields.SetField(trans["Vulnerabilities"], FirstCharToUpper(String.Join(", ", Program.Context.Player.GetVulnerabilities()).ToLowerInvariant()));
+                        if (trans.ContainsKey("Immunities")) p.AcroFields.SetField(trans["Immunities"], FirstCharToUpper(String.Join(", ", Program.Context.Player.GetImmunities()).ToLowerInvariant()));
+                        if (trans.ContainsKey("SavingThrowAdvantages")) p.AcroFields.SetField(trans["SavingThrowAdvantages"], FirstCharToUpper(String.Join(", ", Program.Context.Player.GetSavingThrowAdvantages()).ToLowerInvariant()));
+                        if (trans.ContainsKey("ResistancesImmunities"))
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            List<String> res = Program.Context.Player.GetResistances().ToList();
+                            if (res.Count > 0) sb.Append("Resistances: ").Append(String.Join(", ", res));
+                            List<String> imm = Program.Context.Player.GetResistances().ToList();
+                            if (imm.Count > 0) sb.Append("Immunities: ").Append(String.Join(", ", imm));
+                            List<String> vuln = Program.Context.Player.GetResistances().ToList();
+                            if (vuln.Count > 0) sb.Append("Vulnerabilities: ").Append(String.Join(", ", vuln));
+                            List<String> sadv = Program.Context.Player.GetSavingThrowAdvantages().ToList();
+                            if (vuln.Count > 0) sb.Append("Advantages on Saving Throws vs: ").Append(String.Join(", ", sadv));
+                            if (sb.Length > 0)
+                            {
+                                p.AcroFields.SetField(trans["ResistancesImmunities"], sb.ToString());
+                            }
+                        }
                         if (includeResources)
                         {
                             if (trans.ContainsKey("CurrentHP")) p.AcroFields.SetField(trans["CurrentHP"], (maxhp+Program.Context.Player.CurrentHPLoss).ToString());
@@ -137,6 +171,16 @@ namespace Character_Builder_5
                                 else break;
                             if (trans.ContainsKey("HitDie")) p.AcroFields.SetField(trans["HitDie"], String.Join(", ", hd));
                             if (trans.ContainsKey("Inspiration")) if (Program.Context.Player.Inspiration) p.AcroFields.SetField(trans["Inspiration"], "Yes");
+                            foreach (var e in actiontrans.AsEnumerable())
+                            {
+                                if (e.Key.StartsWith("Condition"))
+                                {
+                                    if (Program.Context.Player.Conditions.Exists(s => StringComparer.OrdinalIgnoreCase.Equals("Condition" + s, e.Key)))
+                                    {
+                                        p.AcroFields.SetField(actiontrans[e.Value], "Yes");
+                                    }
+                                }
+                            }
                         }
                         if (Program.Context.Player.Portrait != null)
                         {
@@ -691,9 +735,15 @@ namespace Character_Builder_5
                     {
                         Queue<ActionInfo> entries = new Queue<ActionInfo>(Program.Context.Player.GetActions());
                         int sheet = 0;
+                        String file = ActionsFile;
                         while (entries.Count > 0)
                         {
-                            using (PdfReader actionsheet = new PdfReader(ActionsFile))
+                            if (sheet > 0 && ActionsFile2 != null && ActionsFile2 != "" && (actiontrans2.ContainsKey("Action1Name") || actiontrans2.ContainsKey("Action1Text")))
+                            {
+                                file = ActionsFile2;
+                                actiontrans = actiontrans2;
+                            }
+                            using (PdfReader actionsheet = new PdfReader(file))
                             {
                                 if (preserveEdit) actionsheet.RemoveUsageRights();
                                 using (MemoryStream abms = new MemoryStream())
@@ -705,13 +755,24 @@ namespace Character_Builder_5
                                         sheet++;
                                         fillBasicFields(actiontrans, abp);
                                         if (actiontrans.ContainsKey("Sheet")) abp.AcroFields.SetField(actiontrans["Sheet"], sheet.ToString());
-                                        foreach (var e in actiontrans.AsEnumerable())
+                                        if (includeResources)
                                         {
-                                            if (e.Key.StartsWith("Condition"))
+                                            if (trans.ContainsKey("CurrentHP")) abp.AcroFields.SetField(trans["CurrentHP"], (maxhp + Program.Context.Player.CurrentHPLoss).ToString());
+                                            if (trans.ContainsKey("TempHP")) abp.AcroFields.SetField(trans["TempHP"], Program.Context.Player.TempHP.ToString());
+                                            for (int d = 1; d <= Program.Context.Player.FailedDeathSaves; d++) if (trans.ContainsKey("DeathSaveFail" + d)) abp.AcroFields.SetField(trans["DeathSaveFail" + d], "Yes");
+                                                else break;
+                                            for (int d = 1; d <= Program.Context.Player.SuccessDeathSaves; d++) if (trans.ContainsKey("DeathSaveSuccess" + d)) abp.AcroFields.SetField(trans["DeathSaveSuccess" + d], "Yes");
+                                                else break;
+                                            if (trans.ContainsKey("HitDie")) abp.AcroFields.SetField(trans["HitDie"], String.Join(", ", hd));
+                                            if (trans.ContainsKey("Inspiration")) if (Program.Context.Player.Inspiration) abp.AcroFields.SetField(trans["Inspiration"], "Yes");
+                                            foreach (var e in actiontrans.AsEnumerable())
                                             {
-                                                if (Program.Context.Player.Conditions.Exists(s => StringComparer.OrdinalIgnoreCase.Equals("Condition" + s, e.Key)))
+                                                if (e.Key.StartsWith("Condition"))
                                                 {
-                                                    abp.AcroFields.SetField(actiontrans[e.Value], "Yes");
+                                                    if (Program.Context.Player.Conditions.Exists(s => StringComparer.OrdinalIgnoreCase.Equals("Condition" + s, e.Key)))
+                                                    {
+                                                        abp.AcroFields.SetField(actiontrans[e.Value], "Yes");
+                                                    }
                                                 }
                                             }
                                         }
@@ -767,7 +828,7 @@ namespace Character_Builder_5
                 case ActionType.BonusAction: return "B";
                 case ActionType.Reaction: return "R";
                 case ActionType.MoveAction: return "M";
-                default: return "O";
+                default: return "";
             }
         }
 
@@ -852,6 +913,18 @@ namespace Character_Builder_5
 
         private void fillBasicFields(Dictionary<string, string> trans, PdfStamper p)
         {
+            int down = 0;
+            int renown = 0;
+            int magic = 0;
+            if (trans.ContainsKey("Renown") || trans.ContainsKey("MagicItems") || trans.ContainsKey("Downtime"))
+            {
+                foreach (JournalEntry je in Program.Context.Player.ComplexJournal)
+                {
+                    down += je.Downtime;
+                    renown += je.Renown;
+                    magic += je.MagicItems;
+                }
+            }
             if (trans.ContainsKey("Background")) p.AcroFields.SetField(trans["Background"], SourceInvariantComparer.NoSource(Program.Context.Player.BackgroundName));
             if (trans.ContainsKey("Race")) p.AcroFields.SetField(trans["Race"], Program.Context.Player.GetRaceSubName());
             if (trans.ContainsKey("PersonalityTrait")) p.AcroFields.SetField(trans["PersonalityTrait"], Program.Context.Player.PersonalityTrait);
@@ -890,6 +963,10 @@ namespace Character_Builder_5
             if (trans.ContainsKey("CharacterName2")) p.AcroFields.SetField(trans["CharacterName2"], Program.Context.Player.Name);
             if (trans.ContainsKey("ClassLevel")) p.AcroFields.SetField(trans["ClassLevel"], String.Join(" | ", Program.Context.Player.GetClassesStrings()));
             if (trans.ContainsKey("DCI")) p.AcroFields.SetField(trans["DCI"], Program.Context.Player.DCI);
+            if (trans.ContainsKey("Renown")) p.AcroFields.SetField(trans["Renown"], renown.ToString());
+            if (trans.ContainsKey("MagicItems")) p.AcroFields.SetField(trans["MagicItems"], magic.ToString());
+            if (trans.ContainsKey("Downtime")) p.AcroFields.SetField(trans["Downtime"], down.ToString());
+            if (trans.ContainsKey("FactionRank")) p.AcroFields.SetField(trans["FactionRank"], Program.Context.Player.FactionRank);
         }
 
         private string plusMinus(int value)

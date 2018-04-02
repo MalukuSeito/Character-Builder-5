@@ -11,6 +11,7 @@ namespace OGL.Features
         public SpeedFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Condition = "true";
             BaseSpeed = 0;
             ExtraSpeed = "0";
@@ -18,6 +19,7 @@ namespace OGL.Features
         public SpeedFeature(string name, string text, int basespeed, int extraspeed = 0, bool ignoreArmor=false, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             BaseSpeed = basespeed;
             ExtraSpeed = extraspeed.ToString();
             IgnoreArmor = ignoreArmor;

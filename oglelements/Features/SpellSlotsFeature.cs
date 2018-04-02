@@ -10,6 +10,7 @@ namespace OGL.Features
         public SpellSlotsFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             SpellcastingID = "";
             Slots = new List<int>();
         }
@@ -17,12 +18,14 @@ namespace OGL.Features
         public SpellSlotsFeature(string name, string text, string spellcastingID, List<int> slots, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             SpellcastingID = spellcastingID;
             Slots = slots;
         }
         public SpellSlotsFeature(string spellcastingID, int level, int first = 0, int second = 0, int third = 0, int fourth = 0, int fifth = 0, int sixth = 0, int seventh = 0, int eighth = 0, int ninth = 0)
             : base("Spell slots", SpellSlotsFeature.tostring(first, second, third, fourth, fifth, sixth, seventh, eighth, ninth), level, true)
         {
+            Action = Base.ActionType.ForceHidden;
             SpellcastingID = spellcastingID;
             Slots = new List<int>() { first, second, third, fourth, fifth, sixth, seventh, eighth, ninth };
         }

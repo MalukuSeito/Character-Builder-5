@@ -7,12 +7,14 @@ namespace OGL.Features
     {
         public List<String> Races;
         public SubRaceFeature() : base() 
-        { 
-            Races=new List<string>();
+        {
+            Action = Base.ActionType.ForceHidden;
+            Races =new List<string>();
         }
         public SubRaceFeature(string name, string text, String Race, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Races = new List<string>();
             Races.Add(Race);
         }

@@ -84,6 +84,7 @@
             this.featureCollectionChoiceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subclassFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subraceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resistanceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -229,6 +230,7 @@
             this.hitPointFeatureToolStripMenuItem,
             this.statBonusFeatureToolStripMenuItem,
             this.speedFeatureToolStripMenuItem,
+            this.resistanceFeatureToolStripMenuItem,
             this.visionFeatureToolStripMenuItem});
             this.attackDefenseToolStripMenuItem.Name = "attackDefenseToolStripMenuItem";
             this.attackDefenseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
@@ -541,6 +543,13 @@
             this.subraceFeatureToolStripMenuItem.Text = "Subrace Feature";
             this.subraceFeatureToolStripMenuItem.Click += new System.EventHandler(this.subraceFeatureToolStripMenuItem_Click);
             // 
+            // resistanceFeatureToolStripMenuItem
+            // 
+            this.resistanceFeatureToolStripMenuItem.Name = "resistanceFeatureToolStripMenuItem";
+            this.resistanceFeatureToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.resistanceFeatureToolStripMenuItem.Text = "Resistance Feature";
+            this.resistanceFeatureToolStripMenuItem.Click += new System.EventHandler(this.resistanceFeatureToolStripMenuItem_Click);
+            // 
             // Features
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -612,5 +621,6 @@
         private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bonusAlwaysPreparedSpellsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resistanceFeatureToolStripMenuItem;
     }
 }

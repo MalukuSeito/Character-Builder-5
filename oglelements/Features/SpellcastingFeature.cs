@@ -19,8 +19,9 @@ namespace OGL.Features
         public int PrepareCountAdditional { get; set; }
         public String PrepareCount { get; set; }
         public RechargeModifier PreparationChange { get; set; }
-        public SpellcastingFeature() : base() { 
-            OverwrittenByMulticlassing=true;
+        public SpellcastingFeature() : base() {
+            Action = Base.ActionType.ForceHidden;
+            OverwrittenByMulticlassing =true;
             SpellcastingID = "";
             DisplayName = "Spellcasting";
             Preparation = PreparationMode.LearnSpells;
@@ -30,6 +31,7 @@ namespace OGL.Features
         public SpellcastingFeature(string name, string text, string spellcastingID, Ability spellcastingAbility, string displayName, PreparationMode preparation, string prepareableSpells, Ability prepareCountAdditionalModifier = Ability.None, int prepareCountPerClassLevel = 1, bool overwrittenByMulticlassing = true, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Preparation = preparation;
             SpellcastingID = spellcastingID;
             DisplayName = displayName;
@@ -45,6 +47,7 @@ namespace OGL.Features
         public SpellcastingFeature(string name, string text, string spellcastingID, Ability spellcastingAbility, string displayName, bool overwrittenByMulticlassing = true, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Preparation = PreparationMode.LearnSpells;
             SpellcastingID = spellcastingID;
             DisplayName = displayName;

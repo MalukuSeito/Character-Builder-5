@@ -23,6 +23,7 @@ namespace OGL.Features
         XmlArrayItem(Type = typeof(LanguageChoiceFeature)),
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
+        XmlArrayItem(Type = typeof(ResistanceFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
@@ -49,12 +50,14 @@ namespace OGL.Features
         public ChoiceFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = 1;
         }
         public ChoiceFeature(string name, string text, string uniqueID, List<Feature> choices, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>(choices);
             Amount = amount;
             UniqueID = uniqueID;
@@ -62,6 +65,7 @@ namespace OGL.Features
         public ChoiceFeature(string name, string text, string uniqueID, Feature choice1, Feature choice2, int amount = 1, int level = 1, bool hidden = false)
         : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -71,6 +75,7 @@ namespace OGL.Features
         public ChoiceFeature(string name, string text, string uniqueID, Feature choice1, Feature choice2, Feature choice3, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -81,6 +86,7 @@ namespace OGL.Features
         public ChoiceFeature(string name, string text, string uniqueID, Feature choice1, Feature choice2, Feature choice3, Feature choice4, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -92,6 +98,7 @@ namespace OGL.Features
         public ChoiceFeature(string name, string text, string uniqueID, Feature choice1, Feature choice2, Feature choice3, Feature choice4, Feature choice5, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = amount;
             UniqueID = uniqueID;
@@ -104,6 +111,7 @@ namespace OGL.Features
         public ChoiceFeature(string name, string text, string uniqueID, Feature choice1, Feature choice2, Feature choice3, Feature choice4, Feature choice5, Feature choice6, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Choices = new List<Feature>();
             Amount = amount;
             UniqueID = uniqueID;

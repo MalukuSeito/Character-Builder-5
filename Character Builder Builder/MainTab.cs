@@ -1,6 +1,7 @@
 ﻿using Character_Builder_Forms;
 using Microsoft.VisualBasic;
 using OGL;
+using OGL.Features;
 using OGL.Items;
 using OGL.Keywords;
 using System;
@@ -19,7 +20,9 @@ namespace Character_Builder_Builder
         {
             InitializeComponent();
             Program.Context.ImportRaces();
+            foreach (Race r in Program.Context.Races.Values) CheckFeatures(r.Features, r.Name, r.Source);
             Program.Context.ImportSubRaces();
+            foreach (SubRace r in Program.Context.SubRaces.Values) CheckFeatures(r.Features, r.Name, r.Source);
             fill(racesList, Program.Context.Races.Keys, null);
             fill(subRaceList, Program.Context.SubRaces.Keys, null);
             DefaultSource.DataBindings.Add("Text", Program.Context.Config, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
@@ -36,13 +39,16 @@ namespace Character_Builder_Builder
             if (tab == racesTab)
             {
                 Program.Context.ImportRaces();
+                foreach (Race r in Program.Context.Races.Values) CheckFeatures(r.Features, r.Name, r.Source);
                 Program.Context.ImportSubRaces();
+                foreach (SubRace r in Program.Context.SubRaces.Values) CheckFeatures(r.Features, r.Name, r.Source);
                 fill(racesList, Program.Context.Races.Keys, null);
                 fill(subRaceList, Program.Context.SubRaces.Keys, null);
             }
             else if (tab == featuresTab)
             {
                 Program.Context.ImportStandaloneFeatures();
+                foreach (List<FeatureContainer> rr in Program.Context.FeatureContainers.Values) foreach (FeatureContainer r in rr) CheckFeatures(r.Features, r.category + ":" + r.Name, r.Source);
                 FeatCats.Items.Clear();
                 FeatCats.Items.Add("Feats");
                 foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Features_Directory)) FeatCats.Items.Add(s);
@@ -50,8 +56,20 @@ namespace Character_Builder_Builder
             else if (tab == classesTab)
             {
                 Program.Context.ImportClasses();
+                foreach (ClassDefinition r in Program.Context.Classes.Values)
+                {
+                    CheckFeatures(r.Features, r.Name, r.Source);
+                    CheckFeatures(r.MulticlassingFeatures, r.Name, r.Source);
+                    CheckFeatures(r.FirstClassFeatures, r.Name, r.Source);
+                }
                 fill(classList, Program.Context.Classes.Keys, null);
                 Program.Context.ImportSubClasses();
+                foreach (SubClass r in Program.Context.SubClasses.Values)
+                {
+                    CheckFeatures(r.Features, r.Name, r.Source);
+                    CheckFeatures(r.MulticlassingFeatures, r.Name, r.Source);
+                    CheckFeatures(r.FirstClassFeatures, r.Name, r.Source);
+                }
                 fill(subclassList, Program.Context.SubClasses.Keys, null);
             }
             else if (tab == langTab)
@@ -62,6 +80,7 @@ namespace Character_Builder_Builder
             else if (tab == backTab)
             {
                 Program.Context.ImportBackgrounds();
+                foreach (Background r in Program.Context.Backgrounds.Values) CheckFeatures(r.Features, r.Name, r.Source);
                 fill(backBox, Program.Context.Backgrounds.Keys, null);
             }
             else if (tab == itemTab)
@@ -112,6 +131,15 @@ namespace Character_Builder_Builder
             else if (tab == magicTab)
             {
                 Program.Context.ImportMagic();
+                foreach (MagicProperty r in Program.Context.Magic.Values)
+                {
+                    CheckFeatures(r.AttunedEquipFeatures, r.Name, r.Source);
+                    CheckFeatures(r.AttunedOnUseFeatures, r.Name, r.Source);
+                    CheckFeatures(r.AttunementFeatures, r.Name, r.Source);
+                    CheckFeatures(r.CarryFeatures, r.Name, r.Source);
+                    CheckFeatures(r.EquipFeatures, r.Name, r.Source);
+                    CheckFeatures(r.OnUseFeatures, r.Name, r.Source);
+                }
                 magicCatBox.Items.Clear();
                 magicCatBox.Items.Add("Magic");
                 foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Magic_Directory)) magicCatBox.Items.Add(s);
@@ -955,6 +983,20 @@ namespace Character_Builder_Builder
         private void button3_Click(object sender, EventArgs e)
         {
             Program.Errorlog.Show();
+        }
+
+        private void CheckFeatures(List<Feature> fs, string text, string Source)
+        {
+            foreach (Feature f in fs)
+            {
+                if (f is MultiFeature mf) CheckFeatures(mf.Features, text + " - " + mf.Name, Source);
+                if (f is ChoiceFeature cf) CheckFeatures(cf.Choices, text + " - " + cf.Name, Source);
+                if (f is BonusSpellFeature || f is BonusSpellKeywordChoiceFeature) continue;
+                if (f.Action == OGL.Base.ActionType.DetectAction)
+                {
+                    ConfigManager.LogError("Info: No Action for: " + text + " - " + f.Name + " (" + Source + ")");
+                }
+            }
         }
     }
 }

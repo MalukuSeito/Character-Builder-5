@@ -84,7 +84,7 @@ namespace Character_Builder
                 {
                     foreach (string s in bspf.Spells)
                     {
-                        res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, true, false));
+                        res.Add(new ModifiedSpell(context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, false, false));
                     }
                     res.AddRange(Utils.FilterSpell(player.Context, bspf.Condition, bspf.SpellcastingID).Select(s => new ModifiedSpell(s, bspf.KeywordsToAdd, false, false)));
                 }

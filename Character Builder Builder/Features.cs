@@ -464,5 +464,11 @@ namespace Character_Builder_Builder
             list.Add(new FeatureForms.VisionFeatureForm(new VisionFeature()).edit(HistoryManager));
             fill();
         }
+
+        private void resistanceFeatureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            list.Add(new FeatureForms.ResistanceFeatureForm(new ResistanceFeature()).edit(HistoryManager));
+            fill();
+        }
     }
 }

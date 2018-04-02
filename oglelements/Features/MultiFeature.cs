@@ -21,6 +21,7 @@ namespace OGL.Features
         XmlArrayItem(Type = typeof(LanguageChoiceFeature)),
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
+        XmlArrayItem(Type = typeof(ResistanceFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
@@ -47,11 +48,13 @@ namespace OGL.Features
 
         public MultiFeature() : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Features = new List<Feature>();
         }
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Features = new List<Feature>
             {
                 feature1,
@@ -61,6 +64,7 @@ namespace OGL.Features
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, Feature feature3, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Features = new List<Feature>
             {
                 feature1,
@@ -71,6 +75,7 @@ namespace OGL.Features
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, Feature feature3, Feature feature4, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Features = new List<Feature>
             {
                 feature1,

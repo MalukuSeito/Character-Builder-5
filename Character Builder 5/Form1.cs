@@ -1401,6 +1401,7 @@ namespace Character_Builder_5
                 Skin.Text = Program.Context.Player.Skin;
                 Hair.Text = Program.Context.Player.Hair;
                 FactionName.Text = Program.Context.Player.FactionName;
+                factionRank.Text = Program.Context.Player.FactionRank;
                 FactionInsignia.Image = Program.Context.Player.GetFactionImage();
                 Backstory.Text = Program.Context.Player.Backstory;
                 Allies.Text = Program.Context.Player.Allies;
@@ -4177,6 +4178,15 @@ namespace Character_Builder_5
         private void includeActionsInPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             includeActionsInPDFToolStripMenuItem.Checked = !includeActionsInPDFToolStripMenuItem.Checked;
+        }
+
+        private void factionRank_TextChanged(object sender, EventArgs e)
+        {
+            if (!layouting)
+            {
+                Program.Context.MakeHistory("Factionrank");
+                Program.Context.Player.FactionRank = factionRank.Text;
+            }
         }
     }
 }

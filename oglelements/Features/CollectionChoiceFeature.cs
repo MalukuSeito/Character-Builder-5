@@ -13,12 +13,14 @@ namespace OGL.Features
         public CollectionChoiceFeature()
             : base()
         {
+            Action = Base.ActionType.ForceHidden;
             Collection = "";
             Amount = 1;
         }
         public CollectionChoiceFeature(string name, string text, string uniqueID, String collection, int amount = 1, int level = 1, bool hidden = false)
         : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Collection = collection;
             Amount = amount;
             UniqueID = uniqueID;

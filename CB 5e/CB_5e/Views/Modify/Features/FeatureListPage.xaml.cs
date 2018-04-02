@@ -123,6 +123,7 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Extra Attack Feature", "Sets the amount of extra attacks when attacking", new ExtraAttackFeature()),
                     new SelectOption("Hitpoint Feature", "Defines a bonus to hitpoints", new HitPointsFeature()),
                     new SelectOption("Stat Bonus Feature", "Defines various conditional stat boni, i.e. attack, AC, skills, damage", new BonusFeature()),
+                    new SelectOption("Resistance Feature", "A feature for Resistances", new ResistanceFeature()),
                     new SelectOption("Speed Feature", "Defines the base speed or a stacking speed bonus", new SpeedFeature()),
                     new SelectOption("Vision Feature", "Defines the range of darkvision a character has", new VisionFeature() {Range = 60 }),
                     new SelectOption("Skill Proficiency Feature", "Adds proficiency to skills", new SkillProficiencyFeature()),

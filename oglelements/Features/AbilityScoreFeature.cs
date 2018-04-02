@@ -14,6 +14,7 @@ namespace OGL.Features
         public AbilityScoreFeature()
             : base("Ability Score Increase","",1,true)
         {
+            Action = Base.ActionType.ForceHidden;
             Strength = 0;
             Constitution = 0;
             Dexterity = 0;
@@ -25,6 +26,7 @@ namespace OGL.Features
         public AbilityScoreFeature(string name, string text, int str, int con, int dex, int intel, int wis, int cha, AbilityScoreModifikation mod = AbilityScoreModifikation.AddScore, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.ForceHidden;
             Strength = str;
             Constitution = con;
             Dexterity = dex;

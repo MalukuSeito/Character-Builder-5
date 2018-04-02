@@ -21,6 +21,7 @@ namespace OGL.Features
         public BonusSpellKeywordChoiceFeature()
             : base()
         {
+            Action = Base.ActionType.DetectAction;
             KeywordsToAdd = new List<Keyword>();
             SpellCastingAbility = Ability.None;
             Amount = 1;
@@ -28,6 +29,7 @@ namespace OGL.Features
         public BonusSpellKeywordChoiceFeature(string name, string text, string condition, String uniqueID, Ability spellability, RechargeModifier spellmodifier = RechargeModifier.Unmodified, List<Keyword> kwToAdd = null, int amount = 1, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)
         {
+            Action = Base.ActionType.DetectAction;
             KeywordsToAdd = new List<Keyword>();
             Condition = condition;
             SpellCastingAbility = spellability;
