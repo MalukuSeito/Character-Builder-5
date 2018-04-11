@@ -75,6 +75,8 @@ namespace Character_Builder_5
             foreach (PDFField pf in ActionsFields) actiontrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in ActionsFields2) actiontrans2.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = Program.Context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
+            hiddenfeats.Add("", true);
+            hiddenfeats.Add(null, true);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
             List<Spell> spellbook = new List<Spell>();
             List<HitDie> hd = Program.Context.Player.GetHitDie();
@@ -225,15 +227,32 @@ namespace Character_Builder_5
                         int level=Program.Context.Player.GetLevel();
                         // TODO Proper Items:
                         List<Possession> equip=new List<Possession>();
+                        List<String> equipDetailed = new List<String>();
+                        List<String> equipDetailed2 = new List<String>();
                         List<Possession> treasure=new List<Possession>();
+                        List<String> treasureDetailed = new List<String>();
                         List<Feature> onUse=new List<Feature>();
                         foreach (Possession pos in Program.Context.Player.GetItemsAndPossessions()) {
-                            if (pos.BaseItem!=null && pos.BaseItem != "") {
-                                Item i=Program.Context.GetItem(pos.BaseItem, null);
-                                if (pos.Equipped != EquipSlot.None || i is Weapon || i is Armor || i is Shield) equip.Add(pos);
-                                else treasure.Add(pos);
+                            if ((trans.ContainsKey("Equipment") || trans.ContainsKey("EquipmentShort") || trans.ContainsKey("EquipmentDetailed")) && pos.BaseItem != null && pos.BaseItem != "")
+                            {
+                                Item i = Program.Context.GetItem(pos.BaseItem, null);
+                                if (pos.Equipped != EquipSlot.None || i is Weapon || i is Armor || i is Shield)
+                                {
+                                    equip.Add(pos);
+                                    equipDetailed.Add(pos.ToInfo());
+                                    equipDetailed2.Add(pos.ToInfo(true));
+                                }
+                                else
+                                {
+                                    treasure.Add(pos);
+                                    treasureDetailed.Add(pos.ToInfo(true));
+                                }
                             }
-                                else treasure.Add(pos);
+                            else
+                            {
+                                treasure.Add(pos);
+                                treasureDetailed.Add(pos.ToInfo(true));
+                            }
                             onUse.AddRange(pos.CollectOnUse(level, Program.Context.Player, Program.Context));
                         }
                         equip.Sort(delegate(Possession t1, Possession t2)
@@ -248,25 +267,6 @@ namespace Character_Builder_5
                             }
 
                         });
-                        if (trans.ContainsKey("CP"))
-                        {
-                            if (trans.ContainsKey("Equipment")) p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equip));
-                            p.AcroFields.SetField(trans["CP"], money.cp.ToString());
-                            if (trans.ContainsKey("SP")) p.AcroFields.SetField(trans["SP"], money.sp.ToString());
-                            if (trans.ContainsKey("EP")) p.AcroFields.SetField(trans["EP"], money.ep.ToString());
-                            if (trans.ContainsKey("GP")) p.AcroFields.SetField(trans["GP"], money.gp.ToString());
-                            if (trans.ContainsKey("PP")) p.AcroFields.SetField(trans["PP"], money.pp.ToString());
-                        }
-                        else if (trans.ContainsKey("GP"))
-                        {
-                            if (trans.ContainsKey("Equipment")) p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equip));
-                            p.AcroFields.SetField(trans["GP"], money.ToGold());
-                        }
-                        else if (trans.ContainsKey("Equipment"))
-                        {
-                            p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equip) + "\n" + money.ToString());
-                            //TODO .CollectOnUseFeatures() foreach Possession
-                        }
                         int chigh = 1;
                         foreach (SpellcastingFeature scf in spellcasts)
                         {
@@ -344,13 +344,17 @@ namespace Character_Builder_5
                                 }
                             }
                         }
-                        if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join("\n", treasure));
+                        List<string> usable = new List<string>();
                         if (preserveEdit || true)
                         {
                             if (trans.ContainsKey("RaceBackgroundFeatures"))
                             {
                                 List<string> feats = new List<string>();
-                                foreach (Feature f in onUse) if (!f.Hidden) feats.Add(f.ShortDesc());
+                                foreach (Feature f in onUse) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name))
+                                    {
+                                        if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
+                                        else feats.Add(f.ShortDesc());
+                                    }
                                 foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 p.AcroFields.SetField(trans["RaceBackgroundFeatures"], String.Join("\n", feats));
@@ -361,7 +365,11 @@ namespace Character_Builder_5
                             } else if (trans.ContainsKey("Features"))
                             {
                                 List<string> feats = new List<string>();
-                                foreach (Feature f in onUse) if (!f.Hidden) feats.Add(f.ShortDesc());
+                                foreach (Feature f in onUse) if (!f.Hidden)
+                                    {
+                                        if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
+                                        else feats.Add(f.ShortDesc());
+                                    }
                                 foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 foreach (Feature f in Program.Context.Player.GetClassFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
@@ -408,6 +416,55 @@ namespace Character_Builder_5
                                 currentColumnText.Go();
                             }
                         }
+                        bool addUsableToTreasure = false;
+                        if (trans.ContainsKey("Usable")) p.AcroFields.SetField(trans["Usable"], String.Join("\n", usable));
+                        else addUsableToTreasure = usable.Count > 0;
+                        if (trans.ContainsKey("CP") && trans.ContainsKey("GP") && trans.ContainsKey("SP") && trans.ContainsKey("EP") && trans.ContainsKey("PP"))
+                        {
+                            if (trans.ContainsKey("Equipment")) p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                            if (trans.ContainsKey("EquipmentShort")) p.AcroFields.SetField(trans["EquipmentShort"], String.Join(", ", equip));
+                            if (trans.ContainsKey("EquipmentDetailed")) p.AcroFields.SetField(trans["EquipmentDetailed"], String.Join("\n", equipDetailed2));
+                            if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                            p.AcroFields.SetField(trans["CP"], money.cp.ToString());
+                            if (trans.ContainsKey("SP")) p.AcroFields.SetField(trans["SP"], money.sp.ToString());
+                            if (trans.ContainsKey("EP")) p.AcroFields.SetField(trans["EP"], money.ep.ToString());
+                            if (trans.ContainsKey("GP")) p.AcroFields.SetField(trans["GP"], money.gp.ToString());
+                            if (trans.ContainsKey("PP")) p.AcroFields.SetField(trans["PP"], money.pp.ToString());
+                        }
+                        else if (trans.ContainsKey("GP"))
+                        {
+                            if (trans.ContainsKey("Equipment")) p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                            if (trans.ContainsKey("EquipmentShort")) p.AcroFields.SetField(trans["EquipmentShort"], String.Join(", ", equip));
+                            if (trans.ContainsKey("EquipmentDetailed")) p.AcroFields.SetField(trans["EquipmentDetailed"], String.Join("\n", equipDetailed2));
+                            if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                            p.AcroFields.SetField(trans["GP"], money.ToGold());
+                        }
+                        else if (trans.ContainsKey("EquipmentShort"))
+                        {
+                            p.AcroFields.SetField(trans["EquipmentShort"], String.Join(", ", equip) + "\n" + money.ToString());
+                            if (trans.ContainsKey("EquipmentDetailed")) p.AcroFields.SetField(trans["EquipmentDetailed"], String.Join("\n", equipDetailed2));
+                            if (trans.ContainsKey("Equipment")) p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                            if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                        }
+                        else if (trans.ContainsKey("Equipment"))
+                        {
+                            p.AcroFields.SetField(trans["Equipment"], String.Join("\n", equipDetailed) + "\n" + money.ToString());
+                            if (trans.ContainsKey("EquipmentDetailed")) p.AcroFields.SetField(trans["EquipmentDetailed"], String.Join("\n", equipDetailed2));
+                            if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                        } else if (trans.ContainsKey("EquipmentDetailed"))
+                        {
+                            p.AcroFields.SetField(trans["EquipmentDetailed"], String.Join("\n", equipDetailed2) + "\n" + money.ToString());
+                            if (trans.ContainsKey("Treasure")) p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                        }
+                        else if (trans.ContainsKey("Treasure"))
+                        {
+                            p.AcroFields.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : "") + "\n" + money.ToString());
+                        }
+                        else
+                        {
+                            treasureDetailed.Add(money.ToString());
+                        }
+                        if (trans.ContainsKey("TreasureDetailed")) p.AcroFields.SetField(trans["TreasureDetailed"], String.Join("\n", treasureDetailed));
                         p.FormFlattening = !preserveEdit;
                         p.Writer.CloseStream = false;
                     }

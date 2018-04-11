@@ -293,7 +293,7 @@ namespace OGL
             if (oldname != null && oldname != "") return (PrependName != null && PrependName != "" ? PrependName + " " : "") + oldname + (PostName != null && PostName != "" ? " " + PostName : "");
             return Name;
         }
-        public IEnumerable<Feature> Collect(int level, bool equipped, bool attuned, IChoiceProvider choiceProvider, OGLContext context)
+        public IEnumerable<Feature> Collect(int level, bool equipped, bool attuned, IChoiceProvider choiceProvider, OGLContext context, bool includeOnUseFeatures = false)
         {
             List<Feature> res = new List<Feature>();
             foreach (Feature f in CarryFeatures)
@@ -316,6 +316,20 @@ namespace OGL
                     f.Source = Source;
                     res.AddRange(f.Collect(level, choiceProvider, context));
                 }
+            if (includeOnUseFeatures)
+            {
+                foreach (Feature f in OnUseFeatures)
+                {
+                    f.Source = Source;
+                    res.AddRange(f.Collect(level, choiceProvider, context));
+                }
+                if (attuned)
+                    foreach (Feature f in AttunedOnUseFeatures)
+                    {
+                        f.Source = Source;
+                        res.AddRange(f.Collect(level, choiceProvider, context));
+                    }
+            }
             return res;
         }
         public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider choiceProvider, bool attuned, OGLContext context)

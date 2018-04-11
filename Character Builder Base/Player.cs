@@ -329,14 +329,14 @@ namespace Character_Builder
             afc.Ability2=ab2;
             afc.Feat = feat + " " + ConfigManager.SourceSeperator + " " + source;
         }
-        public List<Feature> GetPossessionFeatures(int level = 0, bool reset = false)
+        public List<Feature> GetPossessionFeatures(int level = 0, bool reset = false, bool includeOnUseFeatures = false)
         {
             //if (reset) ChoiceCounter.Clear();
             if (level == 0) level = GetLevel();
             List<Feature> result=new List<Feature>();
             foreach (Possession p in Possessions)
             {
-                result.AddRange(p.Collect(level, this, Context));
+                result.AddRange(p.Collect(level, this, Context, false, includeOnUseFeatures));
             }
             return Context.Plugins.FilterPossessionFeatures(result, level, this, Context);
         }
@@ -706,7 +706,7 @@ namespace Character_Builder
 
         public bool AllRituals { get; set; }
 
-        public List<Feature> GetBackgroundFeatures(int level=0, bool reset = false)
+        public List<Feature> GetBackgroundFeatures(int level=0, bool reset = false, bool includeOnUseFeatures = false)
         {
             //if (reset) ChoiceCounter.Clear();
             if (reset) ResetChoices();
@@ -714,7 +714,7 @@ namespace Character_Builder
             List<Feature> fl = new List<Feature>();
             if (Background != null) fl.AddRange(Context.Plugins.FilterBackgroundFeatures(Background, Background.CollectFeatures(level, this, Context), level, this, Context));
             fl.AddRange(GetBoons(level, false));
-            fl.AddRange(GetPossessionFeatures(level, false));
+            fl.AddRange(GetPossessionFeatures(level, false, includeOnUseFeatures));
             return fl;
         }
 
@@ -869,12 +869,12 @@ namespace Character_Builder
         {
             return from Feature f in GetFeatures(level) where f is AbilityScoreFeatFeature select (AbilityScoreFeatFeature)f;
         }
-        public List<Feature> GetFeatures(int level=0, bool reset = false)
+        public List<Feature> GetFeatures(int level=0, bool reset = false, bool includeOnUseFeatures = false)
         {
             //if (reset) ChoiceCounter.Clear();
             if (reset) ResetChoices();
             List<Feature> res = new List<Feature>();
-            res.AddRange(GetBackgroundFeatures(level, false));
+            res.AddRange(GetBackgroundFeatures(level, false, includeOnUseFeatures));
             res.AddRange(GetRaceFeatures(level, false));
             res.AddRange(GetClassFeatures(level, false));
             res.AddRange(GetCommonFeaturesAndFeats(level, false));
@@ -2324,7 +2324,7 @@ namespace Character_Builder
         public List<ActionInfo> GetActions()
         {
             var res = new List<ActionInfo>();
-            foreach (var f in GetFeatures())
+            foreach (var f in GetFeatures(0,false, true))
             {
                 if (f is BonusSpellFeature bsf)
                 {
