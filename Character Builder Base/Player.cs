@@ -2306,6 +2306,10 @@ namespace Character_Builder
         }
         public virtual ActionType GetActualAction(Feature f)
         {
+            if (f is BonusSpellFeature || f is BonusSpellKeywordChoiceFeature)
+            {
+                return f.Action;
+            }
             if (f.Action != ActionType.DetectAction)
             {
                 return f.Action;

@@ -76,7 +76,6 @@ namespace Character_Builder_5
             foreach (PDFField pf in ActionsFields2) actiontrans2.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = Program.Context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             hiddenfeats.Add("", true);
-            hiddenfeats.Add(null, true);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
             List<Spell> spellbook = new List<Spell>();
             List<HitDie> hd = Program.Context.Player.GetHitDie();
@@ -350,17 +349,17 @@ namespace Character_Builder_5
                             if (trans.ContainsKey("RaceBackgroundFeatures"))
                             {
                                 List<string> feats = new List<string>();
-                                foreach (Feature f in onUse) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name))
+                                foreach (Feature f in onUse) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name))
                                     {
                                         if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
                                         else feats.Add(f.ShortDesc());
                                     }
-                                foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
-                                foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 p.AcroFields.SetField(trans["RaceBackgroundFeatures"], String.Join("\n", feats));
                                 List<string> feats2 = new List<string>();
-                                foreach (Feature f in Program.Context.Player.GetClassFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats2.Add(f.ShortDesc());
-                                foreach (Feature f in Program.Context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats2.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats2.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats2.Add(f.ShortDesc());
                                 if (trans.ContainsKey("Features")) p.AcroFields.SetField(trans["Features"], String.Join("\n", feats2));
                             } else if (trans.ContainsKey("Features"))
                             {
@@ -370,10 +369,10 @@ namespace Character_Builder_5
                                         if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
                                         else feats.Add(f.ShortDesc());
                                     }
-                                foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
-                                foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
-                                foreach (Feature f in Program.Context.Player.GetClassFeatures()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
-                                foreach (Feature f in Program.Context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
+                                foreach (Feature f in Program.Context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name)) feats.Add(f.ShortDesc());
                                 p.AcroFields.SetField(trans["Features"], String.Join("\n", feats));
                             }
                         }
