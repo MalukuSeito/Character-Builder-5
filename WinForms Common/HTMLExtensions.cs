@@ -31,6 +31,7 @@ namespace Character_Builder_Forms
         public static FileInfo Transform_Possession = new FileInfo("Possession.xsl");
         public static FileInfo Transform_Description = new FileInfo("Descriptions.xsl");
         public static FileInfo Transform_Scroll = new FileInfo("Scroll.xsl");
+        public static FileInfo Transform_Monster = new FileInfo("Monster.xsl");
         public static FileInfo Transform_RemoveDescription = new FileInfo("NoDescription.xsl");
         public static string Error(Exception ex) => "<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>";
         private static Dictionary<Type, XslCompiledTransform> Transforms = new Dictionary<Type, XslCompiledTransform>();
@@ -74,6 +75,7 @@ namespace Character_Builder_Forms
             LoadTransform += (t, o) => { if (o is Spell) t.Load(Transform_Spells.FullName); };
             LoadTransform += (t, o) => { if (o is SubClass) t.Load(Transform_SubClasses.FullName); };
             LoadTransform += (t, o) => { if (o is SubRace) t.Load(Transform_SubRaces.FullName); };
+            LoadTransform += (t, o) => { if (o is Monster) t.Load(Transform_Monster.FullName); };
         }
 
         private static XslCompiledTransform GetTransform(IXML t)

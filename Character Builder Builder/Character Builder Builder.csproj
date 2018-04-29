@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,11 +58,53 @@
     <Compile Include="BackgroundForm.Designer.cs">
       <DependentUpon>BackgroundForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FeatureForms\FormsCompanionsFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\FormsCompanionsFeatureForm.Designer.cs">
+      <DependentUpon>FormsCompanionsFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureForms\FormsCompanionsBonusFeatureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FeatureForms\FormsCompanionsBonusFeatureForm.Designer.cs">
+      <DependentUpon>FormsCompanionsBonusFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterActionForm .cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterActionForm .Designer.cs">
+      <DependentUpon>MonsterActionForm .cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterTraitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterTraitForm.Designer.cs">
+      <DependentUpon>MonsterTraitForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FeatureForms\ResistanceFeatureForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FeatureForms\ResistanceFeatureForm.Designer.cs">
       <DependentUpon>ResistanceFeatureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterActions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonsterActions.Designer.cs">
+      <DependentUpon>MonsterActions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterSkill.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonsterSkill.Designer.cs">
+      <DependentUpon>MonsterSkill.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterSave.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MonsterSave.Designer.cs">
+      <DependentUpon>MonsterSave.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageChooser.cs">
       <SubType>UserControl</SubType>
@@ -69,6 +114,24 @@
     </Compile>
     <Compile Include="IImageEditor.cs" />
     <Compile Include="IMainEditor.cs" />
+    <Compile Include="MonsterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterForm.Designer.cs">
+      <DependentUpon>MonsterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterSkillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterSkillForm.Designer.cs">
+      <DependentUpon>MonsterSkillForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterSaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterSaveForm.Designer.cs">
+      <DependentUpon>MonsterSaveForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SaveExtensions.cs" />
     <Compile Include="ScrollInfo.cs" />
     <Compile Include="KeywordForms\SaveForm.cs">
@@ -486,14 +549,44 @@
     <EmbeddedResource Include="BackgroundForm.resx">
       <DependentUpon>BackgroundForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\FormsCompanionsFeatureForm.resx">
+      <DependentUpon>FormsCompanionsFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FeatureForms\FormsCompanionsBonusFeatureForm.resx">
+      <DependentUpon>FormsCompanionsBonusFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterActionForm .resx">
+      <DependentUpon>MonsterActionForm .cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterTraitForm.resx">
+      <DependentUpon>MonsterTraitForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FeatureForms\ResistanceFeatureForm.resx">
       <DependentUpon>ResistanceFeatureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterActions.resx">
+      <DependentUpon>MonsterActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterSkill.resx">
+      <DependentUpon>MonsterSkill.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterSave.resx">
+      <DependentUpon>MonsterSave.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageChooser.resx">
       <DependentUpon>ImageChooser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="KeywordForms\SaveForm.resx">
       <DependentUpon>SaveForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterForm.resx">
+      <DependentUpon>MonsterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterSkillForm.resx">
+      <DependentUpon>MonsterSkillForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterSaveForm.resx">
+      <DependentUpon>MonsterSaveForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpellForm.resx">
       <DependentUpon>SpellForm.cs</DependentUpon>
@@ -706,6 +799,7 @@
     <EmbeddedResource Include="UserControl1.resx">
       <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

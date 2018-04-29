@@ -2,11 +2,13 @@
 using OGL;
 using OGL.Base;
 using OGL.Common;
+using OGL.Features;
 using OGL.Keywords;
 using OGL.Spells;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder
@@ -109,6 +111,10 @@ namespace Character_Builder_Builder
             dataGridView1.DataSource = new BindingList<CantripDamage>(spell.CantripDamage);
             keywordControl1.Keywords = spell.Keywords;
             decriptions1.descriptions = spell.Descriptions;
+            FormCompCount.DataBindings.Clear();
+            FormCompCount.DataBindings.Add("Value", spell, "FormsCompanionsCount", true, DataSourceUpdateMode.OnPropertyChanged);
+            FormsCompanionOptions.DataBindings.Clear();
+            FormsCompanionOptions.DataBindings.Add("Text", spell, "FormsCompanionsFilter", true, DataSourceUpdateMode.OnPropertyChanged);
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(spell.ToHTML());
@@ -399,6 +405,40 @@ namespace Character_Builder_Builder
         private void SpellForm_Shown(object sender, EventArgs e)
         {
             doHistory = true;
+        }
+
+        private void FormsCompanionOptions_TextChanged(object sender, EventArgs e)
+        {
+            MakeHistory("FormsCompanionOptions");
+            showPreviewMatching(sender, e);
+        }
+
+        private void showPreviewMatching(object sender, EventArgs e)
+        {
+            if (!doHistory) return;
+            if (FormsCompanionOptions.Text == null || FormsCompanionOptions.Text == "")
+            {
+                ShowPreview(sender, e);
+                return;
+            }
+            preview.Navigate("about:blank");
+            preview.Document.OpenNew(true);
+            try
+            {
+                Feature f = new Feature("Matching", "\n" + String.Join("\n", from i in Program.Context.FilterMonsters(FormsCompanionOptions.Text) select i.Name + " " + ConfigManager.SourceSeperator + " " + i.Source), 0, true);
+                preview.Document.Write(f.ToHTML());
+            }
+            catch (Exception ex)
+            {
+                preview.Document.Write("<html><body><b>Error generating output:</b><br>" + ex.Message + "<br>" + ex.InnerException + "<br>" + ex.StackTrace + "</body></html>");
+            }
+            preview.Refresh();
+
+        }
+
+        private void FormCompCount_ValueChanged(object sender, EventArgs e)
+        {
+            MakeHistory("FormsCompanionCount");
         }
     }
 }

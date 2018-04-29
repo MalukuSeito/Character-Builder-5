@@ -470,5 +470,17 @@ namespace Character_Builder_Builder
             list.Add(new FeatureForms.ResistanceFeatureForm(new ResistanceFeature()).edit(HistoryManager));
             fill();
         }
+
+        private void formsCompanionFeatureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            list.Add(new FeatureForms.FormsCompanionsFeatureForm(new FormsCompanionsFeature()).edit(HistoryManager));
+            fill();
+        }
+
+        private void formsCompanionsBonusFeatureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            list.Add(new FeatureForms.FormsCompanionsBonusFeatureForm(new FormsCompanionsBonusFeature()).edit(HistoryManager));
+            fill();
+        }
     }
 }

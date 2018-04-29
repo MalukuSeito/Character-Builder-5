@@ -51,6 +51,8 @@ namespace Character_Builder_Builder.FeatureForms
             else if (f is ToolProficiencyFeature) return new ToolProficiencyFeatureForm(f as ToolProficiencyFeature).edit(manager);
             else if (f is VisionFeature) return new VisionFeatureForm(f as VisionFeature).edit(manager);
             else if (f is ResistanceFeature) return new ResistanceFeatureForm(f as ResistanceFeature).edit(manager);
+            else if (f is FormsCompanionsBonusFeature) return new FormsCompanionsBonusFeatureForm(f as FormsCompanionsBonusFeature).edit(manager);
+            else if (f is FormsCompanionsFeature) return new FormsCompanionsFeatureForm(f as FormsCompanionsFeature).edit(manager);
             else return new FeatureForm(f).edit(manager);
         }
 

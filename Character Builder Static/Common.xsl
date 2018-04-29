@@ -42,7 +42,7 @@
    </xsl:choose>
  </xsl:template>
 
- <xsl:template match="AbilityScoreFeature | BonusSpellKeywordChoiceFeature | ChoiceFeature | CollectionChoiceFeature | Feature | FreeItemAndGoldFeature | ItemChoiceConditionFeature | ItemChoiceFeature | HitPointsFeature | LanguageProficiencyFeature | LanguageChoiceFeature | OtherProficiencyFeature | SaveProficiencyFeature | SpeedFeature | SkillProficiencyChoiceFeature | SkillProficiencyFeature | SubRaceFeature | SubClassFeature | ToolProficiencyFeature | ToolKWProficiencyFeature | ToolProficiencyChoiceConditionFeature | BonusFeature | SpellcastingFeature | IncreaseSpellChoiceAmountFeature | ModifySpellChoiceFeature | SpellChoiceFeature | SpellSlotsFeature | BonusSpellPrepareFeature | BonusSpellFeature | ACFeature | AbilityScoreFeatFeature | ExtraAttackFeature | ResourceFeature | SpellModifyFeature | VisionFeature">
+ <xsl:template match="AbilityScoreFeature | BonusSpellKeywordChoiceFeature | ChoiceFeature | CollectionChoiceFeature | Feature | FreeItemAndGoldFeature | ItemChoiceConditionFeature | ItemChoiceFeature | HitPointsFeature | LanguageProficiencyFeature | LanguageChoiceFeature | OtherProficiencyFeature | SaveProficiencyFeature | SpeedFeature | SkillProficiencyChoiceFeature | SkillProficiencyFeature | SubRaceFeature | SubClassFeature | ToolProficiencyFeature | ToolKWProficiencyFeature | ToolProficiencyChoiceConditionFeature | BonusFeature | SpellcastingFeature | IncreaseSpellChoiceAmountFeature | ModifySpellChoiceFeature | SpellChoiceFeature | SpellSlotsFeature | BonusSpellPrepareFeature | BonusSpellFeature | ACFeature | AbilityScoreFeatFeature | ExtraAttackFeature | ResourceFeature | SpellModifyFeature | VisionFeature | ResistanceFeature | FormsCompanionsFeature | FormsCompanionsBonusFeature">
 	 <xsl:if test="boolean(Name/node()) and (NoDisplay/text() != 'true' or name(../..)='FeatureContainer')" ><div class="Feature">
 		<xsl:choose>
             		<xsl:when test="contains(Text, '&#10;')">
@@ -224,6 +224,7 @@ body,table,td,th {
 	font-weight: bold;
 	font-size: 11pt;
 }
+
 .Header {
 	font-weight: bold;
 	margin-top:10px;
@@ -265,6 +266,32 @@ img {
   display:block;
   width:90%;
   height:auto
+}
+.Small {
+  font-size: 0.8em;
+}
+hr {
+  color: #58170D;
+}
+.Ability {
+  display:inline-block;
+  margin-left:4px;
+  margin-right:4px;
+  font-size:0.75em;
+}
+ 
+.Ability .Bold {
+  font-size:1.333em;
+}
+.Underline {
+  font-variant:small-caps;
+  font-size:1.2em;
+  border-bottom:  #58170D 1px solid;
+  margin-bottom:4px;
+  margin-top:14px;
+}
+.MonsterActionTrait {
+  margin-bottom:7px;
 }
 </xsl:template>
 

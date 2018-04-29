@@ -14,7 +14,7 @@ namespace Character_Builder_Builder
     {
         public enum KeywordGroup
         {
-            NONE, FEAT, ITEM, SPELL
+            NONE, FEAT, ITEM, SPELL, MONSTER
         }
         private List<Keyword> items = null;
         public List<Keyword> Keywords { get { return items;  } set { items = value; setItems(); } }
@@ -51,6 +51,10 @@ namespace Character_Builder_Builder
                 foreach (String s in "Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder".Split(',')) spell.Add(new Keyword(s.Trim()));
                 foreach (ClassDefinition c in Program.Context.ClassesSimple.Values) spell.Add(new Keyword(c.Name));
                 Groups.Add(KeywordGroup.SPELL, spell);
+
+                List<Keyword> monster = new List<Keyword>();
+                foreach (String s in "Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Humanoid, Monstrosity, Ooze, Plant, Undead, Shapechanger, Devil, Demon, Titan".Split(',')) monster.Add(new Keyword(s.Trim()));
+                Groups.Add(KeywordGroup.MONSTER, monster);
             }
             InitializeComponent();
             foreach (string s in userAdded)

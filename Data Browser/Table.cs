@@ -274,6 +274,11 @@ namespace Data_Browser
                            where search == null || search == "" || Match(r, match, onlyName)
                            orderby r.Name, r.Source, r.Category
                            select r;
+                case "Monster":
+                    return from r in Program.Context.Monsters.Values
+                           where search == null || search == "" || Match(r, match, onlyName)
+                           orderby r.Name, r.Source
+                           select r;
                 default:
                     throw new NotImplementedException();
             }

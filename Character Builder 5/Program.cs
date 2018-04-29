@@ -64,6 +64,8 @@ namespace Character_Builder_5
         }
 
         public static void LoadData() {
+            Context.Monsters.Clear();
+            Context.MonstersSimple.Clear();
             Context.LoadPluginManager(Path.Combine(Application.StartupPath, Context.Config.Plugins_Directory));
             Context.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, "Levels.xml"));
             Context.ImportSkills();

@@ -33,10 +33,6 @@
             this.abort = new System.Windows.Forms.Button();
             this.preview = new System.Windows.Forms.WebBrowser();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.description = new System.Windows.Forms.TextBox();
-            this.decriptions1 = new Character_Builder_Builder.Decriptions();
             this.source = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.Duration = new System.Windows.Forms.ComboBox();
@@ -55,16 +51,19 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.userControl11 = new Character_Builder_Builder.UserControl1();
+            this.FormCompCount = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.FormsCompanionOptions = new System.Windows.Forms.TextBox();
+            this.lcalN = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.description = new System.Windows.Forms.TextBox();
+            this.decriptions1 = new Character_Builder_Builder.Decriptions();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Level)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -73,6 +72,12 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FormCompCount)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -128,6 +133,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
+            this.splitContainer1.Panel1.Controls.Add(this.FormCompCount);
+            this.splitContainer1.Panel1.Controls.Add(this.label7);
+            this.splitContainer1.Panel1.Controls.Add(this.FormsCompanionOptions);
+            this.splitContainer1.Panel1.Controls.Add(this.lcalN);
             this.splitContainer1.Panel1.Controls.Add(this.source);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.Duration);
@@ -147,58 +156,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(775, 508);
             this.splitContainer1.SplitterDistance = 385;
             this.splitContainer1.TabIndex = 11;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.splitContainer3);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 201);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(385, 307);
-            this.groupBox2.TabIndex = 42;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Descriptions";
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(3, 16);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.description);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.decriptions1);
-            this.splitContainer3.Size = new System.Drawing.Size(379, 288);
-            this.splitContainer3.SplitterDistance = 140;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // description
-            // 
-            this.description.AcceptsReturn = true;
-            this.description.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.description.Location = new System.Drawing.Point(0, 0);
-            this.description.Multiline = true;
-            this.description.Name = "description";
-            this.description.Size = new System.Drawing.Size(379, 140);
-            this.description.TabIndex = 0;
-            this.description.TextChanged += new System.EventHandler(this.description_TextChanged);
-            this.description.Enter += new System.EventHandler(this.ShowPreview);
-            // 
-            // decriptions1
-            // 
-            this.decriptions1.descriptions = null;
-            this.decriptions1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.decriptions1.HistoryManager = null;
-            this.decriptions1.Location = new System.Drawing.Point(0, 0);
-            this.decriptions1.Name = "decriptions1";
-            this.decriptions1.preview = this.preview;
-            this.decriptions1.Size = new System.Drawing.Size(379, 144);
-            this.decriptions1.TabIndex = 0;
             // 
             // source
             // 
@@ -404,6 +361,101 @@
             this.userControl11.Size = new System.Drawing.Size(1025, 24);
             this.userControl11.TabIndex = 9;
             // 
+            // FormCompCount
+            // 
+            this.FormCompCount.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FormCompCount.Location = new System.Drawing.Point(0, 247);
+            this.FormCompCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.FormCompCount.Name = "FormCompCount";
+            this.FormCompCount.Size = new System.Drawing.Size(385, 20);
+            this.FormCompCount.TabIndex = 46;
+            this.FormCompCount.ValueChanged += new System.EventHandler(this.FormCompCount_ValueChanged);
+            this.FormCompCount.Enter += new System.EventHandler(this.ShowPreview);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Location = new System.Drawing.Point(0, 234);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(243, 13);
+            this.label7.TabIndex = 45;
+            this.label7.Text = "Forms / Companions Selectable Count (-1: infinte):";
+            // 
+            // FormsCompanionOptions
+            // 
+            this.FormsCompanionOptions.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FormsCompanionOptions.Location = new System.Drawing.Point(0, 214);
+            this.FormsCompanionOptions.Name = "FormsCompanionOptions";
+            this.FormsCompanionOptions.Size = new System.Drawing.Size(385, 20);
+            this.FormsCompanionOptions.TabIndex = 44;
+            this.FormsCompanionOptions.TextChanged += new System.EventHandler(this.FormsCompanionOptions_TextChanged);
+            this.FormsCompanionOptions.Enter += new System.EventHandler(this.ShowPreview);
+            // 
+            // lcalN
+            // 
+            this.lcalN.AutoSize = true;
+            this.lcalN.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lcalN.Location = new System.Drawing.Point(0, 201);
+            this.lcalN.Name = "lcalN";
+            this.lcalN.Size = new System.Drawing.Size(321, 13);
+            this.lcalN.TabIndex = 43;
+            this.lcalN.Text = "Forms / Companions Options (for polymorphs, conjurations; NCalc):";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.splitContainer3);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 267);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(385, 241);
+            this.groupBox2.TabIndex = 47;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Descriptions";
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(3, 16);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.description);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.decriptions1);
+            this.splitContainer3.Size = new System.Drawing.Size(379, 222);
+            this.splitContainer3.SplitterDistance = 107;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // description
+            // 
+            this.description.AcceptsReturn = true;
+            this.description.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.description.Location = new System.Drawing.Point(0, 0);
+            this.description.Multiline = true;
+            this.description.Name = "description";
+            this.description.Size = new System.Drawing.Size(379, 107);
+            this.description.TabIndex = 0;
+            // 
+            // decriptions1
+            // 
+            this.decriptions1.descriptions = null;
+            this.decriptions1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.decriptions1.HistoryManager = null;
+            this.decriptions1.Location = new System.Drawing.Point(0, 0);
+            this.decriptions1.Name = "decriptions1";
+            this.decriptions1.preview = this.preview;
+            this.decriptions1.Size = new System.Drawing.Size(379, 111);
+            this.decriptions1.TabIndex = 0;
+            // 
             // SpellForm
             // 
             this.AcceptButton = this.save;
@@ -428,12 +480,6 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel1.PerformLayout();
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Level)).EndInit();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -442,6 +488,13 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FormCompCount)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -457,10 +510,6 @@
         private System.Windows.Forms.TextBox name;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TextBox description;
-        private Decriptions decriptions1;
         private System.Windows.Forms.TextBox source;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox Duration;
@@ -475,5 +524,13 @@
         private KeywordControl keywordControl1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.TextBox description;
+        private Decriptions decriptions1;
+        private System.Windows.Forms.NumericUpDown FormCompCount;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox FormsCompanionOptions;
+        private System.Windows.Forms.Label lcalN;
     }
 }

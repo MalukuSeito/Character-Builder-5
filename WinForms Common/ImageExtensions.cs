@@ -141,5 +141,20 @@ namespace Character_Builder_Forms
                     o.ImageData = ms.ToArray();
                 }
         }
+
+        public static Bitmap GetImage(this Monster o)
+        {
+            if (o.ImageData == null) return null;
+            else using (MemoryStream ms = new MemoryStream(o.ImageData)) return new Bitmap(ms);
+        }
+        public static void SetImage(this Monster o, Bitmap value)
+        {
+            if (value == null) o.ImageData = null;
+            else using (MemoryStream ms = new MemoryStream())
+                {
+                    value.Save(ms, ImageFormat.Png);
+                    o.ImageData = ms.ToArray();
+                }
+        }
     }
 }

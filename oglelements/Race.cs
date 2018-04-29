@@ -54,6 +54,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
         XmlArrayItem(Type = typeof(ResistanceFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsBonusFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),

@@ -100,6 +100,11 @@ namespace Character_Builder_Builder
                 Program.Context.ImportConditions();
                 fill(condList, Program.Context.Conditions.Keys, null);
             }
+            else if (tab == monsterTab)
+            {
+                Program.Context.ImportMonsters();
+                fill(monsterbox, Program.Context.Monsters.Keys, null);
+            }
             else if (tab == levelTab)
             {
                 Level c = Program.Context.LoadLevel(Program.Context.Config.Levels);
@@ -995,6 +1000,68 @@ namespace Character_Builder_Builder
                 if (f.Action == OGL.Base.ActionType.DetectAction)
                 {
                     ConfigManager.LogError("Info: No Action for: " + text + " - " + f.Name + " (" + Source + ")");
+                }
+            }
+        }
+
+        private void monsterbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (monsterbox.SelectedItem == null) return;
+            Monster selected = Program.Context.GetMonster((string)monsterbox.SelectedItem, null);
+            if (selected != null)
+            {
+                preview.Navigate("about:blank");
+                preview.Document.OpenNew(true);
+                preview.Document.Write(selected.ToHTML());
+                preview.Refresh();
+            }
+        }
+
+        private void editMonster(object sender, EventArgs e)
+        {
+            if (monsterbox.SelectedItem == null) return;
+            Monster selected = Program.Context.GetMonster((string)monsterbox.SelectedItem, null);
+            if (selected != null)
+            {
+                string sel = selected.Name;
+                MonsterForm r = new MonsterForm(selected.Clone());
+                r.Saved += MonsterSaved;
+                r.Show();
+
+            }
+        }
+
+        private void MonsterSaved(object sender, string id)
+        {
+            Program.Context.ImportMonsters();
+            fill(monsterbox, Program.Context.Monsters.Keys, id);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MonsterForm r = new MonsterForm(new Monster()
+            {
+                Source = Program.Context.Config.DefaultSource
+            });
+            r.Saved += MonsterSaved;
+            r.Show();
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox2.Text == null || textBox2.Text == "")
+            {
+                fill(monsterbox, Program.Context.Monsters.Keys, null);
+            }
+            else
+            {
+                try
+                {
+                    fill(monsterbox, from s in Program.Context.FilterMonsters(textBox2.Text) select s.Name, null);
+                }
+                catch (Exception)
+                {
+                    monsterbox.Items.Clear();
                 }
             }
         }

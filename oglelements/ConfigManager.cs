@@ -80,6 +80,8 @@ namespace OGL
         public string Items_Transform = "Items.xsl";
         public string Skills_Directory = "Skills/";
         public string Skills_Transform = "Skills.xsl";
+        public string Monster_Directory = "Monsters/";
+        public string Monster_Transform = "Monster.xsl";
         public string Languages_Directory = "Languages/";
         public string Languages_Transform = "Languages.xsl";
         public string Features_Directory = "Feats/";
@@ -123,6 +125,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
         XmlArrayItem(Type = typeof(ResistanceFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsBonusFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
@@ -159,6 +163,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
         XmlArrayItem(Type = typeof(ResistanceFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsBonusFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),

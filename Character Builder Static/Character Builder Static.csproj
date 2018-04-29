@@ -52,6 +52,9 @@
     <Content Include="Magic.xsl" />
     <Content Include="NoDescription.xsl" />
     <Content Include="Possession.xsl" />
+    <Content Include="Monster.xsl">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Races.xsl" />
     <Content Include="Scroll.xsl" />
     <Content Include="Skills.xsl" />

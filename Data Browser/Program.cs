@@ -8,6 +8,7 @@ using Character_Builder_Forms;
 using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
+using OGL.Monsters;
 
 namespace Data_Browser
 {
@@ -68,6 +69,7 @@ namespace Data_Browser
             Context.ImportMagic();
             Context.ImportClasses(true);
             Context.ImportSubClasses(true);
+            Context.ImportMonsters();
         }
     }
 

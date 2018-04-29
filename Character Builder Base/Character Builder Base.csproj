@@ -55,6 +55,8 @@
     <Compile Include="BuilderContext.cs" />
     <Compile Include="ClassInfo.cs" />
     <Compile Include="DisplayPossession.cs" />
+    <Compile Include="FormCompanionChoice.cs" />
+    <Compile Include="FormsCompanionInfo.cs" />
     <Compile Include="HitDie.cs" />
     <Compile Include="JournalEntry.cs" />
     <Compile Include="ObjectIdentityEqualityComparer.cs" />

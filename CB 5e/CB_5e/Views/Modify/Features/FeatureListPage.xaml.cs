@@ -151,7 +151,9 @@ namespace CB_5e.Views.Modify.Features
                     new SelectOption("Feature Choice Feature", "Adds a choice of contained features", new ChoiceFeature()),
                     new SelectOption("Collection Feature Choice Feature", "Adds a choice of standalone features using a condition", new CollectionChoiceFeature() { Collection = "Category = 'Feats'" }),
                     new SelectOption("Subclass Feature", "Adds a parent to the list classes used to generate available subclasses", new SubClassFeature()),
-                    new SelectOption("Subrace Feature", "Adds parents to the list of races used to generate available subraces", new SubRaceFeature())
+                    new SelectOption("Subrace Feature", "Adds parents to the list of races used to generate available subraces", new SubRaceFeature()),
+                    new SelectOption("Forms/Companions Feature", "Adds a selectable form or companion (summon) option", new FormsCompanionsFeature()),
+                    new SelectOption("Forms/Companions Bonus Feature", "Adds Boni to a selected form or companion", new FormsCompanionsBonusFeature())
                 };
         }
 

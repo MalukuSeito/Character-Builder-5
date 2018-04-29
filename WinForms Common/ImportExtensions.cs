@@ -229,6 +229,29 @@ namespace Character_Builder_Forms
                 }
             }
         }
+        public static void ImportMonsters(this OGLContext context)
+        {
+            if (context == null || context.Config == null) return;
+            context.Monsters.Clear();
+            context.MonstersSimple.Clear();
+            var files = SourceManager.EnumerateFiles(context, context.Config.Monster_Directory, SearchOption.TopDirectoryOnly);
+            foreach (var f in files)
+            {
+                try
+                {
+                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    {
+                        Monster s = (Monster)Monster.Serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.Register(context, f.Key.FullName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
+                }
+            }
+        }
         public static Level LoadLevel(this OGLContext context, String file)
         {
             if (context == null || context.Config == null) return null;
@@ -471,6 +494,7 @@ namespace Character_Builder_Forms
             HTMLExtensions.Transform_Magic = new FileInfo(Fullpath(path, context.Config.Magic_Transform));
             context.Config.Conditions_Directory = MakeRelative(context.Config.Conditions_Directory);
             HTMLExtensions.Transform_Conditions = new FileInfo(Fullpath(path, context.Config.Conditions_Transform));
+            HTMLExtensions.Transform_Monster = new FileInfo(Fullpath(path, context.Config.Monster_Transform));
             HTMLExtensions.Transform_Possession = new FileInfo(Fullpath(path, context.Config.Possessions_Transform));
             HTMLExtensions.Transform_RemoveDescription = new FileInfo(Fullpath(path, context.Config.RemoveDescription_Transform));
             context.Config.Plugins_Directory = MakeRelative(context.Config.Plugins_Directory);

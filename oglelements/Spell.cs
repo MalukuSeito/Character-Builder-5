@@ -41,6 +41,9 @@ namespace OGL
         public bool KWChanged = false;
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
+        public string FormsCompanionsFilter { get; set; } = null;
+        public int FormsCompanionsCount { get; set; } = 0;
+
         public ActionType Action
         {
             get

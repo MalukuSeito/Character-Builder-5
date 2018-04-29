@@ -88,6 +88,15 @@ namespace Character_Builder_Builder
             l.FileName = file.FullName;
             return true;
         }
+        public static bool Save(this Monster m, Boolean overwrite)
+        {
+            m.Name = m.Name.Replace(ConfigManager.SourceSeperator, '-');
+            FileInfo file = SourceManager.GetFileName(m.Name, m.Source, Program.Context.Config.Monster_Directory);
+            if (file.Exists && (m.FileName == null || !m.FileName.Equals(file.FullName)) && !overwrite) return false;
+            using (TextWriter writer = new StreamWriter(file.FullName)) Monster.Serializer.Serialize(writer, m);
+            m.FileName = file.FullName;
+            return true;
+        }
         public static void Save(this Level l, String file)
         {
             using (TextWriter writer = new StreamWriter(file)) Level.Serializer.Serialize(writer, l);

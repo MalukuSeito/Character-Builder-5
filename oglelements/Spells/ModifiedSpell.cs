@@ -28,6 +28,8 @@ namespace OGL.Spells
         XmlArrayItem(Type = typeof(MultiFeature)),
         XmlArrayItem(Type = typeof(OtherProficiencyFeature)),
         XmlArrayItem(Type = typeof(ResistanceFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsFeature)),
+        XmlArrayItem(Type = typeof(FormsCompanionsBonusFeature)),
         XmlArrayItem(Type = typeof(SaveProficiencyFeature)),
         XmlArrayItem(Type = typeof(SpeedFeature)),
         XmlArrayItem(Type = typeof(SkillProficiencyChoiceFeature)),
@@ -84,6 +86,8 @@ namespace OGL.Spells
             Source = s.Source;
             CantripDamage = s.CantripDamage;
             used = 0;
+            FormsCompanionsFilter = s.FormsCompanionsFilter;
+            FormsCompanionsCount = s.FormsCompanionsCount;
             displayShort = false;
             Modifikations = new List<Feature>();
             count = 1;
@@ -111,6 +115,8 @@ namespace OGL.Spells
             Modifikations = new List<Feature>();
             this.includeResources = includeResources;
             includeRecharge = includeResources;
+            FormsCompanionsFilter = s.FormsCompanionsFilter;
+            FormsCompanionsCount = s.FormsCompanionsCount;
             count = 1;
         }
         public ModifiedSpell(Spell s, bool onlyAsRitual)
@@ -136,6 +142,8 @@ namespace OGL.Spells
             this.includeResources = false;
             includeRecharge = includeResources;
             OnlyAsRitual = true;
+            FormsCompanionsFilter = s.FormsCompanionsFilter;
+            FormsCompanionsCount = s.FormsCompanionsCount;
             count = 1;
         }
         public string Recharge(RechargeModifier r, RechargeModifier defaultRecharge = RechargeModifier.LongRest)

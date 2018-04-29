@@ -96,6 +96,8 @@ namespace Character_Builder
         public int EP { get; set; }
         public int GP { get; set; }
         public int PP { get; set; }
+
+        public List<FormsCompanionsChoice> FormsCompanionsChoices = new List<FormsCompanionsChoice>();
         public Player()
         {
             BonusMaxHP = 0;
@@ -138,8 +140,28 @@ namespace Character_Builder
             Journal = new List<string>();
         }
 
-        public int GetSpellSlotsMax(String SpellcastingID)
+        public int GetSpellSlotsMax(String SpellcastingID = null)
         {
+            if (SpellcastingID == null)
+            {
+                int max = 0;
+                foreach (Feature f in GetFeatures())
+                {
+                    if (f is SpellcastingFeature scf && scf.SpellcastingID != "MULTICLASS")
+                    {
+                        List<int> sslots = GetSpellSlots(scf.SpellcastingID);
+                        for (int level = sslots.Count - 1; level >= 0; level--)
+                        {
+                            if (sslots[level] > 0)
+                            {
+                                max = Math.Max(max, level + 1);
+                                break;
+                            }
+                        }
+                    }
+                }
+                return max;
+            }
             List<int> slots = GetSpellSlots(SpellcastingID);
             for (int level = slots.Count - 1; level >= 0; level--)
             {
@@ -2372,6 +2394,149 @@ namespace Character_Builder
                 }
             }
             return res;
+        }
+
+        public List<FormsCompanionInfo> GetFormsCompanionChoices(int level = 0)
+        {
+            if (level == 0) level = GetLevel();
+            Dictionary<string, FormsCompanionInfo> res = new Dictionary<string, FormsCompanionInfo>();
+            List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>();
+            HashSet<Spell> Spells = new HashSet<Spell>(new SpellEqualityComparer());
+            List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is SpellcastingFeature || t is BonusSpellFeature || t is BonusSpellKeywordChoiceFeature || t is FormsCompanionsFeature || t is FormsCompanionsBonusFeature);
+            Dictionary<string, List<Feature>> modifiers = new Dictionary<string, List<Feature>>();
+            foreach (FeatureClass fc in fa)
+            {
+                Feature f = fc.feature;
+                if (f is SpellcastingFeature scf && scf.SpellcastingID != "MULTICLASS") spellcasts.Add(scf);
+                else if (f is BonusSpellFeature bsf)
+                {
+                    Spell s = Context.GetSpell(bsf.Spell, bsf.Source);
+                    Spells.Add(new ModifiedSpell(Context.GetSpell(bsf.Spell, bsf.Source), bsf.KeywordsToAdd, bsf.SpellCastingAbility, bsf.SpellCastModifier));
+                }
+                else if (f is BonusSpellKeywordChoiceFeature bskcf) Spells.UnionWith((Utils.GetSpells(Context, bskcf)));
+                else if (f is FormsCompanionsFeature fcf && fcf.UniqueID != null)
+                {
+                    if (res.ContainsKey(fcf.UniqueID))
+                    {
+                        FormsCompanionInfo fci = res[fcf.UniqueID];
+                        fci.Count = fci.Count < 0 || fcf.FormsCompanionsCount < 0 ? -1 : fci.Count + fcf.FormsCompanionsCount;
+                        fci.Options.Add(fcf.FormsCompanionsOptions);
+                        if (fci.Source is Feature ff) fci.Modifiers.Add(ff);
+                        fci.Source = fcf;
+                        if (fci.DisplayName == null || fci.DisplayName == "") fci.DisplayName = fcf.DisplayName;
+                        if (fci.SourceHint == null) fci.SourceHint = fcf.Source;
+                    }
+                    else
+                    {
+                        res.Add(fcf.UniqueID, new FormsCompanionInfo()
+                        {
+                            ID = fcf.UniqueID,
+                            DisplayName = fcf.DisplayName,
+                            Options = new List<string>() { fcf.FormsCompanionsOptions },
+                            SourceHint = fcf.Source,
+                            Source = fcf,
+                            Count = fcf.FormsCompanionsCount,
+                            ClassLevel = fc.classlevel
+                        });
+                    }
+                }
+                else if (f is FormsCompanionsBonusFeature fcbf && fcbf.UniqueID != null)
+                {
+                    if (modifiers.ContainsKey(fcbf.UniqueID)) modifiers[fcbf.UniqueID].Add(fcbf);
+                    else modifiers.Add(fcbf.UniqueID, new List<Feature>() { fcbf });
+                }
+            }
+
+            foreach (SpellcastingFeature scf in spellcasts)
+            {
+                if (scf.SpellcastingID != "MULTICLASS")
+                {
+                    Spellcasting sc = GetSpellcasting(scf.SpellcastingID);
+                    int classlevel = GetClassLevel(scf.SpellcastingID);
+                    if (scf.Preparation == PreparationMode.ClassList)
+                    {
+                        Spells.UnionWith(sc.GetAdditionalClassSpells(this, Context));
+                        Spells.UnionWith(Utils.FilterSpell(Context, scf.PrepareableSpells, scf.SpellcastingID, classlevel));
+                        Spells.UnionWith(sc.GetPrepared(this, Context));
+                    }
+                    else if (scf.Preparation == PreparationMode.Spellbook)
+                    {
+                        Spells.UnionWith(sc.GetSpellbook(this, Context));
+                        Spells.UnionWith(sc.GetPrepared(this, Context));
+                    }
+                    else
+                    {
+                        Spells.UnionWith(sc.GetPrepared(this, Context));
+                    }
+                    Spells.UnionWith(sc.GetLearned(this, Context));
+                }
+            }
+            foreach (Spell s in Spells)
+            {
+                if (s.FormsCompanionsFilter != null && s.FormsCompanionsFilter != "" && s.FormsCompanionsFilter != "false")
+                {
+                    string id = s.Name.ToLowerInvariant();
+                    if (res.ContainsKey(id))
+                    {
+                        FormsCompanionInfo fci = res[id];
+                        fci.Count = fci.Count < 0 || s.FormsCompanionsCount < 0 ? -1 : fci.Count + s.FormsCompanionsCount;
+                        fci.Options.Add(s.FormsCompanionsFilter);
+                        if (fci.Source is Feature f) fci.Modifiers.Add(f);
+                        fci.Source = s;
+                    } else
+                    {
+                        res.Add(id, new FormsCompanionInfo()
+                        {
+                            ID = id,
+                            DisplayName = s.Name,
+                            Options = new List<string>() { s.FormsCompanionsFilter },
+                            SourceHint = s.Source,
+                            Source = s,
+                            Count = s.FormsCompanionsCount,
+                            ClassLevel = level
+                        });
+                    }
+                }
+            }
+            foreach (FormsCompanionsChoice fcc in FormsCompanionsChoices)
+            {
+                if (res.ContainsKey(fcc.ChoiceID))
+                {
+                    res[fcc.ChoiceID].Choices.AddRange(from s in fcc.FormsCompanions select Context.GetMonster(s, res[fcc.ChoiceID].SourceHint));
+                }
+            }
+            foreach (var e in modifiers.AsEnumerable()) if (res.ContainsKey(e.Key)) res[e.Key].Modifiers.AddRange(e.Value);
+            return res.Values.OrderBy(s => s.DisplayName).ToList();
+        }
+
+        public void RemoveFormCompanion(string iD, Monster m)
+        {
+            foreach (FormsCompanionsChoice fcc in FormsCompanionsChoices)
+            {
+                if (StringComparer.Ordinal.Equals(iD, fcc.ChoiceID))
+                {
+                    String name = m?.Name + " " + ConfigManager.SourceSeperator + " " + m?.Source;
+                    if (!fcc.FormsCompanions.Remove(name))
+                    {
+                        int index = fcc.FormsCompanions.FindIndex(s => ConfigManager.SourceInvariantComparer.Equals(s, name));
+                        if (index >= 0) fcc.FormsCompanions.RemoveAt(index);
+                    }
+                        
+                }
+            }
+        }
+
+        public void AddFormCompanion(string iD, Monster m)
+        {
+            foreach (FormsCompanionsChoice fcc in FormsCompanionsChoices)
+            {
+                if (StringComparer.Ordinal.Equals(iD, fcc.ChoiceID))
+                {
+                    fcc.FormsCompanions.Add(m?.Name + " " + ConfigManager.SourceSeperator + " " + m?.Source);
+                    return;
+                }
+            }
+            FormsCompanionsChoices.Add(new FormsCompanionsChoice() { ChoiceID = iD, FormsCompanions = new List<string>() { m?.Name + " " + ConfigManager.SourceSeperator + " " + m?.Source } });
         }
     }
 }

@@ -355,6 +355,7 @@ namespace Character_Builder_5
                 UpdateClass(false);
                 UpdateSpellcastingOuter(false);
                 UpdateEquipmentLayout(false);
+                UpdateFormsCompanions();
                 UpdateInPlayInner();
                 UpdateJournal(false);
             }
@@ -844,6 +845,36 @@ namespace Character_Builder_5
                 System.Windows.Forms.MessageBox.Show(e.Message + "\n" + e.InnerException + "\n" + e.StackTrace, "Internal Error while updating Background");
             }
         }
+
+        public void UpdateFormsCompanions()
+        {
+            string selected = null;
+            if (FormsCompanionOptions.SelectedItem is FormsCompanionInfo fci)
+            {
+                selected = fci.ID;
+            }
+            FormsCompanionOptions.Items.Clear();
+            FormsCompanionsBox.Items.Clear();
+            int i = 0;
+            var fcs = Program.Context.Player.GetFormsCompanionChoices();
+            if (fcs.Count > 0 && Program.Context.MonstersSimple.Count == 0)
+            {
+                Program.Context.ImportMonsters();
+                fcs = Program.Context.Player.GetFormsCompanionChoices();
+            }
+            foreach (FormsCompanionInfo fc in fcs )
+            {
+                FormsCompanionOptions.Items.Add(fc);
+                if (StringComparer.Ordinal.Equals(fc.ID, selected)) FormsCompanionOptions.SelectedIndex = i;
+                i++;
+                foreach (Monster m in fc.AppliedChoices(Program.Context, Program.Context.Player.GetFinalAbilityScores()))
+                {
+                    FormsCompanionsBox.Items.Add(m);
+                }
+            }
+            
+        }
+
         public void UpdateSpellcastingOuter(bool updateside = true)
         {
             try
@@ -864,6 +895,7 @@ namespace Character_Builder_5
                 inplayflow.Controls.Add(featurebox);
                 inplayflow.Controls.Add(conditionbox);
                 inplayflow.Controls.Add(combatBox);
+                inplayflow.Controls.Add(formsbox);
                 foreach (SpellcastingFeature sf in spellcasts)
                 {
                     if (sf.SpellcastingID == "MULTICLASS") continue;
@@ -4187,6 +4219,43 @@ namespace Character_Builder_5
                 Program.Context.MakeHistory("Factionrank");
                 Program.Context.Player.FactionRank = factionRank.Text;
             }
+        }
+
+        private void FormsCompanionOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FormsCompanionOptions.SelectedItem is FormsCompanionInfo fci)
+            {
+                if (fci.Source != null)
+                {
+                    displayElement.Navigate("about:blank");
+                    displayElement.Document.OpenNew(true);
+                    displayElement.Document.Write(fci.Source.ToHTML());
+                    displayElement.Refresh();
+                }
+                FormsCompanionsSelected.Items.Clear();
+                foreach (Monster m in fci.AppliedChoices(Program.Context, Program.Context.Player.GetFinalAbilityScores())) FormsCompanionsSelected.Items.Add(m);
+                FormsCompanionsAvailable.Items.Clear();
+                foreach (Monster m in fci.AvailableOptions(Program.Context, Program.Context.Player.GetFinalAbilityScores()).Where(m=>!fci.Choices.Exists(mm=>StringComparer.OrdinalIgnoreCase.Equals(m.Name, mm.Name)))) FormsCompanionsAvailable.Items.Add(m);
+                if (fci.Count < 0) FormsCompanionsCounter.Text = "Selected: " + fci.Choices.Count;
+                else FormsCompanionsCounter.Text = "Selected: " + fci.Choices.Count + " / " + fci.Count;
+            }
+        }
+
+        private void FormsCompanionsSelected_DoubleClick(object sender, EventArgs e)
+        {
+            if (FormsCompanionOptions.SelectedItem is FormsCompanionInfo fci)
+                if (FormsCompanionsSelected.SelectedItem is Monster m)
+                    Program.Context.Player.RemoveFormCompanion(fci.ID, m);
+            UpdateFormsCompanions();
+        }
+
+        private void FormsCompanionsAvailable_DoubleClick(object sender, EventArgs e)
+        {
+            if (FormsCompanionOptions.SelectedItem is FormsCompanionInfo fci)
+                if (fci.Count < 0 || fci.Choices.Count < fci.Count)
+                    if (FormsCompanionsAvailable.SelectedItem is Monster m)
+                        Program.Context.Player.AddFormCompanion(fci.ID, m);
+            UpdateFormsCompanions();
         }
     }
 }

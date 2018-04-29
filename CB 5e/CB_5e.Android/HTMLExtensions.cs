@@ -81,6 +81,7 @@ namespace CB_5e.Droid
             LoadTransform += (t, o) => { if (o is SubClass) t.Load(App.Storage.Path + "/Data/" + Config.SubClasses_Transform); };
             LoadTransform += (t, o) => { if (o is SubRace) t.Load(App.Storage.Path + "/Data/" + Config.SubRaces_Transform); };
             LoadTransform += (t, o) => { if (o is DisplayPossession) t.Load(App.Storage.Path + "/Data/" + Transform_Possession); };
+            LoadTransform += (t, o) => { if (o is Monster) t.Load(App.Storage.Path + "/Data/" + Config.Monster_Transform); };
         }
 
         private static XslCompiledTransform GetTransform(IXML t)

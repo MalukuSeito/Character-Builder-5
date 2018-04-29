@@ -56,6 +56,8 @@
     <Compile Include="Common\IMatchable.cs" />
     <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
+    <Compile Include="Features\FormsCompanionsBonusFeature.cs" />
+    <Compile Include="Features\FormsCompanionsFeature.cs" />
     <Compile Include="Features\ResistanceFeature.cs" />
     <Compile Include="Items\Category.cs" />
     <Compile Include="ClassDefiniton.cs" />
@@ -125,6 +127,11 @@
     <Compile Include="Keywords\Versatile.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Monster.cs" />
+    <Compile Include="Monsters\MonsterAction.cs" />
+    <Compile Include="Monsters\MonsterSkillBonus.cs" />
+    <Compile Include="Monsters\MonsterSaveBonus.cs" />
+    <Compile Include="Monsters\MonsterTrait.cs" />
     <Compile Include="OGLContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Race.cs" />

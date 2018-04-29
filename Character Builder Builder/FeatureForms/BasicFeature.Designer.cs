@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.Description = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.Prereq = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.Action = new System.Windows.Forms.ComboBox();
+            this.NoPreview = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Level = new System.Windows.Forms.NumericUpDown();
             this.Hidden = new System.Windows.Forms.CheckBox();
@@ -37,20 +44,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.keywordControl1 = new Character_Builder_Builder.KeywordControl();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.NoPreview = new System.Windows.Forms.CheckBox();
-            this.Description = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Prereq = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.Action = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Level)).BeginInit();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -78,6 +78,76 @@
             this.splitContainer1.Size = new System.Drawing.Size(490, 284);
             this.splitContainer1.SplitterDistance = 268;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // Description
+            // 
+            this.Description.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Description.Location = new System.Drawing.Point(0, 136);
+            this.Description.Multiline = true;
+            this.Description.Name = "Description";
+            this.Description.Size = new System.Drawing.Size(268, 148);
+            this.Description.TabIndex = 14;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(0, 123);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Description:";
+            // 
+            // Prereq
+            // 
+            this.Prereq.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Prereq.Location = new System.Drawing.Point(0, 103);
+            this.Prereq.Name = "Prereq";
+            this.Prereq.Size = new System.Drawing.Size(268, 20);
+            this.Prereq.TabIndex = 12;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(0, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(171, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Prerequesite: (standalone features)";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.Action);
+            this.panel2.Controls.Add(this.NoPreview);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 68);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(268, 22);
+            this.panel2.TabIndex = 8;
+            // 
+            // Action
+            // 
+            this.Action.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Action.FormattingEnabled = true;
+            this.Action.Location = new System.Drawing.Point(0, 0);
+            this.Action.Name = "Action";
+            this.Action.Size = new System.Drawing.Size(113, 21);
+            this.Action.TabIndex = 1;
+            // 
+            // NoPreview
+            // 
+            this.NoPreview.AutoSize = true;
+            this.NoPreview.Dock = System.Windows.Forms.DockStyle.Right;
+            this.NoPreview.Location = new System.Drawing.Point(113, 0);
+            this.NoPreview.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
+            this.NoPreview.Name = "NoPreview";
+            this.NoPreview.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.NoPreview.Size = new System.Drawing.Size(155, 22);
+            this.NoPreview.TabIndex = 0;
+            this.NoPreview.Text = "Hide feature in preview";
+            this.NoPreview.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
@@ -165,76 +235,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Keywords: (standalone features)";
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.Action);
-            this.panel2.Controls.Add(this.NoPreview);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 68);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(268, 22);
-            this.panel2.TabIndex = 8;
-            // 
-            // NoPreview
-            // 
-            this.NoPreview.AutoSize = true;
-            this.NoPreview.Dock = System.Windows.Forms.DockStyle.Right;
-            this.NoPreview.Location = new System.Drawing.Point(113, 0);
-            this.NoPreview.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
-            this.NoPreview.Name = "NoPreview";
-            this.NoPreview.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.NoPreview.Size = new System.Drawing.Size(155, 22);
-            this.NoPreview.TabIndex = 0;
-            this.NoPreview.Text = "Hide feature in preview";
-            this.NoPreview.UseVisualStyleBackColor = true;
-            // 
-            // Description
-            // 
-            this.Description.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Description.Location = new System.Drawing.Point(0, 136);
-            this.Description.Multiline = true;
-            this.Description.Name = "Description";
-            this.Description.Size = new System.Drawing.Size(268, 148);
-            this.Description.TabIndex = 14;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(0, 123);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Description:";
-            // 
-            // Prereq
-            // 
-            this.Prereq.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Prereq.Location = new System.Drawing.Point(0, 103);
-            this.Prereq.Name = "Prereq";
-            this.Prereq.Size = new System.Drawing.Size(268, 20);
-            this.Prereq.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(0, 90);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(171, 13);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Prerequesite: (standalone features)";
-            // 
-            // Action
-            // 
-            this.Action.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Action.FormattingEnabled = true;
-            this.Action.Location = new System.Drawing.Point(0, 0);
-            this.Action.Name = "Action";
-            this.Action.Size = new System.Drawing.Size(113, 21);
-            this.Action.TabIndex = 1;
-            // 
             // BasicFeature
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,10 +249,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Level)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Level)).EndInit();
             this.ResumeLayout(false);
 
         }

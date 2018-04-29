@@ -115,6 +115,7 @@ namespace OGL
         //ConfigManager
         public ConfigManager Config;
         public HashSet<string> ExcludedSources { get; private set; } = new HashSet<string>();
+        
 
         //FeatureCollections
         public List<Dictionary<string, List<Feature>>> FeatureCollections = new List<Dictionary<string, List<Feature>>>();
@@ -298,6 +299,25 @@ namespace OGL
             ConfigManager.LogError("Unknown Language: " + name);
             return new Language(this, name, "Missing Entry", "", "");
         }
+        public Dictionary<String, Monster> Monsters = new Dictionary<string, Monster>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Monster> MonstersSimple = new Dictionary<string, Monster>(StringComparer.OrdinalIgnoreCase);
+
+        public Monster GetMonster(String name, string sourcehint)
+        {
+            if (name.Contains(ConfigManager.SourceSeperatorString))
+            {
+                if (Monsters.ContainsKey(name)) return Monsters[name];
+                name = SourceInvariantComparer.NoSource(name);
+            }
+            if (sourcehint != null && Monsters.ContainsKey(name + " " + ConfigManager.SourceSeperator + " " + sourcehint)) return Monsters[name + " " + ConfigManager.SourceSeperator + " " + sourcehint];
+            if (MonstersSimple.ContainsKey(name)) return MonstersSimple[name];
+            if (MonstersSimple.Count > 0)
+            {
+                ConfigManager.LogError("Unknown Monster: " + name);
+                return new Monster(this, name, "Missing Entry");
+            }
+            return null;
+        }
 
         //Level
         public Level Levels;
@@ -427,6 +447,70 @@ namespace OGL
                 ex.EvaluateFunction += FunctionExtensions;
                 List<Spell> res = new List<Spell>();
                 foreach (Spell f in Spells.Values)
+                {
+                    current = f;
+                    object o = ex.Evaluate();
+                    if (o is Boolean && (Boolean)o) res.Add(current);
+
+                }
+                res.Sort();
+                return res;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error while evaluating expression " + expression, e);
+            }
+        }
+
+        public List<Monster> FilterMonsters(string expression)
+        {
+            if (expression == null || expression == "") expression = "true";
+            try
+            {
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Monster current = null;
+                ex.EvaluateParameter += delegate (string name, ParameterArgs args)
+                {
+                    name = name.ToLowerInvariant();
+                    if (name == "classlevel") args.Result = int.MaxValue;
+                    else if (name == "classspelllevel") args.Result = int.MaxValue;
+                    else if (name == "maxspellslot") args.Result = int.MaxValue;
+                    else if (name == "name") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "source") args.Result = current.Source.ToLowerInvariant();
+                    else if (name == "namelower") args.Result = current.Name.ToLowerInvariant();
+                    else if (name == "cr") args.Result = current.CR;
+                    else if (name == "monsterstrength" || name == "monsterstr") args.Result = current.Strength;
+                    else if (name == "monsterdexterity" || name == "monsterdex") args.Result = current.Dexterity;
+                    else if (name == "monsterconstitution" || name == "monstercon") args.Result = current.Constitution;
+                    else if (name == "monsterintelligence" || name == "monsterint") args.Result = current.Intelligence;
+                    else if (name == "monsterwisdom" || name == "monsterwis") args.Result = current.Wisdom;
+                    else if (name == "monstercharisma" || name == "monstercha") args.Result = current.Charisma;
+                    else if (name == "passiveperception") args.Result = current.PassivePerception;
+                    else if (name == "xp") args.Result = current.XP;
+                    else if (name == "spells") args.Result = current.Spells?.Count ?? 0;
+                    else if (name == "slots") args.Result = current.Slots?.Count ?? 0;
+                    else if (name == "ac") args.Result = current.AC;
+                    else if (name == "actext") args.Result = current.ACText;
+                    else if (name == "hp") args.Result = current.HP;
+                    else if (name == "hproll") args.Result = current.HPRoll;
+                    else if (name == "alignment") args.Result = current.Alignment?.ToLowerInvariant() ?? "";
+                    else if (name == "flying") args.Result = current.Speeds.Exists(s => s.TrimStart().StartsWith("fly", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "swimming") args.Result = current.Speeds.Exists(s => s.TrimStart().StartsWith("swim", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "climbing") args.Result = current.Speeds.Exists(s => s.TrimStart().StartsWith("climb", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "burrowing") args.Result = current.Speeds.Exists(s => s.TrimStart().StartsWith("burrow", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "darkvision") args.Result = current.Senses.Exists(s => s.TrimStart().StartsWith("darkvision", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "blindsight") args.Result = current.Senses.Exists(s => s.TrimStart().StartsWith("blindsight", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "tremorsense") args.Result = current.Senses.Exists(s => s.TrimStart().StartsWith("tremorsense", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "truesight") args.Result = current.Senses.Exists(s => s.TrimStart().StartsWith("truesight", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "hover") args.Result = current.Speeds.Exists(s => s.ToLowerInvariant().Contains("hover"));
+                    else if (name == "teleporting") args.Result = current.Speeds.Exists(s => s.TrimStart().StartsWith("teleport", StringComparison.OrdinalIgnoreCase));
+                    else if (name == "size") args.Result = current.Size.ToString() ?? "";
+                    else if (current.Keywords.Count > 0 && current.Keywords.Exists(k => MatchesKW(k.Name, name))) args.Result = true;
+                    else args.Result = false;
+                };
+                ex.EvaluateFunction += FunctionExtensions;
+                List<Monster> res = new List<Monster>();
+                foreach (Monster f in Monsters.Values)
                 {
                     current = f;
                     object o = ex.Evaluate();

@@ -49,6 +49,7 @@
             this.hitPointFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statBonusFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.speedFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resistanceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visionFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.proficiencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageChoiceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +85,8 @@
             this.featureCollectionChoiceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subclassFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.subraceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resistanceFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formsCompanionFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formsCompanionsBonusFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
@@ -180,21 +182,23 @@
             this.bonusSpellFeatureToolStripMenuItem,
             this.multipleFeaturesToolStripMenuItem,
             this.subclassFeatureToolStripMenuItem,
-            this.subraceFeatureToolStripMenuItem});
+            this.subraceFeatureToolStripMenuItem,
+            this.formsCompanionFeatureToolStripMenuItem,
+            this.formsCompanionsBonusFeatureToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(165, 268);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(259, 312);
             // 
             // basicFeatureToolStripMenuItem
             // 
             this.basicFeatureToolStripMenuItem.Name = "basicFeatureToolStripMenuItem";
-            this.basicFeatureToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.basicFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.basicFeatureToolStripMenuItem.Text = "Basic Feature";
             this.basicFeatureToolStripMenuItem.Click += new System.EventHandler(this.basicFeatureToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(258, 22);
             this.toolStripMenuItem6.Text = "Resource Feature";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
@@ -204,7 +208,7 @@
             this.abilityScoreFeatureToolStripMenuItem,
             this.abilityScoreFeatSelectionFeatureToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(258, 22);
             this.toolStripMenuItem1.Text = "Ability Score";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -233,7 +237,7 @@
             this.resistanceFeatureToolStripMenuItem,
             this.visionFeatureToolStripMenuItem});
             this.attackDefenseToolStripMenuItem.Name = "attackDefenseToolStripMenuItem";
-            this.attackDefenseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.attackDefenseToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.attackDefenseToolStripMenuItem.Text = "Stats";
             // 
             // aCCalculationFeatureToolStripMenuItem
@@ -271,6 +275,13 @@
             this.speedFeatureToolStripMenuItem.Text = "Speed Feature";
             this.speedFeatureToolStripMenuItem.Click += new System.EventHandler(this.speedFeatureToolStripMenuItem_Click);
             // 
+            // resistanceFeatureToolStripMenuItem
+            // 
+            this.resistanceFeatureToolStripMenuItem.Name = "resistanceFeatureToolStripMenuItem";
+            this.resistanceFeatureToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.resistanceFeatureToolStripMenuItem.Text = "Resistance Feature";
+            this.resistanceFeatureToolStripMenuItem.Click += new System.EventHandler(this.resistanceFeatureToolStripMenuItem_Click);
+            // 
             // visionFeatureToolStripMenuItem
             // 
             this.visionFeatureToolStripMenuItem.Name = "visionFeatureToolStripMenuItem";
@@ -287,7 +298,7 @@
             this.saveProficiencyFeatureToolStripMenuItem,
             this.otherProficiencyFeatureToolStripMenuItem});
             this.proficiencyToolStripMenuItem.Name = "proficiencyToolStripMenuItem";
-            this.proficiencyToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.proficiencyToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.proficiencyToolStripMenuItem.Text = "Proficiency";
             // 
             // languageChoiceFeatureToolStripMenuItem
@@ -392,7 +403,7 @@
             this.increaseSpellchoicesFeatureToolStripMenuItem,
             this.modifySpellchoiceFeatureToolStripMenuItem});
             this.spellcastingToolStripMenuItem.Name = "spellcastingToolStripMenuItem";
-            this.spellcastingToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.spellcastingToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.spellcastingToolStripMenuItem.Text = "Spellcasting";
             // 
             // spellcastingFeatureToolStripMenuItem
@@ -450,7 +461,7 @@
             this.bonusSpellFeatureToolStripMenuItem1,
             this.bonusSpellCoiceFeatureToolStripMenuItem});
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(258, 22);
             this.toolStripMenuItem5.Text = "Bonus Spells";
             // 
             // bonusSpellFeatureToolStripMenuItem1
@@ -474,7 +485,7 @@
             this.itemChoiceFeatureToolStripMenuItem,
             this.itemChoiceByConditionFeatureToolStripMenuItem});
             this.bonusSpellFeatureToolStripMenuItem.Name = "bonusSpellFeatureToolStripMenuItem";
-            this.bonusSpellFeatureToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.bonusSpellFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.bonusSpellFeatureToolStripMenuItem.Text = "Items / Gold";
             // 
             // freeItemGoldFeatureToolStripMenuItem
@@ -505,7 +516,7 @@
             this.featureChoiceFeatureToolStripMenuItem,
             this.featureCollectionChoiceFeatureToolStripMenuItem});
             this.multipleFeaturesToolStripMenuItem.Name = "multipleFeaturesToolStripMenuItem";
-            this.multipleFeaturesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.multipleFeaturesToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.multipleFeaturesToolStripMenuItem.Text = "Features";
             // 
             // multiFeatureToolStripMenuItem
@@ -532,23 +543,30 @@
             // subclassFeatureToolStripMenuItem
             // 
             this.subclassFeatureToolStripMenuItem.Name = "subclassFeatureToolStripMenuItem";
-            this.subclassFeatureToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.subclassFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.subclassFeatureToolStripMenuItem.Text = "Subclass Feature";
             this.subclassFeatureToolStripMenuItem.Click += new System.EventHandler(this.subclassFeatureToolStripMenuItem_Click);
             // 
             // subraceFeatureToolStripMenuItem
             // 
             this.subraceFeatureToolStripMenuItem.Name = "subraceFeatureToolStripMenuItem";
-            this.subraceFeatureToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.subraceFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.subraceFeatureToolStripMenuItem.Text = "Subrace Feature";
             this.subraceFeatureToolStripMenuItem.Click += new System.EventHandler(this.subraceFeatureToolStripMenuItem_Click);
             // 
-            // resistanceFeatureToolStripMenuItem
+            // formsCompanionFeatureToolStripMenuItem
             // 
-            this.resistanceFeatureToolStripMenuItem.Name = "resistanceFeatureToolStripMenuItem";
-            this.resistanceFeatureToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.resistanceFeatureToolStripMenuItem.Text = "Resistance Feature";
-            this.resistanceFeatureToolStripMenuItem.Click += new System.EventHandler(this.resistanceFeatureToolStripMenuItem_Click);
+            this.formsCompanionFeatureToolStripMenuItem.Name = "formsCompanionFeatureToolStripMenuItem";
+            this.formsCompanionFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.formsCompanionFeatureToolStripMenuItem.Text = "Forms/Companions Feature";
+            this.formsCompanionFeatureToolStripMenuItem.Click += new System.EventHandler(this.formsCompanionFeatureToolStripMenuItem_Click);
+            // 
+            // formsCompanionsBonusFeatureToolStripMenuItem
+            // 
+            this.formsCompanionsBonusFeatureToolStripMenuItem.Name = "formsCompanionsBonusFeatureToolStripMenuItem";
+            this.formsCompanionsBonusFeatureToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.formsCompanionsBonusFeatureToolStripMenuItem.Text = "Forms/Companions Bonus Feature";
+            this.formsCompanionsBonusFeatureToolStripMenuItem.Click += new System.EventHandler(this.formsCompanionsBonusFeatureToolStripMenuItem_Click);
             // 
             // Features
             // 
@@ -622,5 +640,7 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bonusAlwaysPreparedSpellsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resistanceFeatureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formsCompanionFeatureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formsCompanionsBonusFeatureToolStripMenuItem;
     }
 }

@@ -33,7 +33,8 @@ namespace Data_Browser
             new Table<Feature>().Add(e=>e.Level).Add(e=>e.Category).Add(e=>e.Prerequisite).Add(e=>e.Keywords),
             new Table<Skill>().Add(e=>e.Base),
             new Table<Condition>(),
-            new Table<Language>().Add(e=>e.Skript).Add(e=>e.TypicalSpeakers), 
+            new Table<Language>().Add(e=>e.Skript).Add(e=>e.TypicalSpeakers),
+            new Table<Monster>().Add(e=>e.CR).Add(e=>e.XP).Add(e=>e.Size).Add(e=>e.Keywords).Add(e=>e.Alignment).Add(e=>e.HP).Add(e=>e.HPRoll, "HP roll").Add(e=>e.AC).Add(e => e.Strength).Add(e => e.Dexterity).Add(e => e.Constitution).Add(e => e.Intelligence).Add(e=>e.Wisdom).Add(e=>e.Charisma).Add(e=>e.Senses).Add(e=>e.Speeds).Add(e=>e.Vulnerablities).Add(e=>e.Resistances).Add(e=>e.Immunities).Add(e=>e.ConditionImmunities).Add(e=>e.Languages),
         };
         private List<IXML> results;
         public Drowser()
