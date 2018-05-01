@@ -73,8 +73,12 @@ namespace CB_5e.iOS
         {
             using (MemoryStream ms = new MemoryStream()) {
                 Stream s = await GetImageStreamAsync();
-                await s.CopyToAsync(ms);
-                return ms.ToArray();
+                if (s != null)
+                {
+                    await s.CopyToAsync(ms);
+                    return ms.ToArray();
+                }
+                return null;
             }
         }
 

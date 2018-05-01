@@ -46,10 +46,6 @@
 				<xsl:value-of select="Wisdom"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(floor(Wisdom div 2) - 5, '+0;-0')"/>)
 			</div>
 			<div class="Ability">
-				<div class="Bold">DEX</div>
-				<xsl:value-of select="Dexterity"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(floor(Dexterity div 2) - 5, '+0;-0')"/>)
-			</div>
-			<div class="Ability">
 				<div class="Bold">CHA</div>
 				<xsl:value-of select="Charisma"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(floor(Charisma div 2) - 5, '+0;-0')"/>)
 			</div>
@@ -107,7 +103,7 @@
 
         <xsl:choose>
             <xsl:when test="contains($input, '&#10;')">
-                    <xsl:element name="p"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text><xsl:copy-of select="substring-before($input, '&#10;')" /></xsl:element>
+		    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="substring-before($input, '&#10;')" /></xsl:element>
                 <xsl:call-template name="newline-to-paragraph2">
                     <xsl:with-param name="input">
                         <xsl:copy-of select="substring-after($input, '&#10;')" />

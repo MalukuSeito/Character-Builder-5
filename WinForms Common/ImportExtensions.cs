@@ -551,6 +551,5 @@ namespace Character_Builder_Forms
             if (parent.IsSubPathOf(context.Config.Items_Directory)) Make(context, parent);
             return Category.Categories[p];
         }
-
     }
 }

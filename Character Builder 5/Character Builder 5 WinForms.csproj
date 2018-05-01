@@ -87,7 +87,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="PDF.cs" />
+    <Compile Include="PDFForms.cs" />
+    <Compile Include="PDFFormsEditor.cs" />
+    <Compile Include="PDFFormsSheet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveLoadExtensions.cs" />

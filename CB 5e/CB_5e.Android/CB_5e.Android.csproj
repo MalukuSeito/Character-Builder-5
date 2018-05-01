@@ -134,6 +134,8 @@
     <Compile Include="HTMLService_Droid.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MyEntryRenderer.cs" />
+    <Compile Include="PDFDroidEditor.cs" />
+    <Compile Include="PDFDroidSheet.cs" />
     <Compile Include="PDF_Droid.cs" />
     <Compile Include="PicturePicker_Droid.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

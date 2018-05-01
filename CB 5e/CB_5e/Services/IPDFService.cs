@@ -11,6 +11,11 @@ namespace CB_5e.Services
 {
     public interface IPDFService
     {
-        Task ExportPDF(string Exporter, BuilderContext context, bool preserveEdit, bool includeResources, bool log, bool spell);
+        bool PreserveEdit { get; set; }
+        bool IncludeResources { get; set; }
+        bool IncludeLog { get; set; }
+        bool IncludeSpellbook { get; set; }
+        bool IncludeActions { get; set; }
+        Task ExportPDF(string Exporter, BuilderContext context);
     }
 }

@@ -19,6 +19,7 @@ namespace CB_5e.Views.Character
         public bool Editable { get; set; } = false;
         public bool Log { get; set; } = true;
         public bool Book { get; set; } = true;
+        public bool Actions { get; set; } = true;
         public bool IncludeResources { get; set; } = true;
         public string Exporter { get; set; }
         public List<string> Exporters { get => Model.Context.Config.PDF; }
@@ -33,7 +34,13 @@ namespace CB_5e.Views.Character
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            DependencyService.Get<IPDFService>().ExportPDF(Exporter, Model.Context, Editable, IncludeResources, Log, Book).Forget();
+            IPDFService s = DependencyService.Get<IPDFService>();
+            s.IncludeActions = Actions;
+            s.PreserveEdit = Editable;
+            s.IncludeResources = IncludeResources;
+            s.IncludeLog = Log;
+            s.IncludeSpellbook = Book;
+            s.ExportPDF(Exporter, Model.Context).Forget();
         }
     }
 }

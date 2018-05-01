@@ -1,4 +1,5 @@
-﻿using Character_Builder_Forms;
+﻿using Character_Builder;
+using Character_Builder_Forms;
 using OGL;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Character_Builder_5
                     cm.Save(Path.Combine(path, "Config.xml"));
                 }
                 ConfigManager loaded = Program.Context.LoadConfig(path);
-                PDFExporter = PDF.Load(ImportExtensions.Fullpath(path, loaded.PDF[0]));
+                PDFExporter = PlayerExtensions.Load(ImportExtensions.Fullpath(path, loaded.PDF[0]));
                 Program.Context.LoadAbilityScores(ImportExtensions.Fullpath(path, loaded.AbilityScores));
             }
             catch (Exception e)

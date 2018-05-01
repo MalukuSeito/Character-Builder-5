@@ -1,5 +1,7 @@
 ﻿using Character_Builder;
 using Character_Builder_Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using OGL;
 using OGL.Keywords;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -104,7 +107,7 @@ namespace Character_Builder_5
                     string file = args[1];
                     if (File.Exists(file) && ".pdf".Equals(Path.GetExtension(file), StringComparison.InvariantCultureIgnoreCase))
                     {
-                        PDF.markFields(file);
+                        markFields(file);
                         Application.Exit();
                         return;
                     }
@@ -150,6 +153,58 @@ namespace Character_Builder_5
         public static void Resetglobals()
         {
             MainWindow.Resetglobals();
+        }
+
+        public static void scanFields(this PDF pdf)
+        {
+            PdfReader x = new PdfReader(pdf.File);
+            foreach (string field in x.AcroFields.Fields.Keys)
+            {
+                pdf.Fields.Add(new PDFField(field, field));
+            }
+            //System.Windows.Forms.MessageBox.Show(sb.ToString());
+        }
+        public static void splitSpellPage(this PDF pdf, int page)
+        {
+            PdfReader reader = new PdfReader(pdf.File);
+            PdfReader sreader = new PdfReader(pdf.SpellFile);
+            Document sourceDocument = new Document(sreader.GetPageSizeWithRotation(1));
+            PdfCopy pdfCopyProvider = new PdfCopy(sourceDocument, new System.IO.FileStream("Alternate-Sheet.pdf", System.IO.FileMode.Create));
+            sourceDocument.Open();
+            PdfImportedPage importedPage = pdfCopyProvider.GetImportedPage(sreader, 1);
+            pdfCopyProvider.AddPage(importedPage);
+            pdfCopyProvider.AddPage(pdfCopyProvider.GetImportedPage(reader, 2));
+            sourceDocument.Close();
+            reader.Close();
+            sreader.Close();
+            pdfCopyProvider.Close();
+        }
+        public static void markFields(string file)
+        {
+            string outfile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "-marked" + Path.GetExtension(file));
+            FileStream temp = new FileStream(outfile, FileMode.CreateNew);
+            using (PdfReader sheet = new PdfReader(file))
+            {
+                sheet.RemoveUsageRights();
+                using (PdfStamper p = new PdfStamper(sheet, temp))
+                {
+                    foreach (string field in sheet.AcroFields.Fields.Keys)
+                    {
+                        foreach (AcroFields.FieldPosition pos in p.AcroFields.GetFieldPositions(field))
+                        {
+                            Rectangle pageSize = sheet.GetPageSizeWithRotation(pos.page);
+                            PdfContentByte pdfPageContents = p.GetOverContent(pos.page);
+                            pdfPageContents.BeginText();
+                            BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, Encoding.ASCII.EncodingName, false);
+                            pdfPageContents.SetFontAndSize(baseFont, 6);
+                            pdfPageContents.ShowTextAligned(PdfContentByte.ALIGN_CENTER, field, pos.position.Left + pos.position.Width / 2, pos.position.Top - pos.position.Height / 2, 0);
+                            pdfPageContents.EndText();
+                        }
+
+                    }
+                    p.FormFlattening = true;
+                }
+            }
         }
     }
 }

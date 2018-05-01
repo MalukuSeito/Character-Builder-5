@@ -1,4 +1,5 @@
 ﻿using Character_Builder;
+using Character_Builder_Forms;
 using Character_Builder_Plugin;
 using OGL;
 using System;
@@ -15,6 +16,27 @@ namespace Character_Builder_5
 {
     public static class PlayerExtensions
     {
+
+        public static PDF Load(String file)
+        {
+            using (TextReader reader = new StreamReader(file))
+            {
+                PDF p = (PDF)PDF.Serializer.Deserialize(reader);
+                p.File = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.File);
+                p.SpellFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.SpellFile);
+                p.ActionsFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.ActionsFile);
+                p.ActionsFile2 = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.ActionsFile2);
+                p.LogFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.LogFile);
+                p.SpellbookFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.SpellbookFile);
+                return p;
+            }
+        }
+
+        public static void Save(this PDF p, String file)
+        {
+            using (TextWriter writer = new StreamWriter(file)) PDF.Serializer.Serialize(writer, p);
+        }
+
         public static void Save(this Player p, FileStream fs)
         {
             Player.Serializer.Serialize(fs, p);

@@ -192,7 +192,7 @@ namespace Character_Builder_5
         {
             ToolStripMenuItem s=(ToolStripMenuItem)sender;
             s.Checked = true;
-            Config.PDFExporter = PDF.Load(s.Name);
+            Config.PDFExporter = PlayerExtensions.Load(s.Name);
             foreach (ToolStripMenuItem p in pDFExporterToolStripMenuItem.DropDownItems)
             {
                 if (p != s) p.Checked = false;
@@ -2182,7 +2182,7 @@ namespace Character_Builder_5
                 Application.Exit();
         }
 
-        private void exportPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void exportPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog od = new SaveFileDialog();
             if (lastfile != null && lastfile != "")
@@ -2198,7 +2198,16 @@ namespace Character_Builder_5
                 {
                     using (FileStream fs = (FileStream)od.OpenFile())
                     {
-                        Config.PDFExporter.Export(fs, preservePDFFormsToolStripMenuItem.Checked, includeResourcesInSheetToolStripMenuItem.Checked, PDFjournal.Checked, PDFspellbook.Checked, includeActionsInPDFToolStripMenuItem.Checked);
+                        PDFForms pdf = new PDFForms()
+                        {
+                            IncludeActions = includeActionsInPDFToolStripMenuItem.Checked,
+                            IncludeLog = PDFjournal.Checked,
+                            IncludeResources = includeResourcesInSheetToolStripMenuItem.Checked,
+                            IncludeSpellbook = PDFspellbook.Checked,
+                            PreserveEdit = preservePDFFormsToolStripMenuItem.Checked,
+                            OutStream = fs
+                        };
+                        await Config.PDFExporter.Export(Program.Context, pdf);
                     }
                     if (MessageBox.Show("PDF exported to: " + od.FileName + " Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
@@ -2213,14 +2222,14 @@ namespace Character_Builder_5
         }
         private void defaultPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Config.PDFExporter = PDF.Load("DefaultPDF.xml");
+            Config.PDFExporter = PlayerExtensions.Load("DefaultPDF.xml");
             defaultPDFToolStripMenuItem.Checked = true;
             alternateToolStripMenuItem.Checked = false;
         }
 
         private void alternateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Config.PDFExporter = PDF.Load("AlternatePDF.xml");
+            Config.PDFExporter = PlayerExtensions.Load("AlternatePDF.xml");
             alternateToolStripMenuItem.Checked = true;
             defaultPDFToolStripMenuItem.Checked = false;
         }

@@ -155,6 +155,9 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MyEntryRenderer.cs" />
+    <Compile Include="PDFiOSEditor.cs" />
+    <Compile Include="PDFiOSSheet.cs" />
+    <Compile Include="PDF_iOS.cs" />
     <Compile Include="PicturePicker_IOS.cs" />
   </ItemGroup>
   <ItemGroup>

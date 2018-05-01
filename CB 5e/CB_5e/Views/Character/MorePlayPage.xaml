@@ -24,6 +24,8 @@
             <Switch Grid.Row="2" Grid.Column="1" IsToggled="{Binding Log}"/>
             <Label Grid.Row="3" Grid.Column="0" Text="Include Spellbook"/>
             <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding Book}"/>
+            <Label Grid.Row="3" Grid.Column="0" Text="Include Actions (Combat Sheet)"/>
+            <Switch Grid.Row="3" Grid.Column="1" IsToggled="{Binding Actions}"/>
             <Label Grid.Row="4" Grid.Column="0" Text="Preserve Edit"/>
             <Switch Grid.Row="4" Grid.Column="1" IsToggled="{Binding Edit}"/>
             <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Make PDF" Clicked="Button_Clicked"/>
