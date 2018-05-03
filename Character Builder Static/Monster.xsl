@@ -60,15 +60,14 @@
 		<span class="Bold">Senses</span><xsl:text> </xsl:text><xsl:if test="boolean(Senses/string/node())"><xsl:apply-templates select="Senses"/><xsl:text>, </xsl:text></xsl:if>passive Perception <xsl:choose><xsl:when test="boolean(SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/node())"><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/Bonus + PassivePerception"/></xsl:when><xsl:otherwise><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + PassivePerception"/></xsl:otherwise></xsl:choose><br/>
 		<span class="Bold">Languages</span><xsl:text> </xsl:text><xsl:choose><xsl:when test="boolean(Languages/string/node())"><xsl:apply-templates select="Languages"/></xsl:when><xsl:otherwise>&#8212;</xsl:otherwise></xsl:choose><br/>
 		<span class="Bold">Challenge</span><xsl:text> </xsl:text><xsl:apply-templates select="CR"/><xsl:text> (</xsl:text><xsl:value-of select="XP"/> XP)<br/>	
-		<hr />
 
-		<div class="Description">
+		<div class="Description" style="margin-top:10px">
 			<xsl:call-template name="newline-to-paragraph">
 				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>
 			</xsl:call-template>
 		</div>
 		<xsl:apply-templates select="Descriptions/*"/>
-		<div class="Traits">
+		<div class="Traits" style="margin-top:10px">
 			<xsl:apply-templates select="Traits"/>
 		</div>
 		<xsl:if test="boolean(Actions/MonsterTrait/node()) or boolean(Actions/MonsterAction/node())">
@@ -112,7 +111,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="$input != ''">
-                    <xsl:element name="p"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text><xsl:copy-of select="$input" /></xsl:element>
+                    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="$input" /></xsl:element>
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>

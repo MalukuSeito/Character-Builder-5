@@ -2205,6 +2205,7 @@ namespace Character_Builder_5
                             IncludeResources = includeResourcesInSheetToolStripMenuItem.Checked,
                             IncludeSpellbook = PDFspellbook.Checked,
                             PreserveEdit = preservePDFFormsToolStripMenuItem.Checked,
+                            IncludeMonsters = toolStripMenuItem1.Checked,
                             OutStream = fs
                         };
                         await Config.PDFExporter.Export(Program.Context, pdf);
@@ -4265,6 +4266,11 @@ namespace Character_Builder_5
                     if (FormsCompanionsAvailable.SelectedItem is Monster m)
                         Program.Context.Player.AddFormCompanion(fci.ID, m);
             UpdateFormsCompanions();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem1.Checked = !toolStripMenuItem1.Checked;
         }
     }
 }

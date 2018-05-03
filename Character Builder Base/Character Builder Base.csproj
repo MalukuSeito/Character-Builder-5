@@ -61,6 +61,7 @@
     <Compile Include="IPDFEditor.cs" />
     <Compile Include="IPDFSheet.cs" />
     <Compile Include="JournalEntry.cs" />
+    <Compile Include="MonsterInfo.cs" />
     <Compile Include="ObjectIdentityEqualityComparer.cs" />
     <Compile Include="PDF.cs" />
     <Compile Include="PDFBase.cs" />

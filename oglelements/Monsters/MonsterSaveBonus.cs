@@ -16,5 +16,11 @@ namespace OGL.Monsters
         {
             return Ability.ToString() + " " + Bonus.ToString("+#;-#;+0") + (Text != null && Text != "" ? " (" + Text + ")" : "");
         }
+
+        public string ToString(Monster monster)
+        {
+            if (Ability != Ability.None) return Ability.ToString().Substring(0, 3) + " " + (monster.getAbility(Ability) / 2 - 5 + Bonus).ToString("+#;-#;+0") + (Text != null && Text != "" ? " (" + Text + ")" : "");
+            return ToString();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Character_Builder
         public bool IncludeLog { get; set; }
         public bool IncludeSpellbook { get; set; }
         public bool IncludeActions { get; set; }
+        public bool IncludeMonsters { get; set; }
         public abstract Task<IPDFEditor> CreateEditor(string file);
         public abstract IPDFSheet CreateSheet();
     }

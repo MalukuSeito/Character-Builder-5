@@ -89,8 +89,6 @@
             this.SideName = new System.Windows.Forms.Label();
             this.sidePortrait = new System.Windows.Forms.PictureBox();
             this.subSplit = new System.Windows.Forms.SplitContainer();
-            this.displayElement = new System.Windows.Forms.WebBrowser();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mainTab = new System.Windows.Forms.TabControl();
             this.racetab = new Character_Builder_5.NoScrollTab();
             this.subracebox = new System.Windows.Forms.ListBox();
@@ -402,6 +400,9 @@
             this.SpellSlotBox = new System.Windows.Forms.ListBox();
             this.label18 = new System.Windows.Forms.Label();
             this.SpellsBox = new System.Windows.Forms.ListBox();
+            this.displayElement = new System.Windows.Forms.WebBrowser();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -696,6 +697,7 @@
             this.PDFjournal,
             this.PDFspellbook,
             this.includeActionsInPDFToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.makeDefaultEditorForcb5FilesToolStripMenuItem,
             this.showDescriptionToolStripMenuItem,
             this.alawaysShowTheSourcebookToolStripMenuItem,
@@ -710,7 +712,7 @@
             this.someToolStripMenuItem,
             this.rulesToolStripMenuItem});
             this.configureHouserulesToolStripMenuItem.Name = "configureHouserulesToolStripMenuItem";
-            this.configureHouserulesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.configureHouserulesToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.configureHouserulesToolStripMenuItem.Text = "&Configure Houserules";
             // 
             // someToolStripMenuItem
@@ -730,7 +732,7 @@
             this.sourcesToolStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.noneToolStripMenuItem});
             this.sourcesToolStrip.Name = "sourcesToolStrip";
-            this.sourcesToolStrip.Size = new System.Drawing.Size(244, 22);
+            this.sourcesToolStrip.Size = new System.Drawing.Size(312, 22);
             this.sourcesToolStrip.Text = "Sources";
             // 
             // noneToolStripMenuItem
@@ -745,7 +747,7 @@
             this.defaultPDFToolStripMenuItem,
             this.alternateToolStripMenuItem});
             this.pDFExporterToolStripMenuItem.Name = "pDFExporterToolStripMenuItem";
-            this.pDFExporterToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.pDFExporterToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.pDFExporterToolStripMenuItem.Text = "PDF-&Exporter";
             // 
             // defaultPDFToolStripMenuItem
@@ -770,14 +772,14 @@
             this.includeResourcesInSheetToolStripMenuItem.CheckOnClick = true;
             this.includeResourcesInSheetToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.includeResourcesInSheetToolStripMenuItem.Name = "includeResourcesInSheetToolStripMenuItem";
-            this.includeResourcesInSheetToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.includeResourcesInSheetToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.includeResourcesInSheetToolStripMenuItem.Text = "&Include Resources in Sheet";
             // 
             // preservePDFFormsToolStripMenuItem
             // 
             this.preservePDFFormsToolStripMenuItem.CheckOnClick = true;
             this.preservePDFFormsToolStripMenuItem.Name = "preservePDFFormsToolStripMenuItem";
-            this.preservePDFFormsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.preservePDFFormsToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.preservePDFFormsToolStripMenuItem.Text = "&Preserve PDF forms";
             // 
             // PDFjournal
@@ -785,7 +787,7 @@
             this.PDFjournal.Checked = true;
             this.PDFjournal.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PDFjournal.Name = "PDFjournal";
-            this.PDFjournal.Size = new System.Drawing.Size(244, 22);
+            this.PDFjournal.Size = new System.Drawing.Size(312, 22);
             this.PDFjournal.Text = "Include &Journal in PDF";
             this.PDFjournal.Click += new System.EventHandler(this.PDFjournal_Click);
             // 
@@ -794,7 +796,7 @@
             this.PDFspellbook.Checked = true;
             this.PDFspellbook.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PDFspellbook.Name = "PDFspellbook";
-            this.PDFspellbook.Size = new System.Drawing.Size(244, 22);
+            this.PDFspellbook.Size = new System.Drawing.Size(312, 22);
             this.PDFspellbook.Text = "Include Spell&book in PDF";
             this.PDFspellbook.Click += new System.EventHandler(this.PDFspellbook_Click);
             // 
@@ -803,14 +805,14 @@
             this.includeActionsInPDFToolStripMenuItem.Checked = true;
             this.includeActionsInPDFToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.includeActionsInPDFToolStripMenuItem.Name = "includeActionsInPDFToolStripMenuItem";
-            this.includeActionsInPDFToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.includeActionsInPDFToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.includeActionsInPDFToolStripMenuItem.Text = "Include Actions in &PDF";
             this.includeActionsInPDFToolStripMenuItem.Click += new System.EventHandler(this.includeActionsInPDFToolStripMenuItem_Click);
             // 
             // makeDefaultEditorForcb5FilesToolStripMenuItem
             // 
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Name = "makeDefaultEditorForcb5FilesToolStripMenuItem";
-            this.makeDefaultEditorForcb5FilesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.makeDefaultEditorForcb5FilesToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Text = "&Make default editor for .cb5 files";
             this.makeDefaultEditorForcb5FilesToolStripMenuItem.Click += new System.EventHandler(this.makeDefaultEditorForcb5FilesToolStripMenuItem_Click);
             // 
@@ -820,21 +822,21 @@
             this.showDescriptionToolStripMenuItem.CheckOnClick = true;
             this.showDescriptionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showDescriptionToolStripMenuItem.Name = "showDescriptionToolStripMenuItem";
-            this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showDescriptionToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.showDescriptionToolStripMenuItem.Text = "&Show Description";
             this.showDescriptionToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showDescriptionToolStripMenuItem_CheckedChanged);
             // 
             // alawaysShowTheSourcebookToolStripMenuItem
             // 
             this.alawaysShowTheSourcebookToolStripMenuItem.Name = "alawaysShowTheSourcebookToolStripMenuItem";
-            this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.alawaysShowTheSourcebookToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.alawaysShowTheSourcebookToolStripMenuItem.Text = "&Always Show the Sourcebook";
             this.alawaysShowTheSourcebookToolStripMenuItem.Click += new System.EventHandler(this.alawaysShowTheSourcebookToolStripMenuItem_Click);
             // 
             // showAllKnownRitualsToolStripMenuItem
             // 
             this.showAllKnownRitualsToolStripMenuItem.Name = "showAllKnownRitualsToolStripMenuItem";
-            this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.showAllKnownRitualsToolStripMenuItem.Text = "Show All Known Rituals";
             this.showAllKnownRitualsToolStripMenuItem.Click += new System.EventHandler(this.showAllKnownRitualsToolStripMenuItem_Click);
             // 
@@ -1268,24 +1270,6 @@
             this.subSplit.Size = new System.Drawing.Size(983, 519);
             this.subSplit.SplitterDistance = 623;
             this.subSplit.TabIndex = 1;
-            // 
-            // displayElement
-            // 
-            this.displayElement.AllowNavigation = false;
-            this.displayElement.AllowWebBrowserDrop = false;
-            this.displayElement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.displayElement.IsWebBrowserContextMenuEnabled = false;
-            this.displayElement.Location = new System.Drawing.Point(0, 0);
-            this.displayElement.MinimumSize = new System.Drawing.Size(20, 20);
-            this.displayElement.Name = "displayElement";
-            this.displayElement.ScriptErrorsSuppressed = true;
-            this.displayElement.Size = new System.Drawing.Size(356, 519);
-            this.displayElement.TabIndex = 0;
-            this.displayElement.Url = new System.Uri("about:blank", System.UriKind.Absolute);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.IsBalloon = true;
             // 
             // mainTab
             // 
@@ -5034,6 +5018,33 @@
             this.SpellsBox.TabIndex = 0;
             this.SpellsBox.SelectedIndexChanged += new System.EventHandler(this.Display_Generic);
             // 
+            // displayElement
+            // 
+            this.displayElement.AllowNavigation = false;
+            this.displayElement.AllowWebBrowserDrop = false;
+            this.displayElement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.displayElement.IsWebBrowserContextMenuEnabled = false;
+            this.displayElement.Location = new System.Drawing.Point(0, 0);
+            this.displayElement.MinimumSize = new System.Drawing.Size(20, 20);
+            this.displayElement.Name = "displayElement";
+            this.displayElement.ScriptErrorsSuppressed = true;
+            this.displayElement.Size = new System.Drawing.Size(356, 519);
+            this.displayElement.TabIndex = 0;
+            this.displayElement.Url = new System.Uri("about:blank", System.UriKind.Absolute);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Checked = true;
+            this.toolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(312, 22);
+            this.toolStripMenuItem1.Text = "Include Selected Companions / Forms in PDF";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5621,6 +5632,7 @@
         private System.Windows.Forms.ListBox SpellSlotBox;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ListBox SpellsBox;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

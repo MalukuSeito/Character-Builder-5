@@ -5,6 +5,7 @@ using OGL.Descriptions;
 using OGL.Features;
 using OGL.Items;
 using OGL.Keywords;
+using OGL.Monsters;
 using OGL.Spells;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace Character_Builder
         public String SpellFile { get; set; }
         public String LogFile { get; set; }
         public String SpellbookFile { get; set; }
+        public String MonstersFile { get; set; }
         public String ActionsFile { get; set; }
         public String ActionsFile2 { get; set; }
         public List<PDFField> Fields = new List<PDFField>();
@@ -32,6 +34,7 @@ namespace Character_Builder
         public List<PDFField> LogFields = new List<PDFField>();
         public List<PDFField> SpellbookFields = new List<PDFField>();
         public List<PDFField> ActionsFields = new List<PDFField>();
+        public List<PDFField> MonsterFields = new List<PDFField>();
         public List<PDFField> ActionsFields2 = new List<PDFField>();
         
         
@@ -53,6 +56,7 @@ namespace Character_Builder
             Dictionary<String, String> booktrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> actiontrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Dictionary<String, String> actiontrans2 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<String, String> monstertrans = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (PDFField pf in Fields) trans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in SpellFields) spelltrans.Add(pf.Name, pf.Field);
@@ -60,6 +64,7 @@ namespace Character_Builder
             foreach (PDFField pf in SpellbookFields) booktrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in ActionsFields) actiontrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in ActionsFields2) actiontrans2.Add(pf.Name, pf.Field);
+            foreach (PDFField pf in MonsterFields) monstertrans.Add(pf.Name, pf.Field);
             Dictionary<string, bool> hiddenfeats = context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             hiddenfeats.Add("", true);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
@@ -761,8 +766,231 @@ namespace Character_Builder
                             }
                         }
                     }
+
+                    if (pdf.IncludeMonsters && MonstersFile != null && MonstersFile != "" && (monstertrans.ContainsKey("Name1") || monstertrans.ContainsKey("Traits1")))
+                    {
+                        Dictionary<Monster, MonsterInfo> monsters = new Dictionary<Monster, MonsterInfo>(new MonsterInfo());
+                        foreach (FormsCompanionInfo fc in context.Player.GetFormsCompanionChoices())
+                        {
+                            foreach (Monster m in fc.AppliedChoices(context, context.Player.GetFinalAbilityScores()))
+                            {
+                                if (monsters.ContainsKey(m))
+                                {
+                                    monsters[m].Sources.Add(fc.DisplayName);
+                                } else
+                                {
+                                    monsters.Add(m, new MonsterInfo()
+                                    {
+                                        Monster = m,
+                                        Sources = new List<string>() { fc.DisplayName }
+                                    });
+                                }
+                            }
+                        }
+                        Queue<MonsterInfo> entries = new Queue<MonsterInfo>(monsters.Values.OrderBy(s => s.Monster.Name));
+                        int sheetCount = 0;
+                        while (entries.Count > 0)
+                        {
+                            int counter = 1;
+
+                            using (IPDFEditor mp = await pdf.CreateEditor(MonstersFile))
+                            {
+                                sheetCount++;
+                                FillBasicFields(monstertrans, mp, context);
+                                if (monstertrans.ContainsKey("Sheet")) mp.SetField(monstertrans["Sheet"], sheetCount.ToString());
+                                while (entries.Count > 0 && (monstertrans.ContainsKey("Name" + counter) || monstertrans.ContainsKey("Traits" + counter)))
+                                {
+                                    MonsterInfo entry = entries.Dequeue();
+                                    StringBuilder traits = new StringBuilder();
+                                    if (monstertrans.ContainsKey("Name" + counter)) mp.SetField(monstertrans["Name" + counter], entry.Monster.Name);
+                                    else traits.Append(entry.Monster.Name);
+                                    if (monstertrans.ContainsKey("Feature" + counter)) mp.SetField(monstertrans["Feature" + counter], string.Join(", ", entry.Sources));
+                                    else traits.Append("From: ").Append(string.Join(", ", entry.Sources)).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Flavour" + counter)) mp.SetField(monstertrans["Flavour" + counter], entry.Monster.Flavour);
+                                    if (monstertrans.ContainsKey("Descriptions" + counter))
+                                    {
+                                        mp.SetField(monstertrans["Description" + counter], string.Join("\n", entry.Monster.Descriptions.Select(s => s.Name + ": " + s.Text)));
+                                        if (monstertrans.ContainsKey("Description" + counter)) mp.SetField(monstertrans["Description" + counter], entry.Monster.Description);
+                                    }
+                                    else if (monstertrans.ContainsKey("Description" + counter)) mp.SetField(monstertrans["Description" + counter], entry.Monster.Description + "\n" + string.Join("\n", entry.Monster.Descriptions.Select(s => s.Name + ": " + s.Text)));
+
+                                    StringBuilder type = new StringBuilder();
+                                    if (monstertrans.ContainsKey("Size" + counter)) mp.SetField(monstertrans["Size" + counter], entry.Monster.Size.ToString());
+                                    else type.Append(entry.Monster.Size.ToString());
+                                    List<Keyword> t = new List<Keyword>(entry.Monster.Keywords);
+                                    if (t.Count >= 1) {
+                                        AppendIfContent(type, " ").Append(t[0].ToString().ToLowerInvariant());
+                                        t.RemoveAt(0);
+                                        if (t.Count >= 1) type.Append(" (").Append(string.Join(", ", t.Select(s => s.ToString())).ToLowerInvariant()).Append(")");
+                                    }
+                                    if (monstertrans.ContainsKey("Alignment" + counter)) mp.SetField(monstertrans["Alignment" + counter], entry.Monster.Alignment);
+                                    else if (entry.Monster.Alignment != null && entry.Monster.Alignment != "") type.Append(", ").Append(entry.Monster.Alignment);
+                                    if (monstertrans.ContainsKey("Type" + counter)) mp.SetField(monstertrans["Type" + counter], type.ToString());
+                                    else if (type.Length > 0) traits.Append("Type: ").Append(type.ToString()).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Image" + counter)) mp.SetImage(monstertrans["Image" + counter], entry.Monster.ImageData);
+
+                                    string AC = entry.Monster.AC.ToString();
+                                    if (monstertrans.ContainsKey("ACText" + counter)) mp.SetField(monstertrans["ACText" + counter], entry.Monster.ACText);
+                                    else if (entry.Monster.ACText != null && entry.Monster.ACText != "") AC = AC + " (" + entry.Monster.ACText + ")";
+                                    if (monstertrans.ContainsKey("AC" + counter)) mp.SetField(monstertrans["AC" + counter], AC);
+                                    else traits.Append("Armor Class ").Append(AC).Append("\n");
+
+                                    string HP = entry.Monster.HP.ToString();
+                                    if (monstertrans.ContainsKey("HPRoll" + counter)) mp.SetField(monstertrans["HPRoll" + counter], entry.Monster.HPRoll);
+                                    else if (entry.Monster.HPRoll != null && entry.Monster.HPRoll != "") HP = HP + " (" + entry.Monster.HPRoll + ")";
+                                    if (monstertrans.ContainsKey("HP" + counter)) mp.SetField(monstertrans["HP" + counter], HP);
+                                    else traits.Append("Hit Points ").Append(HP).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Speed" + counter)) mp.SetField(monstertrans["Speed" + counter], string.Join(", ", entry.Monster.Speeds));
+                                    else traits.Append("Speeds ").Append(string.Join(", ", entry.Monster.Speeds)).Append("\n");
+
+                                    StringBuilder stats = new StringBuilder();
+                                    if (monstertrans.ContainsKey("StrMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["StrMod" + counter], (entry.Monster.Strength / 2 - 5).ToString() );
+                                        if (monstertrans.ContainsKey("Str" + counter)) mp.SetField(monstertrans["Str" + counter], entry.Monster.Strength.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Str" + counter)) mp.SetField(monstertrans["Str" + counter], entry.Monster.Strength.ToString() + " (" + (entry.Monster.Strength / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else stats.Append("Str: ").Append(entry.Monster.Strength.ToString() + " (" + (entry.Monster.Strength / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+                                    if (monstertrans.ContainsKey("DexMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["DexMod" + counter], (entry.Monster.Dexterity / 2 - 5).ToString());
+                                        if (monstertrans.ContainsKey("Dex" + counter)) mp.SetField(monstertrans["Dex" + counter], entry.Monster.Dexterity.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Dex" + counter)) mp.SetField(monstertrans["Dex" + counter], entry.Monster.Dexterity.ToString() + " (" + (entry.Monster.Dexterity / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else AppendIfContent(stats, " ").Append("Dex: ").Append(entry.Monster.Dexterity.ToString() + " (" + (entry.Monster.Dexterity / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+                                    if (monstertrans.ContainsKey("ConMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["ConMod" + counter], (entry.Monster.Constitution / 2 - 5).ToString());
+                                        if (monstertrans.ContainsKey("Con" + counter)) mp.SetField(monstertrans["Con" + counter], entry.Monster.Constitution.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Con" + counter)) mp.SetField(monstertrans["Con" + counter], entry.Monster.Constitution.ToString() + " (" + (entry.Monster.Constitution / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else AppendIfContent(stats, " ").Append("Con: ").Append(entry.Monster.Constitution.ToString() + " (" + (entry.Monster.Constitution / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+                                    if (monstertrans.ContainsKey("IntMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["IntMod" + counter], (entry.Monster.Intelligence / 2 - 5).ToString());
+                                        if (monstertrans.ContainsKey("Int" + counter)) mp.SetField(monstertrans["Int" + counter], entry.Monster.Intelligence.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Int" + counter)) mp.SetField(monstertrans["Int" + counter], entry.Monster.Intelligence.ToString() + " (" + (entry.Monster.Intelligence / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else AppendIfContent(stats, " ").Append("Int: ").Append(entry.Monster.Intelligence.ToString() + " (" + (entry.Monster.Intelligence / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+                                    if (monstertrans.ContainsKey("WisMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["WisMod" + counter], (entry.Monster.Wisdom / 2 - 5).ToString());
+                                        if (monstertrans.ContainsKey("Wis" + counter)) mp.SetField(monstertrans["Wis" + counter], entry.Monster.Wisdom.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Wis" + counter)) mp.SetField(monstertrans["Wis" + counter], entry.Monster.Wisdom.ToString() + " (" + (entry.Monster.Wisdom / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else AppendIfContent(stats, " ").Append("Wis: ").Append(entry.Monster.Wisdom.ToString() + " (" + (entry.Monster.Wisdom / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+                                    if (monstertrans.ContainsKey("ChaMod" + counter))
+                                    {
+                                        mp.SetField(monstertrans["ChaMod" + counter], (entry.Monster.Charisma / 2 - 5).ToString());
+                                        if (monstertrans.ContainsKey("Cha" + counter)) mp.SetField(monstertrans["Cha" + counter], entry.Monster.Charisma.ToString());
+                                    }
+                                    else if (monstertrans.ContainsKey("Cha" + counter)) mp.SetField(monstertrans["Cha" + counter], entry.Monster.Charisma.ToString() + " (" + (entry.Monster.Charisma / 2 - 5).ToString("+#;-#;+0") + ")");
+                                    else AppendIfContent(stats, " ").Append("Cha: ").Append(entry.Monster.Charisma.ToString() + " (" + (entry.Monster.Charisma / 2 - 5).ToString("+#;-#;+0") + ")").Append("\n");
+
+                                    if (monstertrans.ContainsKey("Stats" + counter)) mp.SetField(monstertrans["Stats" + counter], stats.ToString());
+                                    else if (stats.Length > 0) traits.Append(stats.ToString()).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Saves" + counter)) mp.SetField(monstertrans["Saves" + counter], string.Join(", ", entry.Monster.SaveBonus.Select(s=>s.ToString(entry.Monster))));
+                                    else if (entry.Monster.SaveBonus.Count > 0) traits.Append("Saving Throws ").Append(string.Join(", ", entry.Monster.SaveBonus.Select(s => s.ToString(entry.Monster)))).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Skills" + counter)) mp.SetField(monstertrans["Skills" + counter], string.Join(", ", entry.Monster.SkillBonus.Select(s => s.ToString(entry.Monster, context))));
+                                    else if (entry.Monster.SkillBonus.Count > 0) traits.Append("Skills ").Append(string.Join(", ", entry.Monster.SkillBonus.Select(s => s.ToString(entry.Monster, context)))).Append("\n");
+
+                                    if (monstertrans.ContainsKey("Vulnerabilities" + counter)) mp.SetField(monstertrans["Vulnerabilities" + counter], string.Join(", ", entry.Monster.Vulnerablities));
+                                    else if (entry.Monster.Vulnerablities.Count > 0) traits.Append("Damage Vulnerabilities ").Append(string.Join(", ", entry.Monster.Vulnerablities)).Append("\n");
+                                    if (monstertrans.ContainsKey("Resistances" + counter)) mp.SetField(monstertrans["Resistances" + counter], string.Join(", ", entry.Monster.Resistances));
+                                    else if (entry.Monster.Resistances.Count > 0) traits.Append("Damage Resistances ").Append(string.Join(", ", entry.Monster.Resistances)).Append("\n");
+                                    if (monstertrans.ContainsKey("Immunities" + counter)) mp.SetField(monstertrans["Immunities" + counter], string.Join(", ", entry.Monster.Immunities));
+                                    else if (entry.Monster.Immunities.Count > 0) traits.Append("Damage Immunities ").Append(string.Join(", ", entry.Monster.Immunities)).Append("\n");
+                                    if (monstertrans.ContainsKey("ConditionImmunities" + counter)) mp.SetField(monstertrans["ConditionImmunities" + counter], string.Join(", ", entry.Monster.ConditionImmunities));
+                                    else if (entry.Monster.ConditionImmunities.Count > 0) traits.Append("Condition Immunities ").Append(string.Join(", ", entry.Monster.ConditionImmunities)).Append("\n");
+                                    List<string> senses = new List<string>(entry.Monster.Senses);
+                                    int percept = 0;
+                                    foreach (var ms in entry.Monster.SkillBonus) if (StringComparer.OrdinalIgnoreCase.Equals(ms.Skill, "perception")) percept = ms.Bonus;
+                                    senses.Add("passive Perception " + (entry.Monster.Wisdom / 2 + 5 + percept).ToString());
+                                    if (monstertrans.ContainsKey("Senses" + counter)) mp.SetField(monstertrans["Senses" + counter], string.Join(", ", senses));
+                                    else traits.Append("Senses ").Append(string.Join(", ", senses)).Append("\n");
+                                    if (monstertrans.ContainsKey("Languages" + counter)) mp.SetField(monstertrans["Languages" + counter], entry.Monster.Languages.Count > 0 ? string.Join(", ", entry.Monster.Languages) : "--");
+                                    else traits.Append("Languages ").Append(entry.Monster.Languages.Count > 0 ? string.Join(", ", entry.Monster.Languages) : "--").Append("\n");
+
+                                    string CR = entry.Monster.CR.ToString("#");
+                                    if (entry.Monster.CR == 0m) CR = "0";
+                                    if (entry.Monster.CR == 0.125m) CR = "1/8";
+                                    if (entry.Monster.CR == 0.25m) CR = "\u00BC";
+                                    if (entry.Monster.CR == 0.5m) CR = "\u00BD";
+                                    if (monstertrans.ContainsKey("XP" + counter)) mp.SetField(monstertrans["XP" + counter], entry.Monster.XP.ToString());
+                                    else CR = CR + " (" + entry.Monster.XP.ToString() + " XP)";
+                                    if (monstertrans.ContainsKey("CR" + counter)) mp.SetField(monstertrans["CR" + counter], CR);
+                                    else traits.Append("Challenge ").Append(CR).Append("\n");
+                                    if (traits.Length > 0) traits.Append("\n");
+                                    foreach (MonsterTrait mt in entry.Monster.Traits)
+                                    {
+                                        if (traits.Length > 0) traits.Append("\n");
+                                        traits.Append(mt.Name).Append(". ").Append(mt.Text).Append("\n");
+                                        if (mt is MonsterAction ma) traits.Append("  Attack: ").Append(PlusMinus(ma.AttackBonus)).Append(", ").Append(ma.Damage).Append(" damage,").Append("\n");
+                                    }
+                                    StringBuilder t2;
+                                    if (monstertrans.ContainsKey("Actions" + counter)) t2 = new StringBuilder();
+                                    else
+                                    {
+                                        t2 = traits;
+                                        if (entry.Monster.Actions.Count > 0) traits.Append("\nActions:\n");
+                                    }
+                                    foreach (MonsterTrait mt in entry.Monster.Actions)
+                                    {
+                                        AppendIfContent(t2, "\n").Append(mt.Name).Append(". ").Append(mt.Text).Append("\n");
+                                        if (mt is MonsterAction ma) t2.Append("  Attack: ").Append(PlusMinus(ma.AttackBonus)).Append(", ").Append(ma.Damage).Append(" damage,").Append("\n");
+                                    }
+                                    if (monstertrans.ContainsKey("Actions" + counter)) mp.SetField(monstertrans["Actions" + counter], t2.ToString());
+
+                                    if (monstertrans.ContainsKey("Reactions" + counter)) t2 = new StringBuilder();
+                                    else
+                                    {
+                                        t2 = traits;
+                                        if (entry.Monster.Reactions.Count > 0) traits.Append("\nReactions:\n");
+                                    }
+                                    foreach (MonsterTrait mt in entry.Monster.Reactions)
+                                    {
+                                        AppendIfContent(t2, "\n").Append(mt.Name).Append(". ").Append(mt.Text).Append("\n");
+                                        if (mt is MonsterAction ma) t2.Append("  Attack: ").Append(PlusMinus(ma.AttackBonus)).Append(", ").Append(ma.Damage).Append(" damage,").Append("\n");
+                                    }
+                                    if (monstertrans.ContainsKey("Reactions" + counter)) mp.SetField(monstertrans["Reactions" + counter], t2.ToString());
+
+                                    if (monstertrans.ContainsKey("LegendaryActions" + counter)) t2 = new StringBuilder();
+                                    else
+                                    {
+                                        t2 = traits;
+                                        if (entry.Monster.Reactions.Count > 0) traits.Append("\nLegendary Actions:\n");
+                                    }
+                                    foreach (MonsterTrait mt in entry.Monster.LegendaryActions)
+                                    {
+                                        AppendIfContent(t2, "\n").Append(mt.Name).Append(". ").Append(mt.Text).Append("\n");
+                                        if (mt is MonsterAction ma) t2.Append("  Attack: ").Append(PlusMinus(ma.AttackBonus)).Append(", ").Append(ma.Damage).Append(" damage,").Append("\n");
+                                    }
+                                    if (monstertrans.ContainsKey("LegendaryActions" + counter)) mp.SetField(monstertrans["LegendaryActions" + counter], t2.ToString());
+
+                                    if (monstertrans.ContainsKey("Source" + counter)) mp.SetField(monstertrans["Source" + counter], entry.Monster.Source);
+                                    else AppendIfContent(traits, "\n").Append("Source: ").Append(entry.Monster.Source);
+
+                                    if (monstertrans.ContainsKey("Trait" + counter)) mp.SetField(monstertrans["Trait" + counter], traits.ToString());
+                                    counter++;
+                                }
+                                if (counter > 1) sheet.Add(mp);
+                            }
+                        }
+                    }
+
                 }
             }
+        }
+
+        public static StringBuilder AppendIfContent(StringBuilder s, string v)
+        {
+            if (s.Length > 0) s.Append(v);
+            return s;
         }
 
         private static string Type(ActionType type)

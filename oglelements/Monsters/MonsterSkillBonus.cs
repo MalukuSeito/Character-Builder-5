@@ -17,5 +17,20 @@ namespace OGL.Monsters
         {
             return Skill + (Ability != Ability.None ? " [" + Ability.ToString()+"]" : "") + " " + Bonus.ToString("+#;-#;+0") + (Text != null && Text != "" ? " (" + Text + ")" : "");
         }
+        public string ToString(Monster monster, OGLContext context)
+        {
+            if (Skill != null) try
+                {
+                    Skill s = context.GetSkill(Skill, monster.Source);
+                    if (s.Base != Ability.None)
+                    {
+                        return Skill + " " + (monster.getAbility(s.Base) / 2 - 5 + Bonus).ToString("+#;-#;+0") + (Text != null && Text != "" ? " (" + Text + ")" : "");
+                    }
+
+                }
+                catch (Exception) { }
+            if (Ability != Ability.None) return Skill + " " + (monster.getAbility(Ability) / 2 - 5 + Bonus).ToString("+#;-#;+0") + (Text != null && Text != "" ? " (" + Text + ")" : "");
+            return ToString();
+        }
     }
 }
