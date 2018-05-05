@@ -1,4 +1,5 @@
-﻿using OGL.Features;
+﻿using OGL.Base;
+using OGL.Features;
 using OGL.Keywords;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,12 @@ namespace CB_5e.ViewModels.Modify.Features
         string Prerequisite { get; set; }
         int Level { get; set; }
         bool Hidden { get; set; }
+        bool Sheet { get; set; }
+        bool NoPreview { get; set; }
+        bool Preview { get; set; }
+        string Action { get; set; }
+        List<string> Actions { get; set; }
+
     }
 
     public class FeatureEditModel<T>: ProxyModel<Keyword>, IFeatureEditModel where T: Feature
@@ -76,6 +83,9 @@ namespace CB_5e.ViewModels.Modify.Features
                 OnPropertyChanged("Level");
             }
         }
+        public bool Sheet { get => !Hidden; set => Hidden = !value; }
+        public bool Preview { get => !NoPreview; set => NoPreview = !value; }
+
         public bool Hidden
         {
             get => Feature.Hidden;
@@ -85,15 +95,42 @@ namespace CB_5e.ViewModels.Modify.Features
                 MakeHistory("Hidden");
                 Feature.Hidden = value;
                 OnPropertyChanged("Hidden");
+                OnPropertyChanged("Sheet");
             }
         }
 
         public List<Keyword> Keywords => Feature.Keywords;
+
+        public bool NoPreview {
+            get => Feature.NoDisplay;
+            set
+            {
+                if (value == NoPreview) return;
+                MakeHistory("NoPreview");
+                Feature.NoDisplay = value;
+                OnPropertyChanged("NoPreview");
+                OnPropertyChanged("Preview");
+            }
+        }
+        public string Action
+        {
+            get => Feature.Action.ToString();
+            set
+            {
+                if (value == Action) return;
+                MakeHistory("Action");
+                if (Enum.TryParse(value, out ActionType a)) Feature.Action = a;
+                else Feature.Action = ActionType.DetectAction;
+                OnPropertyChanged("Action");
+            }
+        }
 
         public override Task<bool> SaveAsync(bool overwrite)
         {
             Model.Refresh();
             return base.SaveAsync(overwrite);
         }
+
+        public List<string> Actions { get; set; } = Enum.GetNames(typeof(ActionType)).ToList();
     }
 }

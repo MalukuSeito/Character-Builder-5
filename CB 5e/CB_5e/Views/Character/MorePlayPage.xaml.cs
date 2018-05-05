@@ -20,6 +20,7 @@ namespace CB_5e.Views.Character
         public bool Log { get; set; } = true;
         public bool Book { get; set; } = true;
         public bool Actions { get; set; } = true;
+        public bool Monsters { get; set; } = true;
         public bool IncludeResources { get; set; } = true;
         public string Exporter { get; set; }
         public List<string> Exporters { get => Model.Context.Config.PDF; }
@@ -39,6 +40,7 @@ namespace CB_5e.Views.Character
             s.PreserveEdit = Editable;
             s.IncludeResources = IncludeResources;
             s.IncludeLog = Log;
+            s.IncludeMonsters = Monsters;
             s.IncludeSpellbook = Book;
             s.ExportPDF(Exporter, Model.Context).Forget();
         }

@@ -36,5 +36,18 @@ namespace CB_5e.Views.Modify.Features
             });
             return true;
         }
+        private double width;
+        private double height;
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (width != this.width || height != this.height)
+            {
+                this.width = width;
+                this.height = height;
+                if (width > height) gridder.Padding = new Thickness(10, 0);
+                else gridder.Padding = new Thickness(10);
+            }
+        }
     }
 }

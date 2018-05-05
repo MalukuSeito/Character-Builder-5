@@ -32,7 +32,7 @@ namespace CB_5e.ViewModels.Character
 
         public async Task Load(CancellationToken token = default(CancellationToken))
         {
-            double count = 16;
+            double count = 17;
             double cur = 0;
             Text = "Sources";
             Percentage = cur++ / count;
@@ -115,6 +115,11 @@ namespace CB_5e.ViewModels.Character
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
             await Context.ImportSubClassesAsync(true).ConfigureAwait(true);
+
+            Text = "Monsters";
+            Percentage = cur++ / count;
+            token.ThrowIfCancellationRequested();
+            await Context.ImportMonstersAsync().ConfigureAwait(true);
 
             Text = "UI";
             Percentage = 1;

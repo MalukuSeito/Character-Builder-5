@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Collections.MonsterActionEditPage"
+             Title="Edit Monster Trait">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label Text="Name:" FontSize="Micro"/>
+                <Entry Text="{Binding Entry.Name}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Text:" FontSize="Micro"/>
+                <Entry Text="{Binding Entry.Text}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Attack Bonus: (for calculated attack)" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Telephone" Text="{Binding AttackBonus}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding AttackBonusValue}" />
+                </StackLayout>
+                <Label Text="Damage: (for calculated attack)" FontSize="Small"/>
+                <Entry Text="{Binding Entry.Damage}" TextColor="{StaticResource Accent}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

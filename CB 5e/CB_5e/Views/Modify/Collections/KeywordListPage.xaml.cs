@@ -25,7 +25,7 @@ namespace CB_5e.Views.Modify.Collections
         public Command Redo { get => Model.Redo; }
         public enum KeywordGroup
         {
-            NONE, FEAT, ITEM, SPELL
+            NONE, FEAT, ITEM, SPELL, MONSTER
         }
         private List<Keyword> entries;
         public ObservableRangeCollection<KeywordViewModel> Entries { get; set; } = new ObservableRangeCollection<KeywordViewModel>();
@@ -198,6 +198,9 @@ namespace CB_5e.Views.Modify.Collections
                     foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) Examples.Add(new Keyword(s.Trim()));
                     foreach (String s in "Acid, Cold, Fire, Force, Lightning, Necrotic, Poison, Psychic, Radiant, Thunder".Split(',')) Examples.Add(new Keyword(s.Trim()));
                     if (LoadClasses != null) foreach (string c in await LoadClasses) Examples.Add(new Keyword(c));
+                    break;
+                case KeywordGroup.MONSTER:
+                    foreach (String s in "Aberration, Beast, Celestial, Construct, Dragon, Elemental, Fey, Fiend, Giant, Humanoid, Monstrosity, Ooze, Plant, Undead, Shapechanger, Devil, Demon, Titan".Split(',')) Examples.Add(new Keyword(s.Trim()));
                     break;
                 default:
                     break;

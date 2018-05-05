@@ -54,6 +54,10 @@
     <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
     <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
+    <Compile Include="ViewModels\Modify\Collections\MonsterTraitViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\MonsterSaveViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Collections\MonsterSkillViewModel.cs" />
+    <Compile Include="ViewModels\Modify\MonsterEditModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\CantripDamageViewModel.cs" />
     <Compile Include="ViewModels\Modify\Items\ShieldEditModel.cs" />
     <Compile Include="ViewModels\Modify\Items\ItemEditModel.cs" />
@@ -206,6 +210,30 @@
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterActionEditPage.xaml.cs">
+      <DependentUpon>MonsterActionEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterTraitListPage.xaml.cs">
+      <DependentUpon>MonsterTraitListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterTraitEditPage.xaml.cs">
+      <DependentUpon>MonsterTraitEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterSkillListPage.xaml.cs">
+      <DependentUpon>MonsterSkillListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterSaveListPage.xaml.cs">
+      <DependentUpon>MonsterSaveListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterSkillEditPage.xaml.cs">
+      <DependentUpon>MonsterSkillEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Collections\MonsterSaveEditPage.xaml.cs">
+      <DependentUpon>MonsterSaveEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\CompendiumMonstersPage.xaml.cs">
+      <DependentUpon>CompendiumMonstersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Modify\EditCantripDamage.xaml.cs">
       <DependentUpon>EditCantripDamage.xaml</DependentUpon>
     </Compile>
@@ -214,6 +242,9 @@
     </Compile>
     <Compile Include="Views\Modify\EditMagic.xaml.cs">
       <DependentUpon>EditMagic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditMonster.xaml.cs">
+      <DependentUpon>EditMonster.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\EditSettings.xaml.cs">
       <DependentUpon>EditSettings.xaml</DependentUpon>
@@ -1376,6 +1407,60 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\EditSettings.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\CompendiumMonstersPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterSaveEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterSkillEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditMonster.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterSaveListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterSkillListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterTraitEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterActionEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Collections\MonsterTraitListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

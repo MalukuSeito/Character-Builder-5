@@ -9,11 +9,11 @@
     <ContentPage.Content>
         <Grid Padding="10" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -29,11 +29,15 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Text="Title:" FontSize="Micro"/>
             <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
-            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Text="Level:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
-            <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="Hidden (Sheet):" FontSize="Micro"/>
-            <Switch Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"  IsToggled="{Binding Hidden}"/>
-            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
+            <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
+            <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="Action: (Combat Sheet)" FontSize="Micro"/>
+            <Picker Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding Actions}" SelectedItem="{Binding Action}"/>
+            <Label Grid.Column="4" Grid.Row="2" Text="In: Sheet" FontSize="Micro"/>
+            <Label Grid.Column="5" Grid.Row="2" Text="Preview" FontSize="Micro"/>
+            <Switch Grid.Column="4" Grid.Row="3" IsToggled="{Binding Sheet}"/>
+            <Switch Grid.Column="5" Grid.Row="3" IsToggled="{Binding Preview}"/>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="6" Text="Text:" FontSize="Micro"/>
             <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="6" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Row="6" Grid.ColumnSpan="6" Text="Saving Throws:" FontSize="Micro" LineBreakMode="WordWrap"/>
             <Label Grid.Row="7" Grid.Column="0" Text="Strength" HorizontalTextAlignment="End" VerticalTextAlignment="Center" FontSize="Micro"/>

@@ -29,6 +29,7 @@ namespace CB_5e.Views.Modify
             "Items",
             "Magic Items",
             "Conditions",
+            "Monsters",
             "Level",
             "Ability Scores",
             "Settings"
@@ -56,6 +57,7 @@ namespace CB_5e.Views.Modify
                 else if (s == "Items") await Navigation.PushAsync(new CompendiumItemsOverviewPage());
                 else if (s == "Standalone Features") await Navigation.PushAsync(new CompendiumFeatsOverviewPage());
                 else if (s == "Magic Items") await Navigation.PushAsync(new CompendiumMagicOverviewPage());
+                else if (s == "Monsters") await Navigation.PushAsync(new CompendiumMonstersPage());
                 else if (s == "Level")
                 {
                     OGLContext context = new OGLContext();

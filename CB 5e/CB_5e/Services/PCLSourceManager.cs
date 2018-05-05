@@ -47,7 +47,8 @@ namespace CB_5e.Services
 
         public static async Task<IFolder> GetFolder(IFolder target, string path, CreationCollisionOption options = CreationCollisionOption.GenerateUniqueName)
         {
-            if (path == null || path == "" || path.StartsWith(".") || path.EndsWith("/")) return null;
+            if (path == null || path == "" || path.StartsWith(".")) return null;
+            if (path.EndsWith("/")) path = path.Substring(0, path.Length - 1);
             int i = path.IndexOf('/');
             if (i >= 0)
             {

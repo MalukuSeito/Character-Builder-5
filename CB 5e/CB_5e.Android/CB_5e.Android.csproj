@@ -140,6 +140,7 @@
     <Compile Include="PicturePicker_Droid.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScrollableTabbedPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

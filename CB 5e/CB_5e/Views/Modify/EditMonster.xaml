@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.EditMonster"
+             Title="Monster Details">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Save" Command="{Binding Save}"/>
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Size:" FontSize="Small"/>
+                <Picker HorizontalOptions="Fill" ItemsSource="{Binding Sizes}" SelectedItem="{Binding Size}"/>
+                <Label Text="Alignment:" FontSize="Small"/>
+                <Entry Text="{Binding Alignment}" TextColor="{StaticResource Accent}"/>
+                <Label Text="AC:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding AC}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding AC}"/>
+                </StackLayout>
+                <Label Text="AC Text: (displayed after AC)" FontSize="Small"/>
+                <Entry Text="{Binding ACText}" TextColor="{StaticResource Accent}"/>
+                <Label Text="HP:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding HP}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding HP}" />
+                </StackLayout>
+                <Label Text="HP Roll" FontSize="Small"/>
+                <Entry Text="{Binding HPRoll}" TextColor="{StaticResource Accent}"/>
+
+                <Label Text="Strength:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Strength}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Strength}" />
+                </StackLayout>
+                <Label Text="Dexterity:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Dexterity}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Dexterity}" />
+                </StackLayout>
+                <Label Text="Constitution:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Constitution}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Constitution}" />
+                </StackLayout>
+                <Label Text="Intelligence:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Intelligence}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Intelligence}" />
+                </StackLayout>
+                <Label Text="Wisdom:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Wisdom}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding Wisdom}" />
+                </StackLayout>
+                <Label Text="Charisma:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Charisma}" TextColor="{StaticResource Accent}"/>
+                        <Stepper HorizontalOptions="Fill" Value="{Binding Charisma}" />
+                </StackLayout>
+
+                <Label Text="Passive Perception Bonus (excluding Skill/Ability):" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Telephone" Text="{Binding PassivePerception}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding PassivePerceptionValue}" />
+                </StackLayout>
+                <Label Text="Challenge Rating:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding CR}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding CRValue}" />
+                </StackLayout>
+                <Label Text="XP:" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding XP}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding XPValue}" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -160,6 +160,29 @@ namespace CB_5e.Services
             }
         }
 
+        public static async Task ImportMonstersAsync(this OGLContext context)
+        {
+            context.Monsters.Clear();
+            context.MonstersSimple.Clear();
+            var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Monster_Directory).ConfigureAwait(false);
+            foreach (var f in files)
+            {
+                try
+                {
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
+                    {
+                        Monster s = (Monster)Monster.Serializer.Deserialize(reader);
+                        s.Source = f.Value;
+                        s.Register(context, f.Key.Path);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + Path(f.Key.Path), e);
+                }
+            }
+        }
+
         public static async Task ImportSpellsAsync(this OGLContext context)
         {
             context.Spells.Clear();

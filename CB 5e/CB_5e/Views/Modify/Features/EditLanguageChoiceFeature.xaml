@@ -7,35 +7,41 @@
         <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid Padding="10" RowSpacing="0">
+        <Grid x:Name="gridder" Padding="10" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40*"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Text="Title:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
             <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
-            <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
-            <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
-            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
-            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="TailTruncation"/>
-            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
-            <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Amount: (Number of languages allowed to be chosen)" FontSize="Micro" LineBreakMode="TailTruncation"/>
-            <StackLayout Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Label Grid.Column="1" Grid.Row="2" Text="Action: (Combat Sheet)" FontSize="Micro"/>
+            <Picker Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Actions}" SelectedItem="{Binding Action}"/>
+            <Label Grid.Column="2" Grid.Row="2" Text="In: Sheet" FontSize="Micro"/>
+            <Label Grid.Column="3" Grid.Row="2" Text="Preview" FontSize="Micro"/>
+            <Switch Grid.Column="2" Grid.Row="3" IsToggled="{Binding Sheet}"/>
+            <Switch Grid.Column="3" Grid.Row="3" IsToggled="{Binding Preview}"/>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Text="Text:" FontSize="Micro"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4" Text="Unique ID: (Every choice needs its own id for identification)" FontSize="Micro" LineBreakMode="TailTruncation"/>
+            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="4" Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
+            <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4" Text="Amount: (Number of languages allowed to be chosen)" FontSize="Micro" LineBreakMode="TailTruncation"/>
+            <StackLayout Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
                 <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding Amount}" TextColor="{StaticResource Accent}"/>
                 <Stepper HorizontalOptions="Fill" Value="{Binding Amount}"/>
             </StackLayout>

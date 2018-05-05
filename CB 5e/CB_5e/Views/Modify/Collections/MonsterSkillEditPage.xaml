@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Collections.MonsterSkillEditPage"
+             Title="Edit Monster Skill Proficiency">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label Text="Skill:" FontSize="Micro"/>
+                <Entry Text="{Binding Skill}" TextColor="{StaticResource Accent}"/>
+                <Picker ItemsSource="{Binding Skills}" SelectedItem="{Binding Skill, Mode=OneWayToSource}"/>
+                <Label Text="Skill Base Ability (for new/custom skills):" FontSize="Micro"/>
+                <Picker ItemsSource="{Binding Abilities}" SelectedItem="{Binding Ability}"/>
+                <Label Text="Bonus: (excluding attribute bonus)" FontSize="Micro"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Telephone" Text="{Binding Bonus}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding BonusValue}" />
+                </StackLayout>
+                <Label Text="Text: (optional)" FontSize="Micro"/>
+                <Entry Text="{Binding Entry.Text}" TextColor="{StaticResource Accent}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

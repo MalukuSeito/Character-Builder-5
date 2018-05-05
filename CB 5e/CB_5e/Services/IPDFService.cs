@@ -16,6 +16,7 @@ namespace CB_5e.Services
         bool IncludeLog { get; set; }
         bool IncludeSpellbook { get; set; }
         bool IncludeActions { get; set; }
+        bool IncludeMonsters { get; set; }
         Task ExportPDF(string Exporter, BuilderContext context);
     }
 }

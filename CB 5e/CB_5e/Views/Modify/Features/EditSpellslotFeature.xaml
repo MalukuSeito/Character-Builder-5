@@ -9,32 +9,38 @@
     <ContentPage.Content>
         <Grid Padding="10" RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40*"/>
-                <RowDefinition Height="15"/>
+                <RowDefinition Height="12"/>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Title:" FontSize="Micro"/>
-            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Text="Title:" FontSize="Micro"/>
+            <Entry Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Text="{Binding Name}" TextColor="{StaticResource Accent}"/>
             <Label Grid.Column="0" Grid.Row="2" Text="Level:" FontSize="Micro"/>
             <Entry Grid.Column="0" Grid.Row="3" Text="{Binding Level}" TextColor="{StaticResource Accent}" Keyboard="Numeric"/>
-            <Label Grid.Column="1" Grid.Row="2" Text="Hidden (Sheet):" FontSize="Micro"/>
-            <Switch Grid.Column="1" Grid.Row="3" IsToggled="{Binding Hidden}"/>
-            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Text="Text:" FontSize="Micro"/>
-            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
-            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Text="Spellcasting ID of the associated spellcasting feature:" FontSize="Micro" LineBreakMode="WordWrap"/>
-            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="1" Text="{Binding SpellcastingID}" TextColor="{StaticResource Accent}"/>
-            <Picker Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="1" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding SpellcastingID, Mode=OneWayToSource}"/>
-            <Button Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Text="Generate Description from Slots" Command="{Binding Generate}"/>
+            <Label Grid.Column="1" Grid.Row="2" Text="Action: (Combat Sheet)" FontSize="Micro"/>
+            <Picker Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Actions}" SelectedItem="{Binding Action}"/>
+            <Label Grid.Column="2" Grid.Row="2" Text="In: Sheet" FontSize="Micro"/>
+            <Label Grid.Column="3" Grid.Row="2" Text="Preview" FontSize="Micro"/>
+            <Switch Grid.Column="2" Grid.Row="3" IsToggled="{Binding Sheet}"/>
+            <Switch Grid.Column="3" Grid.Row="3" IsToggled="{Binding Preview}"/>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Text="Text:" FontSize="Micro"/>
+            <Editor Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" VerticalOptions="FillAndExpand" Text="{Binding Text}" TextColor="{StaticResource Accent}"/>
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4" Text="Spellcasting ID of the associated spellcasting feature:" FontSize="Micro" LineBreakMode="WordWrap"/>
+            <Entry Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding SpellcastingID}" TextColor="{StaticResource Accent}"/>
+            <Picker Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Suggestions}" SelectedItem="{Binding SpellcastingID, Mode=OneWayToSource}"/>
+            <Button Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4" Text="Generate Description from Slots" Command="{Binding Generate}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -31,7 +31,7 @@ namespace CB_5e.Views.Modify.Collections
         private Task<IEnumerable<string>> suggestionsTask;
         private List<string> Suggestions = new List<string>();
 
-        public StringListPage(IEditModel parent, string property, Task<IEnumerable<string>> suggestions, bool toplevelpage = true)
+        public StringListPage(IEditModel parent, string property, Task<IEnumerable<string>> suggestions = null, bool toplevelpage = true)
         {
             suggestionsTask = suggestions;
             Model = parent;
