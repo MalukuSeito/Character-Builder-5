@@ -218,8 +218,8 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Items_Directory));
-                    Uri target = new Uri(PCLSourceManager.Parent(f.Key));
+                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Items_Directory));
+                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
                     using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
                     {
                         Item s = (Item)Item.Serializer.Deserialize(reader);
@@ -292,8 +292,8 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Features_Directory));
-                    Uri target = new Uri(PCLSourceManager.Parent(f.Key));
+                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Features_Directory));
+                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
                     FeatureContainer cont = await LoadFeatureContainerAsync(f.Key);
                     List<Feature> feats = cont.Features;
                     string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
@@ -405,8 +405,8 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    Uri source = new Uri(PCLSourceManager.GetDirectory(f.Value, context.Config.Magic_Directory));
-                    Uri target = new Uri(PCLSourceManager.Parent(f.Key));
+                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Magic_Directory));
+                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
                     string cat = MagicPropertyCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!context.MagicCategories.ContainsKey(cat)) context.MagicCategories.Add(cat, MakeMagicCategory(cat));
                     String parent = PCLSourceManager.Parent(cat);
