@@ -29,7 +29,13 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            
+
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -42,18 +48,27 @@
                         </StackLayout>
 
                         <Label Grid.Row="2" Grid.Column="0" Text="Casting Time:" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Grid.Row="3" Grid.Column="0" Text="{Binding CastingTime}"/>
+                        <Entry Grid.Row="3" Grid.Column="0" Text="{Binding CastingTime}" TextColor="{StaticResource Accent}"/>
                         <Picker Grid.Row="4" Grid.Column="0" ItemsSource="{Binding CastingTimes}"  SelectedItem="{Binding CastingTime, Mode=OneWayToSource}"/>
 
                         <Label Grid.Row="5" Grid.Column="0" Text="Range: (updates keywords)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Grid.Row="6" Grid.Column="0" Text="{Binding Range}"/>
+                        <Entry Grid.Row="6" Grid.Column="0" Text="{Binding Range}" TextColor="{StaticResource Accent}"/>
                         <Picker Grid.Row="7" Grid.Column="0" ItemsSource="{Binding Ranges}"  SelectedItem="{Binding Range, Mode=OneWayToSource}"/>
 
                         <Label Grid.Row="8" Grid.Column="0" Text="Duration: (updates keywords)" FontSize="Micro" LineBreakMode="WordWrap"/>
-                        <Entry Grid.Row="9" Grid.Column="0" Text="{Binding Duration}"/>
+                        <Entry Grid.Row="9" Grid.Column="0" Text="{Binding Duration}" TextColor="{StaticResource Accent}"/>
                         <Picker Grid.Row="10" Grid.Column="0" ItemsSource="{Binding Durations}"  SelectedItem="{Binding Duration, Mode=OneWayToSource}"/>
 
-                        <Label Grid.Row="11" Grid.Column="0" Text="Spell Damage at Level: (cantrips)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Label Grid.Row="11" Grid.Column="0" Text="Forms/Companions Choices: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                        <Entry Grid.Row="12" Grid.Column="0" Text="{Binding FormsCompanionsFilter}" TextColor="{StaticResource Accent}"/>
+
+                        <Label Grid.Row="13" Grid.Column="0" Text="Forms/Companions Count: (-1 = infinite)" FontSize="Small"/>
+                        <StackLayout Grid.Row="14" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding FormsCompanionsCount}" TextColor="{StaticResource Accent}"/>
+                            <Stepper HorizontalOptions="Fill" Value="{Binding FormsCompanionsCountValue}" />
+                        </StackLayout>
+
+                        <Label Grid.Row="15" Grid.Column="0" Text="Spell Damage at Level: (cantrips)" FontSize="Micro" LineBreakMode="WordWrap"/>
                     </Grid>
                 </ListView.Header>
                 <ListView.ItemTemplate>
@@ -69,6 +84,19 @@
                         </TextCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <StackLayout Padding="20, 0">
+                        <Label>
+                            <Label.Text>Adding Form/Companion Choices to a spell is the same adding a Form/Companion Feature. The Choices determine what type of monster can be selected and the Count determines the amount.
+The UniqueID for the Form/Companion choice is the spell's name in lowercase, and the Displayname is just the spellname.
+The following variables can be used in the Choices NCalc condition:
+classlevel (same as playerLevel for spells, level in class for features), classspelllevel (classlevel / 2 +1), maxspellslot (highest spellslot in any spellcasting), str, dex, con, int, wis, cha (of the player).
+name, source, cr (of the monsters), monsterstrength, monsterdexterity, monsterconstitution, monsterintelligence, monsterwisdom, monstercharisma, passiveperception (bonus only), xp, spells (count), slots (count), ac, actext, hp, hproll, alignment, size (all of the monster)
+As well as the special booleans flying, swimming, climbing, burrowing (has a fly, swim, climb or burrow speed), darkvision, blindsight, tremorsense, truesight (has the specific sight), hover (has a speed with the text hover).
+And any type of the monster as a boolean (fey, humanoid, giant, devil, ...)</Label.Text>
+                        </Label>
+                    </StackLayout>
+                </ListView.Footer>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

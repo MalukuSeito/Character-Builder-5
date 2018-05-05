@@ -14,5 +14,6 @@ namespace Character_Builder
         {
             return Name + " (" + Type + "): " + Text + " - " + Source;
         }
+        public string Title { get => Name + " (" + Type + ") - " + Source; }
     }
 }

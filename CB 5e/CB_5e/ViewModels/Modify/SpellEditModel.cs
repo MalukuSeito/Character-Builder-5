@@ -29,6 +29,8 @@ namespace CB_5e.ViewModels.Modify
         public string Range { get => Model.Range; set { if (value == Range) return; MakeHistory("Range"); Model.Range = value; OnPropertyChanged("Range"); Range_TextChanged(); } }
         public string Duration { get => Model.Duration; set { if (value == Duration) return; MakeHistory("Duration"); Model.Duration = value; OnPropertyChanged("Duration"); Duration_TextChanged(); } }
         public int Level { get => Model.Level; set { if (value == Level) return; MakeHistory("Level"); Model.Level = value; OnPropertyChanged("Level"); Level_ValueChanged(); } }
+        public string FormsCompanionsFilter { get => Model.FormsCompanionsFilter; set { if (value == FormsCompanionsFilter) return; MakeHistory("FormsCompanionsFilter"); Model.FormsCompanionsFilter = value; OnPropertyChanged("FormsCompanionsFilter"); } }
+        public int FormsCompanionsCount { get => Model.FormsCompanionsCount; set { if (value == FormsCompanionsCount) return; MakeHistory("FormsCompanionsCount"); Model.FormsCompanionsCount = value; OnPropertyChanged("FormsCompanionsCount"); } }
 
         private void AddKeyword(Keyword k)
         {

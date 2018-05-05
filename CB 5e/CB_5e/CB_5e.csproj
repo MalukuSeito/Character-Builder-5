@@ -54,9 +54,15 @@
     <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
     <Compile Include="ViewModels\Character\Choices\BackgroundChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\ItemConditionChoice.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerFormsCompanionsViewModel.cs" />
+    <Compile Include="ViewModels\Character\Play\PlayerActionsViewModel.cs" />
+    <Compile Include="ViewModels\Character\MonsterViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterTraitViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterSaveViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterSkillViewModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FormsCompanionsBonusFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\ResistanceFeatureEditModel.cs" />
+    <Compile Include="ViewModels\Modify\Features\FormsCompanionsFeatureEditModel.cs" />
     <Compile Include="ViewModels\Modify\MonsterEditModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\CantripDamageViewModel.cs" />
     <Compile Include="ViewModels\Modify\Items\ShieldEditModel.cs" />
@@ -207,6 +213,16 @@
     <Compile Include="Views\Character\Build\ClassesPage.xaml.cs">
       <DependentUpon>ClassesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Character\Play\FormsCompanionsViewModel.cs" />
+    <Compile Include="Views\Character\PlayerFormsCompanionsPage.xaml.cs">
+      <DependentUpon>PlayerFormsCompanionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Character\Play\PlayerFormsCompanionsOverviewPage.xaml.cs">
+      <DependentUpon>PlayerFormsCompanionsOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Character\Play\PlayerActionsPage.xaml.cs">
+      <DependentUpon>PlayerActionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomTextEntrySuggestionsPage.xaml.cs">
       <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
     </Compile>
@@ -263,6 +279,12 @@
     </Compile>
     <Compile Include="Views\Modify\EditSubClass.xaml.cs">
       <DependentUpon>EditSubClass.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditFormsCompanionsBonusFeature.xaml.cs">
+      <DependentUpon>EditFormsCompanionsBonusFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\Features\EditFormsCompanionsFeature.xaml.cs">
+      <DependentUpon>EditFormsCompanionsFeature.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\Features\EditSubClassFeature.xaml.cs">
       <DependentUpon>EditSubClassFeature.xaml</DependentUpon>
@@ -1461,6 +1483,36 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\Collections\MonsterTraitListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditFormsCompanionsFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\Features\EditFormsCompanionsBonusFeature.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Character\Play\PlayerActionsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Character\PlayerFormsCompanionsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Character\Play\PlayerFormsCompanionsOverviewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

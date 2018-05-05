@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.Play.PlayerFormsCompanionsOverviewPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Monsters}"
+                      VerticalOptions="FillAndExpand"
+                      IsPullToRefreshEnabled="true"
+                      ItemSelected="InfoSelected"
+                      CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <StackLayout>
+                        <SearchBar Text="{Binding MonstersSearch}" Placeholder="Search Forms/Companions" />
+                    </StackLayout>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Name}" Detail="{Binding Desc}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

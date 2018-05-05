@@ -698,6 +698,30 @@ namespace CB_5e.Views.Modify.Features
                     Title = "Races"
                 });
             }
+            else if (fvm.Feature is ResistanceFeature resf)
+            {
+                ResistanceFeatureEditModel model = new ResistanceFeatureEditModel(resf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Resistances", null, false)) { Title = "Resistances" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Vulnerabilities", null, false)) { Title = "Vulnerabilities" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Immunities", null, false)) { Title = "Immunities" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "SavingThrowAdvantages", null, false)) { Title = "SavingThrowAdvantages" });
+            }
+            else if (fvm.Feature is FormsCompanionsBonusFeature fcbf)
+            {
+                FormsCompanionsBonusFeatureEditModel model = new FormsCompanionsBonusFeatureEditModel(fcbf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditFormsCompanionsBonusFeature(model)) { Title = "Forms/Companions Bonus" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Senses", null, false)) { Title = "Add. Senses" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Speed", null, false)) { Title = "Add. Speed" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Languages", null, false)) { Title = "Add. Languages" });
+            }
+            else if (fvm.Feature is FormsCompanionsFeature fcf)
+            {
+                FormsCompanionsFeatureEditModel model = new FormsCompanionsFeatureEditModel(fcf, Model, fvm);
+                p = Tab(model);
+                p.Children.Add(new NavigationPage(new EditFormsCompanionsFeature(model)) { Title = "Forms/Companions Choice" });
+            }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
                 p = Tab(model);

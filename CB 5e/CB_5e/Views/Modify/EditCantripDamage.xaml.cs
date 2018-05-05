@@ -60,6 +60,10 @@ namespace CB_5e.Views.Modify
             set => Model.Level = value;
         }
 
+        public string FormsCompanionsFilter { get => Model.FormsCompanionsFilter; set => Model.FormsCompanionsFilter = value; }
+        public int FormsCompanionsCount { get => Model.FormsCompanionsCount; set => Model.FormsCompanionsCount = value; }
+        public int FormsCompanionsCountValue { get => Model.FormsCompanionsCount + 1; set => Model.FormsCompanionsCount = value - 1; }
+
         public Keyboard Keyboard { get; private set; } = Keyboard.Numeric;
         public EditCantripDamage(SpellEditModel parent)
         {

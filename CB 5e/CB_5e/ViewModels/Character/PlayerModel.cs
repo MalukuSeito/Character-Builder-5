@@ -56,6 +56,7 @@ namespace CB_5e.ViewModels.Character
             if (item is PlayerResourcesViewModel prvm) return new PlayerResourcesPage(prvm);
             if (item is PlayerFeaturesViewModel pfvm) return new PlayerFeaturesPage(pfvm);
             if (item is PlayerProficiencyViewModel ppvm) return new PlayerProficiencyPage(ppvm);
+            if (item is PlayerActionsViewModel pavm) return new PlayerActionsPage(pavm);
             if (item is PlayerConditionViewModel pcvm) return new PlayerConditionPage(pcvm);
             if (item is PlayerInventoryViewModel ivm) return new PlayerInventoryPage(ivm);
             if (item is PlayerShopViewModel svm) return new ShopPage(svm);
@@ -74,6 +75,8 @@ namespace CB_5e.ViewModels.Character
             if (item is SourcesViewModel sm) return new SourcesPage(sm);
             if (item is SwitchToBuildModel sbm) return new FlowPage(new PlayerBuildModel(sbm.Parent));
             if (item is SwitchToPlayModel spm) return new FlowPage(new PlayerViewModel(spm.Parent));
+            if (item is FormsCompanionsViewModel fcvm) return new PlayerFormsCompanionsPage(fcvm);
+            if (item is PlayerFormsCompanionsViewModel pfcvm) return new PlayerFormsCompanionsOverviewPage(pfcvm);
             return new AboutPage();
         }
 

@@ -31,17 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormsCompanionsBonusFeatureForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.UniqueID = new System.Windows.Forms.ComboBox();
+            this.TraitBonusText = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.TraitBonusName = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.CharismaBonus = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.WisdomBonus = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.IntelligenceBonus = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.ConstitutionBonus = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.DexterityBonus = new System.Windows.Forms.TextBox();
@@ -56,26 +56,26 @@
             this.label8 = new System.Windows.Forms.Label();
             this.HPBonus = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.CharismaBonus = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.WisdomBonus = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.IntelligenceBonus = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.TraitBonusName = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.TraitBonusText = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.Speed = new Character_Builder_Builder.StringList();
-            this.Languages = new Character_Builder_Builder.StringList();
+            this.UniqueID = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.Senses = new Character_Builder_Builder.StringList();
+            this.label19 = new System.Windows.Forms.Label();
             this.DamageBonus = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.AttackBonus = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.Senses = new Character_Builder_Builder.StringList();
-            this.label19 = new System.Windows.Forms.Label();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.Speed = new Character_Builder_Builder.StringList();
+            this.label20 = new System.Windows.Forms.Label();
+            this.Languages = new Character_Builder_Builder.StringList();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -129,75 +129,6 @@
             this.basicFeature1.Size = new System.Drawing.Size(746, 211);
             this.basicFeature1.TabIndex = 45;
             // 
-            // button1
-            // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(0, 532);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(746, 25);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Okay";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoEllipsis = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label3.Location = new System.Drawing.Point(0, 467);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(746, 13);
-            this.label3.TabIndex = 59;
-            this.label3.Text = "Note: The Boni apply to all forms / compendium selected with the referenced optio" +
-    "n, spells can also generate options and their ID is their name in lowercase.";
-            // 
-            // label4
-            // 
-            this.label4.AutoEllipsis = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label4.Location = new System.Drawing.Point(0, 480);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
-            this.label4.Size = new System.Drawing.Size(746, 13);
-            this.label4.TabIndex = 58;
-            this.label4.Text = "All normal player bonus values, like Str, Level, ClassLevel,  Race, Subrace...";
-            // 
-            // label5
-            // 
-            this.label5.AutoEllipsis = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label5.Location = new System.Drawing.Point(0, 493);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
-            this.label5.Size = new System.Drawing.Size(746, 13);
-            this.label5.TabIndex = 57;
-            this.label5.Text = "Monster specific values: Name, CR, MonsterStrength, MonsterConstitution, ...,, Mo" +
-    "nsterCharisma, XP, Spells (count), Slots (count), AC, ACText, ";
-            // 
-            // label6
-            // 
-            this.label6.AutoEllipsis = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label6.Location = new System.Drawing.Point(0, 506);
-            this.label6.Name = "label6";
-            this.label6.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
-            this.label6.Size = new System.Drawing.Size(746, 13);
-            this.label6.TabIndex = 56;
-            this.label6.Text = "HP, HPRoll, Alignment, Flying, Swimming, Burrowing, Climbing, Drakvision, Truesig" +
-    "ht, Tremorsense, Size, and the mosters keywords as boolean";
-            // 
-            // label7
-            // 
-            this.label7.AutoEllipsis = true;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label7.Location = new System.Drawing.Point(0, 519);
-            this.label7.Name = "label7";
-            this.label7.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
-            this.label7.Size = new System.Drawing.Size(746, 13);
-            this.label7.TabIndex = 55;
-            this.label7.Text = "For Boni, value is the current value (after applying other boni) and proficient i" +
-    "s true when the monster has a dedicated bonus to a save or skill";
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -240,67 +171,96 @@
             this.splitContainer2.SplitterDistance = 368;
             this.splitContainer2.TabIndex = 60;
             // 
-            // label1
+            // TraitBonusText
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(264, 13);
-            this.label1.TabIndex = 59;
-            this.label1.Text = "Unique ID (of the modified Form / Compendum option):";
+            this.TraitBonusText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TraitBonusText.Location = new System.Drawing.Point(0, 410);
+            this.TraitBonusText.Multiline = true;
+            this.TraitBonusText.Name = "TraitBonusText";
+            this.TraitBonusText.Size = new System.Drawing.Size(368, 57);
+            this.TraitBonusText.TabIndex = 100;
             // 
-            // splitContainer3
+            // label18
             // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.label18.AutoSize = true;
+            this.label18.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label18.Location = new System.Drawing.Point(0, 397);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(104, 13);
+            this.label18.TabIndex = 99;
+            this.label18.Text = "Additional Trait Text:";
             // 
-            // splitContainer3.Panel1
+            // TraitBonusName
             // 
-            this.splitContainer3.Panel1.Controls.Add(this.Senses);
-            this.splitContainer3.Panel1.Controls.Add(this.label19);
-            this.splitContainer3.Panel1.Controls.Add(this.DamageBonus);
-            this.splitContainer3.Panel1.Controls.Add(this.label22);
-            this.splitContainer3.Panel1.Controls.Add(this.AttackBonus);
-            this.splitContainer3.Panel1.Controls.Add(this.label23);
+            this.TraitBonusName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TraitBonusName.Location = new System.Drawing.Point(0, 377);
+            this.TraitBonusName.Name = "TraitBonusName";
+            this.TraitBonusName.Size = new System.Drawing.Size(368, 20);
+            this.TraitBonusName.TabIndex = 98;
             // 
-            // splitContainer3.Panel2
+            // label17
             // 
-            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(374, 467);
-            this.splitContainer3.SplitterDistance = 209;
-            this.splitContainer3.TabIndex = 0;
+            this.label17.AutoSize = true;
+            this.label17.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label17.Location = new System.Drawing.Point(0, 364);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(103, 13);
+            this.label17.TabIndex = 97;
+            this.label17.Text = "Additional Trait Title:";
             // 
-            // splitContainer4
+            // CharismaBonus
             // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.CharismaBonus.Dock = System.Windows.Forms.DockStyle.Top;
+            this.CharismaBonus.Location = new System.Drawing.Point(0, 344);
+            this.CharismaBonus.Name = "CharismaBonus";
+            this.CharismaBonus.Size = new System.Drawing.Size(368, 20);
+            this.CharismaBonus.TabIndex = 95;
             // 
-            // splitContainer4.Panel1
+            // label14
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.Speed);
-            this.splitContainer4.Panel1.Controls.Add(this.label20);
+            this.label14.AutoSize = true;
+            this.label14.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label14.Location = new System.Drawing.Point(0, 331);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(91, 13);
+            this.label14.TabIndex = 94;
+            this.label14.Text = "Charisma (NCalc):";
             // 
-            // splitContainer4.Panel2
+            // WisdomBonus
             // 
-            this.splitContainer4.Panel2.Controls.Add(this.Languages);
-            this.splitContainer4.Panel2.Controls.Add(this.label21);
-            this.splitContainer4.Size = new System.Drawing.Size(374, 254);
-            this.splitContainer4.SplitterDistance = 125;
-            this.splitContainer4.TabIndex = 1;
+            this.WisdomBonus.Dock = System.Windows.Forms.DockStyle.Top;
+            this.WisdomBonus.Location = new System.Drawing.Point(0, 311);
+            this.WisdomBonus.Name = "WisdomBonus";
+            this.WisdomBonus.Size = new System.Drawing.Size(368, 20);
+            this.WisdomBonus.TabIndex = 93;
             // 
-            // UniqueID
+            // label15
             // 
-            this.UniqueID.Dock = System.Windows.Forms.DockStyle.Top;
-            this.UniqueID.FormattingEnabled = true;
-            this.UniqueID.Location = new System.Drawing.Point(0, 13);
-            this.UniqueID.Name = "UniqueID";
-            this.UniqueID.Size = new System.Drawing.Size(368, 21);
-            this.UniqueID.TabIndex = 75;
+            this.label15.AutoSize = true;
+            this.label15.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label15.Location = new System.Drawing.Point(0, 298);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(86, 13);
+            this.label15.TabIndex = 92;
+            this.label15.Text = "Wisdom (NCalc):";
+            // 
+            // IntelligenceBonus
+            // 
+            this.IntelligenceBonus.Dock = System.Windows.Forms.DockStyle.Top;
+            this.IntelligenceBonus.Location = new System.Drawing.Point(0, 278);
+            this.IntelligenceBonus.Name = "IntelligenceBonus";
+            this.IntelligenceBonus.Size = new System.Drawing.Size(368, 20);
+            this.IntelligenceBonus.TabIndex = 91;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label16.Location = new System.Drawing.Point(0, 265);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(102, 13);
+            this.label16.TabIndex = 90;
+            this.label16.Text = "Intelligence (NCalc):";
             // 
             // ConstitutionBonus
             // 
@@ -428,138 +388,68 @@
             this.label2.TabIndex = 76;
             this.label2.Text = "HP (NCalc):";
             // 
-            // CharismaBonus
+            // UniqueID
             // 
-            this.CharismaBonus.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CharismaBonus.Location = new System.Drawing.Point(0, 344);
-            this.CharismaBonus.Name = "CharismaBonus";
-            this.CharismaBonus.Size = new System.Drawing.Size(368, 20);
-            this.CharismaBonus.TabIndex = 95;
+            this.UniqueID.Dock = System.Windows.Forms.DockStyle.Top;
+            this.UniqueID.FormattingEnabled = true;
+            this.UniqueID.Location = new System.Drawing.Point(0, 13);
+            this.UniqueID.Name = "UniqueID";
+            this.UniqueID.Size = new System.Drawing.Size(368, 21);
+            this.UniqueID.TabIndex = 75;
             // 
-            // label14
+            // label1
             // 
-            this.label14.AutoSize = true;
-            this.label14.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label14.Location = new System.Drawing.Point(0, 331);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(91, 13);
-            this.label14.TabIndex = 94;
-            this.label14.Text = "Charisma (NCalc):";
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(264, 13);
+            this.label1.TabIndex = 59;
+            this.label1.Text = "Unique ID (of the modified Form / Compendum option):";
             // 
-            // WisdomBonus
+            // splitContainer3
             // 
-            this.WisdomBonus.Dock = System.Windows.Forms.DockStyle.Top;
-            this.WisdomBonus.Location = new System.Drawing.Point(0, 311);
-            this.WisdomBonus.Name = "WisdomBonus";
-            this.WisdomBonus.Size = new System.Drawing.Size(368, 20);
-            this.WisdomBonus.TabIndex = 93;
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // label15
+            // splitContainer3.Panel1
             // 
-            this.label15.AutoSize = true;
-            this.label15.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label15.Location = new System.Drawing.Point(0, 298);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(86, 13);
-            this.label15.TabIndex = 92;
-            this.label15.Text = "Wisdom (NCalc):";
+            this.splitContainer3.Panel1.Controls.Add(this.Senses);
+            this.splitContainer3.Panel1.Controls.Add(this.label19);
+            this.splitContainer3.Panel1.Controls.Add(this.DamageBonus);
+            this.splitContainer3.Panel1.Controls.Add(this.label22);
+            this.splitContainer3.Panel1.Controls.Add(this.AttackBonus);
+            this.splitContainer3.Panel1.Controls.Add(this.label23);
             // 
-            // IntelligenceBonus
+            // splitContainer3.Panel2
             // 
-            this.IntelligenceBonus.Dock = System.Windows.Forms.DockStyle.Top;
-            this.IntelligenceBonus.Location = new System.Drawing.Point(0, 278);
-            this.IntelligenceBonus.Name = "IntelligenceBonus";
-            this.IntelligenceBonus.Size = new System.Drawing.Size(368, 20);
-            this.IntelligenceBonus.TabIndex = 91;
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
+            this.splitContainer3.Size = new System.Drawing.Size(374, 467);
+            this.splitContainer3.SplitterDistance = 209;
+            this.splitContainer3.TabIndex = 0;
             // 
-            // label16
+            // Senses
             // 
-            this.label16.AutoSize = true;
-            this.label16.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label16.Location = new System.Drawing.Point(0, 265);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(102, 13);
-            this.label16.TabIndex = 90;
-            this.label16.Text = "Intelligence (NCalc):";
+            this.Senses.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Senses.HistoryManager = null;
+            this.Senses.Items = null;
+            this.Senses.Location = new System.Drawing.Point(0, 79);
+            this.Senses.Name = "Senses";
+            this.Senses.Size = new System.Drawing.Size(374, 130);
+            this.Senses.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Senses.Suggestions")));
+            this.Senses.TabIndex = 109;
             // 
-            // TraitBonusName
+            // label19
             // 
-            this.TraitBonusName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TraitBonusName.Location = new System.Drawing.Point(0, 377);
-            this.TraitBonusName.Name = "TraitBonusName";
-            this.TraitBonusName.Size = new System.Drawing.Size(368, 20);
-            this.TraitBonusName.TabIndex = 98;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label17.Location = new System.Drawing.Point(0, 364);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(103, 13);
-            this.label17.TabIndex = 97;
-            this.label17.Text = "Additional Trait Title:";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label18.Location = new System.Drawing.Point(0, 397);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(104, 13);
-            this.label18.TabIndex = 99;
-            this.label18.Text = "Additional Trait Text:";
-            // 
-            // TraitBonusText
-            // 
-            this.TraitBonusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TraitBonusText.Location = new System.Drawing.Point(0, 410);
-            this.TraitBonusText.Multiline = true;
-            this.TraitBonusText.Name = "TraitBonusText";
-            this.TraitBonusText.Size = new System.Drawing.Size(368, 57);
-            this.TraitBonusText.TabIndex = 100;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label20.Location = new System.Drawing.Point(0, 0);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(95, 13);
-            this.label20.TabIndex = 101;
-            this.label20.Text = "Additional Speeds:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label21.Location = new System.Drawing.Point(0, 0);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(112, 13);
-            this.label21.TabIndex = 101;
-            this.label21.Text = "Additional Languages:";
-            // 
-            // Speed
-            // 
-            this.Speed.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Speed.HistoryManager = null;
-            this.Speed.Items = null;
-            this.Speed.Location = new System.Drawing.Point(0, 13);
-            this.Speed.Name = "Speed";
-            this.Speed.Size = new System.Drawing.Size(374, 112);
-            this.Speed.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Speed.Suggestions")));
-            this.Speed.TabIndex = 102;
-            // 
-            // Languages
-            // 
-            this.Languages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Languages.HistoryManager = null;
-            this.Languages.Items = null;
-            this.Languages.Location = new System.Drawing.Point(0, 13);
-            this.Languages.Name = "Languages";
-            this.Languages.Size = new System.Drawing.Size(374, 112);
-            this.Languages.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Languages.Suggestions")));
-            this.Languages.TabIndex = 102;
+            this.label19.AutoSize = true;
+            this.label19.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label19.Location = new System.Drawing.Point(0, 66);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(94, 13);
+            this.label19.TabIndex = 108;
+            this.label19.Text = "Additional Senses:";
             // 
             // DamageBonus
             // 
@@ -597,26 +487,136 @@
             this.label23.TabIndex = 104;
             this.label23.Text = "Attack Bonus (NCalc):";
             // 
-            // Senses
+            // splitContainer4
             // 
-            this.Senses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Senses.HistoryManager = null;
-            this.Senses.Items = null;
-            this.Senses.Location = new System.Drawing.Point(0, 79);
-            this.Senses.Name = "Senses";
-            this.Senses.Size = new System.Drawing.Size(374, 130);
-            this.Senses.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Senses.Suggestions")));
-            this.Senses.TabIndex = 109;
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            this.splitContainer4.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // label19
+            // splitContainer4.Panel1
             // 
-            this.label19.AutoSize = true;
-            this.label19.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label19.Location = new System.Drawing.Point(0, 66);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(94, 13);
-            this.label19.TabIndex = 108;
-            this.label19.Text = "Additional Senses:";
+            this.splitContainer4.Panel1.Controls.Add(this.Speed);
+            this.splitContainer4.Panel1.Controls.Add(this.label20);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.Languages);
+            this.splitContainer4.Panel2.Controls.Add(this.label21);
+            this.splitContainer4.Size = new System.Drawing.Size(374, 254);
+            this.splitContainer4.SplitterDistance = 125;
+            this.splitContainer4.TabIndex = 1;
+            // 
+            // Speed
+            // 
+            this.Speed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Speed.HistoryManager = null;
+            this.Speed.Items = null;
+            this.Speed.Location = new System.Drawing.Point(0, 13);
+            this.Speed.Name = "Speed";
+            this.Speed.Size = new System.Drawing.Size(374, 112);
+            this.Speed.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Speed.Suggestions")));
+            this.Speed.TabIndex = 102;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label20.Location = new System.Drawing.Point(0, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(95, 13);
+            this.label20.TabIndex = 101;
+            this.label20.Text = "Additional Speeds:";
+            // 
+            // Languages
+            // 
+            this.Languages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Languages.HistoryManager = null;
+            this.Languages.Items = null;
+            this.Languages.Location = new System.Drawing.Point(0, 13);
+            this.Languages.Name = "Languages";
+            this.Languages.Size = new System.Drawing.Size(374, 112);
+            this.Languages.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Languages.Suggestions")));
+            this.Languages.TabIndex = 102;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label21.Location = new System.Drawing.Point(0, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(112, 13);
+            this.label21.TabIndex = 101;
+            this.label21.Text = "Additional Languages:";
+            // 
+            // label3
+            // 
+            this.label3.AutoEllipsis = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label3.Location = new System.Drawing.Point(0, 467);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(746, 13);
+            this.label3.TabIndex = 59;
+            this.label3.Text = "Note: The Boni apply to all forms / compendium selected with the referenced optio" +
+    "n, spells can also generate options and their ID is their name in lowercase.";
+            // 
+            // label4
+            // 
+            this.label4.AutoEllipsis = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label4.Location = new System.Drawing.Point(0, 480);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
+            this.label4.Size = new System.Drawing.Size(746, 13);
+            this.label4.TabIndex = 58;
+            this.label4.Text = "All normal player bonus values, like Str, Level, ClassLevel,  Race, Subrace...";
+            // 
+            // label5
+            // 
+            this.label5.AutoEllipsis = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label5.Location = new System.Drawing.Point(0, 493);
+            this.label5.Name = "label5";
+            this.label5.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.label5.Size = new System.Drawing.Size(746, 13);
+            this.label5.TabIndex = 57;
+            this.label5.Text = "Monster specific values: Name, CR, MonsterStrength, MonsterConstitution, ...,, Mo" +
+    "nsterCharisma, XP, Spells (count), Slots (count), AC, ACText, ";
+            // 
+            // label6
+            // 
+            this.label6.AutoEllipsis = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label6.Location = new System.Drawing.Point(0, 506);
+            this.label6.Name = "label6";
+            this.label6.Padding = new System.Windows.Forms.Padding(40, 0, 0, 0);
+            this.label6.Size = new System.Drawing.Size(746, 13);
+            this.label6.TabIndex = 56;
+            this.label6.Text = "HP, HPRoll, Alignment, Flying, Swimming, Burrowing, Climbing, Drakvision, Truesig" +
+    "ht, Tremorsense, Size, and the mosters keywords as boolean";
+            // 
+            // label7
+            // 
+            this.label7.AutoEllipsis = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label7.Location = new System.Drawing.Point(0, 519);
+            this.label7.Name = "label7";
+            this.label7.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
+            this.label7.Size = new System.Drawing.Size(746, 13);
+            this.label7.TabIndex = 55;
+            this.label7.Text = "For Boni, value is the current value (after applying other boni) and proficient i" +
+    "s true when the monster has a dedicated bonus to a save or skill";
+            // 
+            // button1
+            // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button1.Location = new System.Drawing.Point(0, 532);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(746, 25);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "Okay";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // FormsCompanionsBonusFeatureForm
             // 

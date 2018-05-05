@@ -13,6 +13,9 @@ namespace Character_Builder
         public Monster Monster { get; set; }
         public List<string> Sources { get; set; } = new List<string>();
 
+        public string Name { get => Monster.ToString(); }
+        public string Desc { get => String.Join(", ", Sources.OrderBy(s => s)); }
+
         public bool Equals(Monster x, Monster y)
         {
             return x == y;

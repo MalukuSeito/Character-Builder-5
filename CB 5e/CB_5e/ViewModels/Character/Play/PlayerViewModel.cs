@@ -57,15 +57,18 @@ namespace CB_5e.ViewModels.Character.Play
             playerResources = new PlayerResourcesViewModel(this);
             playerFeatures = new PlayerFeaturesViewModel(this);
             playerProficiencies = new PlayerProficiencyViewModel(this);
+            playerActions = new PlayerActionsViewModel(this);
             playerConditions = new PlayerConditionViewModel(this);
             playerInventory = new PlayerInventoryViewModel(this);
             playerShops = new PlayerShopViewModel(this);
             playerInventoryChoices = new PlayerInventoryChoicesViewModel(this);
             playerJournal = new PlayerJournalViewModel(this);
+            playerForms = new PlayerFormsCompanionsViewModel(this);
             playerNotes = new PlayerNotesViewModel(this);
             playerPDF = new PlayerPDFViewModel(this);
             build = new SwitchToBuildModel(this);
             UpdateSpellcasting();
+            UpdateForms();
         }
 
         public PlayerViewModel(PlayerModel parent) : base(parent.Context)
@@ -80,14 +83,16 @@ namespace CB_5e.ViewModels.Character.Play
             playerResources = new PlayerResourcesViewModel(this);
             playerFeatures = new PlayerFeaturesViewModel(this);
             playerProficiencies = new PlayerProficiencyViewModel(this);
+            playerActions = new PlayerActionsViewModel(this);
             playerConditions = new PlayerConditionViewModel(this);
             playerInventory = new PlayerInventoryViewModel(this);
             playerShops = new PlayerShopViewModel(this);
             playerInventoryChoices = new PlayerInventoryChoicesViewModel(this);
             playerJournal = new PlayerJournalViewModel(this);
+            playerForms = new PlayerFormsCompanionsViewModel(this);
             playerNotes = new PlayerNotesViewModel(this);
             playerPDF = new PlayerPDFViewModel(this);
-            
+            UpdateForms();
             UpdateSpellcasting();
         }
 
@@ -154,9 +159,37 @@ namespace CB_5e.ViewModels.Character.Play
         {
             OnPropertyChanged(null);
             UpdateSpellcasting();
+            UpdateForms();
         }
         
         public ObservableRangeCollection<SpellbookViewModel> Spellcasting { get; set; } = new ObservableRangeCollection<SpellbookViewModel>();
+        public ObservableRangeCollection<FormsCompanionsViewModel> FormsCompanions { get; set; } = new ObservableRangeCollection<FormsCompanionsViewModel>();
+
+        public void UpdateForms()
+        {
+            List<FormsCompanionsViewModel> views = new List<FormsCompanionsViewModel>();
+            foreach (FormsCompanionInfo fci in Context.Player.GetFormsCompanionChoices().OrderBy(f => f.DisplayName))
+            {
+                foreach (FormsCompanionsViewModel fcvm in FormsCompanions)
+                {
+                    if (fci.ID == fcvm.ID)
+                    {
+                        fcvm.Refresh(fci);
+                        views.Add(fcvm);
+                        goto NEXT;
+                    }
+                }
+                views.Add(new FormsCompanionsViewModel(this, fci));
+                NEXT:;
+            }
+            if (!views.SequenceEqual(FormsCompanions))
+            {
+                FormsCompanions.ReplaceRange(views);
+                UpdatePages();
+            }
+            if (views.Count == 0) UpdatePages();
+        }
+
         public override void UpdateSpellcasting()
         {
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" orderby Context.Player.GetClassLevel(((SpellcastingFeature)f).SpellcastingID) descending, ((SpellcastingFeature)f).DisplayName, ((SpellcastingFeature)f).SpellcastingID select f as SpellcastingFeature);
@@ -238,6 +271,9 @@ namespace CB_5e.ViewModels.Character.Play
             };
             pages.AddRange(Spellcasting);
             pages.Add(playerInventory);
+            pages.Add(playerActions);
+            pages.Add(playerForms);
+            pages.AddRange(FormsCompanions);
             pages.Add(playerShops);
             pages.Add(playerInventoryChoices);
             pages.Add(playerJournal);
@@ -257,6 +293,7 @@ namespace CB_5e.ViewModels.Character.Play
         private PlayerResourcesViewModel playerResources;
         private PlayerFeaturesViewModel playerFeatures;
         private PlayerProficiencyViewModel playerProficiencies;
+        private PlayerActionsViewModel playerActions;
         private PlayerConditionViewModel playerConditions;
         private PlayerInventoryViewModel playerInventory;
         private PlayerShopViewModel playerShops;
@@ -264,6 +301,7 @@ namespace CB_5e.ViewModels.Character.Play
         private PlayerJournalViewModel playerJournal;
         private PlayerNotesViewModel playerNotes;
         private PlayerPDFViewModel playerPDF;
+        private PlayerFormsCompanionsViewModel playerForms;
         private SwitchToBuildModel build;
     }
     

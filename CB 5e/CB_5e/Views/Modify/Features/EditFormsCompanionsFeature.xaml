@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditFormsCompanionsFeature"
+             Title="Forms/Companions">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="DisplayName" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding DisplayName}" TextColor="{StaticResource Accent}"/>
+                
+                <Label Text="Unique ID" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
+                
+                <Label Text="Forms/Companions Choices: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding FormsCompanionsOptions}" TextColor="{StaticResource Accent}"/>
+
+                <Label Text="Forms/Companions Count: (-1 = infinite)" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry HorizontalOptions="FillAndExpand" Keyboard="Numeric" Text="{Binding FormsCompanionsCount}" TextColor="{StaticResource Accent}"/>
+                    <Stepper HorizontalOptions="Fill" Value="{Binding FormsCompanionsCountValue}" />
+                </StackLayout>
+                <Label><Label.Text>Adding Form/Companion Choices to a spell is the same adding a Form/Companion Feature. The Choices determine what type of monster can be selected and the Count determines the amount.
+The UniqueID for the Form/Companion choice is the spell's name in lowercase, and the Displayname is just the spellname.
+The following variables can be used in the Choices NCalc condition:
+classlevel (same as playerLevel for spells, level in class for features), classspelllevel (classlevel / 2 +1), maxspellslot (highest spellslot in any spellcasting), str, dex, con, int, wis, cha (of the player).
+name, source, cr (of the monsters), monsterstrength, monsterdexterity, monsterconstitution, monsterintelligence, monsterwisdom, monstercharisma, passiveperception (bonus only), xp, spells (count), slots (count), ac, actext, hp, hproll, alignment, size (all of the monster)
+As well as the special booleans flying, swimming, climbing, burrowing (has a fly, swim, climb or burrow speed), darkvision, blindsight, tremorsense, truesight (has the specific sight), hover (has a speed with the text hover).
+And any type of the monster as a boolean (fey, humanoid, giant, devil, ...)</Label.Text></Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

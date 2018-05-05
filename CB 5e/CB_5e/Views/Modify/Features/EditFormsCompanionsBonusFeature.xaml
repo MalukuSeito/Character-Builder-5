@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.Features.EditFormsCompanionsBonusFeature"
+             Title="Forms/Companions Bonus">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Back" Clicked="ToolbarItem_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+                <Label Text="Unique ID: (that is being modified)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding UniqueID}" TextColor="{StaticResource Accent}"/>
+
+                <Label Text="HP: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding HPBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="AC: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding ACBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Saves: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding SavesBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Skills: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding SkillsBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Strength: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding StrengthBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Dexterity: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding DexterityBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Constitution: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding ConstitutionBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Intelligence: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding IntelligenceBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Wisdom: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding WisdomBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Charisma: (NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding CharismaBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Attack: (Actions, NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding AttackBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="Damage Bonus: (Actions, NCalc)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding DamageBonus}" TextColor="{StaticResource Accent}"/>
+                <Label Text="New Trait (Name)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding TraitBonusName}" TextColor="{StaticResource Accent}"/>
+                <Label Text="New Trait (Text)" FontSize="Micro" LineBreakMode="WordWrap"/>
+                <Entry Text="{Binding TraitBonusText}" TextColor="{StaticResource Accent}"/>
+                <Label>
+                    <Label.Text>The Boni apply to all forms / compendium selected with the referenced option, spells can also generate options and their ID is their name in lowercase.
+The following variables can be used in the NCalc calculations:
+classlevel (same as playerLevel for spells, level in class for features), classspelllevel (classlevel / 2 +1), maxspellslot (highest spellslot in any spellcasting), str, dex, con, int, wis, cha (of the player).
+name, source, cr (of the monsters), monsterstrength, monsterdexterity, monsterconstitution, monsterintelligence, monsterwisdom, monstercharisma, passiveperception (bonus only), xp, spells (count), slots (count), ac, actext, hp, hproll, alignment, size (all of the monster).
+As well as the special booleans flying, swimming, climbing, burrowing (has a fly, swim, climb or burrow speed), darkvision, blindsight, tremorsense, truesight (has the specific sight), hover (has a speed with the text hover).
+And any type of the monster as a boolean (fey, humanoid, giant, devil, ...).
+For Boni, value is the current value (after applying other boni) and proficient is true when the monster has a dedicated bonus to a save or skill.</Label.Text></Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

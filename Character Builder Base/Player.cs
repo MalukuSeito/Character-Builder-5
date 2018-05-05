@@ -2526,6 +2526,17 @@ namespace Character_Builder
             }
         }
 
+        public void RemoveAllFormCompanion(string iD)
+        {
+            foreach (FormsCompanionsChoice fcc in FormsCompanionsChoices)
+            {
+                if (StringComparer.Ordinal.Equals(iD, fcc.ChoiceID))
+                {
+                    fcc.FormsCompanions.Clear();
+                }
+            }
+        }
+
         public void AddFormCompanion(string iD, Monster m)
         {
             foreach (FormsCompanionsChoice fcc in FormsCompanionsChoices)
