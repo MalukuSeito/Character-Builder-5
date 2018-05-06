@@ -476,37 +476,37 @@
     <PDFField Name="Duration1" Field="Duration 1" />
     <PDFField Name="Description1" Field="Spell Description 1" />
 
-    <PDFField Name="Name2" Field="Spell 4" />
-    <PDFField Name="Classes2" Field="Spell Type 4" />
-    <PDFField Name="Time2" Field="Casting Time 4" />
-    <PDFField Name="Range2" Field="Range 4" />
-    <PDFField Name="Components2" Field="Components 4" />
-    <PDFField Name="Duration2" Field="Duration 4" />
-    <PDFField Name="Description2" Field="Spell Description 4" />
+    <PDFField Name="Name2" Field="Spell 2" />
+    <PDFField Name="Classes2" Field="Spell Type 2" />
+    <PDFField Name="Time2" Field="Casting Time 2" />
+    <PDFField Name="Range2" Field="Range 2" />
+    <PDFField Name="Components2" Field="Components 2" />
+    <PDFField Name="Duration2" Field="Duration 2" />
+    <PDFField Name="Description2" Field="Spell Description 2" />
 
-    <PDFField Name="Name3" Field="Spell 2" />
-    <PDFField Name="Classes3" Field="Spell Type 2" />
-    <PDFField Name="Time3" Field="Casting Time 2" />
-    <PDFField Name="Range3" Field="Range 2" />
-    <PDFField Name="Components3" Field="Components 2" />
-    <PDFField Name="Duration3" Field="Duration 2" />
-    <PDFField Name="Description3" Field="Spell Description 2" />
+    <PDFField Name="Name3" Field="Spell 3" />
+    <PDFField Name="Classes3" Field="Spell Type 3" />
+    <PDFField Name="Time3" Field="Casting Time 3" />
+    <PDFField Name="Range3" Field="Range 3" />
+    <PDFField Name="Components3" Field="Components 3" />
+    <PDFField Name="Duration3" Field="Duration 3" />
+    <PDFField Name="Description3" Field="Spell Description 3" />
 
-    <PDFField Name="Name4" Field="Spell 5" />
-    <PDFField Name="Classes4" Field="Spell Type 5" />
-    <PDFField Name="Time4" Field="Casting Time 5" />
-    <PDFField Name="Range4" Field="Range 5" />
-    <PDFField Name="Components4" Field="Components 5" />
-    <PDFField Name="Duration4" Field="Duration 5" />
-    <PDFField Name="Description4" Field="Spell Description 5" />
+    <PDFField Name="Name4" Field="Spell 4" />
+    <PDFField Name="Classes4" Field="Spell Type 4" />
+    <PDFField Name="Time4" Field="Casting Time 4" />
+    <PDFField Name="Range4" Field="Range 4" />
+    <PDFField Name="Components4" Field="Components 4" />
+    <PDFField Name="Duration4" Field="Duration 4" />
+    <PDFField Name="Description4" Field="Spell Description 4" />
 
-    <PDFField Name="Name5" Field="Spell 3" />
-    <PDFField Name="Classes5" Field="Spell Type 3" />
-    <PDFField Name="Time5" Field="Casting Time 3" />
-    <PDFField Name="Range5" Field="Range 3" />
-    <PDFField Name="Components5" Field="Components 3" />
-    <PDFField Name="Duration5" Field="Duration 3" />
-    <PDFField Name="Description5" Field="Spell Description 3" />
+    <PDFField Name="Name5" Field="Spell 5" />
+    <PDFField Name="Classes5" Field="Spell Type 5" />
+    <PDFField Name="Time5" Field="Casting Time 5" />
+    <PDFField Name="Range5" Field="Range 5" />
+    <PDFField Name="Components5" Field="Components 5" />
+    <PDFField Name="Duration5" Field="Duration 5" />
+    <PDFField Name="Description5" Field="Spell Description 5" />
 
     <PDFField Name="Name6" Field="Spell 6" />
     <PDFField Name="Classes6" Field="Spell Type 6" />
@@ -516,10 +516,143 @@
     <PDFField Name="Duration6" Field="Duration 6" />
     <PDFField Name="Description6" Field="Spell Description 6" />
 
+    <PDFField Name="Name7" Field="Spell 7" />
+    <PDFField Name="Classes7" Field="Spell Type 7" />
+    <PDFField Name="Time7" Field="Casting Time 7" />
+    <PDFField Name="Range7" Field="Range 7" />
+    <PDFField Name="Components7" Field="Components 7" />
+    <PDFField Name="Duration7" Field="Duration 7" />
+    <PDFField Name="Description7" Field="Spell Description 7" />
+
+    <PDFField Name="Name8" Field="Spell 8" />
+    <PDFField Name="Classes8" Field="Spell Type 8" />
+    <PDFField Name="Time8" Field="Casting Time 8" />
+    <PDFField Name="Range8" Field="Range 8" />
+    <PDFField Name="Components8" Field="Components 8" />
+    <PDFField Name="Duration8" Field="Duration 8" />
+    <PDFField Name="Description8" Field="Spell Description 8" />
+
+    <PDFField Name="Name9" Field="Spell 9" />
+    <PDFField Name="Classes9" Field="Spell Type 9" />
+    <PDFField Name="Time9" Field="Casting Time 9" />
+    <PDFField Name="Range9" Field="Range 9" />
+    <PDFField Name="Components9" Field="Components 9" />
+    <PDFField Name="Duration9" Field="Duration 9" />
+    <PDFField Name="Description9" Field="Spell Description 9" />
+
   </SpellbookFields>
-  <Name>Default Sheet</Name>
+  <ActionsFields>
+    <PDFField Name="CharacterName" Field="CharacterName" />
+    <PDFField Name="CombatActions" Field="CombatActions" />
+
+    <PDFField Name="Action1Type" Field="Action1Type" />
+    <PDFField Name="Action1Name" Field="Action1Name" />
+    <PDFField Name="Action1Source" Field="Action1Source" />
+    <PDFField Name="Action1Text" Field="Action1Text" />
+
+    <PDFField Name="Action2Type" Field="Action2Type" />
+    <PDFField Name="Action2Name" Field="Action2Name" />
+    <PDFField Name="Action2Source" Field="Action2Source" />
+    <PDFField Name="Action2Text" Field="Action2Text" />
+
+    <PDFField Name="Action3Type" Field="Action3Type" />
+    <PDFField Name="Action3Name" Field="Action3Name" />
+    <PDFField Name="Action3Source" Field="Action3Source" />
+    <PDFField Name="Action3Text" Field="Action3Text" />
+
+    <PDFField Name="Action4Type" Field="Action4Type" />
+    <PDFField Name="Action4Name" Field="Action4Name" />
+    <PDFField Name="Action4Source" Field="Action4Source" />
+    <PDFField Name="Action4Text" Field="Action4Text" />
+
+    <PDFField Name="Action5Type" Field="Action5Type" />
+    <PDFField Name="Action5Name" Field="Action5Name" />
+    <PDFField Name="Action5Source" Field="Action5Source" />
+    <PDFField Name="Action5Text" Field="Action5Text" />
+
+    <PDFField Name="Action6Type" Field="Action6Type" />
+    <PDFField Name="Action6Name" Field="Action6Name" />
+    <PDFField Name="Action6Source" Field="Action6Source" />
+    <PDFField Name="Action6Text" Field="Action6Text" />
+
+    <PDFField Name="Action7Type" Field="Action7Type" />
+    <PDFField Name="Action7Name" Field="Action7Name" />
+    <PDFField Name="Action7Source" Field="Action7Source" />
+    <PDFField Name="Action7Text" Field="Action7Text" />
+
+    <PDFField Name="Action8Type" Field="Action8Type" />
+    <PDFField Name="Action8Name" Field="Action8Name" />
+    <PDFField Name="Action8Source" Field="Action8Source" />
+    <PDFField Name="Action8Text" Field="Action8Text" />
+
+    <PDFField Name="Action9Type" Field="Action9Type" />
+    <PDFField Name="Action9Name" Field="Action9Name" />
+    <PDFField Name="Action9Source" Field="Action9Source" />
+    <PDFField Name="Action9Text" Field="Action9Text" />
+
+    <PDFField Name="Action10Type" Field="Action10Type" />
+    <PDFField Name="Action10Name" Field="Action10Name" />
+    <PDFField Name="Action10Source" Field="Action10Source" />
+    <PDFField Name="Action10Text" Field="Action10Text" />
+
+    <PDFField Name="Action11Type" Field="Action11Type" />
+    <PDFField Name="Action11Name" Field="Action11Name" />
+    <PDFField Name="Action11Source" Field="Action11Source" />
+    <PDFField Name="Action11Text" Field="Action11Text" />
+
+    <PDFField Name="Action12Type" Field="Action12Type" />
+    <PDFField Name="Action12Name" Field="Action12Name" />
+    <PDFField Name="Action12Source" Field="Action12Source" />
+    <PDFField Name="Action12Text" Field="Action12Text" />
+    
+    <PDFField Name="Action13Type" Field="Action13Type" />
+    <PDFField Name="Action13Name" Field="Action13Name" />
+    <PDFField Name="Action13Source" Field="Action13Source" />
+    <PDFField Name="Action13Text" Field="Action13Text" />
+
+    <PDFField Name="Action14Type" Field="Action14Type" />
+    <PDFField Name="Action14Name" Field="Action14Name" />
+    <PDFField Name="Action14Source" Field="Action14Source" />
+    <PDFField Name="Action14Text" Field="Action14Text" />
+
+    <PDFField Name="Action15Type" Field="Action15Type" />
+    <PDFField Name="Action15Name" Field="Action15Name" />
+    <PDFField Name="Action15Source" Field="Action15Source" />
+    <PDFField Name="Action15Text" Field="Action15Text" />
+  </ActionsFields>
+  <MonsterFields>
+    <PDFField Name="Name1" Field="Name1" />
+    <PDFField Name="Type1" Field="Type1" />
+    <PDFField Name="AC1" Field="AC1" />
+    <PDFField Name="HP1" Field="HP1" />
+    <PDFField Name="Speed1" Field="Speed1" />
+    <PDFField Name="Str1" Field="Str1" />
+    <PDFField Name="Dex1" Field="Dex1" />
+    <PDFField Name="Con1" Field="Con1" />
+    <PDFField Name="Int1" Field="Int1" />
+    <PDFField Name="Wis1" Field="Wis1" />
+    <PDFField Name="Cha1" Field="Cha1" />
+    <PDFField Name="Trait1" Field="Description1" />
+
+    <PDFField Name="Name2" Field="Name2" />
+    <PDFField Name="Type2" Field="Type2" />
+    <PDFField Name="AC2" Field="AC2" />
+    <PDFField Name="HP2" Field="HP2" />
+    <PDFField Name="Speed2" Field="Speed2" />
+    <PDFField Name="Str2" Field="Str2" />
+    <PDFField Name="Dex2" Field="Dex2" />
+    <PDFField Name="Con2" Field="Con2" />
+    <PDFField Name="Int2" Field="Int2" />
+    <PDFField Name="Wis2" Field="Wis2" />
+    <PDFField Name="Cha2" Field="Cha2" />
+    <PDFField Name="Trait2" Field="Description2" />
+  </MonsterFields>
+  <MonstersFile>Monster.pdf</MonstersFile>
+  <Name>Default Sheet, double sized combat sheet</Name>
   <File>Default-PlayerSheet.pdf</File>
   <SpellFile>Default-Spellsheet.pdf</SpellFile>
+  <ActionsFile>CombatSheet2-2up.pdf</ActionsFile>
   <LogFile>DnDAdvLgLogsheet.pdf</LogFile>
-  <SpellbookFile>Spellbook.pdf</SpellbookFile>
+  <SpellbookFile>Spell9.pdf</SpellbookFile>
 </PDF>
+
