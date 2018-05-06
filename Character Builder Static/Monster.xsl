@@ -131,8 +131,8 @@
 		<xsl:for-each select="ListOfNames/string"><xsl:value-of select="."/><xsl:if test="position() != last()"><xsl:text>, </xsl:text></xsl:if></xsl:for-each></div>
 </xsl:template>
 
-<xsl:template match="Traits|Actions|LegendaryActions">
-	<xsl:for-each select="MonsterTrait|MonsterAction"><xsl:apply-templates select="." /></xsl:for-each>
+<xsl:template match="Traits|Actions|LegendaryActions|Reactions">
+	<xsl:for-each select="MonsterTrait|MonsterAction|Reactions"><xsl:apply-templates select="." /></xsl:for-each>
 </xsl:template>
 
 <xsl:template match="MonsterTrait">

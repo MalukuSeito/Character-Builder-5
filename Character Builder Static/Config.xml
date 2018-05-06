@@ -474,6 +474,6 @@ If you have both the Spellcasting class feature and the Pact Magic class feature
       <PreparationChange>Unmodified</PreparationChange>
     </SpellcastingFeature>
   </FeaturesForMulticlassing>
-  <Source>Systems Reference Document v5.1</Source>
+  <Source>Custom Source</Source>
   <WeightOfACoin>0.02</WeightOfACoin>
 </ConfigManager>
