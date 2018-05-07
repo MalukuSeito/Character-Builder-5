@@ -59,7 +59,7 @@
 		<xsl:if test="boolean(ConditionImmunities/string/node())"><span class="Bold">Condition Immunities</span><xsl:text> </xsl:text><xsl:apply-templates select="ConditionImmunities"/><br/></xsl:if>
 		<span class="Bold">Senses</span><xsl:text> </xsl:text><xsl:if test="boolean(Senses/string/node())"><xsl:apply-templates select="Senses"/><xsl:text>, </xsl:text></xsl:if>passive Perception <xsl:choose><xsl:when test="boolean(SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/node())"><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/Bonus + PassivePerception"/></xsl:when><xsl:otherwise><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + PassivePerception"/></xsl:otherwise></xsl:choose><br/>
 		<span class="Bold">Languages</span><xsl:text> </xsl:text><xsl:choose><xsl:when test="boolean(Languages/string/node())"><xsl:apply-templates select="Languages"/></xsl:when><xsl:otherwise>&#8212;</xsl:otherwise></xsl:choose><br/>
-		<span class="Bold">Challenge</span><xsl:text> </xsl:text><xsl:apply-templates select="CR"/><xsl:text> (</xsl:text><xsl:value-of select="XP"/> XP)<br/>	
+		<span class="Bold">Challenge</span><xsl:text> </xsl:text><xsl:apply-templates select="CR"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(XP, '#,###,###,###,###')"/> XP)<br/>	
 
 		<div class="Description" style="margin-top:10px">
 			<xsl:call-template name="newline-to-paragraph">
@@ -102,7 +102,7 @@
 
         <xsl:choose>
             <xsl:when test="contains($input, '&#10;')">
-		    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="substring-before($input, '&#10;')" /></xsl:element>
+		    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold" style="font-style:italic"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="substring-before($input, '&#10;')" /></xsl:element>
                 <xsl:call-template name="newline-to-paragraph2">
                     <xsl:with-param name="input">
                         <xsl:copy-of select="substring-after($input, '&#10;')" />
@@ -111,7 +111,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="$input != ''">
-                    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="$input" /></xsl:element>
+                    <xsl:element name="p"><xsl:if test="$title != ''"><span class="Bold" style="font-style:italic"><xsl:value-of select="$title" />.</span><xsl:text> </xsl:text></xsl:if><xsl:copy-of select="$input" /></xsl:element>
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>

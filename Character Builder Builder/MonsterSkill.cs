@@ -104,7 +104,7 @@ namespace Character_Builder_Builder
             object data = e.Data.GetData(e.Data.GetFormats()[0]);
             if (data == null)
                 return;
-            if (data is Feature)
+            if (data is MonsterSkillBonus)
             {
                 HistoryManager?.MakeHistory(null);
                 list.Remove(data as MonsterSkillBonus);
