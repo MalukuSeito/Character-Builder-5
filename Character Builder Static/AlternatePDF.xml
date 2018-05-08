@@ -505,6 +505,29 @@
   </SpellbookFields>
   <ActionsFields>
     <PDFField Name="CharacterName" Field="CharacterName" />
+    <PDFField Name="CondtionPoisoned" Field="CondtionPoisoned" />
+    <PDFField Name="CondtionInvisible" Field="CondtionInvisible" />
+    <PDFField Name="CondtionFreightened" Field="CondtionFreightened" />
+    <PDFField Name="CondtionBlinded" Field="CondtionBlinded" />
+    <PDFField Name="CondtionStunned" Field="CondtionStunned" />
+    <PDFField Name="CondtionRestrained" Field="CondtionRestrained" />
+    <PDFField Name="CondtionPetrified" Field="CondtionPetrified" />
+    <PDFField Name="CondtionParalyzed" Field="CondtionParalyzed" />
+    <PDFField Name="CondtionIncapacitated" Field="CondtionIncapacitated" />
+    <PDFField Name="CondtionGrappled" Field="CondtionGrappled" />
+    <PDFField Name="CondtionDeafened" Field="CondtionDeafened" />
+    <PDFField Name="CondtionCharmed" Field="CondtionCharmed" />
+
+    <PDFField Name="DeathSaveSuccess1" Field="SavingSuccess1" />
+    <PDFField Name="DeathSaveSuccess2" Field="SavingSuccess2" />
+    <PDFField Name="DeathSaveSuccess3" Field="SavingSuccess3" />
+    <PDFField Name="DeathSaveFail1" Field="SavingFail1" />
+    <PDFField Name="DeathSaveFail2" Field="SavingFail2" />
+    <PDFField Name="DeathSaveFail3" Field="SavingFail3" />
+    <PDFField Name="DeathSaveStable" Field="SavingStable" />
+
+    <PDFField Name="Speed" Field="Speed" />
+    <PDFField Name="Miscellaneous" Field="Miscellaneous" />
     <PDFField Name="CombatActions" Field="CombatActions" />
 
     <PDFField Name="Action1Type" Field="Action1Type" />
@@ -567,6 +590,71 @@
     <PDFField Name="Action12Source" Field="Action12Source" />
     <PDFField Name="Action12Text" Field="Action12Text" />
 
+  </ActionsFields>
+  <ActionsFields2>
+    <PDFField Name="CharacterName" Field="CharacterName" />
+    <PDFField Name="CombatActions" Field="CombatActions" />
+
+    <PDFField Name="Action1Type" Field="Action1Type" />
+    <PDFField Name="Action1Name" Field="Action1Name" />
+    <PDFField Name="Action1Source" Field="Action1Source" />
+    <PDFField Name="Action1Text" Field="Action1Text" />
+
+    <PDFField Name="Action2Type" Field="Action2Type" />
+    <PDFField Name="Action2Name" Field="Action2Name" />
+    <PDFField Name="Action2Source" Field="Action2Source" />
+    <PDFField Name="Action2Text" Field="Action2Text" />
+
+    <PDFField Name="Action3Type" Field="Action3Type" />
+    <PDFField Name="Action3Name" Field="Action3Name" />
+    <PDFField Name="Action3Source" Field="Action3Source" />
+    <PDFField Name="Action3Text" Field="Action3Text" />
+
+    <PDFField Name="Action4Type" Field="Action4Type" />
+    <PDFField Name="Action4Name" Field="Action4Name" />
+    <PDFField Name="Action4Source" Field="Action4Source" />
+    <PDFField Name="Action4Text" Field="Action4Text" />
+
+    <PDFField Name="Action5Type" Field="Action5Type" />
+    <PDFField Name="Action5Name" Field="Action5Name" />
+    <PDFField Name="Action5Source" Field="Action5Source" />
+    <PDFField Name="Action5Text" Field="Action5Text" />
+
+    <PDFField Name="Action6Type" Field="Action6Type" />
+    <PDFField Name="Action6Name" Field="Action6Name" />
+    <PDFField Name="Action6Source" Field="Action6Source" />
+    <PDFField Name="Action6Text" Field="Action6Text" />
+
+    <PDFField Name="Action7Type" Field="Action7Type" />
+    <PDFField Name="Action7Name" Field="Action7Name" />
+    <PDFField Name="Action7Source" Field="Action7Source" />
+    <PDFField Name="Action7Text" Field="Action7Text" />
+
+    <PDFField Name="Action8Type" Field="Action8Type" />
+    <PDFField Name="Action8Name" Field="Action8Name" />
+    <PDFField Name="Action8Source" Field="Action8Source" />
+    <PDFField Name="Action8Text" Field="Action8Text" />
+
+    <PDFField Name="Action9Type" Field="Action9Type" />
+    <PDFField Name="Action9Name" Field="Action9Name" />
+    <PDFField Name="Action9Source" Field="Action9Source" />
+    <PDFField Name="Action9Text" Field="Action9Text" />
+
+    <PDFField Name="Action10Type" Field="Action10Type" />
+    <PDFField Name="Action10Name" Field="Action10Name" />
+    <PDFField Name="Action10Source" Field="Action10Source" />
+    <PDFField Name="Action10Text" Field="Action10Text" />
+
+    <PDFField Name="Action11Type" Field="Action11Type" />
+    <PDFField Name="Action11Name" Field="Action11Name" />
+    <PDFField Name="Action11Source" Field="Action11Source" />
+    <PDFField Name="Action11Text" Field="Action11Text" />
+
+    <PDFField Name="Action12Type" Field="Action12Type" />
+    <PDFField Name="Action12Name" Field="Action12Name" />
+    <PDFField Name="Action12Source" Field="Action12Source" />
+    <PDFField Name="Action12Text" Field="Action12Text" />
+    
     <PDFField Name="Action13Type" Field="Action13Type" />
     <PDFField Name="Action13Name" Field="Action13Name" />
     <PDFField Name="Action13Source" Field="Action13Source" />
@@ -662,8 +750,8 @@
     <PDFField Name="Action31Source" Field="Action31Source" />
     <PDFField Name="Action31Text" Field="Action31Text" />
 
-</ActionsFields>
-<MonsterFields>
+  </ActionsFields2>
+  <MonsterFields>
     <PDFField Name="Name1" Field="Name1" />
     <PDFField Name="Type1" Field="Type1" />
     <PDFField Name="AC1" Field="AC1" />
@@ -696,5 +784,6 @@
   <SpellFile>Default-Spellsheet.pdf</SpellFile>
   <LogFile>DnDAdvLgLogsheet.pdf</LogFile>
   <SpellbookFile>Spellbook.pdf</SpellbookFile>
-  <ActionsFile>CombatSheet2.pdf</ActionsFile>
+  <ActionsFile>CombatSheet.pdf</ActionsFile>
+  <ActionsFile2>CombatSheet2.pdf</ActionsFile2>
 </PDF>

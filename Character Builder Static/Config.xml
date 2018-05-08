@@ -28,6 +28,7 @@
   <Possessions_Transform>Possession.xsl</Possessions_Transform>
   <PDF>
     <string>DefaultPDF.xml</string>
+    <string>DefaultPDF - Larger.xml</string>
     <string>AlternatePDF.xml</string>
   </PDF>
   <Slots>
