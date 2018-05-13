@@ -59,14 +59,8 @@
 		<xsl:if test="boolean(ConditionImmunities/string/node())"><span class="Bold">Condition Immunities</span><xsl:text> </xsl:text><xsl:apply-templates select="ConditionImmunities"/><br/></xsl:if>
 		<span class="Bold">Senses</span><xsl:text> </xsl:text><xsl:if test="boolean(Senses/string/node())"><xsl:apply-templates select="Senses"/><xsl:text>, </xsl:text></xsl:if>passive Perception <xsl:choose><xsl:when test="boolean(SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/node())"><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + SkillBonus/MonsterSkillBonus[translate(Skill, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='perception']/Bonus + PassivePerception"/></xsl:when><xsl:otherwise><xsl:value-of select="10 + floor(Wisdom div 2) - 5 + PassivePerception"/></xsl:otherwise></xsl:choose><br/>
 		<span class="Bold">Languages</span><xsl:text> </xsl:text><xsl:choose><xsl:when test="boolean(Languages/string/node())"><xsl:apply-templates select="Languages"/></xsl:when><xsl:otherwise>&#8212;</xsl:otherwise></xsl:choose><br/>
-		<span class="Bold">Challenge</span><xsl:text> </xsl:text><xsl:apply-templates select="CR"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(XP, '#,###,###,###,###')"/> XP)<br/>	
+		<span class="Bold">Challenge</span><xsl:text> </xsl:text><xsl:apply-templates select="CR"/><xsl:text> (</xsl:text><xsl:value-of select="format-number(XP, '#,###,###,###,##0')"/> XP)<br/>	
 
-		<div class="Description" style="margin-top:10px">
-			<xsl:call-template name="newline-to-paragraph">
-				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>
-			</xsl:call-template>
-		</div>
-		<xsl:apply-templates select="Descriptions/*"/>
 		<div class="Traits" style="margin-top:10px">
 			<xsl:apply-templates select="Traits"/>
 		</div>
@@ -88,6 +82,12 @@
 				<xsl:apply-templates select="LegendaryActions"/>
 			</div>
 		</xsl:if>
+		<div class="Description" style="margin-top:10px">
+			<xsl:call-template name="newline-to-paragraph">
+				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>
+			</xsl:call-template>
+		</div>
+		<xsl:apply-templates select="Descriptions/*"/>
 		<div class="Source"><xsl:value-of select="Source"/></div>
 	</body>
 </html>

@@ -35,7 +35,9 @@ namespace CB_5e.iOS
             // Present UIImagePickerController;
             UIWindow window = UIApplication.SharedApplication.KeyWindow;
             //var viewController = window.RootViewController;
-            var viewController = TopViewController(UIApplication.SharedApplication.KeyWindow.RootViewController);
+            //var viewController = TopViewController(UIApplication.SharedApplication.KeyWindow.RootViewController);
+            //viewController.PresentModalViewController(imagePicker, true);
+            var viewController = window.RootViewController;
             viewController.PresentModalViewController(imagePicker, true);
 
             // Return Task object
