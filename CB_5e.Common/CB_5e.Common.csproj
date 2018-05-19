@@ -1,0 +1,459 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data.zip" />
+    <None Remove="Ex Ample.cb5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data.zip" />
+    <EmbeddedResource Include="Ex Ample.cb5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreCLR-NCalc" Version="2.2.34" />
+    <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.10" />
+    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Character Builder Base\Character Builder Base.csproj" />
+    <ProjectReference Include="..\Character Builder Plugin\Character Builder Plugin.csproj" />
+    <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
+    <ProjectReference Include="..\PluginDMG\PluginDMG.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\AddToItemPage.xaml.cs">
+      <DependentUpon>AddToItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\AddToSpellbookPage.xaml.cs">
+      <DependentUpon>AddToSpellbookPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\BackgroundPage.xaml.cs">
+      <DependentUpon>BackgroundPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\ClassesPage.xaml.cs">
+      <DependentUpon>ClassesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\PlayerPersonalPage.xaml.cs">
+      <DependentUpon>PlayerPersonalPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\PlayerScoresPage.xaml.cs">
+      <DependentUpon>PlayerScoresPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\RacePage.xaml.cs">
+      <DependentUpon>RacePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Build\SourcesPage.xaml.cs">
+      <DependentUpon>SourcesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\BuyAddPage.xaml.cs">
+      <DependentUpon>BuyAddPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\CharactersBuildPage.xaml.cs">
+      <DependentUpon>CharactersBuildPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\CharactersPlayPage.xaml.cs">
+      <DependentUpon>CharactersPlayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\EditMoneyPage.xaml.cs">
+      <DependentUpon>EditMoneyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\FlowPage.xaml.cs">
+      <DependentUpon>FlowPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\ItemPage.xaml.cs">
+      <DependentUpon>ItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\JournalEntryPage.xaml.cs">
+      <DependentUpon>JournalEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\JournalPage.xaml.cs">
+      <DependentUpon>JournalPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\LoadingPage.xaml.cs">
+      <DependentUpon>LoadingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\MorePlayPage.xaml.cs">
+      <DependentUpon>MorePlayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\NewItemPage .xaml.cs">
+      <DependentUpon>NewItemPage .xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerFormsCompanionsPage.xaml.cs">
+      <DependentUpon>PlayerFormsCompanionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerInfoPage.xaml.cs">
+      <DependentUpon>PlayerInfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerInventoryOptionsPage.xaml.cs">
+      <DependentUpon>PlayerInventoryOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerInventoryPage.xaml.cs">
+      <DependentUpon>PlayerInventoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerNotesPage.xaml.cs">
+      <DependentUpon>PlayerNotesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerPreparePage.xaml.cs">
+      <DependentUpon>PlayerPreparePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\PlayerSpellsPage.xaml.cs">
+      <DependentUpon>PlayerSpellsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerActionsPage.xaml.cs">
+      <DependentUpon>PlayerActionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerConditionPage.xaml.cs">
+      <DependentUpon>PlayerConditionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerFeaturesPage.xaml.cs">
+      <DependentUpon>PlayerFeaturesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerFormsCompanionsOverviewPage.xaml.cs">
+      <DependentUpon>PlayerFormsCompanionsOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerProficiencyPage.xaml.cs">
+      <DependentUpon>PlayerProficiencyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerResourcesPage.xaml.cs">
+      <DependentUpon>PlayerResourcesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\Play\PlayerSkillPage.xaml.cs">
+      <DependentUpon>PlayerSkillPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\ShopPage.xaml.cs">
+      <DependentUpon>ShopPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\ShopSubPage.xaml.cs">
+      <DependentUpon>ShopSubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\SpellcastingPage.xaml.cs">
+      <DependentUpon>SpellcastingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Character\SplitPage.xaml.cs">
+      <DependentUpon>SplitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomDualTextEntryPage.xaml.cs">
+      <DependentUpon>CustomDualTextEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomPickerPage.xaml.cs">
+      <DependentUpon>CustomPickerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomTextEntryPage.xaml.cs">
+      <DependentUpon>CustomTextEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CustomTextEntrySuggestionsPage.xaml.cs">
+      <DependentUpon>CustomTextEntrySuggestionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Files\DownloadFilePage.xaml.cs">
+      <DependentUpon>DownloadFilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Files\EditFilePage.xaml.cs">
+      <DependentUpon>EditFilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Files\FileBrowser.xaml.cs">
+      <DependentUpon>FileBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Files\NewFolderPage.xaml.cs">
+      <DependentUpon>NewFolderPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Files\RenamePage.xaml.cs">
+      <DependentUpon>RenamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\InfoPage.xaml.cs">
+      <DependentUpon>InfoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\InfoSelectPage.xaml.cs">
+      <DependentUpon>InfoSelectPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\EntryListPage.xaml.cs">
+      <DependentUpon>EntryListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\IntListPage.xaml.cs">
+      <DependentUpon>IntListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\KeywordListPage.xaml.cs">
+      <DependentUpon>KeywordListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterActionEditPage.xaml.cs">
+      <DependentUpon>MonsterActionEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterSaveEditPage.xaml.cs">
+      <DependentUpon>MonsterSaveEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterSaveListPage.xaml.cs">
+      <DependentUpon>MonsterSaveListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterSkillEditPage.xaml.cs">
+      <DependentUpon>MonsterSkillEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterSkillListPage.xaml.cs">
+      <DependentUpon>MonsterSkillListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterTraitEditPage.xaml.cs">
+      <DependentUpon>MonsterTraitEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\MonsterTraitListPage.xaml.cs">
+      <DependentUpon>MonsterTraitListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\StringListPage.xaml.cs">
+      <DependentUpon>StringListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Collections\TableEntryEditPage.xaml.cs">
+      <DependentUpon>TableEntryEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Compendium.xaml.cs">
+      <DependentUpon>Compendium.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumBackgroundsPage.xaml.cs">
+      <DependentUpon>CompendiumBackgroundsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumClassesPage.xaml.cs">
+      <DependentUpon>CompendiumClassesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumConditionsPage.xaml.cs">
+      <DependentUpon>CompendiumConditionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumFeatsOverviewPage.xaml.cs">
+      <DependentUpon>CompendiumFeatsOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumFeatsPage.xaml.cs">
+      <DependentUpon>CompendiumFeatsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumItemsOverviewPage.xaml.cs">
+      <DependentUpon>CompendiumItemsOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumItemsPage.xaml.cs">
+      <DependentUpon>CompendiumItemsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumLanguagesPage.xaml.cs">
+      <DependentUpon>CompendiumLanguagesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumMagicOverviewPage.xaml.cs">
+      <DependentUpon>CompendiumMagicOverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumMagicPage.xaml.cs">
+      <DependentUpon>CompendiumMagicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumMonstersPage.xaml.cs">
+      <DependentUpon>CompendiumMonstersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumRacesPage.xaml.cs">
+      <DependentUpon>CompendiumRacesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumSkillsPage.xaml.cs">
+      <DependentUpon>CompendiumSkillsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumSpellsPage.xaml.cs">
+      <DependentUpon>CompendiumSpellsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumSubClassPage.xaml.cs">
+      <DependentUpon>CompendiumSubClassPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\CompendiumSubRacesPage.xaml.cs">
+      <DependentUpon>CompendiumSubRacesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Descriptions\DescriptionListPage.xaml.cs">
+      <DependentUpon>DescriptionListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Descriptions\EditDescription.xaml.cs">
+      <DependentUpon>EditDescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Descriptions\EditListDescription.xaml.cs">
+      <DependentUpon>EditListDescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Descriptions\EditTableDescription.xaml.cs">
+      <DependentUpon>EditTableDescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Descriptions\NamesEditPage.xaml.cs">
+      <DependentUpon>NamesEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditCantripDamage.xaml.cs">
+      <DependentUpon>EditCantripDamage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditCommon.xaml.cs">
+      <DependentUpon>EditCommon.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditCommonFlavor.xaml.cs">
+      <DependentUpon>EditCommonFlavor.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditFeatureContainer.xaml.cs">
+      <DependentUpon>EditFeatureContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditHitDie.xaml.cs">
+      <DependentUpon>EditHitDie.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditLanguage.xaml.cs">
+      <DependentUpon>EditLanguage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditMagic.xaml.cs">
+      <DependentUpon>EditMagic.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditMonster.xaml.cs">
+      <DependentUpon>EditMonster.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditMulticlassing.xaml.cs">
+      <DependentUpon>EditMulticlassing.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditRace.xaml.cs">
+      <DependentUpon>EditRace.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditScores.xaml.cs">
+      <DependentUpon>EditScores.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditSettings.xaml.cs">
+      <DependentUpon>EditSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditSkill.xaml.cs">
+      <DependentUpon>EditSkill.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditSpell.xaml.cs">
+      <DependentUpon>EditSpell.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditSubClass.xaml.cs">
+      <DependentUpon>EditSubClass.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\EditSubRace.xaml.cs">
+      <DependentUpon>EditSubRace.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\BonusFeatureSkillsPage.xaml.cs">
+      <DependentUpon>BonusFeatureSkillsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\BonusFeatureWeaponPage.xaml.cs">
+      <DependentUpon>BonusFeatureWeaponPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\DualSpellListPage.xaml.cs">
+      <DependentUpon>DualSpellListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditAbilityFeatFeature.xaml.cs">
+      <DependentUpon>EditAbilityFeatFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditAbilityFeature.xaml.cs">
+      <DependentUpon>EditAbilityFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditAddSpellsFeature.xaml.cs">
+      <DependentUpon>EditAddSpellsFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditBonusFeature.xaml.cs">
+      <DependentUpon>EditBonusFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditBonusSpellChoiceFeature.xaml.cs">
+      <DependentUpon>EditBonusSpellChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditBonusSpellFeature.xaml.cs">
+      <DependentUpon>EditBonusSpellFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditExpression.xaml.cs">
+      <DependentUpon>EditExpression.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditFeature.xaml.cs">
+      <DependentUpon>EditFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditFeatureChoiceFeature.xaml.cs">
+      <DependentUpon>EditFeatureChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditFeatureCollectionChoice.xaml.cs">
+      <DependentUpon>EditFeatureCollectionChoice.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditFormsCompanionsBonusFeature.xaml.cs">
+      <DependentUpon>EditFormsCompanionsBonusFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditFormsCompanionsFeature.xaml.cs">
+      <DependentUpon>EditFormsCompanionsFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditIncreaseSpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditIncreaseSpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditIntFeature.xaml.cs">
+      <DependentUpon>EditIntFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditItemChoiceConditionFeature.xaml.cs">
+      <DependentUpon>EditItemChoiceConditionFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditLanguageChoiceFeature.xaml.cs">
+      <DependentUpon>EditLanguageChoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditModifySpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditModifySpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditResourceFeature.xaml.cs">
+      <DependentUpon>EditResourceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSaveProficiencyFeature.xaml.cs">
+      <DependentUpon>EditSaveProficiencyFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSpeedFeature.xaml.cs">
+      <DependentUpon>EditSpeedFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSpellcasting.xaml.cs">
+      <DependentUpon>EditSpellcasting.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSpellchoiceFeature.xaml.cs">
+      <DependentUpon>EditSpellchoiceFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSpellModifyFeature.xaml.cs">
+      <DependentUpon>EditSpellModifyFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSpellslotFeature.xaml.cs">
+      <DependentUpon>EditSpellslotFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\EditSubClassFeature.xaml.cs">
+      <DependentUpon>EditSubClassFeature.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\FeatureKeywords.xaml.cs">
+      <DependentUpon>FeatureKeywords.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\FeatureListPage.xaml.cs">
+      <DependentUpon>FeatureListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\FreeItemChoicePage.xaml.cs">
+      <DependentUpon>FreeItemChoicePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\FreeItemPage.xaml.cs">
+      <DependentUpon>FreeItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\SkillProficiencyChoiceFeaturePage.xaml.cs">
+      <DependentUpon>SkillProficiencyChoiceFeaturePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\SkillProficiencyFeaturePage.xaml.cs">
+      <DependentUpon>SkillProficiencyFeaturePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\ToolProficiencyChoicePage.xaml.cs">
+      <DependentUpon>ToolProficiencyChoicePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Features\ToolProficiencyExpressionPage.xaml.cs">
+      <DependentUpon>ToolProficiencyExpressionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Items\EditArmor.xaml.cs">
+      <DependentUpon>EditArmor.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Items\EditItem.xaml.cs">
+      <DependentUpon>EditItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Items\EditShield.xaml.cs">
+      <DependentUpon>EditShield.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\Items\EditWeapon.xaml.cs">
+      <DependentUpon>EditWeapon.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Modify\SelectPage.xaml.cs">
+      <DependentUpon>SelectPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

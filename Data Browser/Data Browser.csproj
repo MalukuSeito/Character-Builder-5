@@ -89,10 +89,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCalc2\NCalc2.csproj">
-      <Project>{c0dd223d-d679-4b5e-abac-5b662d7a7fa2}</Project>
-      <Name>NCalc2</Name>
-    </ProjectReference>
     <ProjectReference Include="..\oglelements\OGL Elements.csproj">
       <Project>{a6d62ec7-9d12-44ae-8eca-61d436c5d9bd}</Project>
       <Name>OGL Elements</Name>

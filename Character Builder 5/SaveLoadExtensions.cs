@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Character_Builder_Base;
 
 namespace Character_Builder_5
 {
@@ -104,6 +105,7 @@ namespace Character_Builder_5
         {
             PluginManager plug = new PluginManager();
             context.Plugins = plug;
+            plug.Add(new NoFreeEquipment());
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {

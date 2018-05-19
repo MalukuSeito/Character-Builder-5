@@ -137,7 +137,7 @@ namespace OGL
             if (FeatureCollections[copy].ContainsKey(expression)) return new List<Feature>(FeatureCollections[copy][expression]);
             try
             {
-                Expression ex = new Expression(FixQuotes(expression));
+                Expression ex = new Expression(FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Feature current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -251,7 +251,7 @@ namespace OGL
             if (ItemLists.ContainsKey(expression)) return new List<Item>(ItemLists[expression]);
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Item current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -429,7 +429,7 @@ namespace OGL
             if (expression == null || expression == "") expression = "true";
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Spell current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -467,7 +467,7 @@ namespace OGL
             if (expression == null || expression == "") expression = "true";
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Monster current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {

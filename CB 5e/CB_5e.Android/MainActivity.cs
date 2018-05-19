@@ -45,11 +45,13 @@ namespace CB_5e.Droid
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledException;
             App a = new App();
             LoadApplication(a);
+
             if (Intent.Action == Intent.ActionSend || Intent.Action == Intent.ActionSendMultiple)
             {
                 Task.Run(async () =>
                 {
-                    IFolder incoming = await App.Storage.CreateFolderAsync("Incoming", CreationCollisionOption.OpenIfExists);
+                    DirectoryInfo incoming = new DirectoryInfo(Path.Combine(App.Storage.FullName, "Incoming"));
+                    if (!incoming.Exists) incoming.Create();
                     // Get the info from ClipData 
                     for (int i = 0; i < Intent.ClipData.ItemCount; i++)
                     {
@@ -63,8 +65,10 @@ namespace CB_5e.Droid
                         //pdfStream.CopyTo(memOfPdf);
                         string file = System.IO.Path.GetFileName(pdf.Uri.Path);
                         if (file == null || file == "") file = "Incoming.file";
-                        IFile f = await incoming.CreateFileAsync(file, CreationCollisionOption.GenerateUniqueName);
-                        using (Stream s = await f.OpenAsync(PCLStorage.FileAccess.ReadAndWrite))
+                        FileInfo f = new FileInfo(Path.Combine(incoming.FullName, file));
+                        int j = 0;
+                        while (f.Exists) f = new FileInfo(Path.Combine(incoming.FullName, file + "(" + ++j + ")"));
+                        using (Stream s = new FileStream(f.FullName, FileMode.Create))
                         {
                             await pdfStream.CopyToAsync(s);
                             pdfStream.Close();

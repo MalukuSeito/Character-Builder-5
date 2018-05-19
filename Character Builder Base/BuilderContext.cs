@@ -16,7 +16,7 @@ namespace Character_Builder
         public int UnsavedChanges = 0;
         public int MaxBuffer = 200;
         public PluginManager _plugins;
-        public PluginManager Plugins { get { return _plugins; } set { _plugins = value; _plugins.Load(Player?.ExcludedSources); } }
+        public PluginManager Plugins { get { return _plugins; } set { _plugins = value; _plugins.Load(Player?.ActiveHouseRules); } }
 
         public Player _current;
         public Player Player
@@ -28,22 +28,24 @@ namespace Character_Builder
                 _current.Context = this;
                 if (_current == null)
                 {
-                    Plugins?.Load(null);
+                    
                     if (ExcludedSources.Count > 0)
                     {
                         ExcludedSources.Clear();
                         SourcesChangedEvent?.Invoke(_current, null);
                     }
+                    Plugins?.Load(null);
                 }
                 else
                 {
-                    Plugins?.Load(value.ActiveHouseRules);
+                    
                     if (!ExcludedSources.SetEquals(value.ExcludedSources))
                     {
                         ExcludedSources.Clear();
                         ExcludedSources.UnionWith(value.ExcludedSources);
                         SourcesChangedEvent?.Invoke(_current, null);
                     }
+                    Plugins?.Load(value.ActiveHouseRules);
                 }
             }
         }

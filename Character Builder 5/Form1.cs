@@ -90,7 +90,6 @@ namespace Character_Builder_5
                 p.Click += pluginClick;
                 configureHouserulesToolStripMenuItem.DropDownItems.Add(p);
             }
-            Program.Context.Plugins.PluginsChanged += PluginManager_PluginsChanged;
             BuildSources();
             portraitBox.AllowDrop = true;
             FactionInsignia.AllowDrop = true;
@@ -103,6 +102,7 @@ namespace Character_Builder_5
 
         public void BuildSources()
         {
+            Program.Context.Plugins.PluginsChanged += PluginManager_PluginsChanged;
             sourcesToolStrip.DropDownItems.Clear();
             ToolStripMenuItem addall = new ToolStripMenuItem("Add all")
             {

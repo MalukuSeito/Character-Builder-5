@@ -151,7 +151,7 @@ namespace Character_Builder
             if (classlevel == 0) classlevel = level;
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsOrdinal | EvaluateOptions.MatchStringsWithIgnoreCase);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -213,7 +213,7 @@ namespace Character_Builder
             if (classlevel == 0) classlevel = level;
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -256,7 +256,7 @@ namespace Character_Builder
             if (classlevel == 0) classlevel = level;
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -328,7 +328,7 @@ namespace Character_Builder
             }
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(cls.MulticlassingCondition));
+                Expression ex = new Expression(ConfigManager.FixQuotes(cls.MulticlassingCondition), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -370,7 +370,7 @@ namespace Character_Builder
         {
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(acf.Expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(acf.Expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -442,7 +442,7 @@ namespace Character_Builder
             if (additionalKeywords == null) additionalKeywords = new List<string>();
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(bf.Condition));
+                Expression ex = new Expression(ConfigManager.FixQuotes(bf.Condition), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -511,7 +511,7 @@ namespace Character_Builder
             if (i != null && i.CachedMatches.ContainsKey(expression + additionalKeywords.ToString())) return i.CachedMatches[expression + additionalKeywords.ToString()];
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -571,7 +571,7 @@ namespace Character_Builder
             if (context.ItemLists.ContainsKey(expression)) return new List<Item>(context.ItemLists[expression]);
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Item current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -620,7 +620,7 @@ namespace Character_Builder
             try
             {
                 bool caching = true;
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Spell current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -661,7 +661,7 @@ namespace Character_Builder
             if (additionalKeywords == null) additionalKeywords = new List<string>();
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();
@@ -712,7 +712,7 @@ namespace Character_Builder
             if (expression == null || expression == "") expression = "true";
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 Monster current = null;
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
@@ -792,7 +792,7 @@ namespace Character_Builder
             if (classlevel == 0) classlevel = level;
             try
             {
-                Expression ex = new Expression(ConfigManager.FixQuotes(expression));
+                Expression ex = new Expression(ConfigManager.FixQuotes(expression), EvaluateOptions.MatchStringsWithIgnoreCase | EvaluateOptions.MatchStringsOrdinal);
                 ex.EvaluateParameter += delegate (string name, ParameterArgs args)
                 {
                     name = name.ToLowerInvariant();

@@ -690,6 +690,8 @@
     <PDFField Name="Wis1" Field="Wis1" />
     <PDFField Name="Cha1" Field="Cha1" />
     <PDFField Name="Trait1" Field="Description1" />
+    <PDFField Name="Feature1" Field="From1" />
+
 
     <PDFField Name="Name2" Field="Name2" />
     <PDFField Name="Type2" Field="Type2" />
@@ -703,6 +705,7 @@
     <PDFField Name="Wis2" Field="Wis2" />
     <PDFField Name="Cha2" Field="Cha2" />
     <PDFField Name="Trait2" Field="Description2" />
+    <PDFField Name="Feature2" Field="From2" />
   </MonsterFields>
   <MonstersFile>Monster.pdf</MonstersFile>
   <Name>Default Sheet, double sized combat sheet</Name>
