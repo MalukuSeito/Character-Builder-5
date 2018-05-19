@@ -12,6 +12,7 @@ using PCLStorage;
 using System.IO;
 using CB_5e.ViewModels.Character;
 using CB_5e.ViewModels.Character.Build;
+using Character_Builder_Base;
 
 namespace CB_5e.Views.Character
 {
@@ -96,6 +97,7 @@ namespace CB_5e.Views.Character
                 Name = "New Player"
             });
             PluginManager manager = new PluginManager();
+            manager.plugins.Add(new NoFreeEquipment());
             manager.plugins.Add(new SpellPoints());
             manager.plugins.Add(new SingleLanguage());
             Context.Plugins = manager;

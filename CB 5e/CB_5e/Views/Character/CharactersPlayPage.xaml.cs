@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using PluginDMG;
 using CB_5e.ViewModels.Character;
 using CB_5e.ViewModels.Character.Play;
+using Character_Builder_Base;
 
 namespace CB_5e.Views.Character
 {
@@ -37,6 +38,7 @@ namespace CB_5e.Views.Character
                 return;
             BuilderContext Context = new BuilderContext(item.Player);
             PluginManager manager = new PluginManager();
+            manager.Add(new NoFreeEquipment());
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
             Context.Plugins = manager;
