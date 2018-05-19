@@ -81,7 +81,7 @@ namespace CB_5e.ViewModels.Character
                     characters.Create();
                     string example = Path.Combine(characters.FullName, "Ex Ample.cb5");
                     var assembly = typeof(PCLSourceManager).GetTypeInfo().Assembly;
-                    using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Ex Ample.cb5"))
+                    using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Common.Ex Ample.cb5"))
                     {
                         using (Stream ex = new FileStream(example, FileMode.OpenOrCreate))
                         {

@@ -40,16 +40,16 @@ namespace CB_5e.UWP
             StorageFile file = await fileSave.PickSaveFileAsync();
             if (file != null) {
                 fs = await file.OpenStreamForWriteAsync();
-                PDF p = await Load(await PCLSourceManager.Data.GetFileAsync(Exporter).ConfigureAwait(false)).ConfigureAwait(false);
+                PDF p = await Load(new FileInfo(Path.Combine(PCLSourceManager.Data.FullName, Exporter))).ConfigureAwait(false);
                 await p.Export(context, this).ConfigureAwait(false);
                 fs.Close();
             }
         }
-        public async static Task<PDF> Load(IFile file)
+        public async static Task<PDF> Load(FileInfo file)
         {
-            using (Stream s = await file.OpenAsync(PCLStorage.FileAccess.Read))
+            using (Stream s = new FileStream(file.FullName, FileMode.Open))
             {
-                PDF p = (PDF)PDF.Serializer.Deserialize(s);
+                PDF p = await Task.Run(() => (PDF)PDF.Serializer.Deserialize(s)).ConfigureAwait(false);
                 p.File = PCLImport.MakeRelativeFile(p.File);
                 p.SpellFile = PCLImport.MakeRelativeFile(p.SpellFile);
                 p.LogFile = PCLImport.MakeRelativeFile(p.LogFile);
@@ -62,8 +62,7 @@ namespace CB_5e.UWP
 
         public override async Task<IPDFEditor> CreateEditor(string file)
         {
-            IFile f = await PCLSourceManager.Data.GetFileAsync(file).ConfigureAwait(false);
-            using (Stream ls = await f.OpenAsync(PCLStorage.FileAccess.Read).ConfigureAwait(false))
+            using (Stream ls = new FileStream(Path.Combine(PCLSourceManager.Data.FullName, file), FileMode.Open))
             {
                 using (MemoryStream ms = new MemoryStream())
                 {

@@ -71,7 +71,7 @@ namespace CB_5e.Services
             {
                 Data.Create();
                 var assembly = typeof(PCLSourceManager).GetTypeInfo().Assembly;
-                using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Data.zip"))
+                using (Stream stream = assembly.GetManifestResourceStream("CB_5e.Common.Data.zip"))
                 {
                     using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read, false))
                     {
