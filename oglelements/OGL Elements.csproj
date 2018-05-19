@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
     <PackageId>OGL Elements</PackageId>
     <Authors>Maluku Seito</Authors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
