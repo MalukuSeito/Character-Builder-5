@@ -145,7 +145,7 @@ namespace OGL
         }
         public int ApplyMod(Ability ab)
         {
-            int value = 0;
+            int value = -5;
             if (ab.HasFlag(Ability.Charisma)) value = Math.Max(value, ChaMod);
             if (ab.HasFlag(Ability.Constitution)) value = Math.Max(value, ConMod);
             if (ab.HasFlag(Ability.Dexterity)) value = Math.Max(value, DexMod);
