@@ -601,9 +601,9 @@ namespace Character_Builder
 
                                         if (logtrans.ContainsKey("XP" + counter)) lp.SetField(logtrans["XP" + counter], entry.XP.ToString());
                                         if (logtrans.ContainsKey("Gold" + counter)) lp.SetField(logtrans["Gold" + counter], entry.GetMoney());
-                                        if (logtrans.ContainsKey("Downtime" + counter)) lp.SetField(logtrans["Downtime" + counter], PlusMinus(entry.Downtime));
-                                        if (logtrans.ContainsKey("Renown" + counter)) lp.SetField(logtrans["Renown" + counter], PlusMinus(entry.Renown));
-                                        if (logtrans.ContainsKey("MagicItems" + counter)) lp.SetField(logtrans["MagicItems" + counter], PlusMinus(entry.MagicItems));
+                                        if (logtrans.ContainsKey("Downtime" + counter)) lp.SetField(logtrans["Downtime" + counter], PlusMinus(entry.Downtime, "--"));
+                                        if (logtrans.ContainsKey("Renown" + counter)) lp.SetField(logtrans["Renown" + counter], PlusMinus(entry.Renown, "--"));
+                                        if (logtrans.ContainsKey("MagicItems" + counter)) lp.SetField(logtrans["MagicItems" + counter], PlusMinus(entry.MagicItems, "--"));
                                     }
                                     xp += entry.XP;
                                     gold.pp += entry.PP;
@@ -1142,10 +1142,10 @@ namespace Character_Builder
             if (trans.ContainsKey("FactionRank")) p.SetField(trans["FactionRank"], context.Player.FactionRank);
         }
 
-        private string PlusMinus(int value)
+        private string PlusMinus(int value, string zero = "+0")
         {
             if (value > 0) return "+" + value;
-            if (value == 0) return "--";
+            if (value == 0) return zero;
             return value.ToString();
         }
     }

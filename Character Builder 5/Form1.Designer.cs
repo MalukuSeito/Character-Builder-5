@@ -57,6 +57,7 @@
             this.PDFjournal = new System.Windows.Forms.ToolStripMenuItem();
             this.PDFspellbook = new System.Windows.Forms.ToolStripMenuItem();
             this.includeActionsInPDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.makeDefaultEditorForcb5FilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -402,7 +403,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -808,6 +808,15 @@
             this.includeActionsInPDFToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.includeActionsInPDFToolStripMenuItem.Text = "Include Actions in &PDF";
             this.includeActionsInPDFToolStripMenuItem.Click += new System.EventHandler(this.includeActionsInPDFToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Checked = true;
+            this.toolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(312, 22);
+            this.toolStripMenuItem1.Text = "Include Selected Companions / Forms in PDF";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // makeDefaultEditorForcb5FilesToolStripMenuItem
             // 
@@ -2933,6 +2942,16 @@
             // 
             this.Downtime.Enabled = false;
             this.Downtime.Location = new System.Drawing.Point(243, 3);
+            this.Downtime.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.Downtime.Minimum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            -2147483648});
             this.Downtime.Name = "Downtime";
             this.Downtime.Size = new System.Drawing.Size(61, 20);
             this.Downtime.TabIndex = 4;
@@ -2949,7 +2968,17 @@
             // Renown
             // 
             this.Renown.Enabled = false;
-            this.Renown.Location = new System.Drawing.Point(86, 3);
+            this.Renown.Location = new System.Drawing.Point(86, 4);
+            this.Renown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.Renown.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
             this.Renown.Name = "Renown";
             this.Renown.Size = new System.Drawing.Size(61, 20);
             this.Renown.TabIndex = 2;
@@ -5035,15 +5064,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Checked = true;
-            this.toolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(312, 22);
-            this.toolStripMenuItem1.Text = "Include Selected Companions / Forms in PDF";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // Form1
             // 

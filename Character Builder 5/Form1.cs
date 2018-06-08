@@ -130,6 +130,13 @@ namespace Character_Builder_5
                 p.Checked = !Program.Context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase);
                 sourcesToolStrip.DropDownItems.Add(p);
             }
+            itemCategories.Items.Clear();
+            itemCategories.Items.AddRange(Program.Context.Section().ToArray<Category>());
+            itemCategories.Items.AddRange(Program.Context.MagicSection().ToArray<MagicCategory>());
+            itemCategories.Items.Add("Spells");
+            itemCategories.Items.AddRange(Program.Context.FeatureSection().ToArray<string>());
+            ArrayBox.Items.Clear();
+            ArrayBox.Items.AddRange(Program.Context.Scores.GetArrays().ToArray<AbilityScoreArray>());
         }
 
         private void Remall_Click(object sender, EventArgs e)
