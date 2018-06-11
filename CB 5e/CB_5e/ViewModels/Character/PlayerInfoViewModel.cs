@@ -20,6 +20,7 @@ namespace CB_5e.ViewModels.Character
 
         public PlayerInfoViewModel(PlayerModel parent) : base(parent, "Overview")
         {
+            Image = ImageSource.FromResource("CB_5e.images.overview.png");
             parent.PlayerChanged += Parent_PlayerChanged;
             Scores = new ScoresModelViewModel(Context);
             ResetHitDie = new Command(() => {

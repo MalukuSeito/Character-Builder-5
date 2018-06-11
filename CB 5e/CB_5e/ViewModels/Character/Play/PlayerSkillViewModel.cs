@@ -15,6 +15,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerSkillViewModel(PlayerModel parent) : base(parent, "Skills")
         {
+            Image = ImageSource.FromResource("CB_5e.images.skill.png");
             DeselectSkill = new Command(async () =>
             {
                 SkillBusy = true;

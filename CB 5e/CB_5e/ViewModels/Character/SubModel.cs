@@ -21,6 +21,8 @@ namespace CB_5e.ViewModels.Character
             parent.PlayerChanged += Parent_PlayerChanged;
         }
 
+        public ImageSource Image { get; set; } = null;
+
         private void Parent_PlayerChanged(object sender, EventArgs e)
         {
             OnPropertyChanged(null);

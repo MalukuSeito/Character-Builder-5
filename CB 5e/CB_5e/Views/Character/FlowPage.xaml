@@ -13,8 +13,14 @@
 
                 <flv:FlowListView.FlowColumnTemplate>
                     <DataTemplate>
-                        <Label HorizontalOptions="Fill" VerticalOptions="Fill" 
-				XAlign="Center" YAlign="Center" Text="{Binding Title}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Source="{Binding Image}" Aspect="AspectFit"/>
+                            <Label HorizontalTextAlignment="Center" Grid.Row="1" Text="{Binding Title}"/>
+                        </Grid>
                     </DataTemplate>
                 </flv:FlowListView.FlowColumnTemplate>
 
