@@ -2041,7 +2041,7 @@ namespace Character_Builder
                 Feature f = fc.feature;
                 if (f is BonusFeature b)
                 {
-                    if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0"))
+                    if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0" || b.BaseAbility != Ability.None))
                     {
                         if (Utils.Matches(Context, b, weapon, fc.classlevel, additionalKW, asa) || Utils.Matches(Context, b, baseAbility, "Weapon", "Weapon", fc.classlevel, additionalKW))
                         {
