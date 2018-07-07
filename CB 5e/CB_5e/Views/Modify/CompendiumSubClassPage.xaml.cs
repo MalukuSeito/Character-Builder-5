@@ -106,12 +106,12 @@ namespace CB_5e.Views.Modify
         private Page MakePage(SubClassEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditSubClass(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features" });
-            t.Children.Add(new NavigationPage(new IntListPage(m, "MulticlassingSpellLevels", "Level ", "0 'levels'", Keyboard.Numeric)) { Title = "Multiclassing" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features" });
+            t.Children.Add(new NavigationPage(new EditSubClass(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions", Icon = Device.RuntimePlatform == Device.iOS ? "list.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features", Icon = Device.RuntimePlatform == Device.iOS ? "wallet_app.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features", Icon = Device.RuntimePlatform == Device.iOS ? "document.png" : null });
+            t.Children.Add(new NavigationPage(new IntListPage(m, "MulticlassingSpellLevels", "Level ", "0 'levels'", Keyboard.Numeric)) { Title = "Multiclassing", Icon = Device.RuntimePlatform == Device.iOS ? "user_group_man_woman.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features", Icon = Device.RuntimePlatform == Device.iOS ? "documents.png" : null });
             return t;
         }
     }

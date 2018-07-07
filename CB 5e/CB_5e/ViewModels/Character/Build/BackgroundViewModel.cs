@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Build
 {
@@ -16,6 +17,7 @@ namespace CB_5e.ViewModels.Character.Build
         public BackgroundViewModel(PlayerModel parent) : base(parent, "Background")
         {
             UpdateRaceChoices();
+            Image = ImageSource.FromResource("CB_5e.images.background.png");
             Parent.PlayerChanged += Parent_PlayerChanged;
         }
 

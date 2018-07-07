@@ -106,14 +106,14 @@ namespace CB_5e.Views.Modify
         private Page MakePage(MagicEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new EditMagic(m, GetItemsAsync(m.Context))) { Title = "Magic Property" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "CarryFeatures")) { Title = "Carry Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "EquipFeatures")) { Title = "Equipped Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "OnUseFeatures")) { Title = "On Use Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunementFeatures")) { Title = "Attuned Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunedEquipFeatures")) { Title = "Attuned Equip Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunedOnUseFeatures")) { Title = "Attuned On Use Features" });
+            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new EditMagic(m, GetItemsAsync(m.Context))) { Title = "Magic Property", Icon = Device.RuntimePlatform == Device.iOS ? "settings.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "CarryFeatures")) { Title = "Carry Features", Icon = Device.RuntimePlatform == Device.iOS ? "briefcase.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "EquipFeatures")) { Title = "Equipped Features", Icon = Device.RuntimePlatform == Device.iOS ? "user_male.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "OnUseFeatures")) { Title = "On Use Features", Icon = Device.RuntimePlatform == Device.iOS ? "define_location.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunementFeatures")) { Title = "Attuned Features", Icon = Device.RuntimePlatform == Device.iOS ? "star.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunedEquipFeatures")) { Title = "Attuned Equip Features", Icon = Device.RuntimePlatform == Device.iOS ? "add_user_male.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "AttunedOnUseFeatures")) { Title = "Attuned On Use Features", Icon = Device.RuntimePlatform == Device.iOS ? "automation.png" : null });
             return t;
         }
 

@@ -38,6 +38,7 @@ namespace CB_5e.ViewModels.Character
         }
 
         public abstract void UpdateSpellcasting();
+        public abstract void UpdateForms();
 
         public Command Undo { get; set; }
         public Command Redo { get; set; }

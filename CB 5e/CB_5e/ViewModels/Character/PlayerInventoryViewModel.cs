@@ -17,6 +17,7 @@ namespace CB_5e.ViewModels.Character
     {
         public PlayerInventoryViewModel(PlayerModel parent) : base(parent, "Inventory")
         {
+            Image = ImageSource.FromResource("CB_5e.images.inventory.png");
             parent.PlayerChanged += Parent_PlayerChanged;
             EditItem = new Command(async (par) =>
             {

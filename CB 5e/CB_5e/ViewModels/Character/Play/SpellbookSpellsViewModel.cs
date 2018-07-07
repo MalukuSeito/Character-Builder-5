@@ -3,6 +3,7 @@ using CB_5e.ViewModels.Character;
 using CB_5e.Views;
 using Character_Builder;
 using OGL;
+using OGL.Base;
 using OGL.Features;
 using OGL.Spells;
 using System;
@@ -23,6 +24,18 @@ namespace CB_5e.ViewModels.Character.Play
         public PlayerViewModel ViewModel;
         public SpellbookSpellsViewModel(PlayerViewModel model, SpellcastingFeature spellcastingFeature) : base(model, spellcastingFeature, spellcastingFeature.DisplayName??spellcastingFeature.SpellcastingID)
         {
+            switch (spellcastingFeature.Preparation)
+            {
+                case PreparationMode.ClassList:
+                    Image = ImageSource.FromResource("CB_5e.images.classlist.png");
+                    break;
+                case PreparationMode.Spellbook:
+                    Image = ImageSource.FromResource("CB_5e.images.spellbook.png");
+                    break;
+                case PreparationMode.LearnSpells:
+                    Image = ImageSource.FromResource("CB_5e.images.spellcasting.png");
+                    break;
+            }
             ViewModel = model;
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             OnHighlight = new Command((par) =>

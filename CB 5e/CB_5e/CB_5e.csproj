@@ -148,7 +148,6 @@
     <Compile Include="ViewModels\Character\JournalViewModel.cs" />
     <Compile Include="ViewModels\Character\Choices\LanguageChoice.cs" />
     <Compile Include="ViewModels\Character\LoadingProgress.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PCLImport.cs" />
     <Compile Include="Services\PCLSourceManager.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
@@ -1516,6 +1515,56 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\overview.png" />
+    <EmbeddedResource Include="images\skill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\resources.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\actions.png" />
+    <EmbeddedResource Include="images\conditions.png" />
+    <EmbeddedResource Include="images\feats.png" />
+    <EmbeddedResource Include="images\classlist.png" />
+    <EmbeddedResource Include="images\inventory.png" />
+    <EmbeddedResource Include="images\prof.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\1e233a34-374f-4348-a588-793e0bc793b5.png" />
+    <EmbeddedResource Include="images\build.png" />
+    <EmbeddedResource Include="images\export.png" />
+    <EmbeddedResource Include="images\forms.png" />
+    <EmbeddedResource Include="images\invoptions.png" />
+    <EmbeddedResource Include="images\journal.png" />
+    <EmbeddedResource Include="images\notes.png" />
+    <EmbeddedResource Include="images\prepare.png" />
+    <EmbeddedResource Include="images\shop.png" />
+    <EmbeddedResource Include="images\spellbook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\background.png" />
+    <EmbeddedResource Include="images\class.png" />
+    <EmbeddedResource Include="images\feats2.png" />
+    <EmbeddedResource Include="images\petshop.png" />
+    <EmbeddedResource Include="images\race.png" />
+    <EmbeddedResource Include="images\scores.png" />
+    <EmbeddedResource Include="images\spellcasting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\personal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="images\library.png" />
+    <EmbeddedResource Include="images\play.png" />
+    <EmbeddedResource Include="images\sources.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="icons\pencil%403x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.5.0.280555\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.5.0.280555\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

@@ -7,7 +7,7 @@
         <StackLayout>
             <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Actions}"
                       VerticalOptions="FillAndExpand"
-                      IsPullToRefreshEnabled="true"
+                      IsPullToRefreshEnabled="false"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement">
                 <ListView.Header>
@@ -17,7 +17,7 @@
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding Text}" Detail="{Binding Desc}"/>
+                        <TextCell Text="{Binding Title}" Detail="{Binding Text}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -13,6 +13,7 @@ namespace CB_5e.ViewModels.Character
     {
         public PlayerNotesViewModel(PlayerModel parent) : base(parent, "Notes")
         {
+            Image = ImageSource.FromResource("CB_5e.images.notes.png");
             UpdateNotes();
             NewNote = new Command(() =>
             {

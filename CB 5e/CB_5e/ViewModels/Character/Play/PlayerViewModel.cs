@@ -68,7 +68,7 @@ namespace CB_5e.ViewModels.Character.Play
             playerPDF = new PlayerPDFViewModel(this);
             build = new SwitchToBuildModel(this);
             UpdateSpellcasting();
-            UpdateForms();
+            UpdateFormModels();
         }
 
         public PlayerViewModel(PlayerModel parent) : base(parent.Context)
@@ -92,7 +92,7 @@ namespace CB_5e.ViewModels.Character.Play
             playerForms = new PlayerFormsCompanionsViewModel(this);
             playerNotes = new PlayerNotesViewModel(this);
             playerPDF = new PlayerPDFViewModel(this);
-            UpdateForms();
+            UpdateFormModels();
             UpdateSpellcasting();
         }
 
@@ -159,13 +159,19 @@ namespace CB_5e.ViewModels.Character.Play
         {
             OnPropertyChanged(null);
             UpdateSpellcasting();
-            UpdateForms();
+            UpdateFormModels();
         }
         
         public ObservableRangeCollection<SpellbookViewModel> Spellcasting { get; set; } = new ObservableRangeCollection<SpellbookViewModel>();
         public ObservableRangeCollection<FormsCompanionsViewModel> FormsCompanions { get; set; } = new ObservableRangeCollection<FormsCompanionsViewModel>();
 
-        public void UpdateForms()
+        public override void UpdateForms()
+        {
+            Parent?.UpdateForms();
+            playerForms.Update();
+        }
+
+        public void UpdateFormModels()
         {
             List<FormsCompanionsViewModel> views = new List<FormsCompanionsViewModel>();
             foreach (FormsCompanionInfo fci in Context.Player.GetFormsCompanionChoices().OrderBy(f => f.DisplayName))

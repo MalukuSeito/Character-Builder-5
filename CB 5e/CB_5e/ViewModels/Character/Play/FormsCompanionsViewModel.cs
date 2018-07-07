@@ -27,6 +27,7 @@ namespace CB_5e.ViewModels.Character.Play
         public FormsCompanionsViewModel(PlayerModel model, FormsCompanionInfo fci): base(model, fci.DisplayName)
         {
             Model = model;
+            Image = ImageSource.FromResource("CB_5e.images.petshop.png");
             FormsCompanion = fci;
             OnPrepare = new Command((par) =>
             {
@@ -51,9 +52,11 @@ namespace CB_5e.ViewModels.Character.Play
                         if (mvm.BadChoice) Choices.Remove(mvm);
                         if (mvm.BadChoice) choices.Remove(mvm);
                     }
+                    UpdateForms();
                     OnPropertyChanged("Count");
                     OnPropertyChanged("Selected");
                     OnPropertyChanged("SelectedInfo");
+                    
                 }
             }, (par) => par is MonsterViewModel mvm);
             ShowInfo = new Command(async (par) =>
@@ -102,11 +105,12 @@ namespace CB_5e.ViewModels.Character.Play
             List<Monster> c = new List<Monster>(FormsCompanion.Choices);
             foreach (Monster m in FormsCompanion.AvailableOptions(Model.Context, Model.Context.Player.GetFinalAbilityScores()))
             {
+                int found = c.RemoveAll(mm => StringComparer.OrdinalIgnoreCase.Equals(m.Name, mm.Name));
                 choices.Add(new MonsterViewModel(m)
                 {
-                    Selected = c.Remove(m),
                     Prepare = OnPrepare,
-                    ShowInfo = ShowInfo
+                    ShowInfo = ShowInfo,
+                    Selected = found > 0
                 });
             }
             foreach (Monster m in c)

@@ -67,8 +67,8 @@ namespace CB_5e.Views.Modify
                     await context.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels));
                     LevelEditModel m = new LevelEditModel(context);
                     TabbedPage t = new TabbedPage();
-                    t.Children.Add(new NavigationPage(new IntListPage(m, "Experience", "Level ", "0", Keyboard.Numeric, true, true)) { Title = "Experience" });
-                    t.Children.Add(new NavigationPage(new IntListPage(m, "Proficiency", "Level ", "+#;-#;0", Keyboard.Telephone, true, true)) { Title = "Proficiency" });
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "Experience", "Level ", "0", Keyboard.Numeric, true, true)) { Title = "Experience", Icon = Device.RuntimePlatform == Device.iOS ? "upload.png" : null });
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "Proficiency", "Level ", "+#;-#;0", Keyboard.Telephone, true, true)) { Title = "Proficiency", Icon = Device.RuntimePlatform == Device.iOS ? "duplicate.png" : null });
                     m.TrackChanges = true;
                     await Navigation.PushModalAsync(t);
                 }
@@ -81,10 +81,10 @@ namespace CB_5e.Views.Modify
                     await context.LoadAbilityScoresAsync(await PCLSourceManager.Data.GetFileAsync(config.AbilityScores));
                     ScoresEditModel m = new ScoresEditModel(context);
                     TabbedPage t = new TabbedPage();
-                    t.Children.Add(new NavigationPage(new EditScores(m)) { Title = "Scores" });
-                    t.Children.Add(new NavigationPage(new StringListPage(m, "Arrays", null, true)) { Title = "Arrays" });
+                    t.Children.Add(new NavigationPage(new EditScores(m)) { Title = "Scores", Icon = Device.RuntimePlatform == Device.iOS ? "health_sources.png" : null });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "Arrays", null, true)) { Title = "Arrays", Icon = Device.RuntimePlatform == Device.iOS ? "menu.png" : null });
                     IntListPage p = new IntListPage(m, "PointBuyCost", "", "0 points", Keyboard.Telephone, true, false, m.PointBuyMinScore);
-                    t.Children.Add(new NavigationPage(p) { Title = "Point Buy Cost" });
+                    t.Children.Add(new NavigationPage(p) { Title = "Point Buy Cost", Icon = Device.RuntimePlatform == Device.iOS ? "us_dollar.png" : null });
                     m.PropertyChanged += (o, ee) =>
                     {
                         if (ee.PropertyName == "" || ee.PropertyName == null || ee.PropertyName == "PointBuyMinScore") p.Offset = m.PointBuyMinScore;
@@ -100,10 +100,10 @@ namespace CB_5e.Views.Modify
                     SettingsEditModel m = new SettingsEditModel(context);
                     TabbedPage t = new TabbedPage();
                     t.Children.Add(new NavigationPage(new EditSettings(m)) { Title = "Settings" });
-                    t.Children.Add(new NavigationPage(new StringListPage(m, "EqiupmentSlots", null, true)) { Title = "Slots" });
-                    t.Children.Add(new NavigationPage(new StringListPage(m, "PDFExporters", null, true)) { Title = "PDF" });
-                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "CommonFeatures")) { Title = "Common Features" });
-                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "Features (Multiclassing)" });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "EqiupmentSlots", null, true)) { Title = "Slots", Icon = Device.RuntimePlatform == Device.iOS ? "database.png" : null });
+                    t.Children.Add(new NavigationPage(new StringListPage(m, "PDFExporters", null, true)) { Title = "PDF", Icon = Device.RuntimePlatform == Device.iOS ? "pdf.png" : null });
+                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "CommonFeatures")) { Title = "Common Features", Icon = Device.RuntimePlatform == Device.iOS ? "wallet_app.png" : null });
+                    t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "Features (Multiclassing)", Icon = Device.RuntimePlatform == Device.iOS ? "user_group_man_woman.png" : null });
                     await Navigation.PushModalAsync(t);
                 }
             }

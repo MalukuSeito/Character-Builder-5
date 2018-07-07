@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character
 {
@@ -13,6 +14,7 @@ namespace CB_5e.ViewModels.Character
     {
         public PlayerFeaturesViewModel(PlayerModel parent) : base(parent, "Features & Traits")
         {
+            Image = ImageSource.FromResource("CB_5e.images.feats.png");
             parent.PlayerChanged += Parent_PlayerChanged;
             features = (from f in Context.Player.GetFeatures() where f.Name != "" && !f.Hidden select f).ToList();
             UpdateFeatures();

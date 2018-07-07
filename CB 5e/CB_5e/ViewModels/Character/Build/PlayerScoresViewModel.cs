@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Build
 {
@@ -15,6 +16,7 @@ namespace CB_5e.ViewModels.Character.Build
         public ScoresModelViewModel Scores {get; set;}
         public PlayerScoresViewModel(PlayerModel parent) : base(parent, "Ability Scores")
         {
+            Image = ImageSource.FromResource("CB_5e.images.scores.png");
             Scores = new ScoresModelViewModel(Context);
             UpdateAbilityChoices();
             parent.PlayerChanged += Parent_PlayerChanged;

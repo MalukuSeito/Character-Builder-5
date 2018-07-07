@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Play
 {
@@ -15,6 +16,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerActionsViewModel(PlayerModel parent) : base(parent, "Actions")
         {
+            Image = ImageSource.FromResource("CB_5e.images.actions.png");
             actions = new List<ActionInfo>();
             actions.AddRange(Context.Player.GetActions());
             UpdateActions();

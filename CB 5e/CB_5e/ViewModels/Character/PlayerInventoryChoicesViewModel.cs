@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character
 {
@@ -13,6 +14,7 @@ namespace CB_5e.ViewModels.Character
     {
         public PlayerInventoryChoicesViewModel(PlayerModel parent) : base(parent, "Item Choices")
         {
+            Image = ImageSource.FromResource("CB_5e.images.invoptions.png");
             UpdateInventoryChoices();
             parent.PlayerChanged += Parent_PlayerChanged;
         }

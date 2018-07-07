@@ -103,25 +103,25 @@ namespace CB_5e.Views.Modify
         private Page MakePage(MonsterEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditCommonFlavor(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new EditMonster(m)) { Title = "Monster" });
-            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
-            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Type", KeywordListPage.KeywordGroup.MONSTER)) { Title = "Type" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Speed")) { Title = "Speed" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Resistances")) { Title = "Resistances" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Vulnerabilities")) { Title = "Vulnerabilities" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Immunities")) { Title = "Immunities" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "ConditionImmunities")) { Title = "Condition Immunities" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Senses")) { Title = "Senses" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Languages", GetLangAsync(m.Context))) { Title = "Languages" });
-            t.Children.Add(new NavigationPage(new MonsterSaveListPage(m, "SaveBonus")) { Title = "Save Prof." });
-            t.Children.Add(new NavigationPage(new MonsterSkillListPage(m, "SkillBonus")) { Title = "Skill Prof." });
-            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Traits", false)) { Title = "Traits" });
-            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Actions")) { Title = "Actions" });
-            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Reactions")) { Title = "Reactions" });
-            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "LegendaryActions")) { Title = "Legendary Actions" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "Spells", GetSpellsAsync(m.Context))) { Title = "Spells" });
-            t.Children.Add(new NavigationPage(new IntListPage(m, "Slots")) { Title = "Spell Slots" });
+            t.Children.Add(new NavigationPage(new EditCommonFlavor(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new EditMonster(m)) { Title = "Monster", Icon = Device.RuntimePlatform == Device.iOS ? "happy.png" : null });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions", Icon = Device.RuntimePlatform == Device.iOS ? "list.png" : null });
+            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Type", KeywordListPage.KeywordGroup.MONSTER)) { Title = "Type", Icon = Device.RuntimePlatform == Device.iOS ? "face_ID.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Speed")) { Title = "Speed", Icon = Device.RuntimePlatform == Device.iOS ? "stopwatch.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Resistances")) { Title = "Resistances", Icon = Device.RuntimePlatform == Device.iOS ? "minus.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Vulnerabilities")) { Title = "Vulnerabilities", Icon = Device.RuntimePlatform == Device.iOS ? "plus.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Immunities")) { Title = "Immunities", Icon = Device.RuntimePlatform == Device.iOS ? "cancel.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "ConditionImmunities")) { Title = "Condition Immunities", Icon = Device.RuntimePlatform == Device.iOS ? "attention.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Senses")) { Title = "Senses", Icon = Device.RuntimePlatform == Device.iOS ? "compass.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Languages", GetLangAsync(m.Context))) { Title = "Languages", Icon = Device.RuntimePlatform == Device.iOS ? "chat.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterSaveListPage(m, "SaveBonus")) { Title = "Save Prof.", Icon = Device.RuntimePlatform == Device.iOS ? "heart.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterSkillListPage(m, "SkillBonus")) { Title = "Skill Prof.", Icon = Device.RuntimePlatform == Device.iOS ? "graduation_cap.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Traits", false)) { Title = "Traits", Icon = Device.RuntimePlatform == Device.iOS ? "medical_ID.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Actions")) { Title = "Actions", Icon = Device.RuntimePlatform == Device.iOS ? "info.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "Reactions")) { Title = "Reactions", Icon = Device.RuntimePlatform == Device.iOS ? "help.png" : null });
+            t.Children.Add(new NavigationPage(new MonsterTraitListPage(m, "LegendaryActions")) { Title = "Legendary Actions", Icon = Device.RuntimePlatform == Device.iOS ? "okay.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "Spells", GetSpellsAsync(m.Context))) { Title = "Spells", Icon = Device.RuntimePlatform == Device.iOS ? "moon_symbol.png" : null });
+            t.Children.Add(new NavigationPage(new IntListPage(m, "Slots")) { Title = "Spell Slots", Icon = Device.RuntimePlatform == Device.iOS ? "health_data.png" : null });
             return t;
         }
 

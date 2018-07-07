@@ -13,7 +13,7 @@
 
                 <flv:FlowListView.FlowColumnTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Padding="5, 15, 5, 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="auto"/>

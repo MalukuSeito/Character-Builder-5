@@ -33,7 +33,10 @@ namespace CB_5e.ViewModels.Character
             Parent.UpdateSpellcasting();
         }
 
-
+        public override void UpdateForms()
+        {
+            Parent.UpdateForms();
+        }
 
 
         public override void MakeHistory(string h = null)

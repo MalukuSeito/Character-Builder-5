@@ -22,6 +22,7 @@ namespace CB_5e.ViewModels.Character
         public Spellcasting Spellcasting { get; private set; }
         public SpellPrepareViewModel(PlayerModel model, SpellcastingFeature spellcasting) : base(model, spellcasting, "Prepare " + (spellcasting.DisplayName ?? spellcasting.SpellcastingID) + " Spells")
         {
+            Image = ImageSource.FromResource("CB_5e.images.prepare.png");
             Spellcasting = Model.Context.Player.GetSpellcasting(SpellcastingID);
             OnPrepare = new Command((par) =>
             {

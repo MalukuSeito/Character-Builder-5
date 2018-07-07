@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Play
 {
@@ -16,6 +17,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerFormsCompanionsViewModel(PlayerModel parent) : base(parent, "Forms / Companions")
         {
+            Image = ImageSource.FromResource("CB_5e.images.forms.png");
             monsters = new List<MonsterInfo>();
             Dictionary<Monster, MonsterInfo> monstr = new Dictionary<Monster, MonsterInfo>(new MonsterInfo());
             var asa = Context.Player.GetFinalAbilityScores();
@@ -43,6 +45,11 @@ namespace CB_5e.ViewModels.Character.Play
         }
 
         private void Parent_PlayerChanged(object sender, EventArgs e)
+        {
+            Update();
+        }
+
+        public void Update()
         {
             monsters = new List<MonsterInfo>();
             Dictionary<Monster, MonsterInfo> monstr = new Dictionary<Monster, MonsterInfo>(new MonsterInfo());

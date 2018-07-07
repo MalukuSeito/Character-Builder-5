@@ -105,10 +105,10 @@ namespace CB_5e.Views.Modify
         private Page MakePage(SpellEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditSpell(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
-            t.Children.Add(new NavigationPage(new EditCantripDamage(m)) { Title = "Spell" });
-            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Spell Keywords", KeywordListPage.KeywordGroup.SPELL, LoadClassesAsync(m.Context))) { Title = "Keywords" });
+            t.Children.Add(new NavigationPage(new EditSpell(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions", Icon = Device.RuntimePlatform == Device.iOS ? "list.png" : null });
+            t.Children.Add(new NavigationPage(new EditCantripDamage(m)) { Title = "Spell", Icon = Device.RuntimePlatform == Device.iOS ? "cloud.png" : null });
+            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Spell Keywords", KeywordListPage.KeywordGroup.SPELL, LoadClassesAsync(m.Context))) { Title = "Keywords", Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null });
             return t;
         }
 

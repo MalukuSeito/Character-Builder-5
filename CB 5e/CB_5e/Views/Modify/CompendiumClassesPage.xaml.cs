@@ -105,15 +105,15 @@ namespace CB_5e.Views.Modify
         private Page MakePage(ClassEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditCommonFlavor(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new EditHitDie(m)) { Title = "HD" });
-            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features" });
-            t.Children.Add(new NavigationPage(new EditMulticlassing(m)) { Title = "Multiclassing" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "SpellsToAddClassKeywordTo", GetSpellsAsync(m.Context))) { Title = "Compatibility Spells" });
-            t.Children.Add(new NavigationPage(new StringListPage(m, "FeaturesToAddClassKeywordTo", GetFeaturesAsync(m.Context))) { Title = "Compatibility Features" });
+            t.Children.Add(new NavigationPage(new EditCommonFlavor(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new EditHitDie(m)) { Title = "HD", Icon = Device.RuntimePlatform == Device.iOS ? "Investment.png" : null });
+            t.Children.Add(new NavigationPage(new DescriptionListPage(m, "Descriptions")) { Title = "Descriptions", Icon = Device.RuntimePlatform == Device.iOS ? "list.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features", Icon = Device.RuntimePlatform == Device.iOS ? "wallet_app.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "FirstClassFeatures")) { Title = "1st Class Features", Icon = Device.RuntimePlatform == Device.iOS ? "document.png" : null });
+            t.Children.Add(new NavigationPage(new EditMulticlassing(m)) { Title = "Multiclassing", Icon = Device.RuntimePlatform == Device.iOS ? "user_group_man_woman.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "MulticlassingFeatures")) { Title = "2nd Class Features", Icon = Device.RuntimePlatform == Device.iOS ? "documents.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "SpellsToAddClassKeywordTo", GetSpellsAsync(m.Context))) { Title = "Compatibility Spells", Icon = Device.RuntimePlatform == Device.iOS ? "handshake.png" : null });
+            t.Children.Add(new NavigationPage(new StringListPage(m, "FeaturesToAddClassKeywordTo", GetFeaturesAsync(m.Context))) { Title = "Compatibility Features", Icon = Device.RuntimePlatform == Device.iOS ? "refresh.png" : null });
             return t;
         }
 

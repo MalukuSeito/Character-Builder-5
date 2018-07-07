@@ -7,7 +7,7 @@
         <StackLayout>
             <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Features}"
                       VerticalOptions="FillAndExpand"
-                      IsPullToRefreshEnabled="true"
+                      IsPullToRefreshEnabled="false"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement"
                       RowHeight="25">

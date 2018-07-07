@@ -7,7 +7,7 @@
         <StackLayout>
             <ListView HorizontalOptions="FillAndExpand" ItemsSource="{Binding Monsters}"
                       VerticalOptions="FillAndExpand"
-                      IsPullToRefreshEnabled="true"
+                      IsPullToRefreshEnabled="false"
                       ItemSelected="InfoSelected"
                       CachingStrategy="RecycleElement">
                 <ListView.Header>

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Play
 {
@@ -14,6 +15,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerProficiencyViewModel(PlayerModel parent) : base(parent, "Proficiencies")
         {
+            Image = ImageSource.FromResource("CB_5e.images.prof.png");
             proficiencies = new List<IXML>();
             proficiencies.AddRange(Context.Player.GetLanguages());
             proficiencies.AddRange(Context.Player.GetToolProficiencies());

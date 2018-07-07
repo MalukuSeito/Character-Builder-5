@@ -142,7 +142,7 @@ namespace CB_5e.Services
 
         public static string Parent(string path)
         {
-            if (!path.Contains("/"))
+            if (!path.Contains(""+ PortablePath.DirectorySeparatorChar))
             {
                 return "";
             }

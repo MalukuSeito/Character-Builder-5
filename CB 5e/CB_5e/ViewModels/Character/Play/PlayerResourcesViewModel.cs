@@ -16,6 +16,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerResourcesViewModel(PlayerModel parent) : base(parent, "Resources")
         {
+            Image = ImageSource.FromResource("CB_5e.images.resources.png");
             DeselectResource = new Command(async () =>
             {
                 ResourceBusy = true;

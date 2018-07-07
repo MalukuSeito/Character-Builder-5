@@ -48,6 +48,7 @@ namespace CB_5e.ViewModels.Character.Build
     {
         public SourcesViewModel(PlayerModel parent) : base(parent, "Options")
         {
+            Image = ImageSource.FromResource("CB_5e.images.sources.png");
             Sources.Name = "Source books";
             Plugins.Name = "Houserules";
             Options.Add(Sources);

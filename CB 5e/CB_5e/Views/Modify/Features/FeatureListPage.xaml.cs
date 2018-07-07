@@ -275,7 +275,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditResourceFeature(model))
                 {
-                    Title = "Resource"
+                    Title = "Resource",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "high_battery.png" : null
                 });
             }
             else if (fvm.Feature is AbilityScoreFeature asf)
@@ -284,7 +285,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditAbilityFeature(model))
                 {
-                    Title = "Abilities"
+                    Title = "Abilities",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "bar_chart.png" : null
                 });
             }
             else if (fvm.Feature is ACFeature acf)
@@ -293,7 +295,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditExpression(model, "AC Calculation", "AC Calculation Expression: (NCalc)", "Expression", "Note: The expression must result in a number. If there are multiple AC Calculation features, the one returning the highest AC is taken.\nThe following values are available: BaseAC(of Armor), ShieldBonus(if equiped), ACBonus(Bonus that will be added due to other features), Str, Dex, Con, Int, Wis, Cha(Total value), StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod(Modifier).\nThe following boolean flags are available: Unarmored, Armor, OffHand(weapon in off - Hand), Shield, Two - Handed(weapon), FreeHand as well as any Keywords of the Armor.\nThe following string values are available: Category(Category of the equipped Armor), Name(Name of the Armor)."))
                 {
-                    Title = "AC"
+                    Title = "AC",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "calculator.png" : null
                 });
             }
             else if (fvm.Feature is HitPointsFeature hpf)
@@ -302,7 +305,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditExpression(model, "Hitpoints", "Hitpoints Expression: (NCalc)", "Expression", "Note: The expression must result in a number. The following number values are available: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier), PlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel(\"classname\") (function for classlevel)"))
                 {
-                    Title = "HP"
+                    Title = "HP",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "following.png" : null
                 });
             }
             else if (fvm.Feature is VisionFeature vf)
@@ -311,11 +315,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditIntFeature(model, "Vision Feature", "Darkvision Range: (doesn't stack, highest counts)", "Value", 5))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is ExtraAttackFeature eaf)
@@ -324,11 +330,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditIntFeature(model, "Extra Attack Feature", "Additional Attacks: (doesn't stack, highest counts)", "Value"))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is AbilityScoreFeatFeature aff)
@@ -337,11 +345,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditAbilityFeatFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is SpeedFeature sf)
@@ -350,7 +360,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditSpeedFeature(model))
                 {
-                    Title = "Speed"
+                    Title = "Speed",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "stopwatch.png" : null
                 });
             }
             else if (fvm.Feature is BonusFeature bf)
@@ -359,15 +370,18 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditBonusFeature(model))
                 {
-                    Title = "Bonus"
+                    Title = "Bonus",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "approval.png" : null
                 });
                 p.Children.Add(new NavigationPage(new BonusFeatureSkillsPage(model))
                 {
-                    Title = "Skills"
+                    Title = "Skills",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "graduation_cap.png" : null
                 });
                 p.Children.Add(new NavigationPage(new BonusFeatureWeaponPage(model))
                 {
-                    Title = "Weapon"
+                    Title = "Weapon",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "filter.png" : null
                 });
 
             }
@@ -377,7 +391,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new SkillProficiencyFeaturePage(model))
                 {
-                    Title = "Skills"
+                    Title = "Skills",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "graduation_cap.png" : null
                 });
             }
             else if (fvm.Feature is SkillProficiencyChoiceFeature spcf)
@@ -386,7 +401,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new SkillProficiencyChoiceFeaturePage(model))
                 {
-                    Title = "Skills"
+                    Title = "Skills",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "graduation_cap.png" : null
                 });
             }
             else if (fvm.Feature is LanguageProficiencyFeature lpf)
@@ -395,7 +411,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new StringListPage(model, "Languages", GetLanguagesAsync(Model.Context), false))
                 {
-                    Title = "Languages"
+                    Title = "Languages",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "chat.png" : null
                 });
             }
             else if (fvm.Feature is LanguageChoiceFeature lcf)
@@ -404,11 +421,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditLanguageChoiceFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is ToolProficiencyFeature tpf)
@@ -417,7 +436,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new StringListPage(model, "Tools", GetToolsAsync(Model.Context), false))
                 {
-                    Title = "Tools"
+                    Title = "Tools",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "maintenance.png" : null
                 });
             }
             else if (fvm.Feature is ToolProficiencyChoiceConditionFeature tpcf)
@@ -426,7 +446,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new ToolProficiencyChoicePage(model))
                 {
-                    Title = "Tools"
+                    Title = "Tools",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "maintenance.png" : null
                 });
             }
             else if (fvm.Feature is ToolKWProficiencyFeature tkpf)
@@ -435,7 +456,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new ToolProficiencyExpressionPage(model))
                 {
-                    Title = "Tools"
+                    Title = "Tools",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "maintenance.png" : null
                 });
             }
             else if (fvm.Feature is SaveProficiencyFeature saf)
@@ -444,11 +466,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditSaveProficiencyFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is SpellcastingFeature scf)
@@ -457,7 +481,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditSpellcasting(model))
                 {
-                    Title = "Spellcasting"
+                    Title = "Spellcasting",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "airdrop.png" : null
                 });
             }
             else if (fvm.Feature is SpellSlotsFeature ssf)
@@ -466,15 +491,18 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditSpellslotFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new IntListPage(model, "Slots", "Spellslot Level ", "0 'slots'", Keyboard.Numeric, false))
                 {
-                    Title = "Slots"
+                    Title = "Slots",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "health_data.png" : null
                 });
             }
             else if (fvm.Feature is BonusSpellPrepareFeature bspf)
@@ -484,19 +512,23 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditAddSpellsFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new DualSpellListPage(model))
                 {
-                    Title = "Spell"
+                    Title = "Spells",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "moon_symbol.png" : null
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
-                    Title = "Keywords"
+                    Title = "Keywords",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null
                 });
             }
             else if (fvm.Feature is SpellModifyFeature smf)
@@ -505,11 +537,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditSpellModifyFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is SpellChoiceFeature sof)
@@ -519,19 +553,23 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new EditSpellchoiceFeature(model))
                 {
-                    Title = "Spellchoice"
+                    Title = "Spellchoice",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "keypad.png" : null
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
-                    Title = "Keywords"
+                    Title = "Keywords",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null
                 });
             }
             else if (fvm.Feature is ModifySpellChoiceFeature msf)
@@ -541,19 +579,23 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditModifySpellchoiceFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new DualSpellListPage(model))
                 {
-                    Title = "Spells"
+                    Title = "Spells",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "moon_symbol.png" : null
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the selected spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
-                    Title = "Keywords"
+                    Title = "Keywords",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null
                 });
             }
             else if (fvm.Feature is IncreaseSpellChoiceAmountFeature imf)
@@ -562,11 +604,13 @@ namespace CB_5e.Views.Modify.Features
                 p = new TabbedPage();
                 p.Children.Add(new NavigationPage(new EditIncreaseSpellchoiceFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(Model.Context)))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is BonusSpellFeature bsf)
@@ -576,19 +620,23 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new EditBonusSpellFeature(model))
                 {
-                    Title = "Spells"
+                    Title = "Spells",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "moon_symbol.png" : null
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the bonus spell:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
-                    Title = "Keywords"
+                    Title = "Keywords",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null
                 });
             }
             else if (fvm.Feature is BonusSpellKeywordChoiceFeature bskcf)
@@ -598,19 +646,23 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditFeature(model))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
                 p.Children.Add(new NavigationPage(new EditBonusSpellChoiceFeature(model))
                 {
-                    Title = "Spells"
+                    Title = "Spells",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "moon_symbol.png" : null
                 });
                 p.Children.Add(new NavigationPage(new KeywordListPage(model, "AdditionalKeywords", "Keywords to add to the bonus spells:", KeywordListPage.KeywordGroup.SPELL, load, false))
                 {
-                    Title = "Keywords"
+                    Title = "Keywords",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null
                 });
             }
             else if (fvm.Feature is ItemChoiceFeature icf)
@@ -619,7 +671,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new FreeItemChoicePage(model))
                 {
-                    Title = "Items"
+                    Title = "Items",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "shopping_cart_loaded.png" : null
                 });
             }
             else if (fvm.Feature is FreeItemAndGoldFeature figf)
@@ -628,7 +681,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new FreeItemPage(model))
                 {
-                    Title = "Items"
+                    Title = "Items",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "shopping_cart_loaded.png" : null
                 });
             }
             else if (fvm.Feature is ItemChoiceConditionFeature iccf)
@@ -637,7 +691,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditItemChoiceConditionFeature(model))
                 {
-                    Title = "Items"
+                    Title = "Items",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "shopping_cart_loaded.png" : null
                 });
             }
             else if (fvm.Feature is MultiFeature mf)
@@ -646,11 +701,13 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditExpression(model, "Condition", "Condition:", "Condition", "Note: If no condition is set or the condtion evaluates to true, the features are added to the character (The stats are before boni are added from features)\nThe following number values are known: Str, Dex, Con, Int, Wis, Cha (Value) and StrMod, DexMod, ConMod, IntMod, WisMod, ChaMod (Modifier)\nPlayerLevel (character level), ClassLevel (class level if in class, PlayerLevel otherwise), ClassLevel('classname') (function for classlevel)\nThe following text values are known: Race, SubRace, SubClass('classname'): names of the subrace, race and subclasses respectively."))
                 {
-                    Title = "Condition"
+                    Title = "Condition",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "create_new.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureListPage(model, "Features", false))
                 {
-                    Title = "Features"
+                    Title = "Features",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "list.png" : null
                 });
             }
             else if (fvm.Feature is ChoiceFeature cf)
@@ -659,11 +716,13 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditFeatureChoiceFeature(model))
                 {
-                    Title = "Choice"
+                    Title = "Choice",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "attach.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureListPage(model, "Choices", false))
                 {
-                    Title = "Choices"
+                    Title = "Choices",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "copy.png" : null
                 });
             }
             else if (fvm.Feature is CollectionChoiceFeature ccf)
@@ -672,7 +731,8 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new EditFeatureCollectionChoice(model))
                 {
-                    Title = "Choice"
+                    Title = "Choice",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "attach.png" : null
                 });
             }
             else if (fvm.Feature is SubClassFeature sclf)
@@ -682,11 +742,13 @@ namespace CB_5e.Views.Modify.Features
                 var load = GetClassesAsync(Model.Context);
                 p.Children.Add(new NavigationPage(new EditSubClassFeature(model, load))
                 {
-                    Title = "Feature"
+                    Title = "Feature",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
                 });
                 p.Children.Add(new NavigationPage(new FeatureKeywords(model, load))
                 {
-                    Title = "Standalone"
+                    Title = "Standalone",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
                 });
             }
             else if (fvm.Feature is SubRaceFeature srf)
@@ -695,32 +757,33 @@ namespace CB_5e.Views.Modify.Features
                 p = Tab(model);
                 p.Children.Add(new NavigationPage(new StringListPage(model, "ParentRaces", GetRacesAsync(Model.Context), false))
                 {
-                    Title = "Races"
+                    Title = "Races",
+                    Icon = Device.RuntimePlatform == Device.iOS ? "globe.png" : null
                 });
             }
             else if (fvm.Feature is ResistanceFeature resf)
             {
                 ResistanceFeatureEditModel model = new ResistanceFeatureEditModel(resf, Model, fvm);
                 p = Tab(model);
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Resistances", null, false)) { Title = "Resistances" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Vulnerabilities", null, false)) { Title = "Vulnerabilities" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Immunities", null, false)) { Title = "Immunities" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "SavingThrowAdvantages", null, false)) { Title = "SavingThrowAdvantages" });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Resistances", null, false)) { Title = "Resistances", Icon = Device.RuntimePlatform == Device.iOS ? "minus.png" : null});
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Vulnerabilities", null, false)) { Title = "Vulnerabilities", Icon = Device.RuntimePlatform == Device.iOS ? "plus.png" : null });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Immunities", null, false)) { Title = "Immunities", Icon = Device.RuntimePlatform == Device.iOS ? "cancel.png" : null });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "SavingThrowAdvantages", null, false)) { Title = "SavingThrowAdvantages", Icon = Device.RuntimePlatform == Device.iOS ? "syncronize.png" : null });
             }
             else if (fvm.Feature is FormsCompanionsBonusFeature fcbf)
             {
                 FormsCompanionsBonusFeatureEditModel model = new FormsCompanionsBonusFeatureEditModel(fcbf, Model, fvm);
                 p = Tab(model);
-                p.Children.Add(new NavigationPage(new EditFormsCompanionsBonusFeature(model)) { Title = "Forms/Companions Bonus" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Senses", null, false)) { Title = "Add. Senses" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Speed", null, false)) { Title = "Add. Speed" });
-                p.Children.Add(new NavigationPage(new StringListPage(model, "Languages", null, false)) { Title = "Add. Languages" });
+                p.Children.Add(new NavigationPage(new EditFormsCompanionsBonusFeature(model)) { Title = "Forms/Companions Bonus", Icon = Device.RuntimePlatform == Device.iOS ? "contact_card.png" : null });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Senses", null, false)) { Title = "Add. Senses", Icon = Device.RuntimePlatform == Device.iOS ? "compass.png" : null });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Speed", null, false)) { Title = "Add. Speed", Icon = Device.RuntimePlatform == Device.iOS ? "stopwatch.png" : null });
+                p.Children.Add(new NavigationPage(new StringListPage(model, "Languages", null, false)) { Title = "Add. Languages", Icon = Device.RuntimePlatform == Device.iOS ? "chat.png" : null });
             }
             else if (fvm.Feature is FormsCompanionsFeature fcf)
             {
                 FormsCompanionsFeatureEditModel model = new FormsCompanionsFeatureEditModel(fcf, Model, fvm);
                 p = Tab(model);
-                p.Children.Add(new NavigationPage(new EditFormsCompanionsFeature(model)) { Title = "Forms/Companions Choice" });
+                p.Children.Add(new NavigationPage(new EditFormsCompanionsFeature(model)) { Title = "Forms/Companions Choice", Icon = Device.RuntimePlatform == Device.iOS ? "conference.png" : null });
             }
             else {
                 IFeatureEditModel model = new FeatureEditModel<Feature>(fvm.Feature, Model, fvm);
@@ -771,11 +834,13 @@ namespace CB_5e.Views.Modify.Features
 
             p.Children.Add(new NavigationPage(new EditFeature(model))
             {
-                Title = "Feature"
+                Title = "Feature",
+                Icon = Device.RuntimePlatform == Device.iOS ? "report_card.png" : null
             });
             p.Children.Add(new NavigationPage(new FeatureKeywords(model, GetClassesAsync(model.Context)))
             {
-                Title = "Standalone"
+                Title = "Standalone",
+                Icon = Device.RuntimePlatform == Device.iOS ? "book.png" : null
             });
             return p;
         }

@@ -122,34 +122,34 @@ namespace CB_5e.Views.Modify
             {
                 IItemEditModel m = new PackEditModel(p, Context);
                 TabbedPage page = MakePage(m);
-                page.Children.Add(new NavigationPage(new StringListPage(m, "Contents", GetItemsAsync())) { Title = "Contents" });
+                page.Children.Add(new NavigationPage(new StringListPage(m, "Contents", GetItemsAsync())) { Title = "Contents", Icon = Device.RuntimePlatform == Device.iOS ? "shopping_bag.png" : null });
                 await Navigation.PushModalAsync(page);
             }
             else  if (o is Weapon w)
             {
                 WeaponEditModel m = new WeaponEditModel(w, Context);
                 TabbedPage t = new TabbedPage();
-                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
-                t.Children.Add(new NavigationPage(new EditWeapon(m)) { Title = "Weapon" });
-                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+                t.Children.Add(new NavigationPage(new EditWeapon(m)) { Title = "Weapon", Icon = Device.RuntimePlatform == Device.iOS ? "filter.png" : null });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords", Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null });
                 await Navigation.PushModalAsync(t);
             }
             else if (o is Shield s)
             {
                 ShieldEditModel m = new ShieldEditModel(s, Context);
                 TabbedPage t = new TabbedPage();
-                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
-                t.Children.Add(new NavigationPage(new EditShield(m)) { Title = "Shield" });
-                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+                t.Children.Add(new NavigationPage(new EditShield(m)) { Title = "Shield", Icon = Device.RuntimePlatform == Device.iOS ? "bookmark_ribbon.png" : null });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords", Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null });
                 await Navigation.PushModalAsync(t);
             }
             else if (o is Armor a)
             {
                 ArmorEditModel m = new ArmorEditModel(a, Context);
                 TabbedPage t = new TabbedPage();
-                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
-                t.Children.Add(new NavigationPage(new EditArmor(m)) { Title = "Armor" });
-                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+                t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+                t.Children.Add(new NavigationPage(new EditArmor(m)) { Title = "Armor", Icon = Device.RuntimePlatform == Device.iOS ? "spotligt.png" : null });
+                t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords", Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null });
                 await Navigation.PushModalAsync(t);
             }
             else if (o is Item i)
@@ -170,9 +170,9 @@ namespace CB_5e.Views.Modify
         private TabbedPage MakePage(IItemEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new EditItem(m)) { Title = "Item" });
-            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords" });
+            t.Children.Add(new NavigationPage(new EditCommon(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new EditItem(m)) { Title = "Item", Icon = Device.RuntimePlatform == Device.iOS ? "shopping_cart.png" : null });
+            t.Children.Add(new NavigationPage(new KeywordListPage(m, "Keywords", "Item Keywords", KeywordListPage.KeywordGroup.ITEM, null)) { Title = "Keywords", Icon = Device.RuntimePlatform == Device.iOS ? "key.png" : null });
             return t;
         }
     }

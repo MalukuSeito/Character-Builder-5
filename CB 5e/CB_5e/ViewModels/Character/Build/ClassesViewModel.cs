@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CB_5e.ViewModels.Character.Build
 {
@@ -16,6 +17,7 @@ namespace CB_5e.ViewModels.Character.Build
         public ClassesViewModel(PlayerModel parent) : base(parent, "Class(es)")
         {
             UpdateClassChoices();
+            Image = ImageSource.FromResource("CB_5e.images.class.png");
             Parent.PlayerChanged += Parent_PlayerChanged;
         }
 

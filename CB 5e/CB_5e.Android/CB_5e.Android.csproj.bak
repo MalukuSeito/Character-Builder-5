@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CB_5e.Droid</RootNamespace>
     <AssemblyName>CB_5e.Android</AssemblyName>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>

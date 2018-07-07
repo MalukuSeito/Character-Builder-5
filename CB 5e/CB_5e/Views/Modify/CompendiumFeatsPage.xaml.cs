@@ -106,8 +106,8 @@ namespace CB_5e.Views.Modify
         private Page MakePage(FeatureContainerEditModel m)
         {
             TabbedPage t = new TabbedPage();
-            t.Children.Add(new NavigationPage(new EditFeatureContainer(m)) { Title = "Edit" });
-            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features" });
+            t.Children.Add(new NavigationPage(new EditFeatureContainer(m)) { Title = "Edit", Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null });
+            t.Children.Add(new NavigationPage(new FeatureListPage(m, "Features")) { Title = "Features", Icon = Device.RuntimePlatform == Device.iOS ? "wallet_app.png" : null });
             return t;
         }
     }

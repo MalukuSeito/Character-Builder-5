@@ -15,6 +15,7 @@ namespace CB_5e.ViewModels.Character
     {
         public PlayerShopViewModel(PlayerModel parent) : base(parent, "Shop")
         {
+            Image = ImageSource.FromResource("CB_5e.images.shop.png");
             OnOpenShop = new Command(async (par) =>
             {
                 if (par is ShopViewModel svm) await Navigation.PushAsync(new ShopSubPage(svm));

@@ -62,27 +62,27 @@ namespace CB_5e
                     new NavigationPage(new CharactersPlayPage())
                     {
                         Title = "Play",
-                        Icon = Device.OnPlatform("tab_feed.png",null,null)
+                        Icon = Device.RuntimePlatform == Device.iOS ? "people.png" : null
                     },
                     new NavigationPage(new CharactersBuildPage())
                     {
                         Title = "Build",
-                        Icon = Device.OnPlatform("tab_about.png",null,null)
+                        Icon = Device.RuntimePlatform == Device.iOS ? "pencil.png" : null
                     },
                     new NavigationPage(new Compendium())
                     {
                         Title = "Edit",
-                        Icon = Device.OnPlatform("tab_about.png",null,null)
+                        Icon = Device.RuntimePlatform == Device.iOS ? "services.png" : null
                     },
                     new NavigationPage(new FileBrowser(Storage))
                     {
                         Title = "Files",
-                        Icon = Device.OnPlatform("tab_about.png",null,null)
+                        Icon = Device.RuntimePlatform == Device.iOS ? "open.png" : null
                     },
                     new NavigationPage(new AboutPage())
                     {
                         Title = "Config",
-                        Icon = Device.OnPlatform("tab_about.png",null,null)
+                        Icon = Device.RuntimePlatform == Device.iOS ? "support.png" : null
                     },
                 }
             };

@@ -15,6 +15,7 @@ namespace CB_5e.ViewModels.Character
         public PlayerModel ParentView { get; set; }
         public PlayerJournalViewModel(PlayerModel parent) : base(parent, "Journal")
         {
+            Image = ImageSource.FromResource("CB_5e.images.journal.png");
             ParentView = parent;
             UpdateJournal();
 

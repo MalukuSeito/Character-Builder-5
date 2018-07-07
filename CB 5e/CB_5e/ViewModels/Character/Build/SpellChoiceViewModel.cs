@@ -20,6 +20,7 @@ namespace CB_5e.ViewModels.Character.Build
     {
         public SpellChoiceViewModel(PlayerModel model, SpellcastingFeature spellcasting, SpellChoiceFeature choice) : base(model, spellcasting, (spellcasting.DisplayName ?? spellcasting.SpellcastingID) + " - " + choice?.Name ?? choice?.UniqueID ?? "Additional")
         {
+            Image = ImageSource.FromResource("CB_5e.images.library.png");
             Choice = choice;
             OnPrepare = new Command((par) =>
             {

@@ -103,11 +103,14 @@ namespace CB_5e.Views.Modify.Descriptions
                             TabbedPage p = new TabbedPage();
                             p.Children.Add(new NavigationPage(new EditDescription(fvm, Model))
                             {
-                                Title = "Description"
+                                Title = "Description",
+                                Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
+
                             });
                             p.Children.Add(new NavigationPage(new EditTableDescription(Model, td))
                             {
-                                Title = "Table"
+                                Title = "Table",
+                                Icon = Device.RuntimePlatform == Device.iOS ? "order.png" : null
                             });
                             await Navigation.PushModalAsync(p);
 
@@ -117,18 +120,21 @@ namespace CB_5e.Views.Modify.Descriptions
                             TabbedPage p = new TabbedPage();
                             p.Children.Add(new NavigationPage(new EditDescription(fvm, Model))
                             {
-                                Title = "Description"
+                                Title = "Description",
+                                Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
                             });
                             p.Children.Add(new NavigationPage(new EditListDescription(Model, ld))
                             {
-                                Title = "Names"
+                                Title = "Names",
+                                Icon = Device.RuntimePlatform == Device.iOS ? "contacts.png" : null
                             });
                             await Navigation.PushModalAsync(p);
 
                         }
                         else await Navigation.PushModalAsync(new NavigationPage(new EditDescription(fvm, Model))
                         {
-                            Title = "Description"
+                            Title = "Description",
+                            Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
                         });
                     }
                 })));
@@ -158,11 +164,13 @@ namespace CB_5e.Views.Modify.Descriptions
                         TabbedPage p = new TabbedPage();
                         p.Children.Add(new NavigationPage(new EditDescription(fvm, Model))
                         {
-                            Title = "Description"
+                            Title = "Description",
+                            Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
                         });
                         p.Children.Add(new NavigationPage(new EditTableDescription(Model, td))
                         {
-                            Title = "Table"
+                            Title = "Table",
+                            Icon = Device.RuntimePlatform == Device.iOS ? "order.png" : null
                         });
                         await Navigation.PushModalAsync(p);
 
@@ -172,18 +180,21 @@ namespace CB_5e.Views.Modify.Descriptions
                         TabbedPage p = new TabbedPage();
                         p.Children.Add(new NavigationPage(new EditDescription(fvm, Model))
                         {
-                            Title = "Description"
+                            Title = "Description",
+                            Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
                         });
                         p.Children.Add(new NavigationPage(new EditListDescription(Model, ld))
                         {
-                            Title = "Names"
+                            Title = "Names",
+                            Icon = Device.RuntimePlatform == Device.iOS ? "contacts.png" : null
                         });
                         await Navigation.PushModalAsync(p);
 
                     }
                     else await Navigation.PushModalAsync(new NavigationPage(new EditDescription(fvm, Model))
                     {
-                        Title = "Description"
+                        Title = "Description",
+                        Icon = Device.RuntimePlatform == Device.iOS ? "save.png" : null
                     });
                     (sender as ListView).SelectedItem = null;
                 }

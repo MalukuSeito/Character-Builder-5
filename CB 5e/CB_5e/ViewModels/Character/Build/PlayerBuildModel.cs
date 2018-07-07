@@ -62,6 +62,7 @@ namespace CB_5e.ViewModels.Character.Build
             playerSources = new SourcesViewModel(this);
             playerInfo = new PlayerInfoViewModel(this);
             play = new SwitchToPlayModel(this);
+            UpdateFormModels();
             UpdateSpellcasting();
         }
 
@@ -84,7 +85,7 @@ namespace CB_5e.ViewModels.Character.Build
             playerFeatures = new PlayerFeaturesViewModel(this);
             playerSources = new SourcesViewModel(this);
             playerInfo = new PlayerInfoViewModel(this);
-
+            UpdateFormModels();
             UpdateSpellcasting();
         }
 
@@ -110,6 +111,36 @@ namespace CB_5e.ViewModels.Character.Build
             {
                 IsBusy = false;
             }
+        }
+
+        public override void UpdateForms()
+        {
+            Parent?.UpdateForms();
+        }
+
+        public void UpdateFormModels()
+        {
+            List<FormsCompanionsViewModel> views = new List<FormsCompanionsViewModel>();
+            foreach (FormsCompanionInfo fci in Context.Player.GetFormsCompanionChoices().OrderBy(f => f.DisplayName))
+            {
+                foreach (FormsCompanionsViewModel fcvm in FormsCompanions)
+                {
+                    if (fci.ID == fcvm.ID)
+                    {
+                        fcvm.Refresh(fci);
+                        views.Add(fcvm);
+                        goto NEXT;
+                    }
+                }
+                views.Add(new FormsCompanionsViewModel(this, fci));
+                NEXT:;
+            }
+            if (!views.SequenceEqual(FormsCompanions))
+            {
+                FormsCompanions.ReplaceRange(views);
+                UpdatePages();
+            }
+            if (views.Count == 0) UpdatePages();
         }
 
         private void PlayerBuildModel_PlayerChanged(object sender, EventArgs e)
@@ -167,6 +198,7 @@ namespace CB_5e.ViewModels.Character.Build
         }
 
         public ObservableRangeCollection<SpellbookViewModel> Spellcasting { get; set; } = new ObservableRangeCollection<SpellbookViewModel>();
+        public ObservableRangeCollection<FormsCompanionsViewModel> FormsCompanions { get; set; } = new ObservableRangeCollection<FormsCompanionsViewModel>();
         public override void UpdateSpellcasting()
         {
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" orderby Context.Player.GetClassLevel(((SpellcastingFeature)f).SpellcastingID) descending, ((SpellcastingFeature)f).DisplayName, ((SpellcastingFeature)f).SpellcastingID select f as SpellcastingFeature);
@@ -249,6 +281,7 @@ namespace CB_5e.ViewModels.Character.Build
             pages.Add(playerInventory);
             pages.Add(playerShops);
             pages.Add(playerInventoryChoices);
+            pages.AddRange(FormsCompanions);
             pages.Add(playerJournal);
             pages.Add(playerInfo);
             pages.Add(playerFeatures);

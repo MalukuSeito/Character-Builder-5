@@ -14,7 +14,7 @@ namespace CB_5e.ViewModels.Character.Play
     {
         public PlayerConditionViewModel(PlayerModel parent) : base(parent, "Conditions")
         {
-
+            Image = ImageSource.FromResource("CB_5e.images.conditions.png");
             AddCustomCondition = new Command(() =>
             {
                 if (CustomCondition != null && CustomCondition != "")

@@ -14,6 +14,7 @@ namespace CB_5e.ViewModels.Character.Build
     {
         public PlayerPersonalViewModel(PlayerModel parent) : base(parent, "Personal")
         {
+            Image = ImageSource.FromResource("CB_5e.images.personal.png");
             ShowImagePortrait = new Command(async () =>
             {
                 await Navigation.PushAsync(new ImageEditor(Portrait, Context.Player.Portrait, SavePortrait, "Portrait"));

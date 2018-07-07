@@ -7,15 +7,13 @@
 	<key>CFBundleName</key>
 	<string>CB_5e.iOS</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.CB_5e</string>
+	<string>de.malukuseito.CB_5e</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>MinimumOSVersion</key>
-	<string>8.0</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -56,5 +54,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select pictures for characters and new elements</string>
+	<key>XSAppIconAssets</key>
+	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
 </dict>
 </plist>
