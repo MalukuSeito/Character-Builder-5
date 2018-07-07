@@ -12,7 +12,6 @@ using PCLStorage;
 using System.IO;
 using CB_5e.ViewModels.Character;
 using CB_5e.ViewModels.Character.Build;
-using Character_Builder_Base;
 
 namespace CB_5e.Views.Character
 {

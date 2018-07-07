@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Character_Builder_Base
+namespace Character_Builder
 {
     public class NoFreeEquipment : IPlugin
     {

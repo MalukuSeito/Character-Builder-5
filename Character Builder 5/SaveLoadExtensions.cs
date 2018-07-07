@@ -1,5 +1,4 @@
 ﻿using Character_Builder;
-using Character_Builder_Base;
 using Character_Builder_Forms;
 using Character_Builder_Plugin;
 using OGL;

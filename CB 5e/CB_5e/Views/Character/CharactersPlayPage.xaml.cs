@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using PluginDMG;
 using CB_5e.ViewModels.Character;
 using CB_5e.ViewModels.Character.Play;
-using Character_Builder_Base;
 
 namespace CB_5e.Views.Character
 {
