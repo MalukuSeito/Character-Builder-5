@@ -2471,6 +2471,7 @@ namespace Character_Builder
                     Spells.UnionWith(sc.GetLearned(this, Context));
                 }
             }
+            Spells.UnionWith(GetSpellscrolls());
             foreach (Spell s in Spells)
             {
                 if (s.FormsCompanionsFilter != null && s.FormsCompanionsFilter != "" && s.FormsCompanionsFilter != "false")
@@ -2548,6 +2549,10 @@ namespace Character_Builder
                 }
             }
             FormsCompanionsChoices.Add(new FormsCompanionsChoice() { ChoiceID = iD, FormsCompanions = new List<string>() { m?.Name + " " + ConfigManager.SourceSeperator + " " + m?.Source } });
+        }
+
+        public IEnumerable<Spell> GetSpellscrolls() {
+            return from p in GetItemsAndPossessions() where p.Item is Scroll select (p.Item as Scroll).Spell;
         }
     }
 }

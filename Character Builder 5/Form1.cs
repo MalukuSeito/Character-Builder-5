@@ -2812,6 +2812,7 @@ namespace Character_Builder_5
                 Program.Context.MakeHistory("");
                 Program.Context.Player.Items.Add(((Spell)listItems.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)listItems.SelectedItem).Source);
                 UpdateEquipmentLayout();
+                UpdateFormsCompanions();
             }
         }
 

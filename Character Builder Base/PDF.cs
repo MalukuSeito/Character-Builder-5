@@ -633,6 +633,7 @@ namespace Character_Builder
                     if (pdf.IncludeSpellbook && SpellbookFile != null && SpellbookFile != "" && (booktrans.ContainsKey("Name1") || booktrans.ContainsKey("Description1")))
                     {
                         List<SpellModifyFeature> mods = (from f in context.Player.GetFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
+                        spellbook.AddRange(context.Player.GetSpellscrolls());
                         Queue<Spell> entries = new Queue<Spell>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
                         int sheetCount = 0;
                         while (entries.Count > 0)
