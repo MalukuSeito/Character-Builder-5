@@ -23,7 +23,7 @@ namespace CB_5e.iOS
             using (FileStream fs = File.OpenWrite(Path.Combine(tmp, name)))
             {
                 file.CopyTo(fs);
-            }
+            } 
             var fileinfo = new FileInfo(Path.Combine(tmp, name));
             Device.BeginInvokeOnMainThread(() =>
             {

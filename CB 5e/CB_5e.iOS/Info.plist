@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>CB_5e.iOS</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.malukuseito.CB_5e</string>
+	<string>de.malukuseito.CB5e1</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -55,6 +55,10 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select pictures for characters and new elements</string>
 	<key>XSAppIconAssets</key>
-	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
+	<string>Media.xcassets/AppIcons.appiconset</string>
+	<key>MinimumOSVersion</key>
+	<string>11.3</string>
+	<key>UIMainStoryboardFile</key>
+	<string>LaunchScreen</string>
 </dict>
 </plist>

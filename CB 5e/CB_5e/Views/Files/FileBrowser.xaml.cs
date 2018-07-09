@@ -47,7 +47,12 @@ namespace CB_5e.Views.Files
             }
             else if (e.SelectedItem is IFile file)
             {
-                await Navigation.PushAsync(new EditFilePage(file));
+                try
+                {
+                    await Navigation.PushAsync(new EditFilePage(file));
+                } catch (Exception) {
+                    
+                }
             }
 
             //Deselect Item

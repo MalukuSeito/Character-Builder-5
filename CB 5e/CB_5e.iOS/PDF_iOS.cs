@@ -33,66 +33,50 @@ namespace CB_5e.iOS
         {
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var tmp = Path.Combine(documents, "..", "tmp");
-            using (fs = System.IO.File.OpenWrite(Path.Combine(tmp, context.Player.Name + ".pdf")))
+            var f = Path.Combine(tmp, context.Player.Name + ".pdf");
+            int i = 0;
+            while (File.Exists(f)) {
+                try
+                {
+                    File.Delete(f);
+                } catch (Exception)
+                {
+                    f = Path.Combine(tmp, context.Player.Name + "-" + (++i) + ".pdf");
+                }
+            }
+            using (fs = System.IO.File.OpenWrite(f))
             {
                 PDF p = await Load(await PCLSourceManager.Data.GetFileAsync(Exporter).ConfigureAwait(false)).ConfigureAwait(false);
                 await p.Export(context, this).ConfigureAwait(false);
             }
-            var fileinfo = new FileInfo(Path.Combine(tmp, context.Player.Name + ".pdf"));
+            var fileinfo = new FileInfo(f);
             Device.BeginInvokeOnMainThread(() =>
             {
                 var previewController = new QLPreviewController
                 {
-                    DataSource = new PreviewControllerDataSource(fileinfo.FullName, fileinfo.Name)
+                    DataSource = new PreviewControllerDataSource(fileinfo.FullName, context.Player.Name + ".pdf")
                 };
-
-                UINavigationController controller = FindNavigationController();
-
-                if (controller != null)
-                {
-                    controller.PresentViewController((UIViewController)previewController, true, (Action)null);
-                }
+                GetVisibleViewController().PresentViewController((UIViewController)previewController, true, (Action)null);
             });
         }
-
-        private UINavigationController FindNavigationController()
+        private UIViewController GetVisibleViewController(UIViewController controller = null)
         {
-            foreach (var window in UIApplication.SharedApplication.Windows)
-            {
-                if (window.RootViewController.NavigationController != null)
-                {
-                    return window.RootViewController.NavigationController;
-                }
-                else
-                {
-                    UINavigationController value = CheckSubs(window.RootViewController.ChildViewControllers);
-                    if (value != null)
-                    {
-                        return value;
-                    }
-                }
-            }
-            return null;
-        }
+            controller = controller ?? UIApplication.SharedApplication.KeyWindow.RootViewController;
 
-        private UINavigationController CheckSubs(UIViewController[] controllers)
-        {
-            foreach (var controller in controllers)
+            if (controller.PresentedViewController == null)
+                return controller;
+
+            if (controller.PresentedViewController is UINavigationController)
             {
-                if (controller.NavigationController != null)
-                {
-                    return controller.NavigationController;
-                }
-                else
-                {
-                    UINavigationController value = CheckSubs(controller.ChildViewControllers);
-                    if (value != null)
-                    {
-                        return value;
-                    }
-                }
+                return ((UINavigationController)controller.PresentedViewController).VisibleViewController;
             }
-            return null;
+
+            if (controller.PresentedViewController is UITabBarController)
+            {
+                return ((UITabBarController)controller.PresentedViewController).SelectedViewController;
+            }
+
+            return GetVisibleViewController(controller.PresentedViewController);
         }
 
         public async static Task<PDF> Load(IFile file)

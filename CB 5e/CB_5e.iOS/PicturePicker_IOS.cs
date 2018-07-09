@@ -37,8 +37,9 @@ namespace CB_5e.iOS
             //var viewController = window.RootViewController;
             //var viewController = TopViewController(UIApplication.SharedApplication.KeyWindow.RootViewController);
             //viewController.PresentModalViewController(imagePicker, true);
-            var viewController = window.RootViewController;
-            viewController.PresentModalViewController(imagePicker, true);
+            var viewController = GetVisibleViewController();
+            viewController.PresentViewController(imagePicker, true, null);
+            //viewController.PresentModalViewController(imagePicker, true);
 
             // Return Task object
             taskCompletionSource = new TaskCompletionSource<Stream>();
@@ -97,6 +98,26 @@ namespace CB_5e.iOS
                 return TopViewController(presented);
             }
             return b;
+        }
+
+        private UIViewController GetVisibleViewController(UIViewController controller = null)
+        {
+            controller = controller ?? UIApplication.SharedApplication.KeyWindow.RootViewController;
+
+            if (controller.PresentedViewController == null)
+                return controller;
+
+            if (controller.PresentedViewController is UINavigationController)
+            {
+                return ((UINavigationController)controller.PresentedViewController).VisibleViewController;
+            }
+
+            if (controller.PresentedViewController is UITabBarController)
+            {
+                return ((UITabBarController)controller.PresentedViewController).SelectedViewController;
+            }
+
+            return GetVisibleViewController(controller.PresentedViewController);
         }
     }
 }
