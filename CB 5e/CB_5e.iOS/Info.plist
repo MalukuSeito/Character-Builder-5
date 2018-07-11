@@ -55,10 +55,12 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select pictures for characters and new elements</string>
 	<key>XSAppIconAssets</key>
-	<string>Media.xcassets/AppIcons.appiconset</string>
+	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
 	<key>MinimumOSVersion</key>
 	<string>11.3</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Resources/Media.xcassets/LaunchImages.launchimage</string>
 </dict>
 </plist>
