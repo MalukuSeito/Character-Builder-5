@@ -15,7 +15,7 @@ namespace Character_Builder
         {
             get
             {
-                return "No Starting Equipment or Gold (Add your own starting wealth)";
+                return "Official - No Starting Equipment or Gold (Add your own starting wealth)";
             }
         }
 

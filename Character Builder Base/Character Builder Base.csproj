@@ -62,6 +62,7 @@
     <Compile Include="IPDFSheet.cs" />
     <Compile Include="JournalEntry.cs" />
     <Compile Include="MonsterInfo.cs" />
+    <Compile Include="CustomBackground.cs" />
     <Compile Include="NoFreeEquipment.cs" />
     <Compile Include="ObjectIdentityEqualityComparer.cs" />
     <Compile Include="PDF.cs" />

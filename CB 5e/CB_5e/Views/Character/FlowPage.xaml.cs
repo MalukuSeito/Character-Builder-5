@@ -88,6 +88,8 @@ namespace CB_5e.Views.Character
                     }
                     if (Model.Modified) CharactersViewModel.Instance.LoadItemsCommand.Execute(null);
                     await Navigation.PopModalAsync();
+                } else {
+                    Model.FirePlayerChanged();
                 }
             });
             return !Model.ChildModel;

@@ -105,6 +105,7 @@ namespace Character_Builder_5
             PluginManager plug = new PluginManager();
             context.Plugins = plug;
             plug.Add(new NoFreeEquipment());
+            plug.Add(new CustomBackground());
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {

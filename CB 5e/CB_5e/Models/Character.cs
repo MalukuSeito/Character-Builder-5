@@ -8,16 +8,20 @@ namespace CB_5e.Models
     public class Character : BaseDataObject
     {
 
-        public Character(Player p)
+        public Character(Player p, string folder)
         {
             Player = p;
             Description = p.GetRaceSubName() + " " + String.Join(" | ", p.GetClassesStrings());
             Portrait = Player.Portrait != null ? ImageSource.FromStream(() => new MemoryStream(Player.Portrait)) : null;
             Text = Player.Name;
+            Folder = folder;
         }
         public Player Player { get; private set; }
 
         public string Text { get; private set; }
+
+        public string Folder { get; private set; }
+
         //{
         //    get { return Player?.Name; }
         //}

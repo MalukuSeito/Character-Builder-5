@@ -31,7 +31,7 @@ namespace CB_5e.ViewModels.Character
         }
 
         private List<Models.Character> items = new List<Models.Character>();
-        public ObservableRangeCollection<Models.Character> Items { get; set; }
+        public ObservableRangeCollection<CharGroupModel> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         private string search;
@@ -47,16 +47,16 @@ namespace CB_5e.ViewModels.Character
         private void UpdateItems()
         {
             
-            if (search == null || search == "") Items.ReplaceRange(items);
+            if (search == null || search == "") Items.ReplaceRange(from c in items orderby c.Text group c by c.Folder into g select new CharGroupModel(g.FirstOrDefault()?.Folder ?? "--", g) into cc orderby cc.Folder select cc);
             else
             {
-                Items.ReplaceRange(from c in items where culture.CompareInfo.IndexOf(c.Text ?? "", search, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Description ?? "", search, CompareOptions.IgnoreCase) >= 0 select c) ;
+                Items.ReplaceRange(from c in items where culture.CompareInfo.IndexOf(c.Text ?? "", search, CompareOptions.IgnoreCase) >= 0 || culture.CompareInfo.IndexOf(c.Description ?? "", search, CompareOptions.IgnoreCase) >= 0 orderby c.Text group c by c.Folder into g select new CharGroupModel(g.FirstOrDefault()?.Folder ?? "--", g) into cc orderby cc.Folder select cc);
             }
         }
         private CharactersViewModel()
         {
             Title = "Characters";
-            Items = new ObservableRangeCollection<Models.Character>();
+            Items = new ObservableRangeCollection<CharGroupModel>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
@@ -97,7 +97,7 @@ namespace CB_5e.ViewModels.Character
                     try
                     {
                         Player p = await TinyContext.LoadPlayerAsync(c);
-                        items.Add(new Models.Character(p));
+                        items.Add(new Models.Character(p, "--"));
                         //{
                         //    Player = p
                         //});
@@ -105,6 +105,10 @@ namespace CB_5e.ViewModels.Character
                     {
                         ConfigManager.LogError(e);
                     }
+                }
+                foreach (IFolder c in await characters.GetFoldersAsync().ConfigureAwait(false))
+                {
+                    await Add(c, items, c.Name, TinyContext);
                 }
                 UpdateItems();
             }
@@ -123,5 +127,30 @@ namespace CB_5e.ViewModels.Character
                 IsBusy = false;
             }
         }
+        private async Task Add(IFolder f, List<Models.Character> it, String Folder, BuilderContext TinyContext)
+        {
+            foreach (IFile c in await f.GetFilesAsync().ConfigureAwait(false))
+            {
+                if (!c.Name.EndsWith(".cb5", StringComparison.OrdinalIgnoreCase)) continue;
+                try
+                {
+                    Player p = await TinyContext.LoadPlayerAsync(c);
+                    items.Add(new Models.Character(p, Folder));
+                    //{
+                    //    Player = p
+                    //});
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError(e);
+                }
+            }
+            foreach(IFolder c in await f.GetFoldersAsync().ConfigureAwait(false))
+            {
+                await Add(c, it, Folder + "/" + c.Name, TinyContext);
+            }
+        }
     }
+
+    
 };

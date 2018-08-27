@@ -57,6 +57,7 @@
     <Compile Include="ViewModels\Character\Play\PlayerFormsCompanionsViewModel.cs" />
     <Compile Include="ViewModels\Character\Play\PlayerActionsViewModel.cs" />
     <Compile Include="ViewModels\Character\MonsterViewModel.cs" />
+    <Compile Include="ViewModels\Character\CharGroupModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterTraitViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterSaveViewModel.cs" />
     <Compile Include="ViewModels\Modify\Collections\MonsterSkillViewModel.cs" />
@@ -260,6 +261,9 @@
     </Compile>
     <Compile Include="Views\Modify\EditMonster.xaml.cs">
       <DependentUpon>EditMonster.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Modify\EditLevel.xaml.cs">
+      <DependentUpon>EditLevel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Modify\EditSettings.xaml.cs">
       <DependentUpon>EditSettings.xaml</DependentUpon>
@@ -1565,6 +1569,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icons\pencil%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Modify\EditLevel.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.5.0.280555\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.5.0.280555\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

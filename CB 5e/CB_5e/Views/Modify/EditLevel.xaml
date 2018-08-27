@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Modify.EditLevel"
+             Title="Levels">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Exit" Clicked="ToolbarItem_Clicked"/>
+        <ToolbarItem Text="Save" Command="{Binding Save}"/>
+        <ToolbarItem Text="Undo" Command="{Binding Undo}"/>
+        <ToolbarItem Text="Redo" Command="{Binding Redo}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="Edit the total XP/Advancement Checkpoints needed for specific Levels as well as a the proficiency bonus per Level here."/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

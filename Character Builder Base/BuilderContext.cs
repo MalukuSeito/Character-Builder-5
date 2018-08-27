@@ -16,7 +16,7 @@ namespace Character_Builder
         public int UnsavedChanges = 0;
         public int MaxBuffer = 200;
         public PluginManager _plugins;
-        public PluginManager Plugins { get { return _plugins; } set { _plugins = value; _plugins.Load(Player?.ExcludedSources); } }
+        public PluginManager Plugins { get { return _plugins; } set { _plugins = value; _plugins.Load(Player?.ActiveHouseRules); } }
 
         public Player _current;
         public Player Player

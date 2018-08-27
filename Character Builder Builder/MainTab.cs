@@ -108,8 +108,10 @@ namespace Character_Builder_Builder
             else if (tab == levelTab)
             {
                 Level c = Program.Context.LoadLevel(Program.Context.Config.Levels);
+                c.ToAP(0);
                 LevelXP.Items = c.Experience;
                 LevelProficiency.Items = c.Proficiency;
+                LevelAdvCheckpoints.Items = c.Advancement;
 
             }
             else if (tab == arraysTab)

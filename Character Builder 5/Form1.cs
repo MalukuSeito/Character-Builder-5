@@ -54,6 +54,7 @@ namespace Character_Builder_5
             flaws.MouseWheel += listbox_MouseWheel;
             background.MouseWheel += listbox_MouseWheel;
             traits.MouseWheel += listbox_MouseWheel;
+            traits2.MouseWheel += listbox_MouseWheel;
             journalentrybox.MouseWheel += listbox_MouseWheel;
             skillbox.MouseWheel += listbox_MouseWheel;
             HitDiceUsed.MouseWheel += listbox_MouseWheel;
@@ -377,21 +378,39 @@ namespace Character_Builder_5
             bool waslayouting = layouting;
             if (!layouting) layouting = true;
             if (updateside) UpdateSideLayout();
+            advancementCheckpointsInsteadOfXPToolStripMenuItem.Checked = Program.Context.Player.Advancement;
             journalTab.SuspendLayout();
             int index = journalEntries.SelectedIndex;
             journalEntries.Items.Clear();
             int down = 0;
             int renown = 0;
+            int t1tp = 0;
+            int t2tp = 0;
+            int t3tp = 0;
+            int t4tp = 0;
+            int magic = 0;
             foreach (JournalEntry je in Program.Context.Player.ComplexJournal)
             {
                 down += je.Downtime;
                 renown += je.Renown;
+                magic += je.MagicItems;
+                t1tp += je.T1TP;
+                t2tp += je.T2TP;
+                t3tp += je.T3TP;
+                t4tp += je.T4TP;
                 journalEntries.Items.Add(je);
             }
             if (index >= 0 && index < journalEntries.Items.Count) journalEntries.SelectedIndex = index;
             else journalEntries_SelectedIndexChanged(null, null);
-            Downtime.Value = down;
-            Renown.Value = renown;
+            List<string> c = new List<string>();
+            if (down != 0) c.Add(down + " Downtime");
+            if (renown != 0) c.Add(renown + " Renown");
+            if (magic != 0) c.Add(magic + " Magic Items");
+            if (t1tp != 0) c.Add(t1tp + " Tier 1 TP");
+            if (t2tp != 0) c.Add(t2tp + " Tier 2 TP");
+            if (t3tp != 0) c.Add(t3tp + " Tier 3 TP");
+            if (t4tp != 0) c.Add(t4tp + " Tier 4 TP");
+            journalTotal.Text = "Total: " + String.Join(", ", c);
             journalTab.ResumeLayout();
             if (!waslayouting) layouting = false;
         }
@@ -774,8 +793,12 @@ namespace Character_Builder_5
                 }
                 backt.Add(traitLabel);
                 backt.Add(traits);
+                backt.Add(trait2Label);
+                backt.Add(traits2);
                 traits.Items.Clear();
                 traits.ForeColor = System.Drawing.SystemColors.WindowText;
+                traits2.Items.Clear();
+                traits2.ForeColor = System.Drawing.SystemColors.WindowText;
                 if (Program.Context.Player.PersonalityTrait == null || Program.Context.Player.PersonalityTrait == "")
                 {
                     if (back != null) traits.Items.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
@@ -788,6 +811,20 @@ namespace Character_Builder_5
                     traits.Items.Add(Program.Context.Player.PersonalityTrait);
                 }
                 traits.Height = traits.Items.Count * traits.ItemHeight + 10;
+
+                if (Program.Context.Player.PersonalityTrait2 == null || Program.Context.Player.PersonalityTrait2 == "")
+                {
+                    if (back != null) traits2.Items.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
+                    traits2.Items.Add("- None -");
+                    foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Trait)) traits2.Items.AddRange(td.Entries.ToArray<TableEntry>());
+                    traits2.Items.Add("- Custom Personality Trait -");
+                }
+                else
+                {
+                    traits2.ForeColor = Config.SelectColor;
+                    traits2.Items.Add(Program.Context.Player.PersonalityTrait2);
+                }
+                traits2.Height = traits2.Items.Count * traits2.ItemHeight + 10;
 
                 backt.Add(ideallabel);
                 backt.Add(ideals);
@@ -1429,10 +1466,11 @@ namespace Character_Builder_5
                 characterName.Text = Program.Context.Player.Name;
                 XP.Minimum = Program.Context.Player.GetXP(true);
                 XP.Value = Program.Context.Player.GetXP();
+                XPLabel.Text = Program.Context.Player.Advancement ? "Checkpoints:" : "Experience:";
                 Alignment.Text = Program.Context.Player.Alignment;
                 PlayerName.Text = Program.Context.Player.PlayerName;
                 DCI.Text = Program.Context.Player.DCI;
-                XPtoUP.Value = Program.Context.Levels.XpToLevelUp(Program.Context.Player.GetXP());
+                XPtoUP.Value = Program.Context.Levels.XpToLevelUp(Program.Context.Player.GetXP(), Program.Context.Player.Advancement);
                 Age.Value = Program.Context.Player.Age;
                 HeightValue.Text = Program.Context.Player.Height;
                 Weight.Value = Program.Context.Player.Weight;
@@ -1793,7 +1831,7 @@ namespace Character_Builder_5
                 Program.Context.MakeHistory("");
                 if (Program.Context.Player.Background == null) Program.Context.Player.Background = selected;
                 else Program.Context.Player.Background = null;
-                UpdateBackgroundLayout();
+                UpdateLayout();
             }
         }
 
@@ -1807,6 +1845,21 @@ namespace Character_Builder_5
                     else Program.Context.Player.PersonalityTrait = traits.SelectedItem.ToString();
                 }
                 else Program.Context.Player.PersonalityTrait = "";
+                UpdateBackgroundLayout();
+            }
+        }
+
+        private void traits2_DoubleClick(object sender, EventArgs e)
+        {
+            if (traits2.SelectedItem != null)
+            {
+                Program.Context.MakeHistory("");
+                if (Program.Context.Player.PersonalityTrait2 == null || Program.Context.Player.PersonalityTrait2 == "")
+                {
+                    if (traits2.SelectedIndex == traits2.Items.Count - 1) Program.Context.Player.PersonalityTrait2 = Interaction.InputBox("Custom Personality Trait:", "CB 5");
+                    else Program.Context.Player.PersonalityTrait2 = traits2.SelectedItem.ToString();
+                }
+                else Program.Context.Player.PersonalityTrait2 = "";
                 UpdateBackgroundLayout();
             }
         }
@@ -2352,8 +2405,8 @@ namespace Character_Builder_5
                     Program.Context.Player.SetXP((int)XP.Value);
                     UpdateLayout();
                 }
-                else if (XP.Value > xp) XP.Value = xp + Program.Context.Levels.XpToLevelUp((int)xp);
-                else XP.Value = Math.Max(XP.Minimum, xp - Program.Context.Levels.XpToLevelDown((int)xp));
+                else if (XP.Value > xp) XP.Value = xp + Program.Context.Levels.XpToLevelUp((int)xp, Program.Context.Player.Advancement);
+                else XP.Value = Math.Max(XP.Minimum, xp - Program.Context.Levels.XpToLevelDown((int)xp, Program.Context.Player.Advancement));
             }
         }
 
@@ -3838,6 +3891,11 @@ namespace Character_Builder_5
                 journalEP.Value = je.EP;
                 journalPP.Value = je.PP;
                 journalXP.Value = je.XP;
+                journalAP.Value = je.AP;
+                journalT1TP.Value = je.T1TP;
+                journalT2TP.Value = je.T2TP;
+                journalT3TP.Value = je.T3TP;
+                journalT4TP.Value = je.T4TP;
                 journalMagic.Value = je.MagicItems;
                 journalDowntime.Value = je.Downtime;
                 journalRenown.Value = je.Renown;
@@ -3853,6 +3911,11 @@ namespace Character_Builder_5
                 journalEP.Enabled = true;
                 journalPP.Enabled = true;
                 journalXP.Enabled = true;
+                journalAP.Enabled = true;
+                journalT1TP.Enabled = true;
+                journalT2TP.Enabled = true;
+                journalT3TP.Enabled = true;
+                journalT4TP.Enabled = true;
                 journalMagic.Enabled = true;
                 journalDowntime.Enabled = true;
                 journalRenown.Enabled = true;
@@ -3871,6 +3934,11 @@ namespace Character_Builder_5
                 journalEP.Value = 0;
                 journalPP.Value = 0;
                 journalXP.Value = 0;
+                journalAP.Value = 0;
+                journalT1TP.Value = 0;
+                journalT2TP.Value = 0;
+                journalT3TP.Value = 0;
+                journalT4TP.Value = 0;
                 journalMagic.Value = 0;
                 journalDowntime.Value = 0;
                 journalRenown.Value = 0;
@@ -3886,6 +3954,11 @@ namespace Character_Builder_5
                 journalEP.Enabled = false;
                 journalPP.Enabled = false;
                 journalXP.Enabled = false;
+                journalAP.Enabled = false;
+                journalT1TP.Enabled = false;
+                journalT2TP.Enabled = false;
+                journalT3TP.Enabled = false;
+                journalT4TP.Enabled = false;
                 journalMagic.Enabled = false;
                 journalDowntime.Enabled = false;
                 journalRenown.Enabled = false;
@@ -4279,6 +4352,68 @@ namespace Character_Builder_5
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             toolStripMenuItem1.Checked = !toolStripMenuItem1.Checked;
+        }
+
+        private void advancementCheckpointsInsteadOfXPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Context.MakeHistory("");
+            Program.Context.Player.Advancement = !advancementCheckpointsInsteadOfXPToolStripMenuItem.Checked;
+            UpdateLayout();
+        }
+
+        private void journalAP_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalAP");
+            if (journalEntries.SelectedItem is JournalEntry je)
+            {
+                je.AP = (int)journalAP.Value;
+                UpdateLayout();
+            }
+        }
+
+        private void journalT1TP_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalT1TP");
+            if (journalEntries.SelectedItem is JournalEntry je)
+            {
+                je.T1TP = (int)journalT1TP.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void journalT2TP_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalT2TP");
+            if (journalEntries.SelectedItem is JournalEntry je)
+            {
+                je.T2TP = (int)journalT2TP.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void journalT3TP_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalT3TP");
+            if (journalEntries.SelectedItem is JournalEntry je)
+            {
+                je.T3TP = (int)journalT3TP.Value;
+                UpdateJournal();
+            }
+        }
+
+        private void journalT4TP_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalT4TP");
+            if (journalEntries.SelectedItem is JournalEntry je)
+            {
+                je.T4TP = (int)journalT4TP.Value;
+                UpdateJournal();
+            }
         }
     }
 }

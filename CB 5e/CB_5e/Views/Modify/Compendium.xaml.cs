@@ -67,8 +67,10 @@ namespace CB_5e.Views.Modify
                     await context.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels));
                     LevelEditModel m = new LevelEditModel(context);
                     TabbedPage t = new TabbedPage();
+                    t.Children.Add(new NavigationPage(new EditLevel(m)) { Title = "Level", Icon = Device.RuntimePlatform == Device.iOS ? "statistics.png" : null });
                     t.Children.Add(new NavigationPage(new IntListPage(m, "Experience", "Level ", "0", Keyboard.Numeric, true, true)) { Title = "Experience", Icon = Device.RuntimePlatform == Device.iOS ? "upload.png" : null });
                     t.Children.Add(new NavigationPage(new IntListPage(m, "Proficiency", "Level ", "+#;-#;0", Keyboard.Telephone, true, true)) { Title = "Proficiency", Icon = Device.RuntimePlatform == Device.iOS ? "duplicate.png" : null });
+                    t.Children.Add(new NavigationPage(new IntListPage(m, "AdvancementCheckpoints", "Level ", "0", Keyboard.Numeric, true, true)) { Title = "Advancement Checkpoints", Icon = Device.RuntimePlatform == Device.iOS ? "checked.png" : null });
                     m.TrackChanges = true;
                     await Navigation.PushModalAsync(t);
                 }
@@ -99,7 +101,7 @@ namespace CB_5e.Views.Modify
                     DependencyService.Get<IHTMLService>().Reset(config);
                     SettingsEditModel m = new SettingsEditModel(context);
                     TabbedPage t = new TabbedPage();
-                    t.Children.Add(new NavigationPage(new EditSettings(m)) { Title = "Settings" });
+                    t.Children.Add(new NavigationPage(new EditSettings(m)) { Title = "Settings", Icon = Device.RuntimePlatform == Device.iOS ? "flash_light.png" : null });
                     t.Children.Add(new NavigationPage(new StringListPage(m, "EqiupmentSlots", null, true)) { Title = "Slots", Icon = Device.RuntimePlatform == Device.iOS ? "database.png" : null });
                     t.Children.Add(new NavigationPage(new StringListPage(m, "PDFExporters", null, true)) { Title = "PDF", Icon = Device.RuntimePlatform == Device.iOS ? "pdf.png" : null });
                     t.Children.Add(new NavigationPage(new FeatureListPage(m, "CommonFeatures")) { Title = "Common Features", Icon = Device.RuntimePlatform == Device.iOS ? "wallet_app.png" : null });

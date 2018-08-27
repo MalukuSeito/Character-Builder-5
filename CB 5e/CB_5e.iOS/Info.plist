@@ -55,7 +55,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select pictures for characters and new elements</string>
 	<key>XSAppIconAssets</key>
-	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
+	<string>Media.xcassets/AppIcons.appiconset</string>
 	<key>MinimumOSVersion</key>
 	<string>11.3</string>
 	<key>UIMainStoryboardFile</key>

@@ -97,12 +97,18 @@
             this.NewCondition = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.monsterTab = new System.Windows.Forms.TabPage();
+            this.monsterbox = new System.Windows.Forms.ListBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.label31 = new System.Windows.Forms.Label();
             this.levelTab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.LevelXP = new Character_Builder_Builder.IntList();
             this.label14 = new System.Windows.Forms.Label();
+            this.splitContainer11 = new System.Windows.Forms.SplitContainer();
+            this.LevelAdvCheckpoints = new Character_Builder_Builder.IntList();
+            this.label33 = new System.Windows.Forms.Label();
             this.LevelProficiency = new Character_Builder_Builder.IntList();
             this.label13 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -149,9 +155,6 @@
             this.armorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label32 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.monsterbox = new System.Windows.Forms.ListBox();
             this.TabControls.SuspendLayout();
             this.racesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -189,6 +192,10 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer11)).BeginInit();
+            this.splitContainer11.Panel1.SuspendLayout();
+            this.splitContainer11.Panel2.SuspendLayout();
+            this.splitContainer11.SuspendLayout();
             this.panel1.SuspendLayout();
             this.arraysTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
@@ -1025,6 +1032,36 @@
             this.monsterTab.Text = "Monsters";
             this.monsterTab.UseVisualStyleBackColor = true;
             // 
+            // monsterbox
+            // 
+            this.monsterbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.monsterbox.FormattingEnabled = true;
+            this.monsterbox.Location = new System.Drawing.Point(3, 16);
+            this.monsterbox.Name = "monsterbox";
+            this.monsterbox.Size = new System.Drawing.Size(824, 380);
+            this.monsterbox.TabIndex = 22;
+            this.monsterbox.SelectedIndexChanged += new System.EventHandler(this.monsterbox_SelectedIndexChanged);
+            this.monsterbox.DoubleClick += new System.EventHandler(this.editMonster);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label32.Location = new System.Drawing.Point(3, 396);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(112, 13);
+            this.label32.TabIndex = 21;
+            this.label32.Text = "Filter/Expression Test:";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox2.Location = new System.Drawing.Point(3, 409);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(824, 20);
+            this.textBox2.TabIndex = 20;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
             // button4
             // 
             this.button4.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -1071,10 +1108,9 @@
             // 
             // splitContainer5.Panel2
             // 
-            this.splitContainer5.Panel2.Controls.Add(this.LevelProficiency);
-            this.splitContainer5.Panel2.Controls.Add(this.label13);
+            this.splitContainer5.Panel2.Controls.Add(this.splitContainer11);
             this.splitContainer5.Size = new System.Drawing.Size(824, 419);
-            this.splitContainer5.SplitterDistance = 398;
+            this.splitContainer5.SplitterDistance = 267;
             this.splitContainer5.TabIndex = 2;
             // 
             // LevelXP
@@ -1086,7 +1122,7 @@
             this.LevelXP.Items = null;
             this.LevelXP.Location = new System.Drawing.Point(0, 13);
             this.LevelXP.Name = "LevelXP";
-            this.LevelXP.Size = new System.Drawing.Size(398, 406);
+            this.LevelXP.Size = new System.Drawing.Size(267, 406);
             this.LevelXP.Start = 1;
             this.LevelXP.TabIndex = 2;
             // 
@@ -1100,6 +1136,48 @@
             this.label14.TabIndex = 1;
             this.label14.Text = "XP:";
             // 
+            // splitContainer11
+            // 
+            this.splitContainer11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer11.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer11.Name = "splitContainer11";
+            // 
+            // splitContainer11.Panel1
+            // 
+            this.splitContainer11.Panel1.Controls.Add(this.LevelAdvCheckpoints);
+            this.splitContainer11.Panel1.Controls.Add(this.label33);
+            // 
+            // splitContainer11.Panel2
+            // 
+            this.splitContainer11.Panel2.Controls.Add(this.LevelProficiency);
+            this.splitContainer11.Panel2.Controls.Add(this.label13);
+            this.splitContainer11.Size = new System.Drawing.Size(553, 419);
+            this.splitContainer11.SplitterDistance = 277;
+            this.splitContainer11.TabIndex = 0;
+            // 
+            // LevelAdvCheckpoints
+            // 
+            this.LevelAdvCheckpoints.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.LevelAdvCheckpoints.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LevelAdvCheckpoints.Format = "Level {0}: {1}";
+            this.LevelAdvCheckpoints.HistoryManager = null;
+            this.LevelAdvCheckpoints.Items = null;
+            this.LevelAdvCheckpoints.Location = new System.Drawing.Point(0, 13);
+            this.LevelAdvCheckpoints.Name = "LevelAdvCheckpoints";
+            this.LevelAdvCheckpoints.Size = new System.Drawing.Size(277, 406);
+            this.LevelAdvCheckpoints.Start = 1;
+            this.LevelAdvCheckpoints.TabIndex = 3;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label33.Location = new System.Drawing.Point(0, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(138, 13);
+            this.label33.TabIndex = 2;
+            this.label33.Text = "Advancement Checkpoints:";
+            // 
             // LevelProficiency
             // 
             this.LevelProficiency.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
@@ -1109,9 +1187,9 @@
             this.LevelProficiency.Items = null;
             this.LevelProficiency.Location = new System.Drawing.Point(0, 13);
             this.LevelProficiency.Name = "LevelProficiency";
-            this.LevelProficiency.Size = new System.Drawing.Size(422, 406);
+            this.LevelProficiency.Size = new System.Drawing.Size(272, 406);
             this.LevelProficiency.Start = 1;
-            this.LevelProficiency.TabIndex = 1;
+            this.LevelProficiency.TabIndex = 3;
             // 
             // label13
             // 
@@ -1120,7 +1198,7 @@
             this.label13.Location = new System.Drawing.Point(0, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(62, 13);
-            this.label13.TabIndex = 0;
+            this.label13.TabIndex = 2;
             this.label13.Text = "Proficiency:";
             // 
             // panel1
@@ -1629,36 +1707,6 @@
             this.packToolStripMenuItem.Text = "Pack";
             this.packToolStripMenuItem.Click += new System.EventHandler(this.packToolStripMenuItem_Click);
             // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label32.Location = new System.Drawing.Point(3, 396);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(112, 13);
-            this.label32.TabIndex = 21;
-            this.label32.Text = "Filter/Expression Test:";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textBox2.Location = new System.Drawing.Point(3, 409);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(824, 20);
-            this.textBox2.TabIndex = 20;
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // monsterbox
-            // 
-            this.monsterbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.monsterbox.FormattingEnabled = true;
-            this.monsterbox.Location = new System.Drawing.Point(3, 16);
-            this.monsterbox.Name = "monsterbox";
-            this.monsterbox.Size = new System.Drawing.Size(824, 380);
-            this.monsterbox.TabIndex = 22;
-            this.monsterbox.SelectedIndexChanged += new System.EventHandler(this.monsterbox_SelectedIndexChanged);
-            this.monsterbox.DoubleClick += new System.EventHandler(this.editMonster);
-            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1720,9 +1768,14 @@
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel1.PerformLayout();
             this.splitContainer5.Panel2.ResumeLayout(false);
-            this.splitContainer5.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
+            this.splitContainer11.Panel1.ResumeLayout(false);
+            this.splitContainer11.Panel1.PerformLayout();
+            this.splitContainer11.Panel2.ResumeLayout(false);
+            this.splitContainer11.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer11)).EndInit();
+            this.splitContainer11.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.arraysTab.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
@@ -1827,8 +1880,6 @@
         private System.Windows.Forms.SplitContainer splitContainer5;
         private IntList LevelXP;
         private System.Windows.Forms.Label label14;
-        private IntList LevelProficiency;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.SplitContainer splitContainer6;
@@ -1885,6 +1936,11 @@
         private System.Windows.Forms.ListBox monsterbox;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.SplitContainer splitContainer11;
+        private IntList LevelAdvCheckpoints;
+        private System.Windows.Forms.Label label33;
+        private IntList LevelProficiency;
+        private System.Windows.Forms.Label label13;
     }
 }
 

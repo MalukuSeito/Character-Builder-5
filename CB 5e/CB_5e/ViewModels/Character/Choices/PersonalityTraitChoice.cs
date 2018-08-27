@@ -13,9 +13,23 @@ namespace CB_5e.ViewModels.Character.Choices
 {
     public class PersonalityTraitChoice : ChoiceViewModel<Feature>
     {
-        public PersonalityTraitChoice(SubModel model,List<TableEntry> choices) : base(model, null, 1, null, false, true)
+        public string Trait {
+            get
+            {
+                if (Other) return Model.Context.Player.PersonalityTrait2;
+                else return Model.Context.Player.PersonalityTrait;
+            }
+            set
+            {
+                if (Other) Model.Context.Player.PersonalityTrait2 = value;
+                else Model.Context.Player.PersonalityTrait = value;
+            }
+        }
+        private bool Other = false;
+        public PersonalityTraitChoice(SubModel model,List<TableEntry> choices, bool other) : base(model, null, 1, null, false, true)
         {
-            Name = "Personality Trait";
+            Other = other;
+            Name = other ? "Personality Trait" : "2nd Personality Trait";
             Choices = choices;
             Navigation = model.Navigation;
             OnSelect = new Command((par) =>
@@ -23,7 +37,7 @@ namespace CB_5e.ViewModels.Character.Choices
                 if (par is string s)
                 {
                     Model.MakeHistory();
-                    Model.Context.Player.PersonalityTrait = s;
+                    Trait = s;
                     Model.Save();
                     Model.FirePlayerChanged();
                 }
@@ -32,11 +46,11 @@ namespace CB_5e.ViewModels.Character.Choices
                     Model.MakeHistory();
                     if (co.Selected)
                     {
-                        Model.Context.Player.PersonalityTrait = null;
+                        Trait = null;
                     } 
                     else
                     {
-                        Model.Context.Player.PersonalityTrait = co.NameWithSource;
+                        Trait = co.NameWithSource;
                     }
                     Model.Save();
                     Model.FirePlayerChanged();
@@ -47,20 +61,17 @@ namespace CB_5e.ViewModels.Character.Choices
 
         public override List<string> GetMyTakenChoices()
         {
-            return Model.Context.Player.PersonalityTrait == null || Model.Context.Player.PersonalityTrait == "" ? new List<string>() : new List<string>()
+            return (Trait == null || Trait == "") ? new List<string>() : new List<string>()
             {
-                Model.Context.Player.PersonalityTrait
+                Trait
             };
         }
         public override List<string> GetAllTakenChoices()
         {
-            return Model.Context.Player.PersonalityTrait == null || Model.Context.Player.PersonalityTrait == "" ? new List<string>() : new List<string>()
-            {
-                Model.Context.Player.PersonalityTrait
-            };
+            return GetMyTakenChoices();
         }
 
-        public override int Taken => Model.Context.Player.PersonalityTrait == null || Model.Context.Player.PersonalityTrait == "" ? 0 : 1;
+        public override int Taken => (Trait == null || Trait == "") ? 0 : 1;
 
         public override void Refresh(Feature feature)
         {

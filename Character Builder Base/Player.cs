@@ -52,6 +52,7 @@ namespace Character_Builder
         [XmlElement(ElementName = "Background")]
         public String BackgroundName { get; set; }
         public String PersonalityTrait { get; set; }
+        public String PersonalityTrait2 { get; set; }
         public String Ideal { get; set; }
         public String Bond { get; set; }
         public String Flaw { get; set; }
@@ -96,6 +97,8 @@ namespace Character_Builder
         public int EP { get; set; }
         public int GP { get; set; }
         public int PP { get; set; }
+        public int AP { get; set; }
+        public bool Advancement { get; set; }
 
         public List<FormsCompanionsChoice> FormsCompanionsChoices = new List<FormsCompanionsChoice>();
         public Player()
@@ -2148,7 +2151,7 @@ namespace Character_Builder
         }
         public int GetLevel()
         {
-            return Context.Levels.Get(GetXP());
+            return Context.Levels.Get(GetXP(), Advancement);
         }
         public int GetProficiency(int level = 0)
         {
@@ -2248,20 +2251,58 @@ namespace Character_Builder
 
         public int GetXP(bool onlyJournal = false)
         {
-            int x = onlyJournal ? 0 : XP;
-            foreach (JournalEntry e in ComplexJournal)
-            {
-                x += e.XP;
+            if (Advancement) {
+                int lastxp = onlyJournal ? 0 : XP;
+                int a = 0;
+                foreach (JournalEntry e in ComplexJournal)
+                {
+                    if (e.AP != 0 && lastxp != 0)
+                    {
+                        a = Context.Levels.ToAP(Context.Levels.ToXP(a) + lastxp);
+                        lastxp = 0;
+                    }
+                    a += e.AP;
+                    if (e.XP > 0) lastxp += e.XP;
+                }
+                if (lastxp != 0)
+                {
+                    a = Context.Levels.ToAP(Context.Levels.ToXP(a) + lastxp);
+                }
+                if (!onlyJournal) a += AP;
+                return a;
             }
-            return x;
+            else
+            {
+                int x = onlyJournal ? 0 : XP;
+                int lastap = 0;
+                foreach (JournalEntry e in ComplexJournal)
+                {
+                    if (e.XP != 0 && lastap != 0)
+                    {
+                        x = Context.Levels.ToXP(Context.Levels.ToAP(x) + lastap);
+                        lastap = 0;
+                    } 
+                    x += e.XP;
+                    if (e.AP > 0) lastap += e.AP;
+                }
+                if (lastap + AP != 0)
+                {
+                    x = Context.Levels.ToXP(Context.Levels.ToAP(x) + lastap + AP);
+                }
+                return x;
+            }
         }
         public void SetXP(int xp)
         {
-            foreach (JournalEntry e in ComplexJournal)
+            int cur = GetXP(false);
+            if (Advancement)
             {
-                xp -= e.XP;
+                AP = xp - cur + AP;
             }
-            XP = xp;
+            else
+            {
+                XP = xp - cur + XP;
+            }
         }
 
         public void RemoveBoon(Feature feature)

@@ -62,6 +62,7 @@
             this.showDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alawaysShowTheSourcebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showAllKnownRitualsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSpilt = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.MoneyButton = new System.Windows.Forms.Button();
@@ -152,6 +153,8 @@
             this.bondlabel = new System.Windows.Forms.Label();
             this.ideals = new System.Windows.Forms.ListBox();
             this.ideallabel = new System.Windows.Forms.Label();
+            this.traits2 = new System.Windows.Forms.ListBox();
+            this.trait2Label = new System.Windows.Forms.Label();
             this.traits = new System.Windows.Forms.ListBox();
             this.traitLabel = new System.Windows.Forms.Label();
             this.background = new System.Windows.Forms.ListBox();
@@ -222,16 +225,23 @@
             this.journalTab = new System.Windows.Forms.TabPage();
             this.journalEntries = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label34 = new System.Windows.Forms.Label();
-            this.Downtime = new System.Windows.Forms.NumericUpDown();
-            this.label33 = new System.Windows.Forms.Label();
-            this.Renown = new System.Windows.Forms.NumericUpDown();
+            this.journalTotal = new System.Windows.Forms.Label();
             this.removeJournalButton = new System.Windows.Forms.Button();
             this.newJournalEntry = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.journalText = new System.Windows.Forms.TextBox();
             this.journalTitle = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label39 = new System.Windows.Forms.Label();
+            this.journalAP = new System.Windows.Forms.NumericUpDown();
+            this.journalT4TP = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.journalT3TP = new System.Windows.Forms.NumericUpDown();
+            this.label36 = new System.Windows.Forms.Label();
+            this.journalT2TP = new System.Windows.Forms.NumericUpDown();
+            this.label38 = new System.Windows.Forms.Label();
+            this.journalT1TP = new System.Windows.Forms.NumericUpDown();
             this.journalInSheet = new System.Windows.Forms.CheckBox();
             this.label32 = new System.Windows.Forms.Label();
             this.journalDM = new System.Windows.Forms.TextBox();
@@ -494,10 +504,13 @@
             this.splitContainer13.SuspendLayout();
             this.journalTab.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Downtime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Renown)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.journalAP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT4TP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT3TP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT2TP)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT1TP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalRenown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalDowntime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalMagic)).BeginInit();
@@ -701,7 +714,8 @@
             this.makeDefaultEditorForcb5FilesToolStripMenuItem,
             this.showDescriptionToolStripMenuItem,
             this.alawaysShowTheSourcebookToolStripMenuItem,
-            this.showAllKnownRitualsToolStripMenuItem});
+            this.showAllKnownRitualsToolStripMenuItem,
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "&Settings";
@@ -848,6 +862,13 @@
             this.showAllKnownRitualsToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
             this.showAllKnownRitualsToolStripMenuItem.Text = "Show All Known Rituals";
             this.showAllKnownRitualsToolStripMenuItem.Click += new System.EventHandler(this.showAllKnownRitualsToolStripMenuItem_Click);
+            // 
+            // advancementCheckpointsInsteadOfXPToolStripMenuItem
+            // 
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem.Name = "advancementCheckpointsInsteadOfXPToolStripMenuItem";
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem.Size = new System.Drawing.Size(312, 22);
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem.Text = "Advancement Checkpoints instead of XP";
+            this.advancementCheckpointsInsteadOfXPToolStripMenuItem.Click += new System.EventHandler(this.advancementCheckpointsInsteadOfXPToolStripMenuItem_Click);
             // 
             // mainSpilt
             // 
@@ -2000,6 +2021,8 @@
             this.backtab.Controls.Add(this.bondlabel);
             this.backtab.Controls.Add(this.ideals);
             this.backtab.Controls.Add(this.ideallabel);
+            this.backtab.Controls.Add(this.traits2);
+            this.backtab.Controls.Add(this.trait2Label);
             this.backtab.Controls.Add(this.traits);
             this.backtab.Controls.Add(this.traitLabel);
             this.backtab.Controls.Add(this.background);
@@ -2015,10 +2038,10 @@
             // 
             this.flaws.Dock = System.Windows.Forms.DockStyle.Top;
             this.flaws.FormattingEnabled = true;
-            this.flaws.Location = new System.Drawing.Point(15, 494);
+            this.flaws.Location = new System.Drawing.Point(15, 613);
             this.flaws.Name = "flaws";
             this.flaws.Size = new System.Drawing.Size(568, 95);
-            this.flaws.TabIndex = 9;
+            this.flaws.TabIndex = 17;
             this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
             this.flaws.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
@@ -2027,21 +2050,21 @@
             // 
             this.flawlabel.AutoSize = true;
             this.flawlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flawlabel.Location = new System.Drawing.Point(15, 470);
+            this.flawlabel.Location = new System.Drawing.Point(15, 589);
             this.flawlabel.Name = "flawlabel";
             this.flawlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
             this.flawlabel.Size = new System.Drawing.Size(80, 24);
-            this.flawlabel.TabIndex = 8;
+            this.flawlabel.TabIndex = 16;
             this.flawlabel.Text = "Choose a Flaw:";
             // 
             // bonds
             // 
             this.bonds.Dock = System.Windows.Forms.DockStyle.Top;
             this.bonds.FormattingEnabled = true;
-            this.bonds.Location = new System.Drawing.Point(15, 375);
+            this.bonds.Location = new System.Drawing.Point(15, 494);
             this.bonds.Name = "bonds";
             this.bonds.Size = new System.Drawing.Size(568, 95);
-            this.bonds.TabIndex = 7;
+            this.bonds.TabIndex = 15;
             this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
             this.bonds.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
@@ -2050,21 +2073,21 @@
             // 
             this.bondlabel.AutoSize = true;
             this.bondlabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bondlabel.Location = new System.Drawing.Point(15, 351);
+            this.bondlabel.Location = new System.Drawing.Point(15, 470);
             this.bondlabel.Name = "bondlabel";
             this.bondlabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
             this.bondlabel.Size = new System.Drawing.Size(83, 24);
-            this.bondlabel.TabIndex = 6;
+            this.bondlabel.TabIndex = 14;
             this.bondlabel.Text = "Choose a Bond:";
             // 
             // ideals
             // 
             this.ideals.Dock = System.Windows.Forms.DockStyle.Top;
             this.ideals.FormattingEnabled = true;
-            this.ideals.Location = new System.Drawing.Point(15, 256);
+            this.ideals.Location = new System.Drawing.Point(15, 375);
             this.ideals.Name = "ideals";
             this.ideals.Size = new System.Drawing.Size(568, 95);
-            this.ideals.TabIndex = 5;
+            this.ideals.TabIndex = 13;
             this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
             this.ideals.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
@@ -2073,12 +2096,35 @@
             // 
             this.ideallabel.AutoSize = true;
             this.ideallabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ideallabel.Location = new System.Drawing.Point(15, 232);
+            this.ideallabel.Location = new System.Drawing.Point(15, 351);
             this.ideallabel.Name = "ideallabel";
             this.ideallabel.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
             this.ideallabel.Size = new System.Drawing.Size(87, 24);
-            this.ideallabel.TabIndex = 4;
+            this.ideallabel.TabIndex = 12;
             this.ideallabel.Text = "Choose an Ideal:";
+            // 
+            // traits2
+            // 
+            this.traits2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.traits2.FormattingEnabled = true;
+            this.traits2.Location = new System.Drawing.Point(15, 256);
+            this.traits2.Name = "traits2";
+            this.traits2.Size = new System.Drawing.Size(568, 95);
+            this.traits2.TabIndex = 11;
+            this.traits2.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
+            this.traits2.DoubleClick += new System.EventHandler(this.traits2_DoubleClick);
+            this.traits2.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
+            // 
+            // trait2Label
+            // 
+            this.trait2Label.AutoSize = true;
+            this.trait2Label.Dock = System.Windows.Forms.DockStyle.Top;
+            this.trait2Label.Location = new System.Drawing.Point(15, 232);
+            this.trait2Label.Name = "trait2Label";
+            this.trait2Label.Padding = new System.Windows.Forms.Padding(0, 8, 0, 3);
+            this.trait2Label.Size = new System.Drawing.Size(163, 24);
+            this.trait2Label.TabIndex = 10;
+            this.trait2Label.Text = "Choose another Personality Trait:";
             // 
             // traits
             // 
@@ -2254,7 +2300,7 @@
             65536});
             this.XP.Location = new System.Drawing.Point(0, 0);
             this.XP.Maximum = new decimal(new int[] {
-            355000,
+            35500000,
             0,
             0,
             0});
@@ -2911,78 +2957,28 @@
             this.journalEntries.FormattingEnabled = true;
             this.journalEntries.Location = new System.Drawing.Point(3, 3);
             this.journalEntries.Name = "journalEntries";
-            this.journalEntries.Size = new System.Drawing.Size(609, 246);
+            this.journalEntries.Size = new System.Drawing.Size(609, 190);
             this.journalEntries.TabIndex = 3;
             this.journalEntries.SelectedIndexChanged += new System.EventHandler(this.journalEntries_SelectedIndexChanged);
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label34);
-            this.panel2.Controls.Add(this.Downtime);
-            this.panel2.Controls.Add(this.label33);
-            this.panel2.Controls.Add(this.Renown);
+            this.panel2.Controls.Add(this.journalTotal);
             this.panel2.Controls.Add(this.removeJournalButton);
             this.panel2.Controls.Add(this.newJournalEntry);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 249);
+            this.panel2.Location = new System.Drawing.Point(3, 193);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(609, 25);
             this.panel2.TabIndex = 2;
             // 
-            // label34
+            // journalTotal
             // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(153, 5);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(84, 13);
-            this.label34.TabIndex = 5;
-            this.label34.Text = "Total Downtime:";
-            // 
-            // Downtime
-            // 
-            this.Downtime.Enabled = false;
-            this.Downtime.Location = new System.Drawing.Point(243, 3);
-            this.Downtime.Maximum = new decimal(new int[] {
-            10000000,
-            0,
-            0,
-            0});
-            this.Downtime.Minimum = new decimal(new int[] {
-            10000000,
-            0,
-            0,
-            -2147483648});
-            this.Downtime.Name = "Downtime";
-            this.Downtime.Size = new System.Drawing.Size(61, 20);
-            this.Downtime.TabIndex = 4;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(3, 5);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(77, 13);
-            this.label33.TabIndex = 3;
-            this.label33.Text = "Total Renown:";
-            // 
-            // Renown
-            // 
-            this.Renown.Enabled = false;
-            this.Renown.Location = new System.Drawing.Point(86, 4);
-            this.Renown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.Renown.Minimum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            -2147483648});
-            this.Renown.Name = "Renown";
-            this.Renown.Size = new System.Drawing.Size(61, 20);
-            this.Renown.TabIndex = 2;
-            this.Renown.ValueChanged += new System.EventHandler(this.Renown_ValueChanged);
+            this.journalTotal.Location = new System.Drawing.Point(3, 5);
+            this.journalTotal.Name = "journalTotal";
+            this.journalTotal.Size = new System.Drawing.Size(433, 20);
+            this.journalTotal.TabIndex = 3;
+            this.journalTotal.Text = "Total:";
             // 
             // removeJournalButton
             // 
@@ -3012,9 +3008,9 @@
             this.panel1.Controls.Add(this.journalTitle);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 274);
+            this.panel1.Location = new System.Drawing.Point(3, 218);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(609, 216);
+            this.panel1.Size = new System.Drawing.Size(609, 272);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -3029,7 +3025,7 @@
             this.journalText.Multiline = true;
             this.journalText.Name = "journalText";
             this.journalText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.journalText.Size = new System.Drawing.Size(362, 183);
+            this.journalText.Size = new System.Drawing.Size(323, 239);
             this.journalText.TabIndex = 3;
             this.journalText.TextChanged += new System.EventHandler(this.journalText_TextChanged);
             // 
@@ -3039,12 +3035,22 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.journalTitle.Location = new System.Drawing.Point(3, 6);
             this.journalTitle.Name = "journalTitle";
-            this.journalTitle.Size = new System.Drawing.Size(362, 20);
+            this.journalTitle.Size = new System.Drawing.Size(323, 20);
             this.journalTitle.TabIndex = 1;
             this.journalTitle.TextChanged += new System.EventHandler(this.journalTitle_TextChanged);
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label39);
+            this.panel3.Controls.Add(this.journalAP);
+            this.panel3.Controls.Add(this.journalT4TP);
+            this.panel3.Controls.Add(this.label33);
+            this.panel3.Controls.Add(this.label34);
+            this.panel3.Controls.Add(this.journalT3TP);
+            this.panel3.Controls.Add(this.label36);
+            this.panel3.Controls.Add(this.journalT2TP);
+            this.panel3.Controls.Add(this.label38);
+            this.panel3.Controls.Add(this.journalT1TP);
             this.panel3.Controls.Add(this.journalInSheet);
             this.panel3.Controls.Add(this.label32);
             this.panel3.Controls.Add(this.journalDM);
@@ -3071,15 +3077,150 @@
             this.panel3.Controls.Add(this.label20);
             this.panel3.Controls.Add(this.journalXP);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(368, 0);
+            this.panel3.Location = new System.Drawing.Point(332, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(241, 216);
+            this.panel3.Size = new System.Drawing.Size(277, 272);
             this.panel3.TabIndex = 0;
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(142, 86);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(55, 13);
+            this.label39.TabIndex = 36;
+            this.label39.Text = "Adv. ChP:";
+            // 
+            // journalAP
+            // 
+            this.journalAP.Location = new System.Drawing.Point(202, 84);
+            this.journalAP.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.journalAP.Minimum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            -2147483648});
+            this.journalAP.Name = "journalAP";
+            this.journalAP.Size = new System.Drawing.Size(70, 20);
+            this.journalAP.TabIndex = 35;
+            this.journalAP.ValueChanged += new System.EventHandler(this.journalAP_ValueChanged);
+            // 
+            // journalT4TP
+            // 
+            this.journalT4TP.Location = new System.Drawing.Point(202, 241);
+            this.journalT4TP.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalT4TP.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalT4TP.Name = "journalT4TP";
+            this.journalT4TP.Size = new System.Drawing.Size(70, 20);
+            this.journalT4TP.TabIndex = 34;
+            this.journalT4TP.ValueChanged += new System.EventHandler(this.journalT4TP_ValueChanged);
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(142, 243);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(54, 13);
+            this.label33.TabIndex = 33;
+            this.label33.Text = "Tier 4 TP:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(3, 243);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(54, 13);
+            this.label34.TabIndex = 32;
+            this.label34.Text = "Tier 3 TP:";
+            // 
+            // journalT3TP
+            // 
+            this.journalT3TP.Location = new System.Drawing.Point(66, 241);
+            this.journalT3TP.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalT3TP.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalT3TP.Name = "journalT3TP";
+            this.journalT3TP.Size = new System.Drawing.Size(70, 20);
+            this.journalT3TP.TabIndex = 31;
+            this.journalT3TP.ValueChanged += new System.EventHandler(this.journalT3TP_ValueChanged);
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(142, 217);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(54, 13);
+            this.label36.TabIndex = 30;
+            this.label36.Text = "Tier 2 TP:";
+            // 
+            // journalT2TP
+            // 
+            this.journalT2TP.Location = new System.Drawing.Point(202, 215);
+            this.journalT2TP.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalT2TP.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalT2TP.Name = "journalT2TP";
+            this.journalT2TP.Size = new System.Drawing.Size(70, 20);
+            this.journalT2TP.TabIndex = 29;
+            this.journalT2TP.ValueChanged += new System.EventHandler(this.journalT2TP_ValueChanged);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(3, 217);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(54, 13);
+            this.label38.TabIndex = 28;
+            this.label38.Text = "Tier 1 TP:";
+            // 
+            // journalT1TP
+            // 
+            this.journalT1TP.Location = new System.Drawing.Point(66, 215);
+            this.journalT1TP.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.journalT1TP.Minimum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            -2147483648});
+            this.journalT1TP.Name = "journalT1TP";
+            this.journalT1TP.Size = new System.Drawing.Size(70, 20);
+            this.journalT1TP.TabIndex = 27;
+            this.journalT1TP.ValueChanged += new System.EventHandler(this.journalT1TP_ValueChanged);
             // 
             // journalInSheet
             // 
             this.journalInSheet.AutoSize = true;
-            this.journalInSheet.Location = new System.Drawing.Point(123, 34);
+            this.journalInSheet.Location = new System.Drawing.Point(145, 32);
             this.journalInSheet.Name = "journalInSheet";
             this.journalInSheet.Size = new System.Drawing.Size(119, 17);
             this.journalInSheet.TabIndex = 26;
@@ -3100,7 +3241,7 @@
             // 
             this.journalDM.Location = new System.Drawing.Point(66, 58);
             this.journalDM.Name = "journalDM";
-            this.journalDM.Size = new System.Drawing.Size(171, 20);
+            this.journalDM.Size = new System.Drawing.Size(206, 20);
             this.journalDM.TabIndex = 24;
             this.journalDM.TextChanged += new System.EventHandler(this.journalDM_TextChanged);
             // 
@@ -3117,13 +3258,13 @@
             // 
             this.journalSession.Location = new System.Drawing.Point(66, 32);
             this.journalSession.Name = "journalSession";
-            this.journalSession.Size = new System.Drawing.Size(51, 20);
+            this.journalSession.Size = new System.Drawing.Size(70, 20);
             this.journalSession.TabIndex = 22;
             this.journalSession.TextChanged += new System.EventHandler(this.journalSession_TextChanged);
             // 
             // journalRenown
             // 
-            this.journalRenown.Location = new System.Drawing.Point(186, 162);
+            this.journalRenown.Location = new System.Drawing.Point(202, 163);
             this.journalRenown.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3135,14 +3276,14 @@
             0,
             -2147483648});
             this.journalRenown.Name = "journalRenown";
-            this.journalRenown.Size = new System.Drawing.Size(51, 20);
+            this.journalRenown.Size = new System.Drawing.Size(70, 20);
             this.journalRenown.TabIndex = 21;
             this.journalRenown.ValueChanged += new System.EventHandler(this.journalRenown_ValueChanged);
             // 
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(123, 164);
+            this.label30.Location = new System.Drawing.Point(142, 165);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(50, 13);
             this.label30.TabIndex = 20;
@@ -3162,7 +3303,7 @@
             0,
             -2147483648});
             this.journalDowntime.Name = "journalDowntime";
-            this.journalDowntime.Size = new System.Drawing.Size(51, 20);
+            this.journalDowntime.Size = new System.Drawing.Size(70, 20);
             this.journalDowntime.TabIndex = 19;
             this.journalDowntime.ValueChanged += new System.EventHandler(this.journalDowntime_ValueChanged);
             // 
@@ -3177,7 +3318,7 @@
             // 
             // journalMagic
             // 
-            this.journalMagic.Location = new System.Drawing.Point(186, 189);
+            this.journalMagic.Location = new System.Drawing.Point(202, 189);
             this.journalMagic.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3189,14 +3330,14 @@
             0,
             -2147483648});
             this.journalMagic.Name = "journalMagic";
-            this.journalMagic.Size = new System.Drawing.Size(51, 20);
+            this.journalMagic.Size = new System.Drawing.Size(70, 20);
             this.journalMagic.TabIndex = 17;
             this.journalMagic.ValueChanged += new System.EventHandler(this.journalMagic_ValueChanged);
             // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(123, 191);
+            this.label28.Location = new System.Drawing.Point(142, 191);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(39, 13);
             this.label28.TabIndex = 14;
@@ -3215,7 +3356,7 @@
             // 
             this.journalTime.Location = new System.Drawing.Point(66, 6);
             this.journalTime.Name = "journalTime";
-            this.journalTime.Size = new System.Drawing.Size(171, 20);
+            this.journalTime.Size = new System.Drawing.Size(198, 20);
             this.journalTime.TabIndex = 12;
             this.journalTime.TextChanged += new System.EventHandler(this.journalTime_TextChanged);
             // 
@@ -3242,14 +3383,14 @@
             0,
             -2147483648});
             this.journalCP.Name = "journalCP";
-            this.journalCP.Size = new System.Drawing.Size(51, 20);
+            this.journalCP.Size = new System.Drawing.Size(70, 20);
             this.journalCP.TabIndex = 10;
             this.journalCP.ValueChanged += new System.EventHandler(this.journalCP_ValueChanged);
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(123, 138);
+            this.label24.Location = new System.Drawing.Point(142, 138);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(24, 13);
             this.label24.TabIndex = 9;
@@ -3257,7 +3398,7 @@
             // 
             // journalSP
             // 
-            this.journalSP.Location = new System.Drawing.Point(186, 136);
+            this.journalSP.Location = new System.Drawing.Point(202, 136);
             this.journalSP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3269,7 +3410,7 @@
             0,
             -2147483648});
             this.journalSP.Name = "journalSP";
-            this.journalSP.Size = new System.Drawing.Size(51, 20);
+            this.journalSP.Size = new System.Drawing.Size(70, 20);
             this.journalSP.TabIndex = 8;
             this.journalSP.ValueChanged += new System.EventHandler(this.journalSP_ValueChanged);
             // 
@@ -3296,14 +3437,14 @@
             0,
             -2147483648});
             this.journalEP.Name = "journalEP";
-            this.journalEP.Size = new System.Drawing.Size(51, 20);
+            this.journalEP.Size = new System.Drawing.Size(70, 20);
             this.journalEP.TabIndex = 6;
             this.journalEP.ValueChanged += new System.EventHandler(this.journalEP_ValueChanged);
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(123, 112);
+            this.label22.Location = new System.Drawing.Point(142, 112);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(25, 13);
             this.label22.TabIndex = 5;
@@ -3311,7 +3452,7 @@
             // 
             // journalGP
             // 
-            this.journalGP.Location = new System.Drawing.Point(186, 110);
+            this.journalGP.Location = new System.Drawing.Point(202, 110);
             this.journalGP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3323,7 +3464,7 @@
             0,
             -2147483648});
             this.journalGP.Name = "journalGP";
-            this.journalGP.Size = new System.Drawing.Size(51, 20);
+            this.journalGP.Size = new System.Drawing.Size(70, 20);
             this.journalGP.TabIndex = 4;
             this.journalGP.ValueChanged += new System.EventHandler(this.journalGP_ValueChanged);
             // 
@@ -3350,7 +3491,7 @@
             0,
             -2147483648});
             this.journalPP.Name = "journalPP";
-            this.journalPP.Size = new System.Drawing.Size(51, 20);
+            this.journalPP.Size = new System.Drawing.Size(70, 20);
             this.journalPP.TabIndex = 2;
             this.journalPP.ValueChanged += new System.EventHandler(this.journalPP_ValueChanged);
             // 
@@ -3377,7 +3518,7 @@
             0,
             -2147483648});
             this.journalXP.Name = "journalXP";
-            this.journalXP.Size = new System.Drawing.Size(171, 20);
+            this.journalXP.Size = new System.Drawing.Size(70, 20);
             this.journalXP.TabIndex = 0;
             this.journalXP.ValueChanged += new System.EventHandler(this.journalXP_ValueChanged);
             // 
@@ -5192,13 +5333,15 @@
             this.splitContainer13.ResumeLayout(false);
             this.journalTab.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Downtime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Renown)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.journalAP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT4TP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT3TP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT2TP)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.journalT1TP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalRenown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalDowntime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.journalMagic)).EndInit();
@@ -5302,12 +5445,6 @@
         private System.Windows.Forms.TextBox itemsearchbox;
         private System.Windows.Forms.ListBox background;
         private System.Windows.Forms.Label backgroundLabel;
-        private System.Windows.Forms.ListBox flaws;
-        private System.Windows.Forms.Label flawlabel;
-        private System.Windows.Forms.ListBox bonds;
-        private System.Windows.Forms.Label bondlabel;
-        private System.Windows.Forms.ListBox ideals;
-        private System.Windows.Forms.Label ideallabel;
         private System.Windows.Forms.ListBox traits;
         private System.Windows.Forms.Label traitLabel;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
@@ -5617,10 +5754,7 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.TextBox journalDM;
         private System.Windows.Forms.CheckBox journalInSheet;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.NumericUpDown Renown;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.NumericUpDown Downtime;
+        private System.Windows.Forms.Label journalTotal;
         private System.Windows.Forms.ToolStripMenuItem PDFjournal;
         private System.Windows.Forms.ToolStripMenuItem PDFspellbook;
         private System.Windows.Forms.ToolStripMenuItem reladDataToolStripMenuItem;
@@ -5653,6 +5787,25 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ListBox SpellsBox;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ListBox flaws;
+        private System.Windows.Forms.Label flawlabel;
+        private System.Windows.Forms.ListBox bonds;
+        private System.Windows.Forms.Label bondlabel;
+        private System.Windows.Forms.ListBox ideals;
+        private System.Windows.Forms.Label ideallabel;
+        private System.Windows.Forms.ListBox traits2;
+        private System.Windows.Forms.Label trait2Label;
+        private System.Windows.Forms.ToolStripMenuItem advancementCheckpointsInsteadOfXPToolStripMenuItem;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.NumericUpDown journalAP;
+        private System.Windows.Forms.NumericUpDown journalT4TP;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.NumericUpDown journalT3TP;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.NumericUpDown journalT2TP;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.NumericUpDown journalT1TP;
     }
 }
 

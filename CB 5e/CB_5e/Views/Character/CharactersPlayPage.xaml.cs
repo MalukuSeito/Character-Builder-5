@@ -38,6 +38,7 @@ namespace CB_5e.Views.Character
             BuilderContext Context = new BuilderContext(item.Player);
             PluginManager manager = new PluginManager();
             manager.Add(new NoFreeEquipment());
+            manager.Add(new CustomBackground());
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
             Context.Plugins = manager;
@@ -49,7 +50,18 @@ namespace CB_5e.Views.Character
                     if (Context.Player.FilePath is IFile file)
                     {
                         string name = file.Name;
-                        IFile target = await (await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false)).CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
+                        IFolder back = await App.Storage.CreateFolderAsync("Backups", CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+                        if (item.Folder != "--")
+                        {
+                            foreach (string f in item.Folder.Split('/'))
+                            {
+                                if (f != "")
+                                {
+                                    back = await back.CreateFolderAsync(f, CreationCollisionOption.OpenIfExists).ConfigureAwait(false);
+                                }
+                            }
+                        }
+                        IFile target = await back.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).ConfigureAwait(false);
                         using (Stream fout = await target.OpenAsync(FileAccess.ReadAndWrite))
                         {
                             using (Stream fin = await file.OpenAsync(FileAccess.Read))

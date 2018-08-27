@@ -72,6 +72,7 @@ namespace CB_5e.ViewModels.Modify
         public event EventHandler<Level> ModelChanged;
 
         public LevelEditModel (OGLContext context) {
+            context.Levels.ToAP(0);
             Context = context;
             Undo = new Command(() =>
             {
@@ -138,5 +139,7 @@ namespace CB_5e.ViewModels.Modify
 
         public List<int> Experience { get => Model.Experience; }
         public List<int> Proficiency { get => Model.Proficiency; }
+        public List<int> AdvancementCheckpoints { get => Model.Advancement; }
+        public List<int> Tiers { get => Model.Tier; }
     }
 }

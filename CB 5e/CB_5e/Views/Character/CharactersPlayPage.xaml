@@ -12,6 +12,9 @@
                 RefreshCommand="{Binding LoadItemsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                IsGroupingEnabled="True"
+                GroupDisplayBinding="{Binding Folder}"
+                GroupShortNameBinding="{Binding SFolder}"
                 CachingStrategy="RecycleElement"
 				ItemSelected="OnItemSelected">
                 <ListView.Header>

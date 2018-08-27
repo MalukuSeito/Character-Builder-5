@@ -157,6 +157,7 @@ namespace CB_5e.ViewModels.Character.Play
 
         private void PlayerViewModel_PlayerChanged(object sender, EventArgs e)
         {
+            Parent?.FirePlayerChanged();
             OnPropertyChanged(null);
             UpdateSpellcasting();
             UpdateFormModels();

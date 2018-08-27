@@ -267,6 +267,91 @@ namespace CB_5e.ViewModels.Character
                 if (value != "" && value != "-") OnPropertyChanged("Renown");
             }
         }
+        public String AP
+        {
+            get => Journal.AP.ToString();
+            set
+            {
+                int parsedInt = 0;
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                {
+                    if (Journal.AP == parsedInt) return;
+                    IsChanged = true;
+                    StatsChanged = true;
+                    Journal.AP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("AP");
+                }
+                if (value != "" && value != "-") OnPropertyChanged("AP");
+            }
+        }
+        public String T1TP
+        {
+            get => Journal.T1TP.ToString();
+            set
+            {
+                int parsedInt = 0;
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                {
+                    if (Journal.T1TP == parsedInt) return;
+                    IsChanged = true;
+                    StatsChanged = true;
+                    Journal.T1TP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("T1TP");
+                }
+                if (value != "" && value != "-") OnPropertyChanged("T1TP");
+            }
+        }
+        public String T2TP
+        {
+            get => Journal.T2TP.ToString();
+            set
+            {
+                int parsedInt = 0;
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                {
+                    if (Journal.T2TP == parsedInt) return;
+                    IsChanged = true;
+                    StatsChanged = true;
+                    Journal.T2TP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("T2TP");
+                }
+                if (value != "" && value != "-") OnPropertyChanged("T2TP");
+            }
+        }
+        public String T3TP
+        {
+            get => Journal.T3TP.ToString();
+            set
+            {
+                int parsedInt = 0;
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                {
+                    if (Journal.T3TP == parsedInt) return;
+                    IsChanged = true;
+                    StatsChanged = true;
+                    Journal.T3TP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("T3TP");
+                }
+                if (value != "" && value != "-") OnPropertyChanged("T3TP");
+            }
+        }
+        public String T4TP
+        {
+            get => Journal.T4TP.ToString();
+            set
+            {
+                int parsedInt = 0;
+                if (value == "" || value == "-" || int.TryParse(value, NumberStyles.AllowLeadingSign, null, out parsedInt))
+                {
+                    if (Journal.T4TP == parsedInt) return;
+                    IsChanged = true;
+                    StatsChanged = true;
+                    Journal.T4TP = parsedInt;
+                    if (value != "" && value != "-") OnPropertyChanged("T4TP");
+                }
+                if (value != "" && value != "-") OnPropertyChanged("T4TP");
+            }
+        }
         public bool InSheet
         {
             get => Journal.InSheet;

@@ -38,6 +38,8 @@ namespace CB_5e.Views.Character
             PluginManager manager = new PluginManager();
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
+            manager.Add(new CustomBackground());
+            manager.Add(new NoFreeEquipment());
             Context.Plugins = manager;
 
             //Task.Run(async () =>
@@ -96,9 +98,10 @@ namespace CB_5e.Views.Character
                 Name = "New Player"
             });
             PluginManager manager = new PluginManager();
-            manager.plugins.Add(new NoFreeEquipment());
-            manager.plugins.Add(new SpellPoints());
-            manager.plugins.Add(new SingleLanguage());
+            manager.Add(new NoFreeEquipment());
+            manager.Add(new CustomBackground());
+            manager.Add(new SpellPoints());
+            manager.Add(new SingleLanguage());
             Context.Plugins = manager;
             Context.UndoBuffer = new LinkedList<Player>();
             Context.RedoBuffer = new LinkedList<Player>();

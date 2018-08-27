@@ -44,7 +44,13 @@ namespace CB_5e.ViewModels.Character.Build
             List<TableEntry> traits = new List<TableEntry>();
             if (back != null) traits.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
             foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Trait)) traits.AddRange(td.Entries.ToArray<TableEntry>());
-            choices.Add(new PersonalityTraitChoice(this, traits));
+            choices.Add(new PersonalityTraitChoice(this, traits, false));
+
+            List<TableEntry> traits2 = new List<TableEntry>();
+            traits2.Add(new TableEntry { MaxRoll = 0, MinRoll = 0, Text = "- None -", Title = "- None -" });
+            if (back != null) traits2.AddRange(back.PersonalityTrait.ToArray<TableEntry>());
+            foreach (TableDescription td in tables) if (td.BackgroundOption.HasFlag(BackgroundOption.Trait)) traits2.AddRange(td.Entries.ToArray<TableEntry>());
+            choices.Add(new PersonalityTraitChoice(this, traits2, true));
 
             List<TableEntry> ideals = new List<TableEntry>();
             if (back != null) ideals.AddRange(back.Ideal.ToArray<TableEntry>());

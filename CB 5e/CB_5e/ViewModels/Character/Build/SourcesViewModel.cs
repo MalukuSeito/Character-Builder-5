@@ -196,8 +196,24 @@ namespace CB_5e.ViewModels.Character.Build
             get => Context.Player.AllRituals;
             set
             {
+                MakeHistory("ShowRituals");
                 Context.Player.AllRituals = value;
                 OnPropertyChanged("ShowRituals");
+                UpdateSpellcasting();
+                Save();
+            }
+        }
+
+        public bool Advancement
+        {
+            get => Context.Player.Advancement;
+            set
+            {
+                MakeHistory("Advancement");
+                Context.Player.Advancement = value;
+                OnPropertyChanged("Advancement");
+                Save();
+                FirePlayerChanged();
             }
         }
 

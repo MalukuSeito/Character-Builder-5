@@ -82,9 +82,11 @@ namespace CB_5e.ViewModels.Character.Build
             }
         }
 
+        public String XPText { get => Context.Player.Advancement ? "Checkpoints (also see Journal):" : "XP (also see Journal):"; }
+
         public int XPToLevel
         {
-            get => Context.Levels.XpToLevelUp(XP);
+            get => Context.Levels.XpToLevelUp(XP, Context.Player.Advancement);
         }
 
         public string Player

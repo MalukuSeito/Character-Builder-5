@@ -124,14 +124,24 @@ namespace OGL
                 FeatureContainer r = (FeatureContainer)Serializer.Deserialize(mem);
                 r.FileName = FileName;
                 r.category = category;
+                foreach (Feature f in r.Features) f.Category = category;
                 r.Name = Name;
                 return r;
             }
         }
         public static List<Feature> MakeCopy(List<Feature> features)
         {
-            FeatureContainer fc = new FeatureContainer(features);
-            return fc.Clone().Features;
+            List<Feature> result = new List<Feature>(features.Count);
+            foreach (Feature f in features)
+            {
+                FeatureContainer fc = new FeatureContainer(f);
+                foreach (Feature ff in fc.Features) {
+                    ff.Source = f.Source;
+                    ff.Category = f.Category;
+                    result.Add(ff);
+                }
+            }
+            return result;
         }
 
         public bool Matches(string text, bool nameOnly)

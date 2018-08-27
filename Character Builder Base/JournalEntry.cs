@@ -22,6 +22,11 @@ namespace Character_Builder
         public int MagicItems { get; set; }
         public int Renown { get; set; }
         public bool InSheet { get; set; }
+        public int AP { get; set; }
+        public int T1TP { get; set; }
+        public int T2TP { get; set; }
+        public int T3TP { get; set; }
+        public int T4TP { get; set; }
 
         public JournalEntry ()
         {
@@ -51,6 +56,8 @@ namespace Character_Builder
             List<string> c = new List<string>();
             if (XP > 0) c.Add("+" + XP + " XP");
             else if (XP < 0) c.Add(XP + " XP");
+            if (AP > 0) c.Add("+" + AP + " Advancement Checkpoints");
+            else if (AP < 0) c.Add(AP + " Advancement Checkpoints");
             if (PP > 0) c.Add("+" + PP + " pp");
             else if (PP < 0) c.Add(PP + " pp");
             if (GP > 0) c.Add("+" + GP + " gp");
@@ -68,7 +75,18 @@ namespace Character_Builder
             else if (Renown < 0) c.Add(Renown + " renown");
             if (MagicItems > 0) c.Add("+" + MagicItems + " magic items");
             else if (MagicItems < 0) c.Add(MagicItems + " magic items");
+
+            if (T1TP > 0) c.Add("+" + T1TP + " Tier 1 Treasure Points");
+            else if (T1TP < 0) c.Add(T1TP + " Tier 1 Treasure Points");
+            if (T2TP > 0) c.Add("+" + T2TP + " Tier 2 Treasure Points");
+            else if (T2TP < 0) c.Add(T2TP + " Tier 2 Treasure Points");
+            if (T3TP > 0) c.Add("+" + T3TP + " Tier 3 Treasure Points");
+            else if (T3TP < 0) c.Add(T3TP + " Tier 3 Treasure Points");
+            if (T4TP > 0) c.Add("+" + T4TP + " Tier 4 Treasure Points");
+            else if (T4TP < 0) c.Add(T4TP + " Tier 4 Treasure Points");
+
             if (c.Count > 0) return " (" + String.Join(", ", c) + ")";
+            
             return "";
         }
 

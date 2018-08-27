@@ -19,6 +19,10 @@
                 <ListView.Header>
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
+                            <Label HorizontalOptions="FillAndExpand" Text="Character Advancement (replaces XP):" />
+                            <Switch IsToggled="{Binding Advancement}"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
                             <Label HorizontalOptions="FillAndExpand" Text="Show all known rituals:" />
                             <Switch IsToggled="{Binding ShowRituals}"/>
                         </StackLayout>

@@ -73,14 +73,30 @@ namespace CB_5e.ViewModels.Character
             {
                 int down = 0;
                 int renown = 0;
+                int t1tp = 0;
+                int t2tp = 0;
+                int t3tp = 0;
+                int t4tp = 0;
                 int magic = 0;
                 foreach (JournalEntry je in Context.Player.ComplexJournal)
                 {
                     down += je.Downtime;
                     renown += je.Renown;
                     magic += je.MagicItems;
+                    t1tp += je.T1TP;
+                    t2tp += je.T2TP;
+                    t3tp += je.T3TP;
+                    t4tp += je.T4TP;
                 }
-                return "Total Downtime: " + down + ", Renown : " + renown + ", magic items: " + magic;
+                List<string> c = new List<string>();
+                if (down != 0) c.Add(down + " Downtime");
+                if (renown != 0) c.Add(renown + " Renown");
+                if (magic != 0) c.Add(magic + " Magic Items");
+                if (t1tp != 0) c.Add(t1tp + " Tier 1 TP");
+                if (t2tp != 0) c.Add(t2tp + " Tier 2 TP");
+                if (t3tp != 0) c.Add(t3tp + " Tier 3 TP");
+                if (t4tp != 0) c.Add(t4tp + " Tier 4 TP");
+                return "Total: " + String.Join(", ", c);
             }
         }
     }
