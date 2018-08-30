@@ -382,9 +382,12 @@
     <PDFField Name="Date1" Field="Date" />
     <PDFField Name="DM1" Field="DM Name and DCI" />
 
-    <PDFField Name="XP1" Field="XP Earned" />
-    <PDFField Name="XPStart1" Field="Starting XP" />
-    <PDFField Name="XPEnd1" Field="XP Total" />
+    <PDFField Name="APXP1" Field="XP Earned" />
+    <PDFField Name="APXPText1" Field="XP Earned Text" />
+    <PDFField Name="APXPStart1" Field="Starting XP" />
+    <PDFField Name="APXPEnd1" Field="XP Total" />
+    <PDFField Name="APXPStartText1" Field="XP Starting Text" />
+    <PDFField Name="APXPEndText1" Field="XP Total Text" />
 
     <PDFField Name="Gold1" Field="Gold" />
     <PDFField Name="GoldStart1" Field="Starting Gold" />
@@ -398,13 +401,14 @@
     <PDFField Name="RenownStart1" Field="Starting Renown" />
     <PDFField Name="RenownEnd1" Field="Renown Total" />
 
-    <PDFField Name="MagicItems1" Field="Magic Items" />
-    <PDFField Name="MagicItemsStart1" Field="Starting  of Magic Items" />
-    <PDFField Name="MagicItemsEnd1" Field="Magic Items Total" />
+    <PDFField Name="MagicItemTreasurePoints1" Field="Magic Items" />
+    <PDFField Name="MagicItemTreasurePointsStart1" Field="Starting  of Magic Items" />
+    <PDFField Name="MagicItemTreasurePointsEnd1" Field="Magic Items Total" />
+    <PDFField Name="MagicItemTreasurePointsText1" Field="Magic Earned Text" />
+    <PDFField Name="MagicItemTreasurePointsStartText1" Field="Magic Starting Text" />
+    <PDFField Name="MagicItemTreasurePointsEndText1" Field="Magic Total Text" />
 
-    <PDFField Name="Notes1Line1" Field="Adventure NotesDowntime Activity 1" />
-    <PDFField Name="Notes1Line2" Field="Adventure NotesDowntime Activity 2" />
-    <PDFField Name="Notes1Line3" Field="Adventure NotesDowntime Activity 3" />
+    <PDFField Name="Notes1" Field="Adventure Notes" />
 
 
     <PDFField Name="Title2" Field="Adventure Name_2" />
@@ -412,9 +416,13 @@
     <PDFField Name="Date2" Field="Date_2" />
     <PDFField Name="DM2" Field="DM Name and DCI_2" />
 
-    <PDFField Name="XP2" Field="XP Earned_2" />
-    <PDFField Name="XPStart2" Field="Starting XP_2" />
-    <PDFField Name="XPEnd2" Field="XP Total_2" />
+
+    <PDFField Name="APXP2" Field="XP Earned_2" />
+    <PDFField Name="APXPText2" Field="XP Earned Text_2" />
+    <PDFField Name="APXPStart2" Field="Starting XP_2" />
+    <PDFField Name="APXPEnd2" Field="XP Total_2" />
+    <PDFField Name="APXPStartText2" Field="XP Starting Text_2" />
+    <PDFField Name="APXPEndText2" Field="XP Total Text_2" />
 
     <PDFField Name="Gold2" Field="Gold_2" />
     <PDFField Name="GoldStart2" Field="Starting Gold_2" />
@@ -428,13 +436,14 @@
     <PDFField Name="RenownStart2" Field="Starting Renown_2" />
     <PDFField Name="RenownEnd2" Field="Renown Total_2" />
 
-    <PDFField Name="MagicItems2" Field="Magic Items_2" />
-    <PDFField Name="MagicItemsStart2" Field="Starting  of Magic Items_2" />
-    <PDFField Name="MagicItemsEnd2" Field="Magic Items Total_2" />
+    <PDFField Name="MagicItemTreasurePoints2" Field="Magic Items_2" />
+    <PDFField Name="MagicItemTreasurePointsStart2" Field="Starting  of Magic Items_2" />
+    <PDFField Name="MagicItemTreasurePointsEnd2" Field="Magic Items Total_2" />
+    <PDFField Name="MagicItemTreasurePointsText2" Field="Magic Earned Text_2" />
+    <PDFField Name="MagicItemTreasurePointsStartText2" Field="Magic Starting Text_2" />
+    <PDFField Name="MagicItemTreasurePointsEndText2" Field="Magic Total Text_2" />
 
-    <PDFField Name="Notes2Line1" Field="Adventure NotesDowntime Activity 1_2" />
-    <PDFField Name="Notes2Line2" Field="Adventure NotesDowntime Activity 2_2" />
-    <PDFField Name="Notes2Line3" Field="Adventure NotesDowntime Activity 3_2" />
+    <PDFField Name="Notes2" Field="Adventure Notes_2" />
 
 
     <PDFField Name="Title3" Field="Adventure Name_3" />
@@ -442,9 +451,12 @@
     <PDFField Name="Date3" Field="Date_3" />
     <PDFField Name="DM3" Field="DM Name and DCI_3" />
 
-    <PDFField Name="XP3" Field="XP Earned_3" />
-    <PDFField Name="XPStart3" Field="Starting XP_3" />
-    <PDFField Name="XPEnd3" Field="XP Total_3" />
+    <PDFField Name="APXP3" Field="XP Earned_3" />
+    <PDFField Name="APXPText3" Field="XP Earned Text_3" />
+    <PDFField Name="APXPStart3" Field="Starting XP_3" />
+    <PDFField Name="APXPEnd3" Field="XP Total_3" />
+    <PDFField Name="APXPStartText3" Field="XP Starting Text_3" />
+    <PDFField Name="APXPEndText3" Field="XP Total Text_3" />
 
     <PDFField Name="Gold3" Field="Gold_3" />
     <PDFField Name="GoldStart3" Field="Starting Gold_3" />
@@ -458,13 +470,14 @@
     <PDFField Name="RenownStart3" Field="Starting Renown_3" />
     <PDFField Name="RenownEnd3" Field="Renown Total_3" />
 
-    <PDFField Name="MagicItems3" Field="Magic Items_3" />
-    <PDFField Name="MagicItemsStart3" Field="Starting  of Magic Items_3" />
-    <PDFField Name="MagicItemsEnd3" Field="Magic Items Total_3" />
+    <PDFField Name="MagicItemTreasurePoints3" Field="Magic Items_3" />
+    <PDFField Name="MagicItemTreasurePointsStart3" Field="Starting  of Magic Items_3" />
+    <PDFField Name="MagicItemTreasurePointsEnd3" Field="Magic Items Total_3" />
+    <PDFField Name="MagicItemTreasurePointsText3" Field="Magic Earned Text_3" />
+    <PDFField Name="MagicItemTreasurePointsStartText3" Field="Magic Starting Text_3" />
+    <PDFField Name="MagicItemTreasurePointsEndText3" Field="Magic Total Text_3" />
 
-    <PDFField Name="Notes3Line1" Field="Adventure NotesDowntime Activity 1_3" />
-    <PDFField Name="Notes3Line2" Field="Adventure NotesDowntime Activity 2_3" />
-    <PDFField Name="Notes3Line3" Field="Adventure NotesDowntime Activity 3_3" />
+    <PDFField Name="Notes3" Field="Adventure Notes_3" />
 
   </LogFields>
   <SpellbookFields>
@@ -710,7 +723,7 @@
   <SpellFile>Default-Spellsheet.pdf</SpellFile>
   <ActionsFile>CombatSheet - 2up.pdf</ActionsFile>
   <ActionsFile2>CombatSheet2-2up.pdf</ActionsFile2>
-  <LogFile>DnDAdvLgLogsheet.pdf</LogFile>
+  <LogFile>DnDAdvLgLogsheetModified.pdf</LogFile>
   <SpellbookFile>Spell9.pdf</SpellbookFile>
 </PDF>
 

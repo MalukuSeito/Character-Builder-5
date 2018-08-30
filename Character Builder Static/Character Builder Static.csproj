@@ -71,6 +71,7 @@
     <None Include="Default-PlayerSheet.pdf" />
     <None Include="Default-Spellsheet.pdf" />
     <None Include="DnDAdvLgLogsheet.pdf" />
+    <None Include="DnDAdvLgLogsheetModified.pdf" />
     <None Include="Monster.pdf" />
     <None Include="Spellbook.pdf" />
   </ItemGroup>

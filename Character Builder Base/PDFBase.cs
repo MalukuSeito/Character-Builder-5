@@ -14,6 +14,8 @@ namespace Character_Builder
         public bool IncludeSpellbook { get; set; }
         public bool IncludeActions { get; set; }
         public bool IncludeMonsters { get; set; }
+        public bool IgnoreMagicItems { get; set; }
+        public bool AutoExcludeActions { get; set; } = true;
         public abstract Task<IPDFEditor> CreateEditor(string file);
         public abstract IPDFSheet CreateSheet();
     }

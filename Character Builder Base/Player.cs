@@ -2367,7 +2367,7 @@ namespace Character_Builder
             int l = GetLevel();
             return from c in Classes select c.ToString(Context, l);
         }
-        public virtual ActionType GetActualAction(Feature f)
+        public static ActionType GetActualAction(Feature f)
         {
             if (f is BonusSpellFeature || f is BonusSpellKeywordChoiceFeature)
             {

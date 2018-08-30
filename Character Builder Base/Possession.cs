@@ -204,7 +204,15 @@ namespace Character_Builder
         public override string ToString()
         {
             string name = Name;
-            if (name == null || name == "") name = Context.GetItem(BaseItem, null).Name;
+            if (name == null || name == "")
+            {
+                if (BaseItem != null)
+                {
+                    var item = Context.GetItem(BaseItem, null);
+                    if (item is Scroll) name = item.ToString();
+                    else name = item.Name;
+                }
+            }
             foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
