@@ -187,7 +187,7 @@ namespace CB_5e.Views.Files
             }
         }
 
-        private static async Task<IFile> GetFile(IFolder target, string path)
+        public static async Task<IFile> GetFile(IFolder target, string path)
         {
             if (path == null || path == "" || path.StartsWith(".") || path.EndsWith("/")) return null;
             int i = path.IndexOf('/');

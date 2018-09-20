@@ -6,6 +6,7 @@ using OGL.Keywords;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 
 namespace Character_Builder_Forms
@@ -25,17 +26,18 @@ namespace Character_Builder_Forms
             if (context == null || context.Config == null) return;
             context.Backgrounds.Clear();
             context.BackgroundsSimple.Clear();
+
             var files = SourceManager.EnumerateFiles(context, context.Config.Backgrounds_Directory, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Background s = (Background)Background.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        foreach (Feature fea in s.Features) fea.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        foreach (Feature fea in s.Features) fea.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -54,11 +56,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName, applyKeywords);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -77,11 +79,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Condition s = (Condition)Condition.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -104,16 +106,16 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, context.Config.Features_Directory).FullName);
-                    Uri target = new Uri(f.Key.DirectoryName);
-                    FeatureContainer cont = LoadFeatureContainer(f.Key.FullName);
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Features_Directory).FullName);
+                    Uri target = new Uri(f.Value.DirectoryName);
+                    FeatureContainer cont = LoadFeatureContainer(f.Value);
                     List<Feature> feats = cont.Features;
                     string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
-                    cont.FileName = f.Key.FullName;
+                    cont.FileName = f.Value.FullName;
                     cont.category = cat;
-                    cont.Name = Path.GetFileNameWithoutExtension(f.Key.FullName);
-                    cont.Source = f.Value;
+                    cont.Name = Path.GetFileNameWithoutExtension(f.Value.FullName);
+                    cont.Source = f.Value.Source;
                     context.FeatureContainers[cat].Add(cont);
                     foreach (Feature feat in feats)
                     {
@@ -159,9 +161,9 @@ namespace Character_Builder_Forms
             //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
             return cat;
         }
-        public static FeatureContainer LoadFeatureContainer(String path)
+        public static FeatureContainer LoadFeatureContainer(FileInfoSource fi)
         {
-            using (TextReader reader = new StreamReader(path))
+            using (TextReader reader = fi.GetReader())
             {
                 return ((FeatureContainer)FeatureContainer.Serializer.Deserialize(reader));
             }
@@ -176,7 +178,25 @@ namespace Character_Builder_Forms
                 var cats = f.Key.EnumerateDirectories("*", SearchOption.AllDirectories);
                 foreach (DirectoryInfo d in cats) result.Add(SourceManager.Cleanname(Uri.UnescapeDataString(source.MakeRelativeUri(new Uri(d.FullName)).ToString()), type));
             }
-            return from s in result orderby s select s;
+            string t = type.TrimEnd('/', '\\').ToLowerInvariant() + "/";
+            string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
+            foreach (var z in SourceManager.GetAllZips(context, type))
+            {
+                foreach (ZipArchiveEntry a in z.Key.Entries)
+                {
+                    string f = z.Value.ToLowerInvariant() + "/" + t;
+                    string ff = z.Value.ToLowerInvariant() + "\\" + tt;
+                    if (a.Length == 0)
+                    {
+                        string name = a.FullName.ToLowerInvariant();
+                        if (a.FullName.StartsWith(t)) result.Add(a.FullName.Substring(t.Length).TrimEnd('/', '\\'));
+                        else if (a.FullName.StartsWith(f)) result.Add(a.FullName.Substring(f.Length).TrimEnd('/', '\\'));
+                        else if (a.FullName.StartsWith(tt)) result.Add(a.FullName.Substring(tt.Length).TrimEnd('/', '\\'));
+                        else if (a.FullName.StartsWith(ff)) result.Add(a.FullName.Substring(ff.Length).TrimEnd('/', '\\'));
+                    }
+                }
+            }
+            return result.OrderBy(s => s).Distinct();
         }
         public static void ImportItems(this OGLContext context)
         {
@@ -190,14 +210,14 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, context.Config.Items_Directory).FullName);
-                    Uri target = new Uri(f.Key.DirectoryName);
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Items_Directory).FullName);
+                    Uri target = new Uri(f.Value.DirectoryName);
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Item s = (Item)Item.Serializer.Deserialize(reader);
                         s.Category = Make(context, source.MakeRelativeUri(target));
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -216,11 +236,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Language s = (Language)Language.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -239,11 +259,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Monster s = (Monster)Monster.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -280,8 +300,8 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value, context.Config.Magic_Directory).FullName);
-                    Uri target = new Uri(f.Key.DirectoryName);
+                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Magic_Directory).FullName);
+                    Uri target = new Uri(f.Value.DirectoryName);
                     string cat = MagicPropertyCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
                     if (!context.MagicCategories.ContainsKey(cat)) context.MagicCategories.Add(cat, MakeMagicCategory(cat));
                     String parent = Path.GetDirectoryName(cat);
@@ -290,15 +310,15 @@ namespace Character_Builder_Forms
                         context.MagicCategories.Add(parent, MakeMagicCategory(parent));
                         parent = Path.GetDirectoryName(parent);
                     }
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         MagicProperty mp = ((MagicProperty)MagicProperty.Serializer.Deserialize(reader));
-                        mp.FileName = f.Key.FullName;
-                        mp.Source = f.Value;
-                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
+                        mp.FileName = f.Value.FullName;
+                        mp.Source = f.Value.Source;
+                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value.Source;
+                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value.Source;
+                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value.Source;
+                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value.Source;
                         mp.Category = cat;
                         context.MagicCategories[cat].Contents.Add(mp);
                         if (context.Magic.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
@@ -346,11 +366,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Race s = (Race)Race.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -369,11 +389,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Skill s = (Skill)Skill.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -393,11 +413,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         Spell s = (Spell)Spell.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)
@@ -416,11 +436,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName, applyKeywords);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName, applyKeywords);
                     }
                 }
                 catch (Exception e)
@@ -439,11 +459,11 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (TextReader reader = new StreamReader(f.Key.FullName))
+                    using (TextReader reader = f.Value.GetReader())
                     {
                         SubRace s = (SubRace)SubRace.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.FullName);
+                        s.Source = f.Value.Source;
+                        s.Register(context, f.Value.FullName);
                     }
                 }
                 catch (Exception e)

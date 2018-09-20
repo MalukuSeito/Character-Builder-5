@@ -97,9 +97,9 @@ namespace CB_5e.ViewModels.Character
         public Category ItemCategory { get; set; }
         public MagicCategory MagicCategory { get; set; }
         private string type;
-        public string Type { get => type; set => type = value; }
+        public string Type { get => type ?? "##"; set => type = value; }
         public Command Open { get; set; }
-        public string SType { get => Type.Substring(0, 1); }
+        public string SType { get => Type != null && Type.Length > 0 ? Type.Substring(0, 1) : "#"; }
         public Command Select { get; set; }
 
         public string CommandName { get => Type == "Items" ? "Add/Buy" : "Add"; }

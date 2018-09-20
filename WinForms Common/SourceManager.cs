@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.IO;
+using Character_Builder_Forms;
+using System.IO.Compression;
 
 namespace OGL
 {
@@ -36,6 +38,11 @@ namespace OGL
                     Sources.Add(Path.GetFileName(s));
                 }
             }
+            foreach (string s in Directory.EnumerateFiles(path, "*.zip"))
+            {
+                string n = Path.GetFileName(s).Substring(0, Path.GetFileName(s).Length - 4);
+                if (!Sources.Contains(n)) Sources.Add(n);
+            }
             return true;
         }
 
@@ -44,7 +51,6 @@ namespace OGL
             String isource = string.Join("_", source.Split(Path.GetInvalidFileNameChars()));
             if (!Sources.Contains(isource)) Sources.Add(isource);
             DirectoryInfo res = new DirectoryInfo(Path.Combine(AppPath, isource, type));
-            res.Create();
             return res;
         }
 
@@ -60,16 +66,140 @@ namespace OGL
             return result;
         }
 
-        public static Dictionary<FileInfo, string> EnumerateFiles(OGLContext context, string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
+        public static Dictionary<ZipArchive, string> GetAllZips(OGLContext context, string type)
         {
-            Dictionary<FileInfo, string> result = new Dictionary<FileInfo, string>();
+            Dictionary<ZipArchive, string> result = new Dictionary<ZipArchive, string>();
+            string t = type.TrimEnd('/', '\\').ToLowerInvariant() + "/";
+            string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
+            foreach (string s in Sources)
+            {
+                if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                FileInfo res = new FileInfo(Path.Combine(AppPath, s + ".zip"));
+                if (res.Exists) {
+                    string f = s.ToLowerInvariant() + "/" + t;
+                    string ff = s.ToLowerInvariant() + "\\" + tt;
+                    try
+                    {
+                        ZipArchive archive = ZipFile.OpenRead(res.FullName);
+                        foreach (var e in archive.Entries)
+                        {
+                            string name = e.FullName.ToLowerInvariant();
+                            if (name.StartsWith(t) || name.StartsWith(f) || name.StartsWith(tt) || name.StartsWith(ff))
+                            {
+                                result.Add(archive, s);
+                                break;
+                            }
+                        }
+                    } catch (Exception e)
+                    {
+                        ConfigManager.LogError(e);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static Dictionary<string, FileInfoSource> EnumerateFiles(OGLContext context, string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
+        {
+            Dictionary<string, FileInfoSource> result = new Dictionary<string, FileInfoSource>(StringComparer.InvariantCultureIgnoreCase);
+            try
+            {
+                string t = type.TrimEnd('/','\\').ToLowerInvariant() + "/";
+                string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
+                string p = pattern.StartsWith("*") ? pattern.Substring(1, pattern.Length - 1).ToLowerInvariant() : pattern.ToLowerInvariant();
+                foreach (var z in GetAllZips(context, type))
+                {
+                    string s = z.Value;
+                    foreach (ZipArchiveEntry e in z.Key.Entries)
+                    {
+                        string f = s.ToLowerInvariant() + "/" + t;
+                        string ff = s.ToLowerInvariant() + "\\" + tt;
+                        string name = e.FullName.ToLowerInvariant();
+                        if (name.StartsWith(t) && name.EndsWith(p)) {
+                            if (option == SearchOption.AllDirectories || !name.Substring(t.Length).Contains("/"))
+                            {
+                                FileInfoSource fis = new FileInfoSource()
+                                {
+                                    Archive = e,
+                                    FullName = Path.Combine(AppPath, s, type, name.Substring(t.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                    Source = z.Value
+                                };
+                                if (result.ContainsKey(fis.FullName))
+                                {
+                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                }
+                                result.Add(fis.FullName, fis);
+                            }
+                        }
+                        else if (name.StartsWith(f) && name.EndsWith(p))
+                        {
+                            if (option == SearchOption.AllDirectories || !name.Substring(f.Length).Contains("/"))
+                            {
+                                FileInfoSource fis = new FileInfoSource()
+                                {
+                                    Archive = e,
+                                    FullName = Path.Combine(AppPath, s, type, name.Substring(f.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                    Source = z.Value
+                                };
+                                if (result.ContainsKey(fis.FullName)) {
+                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                } 
+                                result.Add(fis.FullName, fis);
+                            }
+                        }
+                        else if (name.StartsWith(tt) && name.EndsWith(p))
+                        {
+                            if (option == SearchOption.AllDirectories || !name.Substring(tt.Length).Contains("\\"))
+                            {
+                                FileInfoSource fis = new FileInfoSource()
+                                {
+                                    Archive = e,
+                                    FullName = Path.Combine(AppPath, s, type, name.Substring(tt.Length).Replace('\\', Path.DirectorySeparatorChar)),
+                                    Source = z.Value
+                                };
+                                if (result.ContainsKey(fis.FullName))
+                                {
+                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                }
+                                result.Add(fis.FullName, fis);
+                            }
+                        }
+                        else if (name.StartsWith(ff) && name.EndsWith(p))
+                        {
+                            if (option == SearchOption.AllDirectories || !name.Substring(ff.Length).Contains("/"))
+                            {
+                                FileInfoSource fis = new FileInfoSource()
+                                {
+                                    Archive = e,
+                                    FullName = Path.Combine(AppPath, s, type, name.Substring(ff.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                    Source = z.Value
+                                };
+                                if (result.ContainsKey(fis.FullName))
+                                {
+                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                }
+                                result.Add(fis.FullName, fis);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e)
+            {
+                ConfigManager.LogError(e);
+            }
             try
             {
                 foreach (var f in GetAllDirectories(context, type))
                 {
                     foreach (FileInfo file in f.Key.EnumerateFiles(pattern, option))
                     {
-                        result.Add(file, f.Value);
+                        FileInfoSource fis = new FileInfoSource()
+                        {
+                            File = file,
+                            FullName = file.FullName,
+                            Source = f.Value
+                        };
+                        result[fis.FullName] = fis;
                     }
                 }
             }
@@ -83,7 +213,9 @@ namespace OGL
         public static FileInfo GetFileName(string name, string source, string type, string extension = ".xml")
         {
             String iname = string.Join("_", name.Split(ConfigManager.InvalidChars));
-            return new FileInfo(Path.Combine(GetDirectory(source, type).FullName, iname + extension));
+            DirectoryInfo r = GetDirectory(source, type);
+            Directory.CreateDirectory(r.FullName);
+            return new FileInfo(Path.Combine(r.FullName, iname + extension));
         }
 
         public static string Cleanname(string path, string cut)

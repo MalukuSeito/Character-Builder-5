@@ -913,7 +913,7 @@ namespace Character_Builder_5
                 i++;
                 foreach (Monster m in fc.AppliedChoices(Program.Context, Program.Context.Player.GetFinalAbilityScores()))
                 {
-                    FormsCompanionsBox.Items.Add(m);
+                    if (m != null) FormsCompanionsBox.Items.Add(m);
                 }
             }
             
@@ -4324,7 +4324,7 @@ namespace Character_Builder_5
                     displayElement.Refresh();
                 }
                 FormsCompanionsSelected.Items.Clear();
-                foreach (Monster m in fci.AppliedChoices(Program.Context, Program.Context.Player.GetFinalAbilityScores())) FormsCompanionsSelected.Items.Add(m);
+                foreach (Monster m in fci.AppliedChoices(Program.Context, Program.Context.Player.GetFinalAbilityScores())) if (m != null) FormsCompanionsSelected.Items.Add(m);
                 FormsCompanionsAvailable.Items.Clear();
                 foreach (Monster m in fci.AvailableOptions(Program.Context, Program.Context.Player.GetFinalAbilityScores()).Where(m=>!fci.Choices.Exists(mm=>StringComparer.OrdinalIgnoreCase.Equals(m.Name, mm.Name)))) FormsCompanionsAvailable.Items.Add(m);
                 if (fci.Count < 0) FormsCompanionsCounter.Text = "Selected: " + fci.Choices.Count;

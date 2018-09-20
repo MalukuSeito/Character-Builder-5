@@ -85,7 +85,7 @@
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>iOS Team Provisioning Profile: de.malukuseito.CB5e1</CodesignProvision>
+    <CodesignProvision>iOS Team Provisioning Profile: de.malukuseito.CB5</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DLToolkit.Forms.Controls.FlowListView, Version=1.0.6542.36915, Culture=neutral, processorArchitecture=MSIL">
@@ -133,6 +133,14 @@
     <ProjectReference Include="..\CB_5e\CB_5e.csproj">
       <Project>{4EFB7F3C-0E08-4E9E-BF2B-7B08FBD326A1}</Project>
       <Name>CB_5e</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PluginDMG\PluginDMG.csproj">
+      <Project>{45907531-B5F7-45FC-BA00-80550142D520}</Project>
+      <Name>PluginDMG</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Character Builder Plugin\Character Builder Plugin.csproj">
+      <Project>{578EC199-55FB-4830-B085-D16BBB9A22C8}</Project>
+      <Name>Character Builder Plugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

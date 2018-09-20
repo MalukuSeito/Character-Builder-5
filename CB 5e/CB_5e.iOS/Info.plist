@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>CB_5e.iOS</string>
-	<key>CFBundleName</key>
-	<string>CB_5e.iOS</string>
+	<string>CB 5e</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.malukuseito.CB5e1</string>
+	<string>de.malukuseito.CB5</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -60,7 +58,9 @@
 	<string>11.3</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
-	<key>XSLaunchImageAssets</key>
-	<string>Resources/Media.xcassets/LaunchImages.launchimage</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>CFBundleName</key>
+	<string>CB5</string>
 </dict>
 </plist>
