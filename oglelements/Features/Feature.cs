@@ -88,7 +88,7 @@ namespace OGL.Features
         }
         public virtual string ShortDesc()
         {
-            return Name + ": " + Text;
+            return Name + ": " + Text.Trim(new char[] { ' ', '\r', '\n', '\t' });
         }
         public static List<Feature> LoadString(String text)
         {

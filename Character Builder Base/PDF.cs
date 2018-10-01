@@ -1,6 +1,7 @@
 ﻿using Character_Builder;
 using OGL;
 using OGL.Base;
+using OGL.Common;
 using OGL.Descriptions;
 using OGL.Features;
 using OGL.Items;
@@ -83,7 +84,7 @@ namespace Character_Builder
                 //        if (preserveEdit) sheet.RemoveUsageRights();
                 //        using (PdfStamper p = new PdfStamper(sheet, ms))
                 //        {
-                FillBasicFields(trans, p, context);
+                FillBasicFields(trans, p, context, pdf);
                 String attacks = "";
                 String resources = "";
                 if (trans.ContainsKey("Actions"))
@@ -99,7 +100,7 @@ namespace Character_Builder
                     if (attacks != "") attacks += "\n";
                     attacks += String.Join("\n", context.Player.GetResourceInfo(pdf.IncludeResources).Values);
                 }
-                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(context.Player.GetBonusSpells());
+                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(context.Player.GetBonusSpells(!trans.ContainsKey("BonusSpells")));
                 if (pdf.IncludeResources)
                 {
                     Dictionary<string, int> bsres = context.Player.GetResources();
@@ -116,7 +117,7 @@ namespace Character_Builder
                         mods.includeResources = false;
                     }
                 }
-                spellbook.AddRange(bonusspells);
+                spellbook.AddRange(context.Player.GetBonusSpells());
                 if (trans.ContainsKey("BonusSpells"))
                 {
                     p.SetField(trans["BonusSpells"], String.Join("\n", bonusspells));
@@ -336,9 +337,11 @@ namespace Character_Builder
                     foreach (Feature f in onUse) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f))
                         {
                             if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
-                            else feats.Add(f.ShortDesc());
+                            else if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) feats.Add(f.ShortDesc());
                         }
-                    foreach (Feature f in context.Player.GetBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
                     foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
                     p.SetField(trans["RaceBackgroundFeatures"], String.Join("\n", feats));
                     List<string> feats2 = new List<string>();
@@ -352,9 +355,11 @@ namespace Character_Builder
                     foreach (Feature f in onUse) if (!f.Hidden)
                         {
                             if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f.ShortDesc());
-                            else feats.Add(f.ShortDesc());
+                            else if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) feats.Add(f.ShortDesc());
                         }
-                    foreach (Feature f in context.Player.GetBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
+                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
                     foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
                     foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
                     foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f.ShortDesc());
@@ -512,7 +517,7 @@ namespace Character_Builder
                             {
                                 using (IPDFEditor sp = await pdf.CreateEditor(SpellFile))
                                 {
-                                    FillBasicFields(spelltrans, sp, context);
+                                    FillBasicFields(spelltrans, sp, context, pdf);
                                     if (spelltrans.ContainsKey("SpellcastingClass")) sp.SetField(spelltrans["SpellcastingClass"], scf.DisplayName);
                                     if (spelltrans.ContainsKey("SpellcastingAbility")) sp.SetField(spelltrans["SpellcastingAbility"], Enum.GetName(typeof(Ability), scf.SpellcastingAbility));
                                     if (spelltrans.ContainsKey("SpellSaveDC")) sp.SetField(spelltrans["SpellSaveDC"], context.Player.GetSpellSaveDC(scf.SpellcastingID, scf.SpellcastingAbility).ToString());
@@ -584,7 +589,7 @@ namespace Character_Builder
                             using (IPDFEditor lp = await pdf.CreateEditor(LogFile))
                             {
                                 sheetCount++;
-                                FillBasicFields(logtrans, lp, context);
+                                FillBasicFields(logtrans, lp, context, pdf);
                                 if (logtrans.ContainsKey("Sheet")) lp.SetField(logtrans["Sheet"], sheetCount.ToString());
                                 while (entries.Count > 0 && (logtrans.ContainsKey("Title" + counter) || logtrans.ContainsKey("XP" + counter) || logtrans.ContainsKey("AP" + counter) || logtrans.ContainsKey("APXP" + counter)))
                                 {
@@ -629,10 +634,11 @@ namespace Character_Builder
                                                 lp.SetField(logtrans["Notes" + counter + "Line" + line], string.Join(" ", lines));
                                             }
                                         }
+                                        if (logtrans.ContainsKey("LevelStart" + counter)) lp.SetField(logtrans["LevelStart" + counter], context.Levels.Get(advancement ? (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp): ap) : (ap > 0 ? context.Levels.ToXP(context.Levels.ToAP(xp) + ap) : xp), advancement).ToString());
                                         if (logtrans.ContainsKey("XPStart" + counter)) lp.SetField(logtrans["XPStart" + counter], advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString());
-                                        if (logtrans.ContainsKey("APStart" + counter)) lp.SetField(logtrans["APStart" + counter], advancement ? ap.ToString() : (context.Levels.ToAP(xp) + ap).ToString());
-                                        if (logtrans.ContainsKey("APXPStart" + counter)) lp.SetField(logtrans["APXPStart" + counter], (entry.AP != 0 ? (advancement ? ap.ToString() : (context.Levels.ToAP(xp) + ap).ToString()) : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? (advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString()) : ""));
-                                        if (logtrans.ContainsKey("APXPStartText" + counter)) lp.SetField(logtrans["APXPStartText" + counter], "Starting " + (entry.AP != 0 ? (entry.XP != 0 ? "AP/XP" : "AP") : (entry.XP != 0 ? "XP" : (advancement ? "AP" : "XP"))));
+                                        if (logtrans.ContainsKey("APStart" + counter)) lp.SetField(logtrans["APStart" + counter], advancement ? APFormat(context, pdf.APFormat, (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap)) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap));
+                                        if (logtrans.ContainsKey("APXPStart" + counter)) lp.SetField(logtrans["APXPStart" + counter], (entry.AP != 0 ? (advancement ? APFormat(context, pdf.APFormat, ap) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap)) : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? (advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString()) : ""));
+                                        if (logtrans.ContainsKey("APXPStartText" + counter)) lp.SetField(logtrans["APXPStartText" + counter], "Starting " + (entry.AP != 0 ? (entry.XP != 0 ? "ACP/XP" : "ACP") : (entry.XP != 0 ? "XP" : (advancement ? "ACP" : "XP"))));
                                         if (logtrans.ContainsKey("GoldStart" + counter)) lp.SetField(logtrans["GoldStart" + counter], gold.ToGold());
                                         if (logtrans.ContainsKey("DowntimeStart" + counter)) lp.SetField(logtrans["DowntimeStart" + counter], downtime.ToString());
                                         if (logtrans.ContainsKey("RenownStart" + counter)) lp.SetField(logtrans["RenownStart" + counter], renown.ToString());
@@ -728,7 +734,7 @@ namespace Character_Builder
                                         if (logtrans.ContainsKey("XP" + counter)) lp.SetField(logtrans["XP" + counter], entry.XP.ToString());
                                         if (logtrans.ContainsKey("AP" + counter)) lp.SetField(logtrans["AP" + counter], entry.AP.ToString());
                                         if (logtrans.ContainsKey("APXP" + counter)) lp.SetField(logtrans["APXP" + counter], (entry.AP != 0 ? entry.AP.ToString() : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? entry.XP.ToString() : ""));
-                                        if (logtrans.ContainsKey("APXPText" + counter)) lp.SetField(logtrans["APXPText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "AP/XP" : "AP") : (entry.XP != 0 ? "XP" : (advancement ? "AP" : "XP"))) + " +/-");
+                                        if (logtrans.ContainsKey("APXPText" + counter)) lp.SetField(logtrans["APXPText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "ACP/XP" : "ACP") : (entry.XP != 0 ? "XP" : (advancement ? "ACP" : "XP"))) + " +/-");
                                         if (logtrans.ContainsKey("Gold" + counter)) lp.SetField(logtrans["Gold" + counter], entry.GetMoney());
                                         if (logtrans.ContainsKey("Downtime" + counter)) lp.SetField(logtrans["Downtime" + counter], PlusMinus(entry.Downtime, "--"));
                                         if (logtrans.ContainsKey("Renown" + counter)) lp.SetField(logtrans["Renown" + counter], PlusMinus(entry.Renown, "--"));
@@ -762,10 +768,11 @@ namespace Character_Builder
                                     t4tp += entry.T4TP;
                                     if (entry.InSheet)
                                     {
+                                        if (logtrans.ContainsKey("LevelEnd" + counter)) lp.SetField(logtrans["LevelEnd" + counter], context.Levels.Get(advancement ? (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap) : (ap > 0 ? context.Levels.ToXP(context.Levels.ToAP(xp) + ap) : xp), advancement).ToString());
                                         if (logtrans.ContainsKey("XPEnd" + counter)) lp.SetField(logtrans["XPEnd" + counter], advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString());
-                                        if (logtrans.ContainsKey("APEnd" + counter)) lp.SetField(logtrans["APEnd" + counter], advancement ? ap.ToString() : (context.Levels.ToAP(xp) + ap).ToString());
-                                        if (logtrans.ContainsKey("APXPEnd" + counter)) lp.SetField(logtrans["APXPEnd" + counter], (entry.AP != 0 ? (advancement ? ap.ToString() : (context.Levels.ToAP(xp) + ap).ToString()) : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? (advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString()) : ""));
-                                        if (logtrans.ContainsKey("APXPEndText" + counter)) lp.SetField(logtrans["APXPEndText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "AP/XP" : "AP") : (entry.XP != 0 ? "XP" : (advancement ? "AP" : "XP"))) + " Total");
+                                        if (logtrans.ContainsKey("APEnd" + counter)) lp.SetField(logtrans["APEnd" + counter], advancement ? APFormat(context, pdf.APFormat, (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap)) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap));
+                                        if (logtrans.ContainsKey("APXPEnd" + counter)) lp.SetField(logtrans["APXPEnd" + counter], (entry.AP != 0 ? (advancement ? APFormat(context, pdf.APFormat, ap) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap)) : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? (advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString()) : ""));
+                                        if (logtrans.ContainsKey("APXPEndText" + counter)) lp.SetField(logtrans["APXPEndText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "ACP/XP" : "ACP") : (entry.XP != 0 ? "XP" : (advancement ? "ACP" : "XP"))) + " Total");
                                         if (logtrans.ContainsKey("GoldEnd" + counter)) lp.SetField(logtrans["GoldEnd" + counter], gold.ToGold());
                                         if (logtrans.ContainsKey("DowntimeEnd" + counter)) lp.SetField(logtrans["DowntimeEnd" + counter], downtime.ToString());
                                         if (logtrans.ContainsKey("RenownEnd" + counter)) lp.SetField(logtrans["RenownEnd" + counter], renown.ToString());
@@ -827,7 +834,11 @@ namespace Character_Builder
                     {
                         List<SpellModifyFeature> mods = (from f in context.Player.GetFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
                         spellbook.AddRange(context.Player.GetSpellscrolls());
-                        Queue<Spell> entries = new Queue<Spell>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
+                        Queue<object> entries = new Queue<object>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
+                        foreach (Possession pos in context.Player.Possessions)
+                        {
+                            if ((pos.Name != null && pos.Name != "") || (pos.Description != null && pos.Description != "") || pos.MagicProperties.Count > 0) entries.Enqueue(pos);
+                        }
                         int sheetCount = 0;
                         while (entries.Count > 0)
                         {
@@ -835,59 +846,88 @@ namespace Character_Builder
                             using (IPDFEditor sbp = await pdf.CreateEditor(SpellbookFile))
                             {
                                 sheetCount++;
-                                FillBasicFields(booktrans, sbp, context);
+                                FillBasicFields(booktrans, sbp, context, pdf);
                                 if (booktrans.ContainsKey("Sheet")) sbp.SetField(booktrans["Sheet"], sheetCount.ToString());
                                 while (entries.Count > 0 && (booktrans.ContainsKey("Name" + counter) || booktrans.ContainsKey("Description" + counter)))
                                 {
-                                    Spell entry = entries.Dequeue();
-                                    StringBuilder description = new StringBuilder();
-                                    String name = entry.Name;
-                                    String spellLevel = "";
-                                    List<Keyword> original = entry.GetKeywords();
-                                    List<Keyword> keywords = new List<Keyword>(original);
-                                    if (booktrans.ContainsKey("Level" + counter)) sbp.SetField(booktrans["Level" + counter], entry.Level.ToString());
-                                    else spellLevel = (entry.Level == 0 ? "" : " " + AddOrdinal(entry.Level) + " Level");
-                                    keywords.RemoveAll(k => k.Name.Equals("cantrip", StringComparison.OrdinalIgnoreCase));
-                                    if (booktrans.ContainsKey("School" + counter)) sbp.SetField(booktrans["School" + counter], GetAndRemoveSchool(keywords));
-                                    else if (!booktrans.ContainsKey("Keywords" + counter)) spellLevel += " " + GetAndRemoveSchool(keywords);
-                                    if (entry.Level == 0) spellLevel += " Cantrip";
-                                    if (booktrans.ContainsKey("SchoolLevel" + counter)) sbp.SetField(booktrans["SchoolLevel" + counter], spellLevel);
-                                    else name += ", " + spellLevel;
-                                    if (booktrans.ContainsKey("Name" + counter)) sbp.SetField(booktrans["Name" + counter], name);
-                                    else description.Append(name).AppendLine();
-                                    if (booktrans.ContainsKey("Classes" + counter)) sbp.SetField(booktrans["Classes" + counter], GetAndRemoveClasses(keywords, context));
-                                    if (booktrans.ContainsKey("Time" + counter)) sbp.SetField(booktrans["Time" + counter], entry.CastingTime);
-                                    else description.Append("Casting Time: ").Append(entry.CastingTime).AppendLine();
-                                    if (booktrans.ContainsKey("Range" + counter)) sbp.SetField(booktrans["Range" + counter], entry.Range);
-                                    else description.Append("Range: ").Append(entry.Range).AppendLine();
-                                    if (booktrans.ContainsKey("Components" + counter)) sbp.SetField(booktrans["Components" + counter], GetAndRemoveComponents(keywords));
-                                    else if (!booktrans.ContainsKey("Keywords" + counter)) description.Append("Components: ").Append(GetAndRemoveComponents(keywords)).AppendLine();
-                                    if (booktrans.ContainsKey("Duration" + counter)) sbp.SetField(booktrans["Duration" + counter], entry.Duration);
-                                    else description.Append("Duration: ").Append(entry.Duration).AppendLine();
-
-                                    if (booktrans.ContainsKey("Keywords" + counter)) sbp.SetField(booktrans["Keywords" + counter], String.Join(", ", keywords));
-
-                                    description.Append(entry.Description);
-                                    StringBuilder add = new StringBuilder();
-                                    foreach (Description d in entry.Descriptions)
+                                    object xml = entries.Dequeue();
+                                    if (xml is Spell entry)
                                     {
-                                        add.Append(d.Name.ToUpperInvariant()).Append(": ").Append(d.Text).AppendLine();
-                                        if (d is ListDescription) foreach (Names n in (d as ListDescription).Names) add.Append(n.Title).Append(": ").Append(String.Join(", ", n.ListOfNames)).AppendLine();
-                                        if (d is TableDescription) foreach (TableEntry tr in (d as TableDescription).Entries) add.Append(tr.ToFullString()).AppendLine();
+                                        StringBuilder description = new StringBuilder();
+                                        String name = entry.Name;
+                                        String spellLevel = "";
+                                        List<Keyword> original = entry.GetKeywords();
+                                        List<Keyword> keywords = new List<Keyword>(original);
+                                        if (booktrans.ContainsKey("Level" + counter)) sbp.SetField(booktrans["Level" + counter], entry.Level.ToString());
+                                        else spellLevel = (entry.Level == 0 ? "" : " " + AddOrdinal(entry.Level) + " Level");
+                                        keywords.RemoveAll(k => k.Name.Equals("cantrip", StringComparison.OrdinalIgnoreCase));
+                                        if (booktrans.ContainsKey("School" + counter)) sbp.SetField(booktrans["School" + counter], GetAndRemoveSchool(keywords));
+                                        else if (!booktrans.ContainsKey("Keywords" + counter)) spellLevel += " " + GetAndRemoveSchool(keywords);
+                                        if (entry.Level == 0) spellLevel += " Cantrip";
+                                        if (booktrans.ContainsKey("SchoolLevel" + counter)) sbp.SetField(booktrans["SchoolLevel" + counter], spellLevel);
+                                        else name += ", " + spellLevel;
+                                        if (booktrans.ContainsKey("Name" + counter)) sbp.SetField(booktrans["Name" + counter], name);
+                                        else description.Append(name).AppendLine();
+                                        if (booktrans.ContainsKey("Classes" + counter)) sbp.SetField(booktrans["Classes" + counter], GetAndRemoveClasses(keywords, context));
+                                        if (booktrans.ContainsKey("Time" + counter)) sbp.SetField(booktrans["Time" + counter], entry.CastingTime);
+                                        else description.Append("Casting Time: ").Append(entry.CastingTime).AppendLine();
+                                        if (booktrans.ContainsKey("Range" + counter)) sbp.SetField(booktrans["Range" + counter], entry.Range);
+                                        else description.Append("Range: ").Append(entry.Range).AppendLine();
+                                        if (booktrans.ContainsKey("Components" + counter)) sbp.SetField(booktrans["Components" + counter], GetAndRemoveComponents(keywords));
+                                        else if (!booktrans.ContainsKey("Keywords" + counter)) description.Append("Components: ").Append(GetAndRemoveComponents(keywords)).AppendLine();
+                                        if (booktrans.ContainsKey("Duration" + counter)) sbp.SetField(booktrans["Duration" + counter], entry.Duration);
+                                        else description.Append("Duration: ").Append(entry.Duration).AppendLine();
+
+                                        if (booktrans.ContainsKey("Keywords" + counter)) sbp.SetField(booktrans["Keywords" + counter], String.Join(", ", keywords));
+
+                                        description.Append(entry.Description);
+                                        StringBuilder add = new StringBuilder();
+                                        foreach (Description d in entry.Descriptions)
+                                        {
+                                            add.Append(d.Name.ToUpperInvariant()).Append(": ").Append(d.Text.Trim(new char[] { ' ', '\r', '\n', '\t' })).AppendLine();
+                                            if (d is ListDescription) foreach (Names n in (d as ListDescription).Names) add.Append(n.Title).Append(": ").Append(String.Join(", ", n.ListOfNames)).AppendLine();
+                                            if (d is TableDescription) foreach (TableEntry tr in (d as TableDescription).Entries) add.Append(tr.ToFullString()).AppendLine();
+                                        }
+                                        if (booktrans.ContainsKey("AdditionDescription" + counter)) sbp.SetField(booktrans["AdditionDescription" + counter], add.ToString());
+                                        else description.AppendLine().AppendLine().Append(add.ToString());
+                                        StringBuilder Modifiers = new StringBuilder();
+                                        foreach (SpellModifyFeature m in mods.Where(f => Utils.Matches(context, entry, ((SpellModifyFeature)f).Spells, null)))
+                                        {
+                                            Modifiers.Append(m.Name.ToUpperInvariant()).Append(": ").Append(m.Text.Trim(new char[] { ' ', '\r', '\n', '\t' })).AppendLine();
+                                        }
+                                        if (booktrans.ContainsKey("Modifiers" + counter)) sbp.SetField(booktrans["Modifiers" + counter], Modifiers.ToString());
+                                        else description.AppendLine().Append(Modifiers.ToString());
+                                        if (booktrans.ContainsKey("Source" + counter)) sbp.SetField(booktrans["Source" + counter], entry.Source);
+                                        else description.AppendLine().Append("Source: ").Append(entry.Source).AppendLine();
+                                        if (booktrans.ContainsKey("Description" + counter)) sbp.SetField(booktrans["Description" + counter], description.ToString());
+                                        counter++;
                                     }
-                                    if (booktrans.ContainsKey("AdditionDescription" + counter)) sbp.SetField(booktrans["AdditionDescription" + counter], add.ToString());
-                                    else description.AppendLine().AppendLine().Append(add.ToString());
-                                    StringBuilder Modifiers = new StringBuilder();
-                                    foreach (SpellModifyFeature m in mods.Where(f => Utils.Matches(context, entry, ((SpellModifyFeature)f).Spells, null)))
+                                    else if (xml is Possession pos && (pdf.ForceAttunedItemsInSpellbook || !pdf.ForceAttunedAndOnUseItemsOnSheet))
                                     {
-                                        Modifiers.Append(m.Name.ToUpperInvariant()).Append(": ").Append(m.Text).AppendLine();
+                                        StringBuilder description = new StringBuilder();
+                                        HashSet<string> source = new HashSet<string>();
+                                        HashSet<string> keywords = new HashSet<string>();
+                                        if (booktrans.ContainsKey("Name" + counter)) sbp.SetField(booktrans["Name" + counter], pos.ToString());
+                                        else description.Append(pos.ToString()).AppendLine();
+                                        if (pos.Description != null && pos.Description != "") description.AppendLine(pos.Description);
+                                        foreach (MagicProperty mp in pos.Magic)
+                                        {
+                                            string d = mp.DisplayRequirement;
+                                            if (d != null && d != "") keywords.Add(d);
+                                            if (mp.Source != null && mp.Source != "") source.Add(mp.Source);
+                                            string t = mp.Text;
+                                            if (t != null && t.Trim(new char[] { ' ', '\r', '\n', '\t' }) != "")
+                                            {
+                                                description.AppendLine().AppendLine(t.Trim(new char[] { ' ', '\r', '\n', '\t' }));
+                                            }
+                                        }
+                                        if (booktrans.ContainsKey("Source" + counter)) sbp.SetField(booktrans["Source" + counter], string.Join(", ", source));
+                                        else description.AppendLine().Append("Source: ").Append(string.Join(", ", source)).AppendLine();
+                                        if (booktrans.ContainsKey("Classes" + counter)) sbp.SetField(booktrans["Classes" + counter], string.Join("; ", keywords));
+                                        if (booktrans.ContainsKey("Description" + counter)) sbp.SetField(booktrans["Description" + counter], description.ToString());
+                                        counter++;
                                     }
-                                    if (booktrans.ContainsKey("Modifiers" + counter)) sbp.SetField(booktrans["Modifiers" + counter], Modifiers.ToString());
-                                    else description.AppendLine().Append(Modifiers.ToString());
-                                    if (booktrans.ContainsKey("Source" + counter)) sbp.SetField(booktrans["Source" + counter], entry.Source);
-                                    else description.AppendLine().Append("Source: ").Append(entry.Source).AppendLine();
-                                    if (booktrans.ContainsKey("Description" + counter)) sbp.SetField(booktrans["Description" + counter], description.ToString());
-                                    counter++;
+                                    
                                 }
                                 if (counter > 1) sheet.Add(sbp);
                             }
@@ -910,7 +950,7 @@ namespace Character_Builder
                             using (IPDFEditor abp = await pdf.CreateEditor(file))
                             {
                                 sheetCount++;
-                                FillBasicFields(actiontrans, abp, context);
+                                FillBasicFields(actiontrans, abp, context, pdf);
                                 if (actiontrans.ContainsKey("Sheet")) abp.SetField(actiontrans["Sheet"], sheetCount.ToString());
                                 if (pdf.IncludeResources)
                                 {
@@ -991,7 +1031,7 @@ namespace Character_Builder
                             using (IPDFEditor mp = await pdf.CreateEditor(MonstersFile))
                             {
                                 sheetCount++;
-                                FillBasicFields(monstertrans, mp, context);
+                                FillBasicFields(monstertrans, mp, context, pdf);
                                 if (monstertrans.ContainsKey("Sheet")) mp.SetField(monstertrans["Sheet"], sheetCount.ToString());
                                 while (entries.Count > 0 && (monstertrans.ContainsKey("Name" + counter) || monstertrans.ContainsKey("Traits" + counter)))
                                 {
@@ -1183,6 +1223,18 @@ namespace Character_Builder
             }
         }
 
+        private string APFormat(BuilderContext context, string format, int ap)
+        {
+            int level = context.Levels.Get(ap, true);
+            int next = 8;
+            if (level < context.Levels.Advancement.Count)
+            {
+                next = context.Levels.Advancement[level] - (level > 0 ? context.Levels.Advancement[level - 1] : 0);
+            }
+            int over = ap - (level > 0 ? context.Levels.Advancement[level - 1] : 0);
+            return String.Format(format, ap, over, level, next);
+        }
+
         public static StringBuilder AppendIfContent(StringBuilder s, string v)
         {
             if (s.Length > 0) s.Append(v);
@@ -1282,7 +1334,7 @@ namespace Character_Builder
 
         }
 
-        private void FillBasicFields(Dictionary<string, string> trans, IPDFEditor p, BuilderContext context)
+        private void FillBasicFields(Dictionary<string, string> trans, IPDFEditor p, BuilderContext context, PDFBase pdf)
         {
             int down = 0;
             int renown = 0;
@@ -1304,6 +1356,13 @@ namespace Character_Builder
                     t4tp += je.T4TP;
                 }
             }
+            bool advancement = context.Player.Advancement;
+            int ap = advancement ? context.Player.GetXP() : context.Levels.ToAP(context.Player.GetXP());
+            for (int i = 1; i<=ap; i++)
+            {
+                if (trans.ContainsKey("APCheck" + i)) p.SetField(trans["APCheck" + i], "Yes");
+                else break;
+            }
             if (trans.ContainsKey("Background")) p.SetField(trans["Background"], SourceInvariantComparer.NoSource(context.Player.BackgroundName));
             if (trans.ContainsKey("Race")) p.SetField(trans["Race"], context.Player.GetRaceSubName());
             if (trans.ContainsKey("PersonalityTrait")) p.SetField(trans["PersonalityTrait"], context.Player.PersonalityTrait + (context.Player.PersonalityTrait2 == null || context.Player.PersonalityTrait2 == "" || context.Player.PersonalityTrait2 == "- None -" ? "" : "\n" + context.Player.PersonalityTrait2));
@@ -1312,7 +1371,10 @@ namespace Character_Builder
             if (trans.ContainsKey("Flaw")) p.SetField(trans["Flaw"], context.Player.Flaw);
             if (trans.ContainsKey("PlayerName")) p.SetField(trans["PlayerName"], context.Player.PlayerName);
             if (trans.ContainsKey("Alignment")) p.SetField(trans["Alignment"], context.Player.Alignment);
-            if (trans.ContainsKey("XP")) p.SetField(trans["XP"], context.Player.GetXP().ToString());
+            if (trans.ContainsKey("XP")) p.SetField(trans["XP"], advancement ? APFormat(context, pdf.APFormat, context.Player.GetXP()) + " ACP" : context.Player.GetXP().ToString());
+            if (trans.ContainsKey("XPTotal")) p.SetField(trans["XPTotal"], advancement ? context.Levels.ToXP(context.Player.GetXP()).ToString() : context.Player.GetXP().ToString());
+            if (trans.ContainsKey("AP")) p.SetField(trans["AP"], advancement ? APFormat(context, pdf.APFormat, context.Player.GetXP()) : context.Player.GetXP().ToString() + " XP");
+            if (trans.ContainsKey("APTotal")) p.SetField(trans["APTotal"], advancement ? context.Player.GetXP().ToString() : APFormat(context, pdf.APFormat, context.Levels.ToXP(context.Player.GetXP())));
             if (trans.ContainsKey("Age")) p.SetField(trans["Age"], context.Player.Age.ToString());
             if (trans.ContainsKey("Height")) p.SetField(trans["Height"], context.Player.Height.ToString());
             if (trans.ContainsKey("Weight")) p.SetField(trans["Weight"], context.Player.Weight.ToString() + " lb");

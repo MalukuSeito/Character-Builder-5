@@ -1161,10 +1161,10 @@ namespace Character_Builder
                 if (f is BonusSpellFeature bsf)
                 {
                     Spell s = Context.GetSpell(bsf.Spell, bsf.Source);
-                    if (!FilterAtWill || (bsf.SpellCastModifier < RechargeModifier.AtWill && bsf.SpellCastModifier != RechargeModifier.Unmodified) || (bsf.SpellCastModifier < RechargeModifier.AtWill && s.Level > 0))
+                    if (!FilterAtWill || (bsf.SpellCastModifier < RechargeModifier.Charges && bsf.SpellCastModifier != RechargeModifier.Unmodified) || (bsf.SpellCastModifier < RechargeModifier.Charges && s.Level > 0))
                         spells.Add(new ModifiedSpell(Context.GetSpell (bsf.Spell, bsf.Source), bsf.KeywordsToAdd, bsf.SpellCastingAbility, bsf.SpellCastModifier));
                 }
-                else if (f is BonusSpellKeywordChoiceFeature) if (!FilterAtWill || ((BonusSpellKeywordChoiceFeature)f).SpellCastModifier < RechargeModifier.AtWill) spells.AddRange((Utils.GetSpells(Context, (BonusSpellKeywordChoiceFeature)f)).Where(s => s.Level > 0 || !FilterAtWill));
+                else if (f is BonusSpellKeywordChoiceFeature) if (!FilterAtWill || ((BonusSpellKeywordChoiceFeature)f).SpellCastModifier < RechargeModifier.Charges) spells.AddRange((Utils.GetSpells(Context, (BonusSpellKeywordChoiceFeature)f)).Where(s => s.Level > 0 || !FilterAtWill));
             }
             Dictionary<ModifiedSpell, ModifiedSpell> distinct = new Dictionary<ModifiedSpell, ModifiedSpell>();
             foreach (ModifiedSpell ms in spells)

@@ -393,5 +393,71 @@ namespace OGL
 
         [XmlIgnore]
         public string Desc { get => Requirement; }
+
+        [XmlIgnore]
+        public string Text { get
+            {
+                List<String> s = new List<string>();
+                if (Description != null && Description != "") s.Add(Description);
+                foreach (Feature f in AttunementFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                foreach (Feature f in CarryFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                foreach (Feature f in EquipFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                foreach (Feature f in OnUseFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                foreach (Feature f in AttunedEquipFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                foreach (Feature f in AttunedOnUseFeatures) if (f.Name != "" && f.Name != null && !f.NoDisplay) s.Add(f.ShortDesc());
+                return String.Join("\n", s);
+            }
+        }
+
+        [XmlIgnore]
+        public String DisplayRequirement
+        {
+            get
+            {
+                if (Requirement != null && Requirement != "")
+                {
+                    if (Rarity != Rarity.None)
+                    {
+                        if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(Requirement, DisplayRarity) >= 0) {
+                            if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(Requirement, "requires attunement") >= 0) return Requirement;
+                            else if (AttunedEquipFeatures.Count > 0 || AttunementFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return Requirement + " (requires attunment)";
+                            else return Requirement;
+                        } else
+                        {
+                            if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(Requirement, "requires attunement") >= 0) return Requirement + ", " + DisplayRarity;
+                            else if (AttunedEquipFeatures.Count > 0 || AttunementFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return Requirement + ", " + DisplayRarity + " (requires attunment)";
+                            else return Requirement + ", " + DisplayRarity;
+                        }
+                    } else
+                    {
+                        if (CultureInfo.InvariantCulture.CompareInfo.IndexOf(Requirement, "requires attunement") >= 0) return Requirement;
+                        else if (AttunedEquipFeatures.Count > 0 || AttunementFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return Requirement + " (requires attunment)";
+                        else return Requirement;
+                    }
+                } else
+                {
+                    if (Rarity != Rarity.None)
+                    {
+                        if (AttunedEquipFeatures.Count > 0 || AttunementFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return "(requires attunment)";
+                        else return "";
+                    } else
+                    {
+                        if (AttunedEquipFeatures.Count > 0 || AttunementFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return DisplayRarity + " (requires attunment)";
+                        return DisplayRarity;
+                    }
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public string DisplayRarity
+        {
+            get
+            {
+                if (Rarity == Rarity.None) return "";
+                if (Rarity == Rarity.VeryRare) return "very rare";
+                return Rarity.ToString().ToLowerInvariant();
+            }
+        }
     }
 }
