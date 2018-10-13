@@ -413,6 +413,9 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label40 = new System.Windows.Forms.Label();
+            this.attacksLabel = new System.Windows.Forms.Label();
+            this.attacksBox = new System.Windows.Forms.ListBox();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -5058,6 +5061,9 @@
             // 
             // combatBox
             // 
+            this.combatBox.Controls.Add(this.attacksBox);
+            this.combatBox.Controls.Add(this.attacksLabel);
+            this.combatBox.Controls.Add(this.label40);
             this.combatBox.Controls.Add(this.actionsBox);
             this.combatBox.Location = new System.Drawing.Point(239, 929);
             this.combatBox.Name = "combatBox";
@@ -5070,9 +5076,9 @@
             // 
             this.actionsBox.FormattingEnabled = true;
             this.actionsBox.HorizontalScrollbar = true;
-            this.actionsBox.Location = new System.Drawing.Point(6, 18);
+            this.actionsBox.Location = new System.Drawing.Point(6, 158);
             this.actionsBox.Name = "actionsBox";
-            this.actionsBox.Size = new System.Drawing.Size(218, 433);
+            this.actionsBox.Size = new System.Drawing.Size(218, 290);
             this.actionsBox.TabIndex = 2;
             this.actionsBox.SelectedIndexChanged += new System.EventHandler(this.actionsBox_SelectedIndexChanged);
             // 
@@ -5205,6 +5211,34 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(3, 142);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(74, 13);
+            this.label40.TabIndex = 3;
+            this.label40.Text = "Other Actions:";
+            // 
+            // attacksLabel
+            // 
+            this.attacksLabel.AutoSize = true;
+            this.attacksLabel.Location = new System.Drawing.Point(3, 18);
+            this.attacksLabel.Name = "attacksLabel";
+            this.attacksLabel.Size = new System.Drawing.Size(111, 13);
+            this.attacksLabel.TabIndex = 4;
+            this.attacksLabel.Text = "Attacks (1 per action):";
+            // 
+            // attacksBox
+            // 
+            this.attacksBox.FormattingEnabled = true;
+            this.attacksBox.HorizontalScrollbar = true;
+            this.attacksBox.Location = new System.Drawing.Point(6, 34);
+            this.attacksBox.Name = "attacksBox";
+            this.attacksBox.Size = new System.Drawing.Size(218, 108);
+            this.attacksBox.TabIndex = 5;
+            this.attacksBox.SelectedIndexChanged += new System.EventHandler(this.attacksBox_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -5412,6 +5446,7 @@
             this.conditionbox.ResumeLayout(false);
             this.conditionbox.PerformLayout();
             this.combatBox.ResumeLayout(false);
+            this.combatBox.PerformLayout();
             this.formsbox.ResumeLayout(false);
             this.spellcastingexample.ResumeLayout(false);
             this.spellcastingexample.PerformLayout();
@@ -5806,6 +5841,9 @@
         private System.Windows.Forms.NumericUpDown journalT2TP;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.NumericUpDown journalT1TP;
+        private System.Windows.Forms.ListBox attacksBox;
+        private System.Windows.Forms.Label attacksLabel;
+        private System.Windows.Forms.Label label40;
     }
 }
 

@@ -83,6 +83,7 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttackRow.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ControlAdder.cs" />
     <Compile Include="NoScrollTab.cs">

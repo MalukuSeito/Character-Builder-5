@@ -1965,7 +1965,7 @@ namespace Character_Builder
             foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
         }
-        public AttackInfo GetAttack(Possession p,int level=0)
+        public AttackInfo GetAttack(Possession p,int level=0, bool extraAttacks = true)
         {
             if (level == 0) level = GetLevel();
             List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature || t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature, level, p.CollectOnUse(level, this, Context));
@@ -2085,7 +2085,7 @@ namespace Character_Builder
             if (damagebonus > 0) damage += "+" + damagebonus;
             else if (damagebonus < 0) damage += damagebonus;
             extraatk++;
-            if (extraatk > 1) damage = extraatk.ToString() + " x " + damage;
+            if (extraAttacks && extraatk > 1) damage = extraatk.ToString() + " x " + damage;
             return new AttackInfo(attackbonus,damage,damagetype);
         }
         public AttackInfo GetAttack(Spell s, Ability spellcastingModifier, int level = 0)

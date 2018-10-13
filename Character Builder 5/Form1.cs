@@ -675,7 +675,7 @@ namespace Character_Builder_5
                 List<Feature> spellfeatures = new List<Feature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature select f);
                 List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>();
                 foreach (Feature f in spellfeatures) if (f is SpellcastingFeature) spellcasts.Add((SpellcastingFeature)f);
-                for (int i = 4; i < inplayflow.Controls.Count; i++)
+                for (int i = 6; i < inplayflow.Controls.Count; i++)
                 {
                     if (inplayflow.Controls[i] is GroupBox box)
                     {
@@ -750,6 +750,15 @@ namespace Character_Builder_5
                 Proficiencies.Items.AddRange(Program.Context.Player.GetOtherProficiencies().ToArray());
                 actionsBox.Items.Clear();
                 actionsBox.Items.AddRange(Program.Context.Player.GetActions().ToArray());
+                attacksBox.Items.Clear();
+                foreach (Possession p in Program.Context.Player.GetItemsAndPossessions()) {
+                    AttackInfo ai = Program.Context.Player.GetAttack(p, 0, false);
+                    if (ai != null)
+                    {
+                        attacksBox.Items.Add(new AttackRow() { Possession = p, Attack = ai });
+                    }
+                }
+                attacksLabel.Text = "Attacks (" + (Program.Context.Player.GetExtraAttacks() + 1) + " per action):";
                 layouting = false;
             }
             catch (Exception e)
@@ -4413,6 +4422,17 @@ namespace Character_Builder_5
             {
                 je.T4TP = (int)journalT4TP.Value;
                 UpdateJournal();
+            }
+        }
+
+        private void attacksBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (attacksBox.SelectedItem is AttackRow row && row.Possession != null)
+            {
+                displayElement.Navigate("about:blank");
+                displayElement.Document.OpenNew(true);
+                displayElement.Document.Write(new DisplayPossession(row.Possession, Program.Context.Player).ToHTML());
+                displayElement.Refresh();
             }
         }
     }
