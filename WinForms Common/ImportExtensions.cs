@@ -539,7 +539,11 @@ namespace Character_Builder_Forms
 
         private static string MakeRelative(string dir)
         {
-            return Path.GetDirectoryName(dir);
+            if (dir.Contains(Path.DirectorySeparatorChar) || dir.Contains(Path.AltDirectorySeparatorChar))
+            {
+                return Path.GetDirectoryName(dir);
+            }
+            return dir;
         }
 
         public static ConfigManager LoadConfigManager(string file)

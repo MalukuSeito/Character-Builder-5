@@ -23,6 +23,7 @@ namespace OGL
         public static string SourceSeperatorString = "\u2014";
         public static char[] InvalidChars = "\u2014".ToCharArray();
         public static bool Description = true;
+        [XmlIgnore]
         public int MultiClassTarget
         {
             get
@@ -46,7 +47,7 @@ namespace OGL
                 return r;
             }
         }
-
+        [XmlIgnore]
         public string DefaultSource
         {
             get
@@ -187,7 +188,9 @@ namespace OGL
         XmlArrayItem(Type = typeof(VisionFeature))]
         public List<Feature> FeaturesForMulticlassing = new List<Feature>() {};
         
+        [XmlIgnore]
         public List<string> PDFExporters { get; set; }
+        [XmlIgnore]
         public List<Feature> CommonFeatures
         {
             get
@@ -195,6 +198,7 @@ namespace OGL
                 return FeaturesForAll;
             }
         }
+        [XmlIgnore]
         public List<Feature> MultiClassFeatures
         {
             get
