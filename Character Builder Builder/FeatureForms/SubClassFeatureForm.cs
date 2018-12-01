@@ -15,7 +15,7 @@ namespace Character_Builder_Builder.FeatureForms
             InitializeComponent();
             basicFeature1.Feature = f;
             Parentclass.DataBindings.Add("Text", f, "ParentClass", true, DataSourceUpdateMode.OnPropertyChanged);
-            Program.Context.ImportClasses();
+            Program.Context.ImportClasses(true, false);
             foreach (string s in Program.Context.ClassesSimple.Keys)
             {
                 Parentclass.AutoCompleteCustomSource.Add(s);

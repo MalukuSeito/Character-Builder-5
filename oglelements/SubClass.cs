@@ -169,6 +169,11 @@ namespace OGL
                 ShowSource = true;
             }
             else context.SubClassesSimple.Add(Name, this);
+            if (applyKeywords) ApplyKeywords(context);
+        }
+
+        public void ApplyKeywords(OGLContext context)
+        {
         }
         public SubClass() : base() {
             Features = new List<Feature>();

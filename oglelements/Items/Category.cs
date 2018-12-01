@@ -28,9 +28,9 @@ namespace OGL.Items
             if (!Category.Categories.ContainsKey(context.Config.Items_Directory)) Category.Categories.Add(context.Config.Items_Directory, new Category(context));
             return Category.Categories[context.Config.Items_Directory];
         }
-        public Category(String path, List<string> categorypath, OGLContext context)
+        public Category(String path, IEnumerable<string> categorypath, OGLContext context)
         {
-            CategoryPath = categorypath;
+            CategoryPath = categorypath.ToList();
             Path = path;
             ItemsDir = context.Config.Items_Directory;
             //if (CategoryPath.First<String>() != ConfigManager.Directory_Items.Directory.Name) CategoryPath.Insert(0, ConfigManager.Directory_Items.Directory.Name);

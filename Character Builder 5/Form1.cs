@@ -91,7 +91,7 @@ namespace Character_Builder_5
                 p.Click += pluginClick;
                 configureHouserulesToolStripMenuItem.DropDownItems.Add(p);
             }
-            Program.Context.Plugins.PluginsChanged += PluginManager_PluginsChanged;
+            PluginManager.PluginsChanged += PluginManager_PluginsChanged;
             BuildSources();
             portraitBox.AllowDrop = true;
             FactionInsignia.AllowDrop = true;
@@ -176,12 +176,9 @@ namespace Character_Builder_5
 
         private void PluginManager_PluginsChanged(object sender, EventArgs e)
         {
-            if (sender is PluginManager)
-            {
-                PluginManager manager = sender as PluginManager;
-                foreach (ToolStripMenuItem t in plugins.Values) t.Checked = false;
-                foreach (Character_Builder_Plugin.IPlugin p in manager.plugins) plugins[p.Name].Checked = true;
-            }
+            PluginManager manager = Program.Context.Plugins;
+            foreach (ToolStripMenuItem t in plugins.Values) t.Checked = false;
+            foreach (Character_Builder_Plugin.IPlugin p in manager.plugins) plugins[p.Name].Checked = true;
         }
 
         private void pluginClick(object sender, EventArgs e)
@@ -912,7 +909,7 @@ namespace Character_Builder_5
             var fcs = Program.Context.Player.GetFormsCompanionChoices();
             if (fcs.Count > 0 && Program.Context.MonstersSimple.Count == 0)
             {
-                Program.Context.ImportMonsters();
+                Program.Context.ImportMonsters(true);
                 fcs = Program.Context.Player.GetFormsCompanionChoices();
             }
             foreach (FormsCompanionInfo fc in fcs )
@@ -1201,6 +1198,7 @@ namespace Character_Builder_5
                     Program.Context.Player.GetSpellChoice(tab.Name, scf.UniqueID).Choices.RemoveAll(t => ConfigManager.SourceInvariantComparer.Equals(t, r));
                     //UpdateSpellChoices(choicebox);
                     UpdateSpellcastingInner();
+                    UpdateFormsCompanions();
                     UpdateInPlayInner();
                 }
             }
@@ -1227,6 +1225,7 @@ namespace Character_Builder_5
                     }
                     //UpdateSpellChoices(choicebox);
                     UpdateSpellcastingInner(true, spellfeatures);
+                    UpdateFormsCompanions();
                     UpdateInPlayInner();
                 }
             }
@@ -1274,6 +1273,7 @@ namespace Character_Builder_5
                         sc.GetPreparedList(Program.Context.Player, Program.Context).Add(((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source);
                     }
                     UpdateSpellcastingInner(true, spellfeatures);
+                    UpdateFormsCompanions();
                     UpdateInPlayInner();
                 }
             }
@@ -1289,6 +1289,7 @@ namespace Character_Builder_5
                 string r = ((Spell)lb.SelectedItem).Name + " " + ConfigManager.SourceSeperator + " " + ((Spell)lb.SelectedItem).Source;
                 sc.GetPreparedList(Program.Context.Player, Program.Context).RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
                 UpdateSpellcastingInner();
+                UpdateFormsCompanions();
                 UpdateInPlayInner();
             }
         }

@@ -15,6 +15,7 @@ namespace CB_5e.Services
     {
         public static IFolder Data;
         public static IList<IFolder> Sources;
+        public static IList<IFile> Zips;
 
         private static async Task Extract(Stream stream, IFolder target, string path)
         {
@@ -87,6 +88,7 @@ namespace CB_5e.Services
                 }
             }
             Sources = await Data.GetFoldersAsync();
+            Zips = (await Data.GetFilesAsync()).Where(f => f.Name.ToLowerInvariant().EndsWith(".zip")).ToList();
             return true;
         }
 
@@ -119,6 +121,36 @@ namespace CB_5e.Services
             return result;
         }
 
+        public static async Task<Dictionary<string, ZipEntry>> EnumerateZipFilesAsync(ZipFile zf, String source, string type)
+        {
+            Dictionary<string, ZipEntry> result = new Dictionary<string, ZipEntry>();
+            string t = type.TrimEnd('/', '\\').ToLowerInvariant() + "/";
+            string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
+            string f = source.ToLowerInvariant() + "/" + t;
+            string ff = source.ToLowerInvariant() + "\\" + tt;
+            String basepath = Data.Path;
+            String basesource = Sources.Select(ss=>ss.Name).FirstOrDefault(ss => StringComparer.OrdinalIgnoreCase.Equals(ss, source));
+            bool overridden = basesource != null;
+            foreach (ZipEntry entry in zf)
+            {
+                if (!entry.IsFile) continue;
+                string name = entry.Name.ToLowerInvariant();
+                if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
+                {
+                    String path = Path.Combine(basepath, name);
+                    if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                    result.Add(path, entry);
+                }
+                else if ((name.StartsWith(t) || name.StartsWith(tt)) && name.EndsWith(".xml"))
+                {
+                    String path = Path.Combine(basepath, basesource, name);
+                    if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                    result.Add(path, entry);
+                }
+            }
+            return result;
+        }
+
         private static async Task<List<IFile>> GetAllFilesAsync(IFolder folder, bool recurse, string pattern)
         {
             List<IFile> result = new List<IFile>();
@@ -147,6 +179,14 @@ namespace CB_5e.Services
                 return "";
             }
             return path.Substring(0, path.LastIndexOf(PortablePath.DirectorySeparatorChar));
+        }
+
+        public static List<String> AllSources()
+        {
+            List<String> res = new List<string>(Sources.Count + Zips.Count);
+            res.AddRange(Sources.Select(f => f.Name));
+            res.AddRange(Zips.Select(z => Path.ChangeExtension(z.Name, null)));
+            return res;
         }
     }
 }

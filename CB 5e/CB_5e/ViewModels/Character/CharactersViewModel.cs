@@ -74,8 +74,8 @@ namespace CB_5e.ViewModels.Character
                 BuilderContext TinyContext = new BuilderContext();
                 ConfigManager config = await TinyContext.LoadConfigAsync(await PCLSourceManager.Data.GetFileAsync("Config.xml").ConfigureAwait(false)).ConfigureAwait(false);
                 await TinyContext.LoadLevelAsync(await PCLSourceManager.Data.GetFileAsync(config.Levels).ConfigureAwait(false)).ConfigureAwait(false);
-                await TinyContext.ImportClassesAsync(false).ConfigureAwait(true);
-                await TinyContext.ImportSubClassesAsync(false).ConfigureAwait(true);
+                await TinyContext.ImportClassesAsync(true, false).ConfigureAwait(true);
+                await TinyContext.ImportSubClassesAsync(true, false).ConfigureAwait(true);
                 ExistenceCheckResult res = await App.Storage.CheckExistsAsync("Characters");
                 IFolder characters = await App.Storage.CreateFolderAsync("Characters", CreationCollisionOption.OpenIfExists);
                 if (res == ExistenceCheckResult.NotFound)

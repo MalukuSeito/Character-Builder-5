@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using OGL.Items;
 using OGL.Features;
 using OGL.Keywords;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace CB_5e.Services
 {
@@ -24,21 +25,102 @@ namespace CB_5e.Services
             return context.Scores;
         }
 
-        public static async Task ImportClassesAsync(this OGLContext context, bool applyKeywords = false)
+        public static async Task ImportZips(this OGLContext context, bool applyKeywords = false, bool cleanup = true)
         {
-            context.Classes.Clear();
-            context.ClassesSimple.Clear();
+            if (cleanup)
+            {
+                context.Backgrounds.Clear();
+                context.BackgroundsSimple.Clear();
+                context.Classes.Clear();
+                context.ClassesSimple.Clear();
+                context.Conditions.Clear();
+                context.ConditionsSimple.Clear();
+                context.FeatureCollections.Clear();
+                context.FeatureContainers.Clear();
+                context.FeatureCategories.Clear();
+                context.Boons.Clear();
+                context.Features.Clear();
+                context.BoonsSimple.Clear();
+                context.Items.Clear();
+                context.ItemLists.Clear();
+                context.ItemsSimple.Clear();
+                context.Languages.Clear();
+                context.LanguagesSimple.Clear();
+                context.Magic.Clear();
+                context.MagicCategories.Clear();
+                context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+                context.MagicSimple.Clear();
+                context.Monsters.Clear();
+                context.MonstersSimple.Clear();
+                context.Races.Clear();
+                context.RacesSimple.Clear();
+                context.Skills.Clear();
+                context.SkillsSimple.Clear();
+                context.Spells.Clear();
+                context.SpellLists.Clear();
+                context.SpellsSimple.Clear();
+                context.SubClasses.Clear();
+                context.SubClassesSimple.Clear();
+                context.SubRaces.Clear();
+                context.SubRacesSimple.Clear();
+            }
+            String basepath = PCLSourceManager.Data.Path;
+            foreach (IFile z in PCLSourceManager.Zips)
+            {
+
+                String s = System.IO.Path.ChangeExtension(z.Name, null);
+                if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                {
+                    string f = s.ToLowerInvariant() + "/";
+                    string ff = s.ToLowerInvariant() + "\\";
+                    String basesource = PCLSourceManager.Sources.Select(ss => ss.Name).FirstOrDefault(ss => StringComparer.OrdinalIgnoreCase.Equals(ss, s));
+                    bool overridden = basesource != null;
+                    foreach (ZipEntry entry in zf)
+                    {
+                        if (!entry.IsFile) continue;
+                        string name = entry.Name.ToLowerInvariant();
+                        if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
+                        {
+                            String path = System.IO.Path.Combine(basepath, name);
+                            if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                            using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s , basepath, context, applyKeywords);
+                        }
+                        else if (name.EndsWith(".xml"))
+                        {
+                            String path = System.IO.Path.Combine(basepath, basesource, name);
+                            if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                            using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static async Task ImportClassesAsync(this OGLContext context, bool withZips = true, bool applyKeywords = false)
+        {
+            if (withZips)
+            {
+                context.Classes.Clear();
+                context.ClassesSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Classes_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportClass(reader, s, f.Key, context, applyKeywords); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Classes_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) 
-                    {
-                        ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path, applyKeywords);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportClass(reader, f.Value, f.Key.Path, context, applyKeywords);
                 }
                 catch (Exception e)
                 {
@@ -47,21 +129,29 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSubClassesAsync(this OGLContext context, bool applyKeywords = false)
+        public static async Task ImportSubClassesAsync(this OGLContext context, bool withZips = true, bool applyKeywords = false)
         {
-            context.SubClasses.Clear();
-            context.SubClassesSimple.Clear();
+            if (withZips) { 
+                context.SubClasses.Clear();
+                context.SubClassesSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.SubClasses_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubClass(reader, s, f.Key, context, applyKeywords); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.SubClasses_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path, applyKeywords);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubClass(reader, f.Value, f.Key.Path, context, applyKeywords);
                 }
                 catch (Exception e)
                 {
@@ -69,21 +159,29 @@ namespace CB_5e.Services
                 }
             }
         }
-        public async static Task ImportSubRacesAsync(this OGLContext context)
+        public async static Task ImportSubRacesAsync(this OGLContext context, bool withZips = true)
         {
-            context.SubRaces.Clear();
-            context.SubRacesSimple.Clear();
+            if (withZips) { 
+                context.SubRaces.Clear();
+                context.SubRacesSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.SubRaces_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubRace(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.SubRaces_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        SubRace s = (SubRace)SubRace.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubRace(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -91,21 +189,29 @@ namespace CB_5e.Services
                 }
             }
         }
-        public async static Task ImportRacesAsync(this OGLContext context)
+        public async static Task ImportRacesAsync(this OGLContext context, bool withZips = true)
         {
-            context.Races.Clear();
-            context.RacesSimple.Clear();
+            if (withZips) {
+                context.Races.Clear();
+                context.RacesSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Races_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportRace(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Races_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Race s = (Race)Race.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportRace(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -114,21 +220,30 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSkillsAsync(this OGLContext context)
+        public static async Task ImportSkillsAsync(this OGLContext context, bool withZips = true)
         {
-            context.Skills.Clear();
-            context.SkillsSimple.Clear();
+            if (withZips)
+            {
+                context.Skills.Clear();
+                context.SkillsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Skills_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSkill(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Skills_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Skill s = (Skill)Skill.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSkill(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -137,21 +252,30 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportLanguagesAsync(this OGLContext context)
+        public static async Task ImportLanguagesAsync(this OGLContext context, bool withZips = true)
         {
-            context.Languages.Clear();
-            context.LanguagesSimple.Clear();
+            if (withZips)
+            {
+                context.Languages.Clear();
+                context.LanguagesSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Languages_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportLanguage(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Languages_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Language s = (Language)Language.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportLanguage(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -160,21 +284,30 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportMonstersAsync(this OGLContext context)
+        public static async Task ImportMonstersAsync(this OGLContext context, bool withZips = true)
         {
-            context.Monsters.Clear();
-            context.MonstersSimple.Clear();
+            if (withZips)
+            {
+                context.Monsters.Clear();
+                context.MonstersSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Monster_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMonster(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Monster_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Monster s = (Monster)Monster.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMonster(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -183,22 +316,31 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportSpellsAsync(this OGLContext context)
+        public static async Task ImportSpellsAsync(this OGLContext context, bool withZips = true)
         {
-            context.Spells.Clear();
-            context.SpellLists.Clear();
-            context.SpellsSimple.Clear();
+            if (withZips)
+            {
+                context.Spells.Clear();
+                context.SpellLists.Clear();
+                context.SpellsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Spells_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSpell(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Spells_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Spell s = (Spell)Spell.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSpell(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -207,37 +349,38 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportItemsAsync(this OGLContext context)
+        public static async Task ImportItemsAsync(this OGLContext context, bool withZips = true)
         {
-            context.Items.Clear();
-            context.ItemLists.Clear();
-            context.ItemsSimple.Clear();
+            String basepath = PCLSourceManager.Data.Path;
+            if (withZips)
+            {
+                context.Items.Clear();
+                context.ItemLists.Clear();
+                context.ItemsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Items_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportItem(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Items_Directory, true).ConfigureAwait(false);
-
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Items_Directory));
-                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Item s = (Item)Item.Serializer.Deserialize(reader);
-                        s.Category = Make(context, source.MakeRelativeUri(target));
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportItem(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
                     ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
             }
-        }
-
-        public static Category Make(this OGLContext context, Uri path)
-        {
-            return Make(context, Uri.UnescapeDataString(path.ToString()));
         }
 
         public static Category Make(this OGLContext context, String path)
@@ -255,22 +398,30 @@ namespace CB_5e.Services
         }
 
 
-        public static async Task ImportBackgroundsAsync(this OGLContext context)
+        public static async Task ImportBackgroundsAsync(this OGLContext context, bool withZips = true)
         {
-            context.Backgrounds.Clear();
-            context.BackgroundsSimple.Clear();
+            if (withZips)
+            {
+                context.Backgrounds.Clear();
+                context.BackgroundsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Backgrounds_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportBackground(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Backgrounds_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        Background s = (Background)Background.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        foreach (Feature fea in s.Features) fea.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportBackground(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -279,64 +430,35 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task ImportStandaloneFeaturesAsync(this OGLContext context)
+        public static async Task ImportStandaloneFeaturesAsync(this OGLContext context, bool withZips = true)
         {
-            context.FeatureCollections.Clear();
-            context.FeatureContainers.Clear();
-            context.FeatureCategories.Clear();
-            context.Boons.Clear();
-            context.Features.Clear();
-            context.BoonsSimple.Clear();
+            String basepath = PCLSourceManager.Data.Path;
+            if (withZips)
+            {
+                context.FeatureCollections.Clear();
+                context.FeatureContainers.Clear();
+                context.FeatureCategories.Clear();
+                context.Boons.Clear();
+                context.Features.Clear();
+                context.BoonsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Features_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportFeatureContainer(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Features_Directory, true).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Features_Directory));
-                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
-                    FeatureContainer cont = await LoadFeatureContainerAsync(f.Key);
-                    List<Feature> feats = cont.Features;
-                    string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
-                    cont.FileName = f.Key.Path;
-                    cont.category = cat;
-                    cont.Name = f.Key.Name;
-                    int i = cont.Name.LastIndexOf('.');
-                    if (i > 0)
-                    {
-                        cont.Name = cont.Name.Substring(0, i);
-                    }
-                    cont.Source = f.Value;
-                    context.FeatureContainers[cat].Add(cont);
-                    foreach (Feature feat in feats)
-                    {
-                        feat.Source = cont.Source;
-                        foreach (Keyword kw in feat.Keywords) kw.check();
-                        feat.Category = cat;
-                        if (!context.FeatureCategories.ContainsKey(cat)) context.FeatureCategories.Add(cat, new List<Feature>());
-                        Feature other = context.FeatureCategories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                        if (other != null)
-                        {
-                            other.ShowSource = true;
-                            feat.ShowSource = true;
-                        }
-                        context.FeatureCategories[cat].Add(feat);
-                        if (cat.Equals("Feats/Boons", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (context.BoonsSimple.ContainsKey(feat.Name))
-                            {
-                                context.BoonsSimple[feat.Name].ShowSource = true;
-                                feat.ShowSource = true;
-                            }
-                            else context.BoonsSimple.Add(feat.Name, feat);
-                            if (context.Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
-                            else context.Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
-                        }
-                    }
-                    foreach (Feature feat in feats)
-                    {
-                        context.Features.Add(feat);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportFeatureContainer(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
@@ -345,38 +467,29 @@ namespace CB_5e.Services
             }
         }
 
-        public static async Task<FeatureContainer> LoadFeatureContainerAsync(IFile path)
+        public static async Task ImportConditionsAsync(this OGLContext context, bool withZips = true)
         {
-            using (Stream reader = await path.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-            {
-                return ((FeatureContainer)FeatureContainer.Serializer.Deserialize(reader));
+            if (withZips) { 
+                context.Conditions.Clear();
+                context.ConditionsSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Conditions_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportCondition(reader, s, f.Key, context); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
             }
-        }
-
-        public static string FeatureCleanname(this OGLContext context, string path)
-        {
-            string cat = path;
-            if (!cat.StartsWith(context.Config.Features_Directory)) cat = PortablePath.Combine(context.Config.Features_Directory, path);
-            cat = cat.Replace(PortablePath.DirectorySeparatorChar, '/');
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
-        }
-
-        public static async Task ImportConditionsAsync(this OGLContext context)
-        {
-            context.Conditions.Clear();
-            context.ConditionsSimple.Clear();
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Conditions_Directory).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        OGL.Condition s = (OGL.Condition)OGL.Condition.Serializer.Deserialize(reader);
-                        s.Source = f.Value;
-                        s.Register(context, f.Key.Path);
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportCondition(reader, f.Value, f.Key.Path, context);
                 }
                 catch (Exception e)
                 {
@@ -384,82 +497,39 @@ namespace CB_5e.Services
                 }
             }
         }
-        private static MagicCategory MakeMagicCategory(string Name)
+        public static async Task ImportMagicAsync(this OGLContext context, bool withZips = true)
         {
-            string path = Name.TrimEnd('/');
-            int i = path.LastIndexOf('/');
-            if (i >= 0) path = path.Substring(i + 1);
-            int count = 0;
-            foreach (char c in Name)
-                if (c == '/') count++;
-            return new MagicCategory(Name, path, count);
-        }
-        public static async Task ImportMagicAsync(this OGLContext context)
-        {
-            context.Magic.Clear();
-            context.MagicCategories.Clear();
-            context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
-            context.MagicSimple.Clear();
+            String basepath = PCLSourceManager.Data.Path;
+            if (withZips)
+            {
+                context.Magic.Clear();
+                context.MagicCategories.Clear();
+                context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+                context.MagicSimple.Clear();
+                foreach (IFile z in PCLSourceManager.Zips)
+                {
+                    String s = System.IO.Path.ChangeExtension(z.Name, null);
+                    if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                    using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                    {
+                        var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Magic_Directory).ConfigureAwait(false);
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMagicItem(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                            catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
+                    }
+                }
+            }
             var files = await PCLSourceManager.EnumerateFilesAsync(context, context.Config.Magic_Directory, true).ConfigureAwait(false);
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(new Uri("file://"), PCLSourceManager.GetDirectory(f.Value, context.Config.Magic_Directory));
-                    Uri target = new Uri(new Uri("file://"), PCLSourceManager.Parent(f.Key));
-                    string cat = MagicPropertyCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!context.MagicCategories.ContainsKey(cat)) context.MagicCategories.Add(cat, MakeMagicCategory(cat));
-                    String parent = PCLSourceManager.Parent(cat);
-                    while (parent.StartsWith(context.Config.Magic_Directory) && !context.MagicCategories.ContainsKey(parent))
-                    {
-                        context.MagicCategories.Add(parent, MakeMagicCategory(parent));
-                        parent = PCLSourceManager.Parent(parent);
-                    }
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false))
-                    {
-                        MagicProperty mp = ((MagicProperty)MagicProperty.Serializer.Deserialize(reader));
-                        mp.FileName = f.Key.Path;
-                        mp.Source = f.Value;
-                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value;
-                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value;
-                        mp.Category = cat;
-                        context.MagicCategories[cat].Contents.Add(mp);
-                        if (context.Magic.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
-                        {
-                            throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
-                        }
-                        if (context.MagicSimple.ContainsKey(mp.Name))
-                        {
-                            context.MagicSimple[mp.Name].ShowSource = true;
-                            mp.ShowSource = true;
-                        }
-                        context.Magic.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
-                        context.MagicSimple[mp.Name] = mp;
-                    }
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMagicItem(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
                     ConfigManager.LogError("Error reading " + f.ToString(), e);
                 }
-
-                //Collections[].AddRange(feats);
             }
-        }
-        public static string MagicPropertyCleanname(this OGLContext context, string path)
-        {
-            string cat = path;
-            if (!cat.StartsWith(context.Config.Magic_Directory)) cat = PortablePath.Combine(context.Config.Magic_Directory, path);
-            cat = cat.Replace(PortablePath.DirectorySeparatorChar, '/');
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
-        }
-
-        public static string MagicPropertyPath(OGLContext context, string path)
-        {
-            string cat = MagicPropertyCleanname(context, path);
-            return cat.Remove(0, context.Config.Magic_Directory.Length + 1);
         }
 
         public static string Path(string path)
@@ -485,6 +555,8 @@ namespace CB_5e.Services
             context.Config.Spells_Directory = MakeRelative(context.Config.Spells_Directory);
             context.Config.Magic_Directory = MakeRelative(context.Config.Magic_Directory);
             context.Config.Conditions_Directory = MakeRelative(context.Config.Conditions_Directory);
+            context.Config.Monster_Directory = MakeRelative(context.Config.Monster_Directory);
+            context.Config.Plugins_Directory = MakeRelative(context.Config.Plugins_Directory);
             context.Config.PDFExporters = new List<string>();
             foreach (string s in context.Config.PDF) context.Config.PDFExporters.Add(s);
             //for (int i = 0; i < loaded.PDF.Count; i++)
@@ -499,7 +571,12 @@ namespace CB_5e.Services
 
         public static string MakeRelative(string dir)
         {
-            return System.IO.Path.GetDirectoryName(dir);
+            if (dir.Contains("\\") || dir.Contains("/"))
+            {
+                return System.IO.Path.GetDirectoryName(dir);
+            }
+            return dir;
+            
         }
 
         public static string MakeRelativeFile(string dir)
@@ -562,6 +639,27 @@ namespace CB_5e.Services
             foreach (var f in await PCLSourceManager.GetAllDirectoriesAsync(context, type))
             {
                 result.UnionWith(await GetSubDirectoriesAsync(f.Key, type).ConfigureAwait(false));
+            }
+            string t = type.TrimEnd('/', '\\').ToLowerInvariant() + "/";
+            string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
+            foreach (IFile z in PCLSourceManager.Zips)
+            {
+                String s = System.IO.Path.ChangeExtension(z.Name, null);
+                using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+                {
+                    string f = s.ToLowerInvariant() + "/" + t;
+                    string ff = s.ToLowerInvariant() + "\\" + tt;
+                    zf.IsStreamOwner = true;
+                    foreach (ZipEntry entry in zf)
+                    {
+                        String name = entry.IsFile ? System.IO.Path.GetFileName(entry.Name) : entry.Name;
+                        String n = name.ToLowerInvariant();
+                        if (n.StartsWith(t)) result.Add(name.Substring(t.Length));
+                        else if (n.StartsWith(tt)) result.Add(name.Substring(tt.Length));
+                        else if (n.StartsWith(f)) result.Add(name.Substring(f.Length));
+                        else if (n.StartsWith(ff)) result.Add(name.Substring(ff.Length));
+                    }
+                }
             }
             return from s in result orderby s select s;
         }

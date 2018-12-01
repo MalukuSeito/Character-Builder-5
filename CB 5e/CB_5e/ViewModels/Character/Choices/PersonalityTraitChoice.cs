@@ -29,7 +29,7 @@ namespace CB_5e.ViewModels.Character.Choices
         public PersonalityTraitChoice(SubModel model,List<TableEntry> choices, bool other) : base(model, null, 1, null, false, true)
         {
             Other = other;
-            Name = other ? "Personality Trait" : "2nd Personality Trait";
+            Name = other ? "2nd Personality Trait" : "Personality Trait";
             Choices = choices;
             Navigation = model.Navigation;
             OnSelect = new Command((par) =>

@@ -142,6 +142,7 @@
     <Compile Include="Monsters\MonsterSaveBonus.cs" />
     <Compile Include="Monsters\MonsterTrait.cs" />
     <Compile Include="OGLContext.cs" />
+    <Compile Include="OGLImport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Base\Size.cs" />

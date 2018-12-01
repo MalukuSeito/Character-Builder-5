@@ -21,47 +21,84 @@ namespace Character_Builder_Forms
             context.Scores.Filename = file;
             return context.Scores;
         }
-        public static void ImportBackgrounds(this OGLContext context)
-        {
-            if (context == null || context.Config == null) return;
-            context.Backgrounds.Clear();
-            context.BackgroundsSimple.Clear();
 
-            var files = SourceManager.EnumerateFiles(context, context.Config.Backgrounds_Directory, SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
+        public static void ImportZips(this OGLContext context, bool applyKeywords = false,  bool cleanup = true)
+        {
+            if (cleanup)
             {
-                try
+                context.Backgrounds.Clear();
+                context.BackgroundsSimple.Clear();
+                context.Classes.Clear();
+                context.ClassesSimple.Clear();
+                context.Conditions.Clear();
+                context.ConditionsSimple.Clear();
+                context.FeatureCollections.Clear();
+                context.FeatureContainers.Clear();
+                context.FeatureCategories.Clear();
+                context.Boons.Clear();
+                context.Features.Clear();
+                context.BoonsSimple.Clear();
+                context.Items.Clear();
+                context.ItemLists.Clear();
+                context.ItemsSimple.Clear();
+                context.Languages.Clear();
+                context.LanguagesSimple.Clear();
+                context.Magic.Clear();
+                context.MagicCategories.Clear();
+                context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+                context.MagicSimple.Clear();
+                context.Monsters.Clear();
+                context.MonstersSimple.Clear();
+                context.Races.Clear();
+                context.RacesSimple.Clear();
+                context.Skills.Clear();
+                context.SkillsSimple.Clear();
+                context.Spells.Clear();
+                context.SpellLists.Clear();
+                context.SpellsSimple.Clear();
+                context.SubClasses.Clear();
+                context.SubClassesSimple.Clear();
+                context.SubRaces.Clear();
+                context.SubRacesSimple.Clear();
+            }
+            foreach (KeyValuePair<FileInfo, string> zip in SourceManager.GetAllZips(context).AsEnumerable())
+            {
+                ZipArchive archive = ZipFile.OpenRead(zip.Key.FullName);
+                string f = zip.Value.ToLowerInvariant() + "/";
+                string ff = zip.Value.ToLowerInvariant() + "\\";
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    using (TextReader reader = f.Value.GetReader())
+                    string name = entry.FullName.ToLowerInvariant();
+                    if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
                     {
-                        Background s = (Background)Background.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        foreach (Feature fea in s.Features) fea.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
+                        String path = Path.Combine(SourceManager.AppPath, name);
+                        if (File.Exists(path)) continue;
+                        using (Stream s = entry.Open()) OGLImport.Import(s, path, zip.Value, SourceManager.AppPath, context, applyKeywords);
                     }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
+                    else if (name.EndsWith(".xml"))
+                    {
+                        String path = Path.Combine(SourceManager.AppPath, zip.Value, name);
+                        if (File.Exists(path)) continue;
+                        using (Stream s = entry.Open()) OGLImport.Import(s, path, zip.Value, SourceManager.AppPath, context, applyKeywords);
+                    }
                 }
             }
         }
-        public static void ImportClasses(this OGLContext context, bool applyKeywords = false)
+
+        public static void ImportBackgrounds(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Classes.Clear();
-            context.ClassesSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Classes_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Backgrounds.Clear();
+                context.BackgroundsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Backgrounds_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName, applyKeywords);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportBackground(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -69,22 +106,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportConditions(this OGLContext context)
+        public static void ImportClasses(this OGLContext context, bool withZips, bool applyKeywords = false)
         {
             if (context == null || context.Config == null) return;
-            context.Conditions.Clear();
-            context.ConditionsSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Conditions_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Classes.Clear();
+                context.ClassesSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Classes_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Condition s = (Condition)Condition.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportClass(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -92,60 +127,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportStandaloneFeatures(this OGLContext context)
+        public static void ImportConditions(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.FeatureCollections.Clear();
-            context.FeatureContainers.Clear();
-            context.FeatureCategories.Clear();
-            context.Boons.Clear();
-            context.Features.Clear();
-            context.BoonsSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Features_Directory);
+            if (withZips)
+            {
+                context.Conditions.Clear();
+                context.ConditionsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Conditions_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Features_Directory).FullName);
-                    Uri target = new Uri(f.Value.DirectoryName);
-                    FeatureContainer cont = LoadFeatureContainer(f.Value);
-                    List<Feature> feats = cont.Features;
-                    string cat = FeatureCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!context.FeatureContainers.ContainsKey(cat)) context.FeatureContainers.Add(cat, new List<FeatureContainer>());
-                    cont.FileName = f.Value.FullName;
-                    cont.category = cat;
-                    cont.Name = Path.GetFileNameWithoutExtension(f.Value.FullName);
-                    cont.Source = f.Value.Source;
-                    context.FeatureContainers[cat].Add(cont);
-                    foreach (Feature feat in feats)
-                    {
-                        feat.Source = cont.Source;
-                        foreach (Keyword kw in feat.Keywords) kw.check();
-                        feat.Category = cat;
-                        if (!context.FeatureCategories.ContainsKey(cat)) context.FeatureCategories.Add(cat, new List<Feature>());
-                        Feature other = context.FeatureCategories[cat].Where(ff => string.Equals(ff.Name, feat.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                        if (other != null)
-                        {
-                            other.ShowSource = true;
-                            feat.ShowSource = true;
-                        }
-                        context.FeatureCategories[cat].Add(feat);
-                        if (cat.Equals("Feats/Boons", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            if (context.BoonsSimple.ContainsKey(feat.Name))
-                            {
-                                context.BoonsSimple[feat.Name].ShowSource = true;
-                                feat.ShowSource = true;
-                            }
-                            else context.BoonsSimple.Add(feat.Name, feat);
-                            if (context.Boons.ContainsKey(feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source)) ConfigManager.LogError("Duplicate Boon: " + feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source);
-                            else context.Boons[feat.Name + " " + ConfigManager.SourceSeperator + " " + feat.Source] = feat;
-                        }
-                    }
-                    foreach (Feature feat in feats)
-                    {
-                        context.Features.Add(feat);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportCondition(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -153,19 +148,29 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static string FeatureCleanname(OGLContext context, string path)
+        public static void ImportStandaloneFeatures(this OGLContext context, bool withZips)
         {
-            string cat = path;
-            if (!cat.StartsWith(context.Config.Features_Directory)) cat = Path.Combine(context.Config.Features_Directory, path);
-            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
-        }
-        public static FeatureContainer LoadFeatureContainer(FileInfoSource fi)
-        {
-            using (TextReader reader = fi.GetReader())
+            if (context == null || context.Config == null) return;
+            if (withZips)
             {
-                return ((FeatureContainer)FeatureContainer.Serializer.Deserialize(reader));
+                context.FeatureCollections.Clear();
+                context.FeatureContainers.Clear();
+                context.FeatureCategories.Clear();
+                context.Boons.Clear();
+                context.Features.Clear();
+                context.BoonsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Features_Directory, withZips);
+            foreach (var f in files)
+            {
+                try
+                {
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportFeatureContainer(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
+                }
             }
         }
         public static IEnumerable<string> EnumerateCategories(this OGLContext context, string type)
@@ -198,27 +203,22 @@ namespace Character_Builder_Forms
             }
             return result.OrderBy(s => s).Distinct();
         }
-        public static void ImportItems(this OGLContext context)
+        public static void ImportItems(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Items.Clear();
-            context.ItemLists.Clear();
-            context.ItemsSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Items_Directory);
+            if (withZips)
+            {
+                context.Items.Clear();
+                context.ItemLists.Clear();
+                context.ItemsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Items_Directory, withZips);
 
             foreach (var f in files)
             {
                 try
                 {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Items_Directory).FullName);
-                    Uri target = new Uri(f.Value.DirectoryName);
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Item s = (Item)Item.Serializer.Deserialize(reader);
-                        s.Category = Make(context, source.MakeRelativeUri(target));
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportItem(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
                 }
                 catch (Exception e)
                 {
@@ -226,22 +226,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportLanguages(this OGLContext context)
+        public static void ImportLanguages(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Languages.Clear();
-            context.LanguagesSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Languages_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Languages.Clear();
+                context.LanguagesSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Languages_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Language s = (Language)Language.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportLanguage(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -249,22 +247,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportMonsters(this OGLContext context)
+        public static void ImportMonsters(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Monsters.Clear();
-            context.MonstersSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Monster_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Monsters.Clear();
+                context.MonstersSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Monster_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Monster s = (Monster)Monster.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMonster(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -279,99 +275,22 @@ namespace Character_Builder_Forms
             context.Levels.Sort();
             return context.Levels;
         }
-        private static MagicCategory MakeMagicCategory(string Name)
-        {
-            string path = Path.GetFileName(Name);
-            if (path == null) path = Name;
-            int count = 0;
-            foreach (char c in Name)
-                if (c == Path.AltDirectorySeparatorChar) count++;
-            return new MagicCategory(Name, path, count);
-        }
-        public static void ImportMagic(this OGLContext context)
+        public static void ImportMagic(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Magic.Clear();
-            context.MagicCategories.Clear();
-            context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
-            context.MagicSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Magic_Directory, SearchOption.AllDirectories);
-            foreach (var f in files)
+            if (withZips)
             {
-                try
-                {
-                    Uri source = new Uri(SourceManager.GetDirectory(f.Value.Source, context.Config.Magic_Directory).FullName);
-                    Uri target = new Uri(f.Value.DirectoryName);
-                    string cat = MagicPropertyCleanname(context, Uri.UnescapeDataString(source.MakeRelativeUri(target).ToString()));
-                    if (!context.MagicCategories.ContainsKey(cat)) context.MagicCategories.Add(cat, MakeMagicCategory(cat));
-                    String parent = Path.GetDirectoryName(cat);
-                    while (parent.IsSubPathOf(context.Config.Magic_Directory) && !context.MagicCategories.ContainsKey(parent))
-                    {
-                        context.MagicCategories.Add(parent, MakeMagicCategory(parent));
-                        parent = Path.GetDirectoryName(parent);
-                    }
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        MagicProperty mp = ((MagicProperty)MagicProperty.Serializer.Deserialize(reader));
-                        mp.FileName = f.Value.FullName;
-                        mp.Source = f.Value.Source;
-                        foreach (Feature fea in mp.AttunementFeatures) fea.Source = f.Value.Source;
-                        foreach (Feature fea in mp.CarryFeatures) fea.Source = f.Value.Source;
-                        foreach (Feature fea in mp.OnUseFeatures) fea.Source = f.Value.Source;
-                        foreach (Feature fea in mp.EquipFeatures) fea.Source = f.Value.Source;
-                        mp.Category = cat;
-                        context.MagicCategories[cat].Contents.Add(mp);
-                        if (context.Magic.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
-                        {
-                            throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
-                        }
-                        if (context.MagicSimple.ContainsKey(mp.Name))
-                        {
-                            context.MagicSimple[mp.Name].ShowSource = true;
-                            mp.ShowSource = true;
-                        }
-                        context.Magic.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
-                        context.MagicSimple[mp.Name] = mp;
-                    }
-                }
-                catch (Exception e)
-                {
-                    ConfigManager.LogError("Error reading " + f.ToString(), e);
-                }
-
-                //Collections[].AddRange(feats);
+                context.Magic.Clear();
+                context.MagicCategories.Clear();
+                context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+                context.MagicSimple.Clear();
             }
-        }
-        public static string MagicPropertyCleanname(this OGLContext context, string path)
-        {
-            string cat = path;
-            if (!cat.StartsWith(context.Config.Magic_Directory)) cat = Path.Combine(context.Config.Magic_Directory, path);
-            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
-            return cat;
-        }
-
-        public static string MagicPropertyPath(this OGLContext context, string path)
-        {
-            string cat = MagicPropertyCleanname(context, path);
-            return cat.Remove(0, context.Config.Magic_Directory.Length + 1);
-        }
-        public static void ImportRaces(this OGLContext context)
-        {
-            if (context == null || context.Config == null) return;
-            context.Races.Clear();
-            context.RacesSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Races_Directory, SearchOption.TopDirectoryOnly);
+            var files = SourceManager.EnumerateFiles(context, context.Config.Magic_Directory, withZips, SearchOption.AllDirectories);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Race s = (Race)Race.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMagicItem(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
                 }
                 catch (Exception e)
                 {
@@ -379,22 +298,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSkills(this OGLContext context)
+        public static void ImportRaces(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Skills.Clear();
-            context.SkillsSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Skills_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Races.Clear();
+                context.RacesSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Races_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Skill s = (Skill)Skill.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportRace(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -402,23 +319,20 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSpells(this OGLContext context)
+        public static void ImportSkills(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.Spells.Clear();
-            context.SpellLists.Clear();
-            context.SpellsSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.Spells_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Skills.Clear();
+                context.SkillsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Skills_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        Spell s = (Spell)Spell.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSkill(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -426,22 +340,21 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSubClasses(this OGLContext context, bool applyKeywords = false)
+        public static void ImportSpells(this OGLContext context, bool withZips)
         {
             if (context == null || context.Config == null) return;
-            context.SubClasses.Clear();
-            context.SubClassesSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.SubClasses_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.Spells.Clear();
+                context.SpellLists.Clear();
+                context.SpellsSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.Spells_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName, applyKeywords);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSpell(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -449,22 +362,41 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSubRaces(this OGLContext context)
+        public static void ImportSubClasses(this OGLContext context, bool withZips, bool applyKeywords = false)
         {
             if (context == null || context.Config == null) return;
-            context.SubRaces.Clear();
-            context.SubRacesSimple.Clear();
-            var files = SourceManager.EnumerateFiles(context, context.Config.SubRaces_Directory, SearchOption.TopDirectoryOnly);
+            if (withZips)
+            {
+                context.SubClasses.Clear();
+                context.SubClassesSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.SubClasses_Directory, withZips, SearchOption.TopDirectoryOnly);
             foreach (var f in files)
             {
                 try
                 {
-                    using (TextReader reader = f.Value.GetReader())
-                    {
-                        SubRace s = (SubRace)SubRace.Serializer.Deserialize(reader);
-                        s.Source = f.Value.Source;
-                        s.Register(context, f.Value.FullName);
-                    }
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubClass(reader, f.Value.Source, f.Value.FullName, context, applyKeywords);
+                }
+                catch (Exception e)
+                {
+                    ConfigManager.LogError("Error reading " + f.ToString(), e);
+                }
+            }
+        }
+        public static void ImportSubRaces(this OGLContext context, bool withZips)
+        {
+            if (context == null || context.Config == null) return;
+            if (withZips)
+            {
+                context.SubRaces.Clear();
+                context.SubRacesSimple.Clear();
+            }
+            var files = SourceManager.EnumerateFiles(context, context.Config.SubRaces_Directory, withZips, SearchOption.TopDirectoryOnly);
+            foreach (var f in files)
+            {
+                try
+                {
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubRace(reader, f.Value.Source, f.Value.FullName, context);
                 }
                 catch (Exception e)
                 {
@@ -518,6 +450,7 @@ namespace Character_Builder_Forms
             HTMLExtensions.Transform_Possession = new FileInfo(Fullpath(path, context.Config.Possessions_Transform));
             HTMLExtensions.Transform_RemoveDescription = new FileInfo(Fullpath(path, context.Config.RemoveDescription_Transform));
             context.Config.Plugins_Directory = MakeRelative(context.Config.Plugins_Directory);
+            context.Config.Monster_Directory = MakeRelative(context.Config.Monster_Directory);
             context.Config.PDFExporters = new List<string>();
             foreach (string s in context.Config.PDF) context.Config.PDFExporters.Add(Fullpath(path, s));
             //for (int i = 0; i < loaded.PDF.Count; i++)
@@ -558,6 +491,7 @@ namespace Character_Builder_Forms
         {
             using (TextWriter writer = new StreamWriter(file)) ConfigManager.Serializer.Serialize(writer, m);
         }
+
         public static Category Make(OGLContext context, Uri path)
         {
             return Make(context, Uri.UnescapeDataString(path.ToString()));

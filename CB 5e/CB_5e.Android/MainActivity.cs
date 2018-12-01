@@ -17,6 +17,34 @@ namespace CB_5e.Droid
     [IntentFilter(new[] { Intent.ActionSend, Intent.ActionSendMultiple }, Categories = new[] { Intent.CategoryDefault }, DataMimeType = @"*/*")]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        public void CopyDirectory(Java.IO.File sourceLocation, Java.IO.File targetLocation)
+        {
+
+            if (sourceLocation.IsDirectory)
+            {
+                if (!targetLocation.Exists() && !targetLocation.Mkdirs()) throw new IOException("Cannot create dir " + targetLocation.AbsolutePath);
+
+                String[] children = sourceLocation.List();
+                for (int i = 0; i < children.Length; i++) CopyDirectory(new Java.IO.File(sourceLocation, children[i]), new Java.IO.File(targetLocation, children[i]));
+            }
+            else
+            {
+                // make sure the directory we plan to store the recording in exists
+                Java.IO.File directory = targetLocation.ParentFile;
+                if (directory != null && !directory.Exists() && !directory.Mkdirs())
+                {
+                    throw new IOException("Cannot create dir " + directory.AbsolutePath);
+                }
+                using (FileStream inn = new FileStream(sourceLocation.AbsolutePath, FileMode.Open))
+                {
+                    using (FileStream outn = new FileStream(targetLocation.AbsolutePath, FileMode.OpenOrCreate))
+                    {
+                        inn.CopyTo(outn);
+                    }
+                }
+            }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -43,6 +71,33 @@ namespace CB_5e.Droid
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledException;
+            Java.IO.File ext = Application.Context.GetExternalFilesDir(null);
+
+            //Java.IO.File ext = Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
+            if (Android.OS.Environment.MediaMounted.Equals(Android.OS.Environment.GetExternalStorageState(ext)))
+            {
+                ext.SetExecutable(true);
+                ext.SetReadable(true);
+                ext.SetWritable(true);
+                Java.IO.File data = new Java.IO.File(App.Storage.Path, "Data");
+                Java.IO.File chars = new Java.IO.File(App.Storage.Path, "Characters");
+                Java.IO.File ndata = new Java.IO.File(ext, "Data");
+                Java.IO.File nchars = new Java.IO.File(ext, "Characters");
+                if (!ndata.Exists() && data.Exists())
+                    try
+                    {
+                        CopyDirectory(data, ndata);
+                    }
+                    catch (Exception) { }
+                if (!nchars.Exists() && chars.Exists())
+                    try
+                    {
+                        CopyDirectory(chars, nchars);
+                    }
+                    catch (Exception) { }
+                App.Storage = FileSystem.Current.GetFolderFromPathAsync(ext.AbsolutePath).Result;
+
+            }
             App a = new App();
             LoadApplication(a);
             if (Intent.Action == Intent.ActionSend || Intent.Action == Intent.ActionSendMultiple)

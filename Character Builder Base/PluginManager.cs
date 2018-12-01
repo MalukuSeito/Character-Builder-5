@@ -21,7 +21,7 @@ namespace Character_Builder
                 throw new NotImplementedException();
             }
         }
-        public event EventHandler PluginsChanged;
+        public static event EventHandler PluginsChanged;
         public Dictionary<string, IPlugin> available = new Dictionary<string, IPlugin>(StringComparer.OrdinalIgnoreCase);
         public List<IPlugin> plugins = new List<IPlugin>();
         public void FireEvent(PluginManager plug, EventArgs args) => PluginsChanged?.Invoke(plug, args);

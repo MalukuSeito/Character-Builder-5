@@ -146,7 +146,7 @@ namespace CB_5e.ViewModels.Character.Build
                     else
                     {
                         Excluded.Clear();
-                        Excluded.UnionWith(from f in PCLSourceManager.Sources where f.Name != s.Name select f.Name);
+                        Excluded.UnionWith(from f in PCLSourceManager.AllSources() where f != s.Name select f);
                         foreach (Source ss in Sources) ss.Active = !Excluded.Contains(ss.Name);
                     }
                     Device.BeginInvokeOnMainThread(() =>
@@ -240,12 +240,12 @@ namespace CB_5e.ViewModels.Character.Build
 
         private void UpdateSources()
         {
-            Sources.ReplaceRange(from s in PCLSourceManager.Sources
-                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s.Name ?? "", sourceSearch, CompareOptions.IgnoreCase) >= 0
+            Sources.ReplaceRange(from s in PCLSourceManager.AllSources()
+                                 where sourceSearch == null || sourceSearch == "" || Culture.CompareInfo.IndexOf(s ?? "", sourceSearch, CompareOptions.IgnoreCase) >= 0
                                  select new Source()
                                  {
-                                     Name = s.Name,
-                                     Active = !Excluded.Contains(s.Name),
+                                     Name = s,
+                                     Active = !Excluded.Contains(s),
                                      OnSelect = OnSelect,
                                      ExcludeOthers = ExcludeOthers
                                  });

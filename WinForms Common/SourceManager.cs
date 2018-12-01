@@ -13,7 +13,7 @@ namespace OGL
     public class SourceManager
     {
         public static List<string> Sources { get; private set; }
-        private static string AppPath = null;
+        public static string AppPath = null;
         public static bool Init(OGLContext context, string path, bool skipInsteadOfExit = false)
         {
             Sources = new List<string>();
@@ -66,6 +66,20 @@ namespace OGL
             return result;
         }
 
+        public static Dictionary<FileInfo, string> GetAllZips(OGLContext context)
+        {
+            Dictionary<FileInfo, string> result = new Dictionary<FileInfo, string>();
+            foreach (string s in Sources)
+            {
+                if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                FileInfo res = new FileInfo(Path.Combine(AppPath, s + ".zip"));
+                if (res.Exists) {
+                    result.Add(res, s);
+                }
+            }
+            return result;
+        }
+
         public static Dictionary<ZipArchive, string> GetAllZips(OGLContext context, string type)
         {
             Dictionary<ZipArchive, string> result = new Dictionary<ZipArchive, string>();
@@ -99,93 +113,97 @@ namespace OGL
             return result;
         }
 
-        public static Dictionary<string, FileInfoSource> EnumerateFiles(OGLContext context, string type, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
+        public static Dictionary<string, FileInfoSource> EnumerateFiles(OGLContext context, string type, bool withZips, SearchOption option = SearchOption.AllDirectories, string pattern = "*.xml")
         {
             Dictionary<string, FileInfoSource> result = new Dictionary<string, FileInfoSource>(StringComparer.InvariantCultureIgnoreCase);
-            try
+            if (withZips)
             {
-                string t = type.TrimEnd('/','\\').ToLowerInvariant() + "/";
+                try
+                {
+                string t = type.TrimEnd('/', '\\').ToLowerInvariant() + "/";
                 string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
                 string p = pattern.StartsWith("*") ? pattern.Substring(1, pattern.Length - 1).ToLowerInvariant() : pattern.ToLowerInvariant();
-                foreach (var z in GetAllZips(context, type))
-                {
-                    string s = z.Value;
-                    foreach (ZipArchiveEntry e in z.Key.Entries)
+                    foreach (var z in GetAllZips(context, type))
                     {
-                        string f = s.ToLowerInvariant() + "/" + t;
-                        string ff = s.ToLowerInvariant() + "\\" + tt;
-                        string name = e.FullName.ToLowerInvariant();
-                        if (name.StartsWith(t) && name.EndsWith(p)) {
-                            if (option == SearchOption.AllDirectories || !name.Substring(t.Length).Contains("/"))
-                            {
-                                FileInfoSource fis = new FileInfoSource()
-                                {
-                                    Archive = e,
-                                    FullName = Path.Combine(AppPath, s, type, name.Substring(t.Length).Replace('/', Path.DirectorySeparatorChar)),
-                                    Source = z.Value
-                                };
-                                if (result.ContainsKey(fis.FullName))
-                                {
-                                    ConfigManager.LogError(fis.FullName + "already exists");
-                                }
-                                result.Add(fis.FullName, fis);
-                            }
-                        }
-                        else if (name.StartsWith(f) && name.EndsWith(p))
+                        string s = z.Value;
+                        foreach (ZipArchiveEntry e in z.Key.Entries)
                         {
-                            if (option == SearchOption.AllDirectories || !name.Substring(f.Length).Contains("/"))
-                            {
-                                FileInfoSource fis = new FileInfoSource()
+                            string f = s.ToLowerInvariant() + "/" + t;
+                            string ff = s.ToLowerInvariant() + "\\" + tt;
+                            string name = e.FullName.ToLowerInvariant();
+                            if (name.StartsWith(t) && name.EndsWith(p)) {
+                                if (option == SearchOption.AllDirectories || !name.Substring(t.Length).Contains("/"))
                                 {
-                                    Archive = e,
-                                    FullName = Path.Combine(AppPath, s, type, name.Substring(f.Length).Replace('/', Path.DirectorySeparatorChar)),
-                                    Source = z.Value
-                                };
-                                if (result.ContainsKey(fis.FullName)) {
-                                    ConfigManager.LogError(fis.FullName + "already exists");
-                                } 
-                                result.Add(fis.FullName, fis);
-                            }
-                        }
-                        else if (name.StartsWith(tt) && name.EndsWith(p))
-                        {
-                            if (option == SearchOption.AllDirectories || !name.Substring(tt.Length).Contains("\\"))
-                            {
-                                FileInfoSource fis = new FileInfoSource()
-                                {
-                                    Archive = e,
-                                    FullName = Path.Combine(AppPath, s, type, name.Substring(tt.Length).Replace('\\', Path.DirectorySeparatorChar)),
-                                    Source = z.Value
-                                };
-                                if (result.ContainsKey(fis.FullName))
-                                {
-                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                    FileInfoSource fis = new FileInfoSource()
+                                    {
+                                        Archive = e,
+                                        FullName = Path.Combine(AppPath, s, type, name.Substring(t.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        Source = z.Value
+                                    };
+                                    if (result.ContainsKey(fis.FullName))
+                                    {
+                                        ConfigManager.LogError(fis.FullName + "already exists");
+                                    }
+                                    result.Add(fis.FullName, fis);
                                 }
-                                result.Add(fis.FullName, fis);
                             }
-                        }
-                        else if (name.StartsWith(ff) && name.EndsWith(p))
-                        {
-                            if (option == SearchOption.AllDirectories || !name.Substring(ff.Length).Contains("/"))
+                            else if (name.StartsWith(f) && name.EndsWith(p))
                             {
-                                FileInfoSource fis = new FileInfoSource()
+                                if (option == SearchOption.AllDirectories || !name.Substring(f.Length).Contains("/"))
                                 {
-                                    Archive = e,
-                                    FullName = Path.Combine(AppPath, s, type, name.Substring(ff.Length).Replace('/', Path.DirectorySeparatorChar)),
-                                    Source = z.Value
-                                };
-                                if (result.ContainsKey(fis.FullName))
-                                {
-                                    ConfigManager.LogError(fis.FullName + "already exists");
+                                    FileInfoSource fis = new FileInfoSource()
+                                    {
+                                        Archive = e,
+                                        FullName = Path.Combine(AppPath, s, type, name.Substring(f.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        Source = z.Value
+                                    };
+                                    if (result.ContainsKey(fis.FullName)) {
+                                        ConfigManager.LogError(fis.FullName + "already exists");
+                                    }
+                                    result.Add(fis.FullName, fis);
                                 }
-                                result.Add(fis.FullName, fis);
+                            }
+                            else if (name.StartsWith(tt) && name.EndsWith(p))
+                            {
+                                if (option == SearchOption.AllDirectories || !name.Substring(tt.Length).Contains("\\"))
+                                {
+                                    FileInfoSource fis = new FileInfoSource()
+                                    {
+                                        Archive = e,
+                                        FullName = Path.Combine(AppPath, s, type, name.Substring(tt.Length).Replace('\\', Path.DirectorySeparatorChar)),
+                                        Source = z.Value
+                                    };
+                                    if (result.ContainsKey(fis.FullName))
+                                    {
+                                        ConfigManager.LogError(fis.FullName + "already exists");
+                                    }
+                                    result.Add(fis.FullName, fis);
+                                }
+                            }
+                            else if (name.StartsWith(ff) && name.EndsWith(p))
+                            {
+                                if (option == SearchOption.AllDirectories || !name.Substring(ff.Length).Contains("/"))
+                                {
+                                    FileInfoSource fis = new FileInfoSource()
+                                    {
+                                        Archive = e,
+                                        FullName = Path.Combine(AppPath, s, type, name.Substring(ff.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        Source = z.Value
+                                    };
+                                    if (result.ContainsKey(fis.FullName))
+                                    {
+                                        ConfigManager.LogError(fis.FullName + "already exists");
+                                    }
+                                    result.Add(fis.FullName, fis);
+                                }
                             }
                         }
                     }
                 }
-            } catch (Exception e)
-            {
-                ConfigManager.LogError(e);
+                catch (Exception e)
+                {
+                    ConfigManager.LogError(e);
+                }
             }
             try
             {

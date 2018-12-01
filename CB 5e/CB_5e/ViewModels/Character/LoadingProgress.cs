@@ -32,7 +32,7 @@ namespace CB_5e.ViewModels.Character
 
         public async Task Load(CancellationToken token = default(CancellationToken))
         {
-            double count = 17;
+            double count = 18;
             double cur = 0;
             Text = "Sources";
             Percentage = cur++ / count;
@@ -56,70 +56,78 @@ namespace CB_5e.ViewModels.Character
             token.ThrowIfCancellationRequested();
             await Context.LoadAbilityScoresAsync(await PCLSourceManager.Data.GetFileAsync(config.AbilityScores).ConfigureAwait(false)).ConfigureAwait(false);
 
+            Text = "Zip Modules";
+
+            Percentage = cur++ / count;
+            token.ThrowIfCancellationRequested();
+            await Context.ImportZips(false).ConfigureAwait(true);
+
             Text = "Skills";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportSkillsAsync().ConfigureAwait(true);
+            await Context.ImportSkillsAsync(false).ConfigureAwait(true);
 
             Text = "Languages";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportLanguagesAsync().ConfigureAwait(true);
+            await Context.ImportLanguagesAsync(false).ConfigureAwait(true);
 
             Text = "Spells";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportSpellsAsync().ConfigureAwait(true);
+            await Context.ImportSpellsAsync(false).ConfigureAwait(true);
 
             Text = "Items";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportItemsAsync().ConfigureAwait(true);
+            await Context.ImportItemsAsync(false).ConfigureAwait(true);
 
             Text = "Backgrounds";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportBackgroundsAsync().ConfigureAwait(true);
+            await Context.ImportBackgroundsAsync(false).ConfigureAwait(true);
 
             Text = "Races";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportRacesAsync().ConfigureAwait(true);
+            await Context.ImportRacesAsync(false).ConfigureAwait(true);
 
             Text = "Subraces";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportSubRacesAsync().ConfigureAwait(true);
+            await Context.ImportSubRacesAsync(false).ConfigureAwait(true);
 
             Text = "Feats and Features";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportStandaloneFeaturesAsync().ConfigureAwait(true);
+            await Context.ImportStandaloneFeaturesAsync(false).ConfigureAwait(true);
 
             Text = "Conditions";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportConditionsAsync().ConfigureAwait(true);
+            await Context.ImportConditionsAsync(false).ConfigureAwait(true);
 
             Text = "Magic Properties";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportMagicAsync().ConfigureAwait(true);
+            await Context.ImportMagicAsync(false).ConfigureAwait(true);
 
             Text = "Classes";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportClassesAsync(true).ConfigureAwait(true);
+            foreach (ClassDefinition c in Context.Classes.Values) c.ApplyKeywords(Context);
+            await Context.ImportClassesAsync(false, true).ConfigureAwait(true);
 
             Text = "Subclasses";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportSubClassesAsync(true).ConfigureAwait(true);
+            foreach (SubClass c in Context.SubClasses.Values) c.ApplyKeywords(Context);
+            await Context.ImportSubClassesAsync(false, true).ConfigureAwait(true);
 
             Text = "Monsters";
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
-            await Context.ImportMonstersAsync().ConfigureAwait(true);
+            await Context.ImportMonstersAsync(false).ConfigureAwait(true);
 
             Text = "UI";
             Percentage = 1;

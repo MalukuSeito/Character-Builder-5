@@ -16,15 +16,15 @@ namespace Character_Builder_Forms
         public String DirectoryName { get => Path.GetDirectoryName(FullName); }
         public string Source { get; set; }
 
-        public TextReader GetReader()
+        public Stream GetReader()
         {
             if (Archive != null)
             {
-                return new StreamReader(Archive.Open());
+                return Archive.Open();
             }
             else
             {
-                return new StreamReader(File.FullName);
+                return new FileStream(File.FullName, FileMode.Open);
             }
         }
     }

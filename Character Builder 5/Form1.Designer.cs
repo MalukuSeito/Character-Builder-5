@@ -400,6 +400,9 @@
             this.conditionadd = new System.Windows.Forms.Label();
             this.activeConditions = new System.Windows.Forms.ListBox();
             this.combatBox = new System.Windows.Forms.GroupBox();
+            this.attacksBox = new System.Windows.Forms.ListBox();
+            this.attacksLabel = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
             this.actionsBox = new System.Windows.Forms.ListBox();
             this.formsbox = new System.Windows.Forms.GroupBox();
             this.FormsCompanionsBox = new System.Windows.Forms.ListBox();
@@ -413,9 +416,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label40 = new System.Windows.Forms.Label();
-            this.attacksLabel = new System.Windows.Forms.Label();
-            this.attacksBox = new System.Windows.Forms.ListBox();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -5072,6 +5072,34 @@
             this.combatBox.TabStop = false;
             this.combatBox.Text = "Actions in Combat";
             // 
+            // attacksBox
+            // 
+            this.attacksBox.FormattingEnabled = true;
+            this.attacksBox.HorizontalScrollbar = true;
+            this.attacksBox.Location = new System.Drawing.Point(6, 34);
+            this.attacksBox.Name = "attacksBox";
+            this.attacksBox.Size = new System.Drawing.Size(218, 108);
+            this.attacksBox.TabIndex = 5;
+            this.attacksBox.SelectedIndexChanged += new System.EventHandler(this.attacksBox_SelectedIndexChanged);
+            // 
+            // attacksLabel
+            // 
+            this.attacksLabel.AutoSize = true;
+            this.attacksLabel.Location = new System.Drawing.Point(3, 18);
+            this.attacksLabel.Name = "attacksLabel";
+            this.attacksLabel.Size = new System.Drawing.Size(111, 13);
+            this.attacksLabel.TabIndex = 4;
+            this.attacksLabel.Text = "Attacks (1 per action):";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(3, 142);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(74, 13);
+            this.label40.TabIndex = 3;
+            this.label40.Text = "Other Actions:";
+            // 
             // actionsBox
             // 
             this.actionsBox.FormattingEnabled = true;
@@ -5211,34 +5239,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(3, 142);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(74, 13);
-            this.label40.TabIndex = 3;
-            this.label40.Text = "Other Actions:";
-            // 
-            // attacksLabel
-            // 
-            this.attacksLabel.AutoSize = true;
-            this.attacksLabel.Location = new System.Drawing.Point(3, 18);
-            this.attacksLabel.Name = "attacksLabel";
-            this.attacksLabel.Size = new System.Drawing.Size(111, 13);
-            this.attacksLabel.TabIndex = 4;
-            this.attacksLabel.Text = "Attacks (1 per action):";
-            // 
-            // attacksBox
-            // 
-            this.attacksBox.FormattingEnabled = true;
-            this.attacksBox.HorizontalScrollbar = true;
-            this.attacksBox.Location = new System.Drawing.Point(6, 34);
-            this.attacksBox.Name = "attacksBox";
-            this.attacksBox.Size = new System.Drawing.Size(218, 108);
-            this.attacksBox.TabIndex = 5;
-            this.attacksBox.SelectedIndexChanged += new System.EventHandler(this.attacksBox_SelectedIndexChanged);
             // 
             // Form1
             // 

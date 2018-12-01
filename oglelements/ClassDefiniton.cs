@@ -163,13 +163,16 @@ namespace OGL
                 ShowSource = true;
             }
             else context.ClassesSimple.Add(Name, this);
-            Keyword me = new Keyword(Name);
-            if (applyKeywords)
-            {
-                if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in context.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
-                if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in context.Spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me);
-            }
+            if (applyKeywords) ApplyKeywords(context);
         }
+
+        public void ApplyKeywords(OGLContext context)
+        {
+            Keyword me = new Keyword(Name);
+            if (FeaturesToAddClassKeywordTo != null && FeaturesToAddClassKeywordTo.Count > 0) foreach (Feature f in context.Features) if (FeaturesToAddClassKeywordTo.Contains(f.Name, ConfigManager.SourceInvariantComparer)) f.AssignKeywords(me);
+            if (SpellsToAddClassKeywordTo != null && SpellsToAddClassKeywordTo.Count > 0) foreach (Spell s in context.Spells.Values) if (SpellsToAddClassKeywordTo.Contains(s.Name + " " + ConfigManager.SourceSeperator + " " + s.Source, ConfigManager.SourceInvariantComparer)) s.AssignKeywords(me);
+        }
+
         public ClassDefinition()
         {
             Descriptions = new List<Description>();

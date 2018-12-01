@@ -30,7 +30,7 @@ namespace Character_Builder_Builder
             MulticlassSpellLevels.HistoryManager = this;
             featuresFirstClass.HistoryManager = this;
             featuresMultiClass.HistoryManager = this;
-            Program.Context.ImportClasses();
+            Program.Context.ImportClasses(true);
             foreach (string s in Program.Context.ClassesSimple.Keys)
             {
                 ParentClass.AutoCompleteCustomSource.Add(s);

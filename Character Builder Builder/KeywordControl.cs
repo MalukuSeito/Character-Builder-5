@@ -32,7 +32,7 @@ namespace Character_Builder_Builder
                 Groups.Add(KeywordGroup.NONE, none);
 
                 List<Keyword> feat = new List<Keyword>();
-                Program.Context.ImportClasses();
+                Program.Context.ImportClasses(true, false);
                 foreach (ClassDefinition c in Program.Context.ClassesSimple.Values) feat.Add(new Keyword(c.Name));
                 Groups.Add(KeywordGroup.FEAT, feat);
                 List<Keyword> item = new List<Keyword>();

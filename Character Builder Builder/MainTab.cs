@@ -19,9 +19,9 @@ namespace Character_Builder_Builder
         public MainTab()
         {
             InitializeComponent();
-            Program.Context.ImportRaces();
+            Program.Context.ImportRaces(true);
             foreach (Race r in Program.Context.Races.Values) CheckFeatures(r.Features, r.Name, r.Source);
-            Program.Context.ImportSubRaces();
+            Program.Context.ImportSubRaces(true);
             foreach (SubRace r in Program.Context.SubRaces.Values) CheckFeatures(r.Features, r.Name, r.Source);
             fill(racesList, Program.Context.Races.Keys, null);
             fill(subRaceList, Program.Context.SubRaces.Keys, null);
@@ -38,16 +38,16 @@ namespace Character_Builder_Builder
             TabPage tab = TabControls.SelectedTab;
             if (tab == racesTab)
             {
-                Program.Context.ImportRaces();
+                Program.Context.ImportRaces(true);
                 foreach (Race r in Program.Context.Races.Values) CheckFeatures(r.Features, r.Name, r.Source);
-                Program.Context.ImportSubRaces();
+                Program.Context.ImportSubRaces(true);
                 foreach (SubRace r in Program.Context.SubRaces.Values) CheckFeatures(r.Features, r.Name, r.Source);
                 fill(racesList, Program.Context.Races.Keys, null);
                 fill(subRaceList, Program.Context.SubRaces.Keys, null);
             }
             else if (tab == featuresTab)
             {
-                Program.Context.ImportStandaloneFeatures();
+                Program.Context.ImportStandaloneFeatures(true);
                 foreach (List<FeatureContainer> rr in Program.Context.FeatureContainers.Values) foreach (FeatureContainer r in rr) CheckFeatures(r.Features, r.category + ":" + r.Name, r.Source);
                 FeatCats.Items.Clear();
                 FeatCats.Items.Add("Feats");
@@ -55,7 +55,7 @@ namespace Character_Builder_Builder
             }
             else if (tab == classesTab)
             {
-                Program.Context.ImportClasses();
+                Program.Context.ImportClasses(true);
                 foreach (ClassDefinition r in Program.Context.Classes.Values)
                 {
                     CheckFeatures(r.Features, r.Name, r.Source);
@@ -63,7 +63,7 @@ namespace Character_Builder_Builder
                     CheckFeatures(r.FirstClassFeatures, r.Name, r.Source);
                 }
                 fill(classList, Program.Context.Classes.Keys, null);
-                Program.Context.ImportSubClasses();
+                Program.Context.ImportSubClasses(true);
                 foreach (SubClass r in Program.Context.SubClasses.Values)
                 {
                     CheckFeatures(r.Features, r.Name, r.Source);
@@ -74,35 +74,35 @@ namespace Character_Builder_Builder
             }
             else if (tab == langTab)
             {
-                Program.Context.ImportLanguages();
+                Program.Context.ImportLanguages(true);
                 fill(langBox, Program.Context.Languages.Keys, null);
             }
             else if (tab == backTab)
             {
-                Program.Context.ImportBackgrounds();
+                Program.Context.ImportBackgrounds(true);
                 foreach (Background r in Program.Context.Backgrounds.Values) CheckFeatures(r.Features, r.Name, r.Source);
                 fill(backBox, Program.Context.Backgrounds.Keys, null);
             }
             else if (tab == itemTab)
             {
-                Program.Context.ImportItems();
+                Program.Context.ImportItems(true);
                 ItemCat.Items.Clear();
                 ItemCat.Items.Add("Items");
                 foreach (string s in ImportExtensions.EnumerateCategories(Program.Context, Program.Context.Config.Items_Directory)) ItemCat.Items.Add(s);
             }
             else if (tab == skillsTab)
             {
-                Program.Context.ImportSkills();
+                Program.Context.ImportSkills(true);
                 fill(skillList, Program.Context.Skills.Keys, null);
             }
             else if (tab == conditionsTab)
             {
-                Program.Context.ImportConditions();
+                Program.Context.ImportConditions(true);
                 fill(condList, Program.Context.Conditions.Keys, null);
             }
             else if (tab == monsterTab)
             {
-                Program.Context.ImportMonsters();
+                Program.Context.ImportMonsters(true);
                 fill(monsterbox, Program.Context.Monsters.Keys, null);
             }
             else if (tab == levelTab)
@@ -132,12 +132,12 @@ namespace Character_Builder_Builder
             }
             else if (tab == spellsTab)
             {
-                Program.Context.ImportSpells();
+                Program.Context.ImportSpells(true);
                 fill(spellBox, Program.Context.Spells.Keys, null);
             }
             else if (tab == magicTab)
             {
-                Program.Context.ImportMagic();
+                Program.Context.ImportMagic(true);
                 foreach (MagicProperty r in Program.Context.Magic.Values)
                 {
                     CheckFeatures(r.AttunedEquipFeatures, r.Name, r.Source);
@@ -211,13 +211,13 @@ namespace Character_Builder_Builder
 
         private void RaceSaved(object sender, string id)
         {
-            Program.Context.ImportRaces();
+            Program.Context.ImportRaces(true);
             fill(racesList, Program.Context.Races.Keys, id);
         }
 
         private void SubRaceSaved(object sender, string id)
         {
-            Program.Context.ImportSubRaces();
+            Program.Context.ImportSubRaces(true);
             fill(subRaceList, Program.Context.SubRaces.Keys, id);
         }
 
@@ -366,7 +366,7 @@ namespace Character_Builder_Builder
         private void ContainerSaved(object sender, string id)
         {
             string s = (string)FeatCats.SelectedItem;
-            Program.Context.ImportStandaloneFeatures();
+            Program.Context.ImportStandaloneFeatures(true);
             var scroll = savescroll(FeatCollection);
             if (TabControls.SelectedTab == featuresTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = featuresTab;
@@ -404,7 +404,7 @@ namespace Character_Builder_Builder
 
         private void ClassSaved(object sender, string id)
         {
-            Program.Context.ImportClasses();
+            Program.Context.ImportClasses(true);
             fill(classList, Program.Context.Classes.Keys, id);
         }
 
@@ -457,7 +457,7 @@ namespace Character_Builder_Builder
 
         private void SubClassSaved(object sender, string id)
         {
-            Program.Context.ImportSubClasses();
+            Program.Context.ImportSubClasses(true);
             fill(subclassList, Program.Context.SubClasses.Keys, id);
         }
 
@@ -500,7 +500,7 @@ namespace Character_Builder_Builder
 
         private void LangSaved(object sender, string id)
         {
-            Program.Context.ImportLanguages();
+            Program.Context.ImportLanguages(true);
             fill(langBox, Program.Context.Languages.Keys, id);
         }
 
@@ -543,7 +543,7 @@ namespace Character_Builder_Builder
 
         private void BackSaved(object sender, string id)
         {
-            Program.Context.ImportBackgrounds();
+            Program.Context.ImportBackgrounds(true);
             fill(backBox, Program.Context.Backgrounds.Keys, id);
         }
 
@@ -640,7 +640,7 @@ namespace Character_Builder_Builder
         private void ItemSaved(object sender, string id)
         {
             string s = (string)ItemCat.SelectedItem;
-            Program.Context.ImportItems();
+            Program.Context.ImportItems(true);
             var scroll = savescroll(ItemBox);
             if (TabControls.SelectedTab == itemTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = itemTab;
@@ -766,7 +766,7 @@ namespace Character_Builder_Builder
 
         private void SkillSaved(object sender, string id)
         {
-            Program.Context.ImportSkills();
+            Program.Context.ImportSkills(true);
             fill(skillList, Program.Context.Skills.Keys, id);
         }
         private void NewCond_Click(object sender, EventArgs e)
@@ -808,7 +808,7 @@ namespace Character_Builder_Builder
 
         private void ConditionSaved(object sender, string id)
         {
-            Program.Context.ImportConditions();
+            Program.Context.ImportConditions(true);
             fill(condList, Program.Context.Conditions.Keys, id);
         }
 
@@ -870,14 +870,14 @@ namespace Character_Builder_Builder
 
         private void SpellSaved(object sender, string id)
         {
-            Program.Context.ImportSpells();
+            Program.Context.ImportSpells(true);
             fill(spellBox, Program.Context.Spells.Keys, id);
         }
 
         private void ApplySpellsBtn_Click(object sender, EventArgs e)
         {
-            Program.Context.ImportSpells();
-            Program.Context.ImportClasses();
+            Program.Context.ImportSpells(true);
+            Program.Context.ImportClasses(true);
             foreach (Spell s in Program.Context.Spells.Values)
             {
                 if (s.KWChanged) s.Save(false);
@@ -886,8 +886,8 @@ namespace Character_Builder_Builder
 
         private void ApplyFeatsBtn_Click(object sender, EventArgs e)
         {
-            Program.Context.ImportStandaloneFeatures();
-            Program.Context.ImportClasses();
+            Program.Context.ImportStandaloneFeatures(true);
+            Program.Context.ImportClasses(true, false);
             foreach (List<FeatureContainer> c in Program.Context.FeatureContainers.Values)
             {
                 foreach (FeatureContainer s in c)
@@ -962,7 +962,7 @@ namespace Character_Builder_Builder
         {
             string s = (string)magicCatBox.SelectedItem;
             var scroll = savescroll(magicBox);
-            Program.Context.ImportMagic();
+            Program.Context.ImportMagic(true);
             if (TabControls.SelectedTab == magicTab) tabControl1_SelectedIndexChanged(null, null);
             else TabControls.SelectedTab = magicTab;
             magicCatBox.SelectedItem = s;
@@ -1035,7 +1035,7 @@ namespace Character_Builder_Builder
 
         private void MonsterSaved(object sender, string id)
         {
-            Program.Context.ImportMonsters();
+            Program.Context.ImportMonsters(true);
             fill(monsterbox, Program.Context.Monsters.Keys, id);
         }
 

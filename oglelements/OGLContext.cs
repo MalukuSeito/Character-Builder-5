@@ -350,7 +350,7 @@ namespace OGL
         }
         public IEnumerable<MagicCategory> MagicSection()
         {
-            if (Search == null) return from mc in MagicCategories.Values orderby mc select mc;
+            if (Search == null || Search == "") return from mc in MagicCategories.Values orderby mc select mc;
             List<MagicCategory> res = new List<MagicCategory>();
             foreach (MagicCategory mc in MagicCategories.Values)
             {

@@ -103,7 +103,6 @@ namespace Character_Builder_5
         public static void LoadPluginManager(this BuilderContext context, string path)
         {
             PluginManager plug = new PluginManager();
-            context.Plugins = plug;
             plug.Add(new NoFreeEquipment());
             plug.Add(new CustomBackground());
             string[] dllFileNames = null;
@@ -120,6 +119,7 @@ namespace Character_Builder_5
             }
             else
             {
+                context.Plugins = plug;
                 return;
             }
 
@@ -178,6 +178,7 @@ namespace Character_Builder_5
                     ConfigManager.LogError("Error loading Plugin Type " + type, e);
                 }
             }
+            context.Plugins = plug;
         }
     }
 }

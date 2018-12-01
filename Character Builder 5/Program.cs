@@ -67,22 +67,24 @@ namespace Character_Builder_5
         }
 
         public static void LoadData() {
-            Context.Monsters.Clear();
-            Context.MonstersSimple.Clear();
             Context.LoadPluginManager(Path.Combine(Application.StartupPath, Context.Config.Plugins_Directory));
             Context.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, "Levels.xml"));
-            Context.ImportSkills();
-            Context.ImportLanguages();
-            Context.ImportSpells();
-            Context.ImportItems();
-            Context.ImportBackgrounds();
-            Context.ImportRaces();
-            Context.ImportSubRaces();
-            Context.ImportStandaloneFeatures();
-            Context.ImportConditions();
-            Context.ImportMagic();
-            Context.ImportClasses(true);
-            Context.ImportSubClasses(true);
+            Context.ImportZips(false);
+            Context.ImportSkills(false);
+            Context.ImportLanguages(false);
+            Context.ImportSpells(false);
+            Context.ImportItems(false);
+            Context.ImportBackgrounds(false);
+            Context.ImportRaces(false);
+            Context.ImportSubRaces(false);
+            Context.ImportStandaloneFeatures(false);
+            Context.ImportConditions(false);
+            Context.ImportMagic(false);
+            foreach (ClassDefinition c in Context.Classes.Values) c.ApplyKeywords(Context);
+            foreach (SubClass c in Context.SubClasses.Values) c.ApplyKeywords(Context);
+            Context.ImportClasses(false, true);
+            Context.ImportSubClasses(false, true);
+            Context.ImportMonsters(false);
         }
 
         /// <summary>
