@@ -85,7 +85,7 @@ namespace Character_Builder_Forms
             }
         }
 
-        public static void ImportBackgrounds(this OGLContext context, bool withZips)
+        public static void ImportBackgrounds(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -106,7 +106,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportClasses(this OGLContext context, bool withZips, bool applyKeywords = false)
+        public static void ImportClasses(this OGLContext context, bool withZips = true, bool applyKeywords = false)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -148,7 +148,17 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportStandaloneFeatures(this OGLContext context, bool withZips)
+
+        public static string MagicPropertyCleanname(this OGLContext context, string path)
+        {
+            string cat = path;
+            if (!cat.StartsWith(context.Config.Magic_Directory)) cat = Path.Combine(context.Config.Magic_Directory, path);
+            cat = cat.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            //if (!Collections.ContainsKey(cat)) Collections.Add(cat, new FeatureCollection());
+            return cat;
+        }
+
+        public static void ImportStandaloneFeatures(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -203,7 +213,7 @@ namespace Character_Builder_Forms
             }
             return result.OrderBy(s => s).Distinct();
         }
-        public static void ImportItems(this OGLContext context, bool withZips)
+        public static void ImportItems(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -226,7 +236,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportLanguages(this OGLContext context, bool withZips)
+        public static void ImportLanguages(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -247,7 +257,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportMonsters(this OGLContext context, bool withZips)
+        public static void ImportMonsters(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -275,7 +285,7 @@ namespace Character_Builder_Forms
             context.Levels.Sort();
             return context.Levels;
         }
-        public static void ImportMagic(this OGLContext context, bool withZips)
+        public static void ImportMagic(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -298,7 +308,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportRaces(this OGLContext context, bool withZips)
+        public static void ImportRaces(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -319,7 +329,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSkills(this OGLContext context, bool withZips)
+        public static void ImportSkills(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -340,7 +350,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSpells(this OGLContext context, bool withZips)
+        public static void ImportSpells(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -362,7 +372,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSubClasses(this OGLContext context, bool withZips, bool applyKeywords = false)
+        public static void ImportSubClasses(this OGLContext context, bool withZips = true, bool applyKeywords = false)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
@@ -383,7 +393,7 @@ namespace Character_Builder_Forms
                 }
             }
         }
-        public static void ImportSubRaces(this OGLContext context, bool withZips)
+        public static void ImportSubRaces(this OGLContext context, bool withZips = true)
         {
             if (context == null || context.Config == null) return;
             if (withZips)
