@@ -2,8 +2,10 @@
 using CB_5e.Services;
 using Character_Builder;
 using OGL;
+using PCLStorage;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -38,7 +40,11 @@ namespace CB_5e.ViewModels.Character
             Percentage = cur++ / count;
             token.ThrowIfCancellationRequested();
             await PCLSourceManager.InitAsync().ConfigureAwait(false);
-            
+            foreach (IFile z in PCLSourceManager.Zips)
+            {
+                String s = System.IO.Path.ChangeExtension(z.Name, null);
+                if (!Context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) count++;
+            }
 
             Text = "Config";
             Percentage = cur++ / count;
@@ -57,10 +63,16 @@ namespace CB_5e.ViewModels.Character
             await Context.LoadAbilityScoresAsync(await PCLSourceManager.Data.GetFileAsync(config.AbilityScores).ConfigureAwait(false)).ConfigureAwait(false);
 
             Text = "Zip Modules";
-
-            Percentage = cur++ / count;
-            token.ThrowIfCancellationRequested();
-            await Context.ImportZips(false).ConfigureAwait(true);
+            Context.CleanUp();
+            foreach (IFile z in PCLSourceManager.Zips)
+            {
+                Text = z.Name;
+                String s = System.IO.Path.ChangeExtension(z.Name, null);
+                if (Context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
+                Percentage = cur++ / count;
+                token.ThrowIfCancellationRequested();
+                await Context.ImportZip(z, false).ConfigureAwait(true);
+            }
 
             Text = "Skills";
             Percentage = cur++ / count;

@@ -29,40 +29,7 @@ namespace CB_5e.Services
         {
             if (cleanup)
             {
-                context.Backgrounds.Clear();
-                context.BackgroundsSimple.Clear();
-                context.Classes.Clear();
-                context.ClassesSimple.Clear();
-                context.Conditions.Clear();
-                context.ConditionsSimple.Clear();
-                context.FeatureCollections.Clear();
-                context.FeatureContainers.Clear();
-                context.FeatureCategories.Clear();
-                context.Boons.Clear();
-                context.Features.Clear();
-                context.BoonsSimple.Clear();
-                context.Items.Clear();
-                context.ItemLists.Clear();
-                context.ItemsSimple.Clear();
-                context.Languages.Clear();
-                context.LanguagesSimple.Clear();
-                context.Magic.Clear();
-                context.MagicCategories.Clear();
-                context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
-                context.MagicSimple.Clear();
-                context.Monsters.Clear();
-                context.MonstersSimple.Clear();
-                context.Races.Clear();
-                context.RacesSimple.Clear();
-                context.Skills.Clear();
-                context.SkillsSimple.Clear();
-                context.Spells.Clear();
-                context.SpellLists.Clear();
-                context.SpellsSimple.Clear();
-                context.SubClasses.Clear();
-                context.SubClassesSimple.Clear();
-                context.SubRaces.Clear();
-                context.SubRacesSimple.Clear();
+                context.CleanUp();
             }
             String basepath = PCLSourceManager.Data.Path;
             foreach (IFile z in PCLSourceManager.Zips)
@@ -95,6 +62,76 @@ namespace CB_5e.Services
                     }
                 }
             }
+        }
+
+        public static async Task ImportZip(this OGLContext context, IFile z, bool applyKeywords = false)
+        {
+            String basepath = PCLSourceManager.Data.Path;
+
+            String s = System.IO.Path.ChangeExtension(z.Name, null);
+            if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) return;
+            using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
+            {
+                string f = s.ToLowerInvariant() + "/";
+                string ff = s.ToLowerInvariant() + "\\";
+                String basesource = PCLSourceManager.Sources.Select(ss => ss.Name).FirstOrDefault(ss => StringComparer.OrdinalIgnoreCase.Equals(ss, s));
+                bool overridden = basesource != null;
+                foreach (ZipEntry entry in zf)
+                {
+                    if (!entry.IsFile) continue;
+                    string name = entry.Name.ToLowerInvariant();
+                    if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
+                    {
+                        String path = System.IO.Path.Combine(basepath, name);
+                        if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                        using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
+                    }
+                    else if (name.EndsWith(".xml"))
+                    {
+                        String path = System.IO.Path.Combine(basepath, basesource, name);
+                        if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
+                        using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
+                    }
+                }
+            }
+        }
+
+        public static void CleanUp(this OGLContext context)
+        {
+            context.Backgrounds.Clear();
+            context.BackgroundsSimple.Clear();
+            context.Classes.Clear();
+            context.ClassesSimple.Clear();
+            context.Conditions.Clear();
+            context.ConditionsSimple.Clear();
+            context.FeatureCollections.Clear();
+            context.FeatureContainers.Clear();
+            context.FeatureCategories.Clear();
+            context.Boons.Clear();
+            context.Features.Clear();
+            context.BoonsSimple.Clear();
+            context.Items.Clear();
+            context.ItemLists.Clear();
+            context.ItemsSimple.Clear();
+            context.Languages.Clear();
+            context.LanguagesSimple.Clear();
+            context.Magic.Clear();
+            context.MagicCategories.Clear();
+            context.MagicCategories.Add("Magic", new MagicCategory("Magic", "Magic", 0));
+            context.MagicSimple.Clear();
+            context.Monsters.Clear();
+            context.MonstersSimple.Clear();
+            context.Races.Clear();
+            context.RacesSimple.Clear();
+            context.Skills.Clear();
+            context.SkillsSimple.Clear();
+            context.Spells.Clear();
+            context.SpellLists.Clear();
+            context.SpellsSimple.Clear();
+            context.SubClasses.Clear();
+            context.SubClassesSimple.Clear();
+            context.SubRaces.Clear();
+            context.SubRacesSimple.Clear();
         }
 
         public static async Task ImportClassesAsync(this OGLContext context, bool withZips = true, bool applyKeywords = false)
