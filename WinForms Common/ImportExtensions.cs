@@ -175,7 +175,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportFeatureContainer(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportFeatureContainer(reader, f.Value.FullName, f.Value.Source, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
                 }
                 catch (Exception e)
                 {
@@ -228,7 +228,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportItem(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportItem(reader, f.Value.FullName, f.Value.Source, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
                 }
                 catch (Exception e)
                 {
@@ -249,7 +249,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportLanguage(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportLanguage(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -270,7 +270,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMonster(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMonster(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -300,7 +300,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMagicItem(reader, f.Value.Source, f.Value.FullName, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportMagicItem(reader, f.Value.FullName, f.Value.Source, context, OGLImport.GetPath(f.Value.FullName, SourceManager.AppPath, f.Value.Source));
                 }
                 catch (Exception e)
                 {
@@ -321,7 +321,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportRace(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportRace(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -342,7 +342,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSkill(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSkill(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -364,7 +364,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSpell(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSpell(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {
@@ -385,7 +385,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubClass(reader, f.Value.Source, f.Value.FullName, context, applyKeywords);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubClass(reader, f.Value.FullName, f.Value.Source, context, applyKeywords);
                 }
                 catch (Exception e)
                 {
@@ -406,7 +406,7 @@ namespace Character_Builder_Forms
             {
                 try
                 {
-                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubRace(reader, f.Value.Source, f.Value.FullName, context);
+                    using (Stream reader = f.Value.GetReader()) OGLImport.ImportSubRace(reader, f.Value.FullName, f.Value.Source, context);
                 }
                 catch (Exception e)
                 {

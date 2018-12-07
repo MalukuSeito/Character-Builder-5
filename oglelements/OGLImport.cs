@@ -15,23 +15,23 @@ namespace OGL
         public static void Import(Stream reader, String fullpath, String source, String basepath, OGLContext context, bool applyKeywords = false)
         {
             IEnumerable<String> path = GetPath(fullpath, basepath, source, out String type);
-            if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Monster_Directory)) ImportMonster(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Features_Directory)) ImportFeatureContainer(reader, source, fullpath, context, path);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Items_Directory)) ImportItem(reader, source, fullpath, context, path);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Magic_Directory)) ImportMagicItem(reader, source, fullpath, context, path);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Spells_Directory)) ImportSpell(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Backgrounds_Directory)) ImportBackground(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Races_Directory)) ImportRace(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.SubRaces_Directory)) ImportSubRace(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.SubClasses_Directory)) ImportSubClass(reader, source, fullpath, context, applyKeywords);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Classes_Directory)) ImportClass(reader, source, fullpath, context, applyKeywords);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Languages_Directory)) ImportLanguage(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Skills_Directory)) ImportSkill(reader, source, fullpath, context);
-            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Conditions_Directory)) ImportCondition(reader, source, fullpath, context);
+            if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Monster_Directory)) ImportMonster(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Features_Directory)) ImportFeatureContainer(reader, fullpath, source, context, path);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Items_Directory)) ImportItem(reader, fullpath, source, context, path);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Magic_Directory)) ImportMagicItem(reader, fullpath, source, context, path);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Spells_Directory)) ImportSpell(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Backgrounds_Directory)) ImportBackground(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Races_Directory)) ImportRace(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.SubRaces_Directory)) ImportSubRace(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.SubClasses_Directory)) ImportSubClass(reader, fullpath, source, context, applyKeywords);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Classes_Directory)) ImportClass(reader, fullpath, source, context, applyKeywords);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Languages_Directory)) ImportLanguage(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Skills_Directory)) ImportSkill(reader, fullpath, source, context);
+            else if (StringComparer.OrdinalIgnoreCase.Equals(type, context.Config.Conditions_Directory)) ImportCondition(reader, fullpath, source, context);
             else throw new Exception("Unknown Type: " + type);
         }
 
-        public static void ImportBackground(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportBackground(Stream reader, string fullpath, string source, OGLContext context)
         {
             {
                 Background s = (Background)Background.Serializer.Deserialize(reader);
@@ -41,69 +41,69 @@ namespace OGL
             }
         }
 
-        public static void ImportClass(Stream reader, string source, string fullpath, OGLContext context, bool applyKeywords = false)
+        public static void ImportClass(Stream reader, string fullpath, string source, OGLContext context, bool applyKeywords = false)
         {
             ClassDefinition s = (ClassDefinition)ClassDefinition.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath, applyKeywords);
         }
 
-        public static void ImportCondition(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportCondition(Stream reader, string fullpath, string source, OGLContext context)
         {
             Condition s = (Condition)Condition.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportMonster(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportMonster(Stream reader, string fullpath, string source, OGLContext context)
         {
             Monster s = (Monster)Monster.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportLanguage(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportLanguage(Stream reader, string fullpath, string source, OGLContext context)
         {
             Language s = (Language)Language.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportRace(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportRace(Stream reader, string fullpath, string source, OGLContext context)
         {
             Race s = (Race)Race.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportSkill(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportSkill(Stream reader, string fullpath, string source, OGLContext context)
         {
             Skill s = (Skill)Skill.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportSpell(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportSpell(Stream reader, string fullpath, string source, OGLContext context)
         {
             Spell s = (Spell)Spell.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
-        public static void ImportSubClass(Stream reader, string source, string fullpath, OGLContext context, bool applyKeywords = false)
+        public static void ImportSubClass(Stream reader, string fullpath, string source, OGLContext context, bool applyKeywords = false)
         {
             SubClass s = (SubClass)SubClass.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath, applyKeywords);
         }
 
-        public static void ImportSubRace(Stream reader, string source, string fullpath, OGLContext context)
+        public static void ImportSubRace(Stream reader, string fullpath, string source, OGLContext context)
         {
             SubRace s = (SubRace)SubRace.Serializer.Deserialize(reader);
             s.Source = source;
             s.Register(context, fullpath);
         }
 
-        public static void ImportMagicItem(Stream reader, string source, string fullpath, OGLContext context, IEnumerable<String> path)
+        public static void ImportMagicItem(Stream reader, string fullpath, string source, OGLContext context, IEnumerable<String> path)
         {
             String cat = context.Config.Magic_Directory;
             List<String> p = new List<string>() { cat };
@@ -138,7 +138,7 @@ namespace OGL
             context.MagicSimple[mp.Name] = mp;
         }
 
-        public static void ImportItem(Stream reader, string source, string fullpath, OGLContext context, IEnumerable<String> path)
+        public static void ImportItem(Stream reader, string fullpath, string source, OGLContext context, IEnumerable<String> path)
         {
             String cat = context.Config.Items_Directory;
             List<String> p = new List<string>() { cat };
@@ -158,7 +158,7 @@ namespace OGL
             s.Register(context, fullpath);
         }
 
-        public static void ImportFeatureContainer(Stream reader, string source, string fullpath, OGLContext context, IEnumerable<String> path)
+        public static void ImportFeatureContainer(Stream reader, string fullpath, string source, OGLContext context, IEnumerable<String> path)
         {
             String cat = context.Config.Features_Directory;
             List<String> p = new List<string>() { cat };

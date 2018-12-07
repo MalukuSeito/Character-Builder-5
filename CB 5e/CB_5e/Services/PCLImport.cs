@@ -147,7 +147,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Classes_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportClass(reader, s, f.Key, context, applyKeywords); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportClass(reader, f.Key, s, context, applyKeywords); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -157,7 +157,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportClass(reader, f.Value, f.Key.Path, context, applyKeywords);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportClass(reader, f.Key.Path, f.Value, context, applyKeywords);
                 }
                 catch (Exception e)
                 {
@@ -178,7 +178,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.SubClasses_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubClass(reader, s, f.Key, context, applyKeywords); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubClass(reader, f.Key, s, context, applyKeywords); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -188,7 +188,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubClass(reader, f.Value, f.Key.Path, context, applyKeywords);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubClass(reader, f.Key.Path, f.Value, context, applyKeywords);
                 }
                 catch (Exception e)
                 {
@@ -208,7 +208,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.SubRaces_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubRace(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSubRace(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -218,7 +218,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubRace(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSubRace(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -238,7 +238,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Races_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportRace(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportRace(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -248,7 +248,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportRace(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportRace(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -270,7 +270,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Skills_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSkill(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSkill(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -280,7 +280,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSkill(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSkill(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -302,7 +302,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Languages_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportLanguage(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportLanguage(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -312,7 +312,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportLanguage(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportLanguage(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -334,7 +334,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Monster_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMonster(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMonster(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -344,7 +344,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMonster(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMonster(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -367,7 +367,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Spells_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSpell(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportSpell(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -377,7 +377,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSpell(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportSpell(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -401,7 +401,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Items_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportItem(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportItem(reader, f.Key, s, context, OGLImport.GetPath(f.Key, basepath, s)); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -411,7 +411,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportItem(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportItem(reader, f.Key.Path, f.Value, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
@@ -448,7 +448,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Backgrounds_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportBackground(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportBackground(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -458,7 +458,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportBackground(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportBackground(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -485,7 +485,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Features_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportFeatureContainer(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportFeatureContainer(reader, f.Key, s, context, OGLImport.GetPath(f.Key, basepath, s)); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -495,7 +495,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportFeatureContainer(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportFeatureContainer(reader, f.Key.Path, f.Value, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
@@ -516,7 +516,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Conditions_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportCondition(reader, s, f.Key, context); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportCondition(reader, f.Key, s, context); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -526,7 +526,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportCondition(reader, f.Value, f.Key.Path, context);
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportCondition(reader, f.Key.Path, f.Value, context);
                 }
                 catch (Exception e)
                 {
@@ -550,7 +550,7 @@ namespace CB_5e.Services
                     using (ZipFile zf = new ZipFile(await z.OpenAsync(FileAccess.Read)))
                     {
                         var zfiles = await PCLSourceManager.EnumerateZipFilesAsync(zf, s, context.Config.Magic_Directory).ConfigureAwait(false);
-                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMagicItem(reader, s, f.Key, context, OGLImport.GetPath(f.Key, basepath, s)); }
+                        foreach (var f in zfiles) try { using (Stream reader = zf.GetInputStream(f.Value)) OGLImport.ImportMagicItem(reader, f.Key, s, context, OGLImport.GetPath(f.Key, basepath, s)); }
                             catch (Exception e) { ConfigManager.LogError("Error reading " + Path(f.Key), e); }
                     }
                 }
@@ -560,7 +560,7 @@ namespace CB_5e.Services
             {
                 try
                 {
-                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMagicItem(reader, f.Value, f.Key.Path, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
+                    using (Stream reader = await f.Key.OpenAsync(FileAccess.Read).ConfigureAwait(false)) OGLImport.ImportMagicItem(reader, f.Key.Path, f.Value, context, OGLImport.GetPath(f.Key.Path, basepath, f.Value));
                 }
                 catch (Exception e)
                 {
