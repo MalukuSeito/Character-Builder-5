@@ -32,10 +32,14 @@
                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" Text="Description: " HorizontalTextAlignment="Center" FontSize="Micro" VerticalTextAlignment="Center"/>
                 <Editor Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Text="{Binding Text}" VerticalOptions="FillAndExpand" TextColor="{StaticResource Accent}"/>
 
+                
                 <Label Grid.Row="3" Grid.Column="0" Text="Session" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Session}" TextColor="{StaticResource Accent}"/>
-                <Label Grid.Row="3" Grid.Column="3" Text="Time" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Text="{Binding Time}" TextColor="{StaticResource Accent}"/>
+                <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Session}" TextColor="{StaticResource Accent}"/>
+                <Label Grid.Row="3" Grid.Column="2" Text="Place/Time" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="3" Grid.Column="3" Text="{Binding Time}" TextColor="{StaticResource Accent}"/>
+                <DatePicker Date="{Binding Date}" Format = "d" Grid.Row="3" Grid.Column="4" TextColor="{StaticResource Accent}"/>
+                <TimePicker Time="{Binding AddedTime}" Grid.Row="3" Grid.Column="5" TextColor="{StaticResource Accent}" />
+
 
                 <Label Grid.Row="4" Grid.Column="0" Text="DM + DCI" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
                 <Entry Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding DM}" TextColor="{StaticResource Accent}"/>

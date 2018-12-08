@@ -14,6 +14,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -100,6 +101,7 @@ namespace Character_Builder_5
             possequip.Items.Clear();
             possequip.Items.Add(EquipSlot.None);
             foreach (string s in Program.Context.Config.Slots) possequip.Items.Add(s);
+            journalDate.CustomFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
         }
 
         public void BuildSources()
@@ -3910,6 +3912,7 @@ namespace Character_Builder_5
                 journalDowntime.Value = je.Downtime;
                 journalRenown.Value = je.Renown;
                 journalInSheet.Checked = je.InSheet;
+                journalDate.Value = je.Added;
                 journalTitle.Enabled = true;
                 journalTime.Enabled = true;
                 journalText.Enabled = true;
@@ -3930,6 +3933,7 @@ namespace Character_Builder_5
                 journalDowntime.Enabled = true;
                 journalRenown.Enabled = true;
                 journalInSheet.Enabled = true;
+                journalDate.Enabled = true;
                 removeJournalButton.Enabled = true;
             } else
             {
@@ -3952,6 +3956,7 @@ namespace Character_Builder_5
                 journalMagic.Value = 0;
                 journalDowntime.Value = 0;
                 journalRenown.Value = 0;
+                journalDate.Value = DateTime.Now;
                 journalInSheet.Checked = false;
                 journalTitle.Enabled = false;
                 journalTime.Enabled = false;
@@ -3973,6 +3978,7 @@ namespace Character_Builder_5
                 journalDowntime.Enabled = false;
                 journalRenown.Enabled = false;
                 journalInSheet.Enabled = false;
+                journalDate.Enabled = false;
                 removeJournalButton.Enabled = false;
             }
             if (!waslayouting) layouting = false;
@@ -4434,6 +4440,18 @@ namespace Character_Builder_5
                 displayElement.Document.OpenNew(true);
                 displayElement.Document.Write(new DisplayPossession(row.Possession, Program.Context.Player).ToHTML());
                 displayElement.Refresh();
+            }
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("JournalDate");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.Added = journalDate.Value;
+                UpdateJournal();
             }
         }
     }

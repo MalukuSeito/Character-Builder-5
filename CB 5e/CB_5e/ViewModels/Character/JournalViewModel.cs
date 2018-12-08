@@ -366,6 +366,41 @@ namespace CB_5e.ViewModels.Character
             }
         }
 
+        public DateTime Date
+        {
+            get => Journal.Added.Date;
+            set
+            {
+                DateTime v = value.Date;
+                TimeSpan t = AddedTime;
+                v = v + t;
+                if (v != Journal.Added)
+                {
+                    IsChanged = true;
+                    Journal.Added = v;
+                }
+                OnPropertyChanged("AddedTime");
+                OnPropertyChanged("Date");
+                OnPropertyChanged("Added");
+            }
+        }
+
+        public TimeSpan AddedTime
+        {
+            get => Journal.Added - Journal.Added.Date;
+            set
+            {
+                if (value != Journal.Added - Journal.Added.Date)
+                {
+                    IsChanged = true;
+                    Journal.Added = Journal.Added.Date + value;
+                }
+                OnPropertyChanged("Date");
+                OnPropertyChanged("AddedTime");
+                OnPropertyChanged("Added");
+            }
+        }
+
         public string Added { get => Journal.Added.ToString("d"); }
 
         public string Desc { get => Journal.GetChanges(); }
