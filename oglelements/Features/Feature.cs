@@ -9,8 +9,12 @@ using System.Xml.Serialization;
 
 namespace OGL.Features
 {
-    public class Feature : IComparable<Feature>, IXML
+    public class Feature : IComparable<Feature>, IXML, IInfoText
     {
+        [XmlIgnore]
+        public string InfoTitle => Name;
+        [XmlIgnore]
+        public string InfoText => Text;
         public static bool DETAILED_TO_STRING = false;
         [XmlArrayItem(Type = typeof(Keyword))]
         public List<Keyword> Keywords;
@@ -88,7 +92,7 @@ namespace OGL.Features
         }
         public virtual string ShortDesc()
         {
-            return Name + ": " + Text.Trim(new char[] { ' ', '\r', '\n', '\t' });
+            return Name + ": " + (Text?.Trim(new char[] { ' ', '\r', '\n', '\t' }) ?? "");
         }
         public static List<Feature> LoadString(String text)
         {
@@ -129,6 +133,12 @@ namespace OGL.Features
                 || Culture.CompareInfo.IndexOf(Category ?? "", text, CompareOptions.IgnoreCase) >= 0
                 || Keywords.Exists(s => Culture.CompareInfo.IndexOf(s.Name ?? "", text, CompareOptions.IgnoreCase) >= 0);
            
+        }
+
+        public string ToInfo(bool desc = false)
+        {
+            if (!desc) return Text;
+            return ShortDesc();
         }
 
         [XmlIgnore]

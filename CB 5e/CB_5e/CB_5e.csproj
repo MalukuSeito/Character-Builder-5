@@ -1536,6 +1536,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="icons\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="images\resources.png" />
@@ -1576,9 +1577,6 @@
     <EmbeddedResource Include="images\library.png" />
     <EmbeddedResource Include="images\play.png" />
     <EmbeddedResource Include="images\sources.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="icons\pencil%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Modify\EditLevel.xaml">

@@ -2,13 +2,19 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace OGL.Descriptions
 {
-    public class Description: IMatchable
+    public class Description: IMatchable, IInfoText
     {
         public string Name { get; set; }
         public string Text { get; set; }
+        [XmlIgnore]
+        public string InfoTitle => Name;
+        [XmlIgnore]
+        public virtual string InfoText => Text;
+
         public Description() { }
         public Description(String name, String text)
         {
@@ -38,6 +44,12 @@ namespace OGL.Descriptions
             if (nameOnly) return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0;
             return Culture.CompareInfo.IndexOf(Name ?? "", text, CompareOptions.IgnoreCase) >= 0
                 || Culture.CompareInfo.IndexOf(Text ?? "", text, CompareOptions.IgnoreCase) >= 0;
+        }
+
+        public string ToInfo(bool desc = false)
+        {
+            if (!desc) return Name;
+            return Name + ": " + (Text?.Trim(new char[] { ' ', '\r', '\n', '\t' }) ?? "");
         }
     }
 }

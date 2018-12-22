@@ -1,4 +1,7 @@
-﻿using System;
+﻿using OGL.Common;
+using OGL.Descriptions;
+using OGL.Features;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +15,6 @@ namespace Character_Builder
 
         void SetField(string fieldName, string value);
         void SetImage(string fieldName, byte[] image);
+        void SetTextAndDescriptions(string fieldName, string text, IEnumerable<IInfoText> values, string textAfter = null);
     }
 }

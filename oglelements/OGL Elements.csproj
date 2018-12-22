@@ -63,6 +63,7 @@
     <Compile Include="Common\IHistoryManager.cs" />
     <Compile Include="Common\ILicense.cs" />
     <Compile Include="Common\IMatchable.cs" />
+    <Compile Include="Common\INameText.cs" />
     <Compile Include="Common\IOGLElement.cs" />
     <Compile Include="Common\ISaveLoad.cs" />
     <Compile Include="Features\FormsCompanionsBonusFeature.cs" />

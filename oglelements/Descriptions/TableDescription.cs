@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OGL.Descriptions
 {
     public class TableDescription : Description
     {
+        public override string InfoText => (Text?.Trim(new char[] { ' ', '\r', '\n', '\t' }) ?? "d" + (Entries?.Max(n => (int?)n?.MaxRoll) ?? 0)) + (Entries?.Count > 0 ? "\n" : "") + String.Join("\n", Entries?.Where(n => n != null)?.Select(n => n.ToFullString()) ?? new List<String>());
         public int Amount { get; set; }
         public String UniqueID { get; set; }
         public TableDescription() { }
