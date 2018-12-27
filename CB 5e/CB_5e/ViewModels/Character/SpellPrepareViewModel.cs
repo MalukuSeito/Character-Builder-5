@@ -109,7 +109,7 @@ namespace CB_5e.ViewModels.Character
                                     ShowInfo = ShowInfo
                                 });
                 spells.AddRange(from s in filtered
-                                where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
+                                where !spells.Exists(t => t.Name == s.Name)
                                 select new SpellViewModel(s)
                                 {
                                     Prepared = false,
@@ -130,7 +130,7 @@ namespace CB_5e.ViewModels.Character
                                 });
                 
                 spells.AddRange(from s in spellbook
-                                where !spells.Exists(t => t.Name == s.Name && s.Source == t.Spell.Source)
+                                where !spells.Exists(t => t.Name == s.Name)
                                 select new SpellViewModel(s)
                                 {
                                     Prepared = false,

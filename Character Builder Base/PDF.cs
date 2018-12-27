@@ -38,6 +38,20 @@ namespace Character_Builder
         public List<PDFField> MonsterFields = new List<PDFField>();
         public List<PDFField> ActionsFields2 = new List<PDFField>();
 
+        public string SheetName { get; set; }
+        public string SpellName { get; set; }
+        public string LogName { get; set; }
+        public string SpellbookName { get; set; }
+        public string MonstersName { get; set; }
+        public string ActionsName { get; set; }
+
+        public byte[] SheetPreview { get; set; }
+        public byte[] SpellPreview { get; set; }
+        public byte[] LogPreview { get; set; }
+        public byte[] SpellbookPreview { get; set; }
+        public byte[] MonstersPreview { get; set; }
+        public byte[] ActionsPreview { get; set; }
+
 
         public static string FirstCharToUpper(string input)
         {
@@ -84,7 +98,7 @@ namespace Character_Builder
                 //        if (preserveEdit) sheet.RemoveUsageRights();
                 //        using (PdfStamper p = new PdfStamper(sheet, ms))
                 //        {
-                FillBasicFields(trans, p, context, pdf);
+                FillBasicFields(trans, p, context, pdf, true);
                 String attacks = "";
                 String resources = "";
                 if (trans.ContainsKey("Actions"))
@@ -432,117 +446,131 @@ namespace Character_Builder
                 {
                     addMoney = true;
                 }
-                if (trans.ContainsKey("TreasureDetailed")) p.SetTextAndDescriptions(trans["TreasureDetailed"], null, treasureDetailed, addMoney ? money.ToString() : null);
                 using (IPDFSheet sheet = pdf.CreateSheet())
                 {
                     sheet.Add(p);
-                    foreach (SpellcastingFeature scf in spellcasts)
+                    await sheet.AddBlankPages(null);
+                    int sheetc = 0;
+                    if (SpellFile != null && SpellFile != "" && spelltrans.ContainsKey("Spell1-1"))
                     {
-                        if (scf.SpellcastingID != "MULTICLASS")
+                        foreach (SpellcastingFeature scf in spellcasts)
                         {
-                            Spellcasting sc = context.Player.GetSpellcasting(scf.SpellcastingID);
-                            int classlevel = context.Player.GetClassLevel(scf.SpellcastingID);
-                            List<int> SpellSlots = context.Player.GetSpellSlots(scf.SpellcastingID);
-                            List<int> UsedSpellSlots = context.Player.GetUsedSpellSlots(scf.SpellcastingID);
-                            List<Spell> Available = new List<Spell>();
-                            List<Spell> Prepared = new List<Spell>();
-                            if (scf.Preparation == PreparationMode.ClassList)
+                            if (scf.SpellcastingID != "MULTICLASS")
                             {
-                                Available.AddRange(sc.GetAdditionalClassSpells(context.Player, context));
-                                Available.AddRange(Utils.FilterSpell(context, scf.PrepareableSpells, scf.SpellcastingID, classlevel));
-                                Prepared.AddRange(sc.GetPrepared(context.Player, context));
-                                Available.RemoveAll(s => Prepared.Exists(ss => StringComparer.OrdinalIgnoreCase.Equals(s.Name, ss.Name)));
-                            }
-                            else if (scf.Preparation == PreparationMode.Spellbook)
-                            {
-                                Available.AddRange(sc.GetSpellbook(context.Player, context));
-                                Prepared.AddRange(sc.GetPrepared(context.Player, context));
-                                Available.RemoveAll(s => Prepared.Exists(ss => StringComparer.OrdinalIgnoreCase.Equals(s.Name, ss.Name)));
-                            }
-                            else
-                            {
-                                Prepared.AddRange(sc.GetPrepared(context.Player, context));
-                            }
-                            Prepared.AddRange(sc.GetLearned(context.Player, context));
-                            Available.AddRange(Prepared);
-                            spellbook.AddRange(Available);
-                            List<Spell> Shown = new List<Spell>(Available.Distinct());
-                            Shown.Sort(delegate (Spell t1, Spell t2)
-                            {
-                                bool t1p = Prepared.Contains(t1);
-                                bool t2p = Prepared.Contains(t2);
-                                if (t1p && t2p) return (t1.Name.CompareTo(t2.Name));
-                                else if (t1p) return -1;
-                                else if (t2p) return 1;
-                                else return (t1.Name.CompareTo(t2.Name));
-
-                            });
-                            List<LinkedList<Spell>> SpellLevels = new List<LinkedList<Spell>>();
-                            foreach (Spell s in Shown)
-                            {
-                                while (SpellLevels.Count <= s.Level) SpellLevels.Add(new LinkedList<Spell>());
-                                SpellLevels[s.Level].AddLast(s);
-                            }
-                            while (SpellLevels.Count <= SpellSlots.Count) SpellLevels.Add(new LinkedList<Spell>());
-
-
-                            int sheetmaxlevel = 0;
-                            for (sheetmaxlevel = 1; sheetmaxlevel < SpellLevels.Count; sheetmaxlevel++) if (!spelltrans.ContainsKey("Spell" + sheetmaxlevel + "-1")) break;
-                            sheetmaxlevel--;
-                            int offset = 0;
-
-                            while (SpellLevels.Count > 0 && sheetmaxlevel > 0)
-                            {
-                                using (IPDFEditor sp = await pdf.CreateEditor(SpellFile))
+                                Spellcasting sc = context.Player.GetSpellcasting(scf.SpellcastingID);
+                                int classlevel = context.Player.GetClassLevel(scf.SpellcastingID);
+                                List<int> SpellSlots = context.Player.GetSpellSlots(scf.SpellcastingID);
+                                List<int> UsedSpellSlots = context.Player.GetUsedSpellSlots(scf.SpellcastingID);
+                                List<Spell> Available = new List<Spell>();
+                                List<Spell> Prepared = new List<Spell>();
+                                if (scf.Preparation == PreparationMode.ClassList)
                                 {
-                                    FillBasicFields(spelltrans, sp, context, pdf);
-                                    if (spelltrans.ContainsKey("SpellcastingClass")) sp.SetField(spelltrans["SpellcastingClass"], scf.DisplayName);
-                                    if (spelltrans.ContainsKey("SpellcastingAbility")) sp.SetField(spelltrans["SpellcastingAbility"], Enum.GetName(typeof(Ability), scf.SpellcastingAbility));
-                                    if (spelltrans.ContainsKey("SpellSaveDC")) sp.SetField(spelltrans["SpellSaveDC"], context.Player.GetSpellSaveDC(scf.SpellcastingID, scf.SpellcastingAbility).ToString());
-                                    if (spelltrans.ContainsKey("SpellAttackBonus")) sp.SetField(spelltrans["SpellAttackBonus"], PlusMinus(context.Player.GetSpellAttack(scf.SpellcastingID, scf.SpellcastingAbility)));
-                                    for (int i = 0; i <= sheetmaxlevel && i < SpellLevels.Count; i++)
+                                    Available.AddRange(sc.GetAdditionalClassSpells(context.Player, context));
+                                    Available.AddRange(Utils.FilterSpell(context, scf.PrepareableSpells, scf.SpellcastingID, classlevel));
+                                    Prepared.AddRange(sc.GetPrepared(context.Player, context));
+                                    Available.RemoveAll(s => Prepared.Exists(ss => StringComparer.OrdinalIgnoreCase.Equals(s.Name, ss.Name)));
+                                }
+                                else if (scf.Preparation == PreparationMode.Spellbook)
+                                {
+                                    Available.AddRange(sc.GetSpellbook(context.Player, context));
+                                    Prepared.AddRange(sc.GetPrepared(context.Player, context));
+                                    Available.RemoveAll(s => Prepared.Exists(ss => StringComparer.OrdinalIgnoreCase.Equals(s.Name, ss.Name)));
+                                }
+                                else
+                                {
+                                    Prepared.AddRange(sc.GetPrepared(context.Player, context));
+                                }
+                                Prepared.AddRange(sc.GetLearned(context.Player, context));
+                                Available.AddRange(Prepared);
+                                spellbook.AddRange(Available);
+                                List<Spell> Shown = new List<Spell>(Available.Distinct());
+                                Shown.Sort(delegate (Spell t1, Spell t2)
+                                {
+                                    bool t1p = Prepared.Contains(t1);
+                                    bool t2p = Prepared.Contains(t2);
+                                    if (t1p && t2p) return (t1.Name.CompareTo(t2.Name));
+                                    else if (t1p) return -1;
+                                    else if (t2p) return 1;
+                                    else return (t1.Name.CompareTo(t2.Name));
+
+                                });
+                                List<LinkedList<Spell>> SpellLevels = new List<LinkedList<Spell>>();
+                                foreach (Spell s in Shown)
+                                {
+                                    while (SpellLevels.Count <= s.Level) SpellLevels.Add(new LinkedList<Spell>());
+                                    SpellLevels[s.Level].AddLast(s);
+                                }
+                                while (SpellLevels.Count <= SpellSlots.Count) SpellLevels.Add(new LinkedList<Spell>());
+
+
+                                int sheetmaxlevel = 0;
+                                for (sheetmaxlevel = 1; sheetmaxlevel < SpellLevels.Count; sheetmaxlevel++) if (!spelltrans.ContainsKey("Spell" + sheetmaxlevel + "-1")) break;
+                                sheetmaxlevel--;
+                                int offset = 0;
+
+                                while (SpellLevels.Count > 0 && sheetmaxlevel > 0)
+                                {
+                                    using (IPDFEditor sp = await pdf.CreateEditor(SpellFile))
                                     {
-                                        if (SpellSlots.Count >= i && i > 0 && SpellSlots[i - 1] > 0)
+                                        FillBasicFields(spelltrans, sp, context, pdf);
+                                        if (spelltrans.ContainsKey("SpellcastingClass")) sp.SetField(spelltrans["SpellcastingClass"], scf.DisplayName);
+                                        if (spelltrans.ContainsKey("SpellcastingAbility")) sp.SetField(spelltrans["SpellcastingAbility"], Enum.GetName(typeof(Ability), scf.SpellcastingAbility));
+                                        if (spelltrans.ContainsKey("SpellSaveDC")) sp.SetField(spelltrans["SpellSaveDC"], context.Player.GetSpellSaveDC(scf.SpellcastingID, scf.SpellcastingAbility).ToString());
+                                        if (spelltrans.ContainsKey("SpellAttackBonus")) sp.SetField(spelltrans["SpellAttackBonus"], PlusMinus(context.Player.GetSpellAttack(scf.SpellcastingID, scf.SpellcastingAbility)));
+                                        for (int i = 0; i <= sheetmaxlevel && i < SpellLevels.Count; i++)
                                         {
-                                            if (spelltrans.ContainsKey("SpellSlots" + i))
+                                            if (SpellSlots.Count >= i && i > 0 && SpellSlots[i - 1] > 0)
                                             {
-                                                sp.SetField(spelltrans["SpellSlots" + i], (offset > 0 ? "(" + (offset + i) + ") " : "") + SpellSlots[i - 1].ToString());
+                                                if (spelltrans.ContainsKey("SpellSlots" + i))
+                                                {
+                                                    sp.SetField(spelltrans["SpellSlots" + i], (offset > 0 ? "(" + (offset + i) + ") " : "") + SpellSlots[i - 1].ToString());
+                                                }
+                                            }
+                                            if (pdf.IncludeResources && UsedSpellSlots.Count >= i && i > 0)
+                                            {
+                                                if (spelltrans.ContainsKey("SpellSlotsExpended" + i))
+                                                {
+                                                    sp.SetField(spelltrans["SpellSlotsExpended" + i], UsedSpellSlots[i - 1].ToString());
+                                                }
+                                            }
+                                            int field = 1;
+                                            if (!spelltrans.ContainsKey("Spell" + i + "-1")) SpellLevels[i].Clear();
+                                            while (SpellLevels[i].Count > 0)
+                                            {
+                                                if (!spelltrans.ContainsKey("Spell" + i + "-" + field)) break;
+                                                sp.SetField(spelltrans["Spell" + i + "-" + field], SpellLevels[i].First.Value.Name);
+                                                if (Prepared.Contains(SpellLevels[i].First.Value) && spelltrans.ContainsKey("Prepared" + i + "-" + field))
+                                                    sp.SetField(spelltrans["Prepared" + i + "-" + field], "Yes");
+                                                SpellLevels[i].RemoveFirst();
+                                                field++;
                                             }
                                         }
-                                        if (pdf.IncludeResources && UsedSpellSlots.Count >= i && i > 0)
-                                        {
-                                            if (spelltrans.ContainsKey("SpellSlotsExpended" + i))
-                                            {
-                                                sp.SetField(spelltrans["SpellSlotsExpended" + i], UsedSpellSlots[i - 1].ToString());
-                                            }
-                                        }
-                                        int field = 1;
-                                        if (!spelltrans.ContainsKey("Spell" + i + "-1")) SpellLevels[i].Clear();
-                                        while (SpellLevels[i].Count > 0)
-                                        {
-                                            if (!spelltrans.ContainsKey("Spell" + i + "-" + field)) break;
-                                            sp.SetField(spelltrans["Spell" + i + "-" + field], SpellLevels[i].First.Value.Name);
-                                            if (Prepared.Contains(SpellLevels[i].First.Value) && spelltrans.ContainsKey("Prepared" + i + "-" + field))
-                                                sp.SetField(spelltrans["Prepared" + i + "-" + field], "Yes");
-                                            SpellLevels[i].RemoveFirst();
-                                            field++;
-                                        }
+                                        sheetc++;
+                                        sheet.Add(sp);
                                     }
-                                    sheet.Add(sp);
+                                    bool empty = true;
+                                    for (int i = 0; i <= sheetmaxlevel && i < SpellLevels.Count; i++) if (SpellLevels[i].Count > 0) empty = false;
+                                    if (empty)
+                                    {
+                                        SpellLevels.RemoveRange(1, sheetmaxlevel);
+                                        if (SpellLevels.Count == 1) SpellLevels.Clear(); //Cantrips
+                                        offset += sheetmaxlevel;
+                                    }
                                 }
-                                bool empty = true;
-                                for (int i = 0; i <= sheetmaxlevel && i < SpellLevels.Count; i++) if (SpellLevels[i].Count > 0) empty = false;
-                                if (empty)
-                                {
-                                    SpellLevels.RemoveRange(1, sheetmaxlevel);
-                                    if (SpellLevels.Count == 1) SpellLevels.Clear(); //Cantrips
-                                    offset += sheetmaxlevel;
-                                }
+                            }
+
+                        }
+                        if (pdf.Duplex && !pdf.DuplexWhite && sheetc % 2 != 0)
+                        {
+                            using (IPDFEditor sp = await pdf.CreateEditor(SpellFile))
+                            {
+                                FillBasicFields(spelltrans, sp, context, pdf);
+                                sheet.Add(sp);
                             }
                         }
-
+                        await sheet.AddBlankPages(SpellFile);
                     }
-
+                    
                     if (pdf.IncludeLog && LogFile != null && LogFile != "" && (logtrans.ContainsKey("Title1") || logtrans.ContainsKey("XP1")))
                     {
                         Queue<JournalEntry> entries = new Queue<JournalEntry>(context.Player.ComplexJournal);
@@ -561,7 +589,7 @@ namespace Character_Builder
                         int t4tp = 0;
                         int sheetCount = 0;
                         bool advancement = context.Player.Advancement;
-                        while (entries.Count > 0)
+                        while (entries.Count > 0 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 0))
                         {
                             int counter = 1;
                             using (IPDFEditor lp = await pdf.CreateEditor(LogFile))
@@ -803,11 +831,12 @@ namespace Character_Builder
                                     }
 
                                 }
-                                if (counter > 1) sheet.Add(lp);
+                                if (counter > 1 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 1)) sheet.Add(lp);
                             }
                         }
+                        await sheet.AddBlankPages(LogFile);
                     }
-
+                    
                     if (pdf.IncludeSpellbook && SpellbookFile != null && SpellbookFile != "" && (booktrans.ContainsKey("Name1") || booktrans.ContainsKey("Description1")))
                     {
                         List<SpellModifyFeature> mods = (from f in context.Player.GetFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
@@ -818,7 +847,7 @@ namespace Character_Builder
                             if ((pos.Name != null && pos.Name != "") || (pos.Description != null && pos.Description != "") || pos.MagicProperties.Count > 0) entries.Enqueue(pos);
                         }
                         int sheetCount = 0;
-                        while (entries.Count > 0)
+                        while (entries.Count > 0 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 0))
                         {
                             int counter = 1;
                             using (IPDFEditor sbp = await pdf.CreateEditor(SpellbookFile))
@@ -909,16 +938,18 @@ namespace Character_Builder
                                     }
                                     
                                 }
-                                if (counter > 1) sheet.Add(sbp);
+                                if (counter > 1 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 1)) sheet.Add(sbp);
                             }
                         }
+                        await sheet.AddBlankPages(SpellbookFile);
                     }
+                    
                     if (pdf.IncludeActions && ActionsFile != null && ActionsFile != "" && (actiontrans.ContainsKey("Action1Name") || actiontrans.ContainsKey("Action1Text")))
                     {
                         Queue<ActionInfo> entries = new Queue<ActionInfo>(context.Player.GetActions());
                         int sheetCount = 0;
                         String file = ActionsFile;
-                        while (entries.Count > 0)
+                        while (entries.Count > 0 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 0))
                         {
                             if (sheetCount > 0 && ActionsFile2 != null && ActionsFile2 != "" && (actiontrans2.ContainsKey("Action1Name") || actiontrans2.ContainsKey("Action1Text")))
                             {
@@ -976,11 +1007,16 @@ namespace Character_Builder
                                     }
                                     counter++;
                                 }
-                                if (counter > 1) sheet.Add(abp);
+                                if (counter > 1 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 1)) sheet.Add(abp);
                             }
                         }
+                        if (sheetCount > 0 && ActionsFile2 != null && ActionsFile2 != "" && (actiontrans2.ContainsKey("Action1Name") || actiontrans2.ContainsKey("Action1Text")))
+                        {
+                            file = ActionsFile2;
+                        }
+                        await sheet.AddBlankPages(file);
                     }
-
+                    
                     if (pdf.IncludeMonsters && MonstersFile != null && MonstersFile != "" && (monstertrans.ContainsKey("Name1") || monstertrans.ContainsKey("Traits1")))
                     {
                         Dictionary<Monster, MonsterInfo> monsters = new Dictionary<Monster, MonsterInfo>(new MonsterInfo());
@@ -1203,7 +1239,7 @@ namespace Character_Builder
             }
         }
 
-        private string APFormat(BuilderContext context, string format, int ap)
+        public static string APFormat(BuilderContext context, string format, int ap)
         {
             int level = context.Levels.Get(ap, true);
             int next = 8;
@@ -1314,8 +1350,9 @@ namespace Character_Builder
 
         }
 
-        private void FillBasicFields(Dictionary<string, string> trans, IPDFEditor p, BuilderContext context, PDFBase pdf)
+        private void FillBasicFields(Dictionary<string, string> trans, IPDFEditor p, BuilderContext context, PDFBase pdf, bool swap = false)
         {
+            swap = swap && pdf.SwapScoreAndMod;
             int down = 0;
             int renown = 0;
             int magic = 0;
@@ -1365,21 +1402,33 @@ namespace Character_Builder
             if (trans.ContainsKey("FactionName")) p.SetField(trans["FactionName"], context.Player.FactionName);
             if (trans.ContainsKey("Backstory")) p.SetField(trans["Backstory"], context.Player.Backstory);
             if (trans.ContainsKey("Allies")) p.SetField(trans["Allies"], context.Player.Allies);
-            if (trans.ContainsKey("Strength")) p.SetField(trans["Strength"], context.Player.GetStrength().ToString());
-            if (trans.ContainsKey("Dexterity")) p.SetField(trans["Dexterity"], context.Player.GetDexterity().ToString());
-            if (trans.ContainsKey("Constitution")) p.SetField(trans["Constitution"], context.Player.GetConstitution().ToString());
-            if (trans.ContainsKey("Intelligence")) p.SetField(trans["Intelligence"], context.Player.GetIntelligence().ToString());
-            if (trans.ContainsKey("Wisdom")) p.SetField(trans["Wisdom"], context.Player.GetWisdom().ToString());
-            if (trans.ContainsKey("Charisma")) p.SetField(trans["Charisma"], context.Player.GetCharisma().ToString());
-            if (trans.ContainsKey("StrengthModifier")) p.SetField(trans["StrengthModifier"], PlusMinus(context.Player.GetStrengthMod()));
-            if (trans.ContainsKey("DexterityModifier")) p.SetField(trans["DexterityModifier"], PlusMinus(context.Player.GetDexterityMod()));
-            if (trans.ContainsKey("ConstitutionModifier")) p.SetField(trans["ConstitutionModifier"], PlusMinus(context.Player.GetConstitutionMod()));
-            if (trans.ContainsKey("IntelligenceModifier")) p.SetField(trans["IntelligenceModifier"], PlusMinus(context.Player.GetIntelligenceMod()));
-            if (trans.ContainsKey("WisdomModifier")) p.SetField(trans["WisdomModifier"], PlusMinus(context.Player.GetWisdomMod()));
+            if (trans.ContainsKey("Strength")) p.SetField(trans["Strength"], !swap ? context.Player.GetStrength().ToString() : PlusMinus(context.Player.GetStrengthMod()));
+            if (trans.ContainsKey("Dexterity")) p.SetField(trans["Dexterity"], !swap ? context.Player.GetDexterity().ToString() : PlusMinus(context.Player.GetDexterityMod()));
+            if (trans.ContainsKey("Constitution")) p.SetField(trans["Constitution"], !swap ? context.Player.GetConstitution().ToString() : PlusMinus(context.Player.GetConstitutionMod()));
+            if (trans.ContainsKey("Intelligence")) p.SetField(trans["Intelligence"], !swap ? context.Player.GetIntelligence().ToString() : PlusMinus(context.Player.GetIntelligenceMod()));
+            if (trans.ContainsKey("Wisdom")) p.SetField(trans["Wisdom"], !swap ? context.Player.GetWisdom().ToString() : PlusMinus(context.Player.GetWisdomMod()));
+            if (trans.ContainsKey("Charisma")) p.SetField(trans["Charisma"], !swap ? context.Player.GetCharisma().ToString() : PlusMinus(context.Player.GetCharismaMod()));
+            if (trans.ContainsKey("StrengthModifier")) p.SetField(trans["StrengthModifier"], !swap ? PlusMinus(context.Player.GetStrengthMod()) : context.Player.GetStrength().ToString());
+            if (trans.ContainsKey("DexterityModifier")) p.SetField(trans["DexterityModifier"], !swap ? PlusMinus(context.Player.GetDexterityMod()) : context.Player.GetDexterity().ToString());
+            if (trans.ContainsKey("ConstitutionModifier")) p.SetField(trans["ConstitutionModifier"], !swap ? PlusMinus(context.Player.GetConstitutionMod()) : context.Player.GetConstitution().ToString());
+            if (trans.ContainsKey("IntelligenceModifier")) p.SetField(trans["IntelligenceModifier"], !swap ? PlusMinus(context.Player.GetIntelligenceMod()) : context.Player.GetIntelligence().ToString());
+            if (trans.ContainsKey("WisdomModifier")) p.SetField(trans["WisdomModifier"], !swap ? PlusMinus(context.Player.GetWisdomMod()) : context.Player.GetWisdom().ToString());
+            if (trans.ContainsKey("CharismaModifier")) p.SetField(trans["CharismaModifier"], !swap ? PlusMinus(context.Player.GetCharismaMod()) : context.Player.GetCharisma().ToString());
+            if (trans.ContainsKey("ForceStrength")) p.SetField(trans["ForceStrength"], context.Player.GetStrength().ToString());
+            if (trans.ContainsKey("ForceDexterity")) p.SetField(trans["ForceDexterity"], context.Player.GetDexterity().ToString());
+            if (trans.ContainsKey("ForceConstitution")) p.SetField(trans["ForceConstitution"], context.Player.GetConstitution().ToString());
+            if (trans.ContainsKey("ForceIntelligence")) p.SetField(trans["ForceIntelligence"], context.Player.GetIntelligence().ToString());
+            if (trans.ContainsKey("ForceWisdom")) p.SetField(trans["ForceWisdom"], context.Player.GetWisdom().ToString());
+            if (trans.ContainsKey("ForceCharisma")) p.SetField(trans["ForceCharisma"], context.Player.GetCharisma().ToString());
+            if (trans.ContainsKey("ForceStrengthModifier")) p.SetField(trans["ForceStrengthModifier"], PlusMinus(context.Player.GetStrengthMod()));
+            if (trans.ContainsKey("ForceDexterityModifier")) p.SetField(trans["ForceDexterityModifier"], PlusMinus(context.Player.GetDexterityMod()));
+            if (trans.ContainsKey("ForceConstitutionModifier")) p.SetField(trans["ForceConstitutionModifier"], PlusMinus(context.Player.GetConstitutionMod()));
+            if (trans.ContainsKey("ForceIntelligenceModifier")) p.SetField(trans["ForceIntelligenceModifier"], PlusMinus(context.Player.GetIntelligenceMod()));
+            if (trans.ContainsKey("ForceWisdomModifier")) p.SetField(trans["ForceWisdomModifier"], PlusMinus(context.Player.GetWisdomMod()));
             if (trans.ContainsKey("AC")) p.SetField(trans["AC"], context.Player.GetAC().ToString());
             if (trans.ContainsKey("ProficiencyBonus")) p.SetField(trans["ProficiencyBonus"], PlusMinus(context.Player.GetProficiency()));
             if (trans.ContainsKey("Initiative")) p.SetField(trans["Initiative"], PlusMinus(context.Player.GetInitiative()));
-            if (trans.ContainsKey("CharismaModifier")) p.SetField(trans["CharismaModifier"], PlusMinus(context.Player.GetCharismaMod()));
+            if (trans.ContainsKey("ForceCharismaModifier")) p.SetField(trans["ForceCharismaModifier"], PlusMinus(context.Player.GetCharismaMod()));
             if (trans.ContainsKey("CharacterName")) p.SetField(trans["CharacterName"], context.Player.Name);
             if (trans.ContainsKey("CharacterName2")) p.SetField(trans["CharacterName2"], context.Player.Name);
             if (trans.ContainsKey("ClassLevel")) p.SetField(trans["ClassLevel"], String.Join(" | ", context.Player.GetClassesStrings()));

@@ -158,8 +158,13 @@ namespace Character_Builder_5
                         currentColumnText.SetSimpleColumn(pos.position);
                         currentColumnText.SetLeading(0, 1);
                         currentColumnText.Alignment = Element.ALIGN_JUSTIFIED;
-                        var bold = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.BOLD);
-                        var reg = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.NORMAL);
+                        var bold = FontFactory.GetFont("Helvetica", size, Font.BOLD);
+                        var reg = FontFactory.GetFont("Helvetica", size, Font.NORMAL);
+                        if (t.Font != null)
+                        {
+                            bold = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.BOLD);
+                            reg = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.NORMAL);
+                        }
                         if (text != null) currentColumnText.AddElement(new Paragraph(text, reg) { Leading = 0, MultipliedLeading = 1, SpacingAfter = size / 2});
                         foreach (IInfoText f in values)
                         {
@@ -183,8 +188,13 @@ namespace Character_Builder_5
                         currentColumnText.SetSimpleColumn(pos.position);
                         currentColumnText.SetLeading(0, 1);
                         currentColumnText.Alignment = Element.ALIGN_JUSTIFIED;
-                        var bold = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.BOLD);
-                        var reg = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.NORMAL);
+                        var bold = FontFactory.GetFont("Helvetica", size, Font.BOLD);
+                        var reg = FontFactory.GetFont("Helvetica", size, Font.NORMAL);
+                        if (t.Font != null)
+                        {
+                            bold = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.BOLD);
+                            reg = FontFactory.GetFont(t.Font.FullFontName[0][3], size, Font.NORMAL);
+                        }
                         if (text != null) currentColumnText.AddElement(new Paragraph(text, reg) { Leading = 0, MultipliedLeading = 1, SpacingAfter = size / 2 });
                         foreach (IInfoText f in values)
                         {

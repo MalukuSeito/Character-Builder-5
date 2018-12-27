@@ -49,13 +49,13 @@ namespace CB_5e.Services
                         string name = entry.Name.ToLowerInvariant();
                         if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
                         {
-                            String path = System.IO.Path.Combine(basepath, name);
+                            String path = System.IO.Path.Combine(basepath, entry.Name).Replace("\\", "/");
                             if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                             using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s , basepath, context, applyKeywords);
                         }
                         else if (name.EndsWith(".xml"))
                         {
-                            String path = System.IO.Path.Combine(basepath, basesource, name);
+                            String path = System.IO.Path.Combine(basepath, basesource, entry.Name).Replace("\\", "/");
                             if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                             using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
                         }
@@ -82,13 +82,13 @@ namespace CB_5e.Services
                     string name = entry.Name.ToLowerInvariant();
                     if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
                     {
-                        String path = System.IO.Path.Combine(basepath, name);
+                        String path = System.IO.Path.Combine(basepath, entry.Name).Replace("\\", "/");
                         if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                         using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
                     }
                     else if (name.EndsWith(".xml"))
                     {
-                        String path = System.IO.Path.Combine(basepath, basesource, name);
+                        String path = System.IO.Path.Combine(basepath, basesource, entry.Name).Replace("\\", "/");
                         if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                         using (Stream st = zf.GetInputStream(entry)) OGLImport.Import(st, path, s, basepath, context, applyKeywords);
                     }

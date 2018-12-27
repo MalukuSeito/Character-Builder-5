@@ -96,6 +96,8 @@ namespace Character_Builder_5
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            if (Properties.Settings.Default.DCI != null && Properties.Settings.Default.DCI != "") Context.Player.DCI = Properties.Settings.Default.DCI;
+            if (Properties.Settings.Default.PlayerName != null && Properties.Settings.Default.PlayerName != "") Context.Player.PlayerName = Properties.Settings.Default.PlayerName;
             ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
             string[] args = Environment.GetCommandLineArgs();
             Errorlog = new ErrorLog();
@@ -113,6 +115,11 @@ namespace Character_Builder_5
                         Application.Exit();
                         return;
                     }
+                }
+                if (Properties.Settings.Default.EnabledSourcebooks != null && Properties.Settings.Default.EnabledSourcebooks.Count != 0)
+                {
+                    Context.Player.ExcludedSources = SourceManager.Sources.Where(s => !Properties.Settings.Default.EnabledSourcebooks.Contains(s)).ToList();
+                    Context.ExcludedSources.UnionWith(Context.Player.ExcludedSources);
                 }
                 LoadData();
             } else

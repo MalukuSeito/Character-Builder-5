@@ -28,6 +28,7 @@ namespace Character_Builder_5
                 p.ActionsFile2 = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.ActionsFile2);
                 p.LogFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.LogFile);
                 p.SpellbookFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.SpellbookFile);
+                p.MonstersFile = ImportExtensions.Fullpath(Path.GetDirectoryName(file), p.MonstersFile);
                 return p;
             }
         }

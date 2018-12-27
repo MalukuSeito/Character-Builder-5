@@ -51,6 +51,7 @@
     <Content Include="Common.xsl" />
     <Content Include="Conditions.xsl" />
     <Content Include="Config.xml" />
+    <Content Include="DefaultPDF - Larger.xml" />
     <Content Include="DefaultPDF.xml" />
     <Content Include="Descriptions.xsl" />
     <Content Include="Features.xsl" />
@@ -76,12 +77,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="925821-DnD_AL_Logsheet_2018.pdf" />
     <None Include="Alternate-PlayerSheet.pdf" />
+    <None Include="CombatSheet - 2up.pdf" />
+    <None Include="CombatSheet - 3up.pdf" />
+    <None Include="CombatSheet.pdf" />
+    <None Include="CombatSheet2-2up.pdf" />
+    <None Include="CombatSheet2-3up.pdf" />
+    <None Include="CombatSheet2.pdf" />
     <None Include="Default-PlayerSheet.pdf" />
     <None Include="Default-Spellsheet.pdf" />
     <None Include="DnDAdvLgLogsheet.pdf" />
     <None Include="DnDAdvLgLogsheetModified.pdf" />
     <None Include="Monster.pdf" />
+    <None Include="Spell4.pdf" />
+    <None Include="Spell9.pdf" />
     <None Include="Spellbook.pdf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

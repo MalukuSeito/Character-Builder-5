@@ -9,5 +9,6 @@ namespace Character_Builder
     public interface IPDFSheet: IDisposable
     {
         void Add(IPDFEditor sheet);
+        Task AddBlankPages(string file);
     }
 }

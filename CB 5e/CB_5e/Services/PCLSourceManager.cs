@@ -137,13 +137,13 @@ namespace CB_5e.Services
                 string name = entry.Name.ToLowerInvariant();
                 if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
                 {
-                    String path = Path.Combine(basepath, name);
+                    String path = Path.Combine(basepath, entry.Name).Replace("\\", "/");
                     if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                     result.Add(path, entry);
                 }
                 else if ((name.StartsWith(t) || name.StartsWith(tt)) && name.EndsWith(".xml"))
                 {
-                    String path = Path.Combine(basepath, basesource, name);
+                    String path = Path.Combine(basepath, basesource, entry.Name).Replace("\\", "/");
                     if (overridden && (await FileSystem.Current.GetFileFromPathAsync(path)) != null) continue;
                     result.Add(path, entry);
                 }
@@ -174,7 +174,7 @@ namespace CB_5e.Services
 
         public static string Parent(string path)
         {
-            if (!path.Contains(""+ PortablePath.DirectorySeparatorChar))
+            if (!path.Contains("" + PortablePath.DirectorySeparatorChar))
             {
                 return "";
             }

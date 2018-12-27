@@ -26,7 +26,7 @@ namespace Character_Builder_5
 
         public override IPDFSheet CreateSheet()
         {
-            return new PDFFormsSheet(PreserveEdit, OutStream);
+            return new PDFFormsSheet(PreserveEdit, Duplex, DuplexWhite, OutStream, this);
         }
     }
 }

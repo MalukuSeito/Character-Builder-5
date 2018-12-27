@@ -65,21 +65,21 @@ namespace Character_Builder_5
             availableConditions.MouseWheel += listbox_MouseWheel;
             actionBox.Controls.Clear();
             UpdateLayout();
-            pDFExporterToolStripMenuItem.DropDownItems.Clear();
-            bool first=true;
-            foreach (string s in Program.Context.Config.PDFExporters)
-            {
-                ToolStripMenuItem p = new ToolStripMenuItem(Path.GetFileNameWithoutExtension(s));
-                if (first)
-                {
-                    first = false;
-                    p.Checked = true;
-                }
-                p.Name = s;
-                p.Size = new System.Drawing.Size(152, 22);
-                p.Click += new EventHandler(pdfexporter_click);
-                pDFExporterToolStripMenuItem.DropDownItems.Add(p);
-            }
+            //pDFExporterToolStripMenuItem.DropDownItems.Clear();
+            //bool first=true;
+            //foreach (string s in Program.Context.Config.PDFExporters)
+            //{
+            //    ToolStripMenuItem p = new ToolStripMenuItem(Path.GetFileNameWithoutExtension(s));
+            //    if (first)
+            //    {
+            //        first = false;
+            //        p.Checked = true;
+            //    }
+            //    p.Name = s;
+            //    p.Size = new System.Drawing.Size(152, 22);
+            //    p.Click += new EventHandler(pdfexporter_click);
+            //    pDFExporterToolStripMenuItem.DropDownItems.Add(p);
+            //}
 
             configureHouserulesToolStripMenuItem.DropDownItems.Clear();
             if (Program.Context.Plugins.available.Count == 0) configureHouserulesToolStripMenuItem.Enabled = false;
@@ -195,16 +195,16 @@ namespace Character_Builder_5
             }
         }
 
-        private void pdfexporter_click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem s=(ToolStripMenuItem)sender;
-            s.Checked = true;
-            Config.PDFExporter = PlayerExtensions.Load(s.Name);
-            foreach (ToolStripMenuItem p in pDFExporterToolStripMenuItem.DropDownItems)
-            {
-                if (p != s) p.Checked = false;
-            }
-        }
+        //private void pdfexporter_click(object sender, EventArgs e)
+        //{
+        //    ToolStripMenuItem s=(ToolStripMenuItem)sender;
+        //    s.Checked = true;
+        //    Config.PDFExporter = PlayerExtensions.Load(s.Name);
+        //    foreach (ToolStripMenuItem p in pDFExporterToolStripMenuItem.DropDownItems)
+        //    {
+        //        if (p != s) p.Checked = false;
+        //    }
+        //}
 
         public void listbox_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -2145,9 +2145,11 @@ namespace Character_Builder_5
                     Filter = "CB5 XML|*.cb5",
                     Title = "Open a Player File"
                 };
-                od.ShowDialog();
-                if (od.FileName != "")
+                if (Properties.Settings.Default.LastCB5Folder != null && Properties.Settings.Default.LastCB5Folder != "") od.InitialDirectory = Properties.Settings.Default.LastCB5Folder;
+                if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
                 {
+                    Properties.Settings.Default.LastCB5Folder = Path.GetDirectoryName(od.FileName);
+                    Properties.Settings.Default.Save();
                     try
                     {
                         using (FileStream fs = (FileStream)od.OpenFile())
@@ -2180,8 +2182,11 @@ namespace Character_Builder_5
                     Filter = "CB5 XML|*.cb5",
                     Title = "Save a Player File"
                 };
+                if (Properties.Settings.Default.LastCB5Folder != null && Properties.Settings.Default.LastCB5Folder != "") od.InitialDirectory = Properties.Settings.Default.LastCB5Folder;
                 if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
                 {
+                    Properties.Settings.Default.LastCB5Folder = Path.GetDirectoryName(od.FileName);
+                    Properties.Settings.Default.Save();
                     try
                     {
                         lastfile = od.FileName;
@@ -2217,7 +2222,14 @@ namespace Character_Builder_5
             if (Program.Context.UnsavedChanges == 0 || MessageBox.Show(Program.Context.UnsavedChanges + " unsaved changes will be lost. Continue?", "Unsaved Changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 lastfile = "";
-                Program.Context.Player = new Player();
+                Player p = new Player();
+                if (Properties.Settings.Default.DCI != null && Properties.Settings.Default.DCI != "") p.DCI = Properties.Settings.Default.DCI;
+                if (Properties.Settings.Default.PlayerName != null && Properties.Settings.Default.PlayerName != "") p.PlayerName = Properties.Settings.Default.PlayerName;
+                if (Properties.Settings.Default.EnabledSourcebooks != null && Properties.Settings.Default.EnabledSourcebooks.Count != 0)
+                {
+                    p.ExcludedSources = SourceManager.Sources.Where(s => !Properties.Settings.Default.EnabledSourcebooks.Contains(s)).ToList();
+                }
+                Program.Context.Player = p;
                 Program.Context.UndoBuffer = new LinkedList<Player>();
                 Program.Context.RedoBuffer = new LinkedList<Player>();
                 Program.Context.UnsavedChanges = 0;
@@ -2233,8 +2245,11 @@ namespace Character_Builder_5
                 Filter = "CB5 XML|*.cb5",
                 Title = "Save a Player File"
             };
+            if (Properties.Settings.Default.LastCB5Folder != null && Properties.Settings.Default.LastCB5Folder != "") od.InitialDirectory = Properties.Settings.Default.LastCB5Folder;
             if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
             {
+                Properties.Settings.Default.LastCB5Folder = Path.GetDirectoryName(od.FileName);
+                Properties.Settings.Default.Save();
                 try
                 {
                     using (FileStream fs = (FileStream)od.OpenFile()) Program.Context.Player.Save(fs);
@@ -2254,58 +2269,62 @@ namespace Character_Builder_5
                 Application.Exit();
         }
 
-        private async void exportPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportPDFToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog od = new SaveFileDialog();
-            if (lastfile != null && lastfile != "")
-            {
-                od.InitialDirectory = Path.GetDirectoryName(lastfile);
-                od.FileName = Path.GetFileNameWithoutExtension(lastfile) + ".pdf";
-            }
-            od.Filter = "PDF|*.pdf";
-            od.Title = "Save a PDF File";
-            if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
-            {
-                try
-                {
-                    using (FileStream fs = (FileStream)od.OpenFile())
-                    {
-                        PDFForms pdf = new PDFForms()
-                        {
-                            IncludeActions = includeActionsInPDFToolStripMenuItem.Checked,
-                            IncludeLog = PDFjournal.Checked,
-                            IncludeResources = includeResourcesInSheetToolStripMenuItem.Checked,
-                            IncludeSpellbook = PDFspellbook.Checked,
-                            PreserveEdit = preservePDFFormsToolStripMenuItem.Checked,
-                            IncludeMonsters = toolStripMenuItem1.Checked,
-                            OutStream = fs
-                        };
-                        await Config.PDFExporter.Export(Program.Context, pdf);
-                    }
-                    if (MessageBox.Show("PDF exported to: " + od.FileName + " Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        Process.Start(od.FileName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.Forms.MessageBox.Show(ex.Message + "\n" + ex.InnerException + "\n" + ex.StackTrace, "Error exporting PDF to " + od.FileName);
-                }
-            }
+            new Export(lastfile).ShowDialog();
+            //SaveFileDialog od = new SaveFileDialog();
+            //if (Properties.Settings.Default.LastPDFFolder != null && Properties.Settings.Default.LastPDFFolder != "") od.InitialDirectory = Properties.Settings.Default.LastPDFFolder;
+            //if (lastfile != null && lastfile != "")
+            //{
+            //    if (Properties.Settings.Default.LastPDFFolder == null || Properties.Settings.Default.LastPDFFolder == "") od.InitialDirectory = Path.GetDirectoryName(lastfile);
+            //    od.FileName = Path.GetFileNameWithoutExtension(lastfile) + ".pdf";
+            //}
+            //od.Filter = "PDF|*.pdf";
+            //od.Title = "Save a PDF File";
+            //if (od.ShowDialog() == DialogResult.OK && od.FileName != "")
+            //{
+            //    Properties.Settings.Default.LastPDFFolder = Path.GetDirectoryName(od.FileName);
+            //    Properties.Settings.Default.Save();
+            //    try
+            //    {
+            //        using (FileStream fs = (FileStream)od.OpenFile())
+            //        {
+            //            PDFForms pdf = new PDFForms()
+            //            {
+            //                //IncludeActions = includeActionsInPDFToolStripMenuItem.Checked,
+            //                //IncludeLog = PDFjournal.Checked,
+            //                //IncludeResources = includeResourcesInSheetToolStripMenuItem.Checked,
+            //                //IncludeSpellbook = PDFspellbook.Checked,
+            //                //PreserveEdit = preservePDFFormsToolStripMenuItem.Checked,
+            //                //IncludeMonsters = toolStripMenuItem1.Checked,
+            //                OutStream = fs
+            //            };
+            //            await Config.PDFExporter.Export(Program.Context, pdf);
+            //        }
+            //        if (MessageBox.Show("PDF exported to: " + od.FileName + " Do you want to open it?", "CB5", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //        {
+            //            Process.Start(od.FileName);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        System.Windows.Forms.MessageBox.Show(ex.Message + "\n" + ex.InnerException + "\n" + ex.StackTrace, "Error exporting PDF to " + od.FileName);
+            //    }
+            //}
         }
-        private void defaultPDFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.PDFExporter = PlayerExtensions.Load("DefaultPDF.xml");
-            defaultPDFToolStripMenuItem.Checked = true;
-            alternateToolStripMenuItem.Checked = false;
-        }
+        //private void defaultPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    Config.PDFExporter = PlayerExtensions.Load("DefaultPDF.xml");
+        //    defaultPDFToolStripMenuItem.Checked = true;
+        //    alternateToolStripMenuItem.Checked = false;
+        //}
 
-        private void alternateToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Config.PDFExporter = PlayerExtensions.Load("AlternatePDF.xml");
-            alternateToolStripMenuItem.Checked = true;
-            defaultPDFToolStripMenuItem.Checked = false;
-        }
+        //private void alternateToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    Config.PDFExporter = PlayerExtensions.Load("AlternatePDF.xml");
+        //    alternateToolStripMenuItem.Checked = true;
+        //    defaultPDFToolStripMenuItem.Checked = false;
+        //}
 
         private void racebox_DoubleClick(object sender, EventArgs e)
         {
@@ -2381,9 +2400,11 @@ namespace Character_Builder_5
             List<String> extensions=new List<string>();
             foreach (string s in (from c in ImageCodecInfo.GetImageEncoders() select c.FilenameExtension)) extensions.AddRange(s.Split(';'));
             ofd.Filter = "Image Files | *." + String.Join(";", extensions);
-            ofd.ShowDialog();
-            if (ofd.FileName != "")
+            if (Properties.Settings.Default.LastImageFolder != null && Properties.Settings.Default.LastImageFolder != "") ofd.InitialDirectory = Properties.Settings.Default.LastImageFolder;
+            if (ofd.ShowDialog() == DialogResult.OK && ofd.FileName != "")
             {
+                Properties.Settings.Default.LastImageFolder = Path.GetDirectoryName(ofd.FileName);
+                Properties.Settings.Default.Save();
                 try
                 {
                     Program.Context.MakeHistory("");
@@ -2510,9 +2531,11 @@ namespace Character_Builder_5
             List<String> extensions = new List<string>();
             foreach (string s in (from c in ImageCodecInfo.GetImageEncoders() select c.FilenameExtension)) extensions.AddRange(s.Split(';'));
             ofd.Filter = "Image Files | *." + String.Join(";", extensions);
-            ofd.ShowDialog();
-            if (ofd.FileName != "")
+            if (Properties.Settings.Default.LastImageFolder != null && Properties.Settings.Default.LastImageFolder != "") ofd.InitialDirectory = Properties.Settings.Default.LastImageFolder;
+            if (ofd.ShowDialog() == DialogResult.OK && ofd.FileName != "")
             {
+                Properties.Settings.Default.LastImageFolder = Path.GetDirectoryName(ofd.FileName);
+                Properties.Settings.Default.Save();
                 try
                 {
                     Program.Context.MakeHistory("");
@@ -4272,15 +4295,15 @@ namespace Character_Builder_5
 
         }
 
-        private void PDFjournal_Click(object sender, EventArgs e)
-        {
-            PDFjournal.Checked = !PDFjournal.Checked;
-        }
+        //private void PDFjournal_Click(object sender, EventArgs e)
+        //{
+        //    PDFjournal.Checked = !PDFjournal.Checked;
+        //}
 
-        private void PDFspellbook_Click(object sender, EventArgs e)
-        {
-            PDFspellbook.Checked = !PDFspellbook.Checked;
-        }
+        //private void PDFspellbook_Click(object sender, EventArgs e)
+        //{
+        //    PDFspellbook.Checked = !PDFspellbook.Checked;
+        //}
 
         private void reladDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -4314,10 +4337,10 @@ namespace Character_Builder_5
             }
         }
 
-        private void includeActionsInPDFToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            includeActionsInPDFToolStripMenuItem.Checked = !includeActionsInPDFToolStripMenuItem.Checked;
-        }
+        //private void includeActionsInPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    includeActionsInPDFToolStripMenuItem.Checked = !includeActionsInPDFToolStripMenuItem.Checked;
+        //}
 
         private void factionRank_TextChanged(object sender, EventArgs e)
         {
@@ -4365,10 +4388,10 @@ namespace Character_Builder_5
             UpdateFormsCompanions();
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            toolStripMenuItem1.Checked = !toolStripMenuItem1.Checked;
-        }
+        //private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        //{
+        //    toolStripMenuItem1.Checked = !toolStripMenuItem1.Checked;
+        //}
 
         private void advancementCheckpointsInsteadOfXPToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -4453,6 +4476,21 @@ namespace Character_Builder_5
                 je.Added = journalDate.Value;
                 UpdateJournal();
             }
+        }
+
+        private void saveCurrentPlayerDCIAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DCI = Program.Context.Player.DCI;
+            Properties.Settings.Default.PlayerName = Program.Context.Player.PlayerName;
+            Properties.Settings.Default.Save();
+        }
+
+        private void saveCurrentSourcesAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.EnabledSourcebooks == null) Properties.Settings.Default.EnabledSourcebooks = new System.Collections.Specialized.StringCollection();
+            Properties.Settings.Default.EnabledSourcebooks.Clear();
+            Properties.Settings.Default.EnabledSourcebooks.AddRange(SourceManager.Sources.Where(s => !Program.Context.Player.ExcludedSources.Contains(s)).ToArray());
+            Properties.Settings.Default.Save();
         }
     }
 }
