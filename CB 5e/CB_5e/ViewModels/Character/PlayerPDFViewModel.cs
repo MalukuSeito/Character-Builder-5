@@ -319,7 +319,7 @@ namespace CB_5e.ViewModels.Character
             pdf.ForceAttunedAndOnUseItemsOnSheet = MagicFeatures;
             pdf.ForceAttunedItemsInSpellbook = MagicBook;
             pdf.IgnoreMagicItems = !CountMagic;
-            pdf.IncludeActions = ActionFeatures;
+            pdf.IncludeActions = action != null;
             pdf.IncludeLog = log != null;
             pdf.IncludeMonsters = monster != null;
             pdf.IncludeSpellbook = spellbook != null;
