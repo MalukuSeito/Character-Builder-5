@@ -172,17 +172,17 @@ namespace Character_Builder_5
             if (CUSTOM.Equals(Preset.SelectedItem))
             {
                 if (charsheets.ContainsKey(Properties.Settings.Default.CustomSheet)) SheetBox.SelectedItem = Properties.Settings.Default.CustomSheet;
-                else SheetBox.SelectedItem = null;
+                else SheetBox.SelectedItem = NONE;
                 if (spellsheets.ContainsKey(Properties.Settings.Default.CustomSpellSheet)) SpellBox.SelectedItem = Properties.Settings.Default.CustomSpellSheet;
-                else SpellBox.SelectedItem = null;
+                else SpellBox.SelectedItem = NONE;
                 if (logsheets.ContainsKey(Properties.Settings.Default.CustomLogSheet)) LogBox.SelectedItem = Properties.Settings.Default.CustomLogSheet;
-                else LogBox.SelectedItem = null;
+                else LogBox.SelectedItem = NONE;
                 if (spellbooks.ContainsKey(Properties.Settings.Default.CustomSpellbook)) SpellbookBox.SelectedItem = Properties.Settings.Default.CustomSpellbook;
-                else SpellbookBox.SelectedItem = null;
+                else SpellbookBox.SelectedItem = NONE;
                 if (actionsheets.ContainsKey(Properties.Settings.Default.CustomActionsSheet)) ActionsBox.SelectedItem = Properties.Settings.Default.CustomActionsSheet;
-                else ActionsBox.SelectedItem = null;
+                else ActionsBox.SelectedItem = NONE;
                 if (monstersheets.ContainsKey(Properties.Settings.Default.CustomMonsterSheet)) MonsterBox.SelectedItem = Properties.Settings.Default.CustomMonsterSheet;
-                else MonsterBox.SelectedItem = null;
+                else MonsterBox.SelectedItem = NONE;
             }
             else if (SAVE.Equals(Preset.SelectedItem))
             {

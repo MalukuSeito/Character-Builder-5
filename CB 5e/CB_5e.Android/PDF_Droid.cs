@@ -28,12 +28,12 @@ namespace CB_5e.Droid
     public class PDF_Droid : PDFBase, IPDFService
     {
         private FileStream fs = null;
-        public async Task ExportPDF(string Exporter, BuilderContext context)
+        public async Task ExportPDF(PDF Exporter, BuilderContext context)
         {
             using (fs = System.IO.File.OpenWrite(Path.Combine(Android.App.Application.Context.ExternalCacheDir.Path, context.Player.Name + ".pdf")))
             {
-                PDF p = await Load(await PCLSourceManager.Data.GetFileAsync(Exporter).ConfigureAwait(false)).ConfigureAwait(false);
-                await p.Export(context, this).ConfigureAwait(false);
+                fs.SetLength(0);
+                await Exporter.Export(context, this).ConfigureAwait(false);
             }
             var uri = Android.Net.Uri.Parse("file://" + Android.App.Application.Context.ExternalCacheDir.Path + "/" + context.Player.Name + ".pdf");
             var intent = new Intent(Intent.ActionSend);
@@ -42,20 +42,7 @@ namespace CB_5e.Droid
             intent.SetFlags(ActivityFlags.ClearWhenTaskReset | ActivityFlags.NewTask);
             Forms.Context.StartActivity(Intent.CreateChooser(intent, "Select App"));
         }
-        public async static Task<PDF> Load(IFile file)
-        {
-            using (Stream s = await file.OpenAsync(PCLStorage.FileAccess.Read))
-            {
-                PDF p = (PDF)PDF.Serializer.Deserialize(s);
-                p.File = PCLImport.MakeRelativeFile(p.File);
-                p.SpellFile = PCLImport.MakeRelativeFile(p.SpellFile);
-                p.LogFile = PCLImport.MakeRelativeFile(p.LogFile);
-                p.SpellbookFile = PCLImport.MakeRelativeFile(p.SpellbookFile);
-                p.ActionsFile = PCLImport.MakeRelativeFile(p.ActionsFile);
-                p.ActionsFile2 = PCLImport.MakeRelativeFile(p.ActionsFile2);
-                return p;
-            }
-        }
+        
 
         public override async Task<IPDFEditor> CreateEditor(string file)
         {
@@ -72,7 +59,7 @@ namespace CB_5e.Droid
 
         public override IPDFSheet CreateSheet()
         {
-            return new PDFDroidSheet(PreserveEdit, fs);
+            return new PDFDroidSheet(PreserveEdit, fs, Duplex, DuplexWhite, this);
         }
     }
 }

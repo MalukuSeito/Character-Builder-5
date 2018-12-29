@@ -29,7 +29,7 @@ namespace CB_5e.iOS
     public class PDF_iOS : PDFBase, IPDFService
     {
         private FileStream fs = null;
-        public async Task ExportPDF(string Exporter, BuilderContext context)
+        public async Task ExportPDF(PDF Exporter, BuilderContext context)
         {
             var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var tmp = Path.Combine(documents, "..", "tmp");
@@ -46,8 +46,9 @@ namespace CB_5e.iOS
             }
             using (fs = System.IO.File.OpenWrite(f))
             {
-                PDF p = await Load(await PCLSourceManager.Data.GetFileAsync(Exporter).ConfigureAwait(false)).ConfigureAwait(false);
-                await p.Export(context, this).ConfigureAwait(false);
+                //PDF p = await Load(await PCLSourceManager.Data.GetFileAsync(Exporter).ConfigureAwait(false)).ConfigureAwait(false);
+                fs.SetLength(0);
+                await Exporter.Export(context, this).ConfigureAwait(false);
             }
             var fileinfo = new FileInfo(f);
             Device.BeginInvokeOnMainThread(() =>
@@ -109,7 +110,7 @@ namespace CB_5e.iOS
 
         public override IPDFSheet CreateSheet()
         {
-            return new PDFiOSSheet(PreserveEdit, fs);
+            return new PDFiOSSheet(PreserveEdit, fs, Duplex, DuplexWhite, this);
         }
     }
 }

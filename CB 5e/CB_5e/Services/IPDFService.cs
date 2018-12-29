@@ -17,6 +17,14 @@ namespace CB_5e.Services
         bool IncludeSpellbook { get; set; }
         bool IncludeActions { get; set; }
         bool IncludeMonsters { get; set; }
-        Task ExportPDF(string Exporter, BuilderContext context);
+        bool IgnoreMagicItems { get; set; }
+        bool AutoExcludeActions { get; set; }
+        bool ForceAttunedAndOnUseItemsOnSheet { get; set; }
+        bool ForceAttunedItemsInSpellbook { get; set; }
+        bool Duplex { get; set; }
+        bool DuplexWhite { get; set; }
+        bool SwapScoreAndMod { get; set; }
+        String APFormat { get; set; }
+        Task ExportPDF(PDF Exporter, BuilderContext context);
     }
 }

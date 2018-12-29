@@ -1,5 +1,7 @@
 ﻿using OGL;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using System.IO;
 
 namespace CB_5e.Views
 {
@@ -13,5 +15,7 @@ namespace CB_5e.Views
                 },
                 TaskContinuationOptions.OnlyOnFaulted);
         }
+
+        public static ImageSource ToSource(this byte[] data) => data != null ? ImageSource.FromStream(() => new MemoryStream(data)) : null;
     }
 }
