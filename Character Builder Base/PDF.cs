@@ -348,19 +348,19 @@ namespace Character_Builder
                 if (trans.ContainsKey("RaceBackgroundFeatures"))
                 {
                     List<Feature> feats = new List<Feature>();
-                    foreach (Feature f in onUse) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f))
+                    foreach (Feature f in onUse) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f))
                         {
                             if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f);
                             else if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) feats.Add(f);
                         }
-                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     p.SetTextAndDescriptions(trans["RaceBackgroundFeatures"], null, feats);
                     List<Feature> feats2 = new List<Feature>();
-                    foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
-                    foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
+                    foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
+                    foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
                     if (trans.ContainsKey("Features")) p.SetTextAndDescriptions(trans["Features"], null, feats2);
                 }
                 else if (trans.ContainsKey("Features"))
@@ -371,12 +371,12 @@ namespace Character_Builder
                             if (trans.ContainsKey("Treasure") || trans.ContainsKey("Usable")) usable.Add(f);
                             else if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) feats.Add(f);
                         }
-                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetOnlyBackgroundFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
+                    foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     p.SetTextAndDescriptions(trans["Features"], null, feats);
                 }
                 bool addUsableToTreasure = false;

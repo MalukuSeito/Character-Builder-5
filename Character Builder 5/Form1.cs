@@ -3420,7 +3420,7 @@ namespace Character_Builder_5
                 layouting = true;
                 hidefeature.Enabled = true;
                 Feature f = (Feature)Features.SelectedItem;
-                hidefeature.Checked = Program.Context.Player.HiddenFeatures.Exists(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                hidefeature.Checked = Program.Context.Player.HiddenFeatures.Exists(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name) || StringComparer.OrdinalIgnoreCase.Equals(s, f.Name + "/" + f.Level));
                 layouting = false;
                 Choice_DisplayFeature(sender, e);
             }
@@ -3433,8 +3433,8 @@ namespace Character_Builder_5
             {
                 Program.Context.MakeHistory("");
                 Feature f = (Feature)Features.SelectedItem;
-                if (hidefeature.Checked) Program.Context.Player.HiddenFeatures.Add(f.Name);
-                else Program.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                if (hidefeature.Checked) Program.Context.Player.HiddenFeatures.Add(f.Name + "/" + f.Level);
+                else Program.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name) || StringComparer.OrdinalIgnoreCase.Equals(s, f.Name + "/" + f.Level));
                 //UpdateInPlayInner();
             }
         }

@@ -1259,8 +1259,8 @@
             // subSplit.Panel2
             // 
             this.subSplit.Panel2.Controls.Add(this.displayElement);
-            this.subSplit.Size = new System.Drawing.Size(1343, 639);
-            this.subSplit.SplitterDistance = 980;
+            this.subSplit.Size = new System.Drawing.Size(1342, 639);
+            this.subSplit.SplitterDistance = 978;
             this.subSplit.SplitterWidth = 5;
             this.subSplit.TabIndex = 1;
             // 
@@ -1282,7 +1282,7 @@
             this.mainTab.Margin = new System.Windows.Forms.Padding(4);
             this.mainTab.Name = "mainTab";
             this.mainTab.SelectedIndex = 0;
-            this.mainTab.Size = new System.Drawing.Size(980, 639);
+            this.mainTab.Size = new System.Drawing.Size(978, 639);
             this.mainTab.TabIndex = 0;
             // 
             // racetab
@@ -1297,7 +1297,7 @@
             this.racetab.Margin = new System.Windows.Forms.Padding(4);
             this.racetab.Name = "racetab";
             this.racetab.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.racetab.Size = new System.Drawing.Size(972, 610);
+            this.racetab.Size = new System.Drawing.Size(970, 610);
             this.racetab.TabIndex = 0;
             this.racetab.Text = "Race";
             // 
@@ -1309,7 +1309,7 @@
             this.subracebox.Location = new System.Drawing.Point(20, 170);
             this.subracebox.Margin = new System.Windows.Forms.Padding(4);
             this.subracebox.Name = "subracebox";
-            this.subracebox.Size = new System.Drawing.Size(932, 116);
+            this.subracebox.Size = new System.Drawing.Size(930, 116);
             this.subracebox.TabIndex = 5;
             this.subracebox.SelectedIndexChanged += new System.EventHandler(this.subracebox_SelectedIndexChanged);
             this.subracebox.DoubleClick += new System.EventHandler(this.subracebox_DoubleClick);
@@ -1335,7 +1335,7 @@
             this.racebox.Location = new System.Drawing.Point(20, 39);
             this.racebox.Margin = new System.Windows.Forms.Padding(4);
             this.racebox.Name = "racebox";
-            this.racebox.Size = new System.Drawing.Size(932, 100);
+            this.racebox.Size = new System.Drawing.Size(930, 100);
             this.racebox.TabIndex = 3;
             this.racebox.SelectedIndexChanged += new System.EventHandler(this.racebox_SelectedIndexChanged);
             this.racebox.DoubleClick += new System.EventHandler(this.racebox_DoubleClick);
@@ -1361,7 +1361,7 @@
             this.classtab.Location = new System.Drawing.Point(4, 25);
             this.classtab.Margin = new System.Windows.Forms.Padding(4);
             this.classtab.Name = "classtab";
-            this.classtab.Size = new System.Drawing.Size(972, 610);
+            this.classtab.Size = new System.Drawing.Size(970, 610);
             this.classtab.TabIndex = 1;
             this.classtab.Text = "Class";
             // 
@@ -1381,7 +1381,7 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.ClassPanel);
-            this.splitContainer5.Size = new System.Drawing.Size(972, 610);
+            this.splitContainer5.Size = new System.Drawing.Size(970, 610);
             this.splitContainer5.SplitterDistance = 173;
             this.splitContainer5.SplitterWidth = 5;
             this.splitContainer5.TabIndex = 0;
@@ -1407,7 +1407,7 @@
             this.splitContainer6.Panel2.Controls.Add(this.hpSpinner);
             this.splitContainer6.Panel2.Controls.Add(this.classesBox);
             this.splitContainer6.Panel2.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.splitContainer6.Size = new System.Drawing.Size(972, 173);
+            this.splitContainer6.Size = new System.Drawing.Size(970, 173);
             this.splitContainer6.SplitterDistance = 220;
             this.splitContainer6.SplitterWidth = 5;
             this.splitContainer6.TabIndex = 2;
@@ -1429,7 +1429,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(447, 131);
+            this.label2.Location = new System.Drawing.Point(444, 131);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 17);
@@ -1441,7 +1441,7 @@
             // 
             this.hpSpinner.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.hpSpinner.Enabled = false;
-            this.hpSpinner.Location = new System.Drawing.Point(561, 129);
+            this.hpSpinner.Location = new System.Drawing.Point(558, 129);
             this.hpSpinner.Margin = new System.Windows.Forms.Padding(4);
             this.hpSpinner.Name = "hpSpinner";
             this.hpSpinner.Size = new System.Drawing.Size(160, 22);
@@ -1458,7 +1458,7 @@
             this.classesBox.Location = new System.Drawing.Point(20, 18);
             this.classesBox.Margin = new System.Windows.Forms.Padding(4);
             this.classesBox.Name = "classesBox";
-            this.classesBox.Size = new System.Drawing.Size(700, 100);
+            this.classesBox.Size = new System.Drawing.Size(697, 100);
             this.classesBox.TabIndex = 1;
             this.classesBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayClass);
             this.classesBox.Leave += new System.EventHandler(this.listbox_Deselect_on_Leave);
@@ -1472,7 +1472,7 @@
             this.ClassPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ClassPanel.Name = "ClassPanel";
             this.ClassPanel.Padding = new System.Windows.Forms.Padding(20, 9, 20, 18);
-            this.ClassPanel.Size = new System.Drawing.Size(972, 432);
+            this.ClassPanel.Size = new System.Drawing.Size(970, 432);
             this.ClassPanel.TabIndex = 0;
             // 
             // scoretab
@@ -1484,7 +1484,7 @@
             this.scoretab.Margin = new System.Windows.Forms.Padding(4);
             this.scoretab.Name = "scoretab";
             this.scoretab.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.scoretab.Size = new System.Drawing.Size(972, 610);
+            this.scoretab.Size = new System.Drawing.Size(970, 610);
             this.scoretab.TabIndex = 6;
             this.scoretab.Text = "Ability Scores";
             // 
@@ -1506,7 +1506,7 @@
             // 
             this.splitContainer2.Panel2.AutoScroll = true;
             this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(932, 574);
+            this.splitContainer2.Size = new System.Drawing.Size(930, 574);
             this.splitContainer2.SplitterDistance = 220;
             this.splitContainer2.SplitterWidth = 5;
             this.splitContainer2.TabIndex = 0;
@@ -1519,7 +1519,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(932, 220);
+            this.groupBox1.Size = new System.Drawing.Size(930, 220);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ability Scores";
@@ -1572,7 +1572,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.ArrayBox);
             this.splitContainer3.Panel2.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.splitContainer3.Size = new System.Drawing.Size(924, 197);
+            this.splitContainer3.Size = new System.Drawing.Size(922, 197);
             this.splitContainer3.SplitterDistance = 220;
             this.splitContainer3.SplitterWidth = 5;
             this.splitContainer3.TabIndex = 1;
@@ -1974,7 +1974,7 @@
             this.ArrayBox.Location = new System.Drawing.Point(20, 18);
             this.ArrayBox.Margin = new System.Windows.Forms.Padding(4);
             this.ArrayBox.Name = "ArrayBox";
-            this.ArrayBox.Size = new System.Drawing.Size(659, 161);
+            this.ArrayBox.Size = new System.Drawing.Size(657, 161);
             this.ArrayBox.TabIndex = 0;
             this.toolTip1.SetToolTip(this.ArrayBox, "Doubleclick to assign an ability score array");
             this.ArrayBox.DoubleClick += new System.EventHandler(this.ArrayBox_DoubleClick);
@@ -1987,7 +1987,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(932, 349);
+            this.groupBox2.Size = new System.Drawing.Size(930, 349);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ability Score Improvements (Choices for feats appear in the Class tab)";
@@ -2011,7 +2011,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.AbilityFeatBox);
             this.splitContainer4.Panel2.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.splitContainer4.Size = new System.Drawing.Size(924, 326);
+            this.splitContainer4.Size = new System.Drawing.Size(922, 326);
             this.splitContainer4.SplitterDistance = 220;
             this.splitContainer4.SplitterWidth = 5;
             this.splitContainer4.TabIndex = 1;
@@ -2037,7 +2037,7 @@
             this.AbilityFeatBox.Location = new System.Drawing.Point(20, 18);
             this.AbilityFeatBox.Margin = new System.Windows.Forms.Padding(4);
             this.AbilityFeatBox.Name = "AbilityFeatBox";
-            this.AbilityFeatBox.Size = new System.Drawing.Size(659, 290);
+            this.AbilityFeatBox.Size = new System.Drawing.Size(657, 290);
             this.AbilityFeatBox.TabIndex = 1;
             this.AbilityFeatBox.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayFeature);
             this.AbilityFeatBox.DoubleClick += new System.EventHandler(this.AbilityFeatBox_DoubleClick);
@@ -2063,7 +2063,7 @@
             this.backtab.Margin = new System.Windows.Forms.Padding(4);
             this.backtab.Name = "backtab";
             this.backtab.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.backtab.Size = new System.Drawing.Size(972, 610);
+            this.backtab.Size = new System.Drawing.Size(970, 610);
             this.backtab.TabIndex = 2;
             this.backtab.Text = "Background";
             // 
@@ -2075,7 +2075,7 @@
             this.flaws.Location = new System.Drawing.Point(20, 758);
             this.flaws.Margin = new System.Windows.Forms.Padding(4);
             this.flaws.Name = "flaws";
-            this.flaws.Size = new System.Drawing.Size(911, 116);
+            this.flaws.Size = new System.Drawing.Size(909, 116);
             this.flaws.TabIndex = 17;
             this.flaws.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.flaws.DoubleClick += new System.EventHandler(this.flaws_DoubleClick);
@@ -2101,7 +2101,7 @@
             this.bonds.Location = new System.Drawing.Point(20, 611);
             this.bonds.Margin = new System.Windows.Forms.Padding(4);
             this.bonds.Name = "bonds";
-            this.bonds.Size = new System.Drawing.Size(911, 116);
+            this.bonds.Size = new System.Drawing.Size(909, 116);
             this.bonds.TabIndex = 15;
             this.bonds.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.bonds.DoubleClick += new System.EventHandler(this.bonds_DoubleClick);
@@ -2127,7 +2127,7 @@
             this.ideals.Location = new System.Drawing.Point(20, 464);
             this.ideals.Margin = new System.Windows.Forms.Padding(4);
             this.ideals.Name = "ideals";
-            this.ideals.Size = new System.Drawing.Size(911, 116);
+            this.ideals.Size = new System.Drawing.Size(909, 116);
             this.ideals.TabIndex = 13;
             this.ideals.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.ideals.DoubleClick += new System.EventHandler(this.ideals_DoubleClick);
@@ -2153,7 +2153,7 @@
             this.traits2.Location = new System.Drawing.Point(20, 317);
             this.traits2.Margin = new System.Windows.Forms.Padding(4);
             this.traits2.Name = "traits2";
-            this.traits2.Size = new System.Drawing.Size(911, 116);
+            this.traits2.Size = new System.Drawing.Size(909, 116);
             this.traits2.TabIndex = 11;
             this.traits2.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.traits2.DoubleClick += new System.EventHandler(this.traits2_DoubleClick);
@@ -2179,7 +2179,7 @@
             this.traits.Location = new System.Drawing.Point(20, 170);
             this.traits.Margin = new System.Windows.Forms.Padding(4);
             this.traits.Name = "traits";
-            this.traits.Size = new System.Drawing.Size(911, 116);
+            this.traits.Size = new System.Drawing.Size(909, 116);
             this.traits.TabIndex = 3;
             this.traits.SelectedIndexChanged += new System.EventHandler(this.ideals_SelectedIndexChanged);
             this.traits.DoubleClick += new System.EventHandler(this.traits_DoubleClick);
@@ -2205,7 +2205,7 @@
             this.background.Location = new System.Drawing.Point(20, 39);
             this.background.Margin = new System.Windows.Forms.Padding(4);
             this.background.Name = "background";
-            this.background.Size = new System.Drawing.Size(911, 100);
+            this.background.Size = new System.Drawing.Size(909, 100);
             this.background.TabIndex = 1;
             this.background.SelectedIndexChanged += new System.EventHandler(this.background_SelectedIndexChanged);
             this.background.DoubleClick += new System.EventHandler(this.background_DoubleClick);
@@ -2232,7 +2232,7 @@
             this.personaltab.Margin = new System.Windows.Forms.Padding(4);
             this.personaltab.Name = "personaltab";
             this.personaltab.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.personaltab.Size = new System.Drawing.Size(972, 610);
+            this.personaltab.Size = new System.Drawing.Size(970, 610);
             this.personaltab.TabIndex = 5;
             this.personaltab.Text = "Personal";
             // 
@@ -2250,7 +2250,7 @@
             this.personalFlowLayout.Location = new System.Drawing.Point(20, 18);
             this.personalFlowLayout.Margin = new System.Windows.Forms.Padding(4);
             this.personalFlowLayout.Name = "personalFlowLayout";
-            this.personalFlowLayout.Size = new System.Drawing.Size(932, 574);
+            this.personalFlowLayout.Size = new System.Drawing.Size(930, 574);
             this.personalFlowLayout.TabIndex = 0;
             // 
             // infoBox
@@ -2913,7 +2913,7 @@
             this.spelltab.Location = new System.Drawing.Point(4, 25);
             this.spelltab.Margin = new System.Windows.Forms.Padding(4);
             this.spelltab.Name = "spelltab";
-            this.spelltab.Size = new System.Drawing.Size(972, 610);
+            this.spelltab.Size = new System.Drawing.Size(970, 610);
             this.spelltab.TabIndex = 8;
             this.spelltab.Text = "Spells";
             // 
@@ -2926,7 +2926,7 @@
             this.spellcontrol.Margin = new System.Windows.Forms.Padding(4);
             this.spellcontrol.Name = "spellcontrol";
             this.spellcontrol.SelectedIndex = 0;
-            this.spellcontrol.Size = new System.Drawing.Size(972, 610);
+            this.spellcontrol.Size = new System.Drawing.Size(970, 610);
             this.spellcontrol.TabIndex = 0;
             // 
             // tabPage1
@@ -2935,7 +2935,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(964, 581);
+            this.tabPage1.Size = new System.Drawing.Size(962, 581);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -2946,7 +2946,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(966, 581);
+            this.tabPage2.Size = new System.Drawing.Size(964, 581);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -2958,7 +2958,7 @@
             this.formCompanionTab.Margin = new System.Windows.Forms.Padding(4);
             this.formCompanionTab.Name = "formCompanionTab";
             this.formCompanionTab.Padding = new System.Windows.Forms.Padding(4);
-            this.formCompanionTab.Size = new System.Drawing.Size(972, 610);
+            this.formCompanionTab.Size = new System.Drawing.Size(970, 610);
             this.formCompanionTab.TabIndex = 10;
             this.formCompanionTab.Text = "Forms / Summons";
             this.formCompanionTab.UseVisualStyleBackColor = true;
@@ -2978,7 +2978,7 @@
             // splitContainer12.Panel2
             // 
             this.splitContainer12.Panel2.Controls.Add(this.splitContainer13);
-            this.splitContainer12.Size = new System.Drawing.Size(964, 602);
+            this.splitContainer12.Size = new System.Drawing.Size(962, 602);
             this.splitContainer12.SplitterDistance = 250;
             this.splitContainer12.SplitterWidth = 5;
             this.splitContainer12.TabIndex = 0;
@@ -2991,7 +2991,7 @@
             this.FormsCompanionOptions.Location = new System.Drawing.Point(0, 0);
             this.FormsCompanionOptions.Margin = new System.Windows.Forms.Padding(4);
             this.FormsCompanionOptions.Name = "FormsCompanionOptions";
-            this.FormsCompanionOptions.Size = new System.Drawing.Size(964, 250);
+            this.FormsCompanionOptions.Size = new System.Drawing.Size(962, 250);
             this.FormsCompanionOptions.TabIndex = 0;
             this.FormsCompanionOptions.SelectedIndexChanged += new System.EventHandler(this.FormsCompanionOptions_SelectedIndexChanged);
             // 
@@ -3011,8 +3011,8 @@
             // 
             this.splitContainer13.Panel2.Controls.Add(this.FormsCompanionsAvailable);
             this.splitContainer13.Panel2.Controls.Add(this.label37);
-            this.splitContainer13.Size = new System.Drawing.Size(964, 347);
-            this.splitContainer13.SplitterDistance = 456;
+            this.splitContainer13.Size = new System.Drawing.Size(962, 347);
+            this.splitContainer13.SplitterDistance = 455;
             this.splitContainer13.SplitterWidth = 5;
             this.splitContainer13.TabIndex = 0;
             // 
@@ -3024,7 +3024,7 @@
             this.FormsCompanionsSelected.Location = new System.Drawing.Point(0, 27);
             this.FormsCompanionsSelected.Margin = new System.Windows.Forms.Padding(4);
             this.FormsCompanionsSelected.Name = "FormsCompanionsSelected";
-            this.FormsCompanionsSelected.Size = new System.Drawing.Size(456, 320);
+            this.FormsCompanionsSelected.Size = new System.Drawing.Size(455, 320);
             this.FormsCompanionsSelected.TabIndex = 3;
             this.FormsCompanionsSelected.SelectedIndexChanged += new System.EventHandler(this.Display_Generic);
             this.FormsCompanionsSelected.DoubleClick += new System.EventHandler(this.FormsCompanionsSelected_DoubleClick);
@@ -3049,7 +3049,7 @@
             this.FormsCompanionsAvailable.Location = new System.Drawing.Point(0, 27);
             this.FormsCompanionsAvailable.Margin = new System.Windows.Forms.Padding(4);
             this.FormsCompanionsAvailable.Name = "FormsCompanionsAvailable";
-            this.FormsCompanionsAvailable.Size = new System.Drawing.Size(503, 320);
+            this.FormsCompanionsAvailable.Size = new System.Drawing.Size(502, 320);
             this.FormsCompanionsAvailable.TabIndex = 3;
             this.FormsCompanionsAvailable.SelectedIndexChanged += new System.EventHandler(this.Display_Generic);
             this.FormsCompanionsAvailable.DoubleClick += new System.EventHandler(this.FormsCompanionsAvailable_DoubleClick);
@@ -3076,7 +3076,7 @@
             this.journalTab.Margin = new System.Windows.Forms.Padding(4);
             this.journalTab.Name = "journalTab";
             this.journalTab.Padding = new System.Windows.Forms.Padding(4);
-            this.journalTab.Size = new System.Drawing.Size(972, 610);
+            this.journalTab.Size = new System.Drawing.Size(970, 610);
             this.journalTab.TabIndex = 9;
             this.journalTab.Text = "Journal";
             // 
@@ -3088,7 +3088,7 @@
             this.journalEntries.Location = new System.Drawing.Point(4, 4);
             this.journalEntries.Margin = new System.Windows.Forms.Padding(4);
             this.journalEntries.Name = "journalEntries";
-            this.journalEntries.Size = new System.Drawing.Size(964, 236);
+            this.journalEntries.Size = new System.Drawing.Size(962, 236);
             this.journalEntries.TabIndex = 3;
             this.journalEntries.SelectedIndexChanged += new System.EventHandler(this.journalEntries_SelectedIndexChanged);
             // 
@@ -3101,7 +3101,7 @@
             this.panel2.Location = new System.Drawing.Point(4, 240);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(964, 31);
+            this.panel2.Size = new System.Drawing.Size(962, 31);
             this.panel2.TabIndex = 2;
             // 
             // journalTotal
@@ -3116,7 +3116,7 @@
             // removeJournalButton
             // 
             this.removeJournalButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.removeJournalButton.Location = new System.Drawing.Point(741, 0);
+            this.removeJournalButton.Location = new System.Drawing.Point(739, 0);
             this.removeJournalButton.Margin = new System.Windows.Forms.Padding(4);
             this.removeJournalButton.Name = "removeJournalButton";
             this.removeJournalButton.Size = new System.Drawing.Size(123, 31);
@@ -3128,7 +3128,7 @@
             // newJournalEntry
             // 
             this.newJournalEntry.Dock = System.Windows.Forms.DockStyle.Right;
-            this.newJournalEntry.Location = new System.Drawing.Point(864, 0);
+            this.newJournalEntry.Location = new System.Drawing.Point(862, 0);
             this.newJournalEntry.Margin = new System.Windows.Forms.Padding(4);
             this.newJournalEntry.Name = "newJournalEntry";
             this.newJournalEntry.Size = new System.Drawing.Size(100, 31);
@@ -3146,7 +3146,7 @@
             this.panel1.Location = new System.Drawing.Point(4, 271);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(964, 335);
+            this.panel1.Size = new System.Drawing.Size(962, 335);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -3162,7 +3162,7 @@
             this.journalText.Multiline = true;
             this.journalText.Name = "journalText";
             this.journalText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.journalText.Size = new System.Drawing.Size(581, 293);
+            this.journalText.Size = new System.Drawing.Size(579, 293);
             this.journalText.TabIndex = 3;
             this.journalText.TextChanged += new System.EventHandler(this.journalText_TextChanged);
             // 
@@ -3173,7 +3173,7 @@
             this.journalTitle.Location = new System.Drawing.Point(4, 7);
             this.journalTitle.Margin = new System.Windows.Forms.Padding(4);
             this.journalTitle.Name = "journalTitle";
-            this.journalTitle.Size = new System.Drawing.Size(581, 22);
+            this.journalTitle.Size = new System.Drawing.Size(579, 22);
             this.journalTitle.TabIndex = 1;
             this.journalTitle.TextChanged += new System.EventHandler(this.journalTitle_TextChanged);
             // 
@@ -3217,7 +3217,7 @@
             this.panel3.Controls.Add(this.label20);
             this.panel3.Controls.Add(this.journalXP);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(595, 0);
+            this.panel3.Location = new System.Drawing.Point(593, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(369, 335);
@@ -3725,7 +3725,7 @@
             this.equiptab.Location = new System.Drawing.Point(4, 25);
             this.equiptab.Margin = new System.Windows.Forms.Padding(4);
             this.equiptab.Name = "equiptab";
-            this.equiptab.Size = new System.Drawing.Size(972, 610);
+            this.equiptab.Size = new System.Drawing.Size(970, 610);
             this.equiptab.TabIndex = 3;
             this.equiptab.Text = "Shop";
             // 
@@ -3747,7 +3747,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer8);
             this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(4, 4, 11, 4);
-            this.splitContainer1.Size = new System.Drawing.Size(972, 610);
+            this.splitContainer1.Size = new System.Drawing.Size(970, 610);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
@@ -3809,8 +3809,8 @@
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.actionBox);
-            this.splitContainer8.Size = new System.Drawing.Size(782, 602);
-            this.splitContainer8.SplitterDistance = 555;
+            this.splitContainer8.Size = new System.Drawing.Size(780, 602);
+            this.splitContainer8.SplitterDistance = 554;
             this.splitContainer8.SplitterWidth = 5;
             this.splitContainer8.TabIndex = 3;
             // 
@@ -3830,8 +3830,8 @@
             // inventorySplit.Panel2
             // 
             this.inventorySplit.Panel2.Controls.Add(this.inventBox);
-            this.inventorySplit.Size = new System.Drawing.Size(782, 555);
-            this.inventorySplit.SplitterDistance = 274;
+            this.inventorySplit.Size = new System.Drawing.Size(780, 554);
+            this.inventorySplit.SplitterDistance = 273;
             this.inventorySplit.SplitterWidth = 5;
             this.inventorySplit.TabIndex = 1;
             // 
@@ -3843,7 +3843,7 @@
             this.availBox.Margin = new System.Windows.Forms.Padding(4);
             this.availBox.Name = "availBox";
             this.availBox.Padding = new System.Windows.Forms.Padding(4);
-            this.availBox.Size = new System.Drawing.Size(782, 274);
+            this.availBox.Size = new System.Drawing.Size(780, 273);
             this.availBox.TabIndex = 1;
             this.availBox.TabStop = false;
             this.availBox.Text = "Available:";
@@ -3856,7 +3856,7 @@
             this.listItems.Location = new System.Drawing.Point(4, 19);
             this.listItems.Margin = new System.Windows.Forms.Padding(4);
             this.listItems.Name = "listItems";
-            this.listItems.Size = new System.Drawing.Size(774, 251);
+            this.listItems.Size = new System.Drawing.Size(772, 250);
             this.listItems.TabIndex = 0;
             this.listItems.SelectedIndexChanged += new System.EventHandler(this.listItems_SelectedIndexChanged);
             // 
@@ -3868,7 +3868,7 @@
             this.inventBox.Margin = new System.Windows.Forms.Padding(4);
             this.inventBox.Name = "inventBox";
             this.inventBox.Padding = new System.Windows.Forms.Padding(4);
-            this.inventBox.Size = new System.Drawing.Size(782, 276);
+            this.inventBox.Size = new System.Drawing.Size(780, 276);
             this.inventBox.TabIndex = 0;
             this.inventBox.TabStop = false;
             this.inventBox.Text = "Inventory";
@@ -3881,7 +3881,7 @@
             this.inventory2.Location = new System.Drawing.Point(4, 19);
             this.inventory2.Margin = new System.Windows.Forms.Padding(4);
             this.inventory2.Name = "inventory2";
-            this.inventory2.Size = new System.Drawing.Size(774, 253);
+            this.inventory2.Size = new System.Drawing.Size(772, 253);
             this.inventory2.TabIndex = 0;
             this.inventory2.SelectedIndexChanged += new System.EventHandler(this.inventory2_SelectedIndexChanged);
             // 
@@ -3899,7 +3899,7 @@
             this.actionBox.Margin = new System.Windows.Forms.Padding(4);
             this.actionBox.Name = "actionBox";
             this.actionBox.Padding = new System.Windows.Forms.Padding(4);
-            this.actionBox.Size = new System.Drawing.Size(782, 42);
+            this.actionBox.Size = new System.Drawing.Size(780, 43);
             this.actionBox.TabIndex = 2;
             this.actionBox.TabStop = false;
             this.actionBox.Text = "Actions";
@@ -3926,7 +3926,7 @@
             this.addspellbookButton.Location = new System.Drawing.Point(529, 19);
             this.addspellbookButton.Margin = new System.Windows.Forms.Padding(4);
             this.addspellbookButton.Name = "addspellbookButton";
-            this.addspellbookButton.Size = new System.Drawing.Size(125, 19);
+            this.addspellbookButton.Size = new System.Drawing.Size(125, 20);
             this.addspellbookButton.TabIndex = 5;
             this.addspellbookButton.Text = "Add to Spellbook";
             this.addspellbookButton.UseVisualStyleBackColor = true;
@@ -3940,7 +3940,7 @@
             this.spellbookFeaturesBox.Location = new System.Drawing.Point(396, 19);
             this.spellbookFeaturesBox.Margin = new System.Windows.Forms.Padding(4);
             this.spellbookFeaturesBox.Name = "spellbookFeaturesBox";
-            this.spellbookFeaturesBox.Size = new System.Drawing.Size(133, 19);
+            this.spellbookFeaturesBox.Size = new System.Drawing.Size(133, 20);
             this.spellbookFeaturesBox.TabIndex = 4;
             this.spellbookFeaturesBox.SelectedIndexChanged += new System.EventHandler(this.spellbookFeaturesBox_SelectedIndexChanged);
             // 
@@ -3952,7 +3952,7 @@
             this.addtoItemButton.Location = new System.Drawing.Point(188, 19);
             this.addtoItemButton.Margin = new System.Windows.Forms.Padding(4);
             this.addtoItemButton.Name = "addtoItemButton";
-            this.addtoItemButton.Size = new System.Drawing.Size(208, 19);
+            this.addtoItemButton.Size = new System.Drawing.Size(208, 20);
             this.addtoItemButton.TabIndex = 3;
             this.addtoItemButton.Text = "Add to selected inventory item";
             this.addtoItemButton.UseVisualStyleBackColor = true;
@@ -3966,7 +3966,7 @@
             this.addScrollButton.Location = new System.Drawing.Point(89, 19);
             this.addScrollButton.Margin = new System.Windows.Forms.Padding(4);
             this.addScrollButton.Name = "addScrollButton";
-            this.addScrollButton.Size = new System.Drawing.Size(99, 19);
+            this.addScrollButton.Size = new System.Drawing.Size(99, 20);
             this.addScrollButton.TabIndex = 2;
             this.addScrollButton.Text = "Add as scroll";
             this.addScrollButton.UseVisualStyleBackColor = true;
@@ -3980,7 +3980,7 @@
             this.buyButton.Location = new System.Drawing.Point(47, 19);
             this.buyButton.Margin = new System.Windows.Forms.Padding(4);
             this.buyButton.Name = "buyButton";
-            this.buyButton.Size = new System.Drawing.Size(42, 19);
+            this.buyButton.Size = new System.Drawing.Size(42, 20);
             this.buyButton.TabIndex = 1;
             this.buyButton.Text = "Buy";
             this.buyButton.UseVisualStyleBackColor = true;
@@ -3994,7 +3994,7 @@
             this.addButton.Location = new System.Drawing.Point(4, 19);
             this.addButton.Margin = new System.Windows.Forms.Padding(4);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(43, 19);
+            this.addButton.Size = new System.Drawing.Size(43, 20);
             this.addButton.TabIndex = 0;
             this.addButton.Text = "Add";
             this.addButton.UseVisualStyleBackColor = true;
@@ -4007,7 +4007,7 @@
             this.inventab.Location = new System.Drawing.Point(4, 25);
             this.inventab.Margin = new System.Windows.Forms.Padding(4);
             this.inventab.Name = "inventab";
-            this.inventab.Size = new System.Drawing.Size(972, 610);
+            this.inventab.Size = new System.Drawing.Size(970, 610);
             this.inventab.TabIndex = 4;
             this.inventab.Text = "Inventory";
             // 
@@ -4028,8 +4028,8 @@
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer7.Size = new System.Drawing.Size(972, 610);
-            this.splitContainer7.SplitterDistance = 367;
+            this.splitContainer7.Size = new System.Drawing.Size(970, 610);
+            this.splitContainer7.SplitterDistance = 366;
             this.splitContainer7.SplitterWidth = 5;
             this.splitContainer7.TabIndex = 0;
             // 
@@ -4041,7 +4041,7 @@
             this.inventoryBox.Margin = new System.Windows.Forms.Padding(4);
             this.inventoryBox.Name = "inventoryBox";
             this.inventoryBox.Padding = new System.Windows.Forms.Padding(4);
-            this.inventoryBox.Size = new System.Drawing.Size(964, 359);
+            this.inventoryBox.Size = new System.Drawing.Size(962, 358);
             this.inventoryBox.TabIndex = 0;
             this.inventoryBox.TabStop = false;
             this.inventoryBox.Text = "Inventory";
@@ -4054,7 +4054,7 @@
             this.inventory.Location = new System.Drawing.Point(4, 19);
             this.inventory.Margin = new System.Windows.Forms.Padding(4);
             this.inventory.Name = "inventory";
-            this.inventory.Size = new System.Drawing.Size(956, 336);
+            this.inventory.Size = new System.Drawing.Size(954, 335);
             this.inventory.TabIndex = 1;
             this.inventory.SelectedIndexChanged += new System.EventHandler(this.inventory_SelectedIndexChanged);
             // 
@@ -4077,8 +4077,8 @@
             this.splitContainer9.Panel2.Controls.Add(this.inventorymodifybox);
             this.splitContainer9.Panel2.Controls.Add(this.inventoryactionsbox);
             this.splitContainer9.Panel2.Padding = new System.Windows.Forms.Padding(4);
-            this.splitContainer9.Size = new System.Drawing.Size(972, 238);
-            this.splitContainer9.SplitterDistance = 622;
+            this.splitContainer9.Size = new System.Drawing.Size(970, 239);
+            this.splitContainer9.SplitterDistance = 619;
             this.splitContainer9.SplitterWidth = 5;
             this.splitContainer9.TabIndex = 0;
             // 
@@ -4091,7 +4091,7 @@
             this.magicpropbox.Margin = new System.Windows.Forms.Padding(4);
             this.magicpropbox.Name = "magicpropbox";
             this.magicpropbox.Padding = new System.Windows.Forms.Padding(4);
-            this.magicpropbox.Size = new System.Drawing.Size(614, 230);
+            this.magicpropbox.Size = new System.Drawing.Size(611, 231);
             this.magicpropbox.TabIndex = 1;
             this.magicpropbox.TabStop = false;
             this.magicpropbox.Text = "Magic Properties";
@@ -4099,10 +4099,10 @@
             // removeprop
             // 
             this.removeprop.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.removeprop.Location = new System.Drawing.Point(4, 198);
+            this.removeprop.Location = new System.Drawing.Point(4, 199);
             this.removeprop.Margin = new System.Windows.Forms.Padding(4);
             this.removeprop.Name = "removeprop";
-            this.removeprop.Size = new System.Drawing.Size(606, 28);
+            this.removeprop.Size = new System.Drawing.Size(603, 28);
             this.removeprop.TabIndex = 2;
             this.removeprop.Text = "Remove Property";
             this.removeprop.UseVisualStyleBackColor = true;
@@ -4117,7 +4117,7 @@
             this.magicproperties.Location = new System.Drawing.Point(4, 19);
             this.magicproperties.Margin = new System.Windows.Forms.Padding(4);
             this.magicproperties.Name = "magicproperties";
-            this.magicproperties.Size = new System.Drawing.Size(606, 228);
+            this.magicproperties.Size = new System.Drawing.Size(603, 228);
             this.magicproperties.TabIndex = 1;
             this.magicproperties.SelectedIndexChanged += new System.EventHandler(this.Choice_DisplayMagicProperty);
             this.magicproperties.DragDrop += new System.Windows.Forms.DragEventHandler(this.magicproperties_DragDrop);
@@ -4135,7 +4135,7 @@
             this.inventorymodifybox.Margin = new System.Windows.Forms.Padding(4);
             this.inventorymodifybox.Name = "inventorymodifybox";
             this.inventorymodifybox.Padding = new System.Windows.Forms.Padding(4);
-            this.inventorymodifybox.Size = new System.Drawing.Size(337, 238);
+            this.inventorymodifybox.Size = new System.Drawing.Size(338, 238);
             this.inventorymodifybox.TabIndex = 3;
             this.inventorymodifybox.TabStop = false;
             this.inventorymodifybox.Text = "Modify";
@@ -4166,7 +4166,7 @@
             this.splitContainer10.Panel2.Controls.Add(this.newposs);
             this.splitContainer10.Panel2.Controls.Add(this.possname);
             this.splitContainer10.Panel2.Padding = new System.Windows.Forms.Padding(0, 0, 4, 4);
-            this.splitContainer10.Size = new System.Drawing.Size(329, 215);
+            this.splitContainer10.Size = new System.Drawing.Size(330, 215);
             this.splitContainer10.SplitterDistance = 112;
             this.splitContainer10.SplitterWidth = 5;
             this.splitContainer10.TabIndex = 0;
@@ -4298,7 +4298,7 @@
             this.possdescription.Multiline = true;
             this.possdescription.Name = "possdescription";
             this.possdescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.possdescription.Size = new System.Drawing.Size(208, 157);
+            this.possdescription.Size = new System.Drawing.Size(209, 157);
             this.possdescription.TabIndex = 5;
             // 
             // newposs
@@ -4318,7 +4318,7 @@
             this.possname.Location = new System.Drawing.Point(0, 0);
             this.possname.Margin = new System.Windows.Forms.Padding(4);
             this.possname.Name = "possname";
-            this.possname.Size = new System.Drawing.Size(208, 22);
+            this.possname.Size = new System.Drawing.Size(209, 22);
             this.possname.TabIndex = 0;
             // 
             // inventoryactionsbox
@@ -4333,7 +4333,7 @@
             this.inventoryactionsbox.Margin = new System.Windows.Forms.Padding(4);
             this.inventoryactionsbox.Name = "inventoryactionsbox";
             this.inventoryactionsbox.Padding = new System.Windows.Forms.Padding(4);
-            this.inventoryactionsbox.Size = new System.Drawing.Size(337, 49);
+            this.inventoryactionsbox.Size = new System.Drawing.Size(338, 49);
             this.inventoryactionsbox.TabIndex = 2;
             this.inventoryactionsbox.TabStop = false;
             this.inventoryactionsbox.Text = "Actions";
@@ -4354,7 +4354,7 @@
             // poscounter
             // 
             this.poscounter.Dock = System.Windows.Forms.DockStyle.Right;
-            this.poscounter.Location = new System.Drawing.Point(54, 19);
+            this.poscounter.Location = new System.Drawing.Point(55, 19);
             this.poscounter.Margin = new System.Windows.Forms.Padding(4);
             this.poscounter.Maximum = new decimal(new int[] {
             10000000,
@@ -4378,7 +4378,7 @@
             // changecount
             // 
             this.changecount.Dock = System.Windows.Forms.DockStyle.Right;
-            this.changecount.Location = new System.Drawing.Point(117, 19);
+            this.changecount.Location = new System.Drawing.Point(118, 19);
             this.changecount.Margin = new System.Windows.Forms.Padding(4);
             this.changecount.Name = "changecount";
             this.changecount.Size = new System.Drawing.Size(127, 26);
@@ -4390,7 +4390,7 @@
             // splitstack
             // 
             this.splitstack.Dock = System.Windows.Forms.DockStyle.Right;
-            this.splitstack.Location = new System.Drawing.Point(244, 19);
+            this.splitstack.Location = new System.Drawing.Point(245, 19);
             this.splitstack.Margin = new System.Windows.Forms.Padding(4);
             this.splitstack.Name = "splitstack";
             this.splitstack.Size = new System.Drawing.Size(89, 26);
@@ -4419,7 +4419,7 @@
             this.playtab.Margin = new System.Windows.Forms.Padding(4);
             this.playtab.Name = "playtab";
             this.playtab.Padding = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.playtab.Size = new System.Drawing.Size(972, 610);
+            this.playtab.Size = new System.Drawing.Size(970, 610);
             this.playtab.TabIndex = 7;
             this.playtab.Text = "In Play";
             // 
@@ -4438,7 +4438,7 @@
             this.inplayflow.Location = new System.Drawing.Point(20, 18);
             this.inplayflow.Margin = new System.Windows.Forms.Padding(4);
             this.inplayflow.Name = "inplayflow";
-            this.inplayflow.Size = new System.Drawing.Size(932, 574);
+            this.inplayflow.Size = new System.Drawing.Size(930, 574);
             this.inplayflow.TabIndex = 0;
             // 
             // statisticsbox
@@ -5613,7 +5613,7 @@
             this.displayElement.MinimumSize = new System.Drawing.Size(27, 25);
             this.displayElement.Name = "displayElement";
             this.displayElement.ScriptErrorsSuppressed = true;
-            this.displayElement.Size = new System.Drawing.Size(358, 639);
+            this.displayElement.Size = new System.Drawing.Size(359, 639);
             this.displayElement.TabIndex = 0;
             this.displayElement.Url = new System.Uri("about:blank", System.UriKind.Absolute);
             // 

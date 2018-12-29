@@ -34,7 +34,7 @@ namespace CB_5e.Views.Character.Play
             if ((sender as MenuItem).BindingContext is Feature f)
             {
                 Model.MakeHistory();
-                Model.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name));
+                Model.Context.Player.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name) || StringComparer.OrdinalIgnoreCase.Equals(s, f.Name + "/" + f.Level));
                 //Model.Context.Player.HiddenFeatures.Add(f.Name);
                 Model.Save();
             };
@@ -44,7 +44,7 @@ namespace CB_5e.Views.Character.Play
             if ((sender as MenuItem).BindingContext is Feature f)
             {
                 Model.MakeHistory();
-                Model.Context.Player.HiddenFeatures.Add(f.Name);
+                Model.Context.Player.HiddenFeatures.Add(f.Name + "/" + f.Level);
                 Model.Save();
             };
         }
