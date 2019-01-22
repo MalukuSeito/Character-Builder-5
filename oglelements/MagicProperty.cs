@@ -302,7 +302,8 @@ namespace OGL
         }
         public string GetName(string oldname)
         {
-            if (oldname != null && oldname != "" && (PrependName != null && PrependName != "" || PostName != null && PostName != "" || Name == null || Name == "")) return (PrependName != null && PrependName != "" ? PrependName + " " : "") + oldname + (PostName != null && PostName != "" ? " " + PostName : "");
+            if (PrependName != null && PrependName != "" && PrependName == PostName) return PrependName;
+            if (oldname != null && oldname != "") return (PrependName != null && PrependName != "" ? PrependName + " " : "") + oldname + (PostName != null && PostName != "" ? " " + PostName : "");
             return Name;
         }
         public IEnumerable<Feature> Collect(int level, bool equipped, bool attuned, IChoiceProvider choiceProvider, OGLContext context, bool includeOnUseFeatures = false)
