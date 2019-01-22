@@ -80,7 +80,7 @@ namespace Character_Builder
             foreach (PDFField pf in ActionsFields) actiontrans.Add(pf.Name, pf.Field);
             foreach (PDFField pf in ActionsFields2) actiontrans2.Add(pf.Name, pf.Field);
             foreach (PDFField pf in MonsterFields) monstertrans.Add(pf.Name, pf.Field);
-            Dictionary<string, bool> hiddenfeats = context.Player.HiddenFeatures.ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, bool> hiddenfeats = context.Player.HiddenFeatures.Distinct().ToDictionary(f => f, f => true, StringComparer.OrdinalIgnoreCase);
             Dictionary<Feature, bool> hiddenactions = pdf.IncludeActions && pdf.AutoExcludeActions ? context.Player.GetActions().Where(f=>f.Feature != null).Select(f=>f.Feature).Distinct(new ObjectIdentityEqualityComparer()).ToDictionary(f => f, f => true, new ObjectIdentityEqualityComparer()) : new Dictionary<Feature, bool>();
             hiddenfeats.Add("", true);
             List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
