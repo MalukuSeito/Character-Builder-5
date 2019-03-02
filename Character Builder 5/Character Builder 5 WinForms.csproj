@@ -142,6 +142,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Down2.png" />
+    <None Include="Resources\Down1.png" />
+    <None Include="Resources\Up1.png" />
+    <None Include="Resources\Down.png" />
+    <None Include="Resources\Up.png" />
+    <None Include="Resources\Down.ico" />
+    <None Include="Resources\Up.ico" />
     <None Include="Resources\CB5 Logo%282%29.ico" />
     <Content Include="itextsharp.dll" />
     <Content Include="Resources\Chest of Potatoes.png" />

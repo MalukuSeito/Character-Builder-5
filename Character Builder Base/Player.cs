@@ -100,6 +100,8 @@ namespace Character_Builder
         public int AP { get; set; }
         public bool Advancement { get; set; }
 
+        public List<string> AttackOrder = new List<string>();
+
         public List<FormsCompanionsChoice> FormsCompanionsChoices = new List<FormsCompanionsChoice>();
         public Player()
         {

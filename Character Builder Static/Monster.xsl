@@ -82,6 +82,9 @@
 				<xsl:apply-templates select="LegendaryActions"/>
 			</div>
 		</xsl:if>
+    <xsl:if test="boolean(Description/node()) or boolean(Descriptions/node())">
+      <hr class="Under"/>
+    </xsl:if>
 		<div class="Description" style="margin-top:10px">
 			<xsl:call-template name="newline-to-paragraph">
 				<xsl:with-param name="input"><xsl:copy-of select="./Description" /></xsl:with-param>

@@ -15,6 +15,6 @@ namespace Character_Builder
 
         void SetField(string fieldName, string value);
         void SetImage(string fieldName, byte[] image);
-        void SetTextAndDescriptions(string fieldName, string text, IEnumerable<IInfoText> values, string textAfter = null);
+        void SetTextAndDescriptions(string fieldName, bool nameOnly, string text, IEnumerable<IInfoText> values, string textAfter = null);
     }
 }

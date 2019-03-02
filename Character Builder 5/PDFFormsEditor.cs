@@ -137,9 +137,9 @@ namespace Character_Builder_5
             }
         }
 
-        public void SetTextAndDescriptions(string fieldName, string text, IEnumerable<IInfoText> values, string textAfter = null)
+        public void SetTextAndDescriptions(string fieldName, bool nameOnly, string text, IEnumerable<IInfoText> values, string textAfter = null)
         {
-            if(preserveEdit) SetField(fieldName, (text != null ? text + "\n" : "" ) + String.Join("\n", values.Select(f => f.ToInfo(true))) + (textAfter != null ? "\n" + textAfter: ""));
+            if(preserveEdit) SetField(fieldName, (text != null ? text + "\n" : "" ) + String.Join("\n", values.Select(f => f.ToInfo(!nameOnly))) + (textAfter != null ? "\n" + textAfter: ""));
             else
             {
                 int i = 0;
@@ -168,11 +168,14 @@ namespace Character_Builder_5
                         if (text != null) currentColumnText.AddElement(new Paragraph(text, reg) { Leading = 0, MultipliedLeading = 1, SpacingAfter = size / 2});
                         foreach (IInfoText f in values)
                         {
-                            Paragraph p = new Paragraph(f.InfoTitle + ":", bold);
-                            p.Font = reg;
-                            p.SpacingAfter = size / 2;
-                            p.SetLeading(0, 1);
-                            p.Add(f.InfoText.Trim(new char[] { ' ', '\r', '\n', '\t' }));
+                            Paragraph p = new Paragraph(f.InfoTitle + (nameOnly ? "" : ":"), bold);
+                            if (!nameOnly)
+                            {
+                                p.Font = reg;
+                                p.SpacingAfter = size / 2;
+                                p.SetLeading(0, 1);
+                                p.Add(f.InfoText.Trim(new char[] { ' ', '\r', '\n', '\t' }));
+                            }
                             currentColumnText.AddElement(p);
                         }
                         if (textAfter != null) currentColumnText.AddElement(new Paragraph(textAfter, reg) { Leading = 0, MultipliedLeading = 1 });
@@ -198,11 +201,14 @@ namespace Character_Builder_5
                         if (text != null) currentColumnText.AddElement(new Paragraph(text, reg) { Leading = 0, MultipliedLeading = 1, SpacingAfter = size / 2 });
                         foreach (IInfoText f in values)
                         {
-                            Paragraph p = new Paragraph(f.InfoTitle + ": ", bold);
-                            p.Font = reg;
-                            p.SpacingAfter = size / 2;
-                            p.SetLeading(0, 1);
-                            p.Add(f.InfoText.Trim(new char[] { ' ', '\r', '\n', '\t' }));
+                            Paragraph p = new Paragraph(f.InfoTitle + (nameOnly ? "" : ":"), bold);
+                            if (!nameOnly)
+                            {
+                                p.Font = reg;
+                                p.SpacingAfter = size / 2;
+                                p.SetLeading(0, 1);
+                                p.Add(f.InfoText.Trim(new char[] { ' ', '\r', '\n', '\t' }));
+                            }
                             currentColumnText.AddElement(p);
                         }
                         if (textAfter != null) currentColumnText.AddElement(new Paragraph(textAfter, reg) { Leading = 0, MultipliedLeading = 1 });

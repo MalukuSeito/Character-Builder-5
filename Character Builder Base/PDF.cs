@@ -114,7 +114,7 @@ namespace Character_Builder
                     if (attacks != "") attacks += "\n";
                     attacks += String.Join("\n", context.Player.GetResourceInfo(pdf.IncludeResources).Values);
                 }
-                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(context.Player.GetBonusSpells(!trans.ContainsKey("BonusSpells")));
+                List<ModifiedSpell> bonusspells = new List<ModifiedSpell>(context.Player.GetBonusSpells(!trans.ContainsKey("BonusSpells") && pdf.BonusSpellsAreResources == PDFBase.ExceptAtWillAndCharges));
                 if (pdf.IncludeResources)
                 {
                     Dictionary<string, int> bsres = context.Player.GetResources();
@@ -136,12 +136,12 @@ namespace Character_Builder
                 {
                     p.SetField(trans["BonusSpells"], String.Join("\n", bonusspells));
                 }
-                else if (trans.ContainsKey("Resources"))
+                else if (trans.ContainsKey("Resources") && pdf.BonusSpellsAreResources > PDFBase.None)
                 {
                     if (resources != "") resources += "\n";
                     resources += String.Join("\n", bonusspells);
                 }
-                else
+                else if (pdf.BonusSpellsAreResources > PDFBase.None)
                 {
                     if (attacks != "") attacks += "\n";
                     attacks += String.Join("\n", bonusspells);
@@ -225,18 +225,18 @@ namespace Character_Builder
                 List<Possession> treasure = new List<Possession>();
                 List<IInfoText> treasureDetailed = new List<IInfoText>();
                 List<Feature> onUse = new List<Feature>();
-               
+
                 foreach (Possession pos in context.Player.GetItemsAndPossessions())
                 {
                     if (pos.Count > 0)
                     {
+                        if (pos.BaseItem != null && pos.BaseItem != "") equip.Add(pos);
                         if ((trans.ContainsKey("Equipment") || trans.ContainsKey("EquipmentShort") || trans.ContainsKey("EquipmentDetailed")) && pos.BaseItem != null && pos.BaseItem != "")
                         {
                             Item i = context.GetItem(pos.BaseItem, null);
                             if (pos.Equipped != EquipSlot.None || i is Weapon || i is Armor || i is Shield)
                             {
-                                equip.Add(pos);
-                                equipDetailed.Add(pos.ToInfo());
+                                equipDetailed.Add(pos.ToInfo(pdf.EquipmentKeywords, pdf.EquipmentStats));
                                 equipDetailed2.Add(pos);
                             }
                             else
@@ -266,80 +266,104 @@ namespace Character_Builder
 
                 });
                 int chigh = 1;
+                List<KeyValuePair<string, AttackInfo>> attackinfos = new List<KeyValuePair<string, AttackInfo>>();
+                List<KeyValuePair<string, AttackInfo>> addattackinfos = new List<KeyValuePair<string, AttackInfo>>();
                 foreach (SpellcastingFeature scf in spellcasts)
                 {
                     Spellcasting sc = context.Player.GetSpellcasting(scf.SpellcastingID);
-                    if (sc.Highlight != null && sc.Highlight != "")
+                    foreach (Spell s in sc.GetLearned(context.Player, context))
                     {
-                        foreach (Spell s in sc.GetLearned(context.Player, context))
+                        if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
                         {
-                            if (s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
-                            {
-                                if (trans.ContainsKey("Attack" + chigh))
-                                {
-                                    AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
-                                    p.SetField(trans["Attack" + chigh], s.Name);
-                                    if (ai.SaveDC != "") p.SetField(trans["Attack" + chigh + "Attack"], "DC " + ai.SaveDC);
-                                    else p.SetField(trans["Attack" + chigh + "Attack"], PlusMinus(ai.AttackBonus));
-                                    if (trans.ContainsKey("Attack" + chigh + "DamageType"))
-                                    {
-                                        p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage);
-                                        p.SetField(trans["Attack" + chigh + "DamageType"], ai.DamageType);
-                                    }
-                                    else
-                                    {
-                                        p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage + " " + ai.DamageType);
-                                    }
-                                    chigh++;
-                                }
-                            }
+                            AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                            if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                        }
+                        else
+                        {
+                            AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                            if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
                         }
                     }
-                }
-                foreach (ModifiedSpell s in bonusspells)
-                {
-                    if (Utils.Matches(context, s, "Attack or Save", null))
-                    {
-                        if (trans.ContainsKey("Attack" + chigh))
-                        {
-                            AttackInfo ai = context.Player.GetAttack(s, s.differentAbility);
-                            p.SetField(trans["Attack" + chigh], s.Name);
-                            if (ai.SaveDC != "") p.SetField(trans["Attack" + chigh + "Attack"], "DC " + ai.SaveDC);
-                            else p.SetField(trans["Attack" + chigh + "Attack"], PlusMinus(ai.AttackBonus));
-                            if (trans.ContainsKey("Attack" + chigh + "DamageType"))
-                            {
-                                p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage);
-                                p.SetField(trans["Attack" + chigh + "DamageType"], ai.DamageType);
-                            }
-                            else
-                            {
-                                p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage + " " + ai.DamageType);
-                            }
-                            chigh++;
-                        }
-                    }
+                    //foreach (Spell s in sc.GetPrepared(context.Player, context))
+                    //{
+                    //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                    //    {
+                    //        AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                    //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    //    }
+                    //    else
+                    //    {
+                    //        AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                    //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    //    }
+                    //}
+                    //foreach (Spell s in sc.GetAdditionalClassSpells(context.Player, context))
+                    //{
+                    //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                    //    {
+                    //        AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                    //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    //    }
+                    //    else
+                    //    {
+                    //        AttackInfo ai = context.Player.GetAttack(s, scf.SpellcastingAbility);
+                    //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    //    }
+                    //}
                 }
                 foreach (Possession pos in equip)
                 {
                     AttackInfo ai = context.Player.GetAttack(pos);
-                    if (ai != null)
+                    if (ai != null) attackinfos.Add(new KeyValuePair<string, AttackInfo>(pos.ToString(), ai));
+                }
+                foreach (ModifiedSpell s in context.Player.GetBonusSpells(false))
+                {
+                    if (Utils.Matches(context, s, "Attack or Save", null))
                     {
-                        if (trans.ContainsKey("Attack" + chigh))
+                        AttackInfo ai = context.Player.GetAttack(s, s.differentAbility);
+                        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                        //p.SetField(trans["Attack" + chigh], s.Name);
+                        //if (ai.SaveDC != "") p.SetField(trans["Attack" + chigh + "Attack"], "DC " + ai.SaveDC);
+                        //else p.SetField(trans["Attack" + chigh + "Attack"], PlusMinus(ai.AttackBonus));
+                        //if (trans.ContainsKey("Attack" + chigh + "DamageType"))
+                        //{
+                        //    p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage);
+                        //    p.SetField(trans["Attack" + chigh + "DamageType"], ai.DamageType);
+                        //}
+                        //else
+                        //{
+                        //    p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage + " " + ai.DamageType);
+                        //}
+                        //chigh++;
+                    }
+                }
+                attackinfos.AddRange(addattackinfos);
+                //attackinfos.Sort((a, b) =>
+                //{
+                //    int oa = context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(a.Key, s));
+                //    int ob = context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(b.Key, s));
+                //    if (oa < 0) oa = int.MaxValue;
+                //    if (ob < 0) ob = int.MaxValue;
+                //    return oa.CompareTo(ob);
+                //});
+
+                foreach (KeyValuePair<string, AttackInfo> aip in attackinfos.OrderBy(a => { int i = context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(a.Key, s)); return i < 0 ? int.MaxValue : i; }))
+                {
+                    if (trans.ContainsKey("Attack" + chigh))
+                    {
+                        p.SetField(trans["Attack" + chigh], aip.Key);
+                        if (aip.Value.SaveDC != "") p.SetField(trans["Attack" + chigh + "Attack"], "DC " + aip.Value.SaveDC);
+                        else p.SetField(trans["Attack" + chigh + "Attack"], PlusMinus(aip.Value.AttackBonus));
+                        if (trans.ContainsKey("Attack" + chigh + "DamageType"))
                         {
-                            p.SetField(trans["Attack" + chigh], pos.ToString());
-                            if (ai.SaveDC != "") p.SetField(trans["Attack" + chigh + "Attack"], "DC " + ai.SaveDC);
-                            else p.SetField(trans["Attack" + chigh + "Attack"], PlusMinus(ai.AttackBonus));
-                            if (trans.ContainsKey("Attack" + chigh + "DamageType"))
-                            {
-                                p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage);
-                                p.SetField(trans["Attack" + chigh + "DamageType"], ai.DamageType);
-                            }
-                            else
-                            {
-                                p.SetField(trans["Attack" + chigh + "Damage"], ai.Damage + " " + ai.DamageType);
-                            }
-                            chigh++;
+                            p.SetField(trans["Attack" + chigh + "Damage"], aip.Value.Damage);
+                            p.SetField(trans["Attack" + chigh + "DamageType"], aip.Value.DamageType);
                         }
+                        else
+                        {
+                            p.SetField(trans["Attack" + chigh + "Damage"], aip.Value.Damage + " " + aip.Value.DamageType);
+                        }
+                        chigh++;
                     }
                 }
                 List<IInfoText> usable = new List<IInfoText>();
@@ -357,11 +381,11 @@ namespace Character_Builder
                     foreach (Feature f in context.Player.GetBoons()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     if (!pdf.IncludeSpellbook || pdf.ForceAttunedAndOnUseItemsOnSheet) foreach (Feature f in context.Player.GetPossessionFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    p.SetTextAndDescriptions(trans["RaceBackgroundFeatures"], null, feats);
+                    p.SetTextAndDescriptions(trans["RaceBackgroundFeatures"], pdf.OnlyFeatureTitles, null, feats);
                     List<Feature> feats2 = new List<Feature>();
                     foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
                     foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats2.Add(f);
-                    if (trans.ContainsKey("Features")) p.SetTextAndDescriptions(trans["Features"], null, feats2);
+                    if (trans.ContainsKey("Features")) p.SetTextAndDescriptions(trans["Features"], pdf.OnlyFeatureTitles, null, feats2);
                 }
                 else if (trans.ContainsKey("Features"))
                 {
@@ -377,17 +401,17 @@ namespace Character_Builder
                     foreach (Feature f in context.Player.GetRaceFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     foreach (Feature f in context.Player.GetClassFeatures()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
                     foreach (Feature f in context.Player.GetCommonFeaturesAndFeats()) if (!f.Hidden && f.Name != null && !hiddenfeats.ContainsKey(f.Name) && !hiddenfeats.ContainsKey(f.Name + "/" + f.Level) && !hiddenactions.ContainsKey(f)) feats.Add(f);
-                    p.SetTextAndDescriptions(trans["Features"], null, feats);
+                    p.SetTextAndDescriptions(trans["Features"], pdf.OnlyFeatureTitles, null, feats);
                 }
                 bool addUsableToTreasure = false;
-                if (trans.ContainsKey("Usable")) p.SetTextAndDescriptions(trans["Usable"], null, usable);
+                if (trans.ContainsKey("Usable")) p.SetTextAndDescriptions(trans["Usable"], pdf.OnlyFeatureTitles, null, usable);
                 else addUsableToTreasure = usable.Count > 0;
                 bool addMoney = false;
                 if (trans.ContainsKey("CP") && trans.ContainsKey("GP") && trans.ContainsKey("SP") && trans.ContainsKey("EP") && trans.ContainsKey("PP"))
                 {
-                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? "\n" : "; ", equipDetailed));
                     if (trans.ContainsKey("EquipmentShort")) p.SetField(trans["EquipmentShort"], String.Join(", ", equip));
-                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], null, equipDetailed2);
+                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2);
                     if (trans.ContainsKey("Treasure")) p.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
                     p.SetField(trans["CP"], money.cp.ToString());
                     if (trans.ContainsKey("SP")) p.SetField(trans["SP"], money.sp.ToString());
@@ -397,12 +421,12 @@ namespace Character_Builder
                 }
                 else if (trans.ContainsKey("GP"))
                 {
-                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? "\n" : "; ", equipDetailed));
                     if (trans.ContainsKey("EquipmentShort")) p.SetField(trans["EquipmentShort"], String.Join(", ", equip));
-                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], null, equipDetailed2);
+                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2);
                     if (trans.ContainsKey("Treasure"))
                     {
-                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], String.Join(", ", treasure), usable);
+                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable);
                         else p.SetField(trans["Treasure"], String.Join(", ", treasure));
                     }
                     p.SetField(trans["GP"], money.ToGold());
@@ -410,36 +434,36 @@ namespace Character_Builder
                 else if (trans.ContainsKey("EquipmentShort"))
                 {
                     p.SetField(trans["EquipmentShort"], String.Join(", ", equip) + "\n" + money.ToString());
-                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], null, equipDetailed2);
-                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join("\n", equipDetailed));
+                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2);
+                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? "\n" : "; ", equipDetailed));
                     if (trans.ContainsKey("Treasure"))
                     {
-                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], String.Join(", ", treasure), usable);
+                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable);
                         else p.SetField(trans["Treasure"], String.Join(", ", treasure));
                     }
                 }
                 else if (trans.ContainsKey("Equipment"))
                 {
-                    p.SetField(trans["Equipment"], String.Join("\n", equipDetailed) + "\n" + money.ToString());
-                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], null, equipDetailed2);
+                    p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? "\n" : "; ", equipDetailed) + "\n" + money.ToString());
+                    if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2);
                     if (trans.ContainsKey("Treasure"))
                     {
-                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], String.Join(", ", treasure), usable);
+                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable);
                         else p.SetField(trans["Treasure"], String.Join(", ", treasure));
                     }
                 }
                 else if (trans.ContainsKey("EquipmentDetailed"))
                 {
-                    p.SetTextAndDescriptions(trans["EquipmentDetailed"], null, equipDetailed2, money.ToString());
+                    p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2, money.ToString());
                     if (trans.ContainsKey("Treasure"))
                     {
-                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], String.Join(", ", treasure), usable);
+                        if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable);
                         else p.SetField(trans["Treasure"], String.Join(", ", treasure));
                     }
                 }
                 else if (trans.ContainsKey("Treasure"))
                 {
-                    if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], String.Join(", ", treasure), usable, money.ToString());
+                    if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable, money.ToString());
                     else p.SetField(trans["Treasure"], String.Join(", ", treasure) + "\n" + money.ToString());
                 }
                 else
@@ -842,9 +866,12 @@ namespace Character_Builder
                         List<SpellModifyFeature> mods = (from f in context.Player.GetFeatures() where f is SpellModifyFeature select f as SpellModifyFeature).ToList();
                         spellbook.AddRange(context.Player.GetSpellscrolls());
                         Queue<object> entries = new Queue<object>(spellbook.OrderBy(s => s.Name).Distinct(new SpellEqualityComparer()));
-                        foreach (Possession pos in context.Player.Possessions)
+                        foreach (Possession pos in context.Player.GetItemsAndPossessions())
                         {
-                            if ((pos.Name != null && pos.Name != "") || (pos.Description != null && pos.Description != "") || pos.MagicProperties.Count > 0) entries.Enqueue(pos);
+                            if (((pos.Description != null && pos.Description != "") && (pdf.ForceAttunedItemsInSpellbook || !pdf.ForceAttunedAndOnUseItemsOnSheet || pdf.MundaneEquipmentInSpellbook))
+                                || (pos.MagicProperties.Count > 0 && (pdf.ForceAttunedItemsInSpellbook || !pdf.ForceAttunedAndOnUseItemsOnSheet))
+                                || (pos.MagicProperties.Count == 0 && pdf.MundaneEquipmentInSpellbook && (pos.Item is Item i && !i.autogenerated && ((i is Weapon w && w.Damage != null) || (i is Armor a && a.BaseAC > 0) || (i.Description != "" && i.Description != null)))))
+                                    entries.Enqueue(pos);
                         }
                         int sheetCount = 0;
                         while (entries.Count > 0 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 0))
@@ -889,7 +916,7 @@ namespace Character_Builder
 
                                         description.Append(entry.Description);
                                         List<IInfoText> add = new List<IInfoText>();
-                                        if (booktrans.ContainsKey("AdditionDescription" + counter)) sbp.SetTextAndDescriptions(booktrans["AdditionDescription" + counter], null, entry.Descriptions);
+                                        if (booktrans.ContainsKey("AdditionDescription" + counter)) sbp.SetTextAndDescriptions(booktrans["AdditionDescription" + counter], false, null, entry.Descriptions);
                                         else add.AddRange(entry.Descriptions);
                                         //foreach (Description d in entry.Descriptions)
                                         //{
@@ -901,17 +928,19 @@ namespace Character_Builder
                                         //else description.AppendLine().AppendLine().Append(add.ToString());
                                         List<IInfoText> modifiers = new List<IInfoText>();
                                         foreach (SpellModifyFeature m in mods.Where(f => Utils.Matches(context, entry, ((SpellModifyFeature)f).Spells, null))) modifiers.Add(m);
-                                        if (booktrans.ContainsKey("Modifiers" + counter)) sbp.SetTextAndDescriptions(booktrans["Modifiers" + counter], null, modifiers);
+                                        string posttext = null;
+                                        if (booktrans.ContainsKey("Modifiers" + counter)) sbp.SetTextAndDescriptions(booktrans["Modifiers" + counter], pdf.OnlyFeatureTitles, null, modifiers);
+                                        else if (pdf.OnlyFeatureTitles) posttext = String.Join(",", modifiers.Select(m => m.ToInfo(false)));
                                         else add.AddRange(modifiers);
 
                                         if (booktrans.ContainsKey("Source" + counter)) {
                                             sbp.SetField(booktrans["Source" + counter], entry.Source);
-                                            if (booktrans.ContainsKey("Description" + counter)) sbp.SetTextAndDescriptions(booktrans["Description" + counter], description.ToString(), add);
+                                            if (booktrans.ContainsKey("Description" + counter)) sbp.SetTextAndDescriptions(booktrans["Description" + counter], false, description.ToString(), add, posttext);
                                         }
-                                        else if (booktrans.ContainsKey("Description" + counter)) sbp.SetTextAndDescriptions(booktrans["Description" + counter], description.ToString(), add, "Source: " + entry.Source);
+                                        else if (booktrans.ContainsKey("Description" + counter)) sbp.SetTextAndDescriptions(booktrans["Description" + counter], false, description.ToString(), add, (posttext != null ? posttext + "\n" : "") + "Source: " + entry.Source);
                                         counter++;
                                     }
-                                    else if (xml is Possession pos && (pdf.ForceAttunedItemsInSpellbook || !pdf.ForceAttunedAndOnUseItemsOnSheet))
+                                    else if (xml is Possession pos)
                                     {
                                         StringBuilder description = new StringBuilder();
                                         HashSet<string> source = new HashSet<string>();
@@ -930,10 +959,25 @@ namespace Character_Builder
                                                 description.AppendLine().AppendLine(t.Trim(new char[] { ' ', '\r', '\n', '\t' }));
                                             }
                                         }
+                                        if (booktrans.ContainsKey("Classes" + counter)) sbp.SetField(booktrans["Classes" + counter], string.Join("; ", keywords));
+                                        if (pos.Item is Item item)
+                                        {
+                                            if (pos.Magic.Count > 0) description.AppendLine();
+                                            if (!pdf.EquipmentKeywords && item.Keywords != null)
+                                            {
+                                                description.AppendLine(String.Join(", ", item.Keywords.Select(s => s.ToString())));
+                                            }
+                                            if (!pdf.EquipmentStats) {
+                                                if (item is Weapon w && w.Damage != null) description.Append(w.Damage).Append(" ").Append(w.DamageType ?? "").AppendLine();
+                                                if (item is Armor a && a.BaseAC > 0) description.Append(a.BaseAC).Append(" AC").AppendLine();
+                                                //if (item is Pack pack) description.Append(String.Join(", ", pack.Contents)).AppendLine();
+                                                if (item.Description != null && item.Description != "") description.AppendLine(item.Description);
+                                            }
+                                            source.Add(item.Source);
+                                        }
                                         if (booktrans.ContainsKey("Source" + counter)) sbp.SetField(booktrans["Source" + counter], string.Join(", ", source));
                                         else description.AppendLine().Append("Source: ").Append(string.Join(", ", source)).AppendLine();
-                                        if (booktrans.ContainsKey("Classes" + counter)) sbp.SetField(booktrans["Classes" + counter], string.Join("; ", keywords));
-                                        if (booktrans.ContainsKey("Description" + counter)) sbp.SetField(booktrans["Description" + counter], description.ToString());
+                                        if (booktrans.ContainsKey("Description" + counter)) sbp.SetField(booktrans["Description" + counter], description.ToString().Trim(new char[] { ' ', '\r', '\n', '\t' }));
                                         counter++;
                                     }
                                     

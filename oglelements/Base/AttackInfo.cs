@@ -24,5 +24,10 @@
             DamageType = type;
             SaveDC = saveDC;
         }
+        public override string ToString()
+        {
+            if (SaveDC != "") return "DC " + SaveDC + ": " + Damage + " " + DamageType;
+            return "+" + AttackBonus + ": " + Damage + " " + DamageType;
+        }
     }
 }

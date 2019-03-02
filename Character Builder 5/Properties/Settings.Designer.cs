@@ -317,5 +317,77 @@ namespace Character_Builder_5.Properties {
                 this["CustomMonsterSheet"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PDFSpellbookMundaneItems {
+            get {
+                return ((bool)(this["PDFSpellbookMundaneItems"]));
+            }
+            set {
+                this["PDFSpellbookMundaneItems"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PDFEquipmentKeywords {
+            get {
+                return ((bool)(this["PDFEquipmentKeywords"]));
+            }
+            set {
+                this["PDFEquipmentKeywords"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PDFEquipmentStats {
+            get {
+                return ((bool)(this["PDFEquipmentStats"]));
+            }
+            set {
+                this["PDFEquipmentStats"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int PDFBonusSpellResources {
+            get {
+                return ((int)(this["PDFBonusSpellResources"]));
+            }
+            set {
+                this["PDFBonusSpellResources"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PDFFeatureTitlesOnly {
+            get {
+                return ((bool)(this["PDFFeatureTitlesOnly"]));
+            }
+            set {
+                this["PDFFeatureTitlesOnly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideLostItems {
+            get {
+                return ((bool)(this["HideLostItems"]));
+            }
+            set {
+                this["HideLostItems"] = value;
+            }
+        }
     }
 }

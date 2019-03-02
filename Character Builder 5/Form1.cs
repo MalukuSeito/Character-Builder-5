@@ -102,6 +102,7 @@ namespace Character_Builder_5
             possequip.Items.Add(EquipSlot.None);
             foreach (string s in Program.Context.Config.Slots) possequip.Items.Add(s);
             journalDate.CustomFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
+            hideLostItemsToolStripMenuItem.Checked = Properties.Settings.Default.HideLostItems;
         }
 
         public void BuildSources()
@@ -426,7 +427,7 @@ namespace Character_Builder_5
                 int iindex = inventory.SelectedIndex;
                 inventory.Items.Clear();
                 inventory2.Items.Clear();
-                Possession[] pos = Program.Context.Player.GetItemsAndPossessions().ToArray<Possession>();
+                Possession[] pos = Program.Context.Player.GetItemsAndPossessions().Where(p=>p.Count > 0 || !hideLostItemsToolStripMenuItem.Checked).ToArray<Possession>();
                 inventory.Items.AddRange(pos);
                 inventory.Items.AddRange((from b in Program.Context.Player.Boons select Program.Context.GetBoon(b, null)).ToArray<Feature>());
                 inventory2.Items.AddRange(pos);
@@ -750,7 +751,7 @@ namespace Character_Builder_5
                 actionsBox.Items.Clear();
                 actionsBox.Items.AddRange(Program.Context.Player.GetActions().ToArray());
                 attacksBox.Items.Clear();
-                foreach (Possession p in Program.Context.Player.GetItemsAndPossessions()) {
+                foreach (Possession p in Program.Context.Player.GetItemsAndPossessions().Where(p => p.Count > 0 || !hideLostItemsToolStripMenuItem.Checked)) {
                     AttackInfo ai = Program.Context.Player.GetAttack(p, 0, false);
                     if (ai != null)
                     {
@@ -4491,6 +4492,14 @@ namespace Character_Builder_5
             Properties.Settings.Default.EnabledSourcebooks.Clear();
             Properties.Settings.Default.EnabledSourcebooks.AddRange(SourceManager.Sources.Where(s => !Program.Context.Player.ExcludedSources.Contains(s)).ToArray());
             Properties.Settings.Default.Save();
+        }
+
+        private void hideLostItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            hideLostItemsToolStripMenuItem.Checked = !hideLostItemsToolStripMenuItem.Checked;
+            Properties.Settings.Default.HideLostItems = hideLostItemsToolStripMenuItem.Checked;
+            Properties.Settings.Default.Save();
+            UpdateEquipmentLayout();
         }
     }
 }

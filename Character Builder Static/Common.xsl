@@ -209,90 +209,95 @@
 </xsl:template>
 
 <xsl:template name="CSS">
-body,table,td,th {
-	background-color:#FFF3D0;
-	font-family:TeX Gyre Bonum, Verdana, Arial, Helvetica, sans-serif;
-	font-size:10pt;
-} 
-.Source {
-	font-style: italic;
-	margin-top:10px;
-}
-.Name {
-	color: #58170D;
-	font-family:Andada SC, Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	font-size: 11pt;
-}
+  body,table,td,th {
+  background-color:#FFF3D0;
+  font-family:TeX Gyre Bonum, Verdana, Arial, Helvetica, sans-serif;
+  font-size:10pt;
+  }
+  .Source {
+  font-style: italic;
+  margin-top:10px;
+  }
+  .Name {
+  color: #58170D;
+  font-family:Andada SC, Verdana, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 11pt;
+  }
 
-.Header {
-	font-weight: bold;
-	margin-top:10px;
-}
-.Bold {
-	font-weight: bold;
-}
-.Italic {
-	font-style: italic;
-}
-.Features {
-	margin-top:10px;
-	}
-.Feature {
-	margin-top:6px;
-}
-.Flavour {
-	padding-left:10px;
-	padding-right:10px;
-	font-style: italic;
-	margin-bottom:10px;
-}
-table.Standalone {
-	margin-top:10px;
-}
-p {
-	margin:0px;
-}
-p.morelines {
-	margin-top:3px;
-}
-.Properties {
-	margin-top:10px;
-}
-.Names {
-	margin-top:10px;
-}	
-img {
+  .Header {
+  font-weight: bold;
+  margin-top:10px;
+  }
+  .Bold {
+  font-weight: bold;
+  }
+  .Italic {
+  font-style: italic;
+  }
+  .Features {
+  margin-top:10px;
+  }
+  .Feature {
+  margin-top:6px;
+  }
+  .Flavour {
+  padding-left:10px;
+  padding-right:10px;
+  font-style: italic;
+  margin-bottom:10px;
+  }
+  table.Standalone {
+  margin-top:10px;
+  }
+  p {
+  margin:0px;
+  }
+  p.morelines {
+  margin-top:3px;
+  }
+  .Properties {
+  margin-top:10px;
+  }
+  .Names {
+  margin-top:10px;
+  }
+  img {
   display:block;
   width:90%;
   height:auto
-}
-.Small {
+  }
+  .Small {
   font-size: 0.8em;
-}
-hr {
+  }
+  hr {
   color: #58170D;
-}
-.Ability {
+  border:none;
+  border-top: #58170D 1px solid;
+  margin-left:0px;
+  margin-right:0px;
+  }
+  .Ability {
   display:inline-block;
   margin-left:4px;
   margin-right:4px;
   font-size:0.75em;
-}
- 
-.Ability .Bold {
+  }
+
+  .Ability .Bold {
   font-size:1.333em;
-}
-.Underline {
+  }
+
+  .Underline {
   font-variant:small-caps;
   font-size:1.2em;
   border-bottom:  #58170D 1px solid;
   margin-bottom:4px;
   margin-top:14px;
-}
-.MonsterActionTrait {
+  }
+  .MonsterActionTrait {
   margin-bottom:7px;
-}
+  }
 </xsl:template>
 
   <xsl:template match="ImageData">

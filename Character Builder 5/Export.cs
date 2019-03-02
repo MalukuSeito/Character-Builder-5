@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Runtime.InteropServices;
+using OGL.Base;
+using OGL.Items;
+using OGL.Spells;
+using OGL.Features;
 
 namespace Character_Builder_5
 {
@@ -101,8 +105,113 @@ namespace Character_Builder_5
             ACPBox.SelectedIndex = Properties.Settings.Default.PDFACPFormat;
             SwapScoreModBox.Checked = Properties.Settings.Default.PDFSwapScoreMod;
             IgnoreMagicItemsBox.Checked = !Properties.Settings.Default.PDFLogMagicItems;
+            MundaneItemBox.Checked = Properties.Settings.Default.PDFSpellbookMundaneItems;
+            BonusSpellsResources.SelectedIndex = Properties.Settings.Default.PDFBonusSpellResources;
+            EquipmentKeywords.Checked = Properties.Settings.Default.PDFEquipmentKeywords;
+            EquipmentStats.Checked = Properties.Settings.Default.PDFEquipmentStats;
+            FeatureTitle.Checked = Properties.Settings.Default.PDFFeatureTitlesOnly;
 
-    }
+            BuildAttacks();
+
+        }
+
+        private void BuildAttacks()
+        {
+            List<Possession> equip = new List<Possession>();
+            foreach (Possession pos in Program.Context.Player.GetItemsAndPossessions())
+            {
+                if (pos.Count > 0 && pos.BaseItem != null && pos.BaseItem != "")
+                {
+                    Item i = Program.Context.GetItem(pos.BaseItem, null);
+                    if (pos.Equipped != EquipSlot.None || i is Weapon || i is Armor || i is Shield) equip.Add(pos);
+                }
+            }
+            equip.Sort(delegate (Possession t1, Possession t2)
+            {
+                if (t1.Hightlight && !t2.Hightlight) return -1;
+                else if (t2.Hightlight && !t1.Hightlight) return 1;
+                else
+                {
+                    if (!string.Equals(t1.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase) && string.Equals(t2.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) return -1;
+                    else if (!string.Equals(t2.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase) && string.Equals(t1.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) return 1;
+                    else return (t1.ToString().CompareTo(t2.ToString()));
+                }
+
+            });
+
+            List<KeyValuePair<string, AttackInfo>> attackinfos = new List<KeyValuePair<string, AttackInfo>>();
+            List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Program.Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
+            List<KeyValuePair<string, AttackInfo>> addattackinfos = new List<KeyValuePair<string, AttackInfo>>();
+            foreach (SpellcastingFeature scf in spellcasts)
+            {
+                Spellcasting sc = Program.Context.Player.GetSpellcasting(scf.SpellcastingID);
+                foreach (Spell s in sc.GetLearned(Program.Context.Player, Program.Context))
+                {
+                    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                    {
+                        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    }
+                    else
+                    {
+                        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    }
+                }
+                //No prepared Cantrips, so whatever
+                //foreach (Spell s in sc.GetPrepared(Program.Context.Player, Program.Context))
+                //{
+                //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                //    {
+                //        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //    else
+                //    {
+                //        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //}
+                //foreach (Spell s in sc.GetAdditionalClassSpells(Program.Context.Player, Program.Context))
+                //{
+                //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                //    {
+                //        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //    else
+                //    {
+                //        AttackInfo ai = Program.Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //}
+            }
+            foreach (Possession pos in equip)
+            {
+                AttackInfo ai = Program.Context.Player.GetAttack(pos);
+                if (ai != null) attackinfos.Add(new KeyValuePair<string, AttackInfo>(pos.ToString(), ai));
+            }
+            foreach (ModifiedSpell s in Program.Context.Player.GetBonusSpells(false))
+            {
+                if (Utils.Matches(Program.Context, s, "Attack or Save", null))
+                {
+                    AttackInfo ai = Program.Context.Player.GetAttack(s, s.differentAbility);
+                    if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                }
+            }
+            attackinfos.AddRange(addattackinfos);
+            //attackinfos.OrderBy((a, b) =>
+            //{
+            //    int oa = Program.Context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(a.Key, s));
+            //    int ob = Program.Context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(b.Key, s));
+            //    if (oa < 0) oa = int.MaxValue;
+            //    if (ob < 0) ob = int.MaxValue;
+            //    return oa.CompareTo(ob);
+            //});
+
+            AttackOrder.Items.Clear();
+            foreach (var a in attackinfos.OrderBy(a=> { int i = Program.Context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(a.Key, s)); return i < 0 ? int.MaxValue : i; })) AttackOrder.Items.Add(a);
+        }
 
         private void SpellbookBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -277,6 +386,11 @@ namespace Character_Builder_5
             if (IgnoreActionsBox.Enabled) Properties.Settings.Default.PDFSheetActions = !IgnoreActionsBox.Checked;
             Properties.Settings.Default.PDFLogMagicItems = !IgnoreMagicItemsBox.Checked;
             if (AttunementSpellbookBox.Enabled) Properties.Settings.Default.PDFSpellbookMagicItems = AttunementSpellbookBox.Checked;
+            Properties.Settings.Default.PDFSpellbookMundaneItems = MundaneItemBox.Checked;
+            Properties.Settings.Default.PDFBonusSpellResources = BonusSpellsResources.SelectedIndex;
+            Properties.Settings.Default.PDFEquipmentKeywords = EquipmentKeywords.Checked;
+            Properties.Settings.Default.PDFEquipmentStats = EquipmentStats.Checked;
+            Properties.Settings.Default.PDFFeatureTitlesOnly = FeatureTitle.Checked;
             Properties.Settings.Default.Save();
 
 
@@ -307,12 +421,17 @@ namespace Character_Builder_5
                             AutoExcludeActions = IgnoreActionsBox.Checked,
                             ForceAttunedAndOnUseItemsOnSheet = AttunedSheetBox.Checked,
                             ForceAttunedItemsInSpellbook = AttunementSpellbookBox.Checked,
+                            MundaneEquipmentInSpellbook = MundaneItemBox.Checked,
                             IgnoreMagicItems = IgnoreMagicItemsBox.Checked,
                             IncludeActions = ActionsBox.SelectedItem != null && !NONE.Equals(ActionsBox.SelectedItem),
                             IncludeLog = LogBox.SelectedItem != null && !NONE.Equals(LogBox.SelectedItem),
                             IncludeMonsters = MonsterBox.SelectedItem != null && !NONE.Equals(MonsterBox.SelectedItem),
                             IncludeSpellbook = SpellbookBox.SelectedItem != null && !NONE.Equals(SpellbookBox.SelectedItem),
                             SwapScoreAndMod = SwapScoreModBox.Checked,
+                            BonusSpellsAreResources = BonusSpellsResources.SelectedIndex,
+                            EquipmentKeywords = EquipmentKeywords.Checked,
+                            EquipmentStats = EquipmentStats.Checked,
+                            OnlyFeatureTitles = FeatureTitle.Checked,
                             OutStream = fs
                         };
                         await exporter.Export(Program.Context, pdf);
@@ -437,6 +556,58 @@ namespace Character_Builder_5
             internalEvent = false;
             if (MonsterBox.SelectedItem is string && monstersheets.ContainsKey(MonsterBox.SelectedItem as string)) MonsterPreview.Image = LoadImage(monstersheets[MonsterBox.SelectedItem as string].MonstersPreview);
             else MonsterPreview.Image = null;
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (AttackOrder.SelectedIndex >= 1)
+            {
+                var o = AttackOrder.Items[AttackOrder.SelectedIndex];
+                AttackOrder.Items[AttackOrder.SelectedIndex] = AttackOrder.Items[AttackOrder.SelectedIndex - 1];
+                AttackOrder.Items[AttackOrder.SelectedIndex - 1] = o;
+                SaveOrder();
+                AttackOrder.SelectedIndex--;
+            }
+        }
+
+        private void SaveOrder()
+        {
+            Program.Context.MakeHistory("AttackOrder");
+            Program.Context.Player.AttackOrder.Clear();
+            foreach (object o in AttackOrder.Items)
+            {
+                if (o is KeyValuePair<string, AttackInfo> kp) Program.Context.Player.AttackOrder.Add(kp.Key);
+            }
+            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (AttackOrder.SelectedIndex >= 0 && AttackOrder.SelectedIndex < AttackOrder.Items.Count - 1)
+            {
+                var o = AttackOrder.Items[AttackOrder.SelectedIndex];
+                AttackOrder.Items[AttackOrder.SelectedIndex] = AttackOrder.Items[AttackOrder.SelectedIndex + 1];
+                AttackOrder.Items[AttackOrder.SelectedIndex + 1] = o;
+                SaveOrder();
+                AttackOrder.SelectedIndex++;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Program.Context.MakeHistory("AttackOrder");
+            Program.Context.Player.AttackOrder.Clear();
+            BuildAttacks();
         }
     }
 }
