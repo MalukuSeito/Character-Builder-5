@@ -43,6 +43,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Preset = new System.Windows.Forms.ComboBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.BonusSpellsResources = new System.Windows.Forms.ComboBox();
@@ -76,7 +77,6 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.MonsterPreview = new System.Windows.Forms.PictureBox();
             this.MonsterBox = new System.Windows.Forms.ComboBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -272,6 +272,16 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Attacks && Features";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(132, 51);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(28, 31);
+            this.button5.TabIndex = 16;
+            this.button5.Text = "X";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // button4
             // 
             this.button4.Image = global::Character_Builder_5.Properties.Resources.Down1;
@@ -298,7 +308,7 @@
             this.BonusSpellsResources.FormattingEnabled = true;
             this.BonusSpellsResources.Items.AddRange(new object[] {
             "None",
-            "All Except At-Will and Charge based",
+            "Resources",
             "All"});
             this.BonusSpellsResources.Location = new System.Drawing.Point(6, 192);
             this.BonusSpellsResources.Name = "BonusSpellsResources";
@@ -621,16 +631,6 @@
             this.MonsterBox.Size = new System.Drawing.Size(154, 21);
             this.MonsterBox.TabIndex = 0;
             this.MonsterBox.SelectedIndexChanged += new System.EventHandler(this.MonsterBox_SelectedIndexChanged);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(132, 51);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(28, 31);
-            this.button5.TabIndex = 16;
-            this.button5.Text = "X";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Export
             // 

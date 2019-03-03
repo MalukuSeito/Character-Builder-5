@@ -56,6 +56,7 @@
             this.advancementCheckpointsInsteadOfXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCurrentPlayerDCIAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCurrentSourcesAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideLostItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainSpilt = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.MoneyButton = new System.Windows.Forms.Button();
@@ -411,7 +412,6 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.hideLostItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -801,6 +801,13 @@
             this.saveCurrentSourcesAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
             this.saveCurrentSourcesAsDefaultToolStripMenuItem.Text = "Save Current Sources as Default";
             this.saveCurrentSourcesAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentSourcesAsDefaultToolStripMenuItem_Click);
+            // 
+            // hideLostItemsToolStripMenuItem
+            // 
+            this.hideLostItemsToolStripMenuItem.Name = "hideLostItemsToolStripMenuItem";
+            this.hideLostItemsToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
+            this.hideLostItemsToolStripMenuItem.Text = "Hide Lost Items";
+            this.hideLostItemsToolStripMenuItem.Click += new System.EventHandler(this.hideLostItemsToolStripMenuItem_Click);
             // 
             // mainSpilt
             // 
@@ -5188,13 +5195,6 @@
             // toolTip1
             // 
             this.toolTip1.IsBalloon = true;
-            // 
-            // hideLostItemsToolStripMenuItem
-            // 
-            this.hideLostItemsToolStripMenuItem.Name = "hideLostItemsToolStripMenuItem";
-            this.hideLostItemsToolStripMenuItem.Size = new System.Drawing.Size(289, 22);
-            this.hideLostItemsToolStripMenuItem.Text = "Hide Lost Items";
-            this.hideLostItemsToolStripMenuItem.Click += new System.EventHandler(this.hideLostItemsToolStripMenuItem_Click);
             // 
             // Form1
             // 

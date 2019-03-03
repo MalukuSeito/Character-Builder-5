@@ -145,7 +145,7 @@ namespace CB_5e.ViewModels.Character
         public int ACPFormat { get => acpFormat ?? Default("PDFACPFormat", 3); set => SetProperty(ref acpFormat, value >= 0 ? value : 0); }
 
 
-        public bool MundaneEquipmentInSpellbook { get => mundaneEquipmentInSpellbook ?? Default("PDFSpellbookMundane", false); set => SetProperty(ref mundaneEquipmentInSpellbook, value); }
+        public bool MundaneEquipmentInSpellbook { get => mundaneEquipmentInSpellbook ?? Default("PDFSpellbookMundane", true); set => SetProperty(ref mundaneEquipmentInSpellbook, value); }
         public bool OnlyFeatureTitles { get => onlyFeatureTitles ?? Default("PDFOnlyFeatureTitles", false); set => SetProperty(ref onlyFeatureTitles, value); }
         public bool EquipmentKeywords { get => equipmentKeywords ?? Default("PDFEquipmentKeywords", false); set => SetProperty(ref equipmentKeywords, value); }
         public bool EquipmentStats { get => equipmentStats ?? Default("PDFEquipmentStats", false); set => SetProperty(ref equipmentStats, value); }
