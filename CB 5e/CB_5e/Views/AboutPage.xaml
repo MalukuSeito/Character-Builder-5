@@ -18,6 +18,10 @@
                 <Label HorizontalOptions="FillAndExpand" Text="Auto Save in Play Mode"/>
                 <Switch IsToggled="{Binding AutoSave}"/>
             </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label HorizontalOptions="FillAndExpand" Text="Hide Lost Items"/>
+                <Switch IsToggled="{Binding HideLost}"/>
+            </StackLayout>
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout>

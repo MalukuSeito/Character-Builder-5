@@ -1,7 +1,12 @@
-﻿using CB_5e.Services;
+﻿using CB_5e.Helpers;
+using CB_5e.Services;
 using CB_5e.Views;
 using Character_Builder;
 using OGL;
+using OGL.Base;
+using OGL.Features;
+using OGL.Items;
+using OGL.Spells;
 using PCLStorage;
 using System;
 using System.Collections.Generic;
@@ -47,7 +52,7 @@ namespace CB_5e.ViewModels.Character
                         if (Application.Current.Properties.TryGetValue("CustomMonsterSheet", out object CustomMonsterSheet)) monster = CustomMonsterSheet as string;
                         else monster = null;
                     }
-                    else if(pdfs.ContainsKey(preset))
+                    else if (pdfs.ContainsKey(preset))
                     {
                         PDF p = pdfs[preset];
                         sheet = p.SheetName ?? (p.File != null && p.File != "" ? Path.GetFileName(p.File) : null);
@@ -78,7 +83,7 @@ namespace CB_5e.ViewModels.Character
                 });
             }
         }
-        
+
         public string Spell { get => spell ?? NONE; set => SetProperty(ref spell, value == NONE ? null : value, onChanged: () => { OnPropertyChanged("SpellPreview"); preset = null; OnPropertyChanged("Preset"); }); }
         public string Sheet { get => sheet ?? NONE; set => SetProperty(ref sheet, value == NONE ? null : value, onChanged: () => { OnPropertyChanged("SheetPreview"); preset = null; OnPropertyChanged("Preset"); OnPropertyChanged("ButtonEnabled"); }); }
         public string Log { get => log ?? NONE; set => SetProperty(ref log, value == NONE ? null : value, onChanged: () => { OnPropertyChanged("LogPreview"); preset = null; OnPropertyChanged("Preset"); }); }
@@ -103,6 +108,15 @@ namespace CB_5e.ViewModels.Character
         private bool? countMagic;
         private bool? magicBook;
         private int? acpFormat;
+        private bool? mundaneEquipmentInSpellbook;
+        private bool? onlyFeatureTitles;
+        private bool? equipmentKeywords;
+        private bool? equipmentStats;
+        private int? bonusSpellsAreResources;
+
+        public ObservableListCollection<ActionInfo> AttackOrder { get; set; } = new ObservableListCollection<ActionInfo>();
+
+        public Command ResetOrder { get; set; }
 
         public bool Resources { get => resources ?? Default("PDFUsedResources", false); set => SetProperty(ref resources, value); }
         public bool Forms { get => forms ?? Default("PDFPreserveForms", false); set => SetProperty(ref forms, value); }
@@ -128,7 +142,15 @@ namespace CB_5e.ViewModels.Character
             get => !MagicBookEnabled ? spellbook != null : magicBook ?? Default("PDFSpellbookMagicItems", false);
             set { if (MagicBookEnabled) SetProperty(ref magicBook, value); }
         }
-        public int ACPFormat { get => acpFormat ?? Default("PDFACPFormat", 3); set => SetProperty(ref acpFormat, value >= 0 ? value: 0); }
+        public int ACPFormat { get => acpFormat ?? Default("PDFACPFormat", 3); set => SetProperty(ref acpFormat, value >= 0 ? value : 0); }
+
+
+        public bool MundaneEquipmentInSpellbook { get => mundaneEquipmentInSpellbook ?? Default("PDFSpellbookMundane", false); set => SetProperty(ref mundaneEquipmentInSpellbook, value); }
+        public bool OnlyFeatureTitles { get => onlyFeatureTitles ?? Default("PDFOnlyFeatureTitles", false); set => SetProperty(ref onlyFeatureTitles, value); }
+        public bool EquipmentKeywords { get => equipmentKeywords ?? Default("PDFEquipmentKeywords", false); set => SetProperty(ref equipmentKeywords, value); }
+        public bool EquipmentStats { get => equipmentStats ?? Default("PDFEquipmentStats", false); set => SetProperty(ref equipmentStats, value); }
+        public int BonusSpellsAreResources { get => bonusSpellsAreResources ?? Default("PDFBonusSpellResources", 1); set => SetProperty(ref bonusSpellsAreResources, value); }
+
 
         public List<string> ACPFormats => PDFBase.APFormats.Select(s => PDF.APFormat(Context, s, 14) + " + 4 AP = " + PDF.APFormat(Context, s, 18)).ToList();
 
@@ -157,8 +179,16 @@ namespace CB_5e.ViewModels.Character
         public PlayerPDFViewModel(PlayerModel parent) : base(parent, "PDF Export")
         {
             Image = ImageSource.FromResource("CB_5e.images.export.png");
+            ResetOrder = new Command(() => { IsBusy = true;  Context.MakeHistory("AttackOrder"); Context.Player.AttackOrder.Clear(); BuildAttacks(); IsBusy = false; });
+            AttackOrder.OrderChanged += AttackOrder_OrderChanged;
         }
 
+        private void AttackOrder_OrderChanged(object sender, EventArgs e)
+        {
+            Context.MakeHistory("AttackOrder");
+            Context.Player.AttackOrder.Clear();
+            Context.Player.AttackOrder.AddRange(AttackOrder.Select(s => s.Name));
+        }
 
         public async static Task<PDF> Load(IFile file)
         {
@@ -210,9 +240,99 @@ namespace CB_5e.ViewModels.Character
                 else Preset = Presets.Skip(1).FirstOrDefault();
             }
             else Preset = Presets.Skip(1).FirstOrDefault();
+            BuildAttacks();
         }
 
-        private  bool Default(string prop, bool def)
+        private void BuildAttacks()
+        {
+            List<Possession> equip = new List<Possession>();
+            foreach (Possession pos in Context.Player.GetItemsAndPossessions())
+            {
+                if (pos.Count > 0 && pos.BaseItem != null && pos.BaseItem != "")
+                {
+                    Item i = Context.GetItem(pos.BaseItem, null);
+                    if (pos.Equipped != EquipSlot.None || i is Weapon || i is Armor || i is Shield) equip.Add(pos);
+                }
+            }
+            equip.Sort(delegate (Possession t1, Possession t2)
+            {
+                if (t1.Hightlight && !t2.Hightlight) return -1;
+                else if (t2.Hightlight && !t1.Hightlight) return 1;
+                else
+                {
+                    if (!string.Equals(t1.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase) && string.Equals(t2.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) return -1;
+                    else if (!string.Equals(t2.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase) && string.Equals(t1.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase)) return 1;
+                    else return (t1.ToString().CompareTo(t2.ToString()));
+                }
+
+            });
+
+            List<KeyValuePair<string, AttackInfo>> attackinfos = new List<KeyValuePair<string, AttackInfo>>();
+            List<SpellcastingFeature> spellcasts = new List<SpellcastingFeature>(from f in Context.Player.GetFeatures() where f is SpellcastingFeature && ((SpellcastingFeature)f).SpellcastingID != "MULTICLASS" select (SpellcastingFeature)f);
+            List<KeyValuePair<string, AttackInfo>> addattackinfos = new List<KeyValuePair<string, AttackInfo>>();
+            foreach (SpellcastingFeature scf in spellcasts)
+            {
+                Spellcasting sc = Context.Player.GetSpellcasting(scf.SpellcastingID);
+                foreach (Spell s in sc.GetLearned(Context.Player, Context))
+                {
+                    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                    {
+                        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    }
+                    else
+                    {
+                        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                    }
+                }
+                //No prepared Cantrips, so whatever
+                //foreach (Spell s in sc.GetPrepared(Context.Player, Context))
+                //{
+                //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                //    {
+                //        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //    else
+                //    {
+                //        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //}
+                //foreach (Spell s in sc.GetAdditionalClassSpells(Context.Player, Context))
+                //{
+                //    if (sc.Highlight != null && sc.Highlight != "" && s.Name.ToLowerInvariant() == sc.Highlight.ToLowerInvariant())
+                //    {
+                //        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //    else
+                //    {
+                //        AttackInfo ai = Context.Player.GetAttack(s, scf.SpellcastingAbility);
+                //        if (ai != null && ai.Damage != null && ai.Damage != "") addattackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                //    }
+                //}
+            }
+            foreach (Possession pos in equip)
+            {
+                AttackInfo ai = Context.Player.GetAttack(pos);
+                if (ai != null) attackinfos.Add(new KeyValuePair<string, AttackInfo>(pos.ToString(), ai));
+            }
+            foreach (ModifiedSpell s in Context.Player.GetBonusSpells(false))
+            {
+                if (Utils.Matches(Context, s, "Attack or Save", null))
+                {
+                    AttackInfo ai = Context.Player.GetAttack(s, s.differentAbility);
+                    if (ai != null && ai.Damage != null && ai.Damage != "") attackinfos.Add(new KeyValuePair<string, AttackInfo>(s.Name, ai));
+                }
+            }
+            attackinfos.AddRange(addattackinfos);
+            AttackOrder.Clear();
+            AttackOrder.UpdateRange(attackinfos.OrderBy(a => { int i = Context.Player.AttackOrder.FindIndex(s => StringComparer.OrdinalIgnoreCase.Equals(a.Key, s)); return i < 0 ? int.MaxValue : i; }).Select(s=>new ActionInfo() {Name = s.Key, Text = s.Value.ToString()}));
+        }
+
+        private bool Default(string prop, bool def)
         {
             Application.Current.Properties.TryGetValue(prop, out object val);
             return val as bool? ?? def;
@@ -246,6 +366,13 @@ namespace CB_5e.ViewModels.Character
             if (ActionFeaturesEnabled) Application.Current.Properties["PDFSheetActions"] = actionFeatures;
             Application.Current.Properties["PDFLogMagicItems"] = countMagic;
             if (MagicBookEnabled) Application.Current.Properties["PDFSpellbookMagicItems"] = magicBook;
+            Application.Current.Properties["PDFSpellbookMundane"] = mundaneEquipmentInSpellbook;
+            Application.Current.Properties["PDFOnlyFeatureTitles"] = onlyFeatureTitles;
+            Application.Current.Properties["PDFEquipmentKeywords"] = equipmentKeywords;
+            Application.Current.Properties["PDFEquipmentStats"] = equipmentStats;
+            Application.Current.Properties["PDFBonusSpellResources"] = bonusSpellsAreResources;
+            Parent.Save();
+
             return Application.Current.SavePropertiesAsync();
         }
 
@@ -324,7 +451,14 @@ namespace CB_5e.ViewModels.Character
             pdf.IncludeMonsters = monster != null;
             pdf.IncludeSpellbook = spellbook != null;
             pdf.SwapScoreAndMod = Swap;
+            pdf.BonusSpellsAreResources = BonusSpellsAreResources;
+            pdf.OnlyFeatureTitles = OnlyFeatureTitles;
+            pdf.EquipmentStats = EquipmentStats;
+            pdf.EquipmentKeywords = EquipmentKeywords;
+            pdf.MundaneEquipmentInSpellbook = MundaneEquipmentInSpellbook;
         }
+
+        public ObservableRangeCollection<string> BonusSpellsAreResourceOptions { get; set; } = new ObservableRangeCollection<string>(new string[] { "None", "Resources", "All" });
 
         private string name;
         public string NewName { get => name; set => SetProperty(ref name, value); }

@@ -11,5 +11,6 @@ namespace CB_5e.ViewModels
             Title = "About";
         }
         public bool AutoSave { get => App.AutoSaveDuringPlay; set => App.AutoSaveDuringPlay = value; }
+        public bool HideLost { get => App.HideLostItems; set => App.HideLostItems = value; }
     }
 }

@@ -177,6 +177,7 @@
     <Compile Include="FlowListViewInternalCellRenderer.cs" />
     <Compile Include="HTMLExtensions.cs" />
     <Compile Include="HTMLService_Droid.cs" />
+    <Compile Include="ListViewSortableEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MyEntryRenderer.cs" />

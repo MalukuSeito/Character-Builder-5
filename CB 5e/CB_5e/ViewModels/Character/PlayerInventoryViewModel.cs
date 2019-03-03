@@ -105,13 +105,13 @@ namespace CB_5e.ViewModels.Character
             Inventory.ReplaceRange(inventory);
             foreach (Possession p in Context.Player.GetItemsAndPossessions())
             {
-                inventory.Add(new InventoryViewModel
-                {
-                    Item = p,
-                    ShowInfo = ShowItemInfo,
-                    Edit = EditItem,
-                    Delete = DeleteItem
-                });
+                if (p.Count > 0 || !App.HideLostItems) inventory.Add(new InventoryViewModel
+                    {
+                        Item = p,
+                        ShowInfo = ShowItemInfo,
+                        Edit = EditItem,
+                        Delete = DeleteItem
+                    });
             }
             foreach (Feature f in from b in Context.Player.Boons select Context.GetBoon(b, null))
             {

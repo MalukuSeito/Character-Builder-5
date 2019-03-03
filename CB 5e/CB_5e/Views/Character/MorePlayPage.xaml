@@ -1,77 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CB_5e;assembly=CB_5e"
+             xmlns:effects="clr-namespace:CB_5e;assembly=CB_5e"
              x:Class="CB_5e.Views.Character.MorePlayPage"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20, 0">
-                <Label Text="Preset:"/>
-                <Picker ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset}"/>
-                <StackLayout Orientation="Horizontal">
-                    <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewName}"/>
-                    <Button Text="Save Preset" Clicked="Button_Clicked_1"/>
+        <ListView ItemsSource="{Binding AttackOrder, Mode=TwoWay}"
+                IsPullToRefreshEnabled="true"
+                RefreshCommand="{Binding ResetOrder}" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="ListView_ItemSelected"
+                effects:Sorting.IsSortable = "true">
+
+            <ListView.Header>
+                <StackLayout Padding="20, 0">
+                    <Label Text="Preset:"/>
+                    <Picker ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset}"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewName}"/>
+                        <Button Text="Save Preset" Clicked="Button_Clicked_1"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Current HP and Resources:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding Resources}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Preserve PDF Forms:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding Forms}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Add Empty Pages for Duplex Printing:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding Duplex}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="-> Use White Pages for Duplex:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding DuplexWhite}" IsEnabled="{Binding Duplex}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Advancement Checkpoint Style:" FontSize="Micro"/>
+                        <Picker ItemsSource="{Binding ACPFormats}" SelectedIndex="{Binding ACPFormat}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show only the titles of Features:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding OnlyFeatureTitles}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Equipment Stats:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding EquipmentStats}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Equipment Keywords:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding EquipmentKeywords}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Bonus Spells as Resources" FontSize="Micro"/>
+                        <Picker ItemsSource="{Binding BonusSpellsAreResourceOptions}" SelectedIndex="{Binding BonusSpellsAreResources}"/>
+                    </StackLayout>
+                    <Label Text="Attacks: (Arrange by holding / dragging, pull down page to reset)"/>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Show Current HP and Resources:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding Resources}"/>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding Text}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                 <StackLayout Padding="20, 0">
+                    <Label Text="Character Sheet:"/>
+                    <Picker ItemsSource="{Binding Sheets}" SelectedItem="{Binding Sheet}"/>
+                    <Image Source="{Binding SheetPreview}" Aspect="AspectFit"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Swap Ability Score and Mod:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding Swap}"/>
+                    </StackLayout>
+                    <Label Text="Spell List:"/>
+                    <Picker ItemsSource="{Binding SpellSheets}" SelectedItem="{Binding Spell}"/>
+                    <Image Source="{Binding SpellPreview}" Aspect="AspectFit"/>
+                    <Label Text="Logsheet:"/>
+                    <Picker ItemsSource="{Binding LogSheets}" SelectedItem="{Binding Log}"/>
+                    <Image Source="{Binding LogPreview}" Aspect="AspectFit"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Count Magic Items:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding CountMagic}"/>
+                    </StackLayout>
+                    <Label Text="Spellbook:"/>
+                    <Picker ItemsSource="{Binding Spellbooks}" SelectedItem="{Binding Spellbook}"/>
+                    <Image Source="{Binding SpellbookPreview}" Aspect="AspectFit"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Magic Items in the Character Sheet instead: " FontSize="Micro"/>
+                        <Switch IsToggled="{Binding MagicFeatures}" IsEnabled="{Binding MagicFeaturesEnabled}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Magic Items in both Sheets:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding MagicBook}" IsEnabled="{Binding MagicBookEnabled}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Mundane Items in the Spellbook:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding MundaneEquipmentInSpellbook}"/>
+                    </StackLayout>
+                    <Label Text="Action(s) Sheet:"/>
+                    <Picker ItemsSource="{Binding ActionSheets}" SelectedItem="{Binding Action}"/>
+                    <Image Source="{Binding ActionsPreview}" Aspect="AspectFit"/>
+                    <StackLayout Orientation="Horizontal">
+                        <Label HorizontalOptions="FillAndExpand" Text="Show Actions in the Character Sheet as well:" FontSize="Micro"/>
+                        <Switch IsToggled="{Binding ActionFeatures}" IsEnabled="{Binding ActionFeaturesEnabled}"/>
+                    </StackLayout>
+                    <Label Text="Forms / Companions Sheet:"/>
+                    <Picker ItemsSource="{Binding MonsterSheets}" SelectedItem="{Binding Monster}"/>
+                    <Image Source="{Binding MonsterPreview}" Aspect="AspectFit"/>
+                    <Button Text="Make PDF" Clicked="Button_Clicked" IsEnabled="{Binding ButtonEnabled}"/>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Preserve PDF Forms:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding Forms}"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Add Empty Pages for Duplex Printing:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding Duplex}"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="-> Use White Pages for Duplex:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding DuplexWhite}" IsEnabled="{Binding Duplex}"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Advancement Checkpoint Style:" FontSize="Micro"/>
-                    <Picker ItemsSource="{Binding ACPFormats}" SelectedIndex="{Binding ACPFormat}"/>
-                </StackLayout>
-                <Label Text="Character Sheet:"/>
-                <Picker ItemsSource="{Binding Sheets}" SelectedItem="{Binding Sheet}"/>
-                <Image Source="{Binding SheetPreview}" Aspect="AspectFit"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Swap Ability Score and Mod:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding Swap}"/>
-                </StackLayout>
-                <Label Text="Spell List:"/>
-                <Picker ItemsSource="{Binding SpellSheets}" SelectedItem="{Binding Spell}"/>
-                <Image Source="{Binding SpellPreview}" Aspect="AspectFit"/>
-                <Label Text="Logsheet:"/>
-                <Picker ItemsSource="{Binding LogSheets}" SelectedItem="{Binding Log}"/>
-                <Image Source="{Binding LogPreview}" Aspect="AspectFit"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Count Magic Items:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding CountMagic}"/>
-                </StackLayout>
-                <Label Text="Spellbook:"/>
-                <Picker ItemsSource="{Binding Spellbooks}" SelectedItem="{Binding Spellbook}"/>
-                <Image Source="{Binding SpellbookPreview}" Aspect="AspectFit"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Show Magic Items in the Character Sheet instead: " FontSize="Micro"/>
-                    <Switch IsToggled="{Binding MagicFeatures}" IsEnabled="{Binding MagicFeaturesEnabled}"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Show Magic Items in both Sheets:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding MagicBook}" IsEnabled="{Binding MagicBookEnabled}"/>
-                </StackLayout>
-                <Label Text="Action(s) Sheet:"/>
-                <Picker ItemsSource="{Binding ActionSheets}" SelectedItem="{Binding Action}"/>
-                <Image Source="{Binding ActionsPreview}" Aspect="AspectFit"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label HorizontalOptions="FillAndExpand" Text="Show Actions in the Character Sheet as well:" FontSize="Micro"/>
-                    <Switch IsToggled="{Binding ActionFeatures}" IsEnabled="{Binding ActionFeaturesEnabled}"/>
-                </StackLayout>
-                <Label Text="Forms / Companions Sheet:"/>
-                <Picker ItemsSource="{Binding MonsterSheets}" SelectedItem="{Binding Monster}"/>
-                <Image Source="{Binding MonsterPreview}" Aspect="AspectFit"/>
-                <Button Text="Make PDF" Clicked="Button_Clicked" IsEnabled="{Binding ButtonEnabled}"/>
-            </StackLayout>
-        </ScrollView>
+            </ListView.Footer>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

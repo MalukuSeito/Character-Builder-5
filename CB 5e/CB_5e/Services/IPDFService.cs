@@ -25,6 +25,11 @@ namespace CB_5e.Services
         bool DuplexWhite { get; set; }
         bool SwapScoreAndMod { get; set; }
         String APFormat { get; set; }
+        bool MundaneEquipmentInSpellbook { get; set; }
+        bool OnlyFeatureTitles { get; set; }
+        bool EquipmentKeywords { get; set; }
+        bool EquipmentStats { get; set; }
+        int BonusSpellsAreResources { get; set; }
         Task ExportPDF(PDF Exporter, BuilderContext context);
     }
 }

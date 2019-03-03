@@ -63,8 +63,7 @@ namespace CB_5e.Views.Character
             Inventory.ReplaceRange(inventory);
             foreach (Possession p in Model.Model.Context.Player.GetItemsAndPossessions())
             {
-
-                if (p.BaseItem != null && p.BaseItem != "" && Utils.Matches(Model.Model.Context,p.Item,Property.Base,Model.Model.Context.Player.GetLevel())) inventory.Add(new InventoryViewModel
+                if ((p.Count > 0 || !App.HideLostItems) && p.BaseItem != null && p.BaseItem != "" && Utils.Matches(Model.Model.Context,p.Item,Property.Base,Model.Model.Context.Player.GetLevel())) inventory.Add(new InventoryViewModel
                 {
                     Item = p,
                     ShowInfo = Model.Model.ShowItemInfo

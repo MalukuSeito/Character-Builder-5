@@ -60,5 +60,10 @@ namespace CB_5e.Views.Character
             //Model.SaveConfig().Wait();
             return base.OnBackButtonPressed();
         }
+
+        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            (sender as ListView).SelectedItem = null;
+        }
     }
 }

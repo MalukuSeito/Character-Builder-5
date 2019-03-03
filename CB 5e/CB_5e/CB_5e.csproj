@@ -56,9 +56,11 @@
     <Compile Include="Helpers\SpellPageSelector.cs" />
     <Compile Include="Models\BaseDataObject.cs" />
     <Compile Include="Models\Character.cs" />
+    <Compile Include="ObservableListCollection.cs" />
     <Compile Include="Services\IDocumentViewer.cs" />
     <Compile Include="Services\IPDFService.cs" />
     <Compile Include="Services\IHTMLService.cs" />
+    <Compile Include="Sorting.cs" />
     <Compile Include="ViewModels\Character\HitDieViewModel.cs" />
     <Compile Include="ViewModels\Character\ChoiceOptions\AbilityChoice.cs" />
     <Compile Include="ViewModels\Character\Choices\AbilityFeatChoiceModel.cs" />
@@ -1535,8 +1537,8 @@
     <EmbeddedResource Include="images\skill.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
     <Folder Include="icons\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="images\resources.png" />

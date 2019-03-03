@@ -17,6 +17,7 @@ namespace CB_5e
     {
         public static IFolder Storage = PCLStorage.FileSystem.Current.LocalStorage;
         private static bool? autosave;
+        private static bool? hideLost;
         public static bool AutoSaveDuringPlay
         {
             get
@@ -37,6 +38,28 @@ namespace CB_5e
                 Current.Properties["AutoSaveDuringPlay"] = value;
             }
         }
+
+        public static bool HideLostItems
+        {
+            get
+            {
+                if (hideLost.HasValue) return hideLost.Value;
+                if (Current.Properties.ContainsKey("HideLostItems"))
+                {
+                    object o = Current.Properties["HideLostItems"];
+                    hideLost = o is bool b && b;
+                    return hideLost.Value;
+                }
+                hideLost = true;
+                return true;
+            }
+            set
+            {
+                hideLost = value;
+                Current.Properties["HideLostItems"] = value;
+            }
+        }
+
         public static TabbedPage MainTab { get; private set; }
         public App()
         {
