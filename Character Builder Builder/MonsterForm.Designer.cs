@@ -37,7 +37,6 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.flavour = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.CR = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
@@ -79,55 +78,57 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.description = new System.Windows.Forms.TextBox();
-            this.decriptions1 = new Character_Builder_Builder.Decriptions();
             this.preview = new System.Windows.Forms.WebBrowser();
             this.splitContainer15 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
             this.splitContainer14 = new System.Windows.Forms.SplitContainer();
-            this.Keywords = new Character_Builder_Builder.KeywordControl();
             this.label18 = new System.Windows.Forms.Label();
-            this.Speeds = new Character_Builder_Builder.StringList();
             this.label24 = new System.Windows.Forms.Label();
             this.splitContainer17 = new System.Windows.Forms.SplitContainer();
-            this.Senses = new Character_Builder_Builder.StringList();
             this.label25 = new System.Windows.Forms.Label();
-            this.Languages = new Character_Builder_Builder.StringList();
             this.label26 = new System.Windows.Forms.Label();
             this.splitContainer12 = new System.Windows.Forms.SplitContainer();
             this.splitContainer19 = new System.Windows.Forms.SplitContainer();
-            this.Traits = new Character_Builder_Builder.MonsterActions();
             this.label31 = new System.Windows.Forms.Label();
-            this.Actions = new Character_Builder_Builder.MonsterActions();
             this.label32 = new System.Windows.Forms.Label();
             this.splitContainer21 = new System.Windows.Forms.SplitContainer();
-            this.Reactions = new Character_Builder_Builder.MonsterActions();
             this.label33 = new System.Windows.Forms.Label();
-            this.LegendaryActions = new Character_Builder_Builder.MonsterActions();
             this.label34 = new System.Windows.Forms.Label();
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.splitContainer11 = new System.Windows.Forms.SplitContainer();
             this.splitContainer16 = new System.Windows.Forms.SplitContainer();
-            this.Resistances = new Character_Builder_Builder.StringList();
             this.label20 = new System.Windows.Forms.Label();
-            this.Vulnerablities = new Character_Builder_Builder.StringList();
             this.label21 = new System.Windows.Forms.Label();
             this.splitContainer18 = new System.Windows.Forms.SplitContainer();
-            this.Immunities = new Character_Builder_Builder.StringList();
             this.label22 = new System.Windows.Forms.Label();
-            this.ConditionImmunities = new Character_Builder_Builder.StringList();
             this.label23 = new System.Windows.Forms.Label();
             this.splitContainer13 = new System.Windows.Forms.SplitContainer();
             this.splitContainer20 = new System.Windows.Forms.SplitContainer();
-            this.monsterSave1 = new Character_Builder_Builder.MonsterSave();
             this.label29 = new System.Windows.Forms.Label();
-            this.monsterSkill1 = new Character_Builder_Builder.MonsterSkill();
             this.label30 = new System.Windows.Forms.Label();
             this.splitContainer22 = new System.Windows.Forms.SplitContainer();
-            this.Spells = new Character_Builder_Builder.StringList();
             this.label27 = new System.Windows.Forms.Label();
-            this.Slots = new Character_Builder_Builder.IntList();
             this.label28 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.imageChooser1 = new Character_Builder_Builder.ImageChooser();
+            this.decriptions1 = new Character_Builder_Builder.Decriptions();
+            this.Keywords = new Character_Builder_Builder.KeywordControl();
+            this.Speeds = new Character_Builder_Builder.StringList();
+            this.Senses = new Character_Builder_Builder.StringList();
+            this.Languages = new Character_Builder_Builder.StringList();
+            this.Traits = new Character_Builder_Builder.MonsterActions();
+            this.Actions = new Character_Builder_Builder.MonsterActions();
+            this.Reactions = new Character_Builder_Builder.MonsterActions();
+            this.LegendaryActions = new Character_Builder_Builder.MonsterActions();
+            this.Resistances = new Character_Builder_Builder.StringList();
+            this.Vulnerablities = new Character_Builder_Builder.StringList();
+            this.Immunities = new Character_Builder_Builder.StringList();
+            this.ConditionImmunities = new Character_Builder_Builder.StringList();
+            this.monsterSave1 = new Character_Builder_Builder.MonsterSave();
+            this.monsterSkill1 = new Character_Builder_Builder.MonsterSkill();
+            this.Spells = new Character_Builder_Builder.StringList();
+            this.Slots = new Character_Builder_Builder.IntList();
             this.userControl11 = new Character_Builder_Builder.UserControl1();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -235,6 +236,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.save);
             this.panel1.Controls.Add(this.abort);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -353,17 +355,6 @@
             this.label2.Size = new System.Drawing.Size(167, 17);
             this.label2.TabIndex = 5;
             this.label2.Text = "Flavour Text:";
-            // 
-            // imageChooser1
-            // 
-            this.imageChooser1.AllowDrop = true;
-            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageChooser1.History = null;
-            this.imageChooser1.Image = null;
-            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
-            this.imageChooser1.Name = "imageChooser1";
-            this.imageChooser1.Size = new System.Drawing.Size(112, 185);
-            this.imageChooser1.TabIndex = 0;
             // 
             // splitContainer6
             // 
@@ -847,17 +838,6 @@
             this.description.TextChanged += new System.EventHandler(this.description_TextChanged);
             this.description.Enter += new System.EventHandler(this.showPreview);
             // 
-            // decriptions1
-            // 
-            this.decriptions1.descriptions = null;
-            this.decriptions1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.decriptions1.HistoryManager = null;
-            this.decriptions1.Location = new System.Drawing.Point(0, 0);
-            this.decriptions1.Name = "decriptions1";
-            this.decriptions1.preview = this.preview;
-            this.decriptions1.Size = new System.Drawing.Size(277, 123);
-            this.decriptions1.TabIndex = 0;
-            // 
             // preview
             // 
             this.preview.CausesValidation = false;
@@ -941,18 +921,6 @@
             this.splitContainer14.SplitterDistance = 94;
             this.splitContainer14.TabIndex = 3;
             // 
-            // Keywords
-            // 
-            this.Keywords.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.Keywords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Keywords.Group = Character_Builder_Builder.KeywordControl.KeywordGroup.NONE;
-            this.Keywords.HistoryManager = null;
-            this.Keywords.Keywords = null;
-            this.Keywords.Location = new System.Drawing.Point(0, 16);
-            this.Keywords.Name = "Keywords";
-            this.Keywords.Size = new System.Drawing.Size(242, 78);
-            this.Keywords.TabIndex = 2;
-            // 
             // label18
             // 
             this.label18.Dock = System.Windows.Forms.DockStyle.Top;
@@ -961,17 +929,6 @@
             this.label18.Size = new System.Drawing.Size(242, 16);
             this.label18.TabIndex = 1;
             this.label18.Text = "Type:";
-            // 
-            // Speeds
-            // 
-            this.Speeds.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Speeds.HistoryManager = null;
-            this.Speeds.Items = null;
-            this.Speeds.Location = new System.Drawing.Point(0, 16);
-            this.Speeds.Name = "Speeds";
-            this.Speeds.Size = new System.Drawing.Size(242, 82);
-            this.Speeds.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Speeds.Suggestions")));
-            this.Speeds.TabIndex = 4;
             // 
             // label24
             // 
@@ -1003,17 +960,6 @@
             this.splitContainer17.SplitterDistance = 96;
             this.splitContainer17.TabIndex = 3;
             // 
-            // Senses
-            // 
-            this.Senses.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Senses.HistoryManager = null;
-            this.Senses.Items = null;
-            this.Senses.Location = new System.Drawing.Point(0, 16);
-            this.Senses.Name = "Senses";
-            this.Senses.Size = new System.Drawing.Size(242, 80);
-            this.Senses.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Senses.Suggestions")));
-            this.Senses.TabIndex = 6;
-            // 
             // label25
             // 
             this.label25.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1022,17 +968,6 @@
             this.label25.Size = new System.Drawing.Size(242, 16);
             this.label25.TabIndex = 5;
             this.label25.Text = "Senses:";
-            // 
-            // Languages
-            // 
-            this.Languages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Languages.HistoryManager = null;
-            this.Languages.Items = null;
-            this.Languages.Location = new System.Drawing.Point(0, 16);
-            this.Languages.Name = "Languages";
-            this.Languages.Size = new System.Drawing.Size(242, 84);
-            this.Languages.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Languages.Suggestions")));
-            this.Languages.TabIndex = 6;
             // 
             // label26
             // 
@@ -1081,19 +1016,6 @@
             this.splitContainer19.SplitterDistance = 96;
             this.splitContainer19.TabIndex = 3;
             // 
-            // Traits
-            // 
-            this.Traits.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.Traits.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Traits.HistoryManager = null;
-            this.Traits.Location = new System.Drawing.Point(0, 15);
-            this.Traits.Name = "Traits";
-            this.Traits.preview = this.preview;
-            this.Traits.Size = new System.Drawing.Size(242, 81);
-            this.Traits.TabIndex = 6;
-            this.Traits.TraitOnly = true;
-            this.Traits.Traits = null;
-            // 
             // label31
             // 
             this.label31.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1102,19 +1024,6 @@
             this.label31.Size = new System.Drawing.Size(242, 15);
             this.label31.TabIndex = 5;
             this.label31.Text = "Traits:";
-            // 
-            // Actions
-            // 
-            this.Actions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.Actions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Actions.HistoryManager = null;
-            this.Actions.Location = new System.Drawing.Point(0, 15);
-            this.Actions.Name = "Actions";
-            this.Actions.preview = this.preview;
-            this.Actions.Size = new System.Drawing.Size(242, 83);
-            this.Actions.TabIndex = 7;
-            this.Actions.TraitOnly = false;
-            this.Actions.Traits = null;
             // 
             // label32
             // 
@@ -1145,19 +1054,6 @@
             this.splitContainer21.SplitterDistance = 97;
             this.splitContainer21.TabIndex = 3;
             // 
-            // Reactions
-            // 
-            this.Reactions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.Reactions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Reactions.HistoryManager = null;
-            this.Reactions.Location = new System.Drawing.Point(0, 15);
-            this.Reactions.Name = "Reactions";
-            this.Reactions.preview = this.preview;
-            this.Reactions.Size = new System.Drawing.Size(242, 82);
-            this.Reactions.TabIndex = 7;
-            this.Reactions.TraitOnly = false;
-            this.Reactions.Traits = null;
-            // 
             // label33
             // 
             this.label33.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1166,19 +1062,6 @@
             this.label33.Size = new System.Drawing.Size(242, 15);
             this.label33.TabIndex = 5;
             this.label33.Text = "Reactions:";
-            // 
-            // LegendaryActions
-            // 
-            this.LegendaryActions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.LegendaryActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LegendaryActions.HistoryManager = null;
-            this.LegendaryActions.Location = new System.Drawing.Point(0, 15);
-            this.LegendaryActions.Name = "LegendaryActions";
-            this.LegendaryActions.preview = this.preview;
-            this.LegendaryActions.Size = new System.Drawing.Size(242, 86);
-            this.LegendaryActions.TabIndex = 7;
-            this.LegendaryActions.TraitOnly = false;
-            this.LegendaryActions.Traits = null;
             // 
             // label34
             // 
@@ -1245,17 +1128,6 @@
             this.splitContainer16.SplitterDistance = 94;
             this.splitContainer16.TabIndex = 3;
             // 
-            // Resistances
-            // 
-            this.Resistances.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Resistances.HistoryManager = null;
-            this.Resistances.Items = null;
-            this.Resistances.Location = new System.Drawing.Point(0, 16);
-            this.Resistances.Name = "Resistances";
-            this.Resistances.Size = new System.Drawing.Size(242, 78);
-            this.Resistances.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Resistances.Suggestions")));
-            this.Resistances.TabIndex = 2;
-            // 
             // label20
             // 
             this.label20.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1264,17 +1136,6 @@
             this.label20.Size = new System.Drawing.Size(242, 16);
             this.label20.TabIndex = 1;
             this.label20.Text = "Resistances:";
-            // 
-            // Vulnerablities
-            // 
-            this.Vulnerablities.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Vulnerablities.HistoryManager = null;
-            this.Vulnerablities.Items = null;
-            this.Vulnerablities.Location = new System.Drawing.Point(0, 16);
-            this.Vulnerablities.Name = "Vulnerablities";
-            this.Vulnerablities.Size = new System.Drawing.Size(242, 82);
-            this.Vulnerablities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Vulnerablities.Suggestions")));
-            this.Vulnerablities.TabIndex = 4;
             // 
             // label21
             // 
@@ -1305,17 +1166,6 @@
             this.splitContainer18.SplitterDistance = 96;
             this.splitContainer18.TabIndex = 3;
             // 
-            // Immunities
-            // 
-            this.Immunities.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Immunities.HistoryManager = null;
-            this.Immunities.Items = null;
-            this.Immunities.Location = new System.Drawing.Point(0, 16);
-            this.Immunities.Name = "Immunities";
-            this.Immunities.Size = new System.Drawing.Size(242, 80);
-            this.Immunities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Immunities.Suggestions")));
-            this.Immunities.TabIndex = 4;
-            // 
             // label22
             // 
             this.label22.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1324,17 +1174,6 @@
             this.label22.Size = new System.Drawing.Size(242, 16);
             this.label22.TabIndex = 3;
             this.label22.Text = "Immunities:";
-            // 
-            // ConditionImmunities
-            // 
-            this.ConditionImmunities.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConditionImmunities.HistoryManager = null;
-            this.ConditionImmunities.Items = null;
-            this.ConditionImmunities.Location = new System.Drawing.Point(0, 16);
-            this.ConditionImmunities.Name = "ConditionImmunities";
-            this.ConditionImmunities.Size = new System.Drawing.Size(242, 84);
-            this.ConditionImmunities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("ConditionImmunities.Suggestions")));
-            this.ConditionImmunities.TabIndex = 4;
             // 
             // label23
             // 
@@ -1383,17 +1222,6 @@
             this.splitContainer20.SplitterDistance = 96;
             this.splitContainer20.TabIndex = 3;
             // 
-            // monsterSave1
-            // 
-            this.monsterSave1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.monsterSave1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.monsterSave1.HistoryManager = null;
-            this.monsterSave1.Items = null;
-            this.monsterSave1.Location = new System.Drawing.Point(0, 16);
-            this.monsterSave1.Name = "monsterSave1";
-            this.monsterSave1.Size = new System.Drawing.Size(242, 80);
-            this.monsterSave1.TabIndex = 5;
-            // 
             // label29
             // 
             this.label29.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1402,17 +1230,6 @@
             this.label29.Size = new System.Drawing.Size(242, 16);
             this.label29.TabIndex = 4;
             this.label29.Text = "Saving Throw Boni:";
-            // 
-            // monsterSkill1
-            // 
-            this.monsterSkill1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.monsterSkill1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.monsterSkill1.HistoryManager = null;
-            this.monsterSkill1.Items = null;
-            this.monsterSkill1.Location = new System.Drawing.Point(0, 16);
-            this.monsterSkill1.Name = "monsterSkill1";
-            this.monsterSkill1.Size = new System.Drawing.Size(242, 82);
-            this.monsterSkill1.TabIndex = 6;
             // 
             // label30
             // 
@@ -1443,6 +1260,219 @@
             this.splitContainer22.SplitterDistance = 97;
             this.splitContainer22.TabIndex = 3;
             // 
+            // label27
+            // 
+            this.label27.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label27.Location = new System.Drawing.Point(0, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(242, 16);
+            this.label27.TabIndex = 7;
+            this.label27.Text = "Spells:";
+            // 
+            // label28
+            // 
+            this.label28.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label28.Location = new System.Drawing.Point(0, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(242, 16);
+            this.label28.TabIndex = 8;
+            this.label28.Text = "Slots:";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(184, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Overwrite with Clipboard Contents";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // imageChooser1
+            // 
+            this.imageChooser1.AllowDrop = true;
+            this.imageChooser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.imageChooser1.History = null;
+            this.imageChooser1.Image = null;
+            this.imageChooser1.Location = new System.Drawing.Point(0, 0);
+            this.imageChooser1.Name = "imageChooser1";
+            this.imageChooser1.Size = new System.Drawing.Size(112, 185);
+            this.imageChooser1.TabIndex = 0;
+            // 
+            // decriptions1
+            // 
+            this.decriptions1.descriptions = null;
+            this.decriptions1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.decriptions1.HistoryManager = null;
+            this.decriptions1.Location = new System.Drawing.Point(0, 0);
+            this.decriptions1.Name = "decriptions1";
+            this.decriptions1.preview = this.preview;
+            this.decriptions1.Size = new System.Drawing.Size(277, 123);
+            this.decriptions1.TabIndex = 0;
+            // 
+            // Keywords
+            // 
+            this.Keywords.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.Keywords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Keywords.Group = Character_Builder_Builder.KeywordControl.KeywordGroup.NONE;
+            this.Keywords.HistoryManager = null;
+            this.Keywords.Keywords = null;
+            this.Keywords.Location = new System.Drawing.Point(0, 16);
+            this.Keywords.Name = "Keywords";
+            this.Keywords.Size = new System.Drawing.Size(242, 78);
+            this.Keywords.TabIndex = 2;
+            // 
+            // Speeds
+            // 
+            this.Speeds.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Speeds.HistoryManager = null;
+            this.Speeds.Items = null;
+            this.Speeds.Location = new System.Drawing.Point(0, 16);
+            this.Speeds.Name = "Speeds";
+            this.Speeds.Size = new System.Drawing.Size(242, 82);
+            this.Speeds.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Speeds.Suggestions")));
+            this.Speeds.TabIndex = 4;
+            // 
+            // Senses
+            // 
+            this.Senses.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Senses.HistoryManager = null;
+            this.Senses.Items = null;
+            this.Senses.Location = new System.Drawing.Point(0, 16);
+            this.Senses.Name = "Senses";
+            this.Senses.Size = new System.Drawing.Size(242, 80);
+            this.Senses.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Senses.Suggestions")));
+            this.Senses.TabIndex = 6;
+            // 
+            // Languages
+            // 
+            this.Languages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Languages.HistoryManager = null;
+            this.Languages.Items = null;
+            this.Languages.Location = new System.Drawing.Point(0, 16);
+            this.Languages.Name = "Languages";
+            this.Languages.Size = new System.Drawing.Size(242, 84);
+            this.Languages.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Languages.Suggestions")));
+            this.Languages.TabIndex = 6;
+            // 
+            // Traits
+            // 
+            this.Traits.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.Traits.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Traits.HistoryManager = null;
+            this.Traits.Location = new System.Drawing.Point(0, 15);
+            this.Traits.Name = "Traits";
+            this.Traits.preview = this.preview;
+            this.Traits.Size = new System.Drawing.Size(242, 81);
+            this.Traits.TabIndex = 6;
+            this.Traits.TraitOnly = true;
+            this.Traits.Traits = null;
+            // 
+            // Actions
+            // 
+            this.Actions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.Actions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Actions.HistoryManager = null;
+            this.Actions.Location = new System.Drawing.Point(0, 15);
+            this.Actions.Name = "Actions";
+            this.Actions.preview = this.preview;
+            this.Actions.Size = new System.Drawing.Size(242, 83);
+            this.Actions.TabIndex = 7;
+            this.Actions.TraitOnly = false;
+            this.Actions.Traits = null;
+            // 
+            // Reactions
+            // 
+            this.Reactions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.Reactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Reactions.HistoryManager = null;
+            this.Reactions.Location = new System.Drawing.Point(0, 15);
+            this.Reactions.Name = "Reactions";
+            this.Reactions.preview = this.preview;
+            this.Reactions.Size = new System.Drawing.Size(242, 82);
+            this.Reactions.TabIndex = 7;
+            this.Reactions.TraitOnly = false;
+            this.Reactions.Traits = null;
+            // 
+            // LegendaryActions
+            // 
+            this.LegendaryActions.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.LegendaryActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LegendaryActions.HistoryManager = null;
+            this.LegendaryActions.Location = new System.Drawing.Point(0, 15);
+            this.LegendaryActions.Name = "LegendaryActions";
+            this.LegendaryActions.preview = this.preview;
+            this.LegendaryActions.Size = new System.Drawing.Size(242, 86);
+            this.LegendaryActions.TabIndex = 7;
+            this.LegendaryActions.TraitOnly = false;
+            this.LegendaryActions.Traits = null;
+            // 
+            // Resistances
+            // 
+            this.Resistances.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Resistances.HistoryManager = null;
+            this.Resistances.Items = null;
+            this.Resistances.Location = new System.Drawing.Point(0, 16);
+            this.Resistances.Name = "Resistances";
+            this.Resistances.Size = new System.Drawing.Size(242, 78);
+            this.Resistances.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Resistances.Suggestions")));
+            this.Resistances.TabIndex = 2;
+            // 
+            // Vulnerablities
+            // 
+            this.Vulnerablities.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Vulnerablities.HistoryManager = null;
+            this.Vulnerablities.Items = null;
+            this.Vulnerablities.Location = new System.Drawing.Point(0, 16);
+            this.Vulnerablities.Name = "Vulnerablities";
+            this.Vulnerablities.Size = new System.Drawing.Size(242, 82);
+            this.Vulnerablities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Vulnerablities.Suggestions")));
+            this.Vulnerablities.TabIndex = 4;
+            // 
+            // Immunities
+            // 
+            this.Immunities.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Immunities.HistoryManager = null;
+            this.Immunities.Items = null;
+            this.Immunities.Location = new System.Drawing.Point(0, 16);
+            this.Immunities.Name = "Immunities";
+            this.Immunities.Size = new System.Drawing.Size(242, 80);
+            this.Immunities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Immunities.Suggestions")));
+            this.Immunities.TabIndex = 4;
+            // 
+            // ConditionImmunities
+            // 
+            this.ConditionImmunities.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConditionImmunities.HistoryManager = null;
+            this.ConditionImmunities.Items = null;
+            this.ConditionImmunities.Location = new System.Drawing.Point(0, 16);
+            this.ConditionImmunities.Name = "ConditionImmunities";
+            this.ConditionImmunities.Size = new System.Drawing.Size(242, 84);
+            this.ConditionImmunities.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("ConditionImmunities.Suggestions")));
+            this.ConditionImmunities.TabIndex = 4;
+            // 
+            // monsterSave1
+            // 
+            this.monsterSave1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.monsterSave1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.monsterSave1.HistoryManager = null;
+            this.monsterSave1.Items = null;
+            this.monsterSave1.Location = new System.Drawing.Point(0, 16);
+            this.monsterSave1.Name = "monsterSave1";
+            this.monsterSave1.Size = new System.Drawing.Size(242, 80);
+            this.monsterSave1.TabIndex = 5;
+            // 
+            // monsterSkill1
+            // 
+            this.monsterSkill1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.monsterSkill1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.monsterSkill1.HistoryManager = null;
+            this.monsterSkill1.Items = null;
+            this.monsterSkill1.Location = new System.Drawing.Point(0, 16);
+            this.monsterSkill1.Name = "monsterSkill1";
+            this.monsterSkill1.Size = new System.Drawing.Size(242, 82);
+            this.monsterSkill1.TabIndex = 6;
+            // 
             // Spells
             // 
             this.Spells.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1453,15 +1483,6 @@
             this.Spells.Size = new System.Drawing.Size(242, 81);
             this.Spells.Suggestions = ((System.Collections.Generic.IEnumerable<string>)(resources.GetObject("Spells.Suggestions")));
             this.Spells.TabIndex = 8;
-            // 
-            // label27
-            // 
-            this.label27.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label27.Location = new System.Drawing.Point(0, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(242, 16);
-            this.label27.TabIndex = 7;
-            this.label27.Text = "Spells:";
             // 
             // Slots
             // 
@@ -1475,15 +1496,6 @@
             this.Slots.Size = new System.Drawing.Size(242, 85);
             this.Slots.Start = 1;
             this.Slots.TabIndex = 9;
-            // 
-            // label28
-            // 
-            this.label28.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label28.Location = new System.Drawing.Point(0, 0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(242, 16);
-            this.label28.TabIndex = 8;
-            this.label28.Text = "Slots:";
             // 
             // userControl11
             // 
@@ -1729,5 +1741,6 @@
         private System.Windows.Forms.Label label33;
         private MonsterActions LegendaryActions;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Button button1;
     }
 }

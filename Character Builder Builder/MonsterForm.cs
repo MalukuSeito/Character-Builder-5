@@ -4,6 +4,10 @@ using OGL.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder
@@ -363,5 +367,421 @@ namespace Character_Builder_Builder
         {
 
         }
+
+        private void MonsterForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void ParseCilipboard()
+        {
+            if (Clipboard.ContainsText())
+            {
+                MakeHistory(null);
+                string[] elms = Clipboard.GetText().Split('\n');
+                Section section = Section.NAME;
+                int passive = 10;
+                StringBuilder text = new StringBuilder();
+                Dictionary<string, string> rolls = new Dictionary<string, string>();
+                List<string> saves = new List<string>();
+                List<string> skills = new List<string>();
+                OGL.Descriptions.Description desc = null;
+                for (int i = 0; i < elms.Length; i++)
+                {
+                    string s = elms[i];
+                    string trim = s.Trim(new char[] { '\n', '\t', ' ', '\r' });
+                    if (StringComparer.OrdinalIgnoreCase.Equals("Traits", trim))
+                    {
+                        section = Section.TRAITS;
+                        monster.Traits.Clear();
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Actions", trim))
+                    {
+                        section = Section.ACTIONS;
+                        monster.Actions.Clear();
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Legendary Actions", trim))
+                    {
+                        section = Section.LEGENDARY;
+                        monster.LegendaryActions.Clear();
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Lair Actions", trim)) section = Section.LAIR;
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Reactions", trim))
+                    {
+                        monster.LegendaryActions.Clear();
+                        section = Section.REACTIONS;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Attributes", trim)) section = Section.ATTRIBUTES;
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Show Formatted Attributes", trim)) ;
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("AC", trim) && i < elms.Length - 1)
+                    {
+                        string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        string[] ab = val.Split(new char[] { ' ' }, 2);
+                        if (int.TryParse(ab[0], out int ac)) monster.AC = ac;
+                        if (ab.Length > 1) monster.ACText = ab[1].Replace("(", "").Replace(")", "").Trim(new char[] { '\n', '\t', ' ', '\r' });
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Alignment", trim) && i < elms.Length - 1) monster.Alignment = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("CHA", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Charisma = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("CON", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Constitution = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Challenge Rating", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.CR = v;
+                        monster.XP = ToXP(monster.CR);
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Condition Immunities", trim) && i < elms.Length - 1) ReplaceRange(monster.ConditionImmunities, elms[++i].Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })));
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("DEX", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Dexterity = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("HP", trim) && i < elms.Length - 1)
+                    {
+                        string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        string[] ab = val.Split(new char[] { ' ' }, 2);
+                        if (int.TryParse(ab[0], out int hp)) monster.HP = hp;
+                        if (ab.Length > 1) monster.HPRoll = ab[1].Trim(new char[] { '(', ')' });
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("INT", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Intelligence = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Immunities", trim) && i < elms.Length - 1)
+                    {
+                        monster.Immunities.Clear();
+                        foreach (String entry in elms[++i].Split(';'))
+                        {
+                            if (entry.ToLowerInvariant().StartsWith("bludgeoning, piercing, and slashing from"))
+                            {
+                                string from = entry.Substring("bludgeoning, piercing, and slashing from".Length);
+                                monster.Immunities.Add("bludgeoning from" + from);
+                                monster.Immunities.Add("piercing from" + from);
+                                monster.Immunities.Add("slashing from" + from);
+                            }
+                            else monster.Immunities.AddRange(entry.Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })).ToList());
+                        }
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Languages", trim) && i < elms.Length - 1) ReplaceRange(monster.Languages, elms[++i].Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })));
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Passive Perception", trim) && i < elms.Length - 1) int.TryParse(elms[++i], out passive);
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Resistances", trim) && i < elms.Length - 1)
+                    {
+                        monster.Resistances.Clear();
+                        foreach (string entry in elms[++i].Split(';'))
+                        {
+                            if (entry.Trim(new char[] { '\n', '\t', ' ', '\r' }).ToLowerInvariant().StartsWith("bludgeoning, piercing, and slashing from"))
+                            {
+                                string from = entry.Trim(new char[] { '\n', '\t', ' ', '\r' }).Substring("bludgeoning, piercing, and slashing from".Length);
+                                monster.Resistances.Add("bludgeoning from" + from);
+                                monster.Resistances.Add("piercing from" + from);
+                                monster.Resistances.Add("slashing from" + from);
+                            }
+                            else monster.Resistances.AddRange(entry.Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })).ToList());
+                        }
+                    }
+                    else if (Regex.IsMatch(trim, "Roll \\d+", RegexOptions.IgnoreCase) && i < elms.Length - 1)
+                    {
+                        //string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        //string[] ab = val.Split(new char[] { ' ' }, 2);
+                        //if (ab.Length > 1) rolls.Add(ab[0], ab[1]);
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("STR", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Strength = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Saving Throws", trim) && i < elms.Length - 1)
+                    {
+                        string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        foreach (string ss in val.Split(new char[] { ',' }))
+                        {
+                            //string[] ab = val.Split(new char[] { '+', '-' }, 2);
+                            //if (ab.Length > 1 && int.TryParse(ab[1], out int v)) saves.Add(ab[0].Trim(new char[] { '\n', '\t', ' ', '\r' }), val.Contains('-') ? -v: v);
+                            //else saves.Add(ab[0].Trim(new char[] { '\n', '\t', ' ', '\r' }), 0);
+                            saves.Add(ss);
+
+                        }
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Senses", trim) && i < elms.Length - 1) ReplaceRange(monster.Senses, elms[++i].Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })));
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Size", trim) && i < elms.Length - 1)
+                    {
+                        if (Enum.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out OGL.Base.Size v)) monster.Size = v;
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Skills", trim) && i < elms.Length - 1)
+                    {
+                        string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        foreach (string ss in val.Split(new char[] { ',' }))
+                        {
+                            //string[] ab = val.Split(new char[] { '+', '-' }, 2);
+                            //if (ab.Length > 1 && int.TryParse(ab[1], out int v)) skills.Add(ab[0].Trim(new char[] { '\n', '\t', ' ', '\r' }), val.Contains('-') ? -v : v);
+                            //else skills.Add(ab[0].Trim(new char[] { '\n', '\t', ' ', '\r' }), 0);
+                            skills.Add(ss);
+
+                        }
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Speed", trim) && i < elms.Length - 1) ReplaceRange(monster.Speeds, elms[++i].Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })));
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Type", trim) && i < elms.Length - 1)
+                    {
+                        string val = elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        monster.Keywords.Clear();
+                        foreach (string ss in val.Split(new char[] { '(', ')', ',', ';' }))
+                        {
+                            if (ss.Trim().Length > 0) monster.Keywords.Add(new OGL.Keywords.Keyword(ss.Trim().ToLowerInvariant()));
+                        }
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("Vulnerabilities", trim) && i < elms.Length - 1)
+                    {
+                        monster.Resistances.Clear();
+                        foreach (string entry in elms[++i].Split(';'))
+                        {
+                            if (entry.Trim(new char[] { '\n', '\t', ' ', '\r' }).ToLowerInvariant().StartsWith("bludgeoning, piercing, and slashing from"))
+                            {
+                                string from = entry.Trim(new char[] { '\n', '\t', ' ', '\r' }).Substring("bludgeoning, piercing, and slashing from".Length);
+                                monster.Vulnerablities.Add("bludgeoning from" + from);
+                                monster.Vulnerablities.Add("piercing from" + from);
+                                monster.Vulnerablities.Add("slashing from" + from);
+                            }
+                            else monster.Vulnerablities.AddRange(entry.Split(',').Select(ss => ss.Trim(new char[] { '\n', '\t', ' ', '\r' })).ToList());
+                        }
+                    }
+                    else if (StringComparer.OrdinalIgnoreCase.Equals("WIS", trim) && i < elms.Length - 1)
+                    {
+                        if (int.TryParse(elms[++i].Trim(new char[] { '\n', '\t', ' ', '\r' }), out int v)) monster.Wisdom = v;
+                    }
+                    else
+                    {
+                        if (trim.Length == 0) continue;
+                        if (section == Section.NAME)
+                        {
+                            monster.Name = trim;
+                            section = Section.DESCRIPTION;
+                        }
+                        else if (section == Section.DESCRIPTION) monster.Description += (monster.Description?.Length > 0 ? "\n" : "") + trim;
+                        else if (section == Section.TRAITS)
+                        {
+                            string[] ab = trim.Split(new char[] { ':' }, 2);
+                            if (ab.Length > 1) monster.Traits.Add(new OGL.Monsters.MonsterTrait(ab[0], ab[1]));
+                            else if (monster.Traits.Count > 0) monster.Traits.Last().Text += "\n" + trim;
+                            else monster.Traits.Add(new OGL.Monsters.MonsterTrait("", trim));
+                        }
+                        else if (section == Section.ACTIONS)
+                        {
+                            string[] ab = trim.Split(new char[] { ':' }, 2);
+                            if (ab.Length > 1)
+                            {
+                                Regex attck = new Regex("Attack:\\s+\\+(\\d+)\\s+to\\s+hit", RegexOptions.IgnoreCase);
+                                Regex damage2 = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage\\s+plus\\s+[^(]+\\s+\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Regex damage = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Match m = attck.Match(ab[1]);
+                                if (m.Success && int.TryParse(m.Groups[1].Value, out int bonus))
+                                {
+                                    Match md = damage.Match(ab[1]);
+                                    Match m2 = damage2.Match(ab[1]);
+                                    if (m2.Success && m2.Groups[2].Value == m2.Groups[4].Value) monster.Actions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[2].Value));
+                                    else if (m2.Success) monster.Actions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " " + m2.Groups[2].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[4].Value));
+                                    else if (md.Success) monster.Actions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, md.Groups[1].Value + "  " + md.Groups[2].Value));
+                                    else monster.Actions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, ""));
+                                }
+                                else
+                                {
+                                    monster.Actions.Add(new OGL.Monsters.MonsterTrait(ab[0], ab[1]));
+                                }
+                            }
+                            else if (monster.Actions.Count > 0) monster.Actions.Last().Text += "\n" + trim;
+                            else monster.Actions.Add(new OGL.Monsters.MonsterTrait("", trim));
+                        }
+                        else if (section == Section.REACTIONS)
+                        {
+                            string[] ab = trim.Split(new char[] { ':' }, 2);
+                            if (ab.Length > 1)
+                            {
+                                Regex attck = new Regex("Attack:\\s+\\+(\\d+)\\s+to\\s+hit", RegexOptions.IgnoreCase);
+                                Regex damage2 = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage\\s+plus\\s+[^(]+\\s+\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Regex damage = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Match m = attck.Match(ab[1]);
+                                if (m.Success && int.TryParse(m.Groups[1].Value, out int bonus))
+                                {
+                                    Match md = damage.Match(ab[1]);
+                                    Match m2 = damage2.Match(ab[1]);
+                                    if (m2.Success && m2.Groups[2].Value == m2.Groups[4].Value) monster.Reactions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[2].Value));
+                                    else if (m2.Success) monster.Reactions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " " + m2.Groups[2].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[4].Value));
+                                    else if (md.Success) monster.Reactions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, md.Groups[1].Value + "  " + md.Groups[2].Value));
+                                    else monster.Reactions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, ""));
+                                }
+                                else
+                                {
+                                    monster.Reactions.Add(new OGL.Monsters.MonsterTrait(ab[0], ab[1]));
+                                }
+                            }
+                            else if (monster.Reactions.Count > 0) monster.Reactions.Last().Text += "\n" + trim;
+                            else monster.Reactions.Add(new OGL.Monsters.MonsterTrait("", trim));
+                        }
+                        else if (section == Section.LEGENDARY)
+                        {
+                            string[] ab = trim.Split(new char[] { ':' }, 2);
+                            if (ab.Length > 1)
+                            {
+                                Regex attck = new Regex("Attack:\\s+\\+(\\d+)\\s+to\\s+hit", RegexOptions.IgnoreCase);
+                                Regex damage2 = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage\\s+plus\\s+[^(]+\\s+\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Regex damage = new Regex("\\(([^)]+)\\)\\s+(\\w+)\\s*damage");
+                                Match m = attck.Match(ab[1]);
+                                if (m.Success && int.TryParse(m.Groups[1].Value, out int bonus))
+                                {
+                                    Match md = damage.Match(ab[1]);
+                                    Match m2 = damage2.Match(ab[1]);
+                                    if (m2.Success && m2.Groups[2].Value == m2.Groups[4].Value) monster.LegendaryActions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[2].Value));
+                                    else if (m2.Success) monster.LegendaryActions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, m2.Groups[1].Value + " " + m2.Groups[2].Value + " + " + m2.Groups[3].Value + " " + m2.Groups[4].Value));
+                                    else if (md.Success) monster.LegendaryActions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, md.Groups[1].Value + "  " + md.Groups[2].Value));
+                                    else monster.LegendaryActions.Add(new OGL.Monsters.MonsterAction(ab[0], ab[1], bonus, ""));
+                                }
+                                else
+                                {
+                                    monster.LegendaryActions.Add(new OGL.Monsters.MonsterTrait(ab[0], ab[1]));
+                                }
+                            }
+                            else if (monster.LegendaryActions.Count > 0) monster.LegendaryActions.Last().Text += "\n" + trim;
+                            else monster.LegendaryActions.Add(new OGL.Monsters.MonsterTrait("", trim));
+                        }
+                        else if (section == Section.LAIR)
+                        {
+                            if (desc == null)
+                            {
+                                desc = new OGL.Descriptions.Description("Lair Actions", trim);
+                                monster.Descriptions.Add(desc);
+                            }
+                            else desc.Text += "\n" + trim;
+                        }
+                    }
+                }
+                monster.PassivePerception = passive - AbilityScores.GetMod(monster.Wisdom) - 10;
+                if (skills.Count > 0)
+                {
+                    Dictionary<string, OGL.Base.Ability> Skills = new Dictionary<string, OGL.Base.Ability>();
+
+                    foreach (OGL.Skill s in Program.Context.SkillsSimple.Values)
+                    {
+                        Skills.Add(s.Name.ToLowerInvariant(), s.Base);
+                    }
+                    monster.SkillBonus.Clear();
+                    foreach (string skill in skills)
+                    {
+                        foreach (Match match in Regex.Matches(skill, @"(\D+?)\s+\+?(\-?\s*\d+)(?:\s*\(([^\)]+)\))?", RegexOptions.IgnoreCase))
+                        {
+                            string name = match.Groups[1].Value.Trim();
+                            if (int.TryParse(match.Groups[2].Value, out int bonus))
+                            {
+                                if ("perception".Equals(name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    monster.PassivePerception -= bonus - (monster.Wisdom / 2 - 5);
+                                }
+                                if (Skills.ContainsKey(name.ToLowerInvariant())) monster.SkillBonus.Add(new OGL.Monsters.MonsterSkillBonus()
+                                {
+                                    Skill = name,
+                                    Bonus = bonus - monster.getAbility(Skills[name.ToLowerInvariant()]) / 2 + 5,
+                                    Text = match.Groups.Count > 2 ? match.Groups[3].Value : null
+
+                                });
+                                else monster.SkillBonus.Add(new OGL.Monsters.MonsterSkillBonus()
+                                {
+                                    Skill = name,
+                                    Bonus = bonus,
+                                    Text = match.Captures.Count > 2 ? match.Captures[3].Value : null
+                                });
+                            }
+                        }
+                    }
+                }
+                if (saves.Count > 0)
+                {
+                    Dictionary<string, OGL.Base.Ability> abilities = new Dictionary<string, OGL.Base.Ability>();
+                    abilities.Add("str", OGL.Base.Ability.Strength);
+                    abilities.Add("strength", OGL.Base.Ability.Strength);
+                    abilities.Add("dex", OGL.Base.Ability.Dexterity);
+                    abilities.Add("dexterity", OGL.Base.Ability.Dexterity);
+                    abilities.Add("con", OGL.Base.Ability.Constitution);
+                    abilities.Add("constitution", OGL.Base.Ability.Constitution);
+                    abilities.Add("int", OGL.Base.Ability.Intelligence);
+                    abilities.Add("intelligence", OGL.Base.Ability.Intelligence);
+                    abilities.Add("wis", OGL.Base.Ability.Wisdom);
+                    abilities.Add("wisdom", OGL.Base.Ability.Wisdom);
+                    abilities.Add("cha", OGL.Base.Ability.Charisma);
+                    abilities.Add("charisma", OGL.Base.Ability.Charisma);
+                    foreach (string save in saves)
+                    {
+                        foreach (Match match in Regex.Matches(save, @"(\D+?)\s+\+?(\-?\s*\d+)(?:\s*\(([^\)]+)\))?", RegexOptions.IgnoreCase))
+                        {
+                            string name = match.Groups[1].Value.Trim();
+                            if (int.TryParse(match.Groups[2].Value, out int bonus))
+                            {
+                                if (abilities.ContainsKey(name.ToLowerInvariant())) monster.SaveBonus.Add(new OGL.Monsters.MonsterSaveBonus()
+                                {
+                                    Ability = abilities[name.ToLowerInvariant()],
+                                    Bonus = bonus - monster.getAbility(abilities[name.ToLowerInvariant()]) / 2 + 5,
+                                    Text = match.Captures.Count > 2 ? match.Groups[3].Value : null
+
+                                });
+                            }
+                        }
+                    }
+                }
+                refresh();
+            }
+        }
+
+        private void ReplaceRange(List<string> list, IEnumerable<string> enumerable)
+        {
+            list.Clear();
+            list.AddRange(enumerable);
+        }
+
+        private int ToXP(decimal cR)
+        {
+            if (cR >= 30) return 155000;
+            if (cR >= 29) return 135000;
+            if (cR >= 28) return 120000;
+            if (cR >= 27) return 105000;
+            if (cR >= 26) return 90000;
+            if (cR >= 25) return 75000;
+            if (cR >= 24) return 62000;
+            if (cR >= 23) return 50000;
+            if (cR >= 22) return 41000;
+            if (cR >= 21) return 33000;
+            if (cR >= 20) return 25000;
+            if (cR >= 19) return 22000;
+            if (cR >= 18) return 20000;
+            if (cR >= 17) return 18000;
+            if (cR >= 16) return 15000;
+            if (cR >= 15) return 13000;
+            if (cR >= 14) return 11000;
+            if (cR >= 13) return 10000;
+            if (cR >= 12) return 8400;
+            if (cR >= 11) return 7200;
+            if (cR >= 10) return 5900;
+            if (cR >= 9) return 5000;
+            if (cR >= 8) return 3900;
+            if (cR >= 7) return 2900;
+            if (cR >= 6) return 2300;
+            if (cR >= 5) return 1800;
+            if (cR >= 4) return 1100;
+            if (cR >= 3) return 700;
+            if (cR >= 2) return 450;
+            if (cR >= 1) return 200;
+            if (cR >= 0.5m) return 100;
+            if (cR >= 0.25m) return 50;
+            if (cR >= 0.125m) return 25;
+            if (cR >= 0) return 10;
+            return 0;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ParseCilipboard();
+        }
+    }
+    public enum Section
+    {
+        NAME, DESCRIPTION, ATTRIBUTES, TRAITS, ACTIONS, REACTIONS, LEGENDARY, LAIR
     }
 }

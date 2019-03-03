@@ -5,6 +5,7 @@ using OGL.Descriptions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Character_Builder_Builder
@@ -180,7 +181,36 @@ namespace Character_Builder_Builder
                     fill();
                 }
             }
-            catch (Exception) { }
+            catch (Exception) {
+                if (Clipboard.ContainsText())
+                {
+                    string[] elms = Clipboard.GetText().Split('\n');
+                    for (int i = 0; i < elms.Length; i++)
+                    {
+                        string s = elms[i];
+                        string trim = s.Trim(new char[] { '\n', '\t', ' ', '\r' });
+                        if (trim.Length == 0) continue;
+                        if (!s.Contains(".") && i < elms.Length - 1)
+                        {
+                            int next = i + 1;
+                            StringBuilder desc = new StringBuilder();
+                            while (next < elms.Length && (elms[next].Contains(".") || elms[next].Trim(new char[] { '\n', '\t', ' ', '\r' }).Length == 0))
+                            {
+                                if (elms[next].Trim(new char[] { '\n', '\t', ' ', '\r' }).Length > 0) desc.AppendLine(elms[next].Trim(new char[] { '\n', '\t', ' ', '\r' }));
+                                next++;
+                            }
+                            list.Add(new Description(trim, desc.ToString()));
+                            i = next - 1;
+                        }
+                        else
+                        {
+                            string[] ss = s.Split(new char[] { '.' }, 2);
+                            list.Add(new Description(ss[0].Trim(new char[] { '\n', '\t', ' ', '\r' }), ss.Length > 1 ? ss[1].Trim(new char[] { '\n', '\t', ' ', '\r' }) : null));
+                        }
+                    }
+                    fill();
+                }
+            }
         }
 
         private void listBox1_KeyDown(object sender, KeyEventArgs e)
