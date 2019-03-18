@@ -38,6 +38,9 @@ namespace Character_Builder_Builder.FeatureForms
             saveBonus.DataBindings.Add("Text", f, "SavingThrowBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             profBonus.DataBindings.Add("Text", f, "ProficiencyBonus", true, DataSourceUpdateMode.OnPropertyChanged);
             BonusSize.DataBindings.Add("Value", f, "SizeChange", true, DataSourceUpdateMode.OnPropertyChanged);
+            attackOption.DataBindings.Add("Text", f, "OptionalText", true, DataSourceUpdateMode.OnPropertyChanged);
+            offhandAbility.DataBindings.Add("Checked", f, "OffHandAbilityScoreDamage", true, DataSourceUpdateMode.OnPropertyChanged);
+            allowOffhand.DataBindings.Add("Checked", f, "AllowsOffHand", true, DataSourceUpdateMode.OnPropertyChanged);
             SkillList.Items = f.Skills;
             proficiencyOptions.Items = f.ProficiencyOptions;
             Program.Context.ImportSkills();

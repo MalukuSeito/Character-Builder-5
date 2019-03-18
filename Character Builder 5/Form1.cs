@@ -752,10 +752,13 @@ namespace Character_Builder_5
                 actionsBox.Items.AddRange(Program.Context.Player.GetActions().ToArray());
                 attacksBox.Items.Clear();
                 foreach (Possession p in Program.Context.Player.GetItemsAndPossessions().Where(p => p.Count > 0 || !hideLostItemsToolStripMenuItem.Checked)) {
-                    AttackInfo ai = Program.Context.Player.GetAttack(p, 0, false);
-                    if (ai != null)
+                    var ais = Program.Context.Player.GetAttack(p, 0, false);
+                    if (ais != null)
                     {
-                        attacksBox.Items.Add(new AttackRow() { Possession = p, Attack = ai });
+                        foreach (AttackInfo ai in ais)
+                        {
+                            attacksBox.Items.Add(new AttackRow() { Possession = p, Attack = ai });
+                        }
                     }
                 }
                 attacksLabel.Text = "Attacks (" + (Program.Context.Player.GetExtraAttacks() + 1) + " per action):";

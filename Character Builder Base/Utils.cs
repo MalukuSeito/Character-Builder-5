@@ -507,8 +507,8 @@ namespace Character_Builder
         {
             if (asa == null) asa = new AbilityScoreArray(10, 10, 10, 10, 10, 10);
             if (additionalKeywords == null) additionalKeywords = new List<string>();
-            if (i != null && i.CachedMatches == null) i.CachedMatches = new Dictionary<string, bool>();
-            if (i != null && i.CachedMatches.ContainsKey(expression + additionalKeywords.ToString())) return i.CachedMatches[expression + additionalKeywords.ToString()];
+            //if (i != null && i.CachedMatches == null) i.CachedMatches = new Dictionary<string, bool>();
+            //if (i != null && i.CachedMatches.ContainsKey(expression + additionalKeywords.ToString())) return i.CachedMatches[expression + additionalKeywords.ToString()];
             try
             {
                 Expression ex = new Expression(ConfigManager.FixQuotes(expression));
@@ -552,10 +552,10 @@ namespace Character_Builder
                 object o = ex.Evaluate();
                 if (o is Boolean && (Boolean)o)
                 {
-                    if (i != null) i.CachedMatches[expression + additionalKeywords.ToString()] = true;
+                    //if (i != null) i.CachedMatches[expression + additionalKeywords.ToString()] = true;
                     return true;
                 }
-                else if (i != null) i.CachedMatches[expression + additionalKeywords.ToString()] = false;
+                //else if (i != null) i.CachedMatches[expression + additionalKeywords.ToString()] = false;
                 return false;
                  
             }

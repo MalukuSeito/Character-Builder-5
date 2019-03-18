@@ -4,6 +4,7 @@ using OGL.Common;
 using OGL.Descriptions;
 using OGL.Features;
 using OGL.Items;
+using OGL.Keywords;
 using OGL.Spells;
 using System;
 using System.Collections.Generic;
@@ -685,6 +686,13 @@ namespace Character_Builder
         }
         public List<Choice> Choices = new List<Choice>();
         [XmlIgnore]
+        private static readonly FeatureClass OFFHAND = new FeatureClass() { feature = new BonusFeature() { AllowsOffHand = true, Condition = "melee and light and weapon" }, classlevel = 1 };
+        [XmlIgnore]
+        private static readonly FeatureClass OFFHAND2 = new FeatureClass() { feature = new BonusFeature() { OptionalText = "off-hand", Condition = "true" }, classlevel = 1 };
+        [XmlIgnore]
+        private static readonly FeatureClass VERSATILE = new FeatureClass() { feature = new BonusFeature() { OptionalText = "one-handed", Condition = "true" }, classlevel = 1 };
+
+    [XmlIgnore]
         public Background Background
         {
             get
@@ -1967,7 +1975,7 @@ namespace Character_Builder
             foreach (Possession p in Possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
         }
-        public AttackInfo GetAttack(Possession p,int level=0, bool extraAttacks = true)
+        public IEnumerable<AttackInfo> GetAttack(Possession p,int level=0, bool extraAttacks = true)
         {
             if (level == 0) level = GetLevel();
             List<FeatureClass> fa = GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => t is BonusFeature || t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature, level, p.CollectOnUse(level, this, Context));
@@ -1980,7 +1988,9 @@ namespace Character_Builder
             if (offHand is Shield) additionalKW.Add("shield");
             if (mainHand is Weapon) additionalKW.Add("mainhand");
             List<Weapon> countsAs = new List<Weapon>();
+            List<FeatureClass> options = new List<FeatureClass>();
             Weapon weapon = null;
+            fa.Add(OFFHAND);
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
@@ -2008,8 +2018,8 @@ namespace Character_Builder
                                 try
                                 {
                                     Item it = Context.GetItem(i, ((BonusFeature)f).Source);
-                                    if (it is Weapon) weapon = it as Weapon;
-                                    break;
+                                    //if (it is Weapon) weapon = it as Weapon;
+                                    if (it is Weapon w) countsAs.Add(w);
                                 }
                                 catch (Exception) { }
                             }
@@ -2017,6 +2027,8 @@ namespace Character_Builder
                     }
                 }
             }
+
+
             if (weapon == null && (p.Item == null || !(p.Item is Weapon)))
             {
                 return null;
@@ -2026,9 +2038,15 @@ namespace Character_Builder
                 weapon = p.Item as Weapon;
             }
             countsAs.Add(weapon);
-            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k=>k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) additionalKW.Add("freehand");
+            bool freehand = false;
+            if (offHand == null || (offHand.Keywords != null && offHand.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase))) || (weapon != null && weapon.Keywords != null && weapon.Keywords.Exists(k => k.Name.Equals("unarmed", StringComparison.OrdinalIgnoreCase)))) {
+                additionalKW.Add("freehand");
+                freehand = true;
+            }
             Ability baseAbility = Ability.Strength;
-            
+            options.Add(OFFHAND2);
+            var vers = weapon.Keywords.Find(kw => kw is Versatile) as Versatile;
+            if (vers != null) options.Add(VERSATILE);
 
             if (weapon.Keywords.Exists(kw => kw.Name == "finesse")) baseAbility = baseAbility | Ability.Dexterity;
             if (weapon.Keywords.Exists(kw => kw.Name == "ranged"))
@@ -2038,22 +2056,35 @@ namespace Character_Builder
             int attackbonus = 0;
             int damagebonus = 0;
             bool profbonus = false;
+            bool allowsoffhand = false;
+            bool offhandability = false;
             int extraatk = 0;
             String damage = weapon.Damage;
+            String damagetext = "";
             string damagetype = weapon.DamageType;
+            if (baseAbility.HasFlag(Ability.Strength) && asa.StrMod >= asa.DexMod) additionalKW.Add("StrengthAttack");
             foreach (FeatureClass fc in fa)
             {
                 Feature f = fc.feature;
                 if (f is BonusFeature b)
                 {
-                    if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0" || b.BaseAbility != Ability.None))
+                    if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0" || b.BaseAbility != Ability.None) || b.OffHandAbilityScoreDamage == true || b.AllowsOffHand == true)
                     {
-                        if (Utils.Matches(Context, b, weapon, fc.classlevel, additionalKW, asa) || Utils.Matches(Context, b, baseAbility, "Weapon", "Weapon", fc.classlevel, additionalKW))
+                        if (Utils.Matches(Context, b, weapon, fc.classlevel, additionalKW, asa) || Utils.Matches(Context, b, baseAbility, "Weapon", "Weapon", fc.classlevel, additionalKW) || (b.OptionalText != null && b.OptionalText != "" && b.Condition.ToLowerInvariant().Contains("attackoption_")))
                         {
-                            attackbonus += Utils.Evaluate(Context, b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
-                            damagebonus += Utils.Evaluate(Context, b, asa, additionalKW, fc.classlevel, level, weapon);
-                            if (b.DamageBonusText != null && b.DamageBonusText != "") damage += " " + b.DamageBonusText;
-                            if (b.BaseAbility != Ability.None) baseAbility = baseAbility | b.BaseAbility;
+                            if (b.OptionalText != null && b.OptionalText != "")
+                            {
+                                options.Add(fc);
+                            }
+                            else
+                            {
+                                attackbonus += Utils.Evaluate(Context, b.AttackBonus, asa, additionalKW, fc.classlevel, level, weapon);
+                                damagebonus += Utils.Evaluate(Context, b, asa, additionalKW, fc.classlevel, level, weapon);
+                                if (b.DamageBonusText != null && b.DamageBonusText != "") damagetext = damagetext.Length == 0 ? b.DamageBonusText : damagetext + " " + b.DamageBonusText;
+                                if (b.BaseAbility != Ability.None) baseAbility = baseAbility | b.BaseAbility;
+                                allowsoffhand = allowsoffhand | b.AllowsOffHand;
+                                offhandability = offhandability | b.OffHandAbilityScoreDamage;
+                            }
                         }
                     }
                 }
@@ -2080,15 +2111,64 @@ namespace Character_Builder
                     }
                 }
             }
-            int ability = asa.ApplyMod(baseAbility); ;
-            attackbonus += ability;
-            damagebonus += ability;
-            if (profbonus) attackbonus += GetProficiency(level);
-            if (damagebonus > 0) damage += "+" + damagebonus;
-            else if (damagebonus < 0) damage += damagebonus;
-            extraatk++;
-            if (extraAttacks && extraatk > 1) damage = extraatk.ToString() + " x " + damage;
-            return new AttackInfo(attackbonus,damage,damagetype);
+            List<AttackInfo> res = new List<AttackInfo>();
+            foreach (IEnumerable<FeatureClass> perm in options.Combinations())
+            {
+                bool offhand = perm.Contains(OFFHAND2);
+                if (vers != null && !perm.Contains(VERSATILE) && offhand) continue;
+                bool offhanda = offhandability;
+                bool aoffhand = allowsoffhand;
+                int eattacks = extraatk;
+
+                String dtext = damagetext;
+                int attackb = attackbonus;
+                int damageb = damagebonus;
+
+                Ability bAbility = baseAbility;
+                bool allowed = true;
+                var additional = new List<string>(additionalKW);
+                additional.AddRange(perm.Select(s => "AttackOption_" + (s.feature as BonusFeature).OptionalText.Replace(' ','_')));
+                foreach (FeatureClass fc in perm)
+                {
+                    Feature f = fc.feature;
+                    if (f is BonusFeature b)
+                    {
+                        if ((b.DamageBonus != null && b.DamageBonus.Trim() != "" && b.DamageBonus.Trim() != "0") || (b.DamageBonusText != null && b.DamageBonusText != "") || b.DamageBonusModifier != Ability.None || (b.AttackBonus != null && b.AttackBonus.Trim() != "" && b.AttackBonus.Trim() != "0" || b.BaseAbility != Ability.None) || b.OffHandAbilityScoreDamage == true || b.AllowsOffHand == true)
+                        {
+                            if (Utils.Matches(Context, b, weapon, fc.classlevel, additional, asa) || Utils.Matches(Context, b, baseAbility, "Weapon", "Weapon", fc.classlevel, additional))
+                            {
+                                attackb += Utils.Evaluate(Context, b.AttackBonus, asa, additional, fc.classlevel, level, weapon);
+                                damageb += Utils.Evaluate(Context, b, asa, additional, fc.classlevel, level, weapon);
+                                if (b.DamageBonusText != null && b.DamageBonusText != "") dtext = damagetext.Length == 0 ? b.DamageBonusText : dtext + " " + b.DamageBonusText;
+                                if (b.BaseAbility != Ability.None) bAbility = bAbility | b.BaseAbility;
+                                aoffhand = aoffhand | b.AllowsOffHand;
+                                offhanda = offhanda | b.OffHandAbilityScoreDamage;
+                            } else allowed = false;
+                        }
+                    }
+                }
+                if (offhand && !aoffhand) continue;
+                if (!allowed) continue;
+
+                int ability = asa.ApplyMod(bAbility);
+                attackb += ability;
+                if (!offhand || offhandability || ability < 0) damageb += ability;
+                if (profbonus) attackb += GetProficiency(level);
+                if (damageb > 0) dtext += "+" + damageb;
+                else if (damageb < 0) dtext += damageb;
+                eattacks++;
+                if (vers != null && !perm.Contains(VERSATILE)) dtext = vers.Damage + (dtext.Length > 0 ? " " + dtext : "");
+                else dtext = damage + (dtext.Length > 0 ? " " + dtext : "");
+                if (extraAttacks && eattacks > 1) dtext = eattacks.ToString() + " x " + dtext;
+                AttackInfo ai = new AttackInfo(attackb, dtext, damagetype, perm.Select(s => (s.feature as BonusFeature).OptionalText).ToList());
+                if (vers != null && !perm.Contains(VERSATILE)) ai.AttackOptions.Add("two-handed");
+                res.Add(ai);
+            }
+            if (vers != null && !freehand)
+            {
+                return res.OrderBy(ai => ai.AttackOptions.Contains("two-handed"));
+            }
+            return res;
         }
         public AttackInfo GetAttack(Spell s, Ability spellcastingModifier, int level = 0)
         {

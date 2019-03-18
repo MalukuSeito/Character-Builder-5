@@ -188,8 +188,8 @@ namespace Character_Builder_5
             }
             foreach (Possession pos in equip)
             {
-                AttackInfo ai = Program.Context.Player.GetAttack(pos);
-                if (ai != null) attackinfos.Add(new KeyValuePair<string, AttackInfo>(pos.ToString(), ai));
+                IEnumerable<AttackInfo> ais = Program.Context.Player.GetAttack(pos);
+                if (ais != null) attackinfos.AddRange(ais.Select(ai => new KeyValuePair<string, AttackInfo>(pos.ToString() + (ai.AttackOptions.Count > 0 ? " (" + string.Join(", ", ai.AttackOptions) + " )" : ""), ai)));
             }
             foreach (ModifiedSpell s in Program.Context.Player.GetBonusSpells(false))
             {

@@ -29,6 +29,10 @@ namespace OGL.Features
         public String BaseItemChange { get; set; }
         public int SizeChange { get; set; } = 0;
         public List<String> ProficiencyOptions { get; set; } = new List<string>();
+        public bool AllowsOffHand { get; set; } = false;
+        public bool OffHandAbilityScoreDamage { get; set; } = false;
+        public string OptionalText { get; set; } = null;
+
         public BonusFeature():base()
         {
             Action = Base.ActionType.ForceHidden;

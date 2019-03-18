@@ -4,6 +4,7 @@ using OGL.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Character_Builder
@@ -32,7 +33,7 @@ namespace Character_Builder
             Weight = p.Weight;
             Item = p.Item;
             Magic = p.Magic;
-            Info = player.GetAttack(p);
+            Info = player.GetAttack(p)?.FirstOrDefault();
         }
         public String ToXML()
         {

@@ -316,8 +316,8 @@ namespace CB_5e.ViewModels.Character
             }
             foreach (Possession pos in equip)
             {
-                AttackInfo ai = Context.Player.GetAttack(pos);
-                if (ai != null) attackinfos.Add(new KeyValuePair<string, AttackInfo>(pos.ToString(), ai));
+                IEnumerable<AttackInfo> ais = Context.Player.GetAttack(pos);
+                if (ais != null) attackinfos.AddRange(ais.Select(ai => new KeyValuePair<string, AttackInfo>(pos.ToString() + (ai.AttackOptions.Count > 0 ? " (" + string.Join(", ", ai.AttackOptions) + " )" : ""), ai)));
             }
             foreach (ModifiedSpell s in Context.Player.GetBonusSpells(false))
             {

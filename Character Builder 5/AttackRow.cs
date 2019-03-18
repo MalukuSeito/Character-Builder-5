@@ -17,7 +17,7 @@ namespace Character_Builder_5
         {
             if (Attack == null) return (Possession?.ToString() ?? "");
             if (Attack.SaveDC != null && Attack.SaveDC != "") return (Possession?.ToString() ?? "") + ": DC " + Attack.SaveDC + ", " + Attack.Damage + " " + Attack.DamageType + " damage";
-            return (Possession?.ToString() ?? "") + ": +" + Attack.AttackBonus + ", " + Attack.Damage + " " + Attack.DamageType + " damage";
+            return (Possession?.ToString() ?? "" + (Attack.AttackOptions.Count > 0 ? " (" + string.Join(", ", Attack.AttackOptions) + " )" : "")) + ": +" + Attack.AttackBonus + ", " + Attack.Damage + " " + Attack.DamageType + " damage";
         }
     }
 }
