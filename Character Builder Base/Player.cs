@@ -2345,6 +2345,15 @@ namespace Character_Builder
                     }
                     a += e.AP;
                     if (e.XP > 0) lastxp += e.XP;
+                    if (e.Milestone)
+                    {
+                        if (lastxp != 0)
+                        {
+                            a = Context.Levels.ToAP(Context.Levels.ToXP(a) + lastxp);
+                            lastxp = 0;
+                        }
+                        a += Context.Levels.XpToLevelUp(a, true);
+                    }
                 }
                 if (lastxp != 0)
                 {
@@ -2366,6 +2375,15 @@ namespace Character_Builder
                     } 
                     x += e.XP;
                     if (e.AP > 0) lastap += e.AP;
+                    if (e.Milestone)
+                    {
+                        if (lastap != 0)
+                        {
+                            x = Context.Levels.ToXP(Context.Levels.ToAP(x) + lastap);
+                            lastap = 0;
+                        }
+                        x += Context.Levels.XpToLevelUp(x, false);
+                    }
                 }
                 if (lastap + AP != 0)
                 {

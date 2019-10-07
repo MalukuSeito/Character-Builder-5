@@ -3940,6 +3940,8 @@ namespace Character_Builder_5
                 journalRenown.Value = je.Renown;
                 journalInSheet.Checked = je.InSheet;
                 journalDate.Value = je.Added;
+                Milestone.Checked = je.Milestone;
+                Milestone.Enabled = true;
                 journalTitle.Enabled = true;
                 journalTime.Enabled = true;
                 journalText.Enabled = true;
@@ -3984,6 +3986,8 @@ namespace Character_Builder_5
                 journalDowntime.Value = 0;
                 journalRenown.Value = 0;
                 journalDate.Value = DateTime.Now;
+                Milestone.Enabled = false;
+                Milestone.Checked = false;
                 journalInSheet.Checked = false;
                 journalTitle.Enabled = false;
                 journalTime.Enabled = false;
@@ -4503,6 +4507,18 @@ namespace Character_Builder_5
             Properties.Settings.Default.HideLostItems = hideLostItemsToolStripMenuItem.Checked;
             Properties.Settings.Default.Save();
             UpdateEquipmentLayout();
+        }
+
+        private void Milestone_CheckedChanged(object sender, EventArgs e)
+        {
+            if (layouting) return;
+            Program.Context.MakeHistory("journalMilestone");
+            if (journalEntries.SelectedItem is JournalEntry)
+            {
+                JournalEntry je = journalEntries.SelectedItem as JournalEntry;
+                je.Milestone = Milestone.Checked;
+                UpdateJournal();
+            }
         }
     }
 }

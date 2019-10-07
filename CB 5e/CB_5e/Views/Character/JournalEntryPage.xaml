@@ -48,10 +48,12 @@
 
                 <Label Grid.Row="5" Grid.Column="0" Text="XP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
                 <Entry Grid.Row="5" Grid.Column="1" Text="{Binding XP}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
-                <Label Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="3"  Text="Advancement Checkpoints" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
-                <Entry Grid.Row="5" Grid.Column="5" Text="{Binding AP}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
-                
-                
+                <Label Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="1"  Text="Adv. ChP." HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Entry Grid.Row="5" Grid.Column="3" Text="{Binding AP}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
+                <Label Grid.Row="5" Grid.Column="4" Text="Milestone" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
+                <Switch  Grid.Row="5" Grid.Column="5" IsToggled="{Binding Milestone}" HorizontalOptions="Start" VerticalOptions="Center"/>
+
+
                 <Label Grid.Row="6" Grid.Column="0" Text="PP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>
                 <Entry Grid.Row="6" Grid.Column="1" Text="{Binding PP}" TextColor="{StaticResource Accent}" Keyboard="Telephone"/>
                 <Label Grid.Row="6" Grid.Column="2" Text="GP" HorizontalTextAlignment="End" FontSize="Micro" VerticalTextAlignment="Center"/>

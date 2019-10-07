@@ -39,7 +39,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="PDFLogMagicItems" Roaming="true" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PDFSpellbookMagicItems" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

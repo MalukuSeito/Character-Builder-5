@@ -27,6 +27,7 @@ namespace Character_Builder
         public int T2TP { get; set; }
         public int T3TP { get; set; }
         public int T4TP { get; set; }
+        public bool Milestone { get; set; }
 
         public JournalEntry ()
         {
@@ -56,6 +57,7 @@ namespace Character_Builder
             List<string> c = new List<string>();
             if (XP > 0) c.Add("+" + XP + " XP");
             else if (XP < 0) c.Add(XP + " XP");
+            if (Milestone) c.Add("Milestone");
             if (AP > 0) c.Add("+" + AP + " Advancement Checkpoints");
             else if (AP < 0) c.Add(AP + " Advancement Checkpoints");
             if (PP > 0) c.Add("+" + PP + " pp");

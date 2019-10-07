@@ -366,6 +366,20 @@ namespace CB_5e.ViewModels.Character
             }
         }
 
+        public bool Milestone
+        {
+            get => Journal.Milestone;
+            set
+            {
+                if (value != Milestone)
+                {
+                    IsChanged = true;
+                    Journal.Milestone = value;
+                }
+                OnPropertyChanged("Milestone");
+            }
+        }
+
         public DateTime Date
         {
             get => Journal.Added.Date;

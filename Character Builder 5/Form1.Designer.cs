@@ -412,6 +412,7 @@
             this.SpellsBox = new System.Windows.Forms.ListBox();
             this.displayElement = new System.Windows.Forms.WebBrowser();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.Milestone = new System.Windows.Forms.CheckBox();
             this.mainmenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainSpilt)).BeginInit();
             this.mainSpilt.Panel1.SuspendLayout();
@@ -2896,7 +2897,7 @@
             this.journalEntries.FormattingEnabled = true;
             this.journalEntries.Location = new System.Drawing.Point(3, 3);
             this.journalEntries.Name = "journalEntries";
-            this.journalEntries.Size = new System.Drawing.Size(603, 190);
+            this.journalEntries.Size = new System.Drawing.Size(603, 168);
             this.journalEntries.TabIndex = 3;
             this.journalEntries.SelectedIndexChanged += new System.EventHandler(this.journalEntries_SelectedIndexChanged);
             // 
@@ -2906,7 +2907,7 @@
             this.panel2.Controls.Add(this.removeJournalButton);
             this.panel2.Controls.Add(this.newJournalEntry);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(3, 193);
+            this.panel2.Location = new System.Drawing.Point(3, 171);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(603, 25);
             this.panel2.TabIndex = 2;
@@ -2947,9 +2948,9 @@
             this.panel1.Controls.Add(this.journalTitle);
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 218);
+            this.panel1.Location = new System.Drawing.Point(3, 196);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(603, 272);
+            this.panel1.Size = new System.Drawing.Size(603, 294);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -2964,7 +2965,7 @@
             this.journalText.Multiline = true;
             this.journalText.Name = "journalText";
             this.journalText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.journalText.Size = new System.Drawing.Size(316, 239);
+            this.journalText.Size = new System.Drawing.Size(316, 261);
             this.journalText.TabIndex = 3;
             this.journalText.TextChanged += new System.EventHandler(this.journalText_TextChanged);
             // 
@@ -2980,6 +2981,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.Milestone);
             this.panel3.Controls.Add(this.label41);
             this.panel3.Controls.Add(this.journalDate);
             this.panel3.Controls.Add(this.label39);
@@ -3020,7 +3022,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(326, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(277, 272);
+            this.panel3.Size = new System.Drawing.Size(277, 294);
             this.panel3.TabIndex = 0;
             // 
             // label41
@@ -3044,7 +3046,7 @@
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(142, 86);
+            this.label39.Location = new System.Drawing.Point(3, 112);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(55, 13);
             this.label39.TabIndex = 36;
@@ -3052,7 +3054,7 @@
             // 
             // journalAP
             // 
-            this.journalAP.Location = new System.Drawing.Point(202, 84);
+            this.journalAP.Location = new System.Drawing.Point(66, 110);
             this.journalAP.Maximum = new decimal(new int[] {
             100000000,
             0,
@@ -3070,7 +3072,7 @@
             // 
             // journalT4TP
             // 
-            this.journalT4TP.Location = new System.Drawing.Point(202, 241);
+            this.journalT4TP.Location = new System.Drawing.Point(202, 267);
             this.journalT4TP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3089,7 +3091,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(142, 243);
+            this.label33.Location = new System.Drawing.Point(142, 269);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(54, 13);
             this.label33.TabIndex = 33;
@@ -3098,7 +3100,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(3, 243);
+            this.label34.Location = new System.Drawing.Point(3, 269);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(54, 13);
             this.label34.TabIndex = 32;
@@ -3106,7 +3108,7 @@
             // 
             // journalT3TP
             // 
-            this.journalT3TP.Location = new System.Drawing.Point(66, 241);
+            this.journalT3TP.Location = new System.Drawing.Point(66, 267);
             this.journalT3TP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3125,7 +3127,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(142, 217);
+            this.label36.Location = new System.Drawing.Point(142, 243);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(54, 13);
             this.label36.TabIndex = 30;
@@ -3133,7 +3135,7 @@
             // 
             // journalT2TP
             // 
-            this.journalT2TP.Location = new System.Drawing.Point(202, 215);
+            this.journalT2TP.Location = new System.Drawing.Point(202, 241);
             this.journalT2TP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3152,7 +3154,7 @@
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(3, 217);
+            this.label38.Location = new System.Drawing.Point(3, 243);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(54, 13);
             this.label38.TabIndex = 28;
@@ -3160,7 +3162,7 @@
             // 
             // journalT1TP
             // 
-            this.journalT1TP.Location = new System.Drawing.Point(66, 215);
+            this.journalT1TP.Location = new System.Drawing.Point(66, 241);
             this.journalT1TP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3179,7 +3181,7 @@
             // journalInSheet
             // 
             this.journalInSheet.AutoSize = true;
-            this.journalInSheet.Location = new System.Drawing.Point(202, 60);
+            this.journalInSheet.Location = new System.Drawing.Point(201, 82);
             this.journalInSheet.Name = "journalInSheet";
             this.journalInSheet.Size = new System.Drawing.Size(71, 17);
             this.journalInSheet.TabIndex = 26;
@@ -3200,7 +3202,7 @@
             // 
             this.journalDM.Location = new System.Drawing.Point(66, 58);
             this.journalDM.Name = "journalDM";
-            this.journalDM.Size = new System.Drawing.Size(130, 20);
+            this.journalDM.Size = new System.Drawing.Size(206, 20);
             this.journalDM.TabIndex = 24;
             this.journalDM.TextChanged += new System.EventHandler(this.journalDM_TextChanged);
             // 
@@ -3223,7 +3225,7 @@
             // 
             // journalRenown
             // 
-            this.journalRenown.Location = new System.Drawing.Point(202, 163);
+            this.journalRenown.Location = new System.Drawing.Point(202, 189);
             this.journalRenown.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3242,7 +3244,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(142, 165);
+            this.label30.Location = new System.Drawing.Point(142, 191);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(50, 13);
             this.label30.TabIndex = 20;
@@ -3250,7 +3252,7 @@
             // 
             // journalDowntime
             // 
-            this.journalDowntime.Location = new System.Drawing.Point(66, 189);
+            this.journalDowntime.Location = new System.Drawing.Point(66, 215);
             this.journalDowntime.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3269,7 +3271,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(3, 191);
+            this.label29.Location = new System.Drawing.Point(3, 217);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(57, 13);
             this.label29.TabIndex = 18;
@@ -3277,7 +3279,7 @@
             // 
             // journalMagic
             // 
-            this.journalMagic.Location = new System.Drawing.Point(202, 189);
+            this.journalMagic.Location = new System.Drawing.Point(202, 215);
             this.journalMagic.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3296,7 +3298,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(142, 191);
+            this.label28.Location = new System.Drawing.Point(142, 217);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(39, 13);
             this.label28.TabIndex = 14;
@@ -3322,7 +3324,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(3, 164);
+            this.label25.Location = new System.Drawing.Point(3, 190);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(24, 13);
             this.label25.TabIndex = 11;
@@ -3330,7 +3332,7 @@
             // 
             // journalCP
             // 
-            this.journalCP.Location = new System.Drawing.Point(66, 162);
+            this.journalCP.Location = new System.Drawing.Point(66, 188);
             this.journalCP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3349,7 +3351,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(142, 138);
+            this.label24.Location = new System.Drawing.Point(142, 164);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(24, 13);
             this.label24.TabIndex = 9;
@@ -3357,7 +3359,7 @@
             // 
             // journalSP
             // 
-            this.journalSP.Location = new System.Drawing.Point(202, 136);
+            this.journalSP.Location = new System.Drawing.Point(202, 162);
             this.journalSP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3376,7 +3378,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(3, 138);
+            this.label23.Location = new System.Drawing.Point(3, 164);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(24, 13);
             this.label23.TabIndex = 7;
@@ -3384,7 +3386,7 @@
             // 
             // journalEP
             // 
-            this.journalEP.Location = new System.Drawing.Point(66, 136);
+            this.journalEP.Location = new System.Drawing.Point(66, 162);
             this.journalEP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3403,7 +3405,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(142, 112);
+            this.label22.Location = new System.Drawing.Point(142, 138);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(25, 13);
             this.label22.TabIndex = 5;
@@ -3411,7 +3413,7 @@
             // 
             // journalGP
             // 
-            this.journalGP.Location = new System.Drawing.Point(202, 110);
+            this.journalGP.Location = new System.Drawing.Point(202, 136);
             this.journalGP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -3430,7 +3432,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 112);
+            this.label21.Location = new System.Drawing.Point(3, 138);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(24, 13);
             this.label21.TabIndex = 3;
@@ -3438,7 +3440,7 @@
             // 
             // journalPP
             // 
-            this.journalPP.Location = new System.Drawing.Point(66, 110);
+            this.journalPP.Location = new System.Drawing.Point(66, 136);
             this.journalPP.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -5196,6 +5198,17 @@
             // 
             this.toolTip1.IsBalloon = true;
             // 
+            // Milestone
+            // 
+            this.Milestone.AutoSize = true;
+            this.Milestone.Location = new System.Drawing.Point(202, 108);
+            this.Milestone.Name = "Milestone";
+            this.Milestone.Size = new System.Drawing.Size(71, 17);
+            this.Milestone.TabIndex = 39;
+            this.Milestone.Text = "Milestone";
+            this.Milestone.UseVisualStyleBackColor = true;
+            this.Milestone.CheckedChanged += new System.EventHandler(this.Milestone_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5796,6 +5809,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveCurrentPlayerDCIAsDefaultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveCurrentSourcesAsDefaultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideLostItemsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox Milestone;
     }
 }
 

@@ -763,8 +763,8 @@ namespace Character_Builder
 
                                         if (logtrans.ContainsKey("XP" + counter)) lp.SetField(logtrans["XP" + counter], entry.XP.ToString());
                                         if (logtrans.ContainsKey("AP" + counter)) lp.SetField(logtrans["AP" + counter], entry.AP.ToString());
-                                        if (logtrans.ContainsKey("APXP" + counter)) lp.SetField(logtrans["APXP" + counter], (entry.AP != 0 ? entry.AP.ToString() : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? entry.XP.ToString() : ""));
-                                        if (logtrans.ContainsKey("APXPText" + counter)) lp.SetField(logtrans["APXPText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "ACP/XP" : "ACP") : (entry.XP != 0 ? "XP" : (advancement ? "ACP" : "XP"))) + " +/-");
+                                        if (logtrans.ContainsKey("APXP" + counter)) lp.SetField(logtrans["APXP" + counter], (entry.AP != 0 ? entry.AP.ToString() : "") + (entry.AP != 0 && entry.XP != 0 ? ", " : "") + (entry.XP != 0 ? entry.XP.ToString() : "") + ((entry.AP != 0 || entry.XP != 0) && entry.Milestone ? ", " : "") + (entry.Milestone ? "Milestone" : ""));
+                                        if (logtrans.ContainsKey("APXPText" + counter)) lp.SetField(logtrans["APXPText" + counter], (entry.AP != 0 ? (entry.XP != 0 ? "ACP/XP" : "ACP") : (entry.XP != 0 ? "XP" : (entry.Milestone ? "Milestone" : (advancement ? "ACP" : "XP")))) + " +/-");
                                         if (logtrans.ContainsKey("Gold" + counter)) lp.SetField(logtrans["Gold" + counter], entry.GetMoney());
                                         if (logtrans.ContainsKey("Downtime" + counter)) lp.SetField(logtrans["Downtime" + counter], PlusMinus(entry.Downtime, "--"));
                                         if (logtrans.ContainsKey("Renown" + counter)) lp.SetField(logtrans["Renown" + counter], PlusMinus(entry.Renown, "--"));
@@ -777,10 +777,30 @@ namespace Character_Builder
                                         if (logtrans.ContainsKey("TreasurePointsText" + counter)) lp.SetField(logtrans["TreasurePointsText" + counter], String.Join(", ", tpt));
                                         if (logtrans.ContainsKey("TreasurePointsTextLong" + counter)) lp.SetField(logtrans["TreasurePointsTextLong" + counter], String.Join(", ", tpt) + " Treasure Points +/-");
                                         if (logtrans.ContainsKey("TreasurePointsValue" + counter)) lp.SetField(logtrans["TreasurePointsValue" + counter], String.Join(", ", tpv));
+                                        if (entry.Milestone && logtrans.ContainsKey("Milestone" + counter)) lp.SetField(logtrans["Milestone" + counter], "Yes");
                                     }
                                     xp += entry.XP;
                                     ap += entry.AP;
-
+                                    if (entry.Milestone)
+                                    {
+                                        if (advancement)
+                                        {
+                                            if (xp > 0)
+                                            {
+                                                ap = context.Levels.ToAP(context.Levels.ToXP(ap) + xp);
+                                                xp = 0;
+                                            }
+                                            ap += context.Levels.XpToLevelUp(ap, true);
+                                        } else
+                                        {
+                                            if (ap > 0)
+                                            {
+                                                xp = context.Levels.ToAP(context.Levels.ToAP(xp) + ap);
+                                                ap = 0;
+                                            }
+                                            xp += context.Levels.XpToLevelUp(xp, false);
+                                        }
+                                    }
                                     gold.pp += entry.PP;
                                     gold.gp += entry.GP;
                                     gold.sp += entry.SP;
