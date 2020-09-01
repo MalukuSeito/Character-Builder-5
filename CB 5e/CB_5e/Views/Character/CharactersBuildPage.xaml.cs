@@ -73,7 +73,7 @@ namespace CB_5e.Views.Character
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopModalAsync(false);
-                    await Navigation.PushModalAsync(new NavigationPage(new FlowPage(model)));
+                    await Navigation.PushModalAsync(new NavigationPage(new FlexPage(model)));
                 });
             }
             catch (OperationCanceledException)
@@ -119,7 +119,7 @@ namespace CB_5e.Views.Character
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Navigation.PopModalAsync(false);
-                    await Navigation.PushModalAsync(new NavigationPage(new FlowPage(model)));
+                    await Navigation.PushModalAsync(new NavigationPage(new FlexPage(model)));
                 });
             }
             catch (OperationCanceledException)

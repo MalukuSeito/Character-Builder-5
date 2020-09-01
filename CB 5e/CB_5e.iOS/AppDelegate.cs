@@ -95,7 +95,7 @@ namespace CB_5e.iOS
                                     Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
                                     {
                                         await App.MainTab.Children[1].Navigation.PopModalAsync(false);
-                                        await App.MainTab.Children[1].Navigation.PushModalAsync(new NavigationPage(new FlowPage(model)));
+                                        await App.MainTab.Children[1].Navigation.PushModalAsync(new NavigationPage(new FlexPage(model)));
                                     });
                                 } catch (Exception e) {
                                     ConfigManager.LogError(e);

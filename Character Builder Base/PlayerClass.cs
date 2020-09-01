@@ -70,7 +70,11 @@ namespace Character_Builder
         public int getClassLevelUpToLevel(int level)
         {
             if (level < ClassLevelAtLevel[0]) return 0;
-            for (int c = 0; c < ClassLevelAtLevel.Count; c++) if (level<=ClassLevelAtLevel[c]) return c+1;
+            for (int c = 0; c < ClassLevelAtLevel.Count; c++) if (level < ClassLevelAtLevel[c]) return c;
+            /*{
+                if (level == ClassLevelAtLevel[c]) return c + 1;
+                else if (level < ClassLevelAtLevel[c]) return c;
+            }*/
             return ClassLevelAtLevel.Count;
         }
         public int getHP(int classlevel)

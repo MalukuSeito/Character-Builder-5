@@ -1,0 +1,118 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/maluku/Dropbox/Character Builder 5/PluginDMG/PluginDMG.csproj": {}
+  },
+  "projects": {
+    "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/Character Builder Plugin.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/Character Builder Plugin.csproj",
+        "projectName": "Character Builder Plugin",
+        "projectPath": "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/Character Builder Plugin.csproj",
+        "projectJsonPath": "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/project.json",
+        "packagesPath": "/Users/maluku/.nuget/packages/",
+        "projectStyle": "ProjectJson",
+        "configFilePaths": [
+          "/Users/maluku/.config/NuGet/NuGet.Config"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "portable45-net45+win8+wpa81": {
+            "projectReferences": {
+              "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj": {
+                "projectPath": "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "portable45-net45+win8+wpa81": {}
+      }
+    },
+    "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
+        "projectName": "NCalc2",
+        "projectPath": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
+        "projectJsonPath": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/project.json",
+        "packagesPath": "/Users/maluku/.nuget/packages/",
+        "projectStyle": "ProjectJson",
+        "configFilePaths": [
+          "/Users/maluku/.config/NuGet/NuGet.Config"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        }
+      },
+      "frameworks": {
+        "portable45-net45+win8+wpa81": {}
+      }
+    },
+    "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj",
+        "projectName": "OGL Elements",
+        "projectPath": "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj",
+        "projectJsonPath": "/Users/maluku/Dropbox/Character Builder 5/oglelements/project.json",
+        "packagesPath": "/Users/maluku/.nuget/packages/",
+        "projectStyle": "ProjectJson",
+        "configFilePaths": [
+          "/Users/maluku/.config/NuGet/NuGet.Config"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "portable45-net45+win8+wpa81": {
+            "projectReferences": {
+              "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {
+                "projectPath": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "portable45-net45+win8+wpa81": {}
+      }
+    },
+    "/Users/maluku/Dropbox/Character Builder 5/PluginDMG/PluginDMG.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/maluku/Dropbox/Character Builder 5/PluginDMG/PluginDMG.csproj",
+        "projectName": "PluginDMG",
+        "projectPath": "/Users/maluku/Dropbox/Character Builder 5/PluginDMG/PluginDMG.csproj",
+        "projectJsonPath": "/Users/maluku/Dropbox/Character Builder 5/PluginDMG/project.json",
+        "packagesPath": "/Users/maluku/.nuget/packages/",
+        "projectStyle": "ProjectJson",
+        "configFilePaths": [
+          "/Users/maluku/.config/NuGet/NuGet.Config"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "portable45-net45+win8+wpa81": {
+            "projectReferences": {
+              "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/Character Builder Plugin.csproj": {
+                "projectPath": "/Users/maluku/Dropbox/Character Builder 5/Character Builder Plugin/Character Builder Plugin.csproj"
+              },
+              "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj": {
+                "projectPath": "/Users/maluku/Dropbox/Character Builder 5/oglelements/OGL Elements.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "portable45-net45+win8+wpa81": {}
+      }
+    }
+  }
+}

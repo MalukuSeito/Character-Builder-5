@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CB_5e.Views.Character.FlexPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <FlexLayout Wrap="Wrap" JustifyContent="Center" AlignContent="Start" x:Name="flexLayout" BindableLayout.ItemsSource="{Binding SubPages}" Direction="Row">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="5, 15, 5, 0" WidthRequest="150" HeightRequest="160" BindingContext="{Binding .}">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" NumberOfTapsRequired="1"/>
+                            </Grid.GestureRecognizers>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Row="0" Source="{Binding Image}" Aspect="AspectFit"/>
+                            <Label HorizontalTextAlignment="Center" Grid.Row="1" Text="{Binding Title}"/>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

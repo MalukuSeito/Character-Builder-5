@@ -2394,7 +2394,7 @@ namespace Character_Builder
         }
         public void SetXP(int xp)
         {
-            int cur = GetXP(false);
+            /*int cur = GetXP(false);
             if (Advancement)
             {
                 AP = xp - cur + AP;
@@ -2402,6 +2402,39 @@ namespace Character_Builder
             else
             {
                 XP = xp - cur + XP;
+            }
+            if (AP < 0) AP = 0;
+            if (XP < 0) XP = 0;*/
+            if (Advancement)
+            {
+                if (xp > Context.Levels.Advancement.Last()) xp = Context.Levels.Advancement.Last();
+                int old = AP;
+                for (AP=0;AP<=xp;AP++)
+                {
+                    int i = GetXP(false);
+                    if (i == xp) return;
+                    else if (i > xp)
+                    {
+                        AP--;
+                        return;
+                    }
+                }
+                AP = old;
+            } else
+            {
+                if (xp > Context.Levels.Experience.Last()) xp = Context.Levels.Experience.Last();
+                int old = XP;
+                for (XP = 0; XP <= xp; XP++)
+                {
+                    int i = GetXP(false);
+                    if (i == xp) return;
+                    else if (i > xp)
+                    {
+                        XP--;
+                        return;
+                    }
+                }
+                XP = old;
             }
         }
 

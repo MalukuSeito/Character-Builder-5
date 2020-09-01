@@ -80,10 +80,10 @@ namespace Character_Builder_5
             Context.ImportStandaloneFeatures(false);
             Context.ImportConditions(false);
             Context.ImportMagic(false);
-            foreach (ClassDefinition c in Context.Classes.Values) c.ApplyKeywords(Context);
-            foreach (SubClass c in Context.SubClasses.Values) c.ApplyKeywords(Context);
             Context.ImportClasses(false, true);
             Context.ImportSubClasses(false, true);
+            foreach (ClassDefinition c in Context.Classes.Values) c.ApplyKeywords(Context);
+            foreach (SubClass c in Context.SubClasses.Values) c.ApplyKeywords(Context);
             Context.ImportMonsters(false);
         }
 

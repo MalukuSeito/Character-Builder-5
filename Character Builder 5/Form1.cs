@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Character_Builder_5
 {
@@ -4517,7 +4518,44 @@ namespace Character_Builder_5
             {
                 JournalEntry je = journalEntries.SelectedItem as JournalEntry;
                 je.Milestone = Milestone.Checked;
-                UpdateJournal();
+                UpdateLayout();
+            }
+        }
+
+        private void journalEntries_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void journalEntries_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                if (journalEntries.SelectedItem is JournalEntry je)
+                {
+                    List<JournalEntry> entries = new List<JournalEntry> { je };
+                    XmlSerializer Serializer = new XmlSerializer(typeof(List<JournalEntry>));
+                    using (StringWriter writer = new StringWriter())
+                    {
+                        Serializer.Serialize(writer, entries);
+                        Clipboard.SetText(writer.ToString());
+                    }
+                }
+            } else if (e.Control && e.KeyCode == Keys.V && Clipboard.ContainsText())
+            {
+                try
+                {
+                    XmlSerializer Serializer = new XmlSerializer(typeof(List<JournalEntry>));
+                    using (StringReader sr = new StringReader(Clipboard.GetText())) {
+                        var entries = Serializer.Deserialize(sr) as List<JournalEntry>;
+                        Program.Context.MakeHistory("journal");
+                        Program.Context.Player.ComplexJournal.AddRange(entries);
+                        UpdateLayout();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
     }

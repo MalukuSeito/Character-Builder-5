@@ -74,8 +74,8 @@ namespace CB_5e.ViewModels.Character
             if (item is PlayerScoresViewModel psm) return new PlayerScoresPage(psm);
             if (item is PlayerPersonalViewModel ppm) return new PlayerPersonalPage(ppm);
             if (item is SourcesViewModel sm) return new SourcesPage(sm);
-            if (item is SwitchToBuildModel sbm) return new FlowPage(new PlayerBuildModel(sbm.Parent));
-            if (item is SwitchToPlayModel spm) return new FlowPage(new PlayerViewModel(spm.Parent));
+            if (item is SwitchToBuildModel sbm) return new FlexPage(new PlayerBuildModel(sbm.Parent));
+            if (item is SwitchToPlayModel spm) return new FlexPage(new PlayerViewModel(spm.Parent));
             if (item is FormsCompanionsViewModel fcvm) return new PlayerFormsCompanionsPage(fcvm);
             if (item is PlayerFormsCompanionsViewModel pfcvm) return new PlayerFormsCompanionsOverviewPage(pfcvm);
             return new AboutPage();
