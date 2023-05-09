@@ -2,7 +2,7 @@
 <div class="@CssClass">
 	@foreach (var feature in Items.Where(f=>!f.NoDisplay && !string.IsNullOrWhiteSpace(f.Name)))
 	{
-		<DisplayFeature CssClass="@LineCssClass" @NameCssClass="@NameCssClass" Feature="feature" />
+		<DisplayFeature CssClass="@LineCssClass" NameCssClass="@NameCssClass" Feature="feature" />
 	}
 </div>
 @code {

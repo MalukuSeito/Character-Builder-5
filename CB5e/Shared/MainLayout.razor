@@ -7,14 +7,26 @@
 
 	<main>
 		<div class="top-row px-4 auth bg-body-tertiary">
-			<div class="btn-group">
-				<Undo CssClass="btn btn-outline-primary bi bi-arrow-counterclockwise" />
-				<Redo CssClass="btn btn-outline-primary bi bi-arrow-clockwise" />
+			<div class="row g-1 w-100">
+				<div class="col order-md-0">
+					<div class="btn-group">
+						<Undo CssClass="btn btn-outline-primary bi bi-arrow-counterclockwise" />
+						<Redo CssClass="btn btn-outline-primary bi bi-arrow-clockwise" />
+					</div>
+				</div>
+				<div class="col-auto order-md-1">
+					<NewPlayer CssClass="btn btn-primary bi bi-person-plus-fill" />
+				</div>
+				<div class="col-auto order-md-3">
+					<SavePlayer CssClass="btn btn-primary" />
+				</div>
+				<div class="col-auto order-md-4">
+					<button class="btn btn-outline-primary bi bi-lightbulb" onclick="if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {document.documentElement.setAttribute('data-bs-theme','light')} else {document.documentElement.setAttribute('data-bs-theme','dark')}" />
+				</div>
+				<div class="col-12 col-md-auto order-md-2">
+					<LoadPlayer CssClass="btn btn-primary p20rem w-100" />
+				</div>
 			</div>
-			<NewPlayer CssClass="btn btn-primary mx-1 bi bi-person-plus-fill" />
-			<LoadPlayer CssClass="btn btn-primary p20rem" />
-			<SavePlayer CssClass="btn btn-primary mx-1" />
-			<button class="btn btn-outline-primary bi bi-lightbulb" onclick="if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {document.documentElement.setAttribute('data-bs-theme','light')} else {document.documentElement.setAttribute('data-bs-theme','dark')}" />
 		</div>
 
 		<article class="content px-4">

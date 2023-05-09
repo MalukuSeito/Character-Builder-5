@@ -45,7 +45,7 @@
       "url": "Config.xml"
     },
     {
-      "hash": "sha256-Z2Oy4YSIe91fPCH++54qLVJOTTK2U2cSPjjRfn35Rbk=",
+      "hash": "sha256-FKciih6LbI3ifvPjvhntfmtYqWK+B+5RrbpE0q6TnlM=",
       "url": "css\/app.css"
     },
     {
@@ -245,7 +245,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-r3HQTZayDuF\/zMgv15\/65dRsLsvCuNHbCLhYEQmj2bQ=",
+      "hash": "sha256-tVV5+3QHdE6DuJwozon75U2fKNn40RF0pP4TqhkXGQY=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -253,7 +253,7 @@
       "url": "_framework\/BlazorDB.dll"
     },
     {
-      "hash": "sha256-WH99CjfE0Rax940cGPlC1hUlgRLgPStFcvYoK1E9DfM=",
+      "hash": "sha256-MXL8oPwlnPt3bcpVmyy0+KQkuTim4paiekygn2iM9lk=",
       "url": "_framework\/CB5e.dll"
     },
     {
@@ -485,7 +485,7 @@
       "url": "_framework\/System.Xml.XmlSerializer.dll"
     },
     {
-      "hash": "sha256-N2OwiHAU5TP368fpLkUwB8E\/ILFkiG0yTXgOGH5HtXg=",
+      "hash": "sha256-vE67Sx8XYmGWnKX\/3vzzwKWMv3r0EStFrDWbbAQx928=",
       "url": "CB5e.styles.css"
     },
     {
@@ -497,5 +497,5 @@
       "url": "_content\/BlazorIndexedDB\/dexie.min.js"
     }
   ],
-  "version": "\/OJec4EQ"
+  "version": "BhnekD+5"
 };

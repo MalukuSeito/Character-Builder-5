@@ -4,15 +4,34 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.linktag {
-    display: none;
-    visibility: hidden
-}
+@media (hover: hover) {
+    .linktag {
+        display: none;
+        visibility: hidden
+    }
 
-:hover > span > .linktag, :hover > .linktag, .linktag:hover {
-    display: unset;
-    visibility: visible;
-    z-index: 1
+    :hover > span > .linktag, :hover > .linktag, .linktag:hover {
+        display: unset;
+        visibility: visible;
+        z-index: 1
+    }
+    .autohide {
+        display: none;
+        visibility: hidden
+    }
+
+    p:hover > .autohide, div:hover > .autohide, .autohide:hover {
+        display: block;
+        visibility: visible;
+        z-index: 1
+    }
+    ::placeholder {
+        color: transparent;
+    }
+
+    :hover::placeholder, .visible-placeholder::placeholder {
+        color: unset;
+    }
 }
 
 @media (min-width: 992px) {
@@ -58,17 +77,6 @@ input[type="datetime-local"]:focus {
     color:inherit !important;
 }
 
-.autohide {
-    display: none;
-    visibility: hidden
-}
-
-p:hover > .autohide, div:hover > .autohide, .autohide:hover {
-    display: block;
-    visibility: visible;
-    z-index: 1
-}
-
 .reset {
     color:white;
     display:none;
@@ -79,14 +87,6 @@ input:hover ~ .reset, input:focus ~ .reset, .reset:hover {
     color: inherit;
     display: block;
     z-index:1
-}
-
-::placeholder {
-    color: transparent;
-}
-
-:hover::placeholder, .visible-placeholder::placeholder {
-    color: unset;
 }
 
 select.visible-placeholder:invalid {

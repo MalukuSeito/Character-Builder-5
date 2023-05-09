@@ -158,6 +158,8 @@ main[b-qqxbtpc2tn] {
 
 .sidebar[b-qqxbtpc2tn] {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    position: sticky;
+    top: 0;
 }
 
 [b-qqxbtpc2tn] .p20rem {
@@ -169,7 +171,9 @@ main[b-qqxbtpc2tn] {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
-    height: 3.5rem;
+    min-height: 3.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
     display: flex;
     align-items: center;
 }
@@ -189,13 +193,9 @@ main[b-qqxbtpc2tn] {
         text-overflow: ellipsis;
     }
 
-@media (max-width: 640.98px) {
+@media (max-width: 991.98px) {
     .top-row:not(.auth)[b-qqxbtpc2tn] {
         display: none;
-    }
-
-    .top-row.auth[b-qqxbtpc2tn] {
-        justify-content: space-between;
     }
 
     .top-row[b-qqxbtpc2tn]  a, .top-row[b-qqxbtpc2tn]  .btn-link {
@@ -203,7 +203,7 @@ main[b-qqxbtpc2tn] {
     }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 992px) {
     .page[b-qqxbtpc2tn] {
         flex-direction: row;
     }
@@ -211,8 +211,6 @@ main[b-qqxbtpc2tn] {
     .sidebar[b-qqxbtpc2tn] {
         width: 250px;
         height: 100vh;
-        position: sticky;
-        top: 0;
     }
 
     .top-row[b-qqxbtpc2tn] {
@@ -285,7 +283,7 @@ main[b-qqxbtpc2tn] {
     color: white;
 }
 
-@media (min-width: 641px) {
+@media (min-width: 992px) {
     .navbar-toggler[b-wqd5u6a3jr] {
         display: none;
     }

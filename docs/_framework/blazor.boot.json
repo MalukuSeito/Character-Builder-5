@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "BlazorDB.dll": "sha256-QIiZOXxCf67A99RWfzOuyrI2cTcmiE0fjSYqDtS1Y\/g=",
-      "CB5e.dll": "sha256-WH99CjfE0Rax940cGPlC1hUlgRLgPStFcvYoK1E9DfM=",
+      "CB5e.dll": "sha256-MXL8oPwlnPt3bcpVmyy0+KQkuTim4paiekygn2iM9lk=",
       "Character Builder Base.dll": "sha256-iHNOcDu0eiHKsfgewAOMRb4+Wxcq6D0Jw6ttUHn\/ptY=",
       "Character Builder Plugin.dll": "sha256-YLsh7PNT9nHB\/WC6cNMe9EVj2eOrcD2nMj3DHa9N0XI=",
       "Microsoft.AspNetCore.Components.Browser.dll": "sha256-fTTlj7alUCkAJoW4olRxvnOOfbTOhpVeYVgUIbaqIl0=",
