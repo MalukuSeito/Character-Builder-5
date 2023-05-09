@@ -1,0 +1,121 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@TitleCssClass">Flaw</div>
+<ul class="@CssClass">
+	@if (string.IsNullOrWhiteSpace(context.Context.Player.Flaw))
+	{
+		List<(string, List<TableEntry>)> tables = new();
+		if (context.Context.Player.Background?.Flaw is not null) tables.Add((context.Context.Player.Background.Name , context.Context.Player.Background.Flaw));
+		tables.AddRange(context.Context.Player.CollectTables().Where(t => t.BackgroundOption == BackgroundOption.Flaw).Select(t => (t.TableName ?? t.Name, t.Entries)));
+		<li class="@LineCssClass bg-primary"><input type="search" class="border-0 rounded-2 col-auto visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput" /></li>
+		<li class="@LineCssClass">
+			<div class="row g-0">
+				<div class="col-auto">
+					<button disabled="@string.IsNullOrWhiteSpace(CustomText)" class="btn btn-primary me-3 py-0 my-0 bi bi-check-circle" @onclick="SelectCustom" title="Select"  />
+				</div>
+				<div class="col">
+					<input class="border-0 rounded-2 w-100 visible-placeholder" placeholder="Custom Flaw" @bind="CustomText" @bind:event="oninput" />
+				</div>
+			</div>
+		</li>
+		@foreach (var table in tables)
+		{
+			@foreach (var entry in table.Item2.Where(s => string.IsNullOrWhiteSpace(SearchText) || s.Matches(SearchText, false)))
+			{
+				<li class="@LineCssClass">
+					<button class="btn btn-primary me-3 py-0 my-0 bi bi-check-circle" @onclick="async () => await Select(entry.ToString())" title="Select" />
+					<span class="@NameCssClass">
+						@if (entry.MinRoll > 0)
+						{
+							@if (entry.MaxRoll > entry.MinRoll)
+							{
+								<span class="fw-bold">@entry.MinRoll - @entry.MaxRoll @(" ") </span>
+							}
+							else
+							{
+								<span class="fw-bold">@entry.MinRoll @(" ") </span>
+							}
+						}
+						@if (!string.IsNullOrWhiteSpace(entry.Title))
+						{
+							<span class="fw-bold">@entry.Title  @(" ")</span>
+						}
+						@entry.Text
+						@if (!string.IsNullOrWhiteSpace(table.Item1))
+						{
+							<span class="fs--1 text-muted"> (@table.Item1)</span>
+						}
+					</span>
+				</li>
+			}
+		}
+	}
+	else {	
+		<li class="@LineCssClass">
+			<button class="btn btn-primary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Select(null)" title="Remove Choice" />
+			<span class="@NameCssClass">@context.Context.Player.Flaw</span>
+		</li>
+	}
+</ul>
+
+@code {
+	private string SearchText { get; set; } = "";
+
+	private string CustomText { get; set; } = "";
+
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public string? SourceCssClass { get; set; } = "text-muted fs--1";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task SelectCustom()
+	{
+		if (string.IsNullOrWhiteSpace(CustomText)) return;
+		await Select(CustomText);
+		CustomText = "";
+	}
+	private async Task Select(string? choice)
+	{
+		context.Context.MakeHistory("Flaw");
+		context.Context.Player.Flaw = choice;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

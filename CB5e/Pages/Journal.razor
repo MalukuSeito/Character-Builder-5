@@ -1,0 +1,263 @@
+﻿@page "/journal"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Journal</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<ShopModal />
+<div class="container-xxl pb-3">
+
+
+
+	@if (context.Context.Player is not null)
+	{
+		<div class="border border-2 border-primary rounded-2 py-2">
+			<div class="row g-0">
+				<div class="col-lg-3 col-6 px-3 py-1">
+					<EditField CssClass="border-bottom border-secondary m-0 text-center" Expression="@((p)=>p.Name)" Placeholder="Character Name" Title="Character Name" />
+					<div class="p-0 text-lg-center mt-0 fs--2">Character</div>
+				</div>
+				<div class="col-lg-3 col-6 px-3 py-1">
+					<ClassesInfo CssClass="border-bottom border-secondary text-center" />
+					<div class="p-0 text-lg-center mt-0 fs--2">Class and Levels</div>
+				</div>
+				<div class="col-lg-3 col-6 px-3 py-1">
+					<EditField CssClass="border-bottom border-secondary m-0 text-center" Expression="@((p)=>p.PlayerName)" Placeholder="Player Name" Title="Player Name" />
+					<div class="p-0 text-lg-center mt-0 fs--2">Player</div>
+				</div>
+				<div class="col-lg-3 col-6 px-3 py-1">
+					<EditField CssClass="border-bottom border-secondary m-0 text-center" Expression="@((p)=>p.DCI)" Placeholder="DCI" Title="DCI" />
+					<div class="p-0 text-lg-center mt-0 fs--2">DCI</div>
+				</div>
+			</div>
+		</div>
+		@foreach (var entry in Entries)
+		{
+			<JournalEntryBox CssClass="row border border-2 border-primary rounded p-3 g-1 mt-3 position-relative" Entry="entry" FinalItems="FinalItems" FinalMagicItemCount="FinalMagicItemCount" />
+		}
+		<button class="@(Entries.Count > 0 ? "autohide" :"") btn bi bi-journal-plus btn-outline-secondary w-100 mt-3" @onclick="AddEntry" />
+	}
+</div>
+
+@code {
+	List<JournalInfo> Entries { get; set; } = new List<JournalInfo>();
+
+	public List<Guid> FinalItems { get; set; } = new();
+
+	public int FinalMagicItemCount { get; set; } = 0;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		BuildJournal();
+		return Task.CompletedTask;
+	}
+
+	private void BuildJournal()
+	{
+		Entries.Clear();
+		if (context?.Context?.Player is Player player)
+		{
+			Price gold = player.GetMoney(false);
+			int xp = player.XP;
+			int ap = player.AP;
+			int renown = 0;
+			int downtime = 0;
+			int magic = 0;
+			int t1tp = 0;
+			int t2tp = 0;
+			int t3tp = 0;
+			int t4tp = 0;
+			bool advancement = player.Advancement;
+			int common = 0;
+			int uncommon = 0;
+			int consumables = 0;
+			Dictionary<Guid, JournalPossession> journalPossesions = new Dictionary<Guid, JournalPossession>();
+			Dictionary<Guid, JournalBoon> journalBoons = new Dictionary<Guid, JournalBoon>();
+			JournalStats laststats = new()
+				{
+					Level = GetLevel(xp, ap, advancement),
+					Possessions = journalPossesions.Values.ToList(),
+					Boons = journalBoons.Values.ToList(),
+					XP = xp,
+					AP = ap,
+					Renown = renown,
+					Downtime = downtime,
+					MagicItems = magic,
+					T1TP = t1tp,
+					T2TP = t2tp,
+					T3TP = t3tp,
+					T4TP = t4tp,
+					Money = new Price(gold, 1),
+					CommonCount = common,
+					UncommonCount = uncommon,
+					ConsumableCount = consumables
+				};
+			foreach (var entry in player.ComplexJournal)
+			{
+				if (advancement && xp > 0 && entry.AP != 0)
+				{
+					ap = context?.Context?.Levels?.ToAP((context?.Context?.Levels?.ToXP(ap) ?? 0) + xp) ?? 0;
+					xp = 0;
+					laststats = laststats with { Level = GetLevel(xp, ap, advancement) };
+				}
+				else if (!advancement && ap > 0 && entry.XP != 0)
+				{
+					xp = context?.Context?.Levels?.ToXP((context?.Context?.Levels?.ToAP(xp) ?? 0) + ap) ?? 0;
+					ap = 0;
+					laststats = laststats with { Level = GetLevel(xp, ap, advancement) };
+				}
+				xp += entry.XP;
+				ap += entry.AP;
+				if (entry.Milestone)
+				{
+					if (advancement)
+					{
+						if (xp > 0)
+						{
+							ap = context?.Context?.Levels?.ToAP((context?.Context?.Levels?.ToXP(ap) ?? 0) + xp) ?? 0;
+							xp = 0;
+						}
+						ap += context?.Context?.Levels?.XpToLevelUp(ap, true) ?? 0;
+					}
+					else
+					{
+						if (ap > 0)
+						{
+							xp = context?.Context?.Levels?.ToAP((context?.Context?.Levels?.ToAP(xp) ?? 0) + ap) ?? 0;
+							ap = 0;
+						}
+						xp += context?.Context?.Levels?.XpToLevelUp(xp, false) ?? 0;
+					}
+				}
+				gold.pp += entry.PP;
+				gold.gp += entry.GP;
+				gold.sp += entry.SP;
+				gold.ep += entry.EP;
+				gold.cp += entry.CP;
+				renown += entry.Renown;
+				magic += entry.MagicItems;
+				downtime += entry.Downtime;
+				t1tp += entry.T1TP;
+				t2tp += entry.T2TP;
+				t3tp += entry.T3TP;
+				t4tp += entry.T4TP;
+				List<string> addedItems = new List<string>();
+				List<string> removedItems = new List<string>();
+				List<string> touchedItems = new List<string>();
+				foreach (JournalPossession jp in entry.Possessions)
+				{
+					jp.Context = context?.Context;
+					if (jp.Deleted)
+					{
+						journalPossesions.Remove(jp.Guid);
+						removedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+					}
+					else if (journalPossesions.ContainsKey(jp.Guid))
+					{
+						journalPossesions[jp.Guid] = jp;
+						touchedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+					}
+					else
+					{
+						journalPossesions.Add(jp.Guid, jp);
+						addedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+					}
+				}
+				foreach (JournalBoon jb in entry.Boons)
+				{
+					if (jb.Deleted)
+					{
+						journalBoons.Remove(jb.Guid);
+						removedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+					}
+					else if (journalBoons.ContainsKey(jb.Guid))
+					{
+						journalBoons[jb.Guid] = jb;
+						addedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+					}
+					else
+					{
+						journalBoons.Add(jb.Guid, jb);
+						touchedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+					}
+				}
+				common = journalPossesions.Values.Where(x => !x.Banked && !x.Consumable && x.Rarity == Rarity.Common).Count();
+				consumables = journalPossesions.Values.Where(x => !x.Banked && x.Consumable).Count();
+				uncommon = journalPossesions.Values.Where(x => !x.Banked && !x.Consumable && x.Rarity >= Rarity.Uncommon).Count();
+				//Console.WriteLine($"XP {xp} AP {ap} Advancement {advancement} Level {GetLevel(xp, ap, advancement)}");
+				var stats = new JournalStats()
+					{
+						Level = GetLevel(xp, ap, advancement),
+						Possessions = journalPossesions.Values.ToList(),
+						Boons = journalBoons.Values.ToList(),
+						XP = xp,
+						AP = ap,
+						Renown = renown,
+						Downtime = downtime,
+						MagicItems = magic,
+						T1TP = t1tp,
+						T2TP = t2tp,
+						T3TP = t3tp,
+						T4TP = t4tp,
+						Money = new Price(gold, 1),
+						CommonCount = common,
+						UncommonCount = uncommon,
+						ConsumableCount = consumables
+					};
+				Entries.Add(new JournalInfo(laststats, entry, stats, addedItems, touchedItems, removedItems));
+				laststats = stats;
+			}
+			FinalMagicItemCount = magic;
+			FinalItems.Clear();
+			FinalItems.AddRange(journalBoons.Values.Where(jb=>!jb.Banked).Select(jb=>jb.Guid));
+			FinalItems.AddRange(journalPossesions.Values.Where(jb => !jb.Banked).Select(jb => jb.Guid));
+		}
+	}
+
+	private int GetLevel(int xp, int ap, bool advancement)
+	{
+		if (advancement)
+		{
+			if (ap != 0) return context?.Context?.Levels.Get(ap, true) ?? 1;
+			if (xp != 0) return context?.Context?.Levels.Get(xp, false) ?? 1;
+		} else
+		{
+			if (xp != 0) return context?.Context?.Levels.Get(xp, false) ?? 1;
+			if (ap != 0) return context?.Context?.Levels.Get(ap, true) ?? 1;	
+		}
+		return 1;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Journal)) await InvokeAsync(() =>
+			{
+				BuildJournal();
+				StateHasChanged();
+			});
+	}
+
+	private async Task AddEntry()
+	{
+		if (context is not null)
+		{
+			context.Context?.Player?.ComplexJournal?.Add(new JournalEntry());
+			await context.NotifyPlayerChange(ChangeType.Journal);
+		}
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

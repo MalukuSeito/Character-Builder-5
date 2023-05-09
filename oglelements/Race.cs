@@ -24,6 +24,7 @@ namespace OGL
         public List<Description> Descriptions { get; set; }
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
 
         public byte[] ImageData { get; set; }
         public void Register(OGLContext context, string file)
@@ -76,9 +77,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-       
-        //
-        public List<Feature> Features;
+        public List<Feature> Features { get; set; }
         public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;

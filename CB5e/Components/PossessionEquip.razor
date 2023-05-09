@@ -1,0 +1,60 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<select class="@CssClass" placeholder="Slot" title="Equip" @bind="Value">
+	<option value="@EquipSlot.None">None</option>
+	@foreach(var slot in context.Context.Config.Slots)
+	{
+		<option value="@slot">@slot</option>
+	}
+</select>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit visible-placeholder";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory | ChangeType.Features;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	private string? Value { get => Possession?.Equipped; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Set(string? v)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("");
+		string es;
+		if (string.IsNullOrWhiteSpace(v)) es = EquipSlot.None;
+		else es = v;
+		foreach (Possession pos in context.Context.Player.Possessions)
+		{
+			if (string.Equals(pos.Equipped, es, StringComparison.InvariantCultureIgnoreCase)) pos.Equipped = EquipSlot.None;
+		}
+		foreach (Possession pos in context.Context.Player.GetItemsAndPossessions(includeBanked: true, journalOnly: true))
+		{
+			if (string.Equals(pos.Equipped, es, StringComparison.InvariantCultureIgnoreCase)) pos.Equipped = EquipSlot.None;
+		}
+		Possession.Equipped = es;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,46 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass" @onclick="async () => await (OnClick?.Invoke() ?? Task.CompletedTask)">
+	@if (string.IsNullOrEmpty(context.Context.Player.RaceName))
+	{
+		<span>--</span>
+	}
+	<span clss="text-nowrap">
+		@context.Context.Player.GetRaceSubName()
+		@if (!string.IsNullOrEmpty(context.Context.Player.RaceName))
+		{
+			<Tag Xml="@context.Context.Player.Race" />
+		}
+		@if (!string.IsNullOrEmpty(context.Context.Player.SubRaceName))
+		{
+			<Tag Xml="@context.Context.Player.SubRace" Icon="bi-tags" />
+		}
+	</span>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public Func<Task>? OnClick { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

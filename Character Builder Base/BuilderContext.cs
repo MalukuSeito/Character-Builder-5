@@ -25,7 +25,10 @@ namespace Character_Builder
             set
             {
                 _current = value;
-                _current.Context = this;
+                if (_current != null)
+                {
+                    _current.Context = this;
+                }
                 if (_current == null)
                 {
                     Plugins?.Load(null);
@@ -50,36 +53,37 @@ namespace Character_Builder
         public string lastid = "";
         public void MakeHistory(string id = null)
         {
-            using (MemoryStream mem = new MemoryStream())
+            id ??= "";
+            if (id == "" || id != lastid)
             {
-                if (id == null) id = "";
-                if (id == "" || id != lastid)
-                {
-                    byte[] port = Player.Portrait;
-                    byte[] fac = Player.FactionImage;
-                    Player.Portrait = null;
-                    Player.FactionImage = null;
-                    Player.Serializer.Serialize(mem, Player);
-                    mem.Seek(0, SeekOrigin.Begin);
-                    UndoBuffer.AddLast((Player)Player.Serializer.Deserialize(mem));
-                    Player.Portrait = port;
-                    Player.FactionImage = fac;
-                    UndoBuffer.Last.Value.Portrait = port;
-                    UndoBuffer.Last.Value.FactionImage = fac;
-                    foreach (Possession pos in UndoBuffer.Last.Value.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
-                    for (int i = 0; i < UndoBuffer.Last.Value.Journal.Count; i++) UndoBuffer.Last.Value.Journal[i] = UndoBuffer.Last.Value.Journal[i].Replace("\n", Environment.NewLine);
-                    for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) if (UndoBuffer.Last.Value.ComplexJournal[i].Text != null) UndoBuffer.Last.Value.ComplexJournal[i].Text = UndoBuffer.Last.Value.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
-                    UndoBuffer.Last.Value.Allies = UndoBuffer.Last.Value.Allies.Replace("\n", Environment.NewLine);
-                    UndoBuffer.Last.Value.Backstory = UndoBuffer.Last.Value.Backstory.Replace("\n", Environment.NewLine);
-                    RedoBuffer.Clear();
-                    HistoryButtonChange?.Invoke(Player, true, false);
-                    if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
-                    UnsavedChanges++;
-                }
-                lastid = id;
-                Player.ChoiceCounter.Clear();
-                Player.ChoiceTotal.Clear();
+                using MemoryStream mem = new();
+				byte[] port = Player.Portrait;
+                byte[] fac = Player.FactionImage;
+                Player.Portrait = null;
+                Player.FactionImage = null;
+                Player.Serializer.Serialize(mem, Player);
+                mem.Seek(0, SeekOrigin.Begin);
+                UndoBuffer.AddLast((Player)Player.Serializer.Deserialize(mem));
+                Player.Portrait = port;
+                Player.FactionImage = fac;
+                UndoBuffer.Last.Value.Portrait = port;
+                UndoBuffer.Last.Value.FactionImage = fac;
+                foreach (Possession pos in UndoBuffer.Last.Value.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
+                for (int i = 0; i < UndoBuffer.Last.Value.Journal.Count; i++) UndoBuffer.Last.Value.Journal[i] = UndoBuffer.Last.Value.Journal[i].Replace("\n", Environment.NewLine);
+                for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) if (UndoBuffer.Last.Value.ComplexJournal[i].Text != null) UndoBuffer.Last.Value.ComplexJournal[i].Text = UndoBuffer.Last.Value.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
+                for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) for (int j = 0; j < UndoBuffer.Last.Value.ComplexJournal[i].Notes.Count; j++) if (UndoBuffer.Last.Value.ComplexJournal[i].Notes[j] != null) UndoBuffer.Last.Value.ComplexJournal[i].Notes[j] = UndoBuffer.Last.Value.ComplexJournal[i].Notes[j].Replace("\n", Environment.NewLine);
+                for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) for (int j = 0; j < UndoBuffer.Last.Value.ComplexJournal[i].Possessions.Count; j++) if (UndoBuffer.Last.Value.ComplexJournal[i].Possessions[j].Description != null) UndoBuffer.Last.Value.ComplexJournal[i].Possessions[j].Description = UndoBuffer.Last.Value.ComplexJournal[i].Possessions[j].Description.Replace("\n", Environment.NewLine);
+                for (int i = 0; i < UndoBuffer.Last.Value.ComplexJournal.Count; i++) for (int j = 0; j < UndoBuffer.Last.Value.ComplexJournal[i].Boons.Count; j++) if (UndoBuffer.Last.Value.ComplexJournal[i].Boons[j].DisplayText != null) UndoBuffer.Last.Value.ComplexJournal[i].Boons[j].DisplayText = UndoBuffer.Last.Value.ComplexJournal[i].Boons[j].DisplayText.Replace("\n", Environment.NewLine);
+                UndoBuffer.Last.Value.Allies = UndoBuffer.Last.Value.Allies.Replace("\n", Environment.NewLine);
+                UndoBuffer.Last.Value.Backstory = UndoBuffer.Last.Value.Backstory.Replace("\n", Environment.NewLine);
+                RedoBuffer.Clear();
+                HistoryButtonChange?.Invoke(Player, true, false);
+                if (UndoBuffer.Count > MaxBuffer) UndoBuffer.RemoveFirst();
+                UnsavedChanges++;
             }
+            lastid = id;
+            Player.ChoiceCounter.Clear();
+            Player.ChoiceTotal.Clear();
         }
         public event HistoryButtonChangeEvent HistoryButtonChange;
         public event EventHandler SourcesChangedEvent;

@@ -1,0 +1,84 @@
+﻿@inject ContextService context;
+<div class="@CssClass">
+	@foreach (var description in Items.Where(f=>!string.IsNullOrWhiteSpace(f.Name)))
+	{
+		<p class="@LineCssClass">
+			<span class="@NameCssClass">@(description.Name)</span>.
+			@foreach (var line in description.Text?.Split("\n").Where(s=>!string.IsNullOrWhiteSpace(s)) ?? new string[] { })
+			{
+				@line<br />
+			}
+		</p>
+		@if(description is TableDescription td)
+		{
+			var titles = td.Entries.Exists(e => !string.IsNullOrWhiteSpace(e.Title));
+			var max = td.Entries.Max(e => e.MaxRoll);
+			<table class="mb-3">
+				<tr>
+					@if (max > 0) {
+						<th>
+							@("d" + max)
+						</th>
+					}
+					@if (titles)
+					{
+						<th>Title</th>
+					}
+					<th>@(string.IsNullOrWhiteSpace(td.TableName) ? "Text" : td.TableName)</th>
+				</tr>
+				@foreach(var entry in td.Entries)
+				{
+					<tr>
+						@if (entry.MinRoll > 0)
+						{
+							<td class="fw-bold">
+								@if (entry.MaxRoll > entry.MinRoll)
+								{
+									@entry.MinRoll @:- @entry.MaxRoll
+								}
+								else
+								{
+									@entry.MinRoll
+								}
+							</td>
+						}
+						@if (titles)
+						{
+							<td class="fw-bold">@entry.Title</td>
+						}
+						<td>@entry.Text</td>
+					</tr>
+				}
+			</table>
+		}
+		@if(description is ListDescription ld)
+		{
+			@foreach(var names in ld.Names)
+			{
+				<p class="mt-0">
+					<span class="fw-bold">@names.Title:</span>
+					@foreach(var name in names.ListOfNames)
+					{
+						<span class="csv">@name</span>
+					}
+				</p>
+			}
+		}
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public List<Description> Items { get; set; } = new();
+}

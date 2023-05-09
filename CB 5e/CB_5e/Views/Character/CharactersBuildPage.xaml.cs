@@ -36,10 +36,17 @@ namespace CB_5e.Views.Character
                 return;
             BuilderContext Context = new BuilderContext(item.Player);
             PluginManager manager = new PluginManager();
+            manager.Add(new OptionalClassFeatures());
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
+            manager.Add(new PlaneTouchedWings());
             manager.Add(new CustomBackground());
+            manager.Add(new BackgroundFeat());
             manager.Add(new NoFreeEquipment());
+            manager.Add(new RacialAbilityShift());
+            manager.Add(new LanguageChoice());
+            manager.Add(new SkillChoice());
+            manager.Add(new ToolChoice());
             Context.Plugins = manager;
 
             //Task.Run(async () =>
@@ -98,10 +105,17 @@ namespace CB_5e.Views.Character
                 Name = "New Player"
             });
             PluginManager manager = new PluginManager();
+            manager.Add(new OptionalClassFeatures());
+            manager.Add(new RacialAbilityShift());
+            manager.Add(new LanguageChoice());
+            manager.Add(new SkillChoice());
+            manager.Add(new ToolChoice());
             manager.Add(new NoFreeEquipment());
             manager.Add(new CustomBackground());
+            manager.Add(new BackgroundFeat());
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
+            manager.Add(new PlaneTouchedWings());
             Context.Plugins = manager;
             Context.UndoBuffer = new LinkedList<Player>();
             Context.RedoBuffer = new LinkedList<Player>();

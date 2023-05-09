@@ -33,7 +33,8 @@ namespace CB_5e.ViewModels.Character.Build
                             svm.Prepared = true;
                             Model.MakeHistory();
                             Model.Context.Player.GetSpellChoice(SpellcastingID, UniqueID).Choices.Add(svm.Name + " " + ConfigManager.SourceSeperator + " " + svm.Source);
-                            Model.Save();
+							Model.Context.Player..ModifiedSpellChoice(SpellcastingID, UniqueID);
+							Model.Save();
                         }
                     } else
                     {
@@ -41,7 +42,8 @@ namespace CB_5e.ViewModels.Character.Build
                         Model.MakeHistory();
                         string r = svm.Name + " " + ConfigManager.SourceSeperator + " " + svm.Source;
                         Model.Context.Player.GetSpellChoice(SpellcastingID, UniqueID).Choices.RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
-                        Model.Save();
+						Model.Context.Player..ModifiedSpellChoice(SpellcastingID, UniqueID);
+						Model.Save();
                         if (svm.BadChoice) Spells.Remove(svm);
                         if (svm.BadChoice) spells.Remove(svm);
                     }
@@ -90,7 +92,7 @@ namespace CB_5e.ViewModels.Character.Build
                 Spells.ReplaceRange(spells);
                 int classlevel = Model.Context.Player.GetClassLevel(SpellcastingID);
                 List<Spell> available = new List<Spell>(Utils.FilterSpell(Context, Choice.AvailableSpellChoices, SpellcastingID, classlevel));
-                List<Feature> spellfeatures = new List<Feature>(from f in Model.Context.Player.GetFeatures() where f is ModifySpellChoiceFeature select f);
+                List<Feature> spellfeatures = new List<Feature>(from f in Model.Context.Player.GetFeatures() where f is ModifySpellChoiceFeature || f is BonusSpellPrepareFeature select f);
                 List<string> chosen = Model.Context.Player.GetSpellChoice(SpellcastingID, UniqueID).Choices;
                 foreach (Feature f in spellfeatures)
                 {
@@ -98,6 +100,14 @@ namespace CB_5e.ViewModels.Character.Build
                     {
                         if (msf.AdditionalSpellChoices != "false") available.AddRange(Utils.FilterSpell(Context, msf.AdditionalSpellChoices, SpellcastingID, classlevel));
                         if (msf.AdditionalSpells != null && msf.AdditionalSpells.Count > 0) available.AddRange(Context.Spells.Values.Where(s => msf.AdditionalSpells.FirstOrDefault(ss => StringComparer.OrdinalIgnoreCase.Equals(s.Name, ss)) != null));
+                    } 
+                    else if (f is BonusSpellPrepareFeature bspf && bspf.Matches(SpellcastingID) && bspf.AddTo == PreparationMode.ClassList)
+                    {
+                        foreach (string s in bspf.Spells)
+                        {
+                            available.Add(new ModifiedSpell(Context.GetSpell(s, bspf.Source), bspf.KeywordsToAdd, false, false));
+                        }
+                        available.AddRange(Utils.FilterSpell(Context, bspf.Condition, SpellcastingID).Select(s => new ModifiedSpell(s, bspf.KeywordsToAdd, false, false)));
                     }
                 }
                 spells.AddRange(from s in available

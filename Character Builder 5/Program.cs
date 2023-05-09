@@ -67,7 +67,6 @@ namespace Character_Builder_5
         }
 
         public static void LoadData() {
-            Context.LoadPluginManager(Path.Combine(Application.StartupPath, Context.Config.Plugins_Directory));
             Context.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, "Levels.xml"));
             Context.ImportZips(false);
             Context.ImportSkills(false);
@@ -94,6 +93,7 @@ namespace Character_Builder_5
         [STAThread]
         static void Main()
         {
+            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (Properties.Settings.Default.DCI != null && Properties.Settings.Default.DCI != "") Context.Player.DCI = Properties.Settings.Default.DCI;
@@ -121,13 +121,15 @@ namespace Character_Builder_5
                     Context.Player.ExcludedSources = SourceManager.Sources.Where(s => !Properties.Settings.Default.EnabledSourcebooks.Contains(s)).ToList();
                     Context.ExcludedSources.UnionWith(Context.Player.ExcludedSources);
                 }
-                LoadData();
+                
             } else
             {
                 Exit();
                 return;
             }
             Context.SourcesChangedEvent += Player_SourcesChangedEvent;
+            Context.LoadLevel(ImportExtensions.Fullpath(Application.StartupPath, "Levels.xml"));
+            Context.LoadPluginManager(Path.Combine(Application.StartupPath, Context.Config.Plugins_Directory));
             MainWindow = new Form1();
             if (args.Count() > 1)
             {
@@ -140,6 +142,7 @@ namespace Character_Builder_5
                         try
                         {
                             Context.Player = PlayerExtensions.Load(Context, fs);
+                            LoadData();
                             MainWindow.UpdateLayout();
                         }
                         catch (Exception e)
@@ -148,7 +151,17 @@ namespace Character_Builder_5
                             Program.Exit();
                         }
                     }
+                } else
+                {
+                    LoadData();
+                    MainWindow.BuildSources();
+                    MainWindow.UpdateLayout();
                 }
+            } else
+            {
+                LoadData();
+                MainWindow.BuildSources();
+                MainWindow.UpdateLayout();
             }
             if (args.Count() > 2 && args[2] == "register") Register();
             Application.Run(MainWindow);

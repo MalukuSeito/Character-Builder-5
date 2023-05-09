@@ -17,8 +17,8 @@ namespace OGL.Items
         [XmlIgnore]
         private static Regex removeInvalidPathChars = new Regex(regex2, RegexOptions.Singleline | RegexOptions.CultureInvariant);
         [XmlIgnore]
-        public List<String> CategoryPath { get; private set; }
-        public string Path { get; private set; }
+        public List<String> CategoryPath { get; set; }
+        public string Path { get; set; }
         [XmlIgnore]
         public static Dictionary<String, Category> Categories = new Dictionary<string, Category>();
 
@@ -28,6 +28,7 @@ namespace OGL.Items
             if (!Category.Categories.ContainsKey(context.Config.Items_Directory)) Category.Categories.Add(context.Config.Items_Directory, new Category(context));
             return Category.Categories[context.Config.Items_Directory];
         }
+        public Category () { }
         public Category(String path, IEnumerable<string> categorypath, OGLContext context)
         {
             CategoryPath = categorypath.ToList();

@@ -1,0 +1,398 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@if(Entry?.Before.T1TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.T1TP T1 TP</span>
+			}
+			@if (Entry?.Before.T2TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.T2TP T2 TP</span>
+			}
+			@if (Entry?.Before.T3TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.T3TP T3 TP</span>
+			}
+			@if (Entry?.Before.T4TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.T4TP T4 TP</span>
+			}
+			@if (Entry?.Before.UncommonCount != 0 || (Entry?.Before.T1TP == 0 && Entry?.Before.T2TP == 0 && Entry?.Before.T3TP == 0 && Entry?.Before.T4TP == 0 && Entry?.Before.CommonCount == 0 && Entry?.Before.ConsumableCount == 0 && Entry?.Before.MagicItems == 0))
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.UncommonCount Uncommon+</span>
+			}
+			@if (Entry?.Before.CommonCount != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.CommonCount Common</span>
+			}
+			@if (Entry?.Before.ConsumableCount != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.ConsumableCount Consumable</span>
+			}
+			@if (Entry?.Before.MagicItems != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.Before.MagicItems Magic Items</span>
+			}
+		</div>
+		<div class="@TitleCssClass">@Starting @Title</div>
+	}
+	<div class="@BoxCssClass">
+		@{
+			int count = 0;
+			if (Entry?.Entry?.T1TP != 0) count++;
+			if (Entry?.Entry?.T2TP != 0) count++;
+			if (Entry?.Entry?.T3TP != 0) count++;
+			if (Entry?.Entry?.T4TP != 0) count++;
+			if (Entry?.Entry?.MagicItems != 0) count++;
+			if (Entry?.Entry?.Possessions.Count != 0) count++;
+		}
+		@if (!ShowMore && (count == 0 || (Entry?.Entry?.Possessions.Count != 0 && count == 1)))
+		{
+			@if (FinalMagicItemCount > 0 && FinalItems.Count == 0)
+			{
+				<input type="number" class="@InputCssClass" @bind="MagicItems" placeholder="@TitleMagicItems" @onblur="Update" title="@TitleMagicItems" />
+			}
+			else 
+			{
+				<div class="@InputCssClass">
+					<span class="@CombinedCssClass">@Entry?.After.UncommonCount Uncommon+</span>
+					@if (Entry?.After.CommonCount != 0)
+					{
+						<span class="@CombinedCssClass">@Entry?.After.CommonCount Common</span>
+					}
+					@if (Entry?.After.ConsumableCount != 0)
+					{
+						<span class="@CombinedCssClass">@Entry?.After.ConsumableCount Consumable</span>
+					}
+				</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.MagicItems != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="MagicItems" placeholder="@TitleMagicItems" @onblur="Update" title="@TitleMagicItems" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleMagicItems</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.T1TP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="T1TP" placeholder="@TitleT1TP" @onblur="Update" title="@TitleT1TP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleT1TP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.T2TP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="T2TP" placeholder="@TitleT2TP" @onblur="Update" title="@TitleT2TP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleT2TP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.T3TP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="T3TP" placeholder="@TitleT3TP" @onblur="Update" title="@TitleT3TP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleT3TP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.T4TP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="T4TP" placeholder="@TitleT4TP" @onblur="Update" title="@TitleT4TP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleT4TP</div>
+			}
+		}
+		@if (!ShowMore && count > 1)
+		{
+			<div class="@InputCssClass">
+				@if (Entry?.Entry.T1TP != 0)
+				{
+					<span class="@CombinedCssClass">@Entry?.Entry.T1TP.PlusMinus() T1 TP</span>
+				}
+				@if (Entry?.Entry.T2TP != 0)
+				{
+					<span class="@CombinedCssClass">@Entry?.Entry.T2TP.PlusMinus() T2 TP</span>
+				}
+				@if (Entry?.Entry.T3TP != 0)
+				{
+					<span class="@CombinedCssClass">@Entry?.Entry.T3TP.PlusMinus() T3 TP</span>
+				}
+				@if (Entry?.Entry.T4TP != 0)
+				{
+					<span class="@CombinedCssClass">@Entry?.Entry.T4TP.PlusMinus() T4 TP</span>
+				}
+				@if (Entry?.After.UncommonCount - Entry?.Before.UncommonCount != 0)
+				{
+					<span class="@CombinedCssClass">@((Entry?.After.UncommonCount - Entry?.Before.UncommonCount).PlusMinus()) Uncommon+</span>
+				}
+				@if (Entry?.After.CommonCount - Entry?.Before.CommonCount != 0)
+				{
+					<span class="@CombinedCssClass">@((Entry?.After.CommonCount - Entry?.Before.CommonCount).PlusMinus()) Common</span>
+				}
+				@if (Entry?.After.ConsumableCount - Entry?.Before.ConsumableCount != 0)
+				{
+					<span class="@CombinedCssClass">@((Entry?.After.ConsumableCount - Entry?.Before.ConsumableCount).PlusMinus()) Consumable</span>
+				}
+				@if (Entry?.Entry.MagicItems != 0)
+				{
+					<span class="@CombinedCssClass">@Entry?.Entry.MagicItems.PlusMinus() Magic Items</span>
+				}
+			</div>
+		}
+	</div>
+	<div class="@TitleCssClass">
+		@if (!ShowMore && (count == 0 || (Entry?.Entry?.Possessions.Count != 0 && count == 1)))
+		{
+			@if (FinalMagicItemCount > 0 && FinalItems.Count == 0)
+			{
+				<text>@TitleMagicItems @PlusMinus</text>
+			}
+			else {
+				@Title
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.MagicItems != 0 && count == 1))
+		{
+			<text>@TitleMagicItems @PlusMinus</text>
+		}
+		@if (ShowMore || (Entry?.Entry?.T1TP != 0 && count == 1))
+		{
+			<text>@TitleT1TP @PlusMinus</text>
+		}
+		@if (ShowMore || (Entry?.Entry?.T2TP != 0 && count == 1))
+		{
+			<text>@TitleT2TP @PlusMinus</text>
+		}
+		@if (ShowMore || (Entry?.Entry?.T3TP != 0 && count == 1))
+		{
+			<text>@TitleT3TP @PlusMinus</text>
+		}
+		@if (ShowMore || (Entry?.Entry?.T4TP != 0 && count == 1))
+		{
+			<text>@TitleT4TP @PlusMinus</text>
+		}
+		@if (!ShowMore && count > 1)
+		{
+			<text>@Title @PlusMinus</text>
+		}
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@if (Entry?.After.T1TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.T1TP T1 TP</span>
+			}
+			@if (Entry?.After.T2TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.T2TP T2 TP</span>
+			}
+			@if (Entry?.After.T3TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.T3TP T3 TP</span>
+			}
+			@if (Entry?.After.T4TP != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.T4TP T4 TP</span>
+			}
+			@if (Entry?.After.UncommonCount != 0 || (Entry?.After.T1TP == 0 && Entry?.After.T2TP == 0 && Entry?.After.T3TP == 0 && Entry?.After.T4TP == 0 && Entry?.After.CommonCount == 0 && Entry?.After.ConsumableCount == 0 && Entry?.After.MagicItems == 0))
+			{
+				<span class="@CombinedCssClass">@Entry?.After.UncommonCount Uncommon+</span>
+			}
+			@if (Entry?.After.CommonCount != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.CommonCount Common</span>
+			}
+			@if (Entry?.After.ConsumableCount != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.ConsumableCount Consumable</span>
+			}
+			@if (Entry?.After.MagicItems != 0)
+			{
+				<span class="@CombinedCssClass">@Entry?.After.MagicItems Magic Items</span>
+			}
+		</div>
+		<div class="@TitleCssClass">@Ending @Title</div>
+	}
+	
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-4 col-md-8 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? CombinedCssClass { get; set; } = "csv";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tl p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tl p-0 m-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 fw-inherit text-end py-0 px-1";
+
+	[Parameter]
+	public string? TextCssClass { get; set; } = "border-bottom border-1 border-secondary text-end";
+
+	[Parameter]
+	public string? Title { get; set; } = "Treasure";
+	[Parameter]
+	public string? TitleMagicItems { get; set; } = "Magic Items";
+
+	[Parameter]
+	public string? TitleT1TP { get; set; } = "Tier 1 Treasure Points";
+	[Parameter]
+	public string? TitleT2TP { get; set; } = "Tier 2 Treasure Points";
+	[Parameter]
+	public string? TitleT3TP { get; set; } = "Tier 3 Treasure Points";
+	[Parameter]
+	public string? TitleT4TP { get; set; } = "Tier 4 Treasure Points";
+
+	[Parameter]
+	public string? Starting { get; set; } = "Starting";
+
+	[Parameter]
+	public string? Ending { get; set; } = "Ending";
+
+	[Parameter]
+	public string? PlusMinus { get; set; } = "+/-";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public List<Guid> FinalItems { get; set; } = new();
+
+	[Parameter]
+	public int FinalMagicItemCount { get; set; } = 0;
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	private int? T1TP
+	{
+		get
+		{
+			return Entry?.Entry.T1TP != 0 ? Entry?.Entry.T1TP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.T1TP != value; info.Entry.T1TP = value ?? 0;
+			}
+		}
+	}
+	
+	private int? T2TP
+	{
+		get
+		{
+			return Entry?.Entry.T2TP != 0 ? Entry?.Entry.T2TP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.T2TP != value; info.Entry.T2TP = value ?? 0;
+			}
+		}
+	}
+
+	private int? T3TP
+	{
+		get
+		{
+			return Entry?.Entry.T3TP != 0 ? Entry?.Entry.T3TP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.T3TP != value; info.Entry.T3TP = value ?? 0;
+			}
+		}
+	}
+
+	private int? T4TP
+	{
+		get
+		{
+			return Entry?.Entry.T4TP != 0 ? Entry?.Entry.T4TP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.T4TP != value; info.Entry.T4TP = value ?? 0;
+			}
+		}
+	}
+
+	private int? MagicItems
+	{
+		get
+		{
+			return Entry?.Entry.MagicItems != 0 ? Entry?.Entry.MagicItems : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.MagicItems != value; info.Entry.MagicItems = value ?? 0;
+			}
+		}
+	}
+
+	
+
+	private bool changed = false;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public async void Update()
+	{
+		if (changed && EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		changed = false;
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

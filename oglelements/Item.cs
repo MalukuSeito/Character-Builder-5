@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace OGL
@@ -18,14 +19,23 @@ namespace OGL
     XmlInclude(typeof(Shield)),
     XmlInclude(typeof(Pack)),
     XmlInclude(typeof(Scroll))]
+    [JsonDerivedType(typeof(Item), typeDiscriminator: "item")]
+    [JsonDerivedType(typeof(Tool), typeDiscriminator: "tool")]
+    [JsonDerivedType(typeof(Armor), typeDiscriminator: "armor")]
+    [JsonDerivedType(typeof(Shield), typeDiscriminator: "shield")]
+    [JsonDerivedType(typeof(Pack), typeDiscriminator: "pack")]
+    [JsonDerivedType(typeof(Scroll), typeDiscriminator: "scroll")]
+    [JsonDerivedType(typeof(Weapon), typeDiscriminator: "weapon")]
+
     public class Item : IComparable<Item>, IXML, IOGLElement<Item>, IOGLElement
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Versatile)),
-        XmlArrayItem(Type = typeof(Range))]
-        public List<Keyword> Keywords = new List<Keyword>();
+        XmlArrayItem(Type = typeof(Keywords.Range))]
+        public List<Keyword> Keywords { get; set; } = new List<Keyword>();
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Item));
         [XmlIgnore]

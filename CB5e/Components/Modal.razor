@@ -1,0 +1,46 @@
+﻿@inject ContextService context;
+@inject IJSRuntime JSRuntime;
+<div class="modal fade" @ref="modal" tabindex="-1">
+	<div class="modal-dialog modal-xl modal-fullscreen-md-down modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">@Title</h5>
+				<button type="button" class="btn-close" data-bs-backdrop="false" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				@ChildContent
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-backdrop="false" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@code {
+	[Parameter]
+	public string Title { get; set; } = "Edit";
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	private IJSObjectReference? module;
+	private IJSObjectReference? modalRef;
+	private ElementReference? modal;
+
+	public async Task Open(string title)
+	{
+		Title = title;
+		if (module is null)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		}
+		if (modalRef is null)
+		{
+			modalRef = await module.InvokeAsync<IJSObjectReference>("createModal", modal);
+		}
+		await modalRef.InvokeVoidAsync("show");
+		StateHasChanged();
+	}
+}

@@ -1,0 +1,120 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var attack in attacks) {
+		<div class="@Col1CssClass">
+			<div class="@Col1DivCssClass">
+				<span><Tag CssClass="@TagCssClass" XmlLoader="@attack.Xml" Title="@attack.Title" />@attack.Title</span>
+				@if (attack.Attack.AttackOptions.Count > 0)
+				{
+					<span class="@OptionsCssClass">&nbsp;(@string.Join(", ", attack.Attack.AttackOptions))</span>
+				}
+			</div>
+		</div>
+		<div class="@Col2CssClass">
+			<div class="@Col2DivCssClass">@(attack.Attack.SaveDC != "" ? "DC" + attack.Attack.SaveDC : attack.Attack.AttackBonus.PlusMinus())</div>
+		</div>
+		<div class="@Col3CssClass">
+			<div class="@Col3DivCssClass">@attack.Attack.Damage @attack.Attack.DamageType</div>
+		</div>
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? Col1CssClass { get; set; } = "col-4";
+
+	[Parameter]
+	public string? Col2CssClass { get; set; } = "col-2";
+
+	[Parameter]
+	public string? Col3CssClass { get; set; } = "col-6";
+
+	[Parameter]
+	public string? Col1DivCssClass { get; set; } = "bg-body-secondary position-relative";
+
+	[Parameter]
+	public string? Col2DivCssClass { get; set; } = "bg-body-secondary text-center";
+
+	[Parameter]
+	public string? Col3DivCssClass { get; set; } = "bg-body-secondary text-end";
+
+	[Parameter]
+	public string? OptionsCssClass { get; set; } = "fs--2";
+
+	[Parameter]
+	public string? TagCssClass { get; set; } = "position-tr";
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features | ChangeType.Spells;
+
+	private List<Info> attacks { get; set; } = new List<Info>();
+
+	private record struct Info(string Title, Func<IXML> Xml, AttackInfo Attack);
+
+	protected override void OnParametersSet()
+	{
+		BuildInfo();
+		base.OnParametersSet();
+	}
+
+	private void BuildInfo()
+	{
+		attacks.Clear();
+		List<Possession> possessions = Possessions ?? context.Context.Player.GetItemsAndPossessions();
+		AbilityScoreArray? scores = Scores;
+		List<FeatureClass> features = Features ?? context.Context.Player.GetFeatureAndAbility(out scores, out AbilityScoreArray max, t => t is BonusFeature || t is ExtraAttackFeature || t is ToolKWProficiencyFeature || t is ToolProficiencyChoiceConditionFeature || t is ToolProficiencyFeature || t is BonusSpellFeature || t is BonusSpellKeywordChoiceFeature || t is SpellChoiceFeature, context.Level);
+		attacks.AddRange(possessions.Where(p => p.Item is Weapon).SelectMany(p => context.Context.Player.GetAttack(p, context.Level, scores, features, possessions).Select(a => new Info(p.ToString(), () => new DisplayPossession(p, context.Context.Player), a))));
+
+		foreach (var feat in features)
+		{
+			if (feat.feature is SpellcastingFeature scf && scf.SpellcastingID != "MULTICLASS")
+			{
+				var spellcasting = context.Context.Player.GetSpellcasting(scf.SpellcastingID);
+				foreach (var spell in spellcasting.GetLearned(context.Context.Player, context.Context, context.Level, features))
+				{
+					if (spell.Level == 0 && context.Context.Player.GetAttack(spell, scf.SpellcastingAbility, context.Level, scores, features, possessions) is AttackInfo attack && !string.IsNullOrEmpty(attack.Damage)) attacks.Add(new Info(spell.Name, () => spell, attack));
+				}
+			}
+		}
+		foreach (var spell in context.Context.Player.GetBonusSpells(true, false, features))
+		{
+			if (spell.Level == 0 && context.Context.Player.GetAttack(spell, spell.differentAbility, context.Level, scores, features) is AttackInfo attack && !string.IsNullOrEmpty(attack.Damage)) attacks.Add(new Info(spell.Name, () => spell, attack));
+		}
+		attacks.Sort((a, b) => {
+			int c = string.Compare(a.Title, b.Title, StringComparison.OrdinalIgnoreCase);
+			if (c != 0) return c;
+			c = string.Compare(string.Join(",", a.Attack.AttackOptions), string.Join(",", a.Attack.AttackOptions), StringComparison.OrdinalIgnoreCase);
+			return c;
+		});
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildInfo();
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				BuildInfo();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

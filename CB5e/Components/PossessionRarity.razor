@@ -1,0 +1,50 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<select class="@CssClass" placeholder="Rarity" title="Override Rarity" @bind="Value" required>
+	<option value="">(@Possession?.GetRarity())</option>
+	@foreach (Rarity rarity in Enum.GetValues(typeof(Rarity)))
+	{
+		<option value="@rarity.ToString()">@rarity.ToString()</option>
+	}
+</select>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit visible-placeholder";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	private String? Value { get => Possession?.RarityOverride?.ToString()??""; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Set(String? v)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("");
+		if (!string.IsNullOrWhiteSpace(v) && Enum.TryParse<Rarity>(v, out Rarity result)) Possession.RarityOverride = result;
+		else Possession.RarityOverride = null;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

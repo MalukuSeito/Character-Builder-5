@@ -1,0 +1,280 @@
+﻿@page "/class"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Class</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl pb-3">
+	@if (context.Context.Player is not null)
+	{
+		var parentclasses = context.Context.Player.GetFeatures(context.Level).Where(f=>f is SubClassFeature).Select(f => (f as SubClassFeature)!).ToList();
+		@foreach (var cls in context.Context.Player.GetClassInfos())
+		{
+			@if (cls.Class is not null)
+			{
+				<ul class="list-group">
+					<li class="list-group-item">
+						<button class="btn btn-secondary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async ()=> await Select(cls, null)" title="Select Class" />
+						Level @cls.Level: @(" ")
+						<span class="fw-bold text-muted)" @onclick="()=>SelectedClass = SelectedClass == cls.Class ? null : cls.Class">@cls.Class.Name @cls.ClassLevel</span>
+						<span class="text-muted fs--1"> (@cls.Class.Source)</span>
+						<HPRoll CssClass="border border-primary border-1 rounded-2 text-inherit fw-inherit" ClassInfo="cls" /> HP
+						<Tag Xml="cls.Class" />
+						@if (SelectedClass == cls.Class && cls.ClassLevel == 1)
+						{
+							<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+								@foreach (var line in cls.Class.Description?.Split("\n") ?? new string[] { })
+								{
+									@line<br />
+								}
+							</p>
+							@if (ShowDescriptions)
+							{
+								<Descriptions Items="cls.Class.Descriptions" />
+							}
+							<Features Items="cls.Class.Features" />
+							@if(cls.Level == 1)
+							{
+								<Features Items="cls.Class.FirstClassFeatures" />
+							} 
+							else
+							{
+								<Features Items="cls.Class.MulticlassingFeatures" />
+							}
+						}
+					</li>
+				</ul>
+			}
+			else
+			{
+				<div class="row g-1">
+					<div class="border-primary border border-1 rounded-2 bg-primary col-12 text-center p-1">
+						<input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="ClassSearchText" @bind:event="oninput" />
+					</div>
+					@foreach (var clz in context.Context.GetClasses(cls.Level, context.Context.Player).Where(r => string.IsNullOrWhiteSpace(ClassSearchText) || r.Matches(ClassSearchText, false)).OrderBy(r => r.Name).ThenBy(r => r.Source))
+					{
+						<div class="col-xxl-3 col-lg-4 col-md-6">
+							<div class="rounded-2 border-1 border border-secondary">
+								<div class="border-1 border-bottom border-secondary text-center"><span @onclick="()=>SelectedClass = SelectedClass == clz ? null : clz" class="fw-bold">@clz.Name</span><Tag Xml="clz" /><br /><span class="text-muted fs--1">@clz.Source</span></div>
+								<div style="height:200px" class="text-center p-2">
+									<Image Source="clz.ImageData" Title="@clz.Name"/>
+								</div>
+								@if (SelectedClass == clz)
+								{
+								@if (!string.IsNullOrWhiteSpace(clz.Flavour))
+								{
+									<p class="fst-italic">@clz.Flavour</p>
+								}
+									<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+										@foreach (var line in clz.Description?.Split("\n") ?? new string[] { })
+										{
+											@line<br />
+										}
+									</p>
+									@if (ShowDescriptions)
+									{
+										<Descriptions Items="clz.Descriptions" />
+									}
+									<Features Items="clz.Features" />
+									@if (cls.Level == 1)
+									{
+										<Features Items="clz.FirstClassFeatures" />
+									}
+									else
+									{
+										<Features Items="clz.MulticlassingFeatures" />
+									}
+								}
+								<div class="border-1 border-top border-secondary text-center">
+									<button class="btn btn-primary py-0 my-1 bi bi-check-circle w-75" @onclick="async ()=> await Select(cls, clz)" title="Select Class" />
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		}
+		@foreach(var subcls in parentclasses)
+		{
+			var subclz = context.Context.Player.GetSubclass(subcls.ParentClass);
+			if (subclz is not null)
+			{
+				<ul class="list-group">
+					<li class="list-group-item">
+						<button class="btn btn-secondary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async ()=> await SelectSub(subcls, null)" title="Select Sub Class" />
+						<span class="fw-bold text-muted)" @onclick="()=>SelectedSubClass = SelectedSubClass == subclz ? null : subclz">@subclz.Name</span><Tag Xml="subclz" />
+						<span class="text-muted fs--1"> (@subclz.Source)</span>
+						@if (SelectedSubClass == subclz)
+						{
+							<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+								@foreach (var line in subclz.Description?.Split("\n") ?? new string[] { })
+								{
+									@line
+
+									<br />
+								}
+							</p>
+							@if (ShowDescriptions)
+							{
+								<Descriptions Items="subclz.Descriptions" />
+							}
+							<Features Items="subclz.Features" />
+							@if (subclz.FirstClassFeatures.Count > 0)
+							{
+								<p class="fw-bold">First Class Features</p>
+								<Features Items="subclz.FirstClassFeatures" />
+							}
+							@if (subclz.MulticlassingFeatures.Count > 0)
+							{
+								<p class="fw-bold">Multiclassing Features</p>
+								<Features Items="subclz.MulticlassingFeatures" />
+							}
+						}
+					</li>
+				</ul>
+			}
+			else
+			{
+				<div class="row g-1">
+					<div class="border-primary border border-1 rounded-2 bg-primary col-12 text-center p-1">
+						<input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SubClassSearchText" @bind:event="oninput" />
+					</div>
+					@foreach (var subclass in context.Context.SubClassFor(subcls.ParentClass).Where(r => string.IsNullOrWhiteSpace(SubClassSearchText) || r.Matches(SubClassSearchText, false)).OrderBy(r => r.Name).ThenBy(r => r.Source))
+					{
+						<div class="col-xxl-3 col-lg-4 col-md-6">
+							<div class="rounded-2 border-1 border border-secondary">
+								<div class="border-1 border-bottom border-secondary text-center"><span @onclick="()=>SelectedSubClass = SelectedSubClass == subclass ? null : subclass" class="fw-bold">@subclass.Name</span><Tag Xml="subclass" /><br /><span class="text-muted fs--1">@subclass.Source</span></div>
+								<div style="height:200px" class="text-center p-2">
+									<Image Source="subclass.ImageData" Title="@subclass.Name" />
+								</div>
+								@if (SelectedSubClass == subclass)
+								{
+									@if (!string.IsNullOrWhiteSpace(subclass.Flavour))
+									{
+										<p class="fst-italic">@subclass.Flavour</p>
+									}
+									<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+										@foreach (var line in subclass.Description?.Split("\n") ?? new string[] { })
+										{
+											@line
+
+											<br />
+										}
+									</p>
+									@if (ShowDescriptions)
+									{
+										<Descriptions Items="subclass.Descriptions" />
+									}
+									<Features Items="subclass.Features" />
+									@if (subclass.FirstClassFeatures.Count > 0)
+									{
+										<p class="fw-bold">First Class Features</p>
+										<Features Items="subclass.FirstClassFeatures" />	
+									}
+									@if (subclass.MulticlassingFeatures.Count > 0)
+									{
+										<p class="fw-bold">Multiclassing Features</p>
+										<Features Items="subclass.MulticlassingFeatures" />
+									}
+								}
+								<div class="border-1 border-top border-secondary text-center">
+									<button class="btn btn-primary py-0 my-1 bi bi-check-circle w-75" @onclick="async ()=> await SelectSub(subcls, subclass)" title="Select Sub Race" />
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		}
+		@foreach (var playerclass in context.Context.Player.Classes)
+		{
+			@if (playerclass.GetClass(context.Context) is ClassDefinition cd)
+			{
+				@foreach (var desc in cd.Descriptions)
+				{
+					@if (desc is TableDescription td && td.Amount > 0 && !string.IsNullOrEmpty(td.UniqueID))
+					{
+						<ChoiceTableDescription CssClass="list-group" TitleCssClass="text-primary fs-4 fw-bold mt-3" ChoiceProvider="context.Context.Player" Table="td" />
+					}
+				}
+				@if (playerclass.GetSubClass(context.Context) is SubClass subclz)
+				{
+					@foreach (var desc in subclz.Descriptions)
+					{
+						@if (desc is TableDescription td && td.Amount > 0 && !string.IsNullOrEmpty(td.UniqueID))
+						{
+							<ChoiceTableDescription CssClass="list-group" TitleCssClass="text-primary fs-4 fw-bold mt-3" ChoiceProvider="context.Context.Player" Table="td" />
+						}
+					}
+				}
+			}
+		}
+		<Choices CssClass="mt-3" Features="@context.Context.Player.GetClassFeatures(context.Level, true)" ChoiceProvider="context.Context.Player"/>
+	}
+</div>
+
+@code {
+	private ClassDefinition? SelectedClass { get; set; }
+	private SubClass? SelectedSubClass { get; set; }
+
+	private bool ShowDescriptions { get; set; } = false;
+
+	private string ClassSearchText { get; set; } = "";
+	private string SubClassSearchText { get; set; } = "";
+
+	private async Task Select(ClassInfo info, ClassDefinition? selected)
+	{
+		context.Context.MakeHistory("");
+		if (selected is not null)
+		{
+			context.Context.Player.AddClass(selected, info.Level);
+		}
+		else
+		{
+			context.Context.Player.DeleteClass(info.Level);
+		}
+		await context.NotifyPlayerChange(ChangeType.Features);
+	}
+
+	private async Task SelectSub(SubClassFeature feature, SubClass? selected)
+	{
+		context.Context.MakeHistory("");
+		if (selected is not null)
+		{
+			context.Context.Player.AddSubclass(feature.ParentClass, selected.Name + " " + ConfigManager.SourceSeperator + " " + selected.Source);
+		}
+		else
+		{
+			context.Context.Player.RemoveSubclass(feature.ParentClass);
+		}
+		await context.NotifyPlayerChange(ChangeType.Features);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

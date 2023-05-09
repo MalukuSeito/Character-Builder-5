@@ -1,0 +1,297 @@
+/* /Components/Descriptions.razor.rz.scp.css */
+.bi-file-earmark-pdf-fill:hover[b-2sjy0ule6p]::before {
+    content: "\f640";
+}
+.bi-file-earmark-pdf:hover[b-2sjy0ule6p]::before {
+    content: "\f63f";
+}
+.hidepdf[b-2sjy0ule6p] {
+    position:absolute;
+    right:0px;
+    bottom:-1.3em;
+    z-index:2;
+}
+
+/* /Components/EditImage.razor.rz.scp.css */
+.autohide[b-hujb04ewkl] {
+    display: none;
+    visibility: hidden
+}
+
+div:hover > .autohide[b-hujb04ewkl], .autohide:hover[b-hujb04ewkl] {
+    display: block;
+    visibility: visible;
+    z-index: 1
+}
+
+[b-hujb04ewkl] .autohide input {
+    visibility: hidden !important;
+    display: none !important;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+
+label[b-hujb04ewkl] {
+    cursor: pointer;
+}
+/* /Components/FeatureInfo.razor.rz.scp.css */
+.bi-file-earmark-pdf-fill:hover[b-w0xt3pis6g]::before {
+    content: "\f640";
+}
+.bi-file-earmark-pdf:hover[b-w0xt3pis6g]::before {
+    content: "\f63f";
+}
+.hidepdf[b-w0xt3pis6g] {
+    position:absolute;
+    right:0px;
+    bottom:-1.3em;
+    z-index:2;
+}
+
+/* /Components/Features.razor.rz.scp.css */
+.bi-file-earmark-pdf-fill:hover[b-ybuyr32pnu]::before {
+    content: "\f640";
+}
+.bi-file-earmark-pdf:hover[b-ybuyr32pnu]::before {
+    content: "\f63f";
+}
+.hidepdf[b-ybuyr32pnu] {
+    position:absolute;
+    right:0px;
+    bottom:-1.3em;
+    z-index:2;
+}
+
+/* /Components/JournalBoonLine.razor.rz.scp.css */
+.bi-handbag:hover[b-1xh4cjd9k5]::before {
+    content: "\f47d";
+}
+.bi-mailbox:hover[b-1xh4cjd9k5]::before {
+    content: "\f408";
+}
+/* /Components/JournalEntryBox.razor.rz.scp.css */
+.bi-journal-x:hover[b-kqudo1tlzx]::before {
+    content: "\f62a";
+}
+
+.bi-arrows-expand:hover[b-kqudo1tlzx]::before {
+    content: "\f14b";
+}
+.bi-arrows-collapse:hover[b-kqudo1tlzx]::before {
+    content: "\f14c";
+}
+
+.bi-file-earmark-pdf-fill:hover[b-kqudo1tlzx]::before {
+    content: "\f640";
+}
+.bi-file-earmark-pdf:hover[b-kqudo1tlzx]::before {
+    content: "\f63f";
+}
+
+.buttonrow[b-kqudo1tlzx] {
+    fill-opacity:1;
+    position:absolute;
+    right:10px;
+    top:-24px;
+}
+
+/* /Components/JournalItemLine.razor.rz.scp.css */
+.bi-handbag:hover[b-iw8mzhw7s1]::before {
+    content: "\f47d";
+}
+.bi-mailbox:hover[b-iw8mzhw7s1]::before {
+    content: "\f408";
+}
+/* /Components/Notes.razor.rz.scp.css */
+/*::deep textarea::first-line {
+    font-weight:bold;
+}*/
+
+.notes[b-28mjtvq86q] {
+    min-height:1rem;
+}
+/* /Components/SpellLine.razor.rz.scp.css */
+.bi-x-circle:hover[b-kli0gtnnni]::before {
+    content: "\f26b";
+}
+.bi-check-circle-fill:hover[b-kli0gtnnni]::before {
+    content: "\f622";
+}
+.bi-file-earmark-pdf-fill:hover[b-kli0gtnnni]::before {
+    content: "\f640";
+}
+
+.bi-file-earmark-pdf:hover[b-kli0gtnnni]::before {
+    content: "\f63f";
+}
+/* /Components/Tag.razor.rz.scp.css */
+.linktag[b-91nz0opdti] {
+    margin-left: 2px;
+    vertical-align: top;
+}
+
+.bi-tag:hover[b-91nz0opdti]::before {
+    content: "\f5af";
+}
+
+.bi-tags:hover[b-91nz0opdti]::before {
+    content: "\f5b1";
+}
+/* /Shared/MainLayout.razor.rz.scp.css */
+.page[b-qqxbtpc2tn] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-qqxbtpc2tn] {
+    flex: 1;
+}
+
+.sidebar[b-qqxbtpc2tn] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+[b-qqxbtpc2tn] .p20rem {
+    padding-top: 0.20rem !important;
+    padding-bottom: 0.20rem !important;
+}
+
+.top-row[b-qqxbtpc2tn] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-qqxbtpc2tn]  a, .top-row[b-qqxbtpc2tn]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-qqxbtpc2tn]  a:hover, .top-row[b-qqxbtpc2tn]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-qqxbtpc2tn]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth)[b-qqxbtpc2tn] {
+        display: none;
+    }
+
+    .top-row.auth[b-qqxbtpc2tn] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-qqxbtpc2tn]  a, .top-row[b-qqxbtpc2tn]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-qqxbtpc2tn] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-qqxbtpc2tn] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-qqxbtpc2tn] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth[b-qqxbtpc2tn]  a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row[b-qqxbtpc2tn], article[b-qqxbtpc2tn] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+/* /Shared/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-wqd5u6a3jr] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.top-row[b-wqd5u6a3jr] {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand[b-wqd5u6a3jr] {
+    font-size: 1.1rem;
+}
+
+.oi[b-wqd5u6a3jr] {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.nav-item[b-wqd5u6a3jr] {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type[b-wqd5u6a3jr] {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type[b-wqd5u6a3jr] {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item[b-wqd5u6a3jr]  a {
+        color: #d7d7d7;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-item[b-wqd5u6a3jr]  a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.nav-item[b-wqd5u6a3jr]  a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler[b-wqd5u6a3jr] {
+        display: none;
+    }
+
+    .collapse[b-wqd5u6a3jr] {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}

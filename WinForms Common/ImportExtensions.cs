@@ -71,13 +71,13 @@ namespace Character_Builder_Forms
                     string name = entry.FullName.ToLowerInvariant();
                     if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
                     {
-                        String path = Path.Combine(SourceManager.AppPath, name);
+                        String path = Path.Combine(SourceManager.AppPath, entry.FullName);
                         if (File.Exists(path)) continue;
                         using (Stream s = entry.Open()) OGLImport.Import(s, path, zip.Value, SourceManager.AppPath, context, applyKeywords);
                     }
                     else if (name.EndsWith(".xml"))
                     {
-                        String path = Path.Combine(SourceManager.AppPath, zip.Value, name);
+                        String path = Path.Combine(SourceManager.AppPath, zip.Value, entry.FullName);
                         if (File.Exists(path)) continue;
                         using (Stream s = entry.Open()) OGLImport.Import(s, path, zip.Value, SourceManager.AppPath, context, applyKeywords);
                     }
@@ -186,7 +186,7 @@ namespace Character_Builder_Forms
         public static IEnumerable<string> EnumerateCategories(this OGLContext context, string type)
         {
             HashSet<string> result = new HashSet<string>();
-            foreach (var f in SourceManager.GetAllDirectories(context, type))
+            foreach (var f in SourceManager.GetAllDirectories(context, type, false))
             {
                 Uri source = new Uri(f.Key.FullName);
                 //context.ImportStandaloneFeatures();
@@ -197,20 +197,25 @@ namespace Character_Builder_Forms
             string tt = type.TrimEnd('/', '\\').ToLowerInvariant() + "\\";
             foreach (var z in SourceManager.GetAllZips(context, type))
             {
+                string f = z.Value.ToLowerInvariant() + "/" + t;
+                string ff = z.Value.ToLowerInvariant() + "\\" + tt;
                 foreach (ZipArchiveEntry a in z.Key.Entries)
                 {
-                    string f = z.Value.ToLowerInvariant() + "/" + t;
-                    string ff = z.Value.ToLowerInvariant() + "\\" + tt;
                     if (a.Length == 0)
                     {
                         string name = a.FullName.ToLowerInvariant();
-                        if (a.FullName.StartsWith(t)) result.Add(a.FullName.Substring(t.Length).TrimEnd('/', '\\'));
-                        else if (a.FullName.StartsWith(f)) result.Add(a.FullName.Substring(f.Length).TrimEnd('/', '\\'));
-                        else if (a.FullName.StartsWith(tt)) result.Add(a.FullName.Substring(tt.Length).TrimEnd('/', '\\'));
-                        else if (a.FullName.StartsWith(ff)) result.Add(a.FullName.Substring(ff.Length).TrimEnd('/', '\\'));
+                        if (name.StartsWith(t))
+                            result.Add(a.FullName.Trim('/', '\\'));
+                        else if (name.StartsWith(f))
+                            result.Add(a.FullName.Substring(z.Value.Length).Trim('/', '\\'));
+                        else if (name.StartsWith(tt))
+                            result.Add(a.FullName.Trim('/', '\\'));
+                        else if (name.StartsWith(ff))
+                            result.Add(a.FullName.Substring(z.Value.Length).Trim('/', '\\'));
                     }
                 }
             }
+            result.Remove(type);
             return result.OrderBy(s => s).Distinct();
         }
         public static void ImportItems(this OGLContext context, bool withZips = true)

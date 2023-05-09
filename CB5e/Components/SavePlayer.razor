@@ -1,0 +1,43 @@
+﻿@inject ContextService context;
+@inject ConfigService config;
+@inject SourceService sources;
+@inject IBlazorDbFactory dbFactory;
+@inject IJSRuntime JSRuntime;
+@implements IDisposable;
+<button disabled="@(context.Context.Player == null)" class="@CssClass" @onclick="Export">Export</button>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	private IJSObjectReference? module;
+
+	private async Task Export()
+	{
+		using MemoryStream ms = new MemoryStream();
+		Player.Serializer.Serialize(ms, context.Context.Player);
+		byte[] data = ms.ToArray();
+		if (module is null) module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		string name = "export.cb5";
+		if (!string.IsNullOrWhiteSpace(context.Context.Player.Name)) name = context.Context.Player.Name + ".cb5";
+		await module.InvokeVoidAsync("exportFile", name, data.ToArray());
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += PlayerChanged;
+		return Task.CompletedTask;
+	}
+
+	private Task PlayerChanged(ChangeType t)
+	{
+		if (t == ChangeType.Full) StateHasChanged();
+		return Task.CompletedTask;
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= PlayerChanged;
+	}
+
+}

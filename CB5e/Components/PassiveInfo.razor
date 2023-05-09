@@ -1,0 +1,44 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@context.Context.Player.GetPassiveSkill(Skill ?? context.Context.GetSkill("Perception", null), context.Level, Scores, Features, Possessions) @ChildContent
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public Skill? Skill { get; set; }
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

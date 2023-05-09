@@ -5,10 +5,50 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace OGL.Features
 {
+    [JsonDerivedType(typeof(AbilityScoreFeature), "AbilityScoreFeature")]
+    [JsonDerivedType(typeof(BonusSpellKeywordChoiceFeature), "BonusSpellKeywordChoiceFeature")]
+    [JsonDerivedType(typeof(ChoiceFeature), "ChoiceFeature")]
+    [JsonDerivedType(typeof(CollectionChoiceFeature), "CollectionChoiceFeature")]
+    [JsonDerivedType(typeof(Feature), "Feature")]
+    [JsonDerivedType(typeof(FreeItemAndGoldFeature), "FreeItemAndGoldFeature")]
+    [JsonDerivedType(typeof(ItemChoiceConditionFeature), "ItemChoiceConditionFeature")]
+    [JsonDerivedType(typeof(ItemChoiceFeature), "ItemChoiceFeature")]
+    [JsonDerivedType(typeof(HitPointsFeature), "HitPointsFeature")]
+    [JsonDerivedType(typeof(LanguageProficiencyFeature), "LanguageProficiencyFeature")]
+    [JsonDerivedType(typeof(LanguageChoiceFeature), "LanguageChoiceFeature")]
+    [JsonDerivedType(typeof(MultiFeature), "MultiFeature")]
+    [JsonDerivedType(typeof(OtherProficiencyFeature), "OtherProficiencyFeature")]
+    [JsonDerivedType(typeof(ResistanceFeature), "ResistanceFeature")]
+    [JsonDerivedType(typeof(FormsCompanionsFeature), "FormsCompanionsFeature")]
+    [JsonDerivedType(typeof(FormsCompanionsBonusFeature), "FormsCompanionsBonusFeature")]
+    [JsonDerivedType(typeof(SaveProficiencyFeature), "SaveProficiencyFeature")]
+    [JsonDerivedType(typeof(SpeedFeature), "SpeedFeature")]
+    [JsonDerivedType(typeof(SkillProficiencyChoiceFeature), "SkillProficiencyChoiceFeature")]
+    [JsonDerivedType(typeof(SkillProficiencyFeature), "SkillProficiencyFeature")]
+    [JsonDerivedType(typeof(SubRaceFeature), "SubRaceFeature")]
+    [JsonDerivedType(typeof(SubClassFeature), "SubClassFeature")]
+    [JsonDerivedType(typeof(ToolProficiencyFeature), "ToolProficiencyFeature")]
+    [JsonDerivedType(typeof(ToolKWProficiencyFeature), "ToolKWProficiencyFeature")]
+    [JsonDerivedType(typeof(ToolProficiencyChoiceConditionFeature), "ToolProficiencyChoiceConditionFeature")]
+    [JsonDerivedType(typeof(BonusFeature), "BonusFeature")]
+    [JsonDerivedType(typeof(SpellcastingFeature), "SpellcastingFeature")]
+    [JsonDerivedType(typeof(IncreaseSpellChoiceAmountFeature), "IncreaseSpellChoiceAmountFeature")]
+    [JsonDerivedType(typeof(ModifySpellChoiceFeature), "ModifySpellChoiceFeature")]
+    [JsonDerivedType(typeof(SpellChoiceFeature), "SpellChoiceFeature")]
+    [JsonDerivedType(typeof(SpellSlotsFeature), "SpellSlotsFeature")]
+    [JsonDerivedType(typeof(BonusSpellPrepareFeature), "BonusSpellPrepareFeature")]
+    [JsonDerivedType(typeof(BonusSpellFeature), "BonusSpellFeature")]
+    [JsonDerivedType(typeof(ACFeature), "ACFeature")]
+    [JsonDerivedType(typeof(AbilityScoreFeatFeature), "AbilityScoreFeatFeature")]
+    [JsonDerivedType(typeof(ExtraAttackFeature), "ExtraAttackFeature")]
+    [JsonDerivedType(typeof(ResourceFeature), "ResourceFeature")]
+    [JsonDerivedType(typeof(SpellModifyFeature), "SpellModifyFeature")]
+    [JsonDerivedType(typeof(VisionFeature), "VisionFeature")]
     public class Feature : IComparable<Feature>, IXML, IInfoText
     {
         [XmlIgnore]
@@ -17,7 +57,7 @@ namespace OGL.Features
         public string InfoText => Text;
         public static bool DETAILED_TO_STRING = false;
         [XmlArrayItem(Type = typeof(Keyword))]
-        public List<Keyword> Keywords;
+        public List<Keyword> Keywords { get; set; }
         [XmlIgnore]
         private string name;
 

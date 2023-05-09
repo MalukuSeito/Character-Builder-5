@@ -1,0 +1,57 @@
+﻿@inject ContextService context;
+
+@if (Feature is not null && !Feature.NoDisplay && !string.IsNullOrWhiteSpace(Feature.Name))
+{
+	<p class="@CssClass">
+		@if (ShowName)
+		{
+			<span class="@NameCssClass">@Feature.Name</span>
+			@if (Feature.Level > 0)
+			{
+				<span> (Level @Feature.Level)</span>
+			}
+			@(". ")
+		}
+		@foreach (var line in Feature.Text?.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s)) ?? new string[] { })
+		{
+			@line<br />
+		}
+	</p>
+	@if (Feature is MultiFeature mf)
+	{
+		@foreach (var f in mf.Features.Where(f => !f.NoDisplay))
+		{
+			<DisplayFeature Feature="f" />
+		}
+	}
+	@if (Feature is ChoiceFeature cf)
+	{
+		@foreach (var f in cf.Choices.Where(f => !f.NoDisplay))
+		{
+			<DisplayFeature Feature="f" CssClass="opacity-50" />
+		}
+	}
+	@if (Feature is CollectionChoiceFeature ccf)
+	{
+		@foreach (var f in context.Context.GetFeatureCollection(ccf.Collection).Where(f => !f.NoDisplay))
+		{
+			<DisplayFeature Feature="f" CssClass="opacity-50" />
+		}
+	}
+}
+
+@code {
+	[Parameter]
+	public string CssClass { get; set; } = "";
+
+	[Parameter]
+	public string NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public bool ShowName { get; set; } = true;
+
+	[Parameter]
+	public Feature? Feature { get; set; }
+}
+
+

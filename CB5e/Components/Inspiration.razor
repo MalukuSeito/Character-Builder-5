@@ -1,0 +1,52 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+<button @onclick="Toggle" class="@ButtonCssClass @CssClass @(context.Context.Player.Inspiration ? CheckCssClass : UncheckCssClass)"></button>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "btn bi text-center";
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "bi-check-circle";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "bi-circle";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private void Toggle()
+	{
+		context.Context.MakeHistory("Inspiration");
+		context.Context.Player.Inspiration = !context.Context.Player.Inspiration;
+		Notify();
+	}
+
+	private async void Notify()
+	{
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

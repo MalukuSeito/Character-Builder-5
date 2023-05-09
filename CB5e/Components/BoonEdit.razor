@@ -1,0 +1,57 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var feature in context.Context.GetBoon(Boon?.Name, null).Collect(context.Level, Boon, context.Context).Where(f => !f.Hidden && !string.IsNullOrEmpty(f.Name)).OrderBy(f => f.Name))
+	{
+		<p class="@LineCssClass">
+			<span class="@NameCssClass">@(feature.Name). </span>
+			@foreach (var line in feature.Text?.Split("\n") ?? new string[] { })
+			{
+				@line
+
+				<br />
+			}
+		</p>
+	}
+	<BoonName EventMask="EventMask" EventType="EventType" Boon="Boon" />
+	<div class="p-0 text-lg-center mt-0 fs--2 border-1 border-top border-secondary">Name</div>
+	<BoonText EventMask="EventMask" EventType="EventType" Boon="Boon" />
+	<div class="p-0 text-lg-center mt-0 fs--2 border-1 border-top border-secondary">Description</div>
+	<FeatureInfo />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	[Parameter]
+	public JournalBoon? Boon { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

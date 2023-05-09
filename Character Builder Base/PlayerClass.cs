@@ -11,8 +11,8 @@ namespace Character_Builder
 {
     public class PlayerClass
     {
-        public List<int> ClassLevelAtLevel;
-        public List<int> HProllAtClassLevel;
+        public List<int> ClassLevelAtLevel { get; set; }
+        public List<int> HProllAtClassLevel { get; set; }
         [XmlElement(ElementName = "Class")]
         public String ClassName { get; set; }
         [XmlElement(ElementName = "SubClass")]
@@ -77,10 +77,10 @@ namespace Character_Builder
             }*/
             return ClassLevelAtLevel.Count;
         }
-        public int getHP(int classlevel)
+        public int getHP(int classlevel, int hpperlevel)
         {
             int hp = 0;
-            for (int c = 0; c < classlevel; c++) hp += HProllAtClassLevel[c];
+            for (int c = 0; c < classlevel; c++) hp += Math.Max(1, HProllAtClassLevel[c]+hpperlevel);
             return hp;
         }
         public bool AddLevel(int atlevel, int hproll)

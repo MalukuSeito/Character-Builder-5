@@ -9,7 +9,9 @@ namespace PluginDMG
 {
     public class SpellPoints : IPlugin
     {
-        
+
+        public int ExecutionOrdering { get => 0; }
+
         public string Name
         {
             get

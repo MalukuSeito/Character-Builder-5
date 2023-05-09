@@ -9,7 +9,7 @@ namespace OGL.Features
         public string ResourceID { get; set; }
         public RechargeModifier Recharge { get; set; }
         public string ExclusionID { get; set; } //Multiclassing: Channel Divinity
-        public Ability ValueBonus = Ability.None;
+        public Ability ValueBonus { get; set; } = Ability.None;
         public ResourceFeature():base()
         {
             ResourceID = "";

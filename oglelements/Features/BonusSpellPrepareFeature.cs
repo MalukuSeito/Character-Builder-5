@@ -1,5 +1,6 @@
 ﻿using OGL.Base;
 using OGL.Keywords;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -13,7 +14,8 @@ namespace OGL.Features
         public string SpellcastingID { get; set; }
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
-        XmlArrayItem(Type = typeof(Material))]
+        XmlArrayItem(Type = typeof(Material)),
+        XmlArrayItem(Type = typeof(Royalty))]
         public List<Keyword> KeywordsToAdd { get; set; }
         public PreparationMode AddTo { get; set; } = PreparationMode.LearnSpells;
         public BonusSpellPrepareFeature()
@@ -36,6 +38,10 @@ namespace OGL.Features
         public override string Displayname()
         {
             return "Add Spells Feature";
+        }
+        public bool Matches(string spellcastingID)
+        {
+            return SpellcastingID == spellcastingID || SpellcastingID == "*";
         }
     }
 }

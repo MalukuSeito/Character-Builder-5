@@ -1,0 +1,45 @@
+﻿@inject ContextService context;
+@inject IJSRuntime JSRuntime;
+<div class="offcanvas offcanvas-start" @ref="modal" tabindex="-1">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title">@Title</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		@ChildContent
+	</div>
+</div>
+
+
+@code {
+	[Parameter]
+	public string Title { get; set; } = "Edit";
+
+	[Parameter]
+	public bool Scroll { get; set; } = true;
+
+	[Parameter]
+	public object Backdrop { get; set; } = true;
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	private IJSObjectReference? module;
+	private IJSObjectReference? modalRef;
+	private ElementReference? modal;
+
+	public async Task Open(string title)
+	{
+		Title = title;
+		if (module is null)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		}
+		if (modalRef is null)
+		{
+			modalRef = await module.InvokeAsync<IJSObjectReference>("createModal", modal, Backdrop, Scroll);
+		}
+		await modalRef.InvokeVoidAsync("show");
+		StateHasChanged();
+	}
+}

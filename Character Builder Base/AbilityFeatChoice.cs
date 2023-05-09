@@ -6,12 +6,12 @@ namespace Character_Builder
 {
     public class AbilityFeatChoice
     {
-        public string UniqueID = "";
-        public int Level = 1;
-        public String Class = "";
-        public Ability Ability1 = Ability.None;
-        public Ability Ability2 = Ability.None;
-        public String Feat = null;
+        public string UniqueID { get; set; } = "";
+        public int Level { get; set; } = 1;
+        public String Class { get; set; } = "";
+        public Ability Ability1 { get; set; } = Ability.None;
+        public Ability Ability2 { get; set; } = Ability.None;
+        public String Feat { get; set; } = null;
         public override string ToString()
         {
             if (Ability1 == Ability2)
@@ -22,5 +22,7 @@ namespace Character_Builder
             else if (Ability2 == Ability.None) return "+1 to " + Enum.GetName(typeof(Ability), Ability1) + " and ...";
             else return "+1 to " + Enum.GetName(typeof(Ability), Ability1) + " and " + Enum.GetName(typeof(Ability), Ability2);
         }
+
+        public bool Assigned { get=> (Ability1 != Ability.None && Ability2 != Ability.None) || !string.IsNullOrWhiteSpace(Feat); }
     }
 }

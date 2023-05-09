@@ -1,0 +1,44 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<input type="number" class="@CssClass" placeholder="0" title="Charges Used" @bind="Value" />
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 w-100 text-end fw-inherit visible-placeholder";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	private int Value { get => Possession?.ChargesUsed ?? 0; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Set(int v)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("PossesionCharges");
+		Possession.ChargesUsed = v;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -11,6 +11,7 @@ namespace OGL
     {
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Language));
         public String Name { get; set; }

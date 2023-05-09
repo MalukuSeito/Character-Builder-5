@@ -1,0 +1,87 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<input class="@InputCssClass" type="@type" @bind="@value" min="0" max="@HitDie?.Count" @onblur="Update" @onfocus="Focus">
+	<button class="@ReloadCssClass" @onclick="Reset" title="Reset" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public HitDie? HitDie { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "reset bi bi-bootstrap-reboot";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	private string? v;
+	private string? value { get => v??HitDie?.ToString(); set => v = value; }
+
+	private string type { get; set; } = "text";
+
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				v = null;
+				HitDie = context.Context.Player.GetHitDie().First(hd => hd.Dice == HitDie?.Dice);
+				StateHasChanged();
+			});
+	}
+
+	private Task Focus()
+	{
+		type = "number";
+		v = (HitDie?.Count - HitDie?.Used).ToString();
+		return Task.CompletedTask;
+	}
+
+	private async void Reset()
+	{
+		if (HitDie is null) return;
+		context.Context.MakeHistory("HitDice");
+		if (context.Context.Player.UsedHitDice.Count > HitDie.Dice) context.Context.Player.UsedHitDice[HitDie.Dice] = 0;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Update()
+	{
+		if (!string.IsNullOrWhiteSpace(v) && HitDie is not null)
+		{
+			context.Context.MakeHistory("HitDie");
+			int val = 0;
+			if (v.StartsWith("+") && int.TryParse(v.Substring(1), out int added)) val = HitDie.Used - added;
+			else if (int.TryParse(v, out int parsed))
+			{
+				if (parsed < 0) val = HitDie.Used - parsed;
+				else val = HitDie.Count - parsed;
+			}
+			else return;
+			context.Context.Player.SetUsedHitDie(HitDie.Dice, Math.Max(0, Math.Min(HitDie.Count, val)));
+			await context.NotifyPlayerChange(EventType);
+		}
+		type = "text";
+		v = null;
+	}
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

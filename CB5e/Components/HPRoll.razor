@@ -1,0 +1,42 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<input type="number" min="1" max="@((ClassInfo?.Class?.HitDie ?? 4) * (ClassInfo?.Class?.HitDieCount ?? 1))" class="@CssClass" @bind="Value" placeholder="HP Roll"/>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 text-inherit fw-inherit";
+
+	[Parameter]
+	public ClassInfo? ClassInfo { get; set; }
+
+	private int Value { get => ClassInfo?.Hp ?? 0; set => Update(value); }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async void Update(int v)
+	{
+		if (ClassInfo is null || ClassInfo.Class is null) return;
+		context.Context.MakeHistory("HPRoll");
+		ClassInfo.Hp = Math.Max(1, Math.Min(v, ClassInfo.Class.HitDie * ClassInfo.Class.HitDieCount));
+		context.Context.Player.SetHPRoll(ClassInfo.Level, ClassInfo.Hp);
+		await context.NotifyPlayerChange(EventType);
+	}
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

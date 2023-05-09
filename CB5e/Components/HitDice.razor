@@ -1,0 +1,49 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var die in Value)
+	{
+		<HitDiceLine HitDie="@die" CssClass="@LineCssClass" InputCssClass="@InputCssClass" ReloadCssClass="@ReloadCssClass" EventMask="@EventMask" EventType="@EventType"/>
+	}
+
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "reset bi bi-bootstrap-reboot";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	private List<HitDie> Value { get; set; } = new List<HitDie>();
+
+	protected override Task OnInitializedAsync()
+	{
+		Value = context.Context.Player.GetHitDie(context.Level);
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				Value = context.Context.Player.GetHitDie(context.Level);
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

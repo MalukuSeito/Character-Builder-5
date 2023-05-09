@@ -1,0 +1,29 @@
+﻿.autohide {
+    display: none;
+    visibility: hidden
+}
+
+div:hover > .autohide, .autohide:hover {
+    display: block;
+    visibility: visible;
+    z-index: 1
+}
+
+::deep .autohide input {
+    visibility: hidden !important;
+    display: none !important;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+
+label {
+    cursor: pointer;
+}

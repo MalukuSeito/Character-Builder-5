@@ -1,20 +1,19 @@
 {
   "format": 1,
   "restore": {
-    "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {}
+    "/Users/marclucksch/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {}
   },
   "projects": {
-    "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {
-      "version": "1.0.0",
+    "/Users/marclucksch/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj": {
       "restore": {
-        "projectUniqueName": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
+        "projectUniqueName": "/Users/marclucksch/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
         "projectName": "NCalc2",
-        "projectPath": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
-        "projectJsonPath": "/Users/maluku/Dropbox/Character Builder 5/NCalc2/project.json",
-        "packagesPath": "/Users/maluku/.nuget/packages/",
+        "projectPath": "/Users/marclucksch/Dropbox/Character Builder 5/NCalc2/NCalc2.csproj",
+        "projectJsonPath": "/Users/marclucksch/Dropbox/Character Builder 5/NCalc2/project.json",
+        "packagesPath": "/Users/marclucksch/.nuget/packages/",
         "projectStyle": "ProjectJson",
         "configFilePaths": [
-          "/Users/maluku/.config/NuGet/NuGet.Config"
+          "/Users/marclucksch/.config/NuGet/NuGet.Config"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}

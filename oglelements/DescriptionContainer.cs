@@ -15,9 +15,9 @@ namespace OGL
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(TableDescription)),
         XmlArrayItem(Type = typeof(ListDescription))]
-        public List<Description> Descriptions;
+        public List<Description> Descriptions { get; set; }
 
-        public string Name { get => "Descriptions"; }
+		public string Name { get => "Descriptions"; }
 
         public string Source { get => "No Source"; }
 

@@ -1,0 +1,457 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Strength
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Strength ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Strength && Dragging != Ability.Strength ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Strength"
+					   @ondragstart="(e)=>Dragging = Ability.Strength"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Strength"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Strength)"/>
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Strength</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Strength</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.StrMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Dexterity
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Dexterity ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Dexterity && Dragging != Ability.Dexterity ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Dexterity"
+					   @ondragstart="(e)=>Dragging = Ability.Dexterity"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Dexterity"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Dexterity)" />
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Dexterity</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Dexterity</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.DexMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Constitution
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Constitution ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Constitution && Dragging != Ability.Constitution ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Constitution"
+					   @ondragstart="(e)=>Dragging = Ability.Constitution"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Constitution"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Constitution)" />
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Constitution</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Constitution</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.ConMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Intelligence
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Intelligence ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Intelligence && Dragging != Ability.Intelligence ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Intelligence"
+					   @ondragstart="(e)=>Dragging = Ability.Intelligence"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Intelligence"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Intelligence)" />
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Intelligence</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Intelligence</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.IntMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Wisdom
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Wisdom ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Wisdom && Dragging != Ability.Wisdom ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Wisdom"
+					   @ondragstart="(e)=>Dragging = Ability.Wisdom"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Wisdom"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Wisdom)" />
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Wisdom</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Wisdom</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.WisMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@BoxCssClass">
+		<div class="@BorderCssClass">
+			<div class="@TitleCssClass">
+				Charisma
+			</div>
+			<div class="@ValueCssClass">
+				<input class="@InputCssClass @(Dragging == Ability.Charisma ? DragSourceCssClass : Dragging is not null ? DuringDragCssClass : "") @(Target == Ability.Charisma && Dragging != Ability.Charisma ? DropCssClass : "")"
+						draggable="true" type="number" min="1" max="20" @bind="Charisma"
+					   @ondragstart="(e)=>Dragging = Ability.Charisma"
+					   @ondragover:preventDefault="true"
+					   @ondragover:stopPropagation="true"
+					   @ondragleave:stopPropagation="true"
+					   @ondragenter:stopPropagation="true"
+					   @ondrop:stopPropagation="true"
+					   @ondragenter="(e)=>Target = Ability.Charisma"
+					   @ondragleave="(e)=>Target = null"
+					   @ondragend="(e)=>Dragging = null"
+					   @ondrop="async() => await Drop(Ability.Charisma)" />
+				<div class="@SubTitleCssClass">Base</div>
+			</div>
+			<div class="@StatsCssClass">
+				<div class="@FinalScoreCssClass">@Scores?.Charisma</div>
+				<div class="@SubTitleCssClass" title="The final score includes boni from race choice and items">Final</div>
+				<div class="@MaxScoreCssClass">@Max?.Charisma</div>
+				<div class="@SubTitleCssClass">Maximum</div>
+				<div class="@ModiferCssClass">@Scores?.ChaMod.PlusMinus()</div>
+				<div class="@SubTitleCssClass">Modifier</div>
+			</div>
+		</div>
+	</div>
+	<div class="@StandardArrayBoxClass">
+		<div class="@StandardArrayClass">
+			<div class="@StandardArrayTextClass">
+				@foreach (var array in context.Context.Scores.GetArrays())
+				{
+					<button class="@ArrayButtonCssClass" @onclick="async ()=>await ApplyArray(array)">@array.ToString()</button>
+				}
+			</div>
+			<div class="@SubTitleCssClass">Standard Arrays</div>
+		</div>
+	</div>
+	<div class="@PointBuyBoxClass">
+		<div class="@PointBuyClass">
+			<div class="@PointBuyTextClass">Points left: @Utils.GetPointsRemaining(context.Context.Player, context.Context)</div>
+			<div class="@SubTitleCssClass">Point Buy</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "row g-2";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "col-4 col-md-2";
+
+	[Parameter]
+	public string? PointBuyBoxClass { get; set; } = "col-12 col-md-6";
+
+	[Parameter]
+	public string? StandardArrayBoxClass { get; set; } = "col-12 col-md-6";
+
+	[Parameter]
+	public string? PointBuyTextClass { get; set; } = "text-end px-3";
+
+	[Parameter]
+	public string? StandardArrayTextClass { get; set; } = "text-start px-3";
+
+	[Parameter]
+	public string? ArrayButtonCssClass { get; set; } = "btn btn-outline-primary m-1 py-0";
+
+	[Parameter]
+	public string? PointBuyClass { get; set; } = "border border-2 rounded-2 border-primary";
+	[Parameter]
+	public string? StandardArrayClass { get; set; } = "border border-2 rounded-2 border-primary";
+
+	[Parameter]
+	public string? BorderCssClass { get; set; } = "border border-2 rounded-2 border-primary text-center";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "border-bottom border-primary border-2 fw-bold";
+
+	[Parameter]
+	public string? ValueCssClass { get; set; } = "border-bottom border-primary border-2 fw-bold";
+
+	[Parameter]
+	public string? StatsCssClass { get; set; } = "text-center";
+
+	[Parameter]
+	public string? FinalScoreCssClass { get; set; } = "fs-3 fw-bold";
+
+	[Parameter]
+	public string? MaxScoreCssClass { get; set; } = "fs-5";
+
+	[Parameter]
+	public string? ModiferCssClass { get; set; } = "fs-1";
+
+	[Parameter]
+	public string? SubTitleCssClass { get; set; } = "border-top border-1 border-secondary fs--2 text-center";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "text-center form-control fw-inherit d-block fs-2";
+
+	[Parameter]
+	public string? DragSourceCssClass { get; set; } = "shadow";
+
+	[Parameter]
+	public string? DuringDragCssClass { get; set; } = "text-muted";
+
+	[Parameter]
+	public string? DropCssClass { get; set; } = "opacity-0";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	private int Strength { get => context.Context.Player.BaseStrength; set => SetStrength(value); }
+	private int Dexterity { get => context.Context.Player.BaseDexterity; set => SetDexterity(value); }
+	private int Constitution { get => context.Context.Player.BaseConstitution; set => SetConstitution(value); }
+	private int Intelligence { get => context.Context.Player.BaseIntelligence; set => SetIntelligence(value); }
+	private int Wisdom { get => context.Context.Player.BaseWisdom; set => SetWisdom(value); }
+	private int Charisma { get => context.Context.Player.BaseCharisma; set => SetCharisma(value); }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	private Ability? Dragging { get; set; }
+
+	private Ability? Target { get; set; }
+
+
+	[Parameter]
+	public AbilityScoreArray? Max { get; set; }
+
+	private async Task ApplyArray(AbilityScoreArray a)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseStrength = a.Strength;
+		context.Context.Player.BaseDexterity = a.Dexterity;
+		context.Context.Player.BaseConstitution = a.Constitution;
+		context.Context.Player.BaseIntelligence = a.Intelligence;
+		context.Context.Player.BaseWisdom = a.Wisdom;
+		context.Context.Player.BaseCharisma = a.Charisma;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Drop(Ability target)
+	{
+		Target = null;
+		if (Dragging is null || Dragging == Ability.None || Dragging == target) return;
+		context.Context.MakeHistory("Scores");
+		var sourcevalue = Dragging switch
+		{
+			Ability.Strength => context.Context.Player.BaseStrength,
+			Ability.Dexterity => context.Context.Player.BaseDexterity,
+			Ability.Constitution => context.Context.Player.BaseConstitution,
+			Ability.Intelligence => context.Context.Player.BaseIntelligence,
+			Ability.Wisdom => context.Context.Player.BaseWisdom,
+			Ability.Charisma => context.Context.Player.BaseCharisma,
+			_ => 0
+		};
+		var targetvalue = target switch
+		{
+			Ability.Strength => context.Context.Player.BaseStrength,
+			Ability.Dexterity => context.Context.Player.BaseDexterity,
+			Ability.Constitution => context.Context.Player.BaseConstitution,
+			Ability.Intelligence => context.Context.Player.BaseIntelligence,
+			Ability.Wisdom => context.Context.Player.BaseWisdom,
+			Ability.Charisma => context.Context.Player.BaseCharisma,
+			_ => 0
+		};
+		switch (target)
+		{
+			case Ability.Strength:
+				context.Context.Player.BaseStrength = sourcevalue;
+				break;
+			case Ability.Dexterity:
+				context.Context.Player.BaseDexterity = sourcevalue;
+				break;
+			case Ability.Constitution:
+				context.Context.Player.BaseConstitution = sourcevalue;
+				break;
+			case Ability.Intelligence:
+				context.Context.Player.BaseIntelligence = sourcevalue;
+				break;
+			case Ability.Wisdom:
+				context.Context.Player.BaseWisdom = sourcevalue;
+				break;
+			case Ability.Charisma:
+				context.Context.Player.BaseCharisma = sourcevalue;
+				break;
+		}
+		switch (Dragging)
+		{
+			case Ability.Strength:
+				context.Context.Player.BaseStrength = targetvalue;
+				break;
+			case Ability.Dexterity:
+				context.Context.Player.BaseDexterity = targetvalue;
+				break;
+			case Ability.Constitution:
+				context.Context.Player.BaseConstitution = targetvalue;
+				break;
+			case Ability.Intelligence:
+				context.Context.Player.BaseIntelligence = targetvalue;
+				break;
+			case Ability.Wisdom:
+				context.Context.Player.BaseWisdom = targetvalue;
+				break;
+			case Ability.Charisma:
+				context.Context.Player.BaseCharisma = targetvalue;
+				break;
+		}
+		await context.NotifyPlayerChange(EventType);
+		Dragging = null;
+	}
+
+	private async void SetStrength(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseStrength = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void SetDexterity(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseDexterity = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void SetConstitution(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseConstitution = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void SetIntelligence(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseIntelligence = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void SetWisdom(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseWisdom = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void SetCharisma(int value)
+	{
+		context.Context.MakeHistory("Scores");
+		context.Context.Player.BaseCharisma = Math.Max(1, Math.Min(20, value));
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override void OnParametersSet()
+	{
+		if (context.Context.Player is not null)
+		{
+			if (Scores == null || Max == null)
+			{
+				context.Context.Player.GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+				Scores = asa;
+				Max = max;
+			}
+		}
+		base.OnParametersSet();
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		if (context.Context.Player is not null)
+		{
+			context.Context.Player.GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+			Scores = asa;
+			Max = max;
+		}
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change)
+	{
+		Console.WriteLine(change);
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+		{
+			if (context.Context.Player is not null)
+			{
+				context.Context.Player.GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, t => false);
+				Scores = asa;
+				Max = max;
+			}
+			Console.WriteLine("StateChange");
+			StateHasChanged();
+		});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

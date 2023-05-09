@@ -5,7 +5,7 @@ namespace OGL.Features
 {
     public class SubRaceFeature: Feature
     {
-        public List<String> Races;
+        public List<String> Races { get; set; }
         public SubRaceFeature() : base() 
         {
             Action = Base.ActionType.ForceHidden;

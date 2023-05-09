@@ -1,0 +1,238 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (Feature is not null) {
+	var levels = Available.Select(s => s.Level).Distinct().Order().ToList();
+	<div class="@TitleCssClass">
+		Copied Spells <Tag Xml="Feature" />
+	</div>
+	<ul class="@CssClass">
+		@if (Add)
+		{
+			<li class="@LineCssClass bg-primary"><input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput" /></li>
+		}
+		@foreach(var level in levels) {
+			@if (levels.Count > 1 && Add)
+			{
+				<li class="@LineCssClass text-primary fs-5 bg-body-secondary">
+					@if (level == 0) {
+						@:Cantrips
+					}
+					else
+					{
+						@:Level @level
+					}
+				</li>
+			}
+			@foreach (var spell in Available.Where(s=>s.Level == level).Where(s => string.IsNullOrWhiteSpace(SearchText) || s.Matches(SearchText, false)).OrderBy(s=>s.Name).ThenBy(s=>s.Source))
+			{
+				<li class="@LineCssClass">
+					<button class="btn @(Choices.Contains(spell, ConfigManager.SourceAwareComparer) ? "btn-primary-outline" : Choices.Contains(spell) ? "btn-secondary-outline" : Taken.Contains(spell, ConfigManager.InvariantComparer) ? "btn-secondary" : "btn-primary") me-3 py-0 my-0 bi @(Choices.Contains(spell, ConfigManager.SourceAwareComparer) ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(spell)" title="Select" />
+					<span class="@NameCssClass @(Taken.Contains(spell) ? "text-muted" : "")" @onclick="()=>Selected = Selected == spell ? null : spell">@spell.Name</span><Tag Xml="spell" />
+					@if (spell.Level > 0)
+					{
+						<span class="text-muted"> Level @spell.Level</span>
+					}
+					else
+					{
+						<span class="text-muted"> Cantrip </span>
+					}
+					<span class="@SourceCssClass"> (@spell.Source)</span>
+					@if (Selected == spell)
+					{
+						<p class="fst-italic">@spell.Desc</p>
+						<p>
+							@foreach (var line in spell.Description?.Split("\n") ?? new string[] { })
+							{
+								@line
+
+								<br />
+							}
+						</p>
+						@foreach (var description in spell.Descriptions)
+						{
+							<p>
+								<span class="fw-bold">@(description.Name). </span>
+								@foreach (var line in description.Text?.Split("\n") ?? new string[] { })
+								{
+									@line
+									<br />
+								}
+							</p>
+						}
+					}
+				</li>
+			}
+		}
+		@foreach (var spell in Choices.Where(c => !Available.Contains(c)).OrderBy(s => s.Level).ThenBy(s => s.Name).ThenBy(s => s.Source))
+		{
+			<li class="@LineCssClass">
+				<button class="btn btn-primary-outline active me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Remove(spell)" title="Remove Choice" />
+				<span class="@NameCssClass" @onclick="()=>Selected = Selected == spell ? null : spell">@spell.Name</span><Tag Xml="spell" />
+				@if (spell.Level > 0)
+				{
+					<span class="text-muted"> Level @spell.Level</span>
+				}
+				else
+				{
+					<span class="text-muted"> Cantrip </span>
+				}
+				<span class="@SourceCssClass"> (@spell.Source)</span>
+				@if (Selected == spell)
+				{
+					<p class="fst-italic">@spell.Desc</p>
+					<p>
+						@foreach (var line in spell.Description?.Split("\n") ?? new string[] { })
+						{
+							@line<br />
+						}
+					</p>
+					@foreach (var description in spell.Descriptions)
+					{
+						<p>
+							<span class="fw-bold">@(description.Name). </span>
+							@foreach (var line in description.Text?.Split("\n") ?? new string[] { })
+							{
+								@line<br />
+							}
+						</p>
+					}
+				}
+			</li>
+		}
+		<li class="@LineCssClass text-center">
+			<button class="d-block btn btn-primary bi bi-shop-window d-block" @onclick="()=>{Add=!Add; BuildChoices();}"></button>
+		</li>
+	</ul>
+}
+
+@code {
+	private string SearchText { get; set; } = "";
+
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public string? SourceCssClass { get; set; } = "text-muted fs--1";
+
+	[Parameter]
+	public SpellcastingFeature? Feature { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public string? SpellcastingID { get; set; }
+
+	[Parameter]
+	public Spell? Selected { get; set; }
+
+
+	[Parameter]
+	public int? ClassLevel { get; set; }
+
+	public bool Add { get; set; } = false;
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Spells;
+
+	private List<Spell> Choices { get; set; } = new();
+	private List<Spell> Taken { get; set; } = new();
+	private List<Spell> Available { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildChoices();
+		return Task.CompletedTask;
+	}
+
+	private async Task Remove(Spell spell)
+	{
+		if (Feature is null) return;
+		var choice = spell.Name + " " + ConfigManager.SourceSeperator + " " + spell.Source;
+		var sc = context.Context.Player.GetSpellcasting(SpellcastingID ?? Feature.SpellcastingID);
+		context.Context.MakeHistory("");
+		sc.GetAdditionalList(context.Context.Player, context.Context, context.Level).RemoveAll(t => ConfigManager.SourceInvariantComparer.Equals(t, choice));
+		sc.ModifiedAdditionalList(context.Level);
+		await SaveChoices();
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		BuildChoices();
+	}
+
+	private async Task Select(Spell spell)
+	{
+		if (Feature is null) return;
+		var choice = spell.Name + " " + ConfigManager.SourceSeperator + " " + spell.Source;
+		var sc = context.Context.Player.GetSpellcasting(SpellcastingID ?? Feature.SpellcastingID);
+		if (!Choices.Exists(c=>ConfigManager.SourceInvariantComparer.Equals(c, choice)))
+		{
+			context.Context.MakeHistory("");
+			sc.GetAdditionalList(context.Context.Player, context.Context, context.Level).Add(choice);
+			sc.ModifiedAdditionalList(context.Level);
+		}
+		else
+		{
+			context.Context.MakeHistory("");
+			sc.GetAdditionalList(context.Context.Player, context.Context, context.Level).RemoveAll(t => ConfigManager.SourceInvariantComparer.Equals(t, choice));
+			sc.ModifiedAdditionalList(context.Level);
+		}
+		await SaveChoices();
+	}
+
+	private async Task SaveChoices()
+	{
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private void BuildChoices()
+	{
+		if (Feature is null) return;
+		var features = Features ?? context.Context.Player.GetFeatureAndAbility(out _, out _, t => true, context.Level);
+		var scc = context.Context.Player.GetSpellcasting(SpellcastingID ?? Feature.SpellcastingID);
+		Choices.Clear();
+		Choices.AddRange(scc.GetAdditionalList(context.Context.Player, context.Context, context.Level).Select(s=>context.Context.GetSpell(s, Feature.Source)));
+		Taken.Clear();
+		Taken.AddRange(scc.GetSpellbook(context.Context.Player, context.Context, context.Level, features));
+		Available.Clear();
+		if (Add)
+		{
+			Available.AddRange(context.Context.Spells.Values.Where(spell=>
+				Utils.Matches(context.Context, spell, Feature.PrepareableSpells, SpellcastingID ?? Feature.SpellcastingID)
+				|| scc.CanBeAdded(spell, context.Context.Player, context.Context, context.Level, features)));
+		}
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				BuildChoices();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

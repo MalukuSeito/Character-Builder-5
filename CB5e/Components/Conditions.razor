@@ -1,0 +1,81 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (!ShowAll)
+	{
+		@foreach (var condition in context.Context.Player.Conditions)
+		{
+			<span class="csv">@condition<Tag Title="@condition" XmlLoader="()=>context.Context.GetCondition(condition, null)"/></span>
+		}
+		@if (context.Context.Player.Conditions.Count == 0)
+		{
+			<div class="text-center">--</div>
+		}
+		<div class="@ButtonCssClass" @onclick="ToggleEdit" />
+	} 
+	else
+	{
+		<ul class="list-group">
+			@foreach(var condition in context.Context.Conditions.Values.OrderBy(s=>s.Name).ThenBy(s=>s.Source).DistinctBy(s=>s.Name))
+			{
+				<li class="list-group-item @(context.Context.Player.Conditions.Contains(condition.Name, StringComparer.OrdinalIgnoreCase) ? "active": "")" @onclick="()=>ToggleCondition(condition.Name)">@condition.Name<Tag Xml="condition" /></li>
+			}
+			@foreach (var condition in context.Context.Player.Conditions.Where(c => !context.Context.ConditionsSimple.ContainsKey(c) && !context.Context.Conditions.ContainsKey(c)))
+			{
+				<li class="list-group-item active" @onclick="()=>ToggleCondition(condition)">@condition</li>
+			}
+			<input class="list-group-item visible-placeholder" value="" @onchange="AddCustom" placeholder="Add Custom"/>
+		</ul> 
+		<div class="@ActiveButtonCssClass" @onclick="ToggleEdit" />
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "autohide btn btn-primary-outline bi bi-wrench-adjustable-circle-fill btn-outline-secondary mx-2";
+
+	[Parameter]
+	public string? ActiveButtonCssClass { get; set; } = "d-block active btn btn-primary-outline bi bi-wrench-adjustable-circle btn-outline-secondary mx-2";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	private bool ShowAll { get; set; } = false;
+
+	private void ToggleEdit()
+	{
+		ShowAll = !ShowAll;
+	}
+
+	private async Task AddCustom(ChangeEventArgs e)
+	{
+		var custom = e.Value?.ToString();
+		if (string.IsNullOrWhiteSpace(custom)) return;
+		await ToggleCondition(custom);
+	}
+
+	private async Task ToggleCondition(string condition)
+	{
+		context.Context.MakeHistory("");
+		if (context.Context.Player.Conditions.Contains(condition, StringComparer.OrdinalIgnoreCase)) context.Context.Player.Conditions.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, condition));
+		else context.Context.Player.Conditions.Add(condition);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change) {
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() => StateHasChanged());
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,61 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="row">
+		<div class="col-auto autohide py-0 my-0">
+			<div class="btn-group py-0 my-0">
+				<button disabled="@(context.Level == context.Context.Levels.Experience.Count)" class="btn btn-secondary bi bi-plus py-0 fs--1" @onclick="async()=>Set(context.Context.Player.Advancement ? context.Context.Levels.GetAP(Math.Min(context.Level+1, context.Context.Levels.Advancement.Count)): context.Context.Levels.GetXP(Math.Min(context.Level+1, context.Context.Levels.Experience.Count)))" title="Level Up" />
+				<button class="btn py-0 fs--1 @(context.Context.Player.Advancement ? "btn-secondary" : "btn-outline-secondary")" title="Switch AP/XP" @onclick="SwapAdvancement">AP</button>
+				<button disabled="@(context.Level == 1)" class="btn btn-secondary bi bi-dash py-0 fs--1" @onclick="async()=>Set(context.Context.Player.Advancement ? context.Context.Levels.GetAP(Math.Max(1, context.Level-1)): context.Context.Levels.GetXP(Math.Max(1, context.Level-1)))" title="Level Down" />
+			</div>
+		</div>
+		<div class="col">
+			<input type="number" @bind="Value" class="border-0 d-block w-100 text-inherit fw-inherit py-0 my-0" min="@context.Context.Player.GetXP(true)" />
+		</div>
+	</div>
+	
+	
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Full;
+
+	private int Value { get => context.Context.Player.GetXP(); set => Set(value); }
+
+	private async void Set(int value)
+	{
+		context.Context.MakeHistory("XP");
+		context.Context.Player.SetXP(value);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task SwapAdvancement()
+	{
+		context.Context.MakeHistory("");
+		context.Context.Player.Advancement = !context.Context.Player.Advancement;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

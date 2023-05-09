@@ -1,6 +1,7 @@
 ﻿using OGL.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Character_Builder
 {
@@ -28,6 +29,10 @@ namespace Character_Builder
         public int T3TP { get; set; }
         public int T4TP { get; set; }
         public bool Milestone { get; set; }
+
+        public List<JournalPossession> Possessions { get; set; } = new List<JournalPossession>();
+        public List<JournalBoon> Boons { get; set; } = new List<JournalBoon>();
+        public List<string> Notes { get; set; } = new List<string>();
 
         public JournalEntry ()
         {
@@ -86,6 +91,9 @@ namespace Character_Builder
             else if (T3TP < 0) c.Add(T3TP + " Tier 3 Treasure Points");
             if (T4TP > 0) c.Add("+" + T4TP + " Tier 4 Treasure Points");
             else if (T4TP < 0) c.Add(T4TP + " Tier 4 Treasure Points");
+
+            c.AddRange(Possessions.Select(s => s.InfoName()));
+            c.AddRange(Boons.Select(s => s.InfoName()));
 
             if (c.Count > 0) return " (" + String.Join(", ", c) + ")";
             

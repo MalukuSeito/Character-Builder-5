@@ -1,0 +1,42 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass" @onclick="async () => await (OnClick?.Invoke() ?? Task.CompletedTask)">
+	<span clss="text-nowrap">
+		@if (!string.IsNullOrEmpty(context.Context.Player.BackgroundName))
+		{
+			var background = context.Context.Player.Background;
+			@background.Name
+			<Tag Xml="@background" />
+		} else
+		{
+			@:--
+		}
+	</span>
+</div>
+
+@code {
+
+	[Parameter]
+	public Func<Task>? OnClick { get; set; }
+
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

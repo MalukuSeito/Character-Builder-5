@@ -1,0 +1,76 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var feature in features)
+	{
+		bool pdf = PdfState(feature);
+		<p class="@LineCssClass">
+			
+			<button @onclick="()=>TogglePdf(feature)" class="@ButtonCssClass @(pdf?"bi-file-earmark-pdf-fill":"bi-file-earmark-pdf")">@(pdf?"In PDF":"Hidden")</button>
+			<span class="@NameCssClass">@(feature.Name). </span>
+			@foreach (var line in feature.Text?.Split("\n") ?? new string[] { })
+			{
+				@line<br />
+			}
+		</p>
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "position-relative";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "hidepdf bi btn btn-white fs--2 m-0 p-0 autohide";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public Func<Player, int, IEnumerable<Feature>>? Expression { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	private List<Feature> features { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		features.Clear();
+		features.AddRange((Expression?.Invoke(context.Context.Player, context.Level) ?? new Feature[] { }).Where(f => !f.Hidden && !string.IsNullOrEmpty(f.Name)).OrderBy(f => f.Name));
+		return Task.CompletedTask;
+	}
+
+	private bool PdfState(Feature f)
+	{
+		if (context.Context.Player is Player p) return !p.HiddenFeatures.Contains(f.Name, StringComparer.OrdinalIgnoreCase);
+		return false;
+	}
+
+	private void TogglePdf(Feature f)
+	{
+		if (context.Context.Player is Player p)
+		{
+			context.Context.MakeHistory("PDFFeature"+f.Name);
+			if (p.HiddenFeatures.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, f.Name)) == 0) p.HiddenFeatures.Add(f.Name);
+		}
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				features.Clear();
+				features.AddRange((Expression?.Invoke(context.Context.Player, context.Level) ?? new Feature[] { }).Where(f => !f.Hidden && !string.IsNullOrEmpty(f.Name)).OrderBy(f => f.Name));
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

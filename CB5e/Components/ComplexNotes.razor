@@ -1,0 +1,53 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var note in context.Context.Player.ComplexJournal.SelectMany(je => je.Notes))
+	{
+		var s = note.Split("\n");
+		if (s.Length > 1)
+		{
+			<p class="@ElementCssClass">
+				<span class="@TitleCssClass">@s[0]</span><br>
+				@foreach (var n in s[1..^0])
+				{
+					@n
+
+					<br>
+				}
+			</p>
+		}
+		else
+		{
+			<p class="@SingleElementCssClass">@note</p>
+		}
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+	[Parameter]
+	public string? ElementCssClass { get; set; } = "";
+	[Parameter]
+	public string? SingleElementCssClass { get; set; } = "";
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

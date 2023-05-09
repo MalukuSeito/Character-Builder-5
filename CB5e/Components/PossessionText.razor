@@ -1,0 +1,45 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<ResizingTextArea CssClass="@CssClass" Placeholder="Custom Description" @bind-Value="Value" Title="Description"/>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit visible-placeholder";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	private string? Value { get => Possession?.Description; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Set(string? v)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("");
+		if (string.IsNullOrWhiteSpace(v)) Possession.Description = null;
+		else Possession.Description = v;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

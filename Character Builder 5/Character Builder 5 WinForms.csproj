@@ -1,4 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+
+		<RootNamespace>Character_Builder_5</RootNamespace>
+		<AssemblyName>Character Builder 5</AssemblyName>
+<!--		<PublishSingleFile>true</PublishSingleFile> -->
+		<!--<SelfContained>true</SelfContained> -->
+		<!--<RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
+		<!--<PublishReadyToRun>true</PublishReadyToRun> -->
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Antlr3.Runtime" Version="3.5.1" />
+	  <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+	  <PackageReference Include="System.Text.Json" Version="7.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Character Builder Base\Character Builder Base.csproj" />
+	  <ProjectReference Include="..\Character Builder Plugin\Character Builder Plugin.csproj" />
+	  <ProjectReference Include="..\NCalc2\NCalc2.csproj" />
+	  <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
+	  <ProjectReference Include="..\PluginDMG\PluginDMG.csproj" />
+	  <ProjectReference Include="..\WinForms Common\Character Builder Forms.csproj" />
+	</ItemGroup>
+
+</Project>
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,7 +43,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Character_Builder_5</RootNamespace>
     <AssemblyName>Character Builder 5</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -26,6 +60,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,6 +103,9 @@
       <HintPath>.\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -81,9 +119,15 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="TinyCsvParser, Version=2.5.2.0, Culture=neutral, PublicKeyToken=d7df35b038077099, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyCsvParser.2.5.2\lib\net45\TinyCsvParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttackRow.cs" />
+    <Compile Include="ChoiceList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="ControlAdder.cs" />
     <Compile Include="Export.cs">
@@ -196,11 +240,4 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-</Project>
+</Project> -->

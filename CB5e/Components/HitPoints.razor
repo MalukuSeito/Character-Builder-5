@@ -1,0 +1,81 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<input class="@InputCssClass" @bind="Value" />
+	<button class="@ReloadCssClass" @onclick="Reset" title="Reset" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "reset bi bi-bootstrap-reboot";
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	private string? v;
+	private string? Value { get => v; set => Update(value); }
+
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	protected override Task OnInitializedAsync()
+	{
+		v = (context.Context.Player.GetHitpointMax(context.Level, Scores, Features) - context.Context.Player.CurrentHPLoss).ToString();
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	protected override void OnParametersSet()
+	{
+		v = (context.Context.Player.GetHitpointMax(context.Level, Scores, Features) - context.Context.Player.CurrentHPLoss).ToString();
+		base.OnParametersSet();
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) await InvokeAsync(() =>
+			{
+				v = (context.Context.Player.GetHitpointMax(context.Level, Scores, Features) - context.Context.Player.CurrentHPLoss).ToString();
+				StateHasChanged();
+			});
+	}
+
+	private async void Reset()
+	{
+		context.Context.MakeHistory("CurrentHP");
+		context.Context.Player.CurrentHPLoss = 0;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void Update(string? v)
+	{
+		context.Context.MakeHistory("CurrentHP");
+		if (string.IsNullOrEmpty(v)) return;
+		int val = 0;
+		int max = context.Context.Player.GetHitpointMax();
+		if (v.StartsWith("+") && int.TryParse(v.Substring(1), out int added)) val = context.Context.Player.CurrentHPLoss - added;
+		else if (int.TryParse(v, out int parsed))
+		{
+			if (parsed < 0) val = context.Context.Player.CurrentHPLoss - parsed;
+			else val = max - parsed;
+		}
+		else return;
+		context.Context.Player.CurrentHPLoss = Math.Max(0, Math.Min(max, val));
+		//this.v = (max - context.Context.Player.CurrentHPLoss).ToString();
+		await context.NotifyPlayerChange(EventType);
+	}
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

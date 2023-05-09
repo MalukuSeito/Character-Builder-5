@@ -1,23 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder 5 WinForms", "Character Builder 5\Character Builder 5 WinForms.csproj", "{D13C103F-53AA-4A9B-89B6-69BFC4DEC0E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder 5 WinForms", "Character Builder 5\Character Builder 5 WinForms.csproj", "{D13C103F-53AA-4A9B-89B6-69BFC4DEC0E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGL Elements", "oglelements\OGL Elements.csproj", "{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGL Elements", "oglelements\OGL Elements.csproj", "{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Builder", "Character Builder Builder\Character Builder Builder.csproj", "{D6F8C899-E13C-448C-AEEA-5CA962AF659C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder Builder", "Character Builder Builder\Character Builder Builder.csproj", "{D6F8C899-E13C-448C-AEEA-5CA962AF659C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Plugin", "Character Builder Plugin\Character Builder Plugin.csproj", "{578EC199-55FB-4830-B085-D16BBB9A22C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder Plugin", "Character Builder Plugin\Character Builder Plugin.csproj", "{578EC199-55FB-4830-B085-D16BBB9A22C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginDMG", "PluginDMG\PluginDMG.csproj", "{45907531-B5F7-45FC-BA00-80550142D520}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginDMG", "PluginDMG\PluginDMG.csproj", "{45907531-B5F7-45FC-BA00-80550142D520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Base", "Character Builder Base\Character Builder Base.csproj", "{07782F39-5E74-4400-AF78-93826D529B43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder Base", "Character Builder Base\Character Builder Base.csproj", "{07782F39-5E74-4400-AF78-93826D529B43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Static", "Character Builder Static\Character Builder Static.csproj", "{8AD49ACA-D834-4E40-BEB7-B7DAD920B023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder Static", "Character Builder Static\Character Builder Static.csproj", "{8AD49ACA-D834-4E40-BEB7-B7DAD920B023}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Character Builder Forms", "WinForms Common\Character Builder Forms.csproj", "{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Character Builder Forms", "WinForms Common\Character Builder Forms.csproj", "{EEEB4A2A-17BB-4EC6-A331-0C409F468E44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCalc2", "NCalc2\NCalc2.csproj", "{C0DD223D-D679-4B5E-ABAC-5B662D7A7FA2}"
 EndProject
@@ -29,7 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CB_5e.iOS", "CB 5e\CB_5e.iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CB_5e.UWP", "CB 5e\CB_5e.UWP\CB_5e.UWP.csproj", "{DD82A91C-1852-43C5-9E9F-420F2900C052}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data Browser", "Data Browser\Data Browser.csproj", "{30FF38FE-A693-4CFE-8F0E-42FB6C6DC8F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data Browser", "Data Browser\Data Browser.csproj", "{30FF38FE-A693-4CFE-8F0E-42FB6C6DC8F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToJSON", "ToJSON\ToJSON.csproj", "{AD1BF312-0161-4346-B7EF-1CB43C546D15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CB5e", "CB5e\CB5e.csproj", "{37734F2C-F66C-48A1-B945-D1AB70029C69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -542,6 +546,78 @@ Global
 		{30FF38FE-A693-4CFE-8F0E-42FB6C6DC8F0}.Release|x64.Build.0 = Release|Any CPU
 		{30FF38FE-A693-4CFE-8F0E-42FB6C6DC8F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{30FF38FE-A693-4CFE-8F0E-42FB6C6DC8F0}.Release|x86.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|Any CPU.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|ARM.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|ARM.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|iPhone.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|iPhone.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|x64.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|x64.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|x86.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Android|x86.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|ARM.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|x64.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Debug|x86.Build.0 = Debug|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|ARM.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|iPhone.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|x64.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|x64.Build.0 = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|x86.ActiveCfg = Release|Any CPU
+		{AD1BF312-0161-4346-B7EF-1CB43C546D15}.Release|x86.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|Any CPU.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|Any CPU.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|ARM.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|ARM.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|iPhone.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|iPhone.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|x64.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|x64.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|x86.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Android|x86.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|ARM.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|x64.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Debug|x86.Build.0 = Debug|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|ARM.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|ARM.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|iPhone.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|x64.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|x64.Build.0 = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|x86.ActiveCfg = Release|Any CPU
+		{37734F2C-F66C-48A1-B945-D1AB70029C69}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

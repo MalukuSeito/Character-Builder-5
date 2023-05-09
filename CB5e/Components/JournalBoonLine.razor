@@ -1,0 +1,168 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (Item is not null) {
+		@if (New)
+		{
+			<text>+</text>
+		}
+		<span class="@(Item.Banked?BankedCssClass:UnbankedCssClass) @(Item.Deleted?DeletedCssClass:UnDeletedCssClass)"><span @onclick="CopyOnOpen" class="cursor-pointer">@Item.ToString()</span><Tag Title="@Item.DisplayName" XmlLoader="()=>new MultiFeature(Item.DisplayName, Item.DisplayText, context.Context.GetBoon(Item.Name, null))" /></span>
+		@if (Item.Banked)
+		{
+			<div class="@UnbankButtonCssClass" @onclick="Unbank" title="Unbank Item"></div>
+		}
+		else
+		{
+			<div class="@BankButtonCssClass" @onclick="Bank" title="Bank Item"></div>
+		}
+		@if (Current && !New)
+		{
+			<div class="@RemoveEntryButtonCssClass" @onclick="Remove" title="Remove Entry"></div>
+		}
+		else
+		{
+			<div class="@RemoveItemButtonCssClass" @onclick="Delete" title="Remove Item"></div>
+		}
+		@if (Opened == Item && Current)
+		{
+			<BoonEdit CssClass="m-1 p-2 border border-primary border-1 rounded-3" EventType="ChangeType.Features| ChangeType.Journal" Boon="Item" />
+		}
+	}
+</div>
+
+@code {
+	[Parameter]
+	public bool New { get; set; } = false;
+
+	[Parameter]
+	public bool Current { get; set; } = true;
+
+	[Parameter]
+	public JournalBoon? Item { get; set; }
+
+	[Parameter]
+	public string? CssClass { get; set; } = "postion-relative";
+
+	[Parameter]
+	public string? TagCssClass { get; set; } = "position-tr";
+
+	[Parameter]
+	public string? BankedCssClass { get; set; } = "text-muted";
+
+	[Parameter]
+	public string? UnbankedCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? DeletedCssClass { get; set; } = "text-decoration-line-through";
+
+	[Parameter]
+	public string? UnDeletedCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? RemoveEntryButtonCssClass { get; set; } = "btn btn-white bi bi-x-lg autohide d-inline";
+
+	[Parameter]
+	public string? RemoveItemButtonCssClass { get; set; } = "btn btn-white bi bi-trash3 autohide d-inline";
+
+	[Parameter]
+	public string? UnbankButtonCssClass { get; set; } = "btn btn-white bi bi-mailbox d-inline";
+
+	[Parameter]
+	public string? BankButtonCssClass { get; set; } = "btn btn-white bi bi-handbag autohide d-inline";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal | ChangeType.Features;
+
+	[Parameter]
+	public Func<JournalBoon, Task>? Open { get; set; }
+
+	[Parameter]
+	public JournalBoon? Opened { get; set; }
+
+	private async Task CopyOnOpen()
+	{
+		if (Open is null || Item is null) return;
+		await Open.Invoke(Item);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async Task Bank()
+	{
+		if (Entry is null || Item is null) return;
+		context.Context.MakeHistory("");
+		if (Entry.Value.Entry.Boons.Contains(Item))
+		{
+			Item.Banked = true;
+		} else
+		{
+			Entry.Value.Entry.Boons.Add(new JournalBoon(Item) { Banked = true });
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Unbank()
+	{
+		if (Entry is null || Item is null) return;
+		context.Context.MakeHistory("");
+		if (Entry.Value.Entry.Boons.Contains(Item))
+		{
+			Item.Banked = false;
+		}
+		else
+		{
+			Entry.Value.Entry.Boons.Add(new JournalBoon(Item) { Banked = false });
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Remove()
+	{
+		if (Entry is null || Item is null) return;
+		context.Context.MakeHistory("");
+		Entry.Value.Entry.Boons.RemoveAll(s => s.Guid == Item.Guid);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Delete()
+	{
+		if (Entry is null || Item is null) return;
+		context.Context.MakeHistory("");
+		var old = Entry.Value.Before.Boons.Exists(s => s.Guid == Item.Guid);
+		var current = Entry.Value.Entry.Boons.Contains(Item);
+		if (current && old)
+		{
+			Item.Deleted = true;
+		}
+		else if (current && !old)
+		{
+			Entry.Value.Entry.Boons.RemoveAll(s => s.Guid == Item.Guid);
+		}
+		else
+		{
+			Entry.Value.Entry.Boons.Add(new JournalBoon(Item) { Deleted = true });
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,320 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+<div class="">
+	<input class="mb-1 me-3" @ref="Search" onfocus="this.select();" @bind="TextFilter" @bind:event="oninput" placeholder="Search" /><input class="" @bind="NameOnly" type="checkbox" /> Name Only
+
+	@if (ItemToMatch is null && SpellcastingToMatch is null)
+	{
+		<ul class="list-group">
+			<li class="list-group-item @(string.IsNullOrEmpty(ItemFilter)? "" : "text-muted")">
+				@if (OnSelectItem.HasDelegate)
+				{
+					<button class="btn @(string.IsNullOrEmpty(ItemFilter) ? "btn-primary" : "btn-outline-light") me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectItem.InvokeAsync(null)" title="@(string.IsNullOrEmpty(ItemFilter) ? "Add" : "Property does not fit item, force add")" />
+				}
+				<span class="fs-5">(Create New Custom Item)</span>
+			</li>
+		</ul>
+		@foreach (var cat in Category.Categories.Values.OrderBy(c=>c).Where(c => TextFilter.Length > 2 || c.CategoryPath.Count < 2 || ItemsOpened.Contains(c.Path.Substring(0, c.Path.LastIndexOf("/")), StringComparer.OrdinalIgnoreCase)))
+		{
+			if (string.IsNullOrEmpty(TextFilter) || context.Context.Items.Values.Where(i => StringComparer.OrdinalIgnoreCase.Equals(i.Category?.Path, cat.Path)).Where(i => i.Matches(TextFilter, NameOnly)).Any())
+			{
+				var style = "margin-left: " + (string.IsNullOrEmpty(TextFilter) ? cat.CategoryPath.Count - 1 : 0) +"0px";
+				<div style="@style">
+					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleItem(cat.Path)">
+						@if (string.IsNullOrEmpty(TextFilter))
+						{
+							<span class="bi pe-3 @(ItemsOpened.Contains(cat.Path) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
+							@(string.IsNullOrWhiteSpace(cat.ToString()) ? "Items" : cat.ToString())
+						} else
+						{
+							@string.Join(" / ", cat.CategoryPath)
+						}
+						
+					</div>
+					@if (ItemsOpened.Contains(cat.Path) || TextFilter.Length > 2)
+					{
+						<ul class="list-group">
+							@foreach (var item in context.Context.Items.Values.Where(i => StringComparer.OrdinalIgnoreCase.Equals(i.Category?.Path, cat.Path)).OrderBy(i => i.Name).Where(i => (string.IsNullOrWhiteSpace(TextFilter) && cat.CategoryPath.Count > 1) || i.Matches(TextFilter, NameOnly)))
+							{
+								var matches = string.IsNullOrEmpty(ItemFilter) || Utils.Matches(context.Context, item, ItemFilter, context.Level);
+								<li class="list-group-item @(matches ? "" : "text-muted")">
+									@if (OnSelectItem.HasDelegate)
+									{
+										<button class="btn @(matches ? "btn-primary" : "btn-outline-light") me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectItem.InvokeAsync(item)" title="@(matches ? "Add" : "Property does not fit item, force add")" />
+									}
+									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									@if (Selected == item)
+									{
+										<p class="fst-italic">@item.Weight lb</p>
+										<p>
+											@foreach (var line in item.Description?.Split("\n") ?? new string[] { })
+											{
+												@line
+
+												<br />
+											}
+										</p>
+										<p class="text-end">@item.Price.ToString()</p>
+									}
+								</li>
+							}
+						</ul>
+					}
+				</div>
+			}
+		}			
+	}
+	@if (SpellcastingToMatch is null && string.IsNullOrWhiteSpace(ItemFilter))
+	{
+		@foreach (var cat in context.Context.MagicCategories.Values.OrderBy(c => c.Name).Where(c => TextFilter.Length > 2 || !c.Name.Contains("/") || MagicOpened.Contains(c.Name.Substring(0, c.Name.LastIndexOf("/")), StringComparer.OrdinalIgnoreCase)))
+		{
+			if (string.IsNullOrEmpty(TextFilter) || cat.Contents.Where(i => i.Matches(TextFilter, NameOnly)).Any())
+			{
+				<div style="@("margin-left: "+ (string.IsNullOrEmpty(TextFilter) ? cat.Indent : "") + "0px")">
+					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleMagic(cat.Name)">
+						@if (string.IsNullOrEmpty(TextFilter))
+						{
+							<span class="bi pe-3 @(MagicOpened.Contains(cat.Name) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
+							@cat.DisplayName
+						} 
+						else
+						{
+							@cat.Name.Replace("/", " / ");	
+						}
+						
+					</div>
+
+					@if (MagicOpened.Contains(cat.Name) || TextFilter.Length > 2)
+					{
+						<ul class="list-group">
+							@foreach (var item in cat.Contents.OrderBy(i => i.Name).Where(i => string.IsNullOrWhiteSpace(TextFilter) || i.Matches(TextFilter, NameOnly)))
+							{
+								var matches = ItemToMatch is null || ItemToMatch.Item is null || (!string.IsNullOrWhiteSpace(item.Base) && Utils.Fits(context.Context, item, ItemToMatch.Item));
+								<li class="list-group-item @(matches ? "" : "text-muted")">
+									@if (OnSelectMagicProperty.HasDelegate)
+									{
+										<button class="btn @(matches ? "btn-primary" : "btn-outline-light")  me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectMagicProperty.InvokeAsync(item)" title="@(matches ? "Add" : "Property does not fit item, force add")" />
+									}
+									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									@if (Selected == item)
+									{
+										<p class="fst-italic">@item.DisplayRequirement</p>
+										<p>
+											@foreach (var line in item.Description?.Split("\n") ?? new string[] { })
+											{
+												@line
+
+												<br />
+											}
+										</p>
+										@foreach (var feature in item.AttunementFeatures.Union(item.CarryFeatures).Union(item.EquipFeatures).Union(item.OnUseFeatures).Union(item.AttunedEquipFeatures).Union(item.AttunedOnUseFeatures).Where(f => !string.IsNullOrEmpty(f.Name) && !f.NoDisplay))
+										{
+											<DisplayFeature Feature="feature" />
+										}
+									}
+								</li>
+							}
+						</ul>
+					}
+				</div>
+			}
+		}
+	}
+	@if (ItemToMatch is null && string.IsNullOrWhiteSpace(ItemFilter))
+	{
+		@foreach (var cat in new List<(int, string)>() { (-1, "Spells") }.Union(context.Context.Spells.Values.Select(s=>s.Level).OrderBy(c => c).Where(c => TextFilter.Length > 2 || SpellsOpened.Contains("spells", StringComparer.OrdinalIgnoreCase)).Select(l=>(l, (l == 0 ? "Cantrips" : "Level "+l)))))
+		{
+			if (string.IsNullOrEmpty(TextFilter) || context.Context.Spells.Values.Where(i => i.Level == cat.Item1).Where(i => i.Matches(TextFilter, NameOnly)).Any())
+			{
+				<div style="@(string.IsNullOrEmpty(TextFilter) && cat.Item1 >= 0 ? "margin-left: 10px" :"")">
+					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleSpell(cat.Item2)">
+						@if (string.IsNullOrEmpty(TextFilter))
+						{
+							<span class="bi pe-3 @(SpellsOpened.Contains(cat.Item2) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
+							@cat.Item2
+						} 
+						else {
+							@("Spells / " + cat.Item2)
+						}
+					</div>
+					@if (SpellsOpened.Contains(cat.Item2) || TextFilter.Length > 2)
+					{
+						<ul class="list-group">
+							@foreach (var item in context.Context.Spells.Values.Where(i => i.Level == cat.Item1).OrderBy(i => i.Name).Where(i => string.IsNullOrWhiteSpace(TextFilter) || i.Matches(TextFilter, NameOnly)))
+							{
+								var matches = SpellcastingToMatch is null || Utils.Matches(context.Context, item, SpellcastingToMatch.PrepareableSpells, SpellcastingToMatch.SpellcastingID);
+								<li class="list-group-item @(matches ? "" : "text-muted")">
+									@if (OnSelectSpell.HasDelegate)
+									{
+										<button class="btn @(matches ? "btn-primary" : "btn-outline-light") me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectSpell.InvokeAsync(item)" title="@(matches ? "Add" : "Spell does not fit, override")" />
+									}
+									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									@if (Selected == item)
+									{
+										<p class="fst-italic">@item.Desc</p>
+										<p>
+											@foreach (var line in item.Description?.Split("\n") ?? new string[] { })
+											{
+												@line
+
+												<br />
+											}
+										</p>
+										@foreach (var description in item.Descriptions)
+										{
+											<p>
+												<span class="fw-bold">@(description.Name). </span>
+												@foreach (var line in description.Text?.Split("\n") ?? new string[] { })
+												{
+													@line
+													<br />
+												}
+											</p>
+										}
+									}
+								</li>
+							}
+						</ul>
+					}
+				</div>
+			}
+		}
+	}
+	@if (ItemToMatch is null && SpellcastingToMatch is null && string.IsNullOrWhiteSpace(ItemFilter))
+	{
+		if (string.IsNullOrEmpty(TextFilter) || context.Context.Boons.Values.Where(i => i.Matches(TextFilter, NameOnly)).Any())
+		{
+			<div>
+				<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>BoonsOpen = !BoonsOpen">
+					@if (string.IsNullOrEmpty(TextFilter))
+					{
+						<span class="bi pe-3 @(BoonsOpen || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
+					}
+					Boons
+				</div>
+				@if (BoonsOpen || TextFilter.Length > 2)
+				{
+					<ul class="list-group">
+						@foreach (var item in context.Context.Boons.Values.OrderBy(i => i.Name).Where(i => string.IsNullOrWhiteSpace(TextFilter) || i.Matches(TextFilter, NameOnly)))
+						{
+							<li class="list-group-item">
+								@if (OnSelectBoon.HasDelegate)
+								{
+									<button class="btn btn-primary me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectBoon.InvokeAsync(item)" />
+								}
+								<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+								@if (Selected == item)
+								{
+									<p class="fst-italic">@item.Prerequisite</p>
+									<p>
+										@foreach (var line in item.Text?.Split("\n") ?? new string[] { })
+										{
+											@line
+
+											<br />
+										}
+									</p>
+								}
+							</li>
+						}
+					</ul>
+				}
+			</div>
+		}
+	}
+</div>
+
+@code {
+	[Parameter]
+	public List<string> MagicOpened { get; set; } = new List<string>() { "magic" };
+
+	[Parameter]
+	public List<string> ItemsOpened { get; set; } = new List<string>() { "items" };
+
+	[Parameter]
+	public List<string> SpellsOpened { get; set; } = new List<string>() { "spells" };
+
+	[Parameter]
+	public bool Collapsed { get; set; } = true;
+
+	[Parameter]
+	public bool NameOnly { get; set; } = true;
+
+	[Parameter]
+	public bool BoonsOpen { get; set; } = false;
+
+	[Parameter]
+	public string TextFilter { get; set; } = "";
+
+	[Parameter]
+	public string ItemFilter { get; set; } = "";
+
+	[Parameter]
+	public Possession? ItemToMatch { get; set; }
+
+	[Parameter]
+	public EventCallback<MagicProperty> OnSelectMagicProperty { get; set; }
+
+	[Parameter]
+	public EventCallback<Item?> OnSelectItem { get; set; }
+
+	[Parameter]
+	public EventCallback<Spell> OnSelectSpell { get; set; }
+
+	[Parameter]
+	public EventCallback<Feature> OnSelectBoon { get; set; }
+
+	[Parameter]
+	public SpellcastingFeature? SpellcastingToMatch { get; set; }
+
+	[Parameter]
+	public object? Selected { get; set; }
+
+	public ElementReference? Search { get; set; }
+
+	private void ToggleMagic(string cat)
+	{
+		if (MagicOpened.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, cat)) == 0) MagicOpened.Add(cat);
+	}
+
+	private void ToggleItem(string cat)
+	{
+		if (ItemsOpened.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, cat)) == 0) ItemsOpened.Add(cat);
+	}
+
+	private void ToggleSpell(string cat)
+	{
+		if (SpellsOpened.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, cat)) == 0) SpellsOpened.Add(cat);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.DataFiles)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void MatchProperty(MagicProperty? magicProperty)
+	{
+		if (magicProperty is not null) {
+			ItemFilter = magicProperty.Base;
+			TextFilter = "";
+		} else
+		{
+			ItemFilter = "";
+		}
+
+	}
+
+	public void Dispose() {
+		context.PlayerChange -= StateChange;
+	}
+}

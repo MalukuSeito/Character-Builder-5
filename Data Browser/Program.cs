@@ -23,6 +23,7 @@ namespace Data_Browser
         [STAThread]
         static void Main()
         {
+            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
@@ -38,7 +39,7 @@ namespace Data_Browser
             try
             {
                 ConfigManager loaded = Context.LoadConfig(path);
-                SourceManager.Init(Context, Application.StartupPath, true);
+                SourceManager.Init(Context, path, true);
                 ConfigManager.AlwaysShowSource = true;
             }
             catch (Exception e)

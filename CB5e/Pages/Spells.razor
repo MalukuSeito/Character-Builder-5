@@ -1,0 +1,100 @@
+﻿@page "/spells"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Spells</PageTitle>
+
+<Sidebar @ref="Sidebar" Backdrop="false" Scroll="true" Title="Spell Selection">
+	<SpellChoices SpellcastingFeature="Selected"/>
+</Sidebar>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl">
+	@if (context.Context.Player is not null)
+	{
+		@foreach (var spellcasting in Values)
+		{
+			<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1 mt-3">
+				<div class="col-lg-4">
+					<div class="border-bottom border-secondary m-0 fs-1 cursor-pointer" @onclick="async ()=>{if (Sidebar is not null) {Selected = spellcasting; await Sidebar.Open(Sidebar.Title + ':' + ' ' + spellcasting.DisplayName); }}">@spellcasting.DisplayName</div>
+					<div class="p-0 text-lg-center mt-0 fs--2">Spellcasting Class</div>
+				</div>
+				<div class="col-lg-8 align-self-end">
+					<div class="row">
+						<div class="col">
+							<div class="border-bottom border-secondary m-0 fs-1 text-center">@spellcasting.SpellcastingAbility</div>
+							<div class="p-0 text-lg-center mt-0 fs--2">Spellcasting Ability</div>
+						</div>
+						<div class="col">
+							<div class="border-bottom border-secondary m-0 fs-1 text-center">@context.Context.Player.GetSpellSaveDC(spellcasting.SpellcastingID, spellcasting.SpellcastingAbility)</div>
+							<div class="p-0 text-lg-center mt-0 fs--2">Save DC</div>
+						</div>
+						<div class="col">
+							<div class="border-bottom border-secondary m-0 fs-1 text-center">@context.Context.Player.GetSpellAttack(spellcasting.SpellcastingID, spellcasting.SpellcastingAbility).PlusMinus()</div>
+							<div class="p-0 text-lg-center mt-0 fs--2">Spell Attack Bonus</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<SpellList SpellcastingFeature="@spellcasting" />
+		}
+	}
+</div>
+
+@code {
+
+	List<SpellcastingFeature> Values { get; set; } = new List<SpellcastingFeature>();
+
+	private Sidebar? Sidebar { get; set; }
+	private SpellcastingFeature? Selected { get; set; } = null;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		if (context?.Context?.Player is Player player)
+		{
+			foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+			{
+				if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+				{
+					Values.Add(sf);
+				}
+			}
+			
+		}
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				Values.Clear();
+				if (context?.Context?.Player is Player player)
+				{
+					foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+					{
+						if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+						{
+							Values.Add(sf);
+						}
+					}
+
+				}
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

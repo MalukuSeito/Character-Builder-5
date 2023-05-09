@@ -1,0 +1,168 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (Table is not null) {
+	<div class="@TitleCssClass">@Table.Name
+		@if(Table.Amount > 1)
+		{
+			<span class="text-muted">( @Choices.Count / @Table.Amount ) </span>
+		}
+		<Tag Title="@Table.Name" XmlLoader="()=>new DescriptionContainer(Table)"/>
+	</div>
+	<ul class="@CssClass">
+		@if (Choices.Count < Table.Amount)
+		{
+			<li class="@LineCssClass bg-primary"><input type="search" class="border-0 rounded-2 col-auto visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput" /></li>
+			<li class="@LineCssClass">
+				<div class="row g-0">
+					<div class="col-auto">
+						<button disabled="@string.IsNullOrWhiteSpace(CustomText)" class="btn btn-primary me-3 py-0 my-0 bi bi-check-circle" @onclick="SelectCustom" title="Select"  />
+					</div>
+					<div class="col">
+						<input class="border-0 rounded-2 w-100 visible-placeholder " placeholder="Custom Entry" @bind="CustomText" @bind:event="oninput" />
+					</div>
+				</div>
+			</li>
+		}
+		@foreach (var entry in Table.Entries.Where(s => string.IsNullOrWhiteSpace(SearchText) || s.Matches(SearchText, false)))
+		{
+			@if (Choices.Count < Table.Amount || Choices.Contains(entry.ToString()))
+			{
+				<li class="@LineCssClass">
+					<button class="btn @(Choices.Count < Table.Amount ? "btn-primary" : "btn-primary-outline") me-3 py-0 my-0 bi @(Choices.Contains(entry.ToString()) ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(entry.ToString())" title="Select" />
+					<span class="@NameCssClass @(Choices.Contains(entry.ToString()) ? "text-muted" : "")">
+						@if(entry.MinRoll > 0)
+						{
+							@if (entry.MaxRoll > entry.MinRoll)
+							{
+								<span class="fw-bold">@entry.MinRoll - @entry.MaxRoll @(" ") </span>
+							}
+							else
+							{
+								<span class="fw-bold">@entry.MinRoll @(" ") </span>
+							}
+						}
+						@if (!string.IsNullOrWhiteSpace(entry.Title))
+						{
+							<span class="fw-bold">@entry.Title </span>
+						}
+						@entry.Text
+					</span>
+				</li>
+			}
+		}
+		@foreach (var choice in Choices.Where(c => !Table.Entries.Exists(f => StringComparer.OrdinalIgnoreCase.Equals(f.ToString(), c))))
+		{
+			<li class="@LineCssClass">
+				<button class="btn btn-primary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Select(choice)" title="Remove Choice" />
+				<span class="@NameCssClass">@choice</span>
+			</li>
+		}
+	</ul>
+}
+
+@code {
+	private string SearchText { get; set; } = "";
+
+	private string CustomText { get; set; } = "";
+
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public string? SourceCssClass { get; set; } = "text-muted fs--1";
+
+	[Parameter]
+	public TableDescription? Table { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	[Parameter]
+	public IChoiceProvider? ChoiceProvider { get; set; }
+
+	private List<string> Choices { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildChoices();
+		return Task.CompletedTask;
+	}
+
+	private async Task SelectCustom()
+	{
+		if (string.IsNullOrWhiteSpace(CustomText)) return;
+		await Select(CustomText);
+		CustomText = "";
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		BuildChoices();
+	}
+
+	private async Task Select(string choice)
+	{
+		if (Choices.Contains(choice)) Choices.Remove(choice);
+		else Choices.Add(choice);
+		await SaveChoices();
+	}
+
+	private async Task SaveChoices()
+	{
+		if (Table is null || ChoiceProvider is null) return;
+		context.Context.MakeHistory("");
+		for (int c = 0; c < Table.Amount; c++)
+		{
+			var counter = "";
+			if (c > 0) counter = "_" + c.ToString();
+			if (c < Choices.Count) ChoiceProvider.SetChoice(Table.UniqueID + counter, Choices[c]);
+			else ChoiceProvider.RemoveChoice(Table.UniqueID + counter);
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private void BuildChoices()
+	{
+		if (Table is null || ChoiceProvider is null) return;
+		Choices.Clear();
+		for (int c = 0; c < Table.Amount; c++)
+		{
+			var counter = "";
+			if (c > 0) counter = "_" + c.ToString();
+			var cho = ChoiceProvider.GetChoice(Table.UniqueID + counter);
+			if (cho != null && cho.Value != "") Choices.Add(cho.Value);
+		}
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				BuildChoices();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,13 @@
+﻿.bi-x-circle:hover::before {
+    content: "\f26b";
+}
+.bi-check-circle-fill:hover::before {
+    content: "\f622";
+}
+.bi-file-earmark-pdf-fill:hover::before {
+    content: "\f640";
+}
+
+.bi-file-earmark-pdf:hover::before {
+    content: "\f63f";
+}

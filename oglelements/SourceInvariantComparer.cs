@@ -1,6 +1,8 @@
 ﻿using OGL.Common;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +11,7 @@ namespace OGL
 {
     public class SourceInvariantComparer : StringComparer
     {
-        StringComparer s = StringComparer.OrdinalIgnoreCase;
+        private readonly StringComparer s = StringComparer.OrdinalIgnoreCase;
         public override int Compare(string x, string y)
         {
             return s.Compare(x, y);
@@ -49,4 +51,46 @@ namespace OGL
             return x;
         }
     }
+
+    public class SourceAwareComparer: Comparer<IXML>, IEqualityComparer<IXML>
+	{
+        private readonly StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+
+		public override int Compare(IXML x, IXML y)
+		{
+			int i = comparer.Compare(x?.Name, y?.Name);
+            if (i == 0) return comparer.Compare(x?.Source, y?.Source);
+            return i;
+		}
+
+		public bool Equals(IXML x, IXML y)
+		{
+			return comparer.Equals(x?.Name, y?.Name) && comparer.Equals(x?.Source, y?.Source);
+		}
+
+		public int GetHashCode([DisallowNull] IXML obj)
+		{
+            return comparer.GetHashCode(obj.Name + ConfigManager.SourceSeperatorString + obj.Source);
+		}
+	}
+
+	public class InvariantComparer : Comparer<IXML>, IEqualityComparer<IXML>
+	{
+		private readonly StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+
+		public override int Compare(IXML x, IXML y)
+		{
+			return comparer.Compare(x?.Name, y?.Name);
+		}
+
+		public bool Equals(IXML x, IXML y)
+		{
+            return comparer.Equals(x?.Name, y?.Name);
+		}
+
+		public int GetHashCode([DisallowNull] IXML obj)
+		{
+			return comparer.GetHashCode(obj.Name);
+		}
+	}
 }

@@ -1,0 +1,144 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (Possession is not null)
+	{
+		@if (Possession?.Item is not null)
+		{
+			<p class="fw-bold m-0">@Possession?.Item.Name</p>
+			<p class="fst-italic m-0">@Possession?.Item.Weight lb</p>
+			<p class="m-0">
+				@foreach (var line in Possession?.Item.Description?.Split("\n") ?? new string[] { })
+				{
+					@line<br />
+				}
+			</p>
+			<p class="text-end">@Possession?.Item.Price.ToString()</p>
+		}
+	
+		@foreach(var props in Possession!.Magic)
+		{
+			<p class="fw-bold m-0">@props.Name</p>
+			<p class="fst-italic m-0">@props.DisplayRequirement</p>
+			<p>
+				@foreach (var line in props.Description?.Split("\n") ?? new string[] { })
+				{
+					@line
+
+					<br />
+				}
+			</p>
+			@foreach (var feature in props.AttunementFeatures.Union(props.CarryFeatures).Union(props.EquipFeatures).Union(props.OnUseFeatures).Union(props.AttunedEquipFeatures).Union(props.AttunedOnUseFeatures).Where(f => !string.IsNullOrEmpty(f.Name) && !f.NoDisplay))
+			{
+				<DisplayFeature Feature="feature" />
+			}
+		}
+	}
+	<PossessionName EventMask="EventMask" EventType="EventType" Possession="Possession"/>
+	<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Name</div>
+	<PossessionText EventMask="EventMask" EventType="EventType" Possession="Possession" />
+	<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Custom Description</div>
+	<div class="row gx-2">
+		<div class="col-2">
+			<PossessionAttunement EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Attuned</div>
+		</div>
+		<div class="col-2">
+			<PossessionCount EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Count</div>
+		</div>
+		<div class="col-4">
+			<PossessionCharges EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Charges Used</div>
+		</div>
+		<div class="col-3">
+			<PossessionWeight EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Weight in lb.</div>
+		</div>
+		<div class="col-1">
+			<PossessionRolllsOnSheet EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Rolls</div>
+		</div>
+	</div>
+	<div class="row gx-2">
+		<div class="col-4">
+			<PossessionEquip EventMask="EventMask | ChangeType.Features" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Equipped</div>
+		</div>
+		<div class="col-2">
+			<PossessionConsumable EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Consumable</div>
+		</div>
+		<div class="col-6">
+			<PossessionRarity EventMask="EventMask" EventType="EventType" Possession="Possession" />
+			<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Rarity</div>
+		</div>
+	</div>
+	@if (Possession is not null) {
+		@foreach (var mp in Possession.Magic)
+		{
+			<PossessionMagicPropertyLine Property="mp" Possession="Possession" EventMask="EventMask" EventType="EventType | ChangeType.Features"/>
+		}
+	}
+	<div class="btn btn-outline-primary d-block m-2 bi bi-shop" title="Add New Item" @onclick="OpenShop" />
+	@if(ShowShop && !ModalShop)
+	{
+		<Shop ItemToMatch="Possession" OnSelectMagicProperty="AddProperty" />
+	}
+	<div class="p-0 text-center mt-0 fs--2 border-1 border-top border-secondary">Magic Properties</div>
+	@if (Possession is not null)
+	{
+		<Choices EventType="EventType | ChangeType.Features" EventMask="EventMask | ChangeType.Full" Features="context.Context.Plugins.FilterPossessionFeatures(Possession.Collect(context.Level, Possession, context.Context, true, true, true).ToList(), context.Level, Possession, context.Context)" ChoiceProvider="Possession"/>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	[Parameter]
+	public bool ShowShop { get; set; } = false;
+
+	[Parameter]
+	public bool ModalShop { get; set; } = false;
+
+	private async Task OpenShop()
+	{
+		if (ModalShop) await context.OpenShop(null, Possession);
+		else ShowShop = !ShowShop;
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task AddProperty(MagicProperty property)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("");
+		Possession.MagicProperties.Add(property.Name + " " + ConfigManager.SourceSeperator + " " + property.Source);
+		ShowShop = false;
+		await context.NotifyPlayerChange(ChangeType.Features | EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

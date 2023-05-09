@@ -14,6 +14,7 @@ namespace Character_Builder
 {
     public class PluginManager : IPlugin
     {
+        public int ExecutionOrdering { get => -1; }
         string IPlugin.Name
         {
             get
@@ -29,6 +30,7 @@ namespace Character_Builder
         {
             plugins.Clear();
             if (rules != null) foreach (string p in rules) if (available.ContainsKey(p)) plugins.Add(available[p]);
+            plugins.Sort((a, b) => a.ExecutionOrdering.CompareTo(b.ExecutionOrdering));
             FireEvent(this, EventArgs.Empty);
         }
 

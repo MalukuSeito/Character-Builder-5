@@ -1,0 +1,184 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	<div class="@BoxCssClass">
+		@if (ShowMore && Entry is not null) {
+
+			@foreach (var item in Entry.Value.Entry.Possessions.OrderBy(s=>s.Banked).ThenBy(s=>s.FullName))
+			{
+				<JournalItemLine CssClass="@LineCssClass" Entry="@Entry" Item="@item" New="!Entry.Value.Before.Possessions.Exists(s => s.Guid == item.Guid)" Open="CopyOnOpen" Opened="OpenedItem as JournalPossession" Current="true" />
+			}
+			@foreach (var item in Entry.Value.Entry.Boons.OrderBy(s => s.Banked).ThenBy(s => s.ToString()))
+			{
+				<JournalBoonLine CssClass="@LineCssClass" Entry="@Entry" Item="@item" New="!Entry.Value.Before.Boons.Exists(s => s.Guid == item.Guid)" Open="CopyOnOpen" Opened="OpenedItem as JournalBoon" Current="true" />
+			}
+			@if ((Entry.Value.Entry.Possessions.Count > 0 || Entry.Value.Entry.Boons.Count > 0) && (Entry.Value.Before.Possessions.Count > 0 || Entry.Value.Before.Boons.Count > 0))
+			{
+				<div class="@LineCssClass pt-1" />
+			}
+			@foreach (var item in Entry.Value.Before.Possessions.Where(s => !Entry.Value.Entry.Possessions.Exists(t => s.Guid == t.Guid)).OrderBy(s => s.Banked).ThenBy(s => s.FullName))
+			{
+				<JournalItemLine CssClass="@LineCssClass" Entry="@Entry" Item="@item" New="false" Open="CopyOnOpen" Opened="OpenedItem as JournalPossession" Current="false" />
+			}
+			@foreach (var item in Entry.Value.Before.Boons.Where(s => !Entry.Value.Entry.Boons.Exists(t => s.Guid == t.Guid)).OrderBy(s => s.Banked).ThenBy(s => s.ToString()))
+			{
+				<JournalBoonLine CssClass="@LineCssClass" Entry="@Entry" Item="@item" New="false" Open="CopyOnOpen" Opened="OpenedItem as JournalBoon" Current="false" />
+			}
+			<div class="btn btn-outline-primary d-block m-2 bi bi-plus " title="Add New Item" @onclick="async ()=>await context.OpenShop(Entry.Value.Entry, null)"/>
+		} 
+		else 
+		{
+			@if (Entry is not null && (Entry.Value.Entry.Possessions.Count > 0 || Entry.Value.Entry.Boons.Count > 0))
+			{
+				@foreach (var item in Entry.Value.Entry.Possessions)
+				{
+					<span class="@ItemCssClass @(item.Banked ? BankedCssClass : "") @(item.Deleted ? DeletedCssClass : "")">
+						@item.InfoName()<Tag Title="@item.FullName" XmlLoader="()=>new DisplayPossession(item, context.Context.Player)" />
+						@if(item.Banked)
+						{
+							<span title="Banked" class="@BankedIconCssClass" />
+						}
+						</span>
+				}
+				@foreach (var item in Entry.Value.Entry.Boons)
+				{
+					<span class="@ItemCssClass @(item.Banked ? BankedCssClass : "") @(item.Deleted ? DeletedCssClass : "")">
+						@item.InfoName()<Tag Title="@item.DisplayName" XmlLoader="()=>new MultiFeature(item.DisplayName, item.DisplayText, context.Context.GetBoon(item.Name, null))" />
+						@if (item.Banked)
+						{
+							<span title="Banked" class="@BankedIconCssClass" />
+						}
+					</span>
+				}
+			}
+		}
+	</div>
+	<div class="@TitleCssClass">@Title</div>
+	
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-6 col-md-12 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? BankedCssClass { get; set; } = "text-muted";
+
+	[Parameter]
+	public string? DeletedCssClass { get; set; } = "text-decoration-line-through";
+
+	[Parameter]
+	public string? BankedIconCssClass { get; set; } = "bi bi-mailbox ps-1";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary text-start minh-1";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tr p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tr p-0 m-0";
+
+	[Parameter]
+	public string? ItemCssClass { get; set; } = "csv text-nowrap";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "border-bottom border-1 border-secondary position-relative mx-3 pe-3";
+
+	[Parameter]
+	public string? Title { get; set; } = "Inventory";
+
+	[Parameter]
+	public List<Guid> FinalItems { get; set; } = new();
+
+	[Parameter]
+	public int FinalMagicItemCount { get; set; } = 0;
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	[Parameter]
+	public object? OpenedItem { get; set; } = null;
+
+	private async Task CopyOnOpen(JournalPossession item)
+	{
+		if (Entry is null) return;
+		if (OpenedItem == item)
+		{
+			OpenedItem = null;
+			StateHasChanged();
+			return;
+		}
+		if (Entry.Value.Entry.Possessions.Contains(item)) 
+		{
+			OpenedItem = item;
+			StateHasChanged();
+		}
+		else
+		{
+			var nitem = new JournalPossession(item);
+			Entry.Value.Entry.Possessions.Add(nitem);
+			OpenedItem = nitem;
+			await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	private async Task CopyOnOpen(JournalBoon item)
+	{
+		if (Entry is null) return;
+		Console.WriteLine($"Open {item}");
+		if (OpenedItem == item)
+		{
+			OpenedItem = null;
+			StateHasChanged();
+			return;
+		}
+		if (Entry.Value.Entry.Boons.Contains(item))
+		{
+			OpenedItem = item;
+			StateHasChanged();
+		}
+		else
+		{
+			var nitem = new JournalBoon(item);
+			Entry.Value.Entry.Boons.Add(nitem);
+			OpenedItem = nitem;
+			Console.WriteLine($"Open Copy {nitem}");
+			await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

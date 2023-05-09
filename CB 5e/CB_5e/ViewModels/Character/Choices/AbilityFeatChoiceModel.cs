@@ -20,7 +20,7 @@ namespace CB_5e.ViewModels.Character.Choices
         private static AbilityChoice intl = new AbilityChoice(Ability.Intelligence);
         private static AbilityChoice wis = new AbilityChoice(Ability.Wisdom);
         private static AbilityChoice cha = new AbilityChoice(Ability.Charisma);
-        public AbilityFeatChoiceModel(PlayerModel model, AbilityScoreFeatFeature asff): base(model, asff.UniqueID, 2, asff, true)
+        public AbilityFeatChoiceModel(PlayerModel model, IChoiceProvider provider, AbilityScoreFeatFeature asff): base(model, provider, asff.UniqueID, 2, asff, true)
         {
             Name = "Ability Score Improvement";
             OnSelect = new Command((par) =>

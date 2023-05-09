@@ -1,0 +1,48 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<input type="number" class="@CssClass" placeholder="@(Possession?.GetWeight() ?? 0.0)" title="Weight" @bind="Value" />
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "border-0 w-100 text-end fw-inherit visible-placeholder";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	private double? Value { get => (Possession?.Weight ?? -1) < 0 ? null : Possession?.Weight; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Set(double? v)
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("PossesionWeight");
+		if (v is not null)
+		{
+			Possession.Weight = v.Value / Possession.Count;
+		}
+		else Possession.Weight = -1;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

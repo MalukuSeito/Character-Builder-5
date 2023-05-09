@@ -1,0 +1,26 @@
+﻿@inject ContextService context;
+@inject ConfigService config;
+@inject ContextService context;
+@inject SourceService sources;
+@inject IBlazorDbFactory dbFactory;
+@inject IJSRuntime JsRuntime;
+<button class="@CssClass" @onclick="New"></button>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	private async Task New()
+	{
+		if (context.Context is not null && context.Context.UnsavedChanges > 0) {
+			bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Do you want to discard your current Changes");
+			if (!confirmed) return;
+		}
+		if (sources.Sources.Count == 0) await sources.FindAsync(dbFactory);
+		Player p = new Player();
+		p.Context = await context.CreateContext(config, new List<string>());
+		p.Context.Player = p;
+		p.FilePath = "";
+		await context.NotifyPlayerChange(ChangeType.Full);
+	}
+}

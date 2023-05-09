@@ -37,7 +37,7 @@ namespace Character_Builder_Builder
                 Groups.Add(KeywordGroup.FEAT, feat);
                 List<Keyword> item = new List<Keyword>();
                 foreach (String s in "Unarmed, Simple, Martial, Finesse, Thrown, Loading, Reach, Melee, Ranged, Bludgeoning, Piercing, Slashing".Split(',')) item.Add(new Keyword(s.Trim()));
-                item.Add(new Range(0, 0));
+                item.Add(new OGL.Keywords.Range(0, 0));
                 item.Add(new Versatile("0"));
                 foreach (String s in "Ammunition, Two-handed, Special, Light, Medium, Heavy, Instrument, Trinket, Game, Artisan, Focus, Arcane, Divine, Druidic".Split(',')) item.Add(new Keyword(s.Trim()));
                 Groups.Add(KeywordGroup.ITEM, item);
@@ -45,6 +45,7 @@ namespace Character_Builder_Builder
                 List<Keyword> spell = new List<Keyword>();
                 foreach(String s in "Abjuration, Conjuration, Divination, Evocation, Enchantment, Illusion, Necromancy, Transmutation".Split(',')) spell.Add(new Keyword(s.Trim()));
                 spell.Add(new Material(""));
+                spell.Add(new Royalty(""));
                 foreach (String s in "Somatic, Verbal, Attack".Split(',')) spell.Add(new Keyword(s.Trim()));
                 spell.Add(new Save(Ability.None));
                 foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) spell.Add(new Keyword(s.Trim()));
@@ -86,10 +87,15 @@ namespace Character_Builder_Builder
                     kw = new Material();
                     d = new KeywordForms.MaterialForm(kw as Material).ShowDialog();
                 }
-                if (kw is Range)
+                if (kw is Royalty)
                 {
-                    kw = new Range(10, 20);
-                    d = new KeywordForms.RangeForm(kw as Range).ShowDialog();
+                    kw = new Royalty();
+                    d = new KeywordForms.RoyaltyForm(kw as Royalty).ShowDialog();
+                }
+                if (kw is OGL.Keywords.Range)
+                {
+                    kw = new OGL.Keywords.Range(10, 20);
+                    d = new KeywordForms.RangeForm(kw as OGL.Keywords.Range).ShowDialog();
                 }
                 if (kw is Versatile)
                 {

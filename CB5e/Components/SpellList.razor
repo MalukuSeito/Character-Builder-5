@@ -1,0 +1,223 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (Prepareable > 0) {
+		<div class="@TopRowCssClass">
+			<button @onclick="ToggleHidePrepared" class="@(HidePrepared is true ? PreparedButtonCheckedCssClass : PreparedButtonCssClass)" title="@(HidePrepared is true ? "Show" :"Hide") Other Preparable Spells" />
+			<button class="@ReloadCssClass" @onclick="Reset" title="Reset Spellslots" />
+		</div>
+	}
+	<div class="@ColumnCssClass">
+		@for (int i = 0; i <= 2; i++) {
+			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@Prepared" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+		}
+	</div>
+	<div class="@ColumnCssClass">
+		@for (int i = 3; i <= 5; i++)
+		{
+			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+		}
+	</div>
+	<div class="@ColumnCssClass">
+		@for (int i = 6; i <= MaxSpellLevel; i++)
+		{
+			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+		}
+	</div>
+	
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "row position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide";
+
+	[Parameter]
+	public string? PreparedButtonCssClass { get; set; } = "position-tr bi btn btn-white bi-p-circle-fill";
+
+	[Parameter]
+	public string? PreparedButtonCheckedCssClass { get; set; } = "position-tr btn btn-white bi bi-p-circle";
+
+	[Parameter]
+	public string? ColumnCssClass { get; set; } = "col-lg-6 col-xl-4 gy-1";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border border-2 border-primary rounded mt-1";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "bi bi-bootstrap-reboot position-tr btn btn-white position-tl";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features | ChangeType.Spells;
+
+	[Parameter]
+	public ChangeType InPlayEventMask { get; set; } = ChangeType.Spellslots;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Spellslots;
+
+	[Parameter]
+	public SpellcastingFeature? SpellcastingFeature { get; set; }
+
+	public int PreparedCount { get; set; } = 0;
+
+	public int Prepareable { get; set; } = 0;
+
+	public int ClassLevel { get; set; } = 0;
+
+	public int MaxSpellLevel { get; set; } = 9;
+
+	public Spellcasting? Spellcasting { get; set; }
+
+	private Dictionary<string, Spell> Values { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+	private List<int> Slots { get; set; } = new();
+
+	private List<int> UsedSlots { get; set; } = new();
+
+	private List<string> Prepared { get; set; } = new List<string>();
+
+	private bool? HidePrepared { get; set; }
+
+	private void AddSpells(IEnumerable<Spell> spells)
+	{
+		foreach (var spell in spells)
+		{
+			if (Values.ContainsKey(spell.Name))
+			{
+				var existing = Values[spell.Name];
+				if (spell is ModifiedSpell ms && (existing is not ModifiedSpell || ms.AddAlwaysPreparedToName)) Values[spell.Name] = spell;
+			} else
+			{
+				Values.Add(spell.Name, spell);
+			}
+			if (spell.Level > MaxSpellLevel) MaxSpellLevel = spell.Level;
+		}
+	}
+
+	private void BuildSpells()
+	{
+		if (Spellcasting is null || SpellcastingFeature is null) return;
+		ClassLevel = context.Context.Player.GetClassLevel(SpellcastingFeature.SpellcastingID);
+		if (SpellcastingFeature.Preparation == PreparationMode.ClassList)
+		{
+			AddSpells(Utils.FilterSpell(context.Context, SpellcastingFeature.PrepareableSpells, SpellcastingFeature.SpellcastingID, ClassLevel));
+			AddSpells(Spellcasting.GetAdditionalClassSpells(context.Context.Player, context.Context));
+			AddSpells(Spellcasting.GetPrepared(context.Context.Player, context.Context));
+		}
+		else if (SpellcastingFeature.Preparation == PreparationMode.Spellbook)
+		{
+			AddSpells(Spellcasting.GetSpellbook(context.Context.Player, context.Context));
+			AddSpells(Spellcasting.GetPrepared(context.Context.Player, context.Context));
+		}
+		else
+		{
+			AddSpells(Spellcasting.GetPrepared(context.Context.Player, context.Context));
+		}
+		var learned = Spellcasting.GetLearned(context.Context.Player, context.Context).ToList();
+		foreach (var s in learned) s.AddAlwaysPreparedToName = true;
+		AddSpells(learned);
+	}
+
+	private void CalcPrepareable()
+	{
+		if (Spellcasting is null || SpellcastingFeature is null) return;
+		if (SpellcastingFeature.Preparation != PreparationMode.LearnSpells)
+		{
+			Prepareable = Utils.AvailableToPrepare(context.Context, SpellcastingFeature, ClassLevel);
+			Prepared.Clear();
+			Prepared.AddRange(Spellcasting.GetPreparedList(context.Context.Player, context.Context, context.Level));
+			PreparedCount = Prepared.Count;
+		}
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		Spellcasting = context.Context.Player.GetSpellcasting(SpellcastingFeature?.SpellcastingID);
+		HidePrepared = SpellcastingFeature?.Preparation != PreparationMode.Spellbook;
+		CalcPrepareable();
+		BuildSpells();
+		Slots.Add(-1);
+		Slots.AddRange(context.Context.Player.GetSpellSlots(SpellcastingFeature?.SpellcastingID, context.Level));
+		UsedSlots.Add(-1);
+		UsedSlots.AddRange(context.Context.Player.GetUsedSpellSlots(SpellcastingFeature?.SpellcastingID));
+		while (Slots.Count <= MaxSpellLevel) Slots.Add(0);
+		while (UsedSlots.Count <= MaxSpellLevel) UsedSlots.Add(0);
+		return Task.CompletedTask;
+	}
+
+	protected override void OnParametersSet()
+	{
+		Spellcasting = context.Context.Player.GetSpellcasting(SpellcastingFeature?.SpellcastingID);
+		HidePrepared = SpellcastingFeature?.Preparation != PreparationMode.Spellbook;
+		Values.Clear();
+		MaxSpellLevel = 9;
+		CalcPrepareable();
+		BuildSpells();
+		Slots.Clear();
+		Slots.Add(-1);
+		Slots.AddRange(context.Context.Player.GetSpellSlots(SpellcastingFeature?.SpellcastingID, context.Level));
+		UsedSlots.Add(-1);
+		UsedSlots.AddRange(context.Context.Player.GetUsedSpellSlots(SpellcastingFeature?.SpellcastingID));
+		while (Slots.Count <= MaxSpellLevel) Slots.Add(0);
+		while (UsedSlots.Count <= MaxSpellLevel) UsedSlots.Add(0);
+		base.OnParametersSet();
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				Spellcasting = context.Context.Player.GetSpellcasting(SpellcastingFeature?.SpellcastingID);
+				Values.Clear();
+				MaxSpellLevel = 9;
+				CalcPrepareable();
+				BuildSpells();
+				Slots.Clear();
+				Slots.Add(-1);
+				Slots.AddRange(context.Context.Player.GetSpellSlots(SpellcastingFeature?.SpellcastingID, context.Level));
+				UsedSlots.Clear();
+				UsedSlots.Add(-1);
+				UsedSlots.AddRange(context.Context.Player.GetUsedSpellSlots(SpellcastingFeature?.SpellcastingID));
+				while (Slots.Count <= MaxSpellLevel) Slots.Add(0);
+				while (UsedSlots.Count <= MaxSpellLevel) UsedSlots.Add(0);
+
+				StateHasChanged();
+			});
+		else if (change.HasAnyFlag(InPlayEventMask, EventType)) await InvokeAsync(() =>
+			{
+				CalcPrepareable();
+				UsedSlots.Clear();
+				UsedSlots.Add(-1);
+				UsedSlots.AddRange(context.Context.Player.GetUsedSpellSlots(SpellcastingFeature?.SpellcastingID));
+				while (UsedSlots.Count <= MaxSpellLevel) UsedSlots.Add(0);
+				StateHasChanged();
+			});
+	}
+
+	private async Task Reset()
+	{
+		if (SpellcastingFeature?.SpellcastingID is null) return;
+		context.Context.MakeHistory("SpellSlot" + SpellcastingFeature?.SpellcastingID);
+		context.Context.Player.ResetSpellSlots(SpellcastingFeature?.SpellcastingID);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task ToggleHidePrepared()
+	{
+		HidePrepared = !(HidePrepared ?? false);
+		await context.NotifyPlayerChange(ChangeType.Spells);
+	}
+
+	private bool IsPrepared(Spell s)
+	{
+		if (!(HidePrepared ?? true) || Prepareable != PreparedCount) return true;
+		if (s is ModifiedSpell ms && ms.AddAlwaysPreparedToName) return true;
+		return Prepared.Contains(s.Name, ConfigManager.SourceInvariantComparer);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -18,6 +18,10 @@ namespace OGL
         {
             Sources = new List<string>();
             AppPath = path;
+            if (AppPath.EndsWith("/") || AppPath.EndsWith("\\"))
+            {
+                AppPath = AppPath.Substring(0, AppPath.Length - 1);
+            }
             ConfigManager.InvalidChars = (new string(Path.GetInvalidFileNameChars()) + ConfigManager.SourceSeperator).ToCharArray();
             foreach (string s in Directory.EnumerateDirectories(path))
             {
@@ -54,7 +58,7 @@ namespace OGL
             return res;
         }
 
-        public static Dictionary<DirectoryInfo, string> GetAllDirectories(OGLContext context, string type)
+        public static Dictionary<DirectoryInfo, string> GetAllDirectories(OGLContext context, string type, bool withZips = false)
         {
             Dictionary<DirectoryInfo, string> result = new Dictionary<DirectoryInfo, string>();
             foreach (string s in Sources)
@@ -62,6 +66,30 @@ namespace OGL
                 if (context.ExcludedSources.Contains(s, StringComparer.OrdinalIgnoreCase)) continue;
                 DirectoryInfo res = new DirectoryInfo(Path.Combine(AppPath, s, type));
                 if (res.Exists) result.Add(res, s);
+            }
+            if (withZips) {
+                foreach (KeyValuePair<FileInfo, string> zip in SourceManager.GetAllZips(context).AsEnumerable())
+                {
+                    ZipArchive archive = ZipFile.OpenRead(zip.Key.FullName);
+                    string f = zip.Value.ToLowerInvariant() + "/";
+                    string ff = zip.Value.ToLowerInvariant() + "\\";
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        string name = entry.FullName.ToLowerInvariant();
+                        if ((name.StartsWith(f) || name.StartsWith(ff)) && name.EndsWith(".xml"))
+                        {
+                            string path = Path.Combine(AppPath, entry.FullName);
+                            DirectoryInfo res = new DirectoryInfo(Path.GetDirectoryName(path));
+                            if (!result.ContainsKey(res)) result.Add(res, zip.Value);
+                        }
+                        else if (name.EndsWith(".xml"))
+                        {
+                            string path = Path.Combine(AppPath, zip.Value, entry.FullName);
+                            DirectoryInfo res = new DirectoryInfo(Path.GetDirectoryName(path));
+                            if (!result.ContainsKey(res)) result.Add(res, zip.Value);
+                        } 
+                    }
+                }
             }
             return result;
         }
@@ -137,7 +165,7 @@ namespace OGL
                                     FileInfoSource fis = new FileInfoSource()
                                     {
                                         Archive = e,
-                                        FullName = Path.Combine(AppPath, s, type, name.Substring(t.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        FullName = Path.Combine(AppPath, s, type, e.FullName.Substring(t.Length).Replace('/', Path.DirectorySeparatorChar)),
                                         Source = z.Value
                                     };
                                     if (result.ContainsKey(fis.FullName))
@@ -154,7 +182,7 @@ namespace OGL
                                     FileInfoSource fis = new FileInfoSource()
                                     {
                                         Archive = e,
-                                        FullName = Path.Combine(AppPath, s, type, name.Substring(f.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        FullName = Path.Combine(AppPath, s, type, e.FullName.Substring(f.Length).Replace('/', Path.DirectorySeparatorChar)),
                                         Source = z.Value
                                     };
                                     if (result.ContainsKey(fis.FullName)) {
@@ -170,7 +198,7 @@ namespace OGL
                                     FileInfoSource fis = new FileInfoSource()
                                     {
                                         Archive = e,
-                                        FullName = Path.Combine(AppPath, s, type, name.Substring(tt.Length).Replace('\\', Path.DirectorySeparatorChar)),
+                                        FullName = Path.Combine(AppPath, s, type, e.FullName.Substring(tt.Length).Replace('\\', Path.DirectorySeparatorChar)),
                                         Source = z.Value
                                     };
                                     if (result.ContainsKey(fis.FullName))
@@ -187,7 +215,7 @@ namespace OGL
                                     FileInfoSource fis = new FileInfoSource()
                                     {
                                         Archive = e,
-                                        FullName = Path.Combine(AppPath, s, type, name.Substring(ff.Length).Replace('/', Path.DirectorySeparatorChar)),
+                                        FullName = Path.Combine(AppPath, s, type, e.FullName.Substring(ff.Length).Replace('/', Path.DirectorySeparatorChar)),
                                         Source = z.Value
                                     };
                                     if (result.ContainsKey(fis.FullName))

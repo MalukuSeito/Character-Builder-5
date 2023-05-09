@@ -1,0 +1,135 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<div class="@ButtonRowCssClass">
+			<div class="mx-2 p-0 float-end text-center">
+				<button class="@(ShowMore?MoreButtonCss:LessButtonCss)" @onclick="()=>ShowMore=!ShowMore" title="@(ShowMore?CollapseTitle:MoreTitle)" />
+				<div class="@ButtonTextCssClass">@(ShowMore ? MoredTitle : CollapsedTitle)</div>
+			</div>
+			<div class="mx-2 p-0 float-end text-center">
+				<button class="@DeleteButtonCss" @onclick="Delete" title="@DeleteTitle" />
+				<div class="@ButtonTextCssClass">@DeleteTitle</div>
+			</div>
+			<div class="mx-2 p-0 float-end text-center">
+				<button class="@((Entry?.Entry?.InSheet ?? true)?InSheetButtonCss:NoSheetButtonCss)" @onclick="()=>{if (Entry is not null) {context.Context.MakeHistory();Entry.Value.Entry.InSheet=!Entry.Value.Entry.InSheet;}}" title="@((Entry?.Entry?.InSheet ?? true) ? InSheetTitle : NoSheetTitle)" />
+				<div class="@ButtonTextCssClass">@((Entry?.Entry?.InSheet ?? true) ? InSheetTitle : NoSheetTitle)</div>
+			</div>
+			
+		</div>
+	</div>
+	@if (@ShowMore) {
+		<JournalEntryName Entry="@Entry?.Entry" />
+		<JournalEntrySession Entry="@Entry?.Entry" />
+		<JournalEntryDM Entry="@Entry?.Entry" />
+		<JournalEntryDate Entry="@Entry?.Entry" />
+		<JournalLevel Entry="@Entry" />
+		<JournalGold Entry="@Entry" />
+		<JournalDowntime Entry="@Entry" />
+		<JournalRenown Entry="@Entry" />
+		<JournalTreasure Entry="@Entry" FinalItems="@FinalItems" FinalMagicItemCount="@FinalMagicItemCount" />
+		<JournalNotes Entry="@Entry" />
+		<JournalItems Entry="@Entry" FinalItems="@FinalItems" FinalMagicItemCount="@FinalMagicItemCount"/>
+		<JournalText Entry="@Entry" Placeholder=""/>
+	} else {
+		<div>
+			@Entry?.Entry.ToString()
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = true;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "row position-relative";
+
+	[Parameter]
+	public string? CollapseTitle { get; set; } = "Collapse";
+
+	[Parameter]
+	public string? MoreTitle { get; set; } = "Show More";
+
+	[Parameter]
+	public string? CollapsedTitle { get; set; } = "Collapsed";
+
+	[Parameter]
+	public string? MoredTitle { get; set; } = "Expanded";
+
+	[Parameter]
+	public string? DeleteTitle { get; set; } = "Delete";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide m-0 p-0";
+
+	[Parameter]
+	public string? ButtonRowCssClass { get; set; } = "buttonrow border border-2 border-primary rounded bg-body-secondary p-0 m-0";
+
+	[Parameter]
+	public string? ButtonTextCssClass { get; set; } = "fs--3 m-0 p-0 text-center";
+
+	[Parameter]
+	public string? CollapsedCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand m-0 p-0";
+
+	[Parameter]
+	public string? DeleteButtonCss { get; set; } = "btn bi bi-journal-x m-0 p-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse m-0 p-0";
+
+	[Parameter]
+	public string? InSheetButtonCss { get; set; } = "btn bi bi-file-earmark-pdf-fill m-0 p-0";
+
+	[Parameter]
+	public string? NoSheetButtonCss { get; set; } = "btn bi bi-file-earmark-pdf m-0 p-0";
+
+	[Parameter]
+	public string? InSheetTitle { get; set; } = "In PDF";
+
+	[Parameter]
+	public string? NoSheetTitle { get; set; } = "Hidden";
+
+	[Parameter]
+	public List<Guid> FinalItems { get; set; } = new();
+
+	[Parameter]
+	public int FinalMagicItemCount { get; set; } = 0;
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async Task Delete()
+	{
+		if (Entry is not null) {
+			context.Context.MakeHistory("");
+			context.Context.Player.ComplexJournal.Remove(Entry.Value.Entry);
+			await context.NotifyPlayerChange(ChangeType.Full);
+		}
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -22,7 +22,7 @@ namespace CB_5e.ViewModels.Character.Choices
     }
     public abstract class ChoiceViewModel<T> : ObservableRangeCollection<ChoiceOption>, ChoiceViewModel where T: Feature 
     {
-        public ChoiceViewModel(PlayerModel model, String uniqueID, int amount, T feature, bool multiple = false, bool allowCustom = false)
+        public ChoiceViewModel(PlayerModel model, IChoiceProvider provider, String uniqueID, int amount, T feature, bool multiple = false, bool allowCustom = false)
         {
             Model = model;
             UniqueID = uniqueID;
@@ -31,10 +31,11 @@ namespace CB_5e.ViewModels.Character.Choices
             Multiple = multiple;
             Name = Feature?.Name;
             AllowCustom = allowCustom;
+            ChoiceProvider = provider;
             if (Feature != null)
             {
-                Offset = Model.Context.Player.GetChoiceOffset(Feature, UniqueID, Amount);
-                Total = Model.Context.Player.GetChoiceTotal(UniqueID);
+                Offset = provider.GetChoiceOffset(Feature, UniqueID, Amount);
+                Total = provider.GetChoiceTotal(UniqueID);
             }
 
             OnCustom = new Command(async () =>
@@ -53,10 +54,10 @@ namespace CB_5e.ViewModels.Character.Choices
                         String counter = "";
 
                         if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                        Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                        Choice cho = provider.GetChoice(UniqueID + counter);
                         if (cho == null)
                         {
-                            Model.Context.Player.SetChoice(UniqueID + counter, s);
+                            provider.SetChoice(UniqueID + counter, s);
                             Model.Save();
                             Model.FirePlayerChanged();
                             break;
@@ -77,11 +78,11 @@ namespace CB_5e.ViewModels.Character.Choices
                             String counter = "";
 
                             if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                            Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                            Choice cho = provider.GetChoice(UniqueID + counter);
                             if (cho != null && ConfigManager.SourceInvariantComparer.Equals(cho.Value, val))
                             {
                                 co.Selected = false;
-                                Model.Context.Player.RemoveChoice(cho.UniqueID);
+                                ChoiceProvider.RemoveChoice(cho.UniqueID);
                                 Model.Save();
                                 Model.FirePlayerChanged();
                                 break;
@@ -95,11 +96,11 @@ namespace CB_5e.ViewModels.Character.Choices
                             String counter = "";
 
                             if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                            Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                            Choice cho = provider.GetChoice(UniqueID + counter);
                             if (cho == null)
                             {
                                 co.Selected = true;
-                                Model.Context.Player.SetChoice(UniqueID + counter, co.NameWithSource);
+                                ChoiceProvider.SetChoice(UniqueID + counter, co.NameWithSource);
                                 Model.Save();
                                 Model.FirePlayerChanged();
                                 break;
@@ -111,6 +112,7 @@ namespace CB_5e.ViewModels.Character.Choices
             });
             UpdateOptionsImmediately();
         }
+        IChoiceProvider ChoiceProvider { get; set; }
         public PlayerModel Model { get; set; }
         public string Name { get; set; }
         public virtual string DisplayName { get => Amount > 1 ? Name + " (" + Taken + "/" + Amount + ")" : Name; }
@@ -136,7 +138,7 @@ namespace CB_5e.ViewModels.Character.Choices
             {
                 String counter = "";
                 if (c > 0) counter = "_" + c.ToString();
-                Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                Choice cho = ChoiceProvider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             return taken;
@@ -151,7 +153,7 @@ namespace CB_5e.ViewModels.Character.Choices
                 String counter = "";
 
                 if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                Choice cho = ChoiceProvider.GetChoice(UniqueID + counter);
                 if (cho != null && cho.Value != "") taken.Add(cho.Value);
             }
             return taken;
@@ -173,7 +175,7 @@ namespace CB_5e.ViewModels.Character.Choices
                     String counter = "";
 
                     if (c + offset > 0) counter = "_" + (c + offset).ToString();
-                    Choice cho = Model.Context.Player.GetChoice(UniqueID + counter);
+                    Choice cho = ChoiceProvider.GetChoice(UniqueID + counter);
                     if (cho != null && cho.Value != "") res++;
                 }
                 return res;
@@ -281,16 +283,16 @@ namespace CB_5e.ViewModels.Character.Choices
 
         public INavigation Navigation { get; set; }
         public Command OnCustom { get; set; }
-        public static ChoiceViewModel GetChoice(PlayerModel model, Feature f)
+        public static ChoiceViewModel GetChoice(PlayerModel model, IChoiceProvider choiceProvider, Feature f)
         {
-            if (f is BonusSpellKeywordChoiceFeature bskcf) return new BonusSpellKeywordChoice(model, bskcf);
-            if (f is ChoiceFeature cf) return new ChoiceFeatureChoice(model, cf);
-            if (f is ItemChoiceFeature icf) return new ItemChoice(model, icf);
-            if (f is CollectionChoiceFeature ccf) return new CollectionChoice(model, ccf);
-            if (f is ItemChoiceConditionFeature iccf) return new ItemConditionChoice(model, iccf);
-            if (f is LanguageChoiceFeature lcf) return new LanguageChoice(model, lcf);
-            if (f is SkillProficiencyChoiceFeature spcf) return new SkillProficiencyChoice(model, spcf);
-            if (f is ToolProficiencyChoiceConditionFeature tpccf) return new ToolProficiencyChoice(model, tpccf);
+            if (f is BonusSpellKeywordChoiceFeature bskcf) return new BonusSpellKeywordChoice(model, choiceProvider, bskcf);
+            if (f is ChoiceFeature cf) return new ChoiceFeatureChoice(model, choiceProvider, cf);
+            if (f is ItemChoiceFeature icf) return new ItemChoice(model, choiceProvider, icf);
+            if (f is CollectionChoiceFeature ccf) return new CollectionChoice(model, choiceProvider, ccf);
+            if (f is ItemChoiceConditionFeature iccf) return new ItemConditionChoice(model, choiceProvider, iccf);
+            if (f is LanguageChoiceFeature lcf) return new LanguageChoice(model, choiceProvider, lcf);
+            if (f is SkillProficiencyChoiceFeature spcf) return new SkillProficiencyChoice(model, choiceProvider, spcf);
+            if (f is ToolProficiencyChoiceConditionFeature tpccf) return new ToolProficiencyChoice(model, choiceProvider, tpccf);
             return null;
         }
     }

@@ -1,0 +1,111 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@Entry?.Before.Downtime
+		</div>
+		<div class="@TitleCssClass">@Starting @Title</div>
+	}
+	<div class="@BoxCssClass">
+		<input type="number" class="@InputCssClass" @bind="Value" placeholder="@Placeholder" @onblur="Update" title="@Title" />
+	</div>
+	<div class="@TitleCssClass">@Title @PlusMinus</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@Entry?.After.Downtime
+		</div>
+		<div class="@TitleCssClass">@Ending @Title</div>
+	}
+	
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-2 col-md-4 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tl p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tl p-0 m-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-end fw-inherit py-0 px-1";
+
+	[Parameter]
+	public string? TextCssClass { get; set; } = "border-bottom border-1 border-secondary text-end";
+
+	[Parameter]
+	public string? Placeholder { get; set; } = "Downtime";
+
+	[Parameter]
+	public string? Title { get; set; } = "Downtime";
+
+	[Parameter]
+	public string? Starting { get; set; } = "Starting";
+
+	[Parameter]
+	public string? Ending { get; set; } = "Ending";
+
+	[Parameter]
+	public string? PlusMinus { get; set; } = "+/-";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	private int Value { get => Entry?.Entry.Downtime ?? 0; set => Set(value); }
+	private bool changed = false;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private void Set(int value)
+	{
+		if (Entry?.Entry is JournalEntry je)
+		{
+			changed = changed || je.Downtime != value;
+			je.Downtime = value;
+		}
+	}
+
+	public async void Update()
+	{
+		if (changed && EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		changed = false;
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

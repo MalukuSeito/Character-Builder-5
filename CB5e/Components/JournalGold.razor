@@ -1,0 +1,289 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@Entry?.Before.Money
+		</div>
+		<div class="@TitleCssClass">@Starting @Title</div>
+	}
+	<div class="@BoxCssClass">
+		@{
+			int count = 0;
+			if (Entry?.Entry?.PP != 0) count++;
+			if (Entry?.Entry?.GP != 0) count++;
+			if (Entry?.Entry?.EP != 0) count++;
+			if (Entry?.Entry?.SP != 0) count++;
+			if (Entry?.Entry?.CP != 0) count++;
+		}
+		@if (ShowMore || (Entry?.Entry?.PP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="PP" placeholder="@TitlePP" @onblur="Update" title="@TitlePP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitlePP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.GP != 0 && count == 1) || count == 0)
+		{
+			<input type="number" class="@InputCssClass" @bind="GP" placeholder="@TitleGP" @onblur="Update" title="@TitleGP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleGP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.EP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="EP" placeholder="@TitleEP" @onblur="Update" title="@TitleEP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleEP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.SP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="SP" placeholder="@TitleSP" @onblur="Update" title="@TitleSP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleSP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.CP != 0 && count == 1))
+		{
+			<input type="number" class="@InputCssClass" @bind="CP" placeholder="@TitleCP" @onblur="Update" title="@TitleCP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleCP</div>
+			}
+		}
+		@if (count > 1)
+		{
+			<div class="@InputCssClass">
+				@if (Entry?.Entry?.PP != 0)
+				{
+					<span class="@CombinedCssClass">@PP pp</span>
+				}
+				@if (Entry?.Entry?.GP != 0)
+				{
+					<span class="@CombinedCssClass">@GP gp</span>
+				}
+				@if (Entry?.Entry?.EP != 0)
+				{
+					<span class="@CombinedCssClass">@EP ep</span>
+				}
+				@if (Entry?.Entry?.SP != 0)
+				{
+					<span class="@CombinedCssClass">@SP sp</span>
+				}
+				@if (Entry?.Entry?.CP != 0)
+				{
+					<span class="@CombinedCssClass">@CP cp</span>
+				}
+			</div>
+		}
+	</div>
+	<div class="@TitleCssClass">
+		@if (Entry?.Entry?.PP != 0 && count == 1)
+		{
+			@TitlePP
+		}
+		@if ((Entry?.Entry?.GP != 0 && count == 1) || count == 0)
+		{
+			@TitleGP
+		}
+		@if (Entry?.Entry?.EP != 0 && count == 1)
+		{
+			@TitleEP
+		}
+		@if (Entry?.Entry?.SP != 0 && count == 1)
+		{
+			@TitleSP
+		}
+		@if (Entry?.Entry?.CP != 0 && count == 1)
+		{
+			@TitleCP
+		}
+		@if (count > 1)
+		{
+			@Title
+		}
+		<text>&nbsp;@PlusMinus</text>
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@Entry?.After.Money
+		</div>
+		<div class="@TitleCssClass">@Ending @Title</div>
+	}
+	
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-2 col-md-4 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? CombinedCssClass { get; set; } = "csv";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tl p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tl p-0 m-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 fw-inherit text-end py-0 px-1";
+
+	[Parameter]
+	public string? TextCssClass { get; set; } = "border-bottom border-1 border-secondary text-end";
+
+	[Parameter]
+	public string? Title { get; set; } = "Coinage";
+
+	[Parameter]
+	public string? TitlePP { get; set; } = "Platinum";
+
+	[Parameter]
+	public string? TitleGP { get; set; } = "Gold";
+
+	[Parameter]
+	public string? TitleEP { get; set; } = "Electrum";
+
+	[Parameter]
+	public string? TitleSP { get; set; } = "Silver";
+
+	[Parameter]
+	public string? TitleCP { get; set; } = "Copper";
+
+	[Parameter]
+	public string? Starting { get; set; } = "Starting";
+
+	[Parameter]
+	public string? Ending { get; set; } = "Ending";
+
+	[Parameter]
+	public string? PlusMinus { get; set; } = "+/-";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal;
+
+	private int? PP
+	{
+		get
+		{
+			return Entry?.Entry.PP != 0 ? Entry?.Entry.PP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.PP != value; info.Entry.PP = value ?? 0;
+			}
+		}
+	}
+	
+	private int? GP
+	{
+		get
+		{
+			return Entry?.Entry.GP != 0 ? Entry?.Entry.GP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.GP != value; info.Entry.GP = value ?? 0;
+			}
+		}
+	}
+
+	private int? EP
+	{
+		get
+		{
+			return Entry?.Entry.EP != 0 ? Entry?.Entry.EP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.EP != value; info.Entry.EP = value ?? 0;
+			}
+		}
+	}
+
+	private int? SP
+	{
+		get
+		{
+			return Entry?.Entry.SP != 0 ? Entry?.Entry.SP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.SP != value; info.Entry.SP = value ?? 0;
+			}
+		}
+	}
+
+	private int? CP
+	{
+		get
+		{
+			return Entry?.Entry.CP != 0 ? Entry?.Entry.CP : null;
+		}
+		set
+		{
+			if (Entry is JournalInfo info)
+			{
+				changed = changed || info.Entry.CP != value; info.Entry.CP = value ?? 0;
+			}
+		}
+	}
+
+	private bool changed = false;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public async void Update()
+	{
+		if (changed && EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		changed = false;
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

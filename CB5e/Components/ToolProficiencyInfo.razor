@@ -1,0 +1,44 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<p class="@CssClass">
+	@foreach(var toolkw in context.Context.Player.GetToolKWProficiencies(Features))
+	{
+		<span class="@ElementClass">@toolkw</span>
+	}
+	@foreach (var tool in context.Context.Player.GetToolProficiencies(Features))
+	{
+		<span class="@ElementClass">@tool.Name<Tag CssClass="@TagClass" Xml="@tool" /></span>
+	}
+</p>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? ElementClass { get; set; } = "csv";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

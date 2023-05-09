@@ -1,0 +1,85 @@
+﻿@inject ContextService context;
+@using System.Linq.Expressions;
+@using System.Reflection;
+@implements IDisposable;
+<div class="@CssClass">
+	<Image CssClass="@ImageCssClass" Source="Value" />
+	@if (Value is not null) {
+		<button class="@RemoveCssClass" @onclick="Remove" title="Remove Image"/>
+	}
+	<div class="@UpdateCssClass" title="Change Image">
+		<InputFile class="browse" id="@id" OnChange="@Change"/>
+		<label class="@UpdateButtonCssClass" for="@id"></label>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "position-relative h-100";
+
+	[Parameter]
+	public string? ImageCssClass { get; set; } = "mh-100 mw-100";
+
+	[Parameter]
+	public string? RemoveCssClass { get; set; } = "btn bi bi-file-earmark-excel position-br autohide btn-lg btn-light";
+
+	[Parameter]
+	public string? UpdateCssClass { get; set; } = "autohide";
+
+	[Parameter]
+	public string? UpdateButtonCssClass { get; set; } = "btn bi bi-file-earmark-image position-bl btn-lg btn-light";
+
+	private byte[]? Value { get; set; }
+
+	private string id { get; set; } = Guid.NewGuid().ToString();
+
+	[Parameter]
+	public Expression<Func<Player, byte[]>>? Expression { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	private PropertyInfo? propertyInfo;
+
+	protected override Task OnInitializedAsync()
+	{
+		if (Expression?.Body is MemberExpression me && me.Member is PropertyInfo pi) propertyInfo = pi;
+		else throw new ArgumentException($"{Expression?.ToString()} is not accessing a property");
+		Value = pi.GetValue(context.Context.Player) as byte[];
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) {
+			await InvokeAsync(() =>
+			{
+				Value = propertyInfo?.GetValue(context.Context.Player) as byte[];
+				StateHasChanged();
+			});
+		}
+	}
+
+	private async Task Change(InputFileChangeEventArgs e)
+	{
+		using var stream = e.File.OpenReadStream(100 * 1024 * 1024);
+		using MemoryStream ms = new MemoryStream();
+		await stream.CopyToAsync(ms);
+		context.Context.MakeHistory(propertyInfo?.Name);
+		propertyInfo?.SetValue(context.Context.Player, ms.ToArray());
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task Remove()
+	{
+		context.Context.MakeHistory(propertyInfo?.Name);
+		propertyInfo?.SetValue(context.Context.Player, null);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -9,8 +9,9 @@ namespace OGL.Common
     {
         int GetChoiceOffset(Feature f, string uniqueID, int amount);
         int GetChoiceTotal(string uniqueID);
-        Choice GetChoice(String ID);
-        bool CanMulticlass(ClassDefinition c, int level);
-        bool Matches(String expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0);
+        Choice GetChoice(string ID);
+        void SetChoice(string ID, string Value);
+        void RemoveChoice(string ID);
+        bool Matches(string expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0);
     }
 }

@@ -1,0 +1,237 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@if (GetTitle() == TitleXP)
+			{
+				@(Entry?.Before.XP != 0 ? Entry?.Before.XP : Entry?.Before.AP != 0 ? context?.Context?.Levels?.ToXP(Entry?.Before.AP ?? 0) : context?.Context?.Levels?.GetXP(Entry?.Before.Level ?? 1))
+				@: (Level @Entry?.Before.Level)
+			} 
+			else if (GetTitle() == TitleAP)
+			{
+				@(Entry?.Before.AP != 0 ? Entry?.Before.AP : Entry?.Before.XP != 0 ? context?.Context?.Levels?.ToAP(Entry?.Before.XP ?? 0) : context?.Context?.Levels?.GetAP(Entry?.Before.Level ?? 1))
+				@: (Level @Entry?.Before.Level)
+			} else
+			{
+				@Entry?.Before.Level
+			}
+		</div>
+		<div class="@TitleCssClass">@Starting @GetTitle()</div>
+	}
+	<div class="@BoxCssClass">
+		@if (ShowMore || (Entry?.Entry?.AP == 0 && Entry?.Entry?.XP == 0))
+		{
+			<div class="text-center @InputCssClass">
+				<button class="@(Entry?.Entry?.Milestone == true ? CheckCssClass : UncheckCssClass)" title="@MilestoneText" @onclick="ToggleMilestone" />
+			</div>
+			
+			@if(ShowMore)
+			{
+				<div class="@TitleCssClass">@MilestoneText</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.AP == 0 && Entry?.Entry?.XP != 0 && Entry?.Entry?.Milestone != true))
+		{
+			<input type="number" class="@InputCssClass" @bind="XP" placeholder="@TitleXP" @onblur="Update" title="@TitleXP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleXP</div>
+			}
+		}
+		@if (ShowMore || (Entry?.Entry?.AP != 0 && Entry?.Entry?.XP == 0 && Entry?.Entry?.Milestone != true))
+		{
+			<input type="number" class="@InputCssClass" @bind="AP" placeholder="@TitleAP" @onblur="Update" title="@TitleAP" />
+			@if (ShowMore)
+			{
+				<div class="@TitleCssClass">@TitleAP</div>
+			}
+		}
+		@if (!ShowMore && ((Entry?.Entry?.AP != 0 && Entry?.Entry?.XP != 0) || (Entry?.Entry?.AP != 0 && Entry?.Entry?.Milestone != false) || (Entry?.Entry?.XP != 0 && Entry?.Entry?.Milestone != false)))
+		{
+			if (Entry?.Entry?.AP != 0)
+			{
+				<span class="@CombinedCssClass">@AP AP</span>
+			}
+			if (Entry?.Entry?.XP != 0)
+			{
+				<span class="@CombinedCssClass">@XP XP</span>
+			}
+			if (Entry?.Entry?.Milestone == true)
+			{
+				<span class="@CombinedCssClass">Milestone</span>
+			}
+		}
+	</div>
+	<div class="@TitleCssClass">
+		@if (GetTitle() == Title)
+		{
+			@MilestoneText
+		} 
+		else 
+		{
+			<text>@GetTitle() @PlusMinus</text>
+		}
+	</div>
+	@if (@ShowMore) {
+		<div class="@TextCssClass">
+			@if (GetTitle() == TitleXP)
+			{
+				@(Entry?.After.XP != 0 ? Entry?.After.XP : Entry?.After.AP != 0 ? context?.Context?.Levels?.ToXP(Entry?.After.AP ?? 0) : context?.Context?.Levels?.GetXP(Entry?.After.Level ?? 1))
+				@: (Level @Entry?.After.Level)
+			}
+			else if (GetTitle() == TitleAP)
+			{
+				@(Entry?.After.AP != 0 ? Entry?.After.AP : Entry?.After.XP != 0 ? context?.Context?.Levels?.ToAP(Entry?.After.XP ?? 0) : context?.Context?.Levels?.GetAP(Entry?.After.Level ?? 1))
+				@: (Level @Entry?.After.Level)
+			}
+			else
+			{
+				@Entry?.After.Level
+			}
+		</div>
+		<div class="@TitleCssClass">@Ending @GetTitle()</div>
+	}
+	
+</div>
+
+@code {
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-2 col-md-4 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "btn p-0 m-0 bi bi-check-square fs--1";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "btn p-0 m-0 bi bi-square fs--1";
+
+	[Parameter]
+	public string? CombinedCssClass { get; set; } = "csv";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tl p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tl p-0 m-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 fw-inherit text-end py-0 px-1";
+
+	[Parameter]
+	public string? TextCssClass { get; set; } = "border-bottom border-1 border-secondary text-end";
+
+	[Parameter]
+	public string? Title { get; set; } = "Level";
+
+	[Parameter]
+	public string? MilestoneText { get; set; } = "Milestone";
+
+	[Parameter]
+	public string? TitleXP { get; set; } = "XP";
+
+	[Parameter]
+	public string? TitleAP { get; set; } = "AP";
+
+	[Parameter]
+	public string? Starting { get; set; } = "Starting";
+
+	[Parameter]
+	public string? Ending { get; set; } = "Ending";
+
+	[Parameter]
+	public string? PlusMinus { get; set; } = "+/-";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Journal | ChangeType.Full;
+
+	private int? XP { 
+		get {
+			return Entry?.Entry.XP != 0 ? Entry?.Entry.XP: null; 
+		}
+		set { 
+			if (Entry is JournalInfo info) {
+				context.Context.MakeHistory("JournalXP");
+				changed = changed || info.Entry.XP != value;  info.Entry.XP = value ?? 0; 
+			}
+		}
+	}
+
+	private int? AP {
+		get {
+			return Entry?.Entry.AP != 0 ? Entry?.Entry.AP : null;
+		}
+		set {
+			if (Entry is JournalInfo info) {
+				context.Context.MakeHistory("JournalAP");
+				changed = changed || info.Entry.AP != value; info.Entry.AP = value ?? 0;
+			}
+		}
+	}
+	private bool Milestone { get => Entry?.Entry.Milestone ?? false; set { if (Entry is JournalInfo info) { context.Context.MakeHistory("JournalMilestone"); info.Entry.Milestone = value; changed = true; } } }
+	private bool changed = false;
+
+	private string? GetTitle()
+	{
+		if (Entry is JournalInfo info)
+		{
+			if (info.Entry.Milestone) return Title;
+			if (info.Entry.AP != 0) return info.Entry.XP != 0 ? Title : TitleAP;
+			if (info.Entry.XP != 0) return TitleXP;
+		}
+		return Title;
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public async void Update()
+	{
+		if (changed && EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		changed = false;
+	}
+
+	private async Task ToggleMilestone()
+	{
+		if (Entry is JournalInfo info)
+		{
+			context.Context.MakeHistory("");
+			info.Entry.Milestone = !info.Entry.Milestone;
+			await context.NotifyPlayerChange(EventType);
+			changed = false;
+		}
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

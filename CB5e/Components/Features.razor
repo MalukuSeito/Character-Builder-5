@@ -1,0 +1,23 @@
+﻿@inject ContextService context;
+<div class="@CssClass">
+	@foreach (var feature in Items.Where(f=>!f.NoDisplay && !string.IsNullOrWhiteSpace(f.Name)))
+	{
+		<DisplayFeature CssClass="@LineCssClass" @NameCssClass="@NameCssClass" Feature="feature" />
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public List<Feature> Items { get; set; } = new();
+}

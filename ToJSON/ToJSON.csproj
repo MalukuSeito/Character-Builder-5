@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<PublishReadyToRun>true</PublishReadyToRun>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Character Builder Base\Character Builder Base.csproj" />
+    <ProjectReference Include="..\Character Builder Plugin\Character Builder Plugin.csproj" />
+    <ProjectReference Include="..\NCalc2\NCalc2.csproj" />
+    <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
+    <ProjectReference Include="..\PluginDMG\PluginDMG.csproj" />
+  </ItemGroup>
+
+</Project>

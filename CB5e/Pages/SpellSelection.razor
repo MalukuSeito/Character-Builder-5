@@ -1,0 +1,111 @@
+﻿@page "/spellselection"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Spells</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl">
+	@if (context.Context.Player is not null)
+	{
+		<div class="border border-2 border-primary rounded-3">
+			@if (Values.Count == 0)
+			{
+				<div class="text-bg-warning m-3">No Spells to Choose</div>
+			}
+			else if (Values.Count == 1)
+			{
+				<SpellChoices CssClass="px-3" SpellcastingFeature="Selected ?? Values[0]" SpellcastingID="@(Selected?.SpellcastingID ?? Values[0].SpellcastingID)" />
+			}
+			else
+			{
+				<ul class="nav nav-tabs my-3">
+					@foreach (var feature in Values)
+					{
+						<li class="nav-item">
+							<a class="nav-link @(Selected == feature ? "active": "")" @onclick:preventDefault="true" @onclick="()=>Selected = feature" href="#">@feature.DisplayName</a>
+						</li>
+					}
+					<li class="nav-item">
+						<a class="nav-link @(Selected is null ? "active": "")" @onclick:preventDefault="true" @onclick="()=>Selected = null" href="#">All</a>
+					</li>
+				</ul>
+				@if (Selected == null)
+				{
+					var features = context.Context.Player.GetFeatures().Where(f => f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature || f is BonusSpellPrepareFeature).ToList();
+					@foreach (var feature in Values)
+					{
+						<h3 class="text-primary fw-bold mx-1">@feature.DisplayName</h3>
+						<SpellChoices CssClass="px-3" SpellcastingFeature="feature" Features="features" SpellcastingID="@feature.SpellcastingID"/>
+					}
+				} 
+				else
+				{
+					<SpellChoices CssClass="px-3" SpellcastingFeature="Selected ?? Values[0]" SpellcastingID="@(Selected?.SpellcastingID ?? Values[0].SpellcastingID)" />
+				}
+			}
+		</div>
+	}
+</div>
+
+@code {
+
+	List<SpellcastingFeature> Values { get; set; } = new List<SpellcastingFeature>();
+
+	private SpellcastingFeature? Selected { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		if (context?.Context?.Player is Player player)
+		{
+			foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+			{
+				if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+				{
+					Values.Add(sf);
+				}
+			}
+			if (Values.Count > 0) Selected = Values[0];
+			else Selected = null;
+		}
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				Values.Clear();
+				if (context?.Context?.Player is Player player)
+				{
+					foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+					{
+						if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+						{
+							Values.Add(sf);
+						}
+					}
+
+				}
+				if (Values.Count > 0) {
+					if (Selected == null || !Values.Contains(Selected)) Selected = Values[0];
+				}
+				else Selected = null;
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

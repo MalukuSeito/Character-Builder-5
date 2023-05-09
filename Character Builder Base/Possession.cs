@@ -12,22 +12,75 @@ using System.Xml.Serialization;
 
 namespace Character_Builder
 {
-    public class Possession : IComparable<Possession>, IInfoText
+    public class Possession : IComparable<Possession>, IInfoText, IChoiceProvider
     {
 
         [XmlIgnore]
-        public OGLContext Context;
+        public Dictionary<Feature, int> ChoiceCounter = new Dictionary<Feature, int>(new ObjectIdentityEqualityComparer());
+        public bool ShouldSerializeChoiceCounter() => false;
+        [XmlIgnore]
+        public Dictionary<string, int> ChoiceTotal = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        public bool ShouldSerializeChoiceTotal() => false;
+
+        [XmlIgnore]
+        public BuilderContext Context;
+        public bool ShouldSerializeContext() => false;
 
         public String Name { get; set; }
         public String BaseItem { get; set; }
         public string Equipped { get; set; }
         public bool Attuned { get; set; }
-        public List<string> MagicProperties;
+        public List<string> MagicProperties { get; set; }
         public int ChargesUsed { get; set; }
         public int Count { get; set; }
         public String Description { get; set; }
         public double Weight { get; set; }
         public bool Hightlight { get; set; }
+
+        public bool? ConsumableOverride { get; set; }
+        public Rarity? RarityOverride { get; set; }
+        public List<Choice> Choices { get; set; } = new List<Choice>();
+
+        public Choice GetChoice(string ID)
+        {
+            Choice v = (from c in Choices where c.UniqueID == ID select c).FirstOrDefault();
+            if (v == null && Context != null && Context.Player.GetChoice(ID) is Choice cc)
+            {
+                Choices.Add(cc);
+                Context.Player.RemoveChoice(ID);
+                return cc;
+            }
+            return v;
+        }
+        public void SetChoice(String ID, String Value)
+        {
+            Choice c = GetChoice(ID);
+            if (c != null) c.Value = Value;
+            else Choices.Add(new Choice(ID, Value));
+        }
+        public void RemoveChoice(String ID)
+        {
+            Choices.RemoveAll(c => c.UniqueID == ID);
+        }
+        public int GetChoiceOffset(Feature f, string uniqueID, int amount)
+        {
+            if (!ChoiceCounter.ContainsKey(f))
+            {
+                ChoiceCounter.Add(f, GetChoiceTotal(uniqueID));
+                ChoiceTotal[uniqueID] += amount;
+            }
+            return ChoiceCounter[f];
+        }
+        public void ResetChoices()
+        {
+
+        }
+        public int GetChoiceTotal(string uniqueID)
+        {
+            if (!ChoiceTotal.ContainsKey(uniqueID)) ChoiceTotal.Add(uniqueID, 0);
+            return ChoiceTotal[uniqueID];
+        }
+
         [XmlIgnore]
         public List<MagicProperty> Magic
         {
@@ -49,7 +102,7 @@ namespace Character_Builder
         {
             MagicProperties = new List<string>();
         }
-        public Possession(OGLContext context, string name, string text, int count, double weight = 0.0)
+        public Possession(BuilderContext context, string name, string text, int count, double weight = 0.0)
         {
             Context = context;
             Name = name;
@@ -63,7 +116,7 @@ namespace Character_Builder
             Hightlight = false;
             MagicProperties = new List<string>();
         }
-        public Possession(OGLContext context, Item Base, int count)
+        public Possession(BuilderContext context, Item Base, int count)
         {
             Context = context;
             Name = "";
@@ -78,7 +131,7 @@ namespace Character_Builder
             MagicProperties = new List<string>();
             Weight = -1;
         }
-        public Possession(OGLContext context, string Base, int count)
+        public Possession(BuilderContext context, string Base, int count)
         {
             Context = context;
             Name = "";
@@ -125,7 +178,7 @@ namespace Character_Builder
             };
             Weight = -1;
         }
-        public Possession(OGLContext context, Item Base, MagicProperty magic)
+        public Possession(BuilderContext context, Item Base, MagicProperty magic)
         {
             Context = context;
             Name = "";
@@ -162,12 +215,25 @@ namespace Character_Builder
             {
                 string name = Name;
                 if (name == null || name == "") name = Context.GetItem(BaseItem, null).Name;
+                else return Name;
+                if (Context.GetItem(BaseItem, null) is Scroll) name = "Scroll of " + name;
                 foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
                 return name;
             }
         }
 
-        public string Amount
+		public string BaseName
+		{
+			get
+			{
+				string name = Context.GetItem(BaseItem, null).Name;
+				if (Context.GetItem(BaseItem, null) is Scroll) name = "Scroll of " + name;
+				foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
+				return name;
+			}
+		}
+
+		public string Amount
         {
             get {
                 if (Count > 1) return Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "");
@@ -244,7 +310,7 @@ namespace Character_Builder
                     else name = item.Name;
                 }
             }
-            foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
+            if (Name == null || Name == "") foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
@@ -258,24 +324,24 @@ namespace Character_Builder
             return name;
         }
 
-        
+
         public int CompareTo(Possession other) {
             return this.ToString().CompareTo(other.ToString());
         }
 
-        public IEnumerable<Feature> Collect(int level, IChoiceProvider provider, OGLContext context, bool pretendEquipped = false, bool includeOnUseFeatures = false)
+        public IEnumerable<Feature> Collect(int level, IChoiceProvider provider, BuilderContext context, bool pretendEquipped = false, bool includeOnUseFeatures = false, bool pretendAttuned = false)
         {
             Context = context;
             List<Feature> result = new List<Feature>();
             bool equip = !EquipSlot.None.Equals(Equipped, StringComparison.OrdinalIgnoreCase);
-            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).Collect(level, equip || pretendEquipped, Attuned, provider, context, includeOnUseFeatures));
+            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).Collect(level, equip || pretendEquipped, Attuned || pretendAttuned, this, context, includeOnUseFeatures));
             return result;
         }
-        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider provider, OGLContext context)
+        public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider provider, BuilderContext context)
         {
             Context = context;
             List<Feature> result = new List<Feature>();
-            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).CollectOnUse(level, provider, Attuned, context));
+            foreach (string mp in MagicProperties) result.AddRange(context.GetMagic(mp, null).CollectOnUse(level, this, Attuned, context));
             return result;
         }
 
@@ -286,8 +352,9 @@ namespace Character_Builder
             item = Context.GetItem(BaseItem, null);
             if (name == null || name == "") {
                 name = item.Name;
-            }       
-            foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
+                if (item is Scroll) name = item.ToString();
+            }
+            if (Name == null || Name == "") foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
@@ -326,8 +393,9 @@ namespace Character_Builder
             if (name == null || name == "")
             {
                 name = item.Name;
+                if (item is Scroll) name = item.ToString();
             }
-            foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
+            if (Name == null || Name == "") foreach (string mp in MagicProperties) name = Context.GetMagic(mp, null).GetName(name);
             if (Count > 1) name = name + " (" + Count + (Item != null && Item.Unit != null ? " " + Item.Unit : "") + ")";
             else if (Count == 1 && Item != null && Item.SingleUnit != null) name = name + " (" + Item.SingleUnit + ")";
             else if (Count == 1 && Item != null && Item.Unit != null) name = name + "(" + Count + " " + Item.Unit + ")";
@@ -354,5 +422,28 @@ namespace Character_Builder
             if (stats && item is Armor a && a.BaseAC > 0) damage = ", " + a.BaseAC + " AC";
             return name + (keywords != null ? " [" + keywords + "]" : "") + damage;
         }
+
+        public bool Matches(string expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+        {
+            return Context.Player.Matches(expression, additionalKeywords, classlevel, level);
+        }
+        public bool GetConsumable()
+        {
+            if (Context != null && Item is Scroll) return true;
+            if (MagicProperties.Count == 0) return false;
+            if (Context == null) return false;
+            var con = Magic.Select(mp => mp.GetConsumable()).Where(b => b != null).Select(b=>b??true).ToList();
+            if (con.Count == 0) return false;
+            return con.All(b=> b);
+        }
+        public Rarity GetRarity()
+        {
+            if (Context == null) return Rarity.None;
+            if (MagicProperties.Count == 0) return Rarity.None;
+            return Magic.Select(mp => mp.Rarity).Max();
+
+        }
+        public bool Consumable { get => ConsumableOverride ?? GetConsumable(); set => ConsumableOverride = value; }
+        public Rarity Rarity { get => RarityOverride ?? GetRarity(); set => RarityOverride = value; }
     }
 }

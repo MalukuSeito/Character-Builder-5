@@ -1,0 +1,69 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+@using System.Linq.Expressions;
+@using System.Reflection;
+<div class="@CssClass">
+	<ResizingTextArea CssClass="@InputCssClass" @bind-Value="Value" Placeholder="@Placeholder" Title="@Title"/>
+	<div class="@TitleCssClass">@Title</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 border-bottom border-1 border-secondary lh-1";
+
+	[Parameter]
+	public string? Placeholder { get; set; }
+
+	private string? Value { get => Entry?.Entry.Text; set => Update(value); }
+
+	[Parameter]
+	public bool Multiline { get; set; } = true;
+
+	[Parameter]
+	public string? Title { get; set; } = "Notes";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.None;
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) {
+			await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+		}
+	}
+
+
+	private async void Update(string? v)
+	{
+		if (Entry is not null)
+		{
+			context.Context.MakeHistory("JournalText");
+			if (!Multiline) Entry.Value.Entry.Text = v?.Replace("\n", " ") ?? "";
+			else Entry.Value.Entry.Text = v;
+			if (EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

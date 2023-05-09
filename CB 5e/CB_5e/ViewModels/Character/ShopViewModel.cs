@@ -85,7 +85,8 @@ namespace CB_5e.ViewModels.Character
                         in Model.Context.Player.GetFeatures()
                                 where sc is SpellcastingFeature
                                 && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook
-                                && Utils.Matches(Model.Context, s, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) && !Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Context.Player, Model.Context).Contains(s)
+                                && (Utils.Matches(Model.Context, s, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) || Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).CanBeAdded(s, Model.Context.Player, Model.Context))
+                                && !Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Context.Player, Model.Context).Contains(s)
                                 select ((SpellcastingFeature)sc)).Count() > 0;
                     }
                 }

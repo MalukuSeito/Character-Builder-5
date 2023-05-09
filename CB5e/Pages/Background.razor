@@ -1,0 +1,142 @@
+﻿@page "/background"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Background</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl pb-3">
+	@if (context.Context.Player is not null)
+	{
+		@if (context.Context.Player.Background is OGL.Background)
+		{
+			var background = context.Context.Player.Background as OGL.Background;
+			<ul class="list-group">
+				<li class="list-group-item">
+					<button class="btn btn-secondary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async ()=> await Select(null)" title="Select Background" />
+					<span class="fw-bold text-muted)" @onclick="()=>Selected = Selected == background ? null : background">@background.Name</span><Tag Xml="background" />
+					<span class="text-muted fs--1"> (@background.Source)</span>
+					@if (Selected == background)
+					{
+						<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+							@foreach (var line in background.Description?.Split("\n") ?? new string[] { })
+							{
+								@line
+
+								<br />
+							}
+						</p>
+						@if (ShowDescriptions)
+						{
+							<Descriptions Items="background.Descriptions" />
+						}
+						<Features Items="background.Features" />
+					}
+				</li>
+			</ul>
+			@foreach (var desc in background.Descriptions)
+			{
+				@if (desc is TableDescription td && td.Amount > 0 && !string.IsNullOrEmpty(td.UniqueID))
+				{
+					<ChoiceTableDescription CssClass="list-group" TitleCssClass="text-primary fs-4 fw-bold mt-3" ChoiceProvider="context.Context.Player" Table="td" />
+				}
+			}
+		}
+		else
+		{
+			<div class="row g-1">
+				<div class="border-primary border border-1 rounded-2 bg-primary col-12 text-center p-1">
+					<input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput" />
+				</div>
+				@foreach (var background in context.Context.Backgrounds.Values.Where(r => string.IsNullOrWhiteSpace(SearchText) || r.Matches(SearchText, false)).OrderBy(r => r.Name).ThenBy(r => r.Source))
+				{
+					<div class="col-xxl-3 col-lg-4 col-md-6">
+						<div class="rounded-2 border-1 border border-secondary">
+							<div class="border-1 border-bottom border-secondary text-center"><span @onclick="()=>Selected = Selected == background ? null : background" class="fw-bold">@background.Name</span><Tag Xml="background" /><br /><span class="text-muted fs--1">@background.Source</span></div>
+							<div style="height:200px" class="text-center p-2">
+								<Image Source="background.ImageData" Title="@background.Name"/>
+							</div>
+							@if (Selected == background)
+							{
+								@if (!string.IsNullOrWhiteSpace(background.Flavour))
+								{
+									<p class="fst-italic">@background.Flavour</p>
+								}
+								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+									@foreach (var line in background.Description?.Split("\n") ?? new string[] { })
+									{
+										@line
+
+										<br />
+									}
+								</p>
+								@if (ShowDescriptions)
+								{
+									<Descriptions Items="background.Descriptions" />
+								}
+								<Features Items="background.Features" />
+							}
+							<div class="border-1 border-top border-secondary text-center">
+								<button class="btn btn-primary py-0 my-1 bi bi-check-circle w-75" @onclick="async ()=> await Select(background)" title="Select Background" />
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		}
+		<Choices CssClass="mt-3" Features="@context.Context.Player.GetOnlyBackgroundFeatures(context.Level, true)" ChoiceProvider="context.Context.Player"/>
+		<ChoiceTrait />
+		<ChoiceIdeal />
+		<ChoiceBond />
+		<ChoiceFlaw />
+	}
+</div>
+
+@code {
+	private OGL.Background? Selected { get; set; }
+
+	private string SearchText { get; set; } = "";
+
+	private bool ShowDescriptions { get; set; } = false;
+
+	private async Task Select(OGL.Background? background)
+	{
+		context.Context.MakeHistory("");
+		if (background is not null)
+		{
+			context.Context.Player.BackgroundName = background.Name + " " + ConfigManager.SourceSeperator + " " + background.Source;
+		}
+		else
+		{
+			context.Context.Player.BackgroundName = null;
+		}
+		await context.NotifyPlayerChange(ChangeType.Features);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

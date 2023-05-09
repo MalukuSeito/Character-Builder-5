@@ -1,0 +1,184 @@
+﻿@page "/counter"
+@inject ConfigService config;
+@inject ContextService context;
+@inject SourceService sources;
+@inject IBlazorDbFactory dbFactory;
+@implements IDisposable;
+<PageTitle>Packages</PageTitle>
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+
+<div class="container-xxl">
+	@if(config.Config is null)
+	{
+		<p>config not Loaded <button @onclick="loadConfig">Load</button></p>
+	} else {
+		<table class="table table-striped @(context.Context.Player is null? "" : "table-hover") table-sm table-responsive">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th class="text-center">Type</th>
+					<th class="text-center">Status</th>
+					@if (context.Context.Player is not null)
+					{
+						<th>Available for @(string.IsNullOrWhiteSpace(context.Context.Player.Name) ? "Current Character" :context.Context.Player.Name)</th>
+					}
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var source in sources.Sources)
+				{
+					<tr @onclick="()=>Swap(source.Name)">
+						<td>@source.Name</td>
+						<td class="text-center">@source.Type</td>
+						<td class="text-center">@source.Status</td>
+						@if (context.Context.Player is not null)
+						{
+							<td class="text-center">
+								<div class="form-switch">
+									<input checked="@(!excluded.Contains(source.Name, StringComparer.OrdinalIgnoreCase))" class="form-check-input" type="checkbox" @onclick:stopPropagation="true" @onchange="() => Swap(source.Name)">
+								</div>
+							</td>
+						}
+						<td class="text-center"><button class="bi bi-trash btn btn-danger py-0 my-0" @onclick:stopPropagation="true" @onclick="()=>DeleteSource(source)" /></td>
+						<td class="text-center"><button disabled="@(source.Type == "Cache")" class="bi bi-clock btn btn-primary py-0 my-0" @onclick:stopPropagation="true" @onclick="async ()=>await Cache(source)" /></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		@if (context.Context.Player is not null)
+		{
+			<div class="row">
+				<div class="col-md-3 col-6 text-center">
+					<button class="btn btn-secondary" @onclick="()=>excluded.Clear()">Add All</button>
+				</div>
+				<div class="col-md-3 col-6 text-center">
+					<button class="btn btn-secondary" @onclick="()=>excluded.UnionWith(sources.Sources.Select(s=>s.Name))">Exclude All</button>
+				</div>
+				<div class="col-md-6 col-12 text-center">
+					<button class="btn btn-primary" disabled="@excluded.SetEquals(context.Context.Player.ExcludedSources)" @onclick="SaveSources">Apply Changes to Character And Reload</button>
+				</div>
+			</div>
+		}
+		<h4 class="mt-5">Add Package files:</h4>
+		<InputFile OnChange="@LoadDataPackage" multiple />
+
+		<h4 class="mt-5">Add Package Urls (Server must allow CORS):</h4>
+		<textarea class="w-100" @bind="@urls"/><br />
+		<button @onclick="LoadUrls">Load</button>
+		<br />
+		@if (isLoading)
+		{
+			<p>Loading...</p>
+		}
+		
+	}
+</div>
+
+@code {
+	private String urls = "";
+	private bool isLoading;
+	private HashSet<string> excluded = new();
+
+	private void Swap(string source)
+	{
+		if (context.Context.Player is null) return;
+		if (excluded.Contains(source, StringComparer.OrdinalIgnoreCase)) excluded.RemoveWhere(s => StringComparer.OrdinalIgnoreCase.Equals(s, source));
+		else excluded.Add(source);
+	}
+
+	private async Task loadConfig()
+	{
+		if (config.Config is null) await config.LoadConfig();
+	}
+
+	private async Task SaveSources()
+	{
+		if (context.Context.Player is null) return;
+		context.Context.MakeHistory("");
+		context.Context.Player.ExcludedSources.Clear();
+		context.Context.Player.ExcludedSources.AddRange(excluded);
+		context.Context.Player = context.Context.Player;
+		await context.NotifyPlayerChange(ChangeType.Full);
+
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await loadConfig();
+		if (sources.Sources.Count == 0) await sources.FindAsync(dbFactory);
+		urls = string.Join("\n", sources.Sources.Where(s => s is UrlSource).Select(s => s.Name + "|" + (s as UrlSource)?.Url));
+		context.PlayerChange += OnPlayerChange;
+		if (context.Context.Player is not null) excluded.UnionWith(context.Context.Player.ExcludedSources);
+	}
+
+	private Task OnPlayerChange(ChangeType change)
+	{
+		if (change == ChangeType.Full)
+		{
+			excluded.Clear();
+			if (context.Context.Player is not null) excluded.UnionWith(context.Context.Player.ExcludedSources);
+			StateHasChanged();
+		}
+		return Task.CompletedTask;
+	}
+
+	private async Task LoadDataPackage(InputFileChangeEventArgs e)
+	{
+		isLoading = true;
+		foreach (var file in e.GetMultipleFiles(1000))
+		{
+			using (var stream = file.OpenReadStream(100*1024*1024))
+			{
+				using (MemoryStream ms = new MemoryStream((int)file.Size))
+				{
+					await stream.CopyToAsync(ms);
+					ISource s = new LocalSource(Path.GetFileNameWithoutExtension(file.Name), ms.ToArray());
+					sources.Sources.Add(s);
+				}
+
+			}
+		}
+		isLoading = false;
+	}
+
+	private void LoadUrls()
+	{
+		sources.Sources.RemoveAll(s => s is UrlSource);
+		foreach (string s in urls.Split("\n"))
+		{
+			var ss = s.Split("|");
+			if (ss.Length == 1) sources.Sources.Add(new UrlSource(Path.GetFileNameWithoutExtension(new Uri(s.Trim()).LocalPath), s.Trim()));
+			else sources.Sources.Add(new UrlSource(ss[0].Trim(), ss[1].Trim()));
+		}
+	}
+
+	private async Task DeleteSource(ISource source)
+	{
+		sources.Sources.Remove(source);
+		if (source is CachedSource cachedSource) await cachedSource.Delete(dbFactory);
+	}
+
+	private async Task Cache(ISource source)
+	{
+		if (config.Config is null) return;
+		sources.Sources.Remove(source);
+		CachedSource cachedSource = new CachedSource(dbFactory);
+		await cachedSource.Import(source, config.Config);
+		sources.Sources.Add(cachedSource);
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= OnPlayerChange;
+	}
+}
+
+

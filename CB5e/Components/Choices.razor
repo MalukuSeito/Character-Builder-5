@@ -1,0 +1,87 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var feature in Features)
+	{
+		@if(feature is ChoiceFeature cf)
+		{
+			<ChoiceChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="cf" />
+		}
+		else if (feature is CollectionChoiceFeature ccf)
+		{
+			<ChoiceCollectionChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="ccf" />
+		} 
+		else if (feature is ItemChoiceFeature icf)
+		{
+			<ChoiceItemChoiceFeature  TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="icf" />
+		}
+		else if (feature is ItemChoiceConditionFeature iccf)
+		{
+			<ChoiceItemChoiceConditionFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="iccf" />
+		}
+		else if (feature is LanguageChoiceFeature lcf)
+		{
+			<ChoiceLanguageChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="lcf" />
+		}
+		else if (feature is SkillProficiencyChoiceFeature spcf)
+		{
+			<ChoiceSkillChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="spcf" />
+		}
+		else if (feature is ToolProficiencyChoiceConditionFeature tpccf)
+		{
+			<ChoiceToolChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="tpccf" />
+		}
+		else if (feature is BonusSpellKeywordChoiceFeature bskcf)
+		{
+					<ChoiceSpellChoiceFeature TitleCssClass="@TitleCssClass" CssClass="@BoxCssClass" LineCssClass="@LineCssClass" TagClass="@TagClass" EventType="EventType" EventMask="EventMask" NameCssClass="@NameCssClass" ChoiceProvider="ChoiceProvider" Feature="bskcf" />
+		}
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public List<Feature> Features { get; set; } = new();
+
+	[Parameter]
+	public IChoiceProvider? ChoiceProvider { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

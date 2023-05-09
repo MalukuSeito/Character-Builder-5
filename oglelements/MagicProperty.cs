@@ -16,7 +16,7 @@ namespace OGL
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(MagicProperty));        
         [XmlIgnore]
-        public string Category;
+        public string Category { get; set; }
         [XmlIgnore]
         public string FileName { get; set; }
         public String Requirement { get; set; }
@@ -64,7 +64,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> AttunementFeatures = new List<Feature>();
+        public List<Feature> AttunementFeatures { get; set; } = new List<Feature>();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -101,7 +101,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> CarryFeatures = new List<Feature>();
+        public List<Feature> CarryFeatures { get; set; } = new List<Feature>();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -138,7 +138,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> EquipFeatures = new List<Feature>();
+        public List<Feature> EquipFeatures { get; set; } = new List<Feature>();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -175,7 +175,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> AttunedEquipFeatures = new List<Feature>();
+        public List<Feature> AttunedEquipFeatures { get; set; } = new List<Feature>();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -212,7 +212,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> OnUseFeatures = new List<Feature>();
+        public List<Feature> OnUseFeatures { get; set; } = new List<Feature>();
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -249,7 +249,7 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> AttunedOnUseFeatures = new List<Feature>();
+        public List<Feature> AttunedOnUseFeatures { get; set; } = new List<Feature>();
 
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
@@ -345,6 +345,16 @@ namespace OGL
             }
             return res;
         }
+
+        public bool? GetConsumable()
+        {
+            if (Category.ToLowerInvariant().Contains("potion")) return true;
+            if (AttunementFeatures.Count > 0 || AttunedEquipFeatures.Count > 0 || AttunedOnUseFeatures.Count > 0) return false;
+            var recharge = OnUseFeatures.Union(CarryFeatures).Union(EquipFeatures).Select(f => f is BonusSpellFeature bf ? bf.SpellCastModifier : f is BonusSpellKeywordChoiceFeature bkf ? bkf.SpellCastModifier : f is ResourceFeature r ? r.Recharge : RechargeModifier.Unmodified).ToList();
+            if (recharge.Count > 0) return recharge.All(r => r == RechargeModifier.NoRecharge);
+            return null;
+        }
+
         public IEnumerable<Feature> CollectOnUse(int level, IChoiceProvider choiceProvider, bool attuned, OGLContext context)
         {
             List<Feature> res = new List<Feature>();

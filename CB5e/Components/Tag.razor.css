@@ -1,0 +1,12 @@
+﻿.linktag {
+    margin-left: 2px;
+    vertical-align: top;
+}
+
+.bi-tag:hover::before {
+    content: "\f5af";
+}
+
+.bi-tags:hover::before {
+    content: "\f5b1";
+}

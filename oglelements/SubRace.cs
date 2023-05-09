@@ -18,6 +18,7 @@ namespace OGL
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubRace));
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         [XmlArrayItem(Type = typeof(Description)),
         XmlArrayItem(Type = typeof(ListDescription)),
         XmlArrayItem(Type = typeof(TableDescription))]
@@ -58,8 +59,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
-        public String Flavour { get; set; }
+        public List<Feature> Features { get; set; }
+		public String Flavour { get; set; }
         public String Source { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }

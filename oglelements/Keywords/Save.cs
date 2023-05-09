@@ -17,10 +17,10 @@ namespace OGL.Keywords
         public override int CompareTo(Keyword other)
         {
             if (Name != other.Name) return Name.CompareTo(other.Name);
-            if (other is Material)
+            if (other is Save)
             {
-                Material o = (Material)other;
-                return Throw.CompareTo(o.Components);
+                Save o = (Save)other;
+                return Throw.CompareTo(o.Throw);
             }
             return 1;
 

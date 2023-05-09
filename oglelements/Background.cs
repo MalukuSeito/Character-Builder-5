@@ -13,6 +13,7 @@ namespace OGL
     {
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Background));
         [XmlElement(Order = 1)] 
@@ -61,16 +62,16 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
+        public List<Feature> Features { get; set; }
         [XmlArray(Order = 5)] 
-        public List<TableEntry> PersonalityTrait;
-        [XmlArray(Order = 6)] 
-        public List<TableEntry> Ideal;
-        [XmlArray(Order = 7)] 
-        public List<TableEntry> Bond;
-        [XmlArray(Order = 8)] 
-        public List<TableEntry> Flaw;
-        [XmlElement(Order = 9)] 
+        public List<TableEntry> PersonalityTrait { get; set; }
+		[XmlArray(Order = 6)] 
+        public List<TableEntry> Ideal { get; set; }
+		[XmlArray(Order = 7)] 
+        public List<TableEntry> Bond { get; set; }
+		[XmlArray(Order = 8)] 
+        public List<TableEntry> Flaw { get; set; }
+		[XmlElement(Order = 9)] 
         public String Source { get; set; }
         [XmlElement(Order = 10)]
         public String Flavour { get; set; }

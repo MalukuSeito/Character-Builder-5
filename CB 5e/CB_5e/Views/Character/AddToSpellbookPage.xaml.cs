@@ -37,7 +37,8 @@ namespace CB_5e.Views.Character
                        in Model.Model.Context.Player.GetFeatures()
                        where sc is SpellcastingFeature 
                        && ((SpellcastingFeature)sc).Preparation == PreparationMode.Spellbook
-                       && Utils.Matches(Model.Model.Context, Spell, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) && !Model.Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Model.Context.Player, Model.Model.Context).Contains(Spell)
+                       && (Utils.Matches(Model.Model.Context, Spell, ((SpellcastingFeature)sc).PrepareableSpells, ((SpellcastingFeature)sc).SpellcastingID) || Model.Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).CanBeAdded(Spell, Model.Model.Context.Player, Model.Model.Context)) 
+                       && !Model.Model.Context.Player.GetSpellcasting(((SpellcastingFeature)sc).SpellcastingID).GetSpellbook(Model.Model.Context.Player, Model.Model.Context).Contains(Spell)
                        select ((SpellcastingFeature)sc);
             }
         }
@@ -47,7 +48,9 @@ namespace CB_5e.Views.Character
             if (e.SelectedItem is SpellcastingFeature sc)
             {
                 Model.Model.Context.MakeHistory("");
-                Model.Model.Context.Player.GetSpellcasting(sc.SpellcastingID).GetAdditionalList(Model.Model.Context.Player, Model.Model.Context).Add(Spell.Name + " " + ConfigManager.SourceSeperator + " " + Spell.Source);
+                var sc = Model.Model.Context.Player.GetSpellcasting(sc.SpellcastingID);
+				sc.GetAdditionalList(Model.Model.Context.Player, Model.Model.Context).Add(Spell.Name + " " + ConfigManager.SourceSeperator + " " + Spell.Source);
+                sc.ModifiedPreparedList(Model.Model.Context.Player.GetLevel());
                 Model.Model.Save();
                 Model.Model.UpdateSpellcasting();
                 Model.Select.ChangeCanExecute();

@@ -1,0 +1,139 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if(Prepareable > 0) {
+		<button disabled="@(Level == 0 || (PreparedCount == Prepareable && !Prepared) || Spell is ModifiedSpell mss && mss.AddAlwaysPreparedToName)" @onclick="Toggle" 
+			class="@ButtonCssClass @(Level == 0 ? CantripCssClass : Spell is ModifiedSpell ms && ms.AddAlwaysPreparedToName ? AlwaysCheckCssClass : Prepared ? CheckCssClass : (PreparedCount == Prepareable) ? UncheckCssClass : PreparableCssClass)"
+			title="@(Level == 0 ? "Cantrip" : Spell is ModifiedSpell mms && mms.AddAlwaysPreparedToName ? "Always prepared" : Prepared ? "Unprepare Spell" : (PreparedCount == Prepareable) ? "Prepare Limit Reached" : "Prepare Spell")" />
+	}
+	@if (Level ==0) {
+		<button @onclick="Highlight" class="@(ConfigManager.SourceInvariantComparer.Equals(Spellcasting?.Highlight, Spell?.Name) ? HighlightPdfCssClass : DeHighlightPdfCssClass)" title="Cantrip Attack in PDF"/>
+	}
+	<span class="@LineCssClass">
+		@Spell?.Name
+		<Tag CssClass="@TagCssClass" Title="@Spell?.Name" XmlLoader="AddMods"/>
+	</span>
+	
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "mx-2 my-0 p-0";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "btn bi p-0 m-0 fs-inherit border-0";
+
+	[Parameter]
+	public string? TagCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "bi-circle";
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "bi-check-circle-fill";
+
+	[Parameter]
+	public string? CantripCssClass { get; set; } = "bi-c-circle text-white opacity-0";
+
+	[Parameter]
+	public string? HighlightPdfCssClass { get; set; } = "bi btn bi-file-earmark-pdf-fill position-tr autohide fs--1 m-0 p-0";
+	
+	[Parameter]
+	public string? DeHighlightPdfCssClass { get; set; } = "bi btn bi-file-earmark-pdf position-tr autohide fs--1 m-0 p-0";
+
+	[Parameter]
+	public string? PreparableCssClass { get; set; } = "bi-x-circle";
+
+	[Parameter]
+	public string? AlwaysCheckCssClass { get; set; } = "bi-circle-fill opacity-100";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Spells;
+
+	[Parameter]
+	public Spellcasting? Spellcasting { get; set; }
+
+	[Parameter]
+	public SpellcastingFeature? SpellcastingFeature { get; set; }
+
+	[Parameter]
+	public int ClassLevel { get; set; } = 0;
+
+	[Parameter]
+	public int Level { get; set; } = 0;
+
+	[Parameter]
+	public Spell? Spell { get; set; }
+
+	[Parameter]
+	public int PreparedCount { get; set; } = 0;
+
+	[Parameter]
+	public int Prepareable { get; set; } = 0;
+
+	[Parameter]
+	public bool Prepared { get; set; } = false;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				Console.WriteLine("Refresh");
+				StateHasChanged();
+			});
+	}
+
+	private async Task Highlight()
+	{
+		if (Spellcasting is not null && Spell is not null)
+		{
+			context.Context.MakeHistory("Highlight" + (Spellcasting.SpellcastingID ?? ""));
+			if (ConfigManager.SourceInvariantComparer.Equals(Spellcasting.Highlight, Spell.Name)) Spellcasting.Highlight = "";
+			else Spellcasting.Highlight = Spell.Name;
+			await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	private async Task Toggle()
+	{
+		if (Spellcasting?.SpellcastingID is null || SpellcastingFeature is null || Spell is null) return;
+		context.Context.MakeHistory("Prepare" + Spellcasting?.SpellcastingID + Level);
+		var preparedList = Spellcasting?.GetPreparedList(context.Context.Player, context.Context, context.Level);
+		if (preparedList is not null) {
+			if (Prepared && preparedList.Contains(Spell.Name, ConfigManager.SourceInvariantComparer))
+			{
+				preparedList.RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, Spell.Name));
+				Spellcasting?.ModifiedPreparedList(context.Level);
+			} 
+			else if (preparedList.Count < Utils.AvailableToPrepare(context.Context, SpellcastingFeature, ClassLevel))
+			{
+				preparedList.Add(Spell.Name + " " + ConfigManager.SourceSeperator + " " + Spell.Source);
+				Spellcasting?.ModifiedPreparedList(context.Level);
+			}
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private ModifiedSpell AddMods()
+	{
+		ModifiedSpell ms;
+		if (Spell is ModifiedSpell mms) ms = mms;
+		else ms = new ModifiedSpell(Spell, false);
+		ms.Modifikations.AddRange(context.Context.Player.GetFeatures().Where(f => f is SpellModifyFeature smf && Utils.Matches(context.Context, Spell, smf.Spells, SpellcastingFeature?.SpellcastingID)));
+		return ms;
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -4,15 +4,19 @@ namespace OGL.Common
 {
     public class Choice
     {
-        public String UniqueID { get; set; }
-        public String Value { get; set; }
+        public string UniqueID { get; set; }
+        public string Value { get; set; }
         public Choice() {
         }
-        public Choice(String ID, String value)
+        public Choice(string ID, string value)
         {
             UniqueID = ID;
             Value = value;
         }
-
+        public Choice(Choice choice)
+        {
+            UniqueID = choice.UniqueID;
+            Value = choice.Value;
+        }
     }
 }

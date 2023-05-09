@@ -1,0 +1,90 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	
+	<div class="@TopCssClass">
+		<div class="@LevelCssClass">
+			@Level
+		</div>
+		@if (Level == 0) {
+			<div class="@SlotsCssClass">Cantrips</div>
+		} else {
+			<SpellSlots CssClass="@SlotsCssClass" Count="@Count" Level="@Level" SpellcastingID="@SpellcastingFeature?.SpellcastingID" Used="@Used" EventMask="@EventMask" />
+		}
+	</div>
+	<div class="@SpellsBoxCssClass">
+	@foreach (var spell in Spells.OrderBy(s=>s.Name))
+	{
+		<SpellLine CssClass="border-bottom border-1 border-secondary position-relative" Level="@Level" Spell="@spell" ClassLevel="@ClassLevel" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@(Prepared.Contains(spell.Name, ConfigManager.SourceInvariantComparer))" EventMask="@EventMask"/>
+	}	
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "";
+
+	[Parameter]
+	public string? TopCssClass { get; set; } = "row border-bottom border-2 border-primary g-0";
+
+	[Parameter]
+	public string? SpellsBoxCssClass { get; set; } = "p-3";
+
+	[Parameter]
+	public string? LevelCssClass { get; set; } = "col-3 fs-1 border-end border-2 border-primary text-center";
+
+	[Parameter]
+	public string? SlotsCssClass { get; set; } = "col-9 fs-3 px-2 align-self-center px-2";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+	
+	[Parameter]
+	public ChangeType InPlayEventMask { get; set; } = ChangeType.Spellslots | ChangeType.Spells;
+
+	[Parameter]
+	public SpellcastingFeature? SpellcastingFeature { get; set; }
+
+	[Parameter]
+	public int PreparedCount { get; set; } = 0;
+
+	[Parameter]
+	public int Prepareable { get; set; } = 0;
+
+	[Parameter]
+	public int ClassLevel { get; set; } = 0;
+
+	[Parameter]
+	public Spellcasting? Spellcasting { get; set; }
+
+	[Parameter]
+	public List<Spell> Spells { get; set; } = new();
+
+	[Parameter]
+	public int Level { get; set; } = 0;
+
+	[Parameter]
+	public int Count { get; set; } = 0;
+
+	[Parameter]
+	public int Used { get; set; } = 0;
+
+	[Parameter]
+	public List<string> Prepared { get; set; } = new List<string>();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, InPlayEventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

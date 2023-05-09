@@ -1,0 +1,78 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<span class="@LineCssClass">
+		@foreach (int i in Enumerable.Range(0, Count)) 
+		{
+			var state = i < Used ? (NumberCheck?.Invoke(i) ?? CheckCssClass) : (NumberUncheck?.Invoke(i) ?? UncheckCssClass);
+			<button @onclick="async ()=>await Toggle(i)" class="@ButtonCssClass @state" title="Spell Slot" />
+		}
+	</span>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "mx-2 my-0 p-0";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "btn bi p-0 m-0 fs-inherit";
+
+	[Parameter]
+	public Func<int, string?>? NumberCheck { get; set; } = (i) => i < 9 ? $"bi-{i+1}-circle-fill" : null;
+
+	[Parameter]
+	public Func<int, string?>? NumberUncheck { get; set; } // = (i) => i < 9 ? $"bi-{i+1}-circle" : null;
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "bi-circle-fill";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "bi-circle";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Spellslots;
+
+	[Parameter]
+	public string? SpellcastingID { get; set; }
+
+	[Parameter]
+	public int Level { get; set; } = 0;
+
+	[Parameter]
+	public int Count { get; set; } = 0;
+
+	[Parameter]
+	public int Used { get; set; } = 0;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				Console.WriteLine("Refresh");
+				StateHasChanged();
+			});
+	}
+
+	private async Task Toggle(int index)
+	{
+		if (SpellcastingID is null) return;
+		context.Context.MakeHistory("SpellSlot"+SpellcastingID+Level);
+		if (Used <= index) context.Context.Player.SetSpellSlot(SpellcastingID, Level, Used + 1);
+		else context.Context.Player.SetSpellSlot(SpellcastingID, Level, Used - 1);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

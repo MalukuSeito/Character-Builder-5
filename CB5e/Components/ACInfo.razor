@@ -1,0 +1,36 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@context.Context.Player.GetAC(context.Level, Scores, Features, Possessions)
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change) {
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() => StateHasChanged());
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

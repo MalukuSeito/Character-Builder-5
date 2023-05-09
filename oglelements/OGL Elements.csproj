@@ -1,176 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A6D62EC7-9D12-44AE-8ECA-61D436C5D9BD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OGL</RootNamespace>
-    <AssemblyName>oglelements</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Android|AnyCPU'">
-    <OutputPath>bin\Android\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AbilityScoreArray.cs" />
-    <Compile Include="AbilityScores.cs" />
-    <Compile Include="Background.cs" />
-    <Compile Include="Base\Ability.cs" />
-    <Compile Include="Base\ActionType.cs" />
-    <Compile Include="Base\AttackInfo.cs" />
-    <Compile Include="Base\EnumExtensions.cs" />
-    <Compile Include="Base\ProficiencyBonus.cs" />
-    <Compile Include="Common\Choice.cs" />
-    <Compile Include="Base\EquipSlot.cs" />
-    <Compile Include="Base\Price.cs" />
-    <Compile Include="Base\Rarity.cs" />
-    <Compile Include="Common\IHistoryManager.cs" />
-    <Compile Include="Common\ILicense.cs" />
-    <Compile Include="Common\IMatchable.cs" />
-    <Compile Include="Common\INameText.cs" />
-    <Compile Include="Common\IOGLElement.cs" />
-    <Compile Include="Common\ISaveLoad.cs" />
-    <Compile Include="Features\FormsCompanionsBonusFeature.cs" />
-    <Compile Include="Features\FormsCompanionsFeature.cs" />
-    <Compile Include="Features\ResistanceFeature.cs" />
-    <Compile Include="Items\Category.cs" />
-    <Compile Include="ClassDefiniton.cs" />
-    <Compile Include="Condition.cs" />
-    <Compile Include="Descriptions\BackgroundOption.cs" />
-    <Compile Include="Descriptions\Names.cs" />
-    <Compile Include="Descriptions\TableEntry.cs" />
-    <Compile Include="DescriptionContainer.cs" />
-    <Compile Include="Common\IChoiceProvider.cs" />
-    <Compile Include="Base\PreparationMode.cs" />
-    <Compile Include="Base\RechargeModifier.cs" />
-    <Compile Include="ConfigManager.cs" />
-    <Compile Include="Descriptions\Description.cs" />
-    <Compile Include="FeatureContainer.cs" />
-    <Compile Include="Features\AbilityScoreFeatFeature.cs" />
-    <Compile Include="Features\AbilityScoreFeature.cs" />
-    <Compile Include="Features\ACFeature.cs" />
-    <Compile Include="Features\BonusFeature.cs" />
-    <Compile Include="Features\BonusSpellFeature.cs" />
-    <Compile Include="Features\BonusSpellKeywordChoiceFeature.cs" />
-    <Compile Include="Features\BonusSpellPrepareFeature.cs" />
-    <Compile Include="Features\ChoiceFeature.cs" />
-    <Compile Include="Features\CollectionChoiceFeature.cs" />
-    <Compile Include="Features\ExtraAttackFeature.cs" />
-    <Compile Include="Features\Feature.cs" />
-    <Compile Include="Features\FreeItemAndGoldFeature.cs" />
-    <Compile Include="Features\HitPointsFeature.cs" />
-    <Compile Include="Features\IncreaseSpellChoiceAmountFeature.cs" />
-    <Compile Include="Features\ItemChoiceConditionFeature.cs" />
-    <Compile Include="Features\ItemChoiceFeature.cs" />
-    <Compile Include="Features\LanguageChoiceFeature.cs" />
-    <Compile Include="Features\LanguageProficiencyFeature.cs" />
-    <Compile Include="Features\ModifySpellChoiceFeature.cs" />
-    <Compile Include="Features\MultiFeature.cs" />
-    <Compile Include="Features\OtherFeature.cs" />
-    <Compile Include="Features\ResourceFeature.cs" />
-    <Compile Include="Features\SaveProficiencyFeature.cs" />
-    <Compile Include="Features\SkillProficiencyChoiceFeature.cs" />
-    <Compile Include="Features\SkillProficiencyFeature.cs" />
-    <Compile Include="Features\SpeedFeature.cs" />
-    <Compile Include="Features\SpellcastingFeature.cs" />
-    <Compile Include="Features\SpellChoiceFeature.cs" />
-    <Compile Include="Features\SpellModifyFeature.cs" />
-    <Compile Include="Features\SpellSlotsFeature.cs" />
-    <Compile Include="Features\SubClassFeature.cs" />
-    <Compile Include="Features\SubRaceFeature.cs" />
-    <Compile Include="Features\ToolKWProficiencyFeature.cs" />
-    <Compile Include="Features\ToolProficiencyChoiceConditionFeature.cs" />
-    <Compile Include="Features\ToolProficiencyFeature.cs" />
-    <Compile Include="Features\VisionFeature.cs" />
-    <Compile Include="Common\IXML.cs" />
-    <Compile Include="Descriptions\ListDescription.cs" />
-    <Compile Include="Items\Armor.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="Items\MagicCategory.cs" />
-    <Compile Include="MagicProperty.cs" />
-    <Compile Include="Items\Pack.cs" />
-    <Compile Include="Items\Scroll.cs" />
-    <Compile Include="Items\Shield.cs" />
-    <Compile Include="Items\Slot.cs" />
-    <Compile Include="Items\Tool.cs" />
-    <Compile Include="Items\Weapon.cs" />
-    <Compile Include="Keywords\Keyword.cs" />
-    <Compile Include="Keywords\Save.cs" />
-    <Compile Include="Keywords\Material.cs" />
-    <Compile Include="Keywords\Range.cs" />
-    <Compile Include="Keywords\Versatile.cs" />
-    <Compile Include="Language.cs" />
-    <Compile Include="Level.cs" />
-    <Compile Include="Monster.cs" />
-    <Compile Include="Monsters\MonsterAction.cs" />
-    <Compile Include="Monsters\MonsterSkillBonus.cs" />
-    <Compile Include="Monsters\MonsterSaveBonus.cs" />
-    <Compile Include="Monsters\MonsterTrait.cs" />
-    <Compile Include="OGLContext.cs" />
-    <Compile Include="OGLImport.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Race.cs" />
-    <Compile Include="Base\Size.cs" />
-    <Compile Include="Descriptions\TableDescription.cs" />
-    <Compile Include="Skill.cs" />
-    <Compile Include="SourceInvariantComparer.cs" />
-    <Compile Include="Spells\CantripDamage.cs" />
-    <Compile Include="Spells\ModifiedSpell.cs" />
-    <Compile Include="Spell.cs" />
-    <Compile Include="SubClass.cs" />
-    <Compile Include="SubRace.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NCalc2\NCalc2.csproj">
-      <Project>{c0dd223d-d679-4b5e-abac-5b662d7a7fa2}</Project>
-      <Name>NCalc2</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\NCalc2\NCalc2.csproj">
+			<Project>{c0dd223d-d679-4b5e-abac-5b662d7a7fa2}</Project>
+			<Name>NCalc2</Name>
+		</ProjectReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Text.Json" Version="7.0.2" />
+	</ItemGroup>
 </Project>

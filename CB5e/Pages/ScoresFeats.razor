@@ -1,0 +1,77 @@
+﻿@page "/scores"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Scores &amp; Feats</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl">
+	@if (context.Context.Player is not null)
+	{
+		<ScoresEdit />
+		<ChoiceASI />
+		<Houserules />
+	}
+</div>
+
+@code {
+
+	List<SpellcastingFeature> Values { get; set; } = new List<SpellcastingFeature>();
+
+	private SpellcastingFeature? Selected { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		if (context?.Context?.Player is Player player)
+		{
+			foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+			{
+				if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+				{
+					Values.Add(sf);
+				}
+			}
+			if (Values.Count > 0) Selected = Values[0];
+			else Selected = null;
+		}
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				Values.Clear();
+				if (context?.Context?.Player is Player player)
+				{
+					foreach (var feat in context.Context.Player.GetFeatures(context.Level))
+					{
+						if (feat is SpellcastingFeature sf && sf.SpellcastingID != "MULTICLASS")
+						{
+							Values.Add(sf);
+						}
+					}
+
+				}
+				if (Values.Count > 0) {
+					if (Selected == null || !Values.Contains(Selected)) Selected = Values[0];
+				}
+				else Selected = null;
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

@@ -1,0 +1,128 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@TopRowCssClass">
+		<button class="@(ShowMore?LessButtonCss:MoreButtonCss)" @onclick="()=>ShowMore=!ShowMore" />
+	</div>
+	<div class="@BoxCssClass">
+		@if (ShowMore && Entry is not null) {
+			@for (int i = 0; i < Entry.Value.Entry.Notes.Count; i++)
+			{
+				<EditArrayArea CssClass="@LineCssClass" EventMask="@EventMask" EventType="@EventType" RemoveButtonCssClass="@RemoveButtonCssClass" InputCssClass="@InputCssClass" TextAreaCssClass="@TextAreaCssClass" Expression="()=>Entry.Value.Entry.Notes" Event="" Index="i" TextPlaceholder="@TextPlaceholder" TextTitle="@TextTitle" TitlePlaceholder="@TitlePlaceholder" TitleTitle="@TitleTitle" Multiline="@Multiline" />
+			}
+			<div class="@ButtonCssClass" @onclick="AddLine" />
+		} 
+		else 
+		{
+			@if (Entry is not null && Entry.Value.Entry.Notes.Count > 0)
+			{
+				@foreach (var note in Entry.Value.Entry.Notes)
+				{
+					<span class="@ItemCssClass">@note.Split(new []{'\n','\r'}, 2)[0]</span>
+				}
+			}
+		}
+	</div>
+	<div class="@TitleCssClass">@Title</div>
+	
+</div>
+
+@code {
+	[Parameter]
+	public string? TextAreaCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 p-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-bold m-0 p-0";
+
+	[Parameter]
+	public string? RemoveButtonCssClass { get; set; } = "bi bi-dash position-tr autohide btn";
+
+	[Parameter]
+	public bool ShowMore { get; set; } = false;
+
+	[Parameter]
+	public bool Multiline { get; set; } = true;
+
+	[Parameter]
+	public string? TextPlaceholder { get; set; } = "Note Text";
+
+	[Parameter]
+	public string? TextTitle { get; set; }
+
+	[Parameter]
+	public string? TitlePlaceholder { get; set; } = "Note Title";
+
+	[Parameter]
+	public string? TitleTitle { get; set; }
+
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-6 col-md-12 position-relative";
+
+	[Parameter]
+	public string? TopRowCssClass { get; set; } = "autohide p-0 m-0";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "btn bi bi-plus btn-outline-secondary d-block m-1 p-1";
+
+	[Parameter]
+	public string? BankedCssClass { get; set; } = "text-muted";
+
+	[Parameter]
+	public string? BankedIconCssClass { get; set; } = "bi bi-mailbox ps-1";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary minh-1";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? MoreButtonCss { get; set; } = "btn bi bi-arrows-expand position-tr p-0 m-0";
+
+	[Parameter]
+	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse position-tr p-0 m-0";
+
+	[Parameter]
+	public string? ItemCssClass { get; set; } = "csv text-nowrap";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "border-bottom border-1 border-secondary position-relative mx-3 pe-3";
+
+	[Parameter]
+	public string? Title { get; set; } = "Additional Notes & Story Awards";
+
+	[Parameter]
+	public JournalInfo? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.None;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async Task AddLine()
+	{
+		context.Context.MakeHistory("");
+		if (Entry is not null)
+		{
+			Entry.Value.Entry.Notes.Add("");
+			await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

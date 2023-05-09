@@ -1,0 +1,85 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@for(int i =0; i < Value?.Count; i++) {
+		<EditArrayArea CssClass="@LineCssClass" EventMask="@EventMask" EventType="@EventType" RemoveButtonCssClass="@RemoveButtonCssClass" InputCssClass="@InputCssClass" TextAreaCssClass="@TextAreaCssClass" Expression="@(Expression ?? (()=>Value))" Event="@Event" Index="i" TextPlaceholder="@TextPlaceholder" TextTitle="@TextTitle" TitlePlaceholder="@TitlePlaceholder" TitleTitle="@TitleTitle" Multiline="@Multiline" />
+	}
+	<button class="@ButtonCssClass" @onclick="AddLine" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "notes";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "position-relative";
+
+	[Parameter]
+	public string? RemoveButtonCssClass { get; set; } = "bi bi-dash position-tr autohide btn fs--1";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "autohide btn bi bi-plus btn-outline-secondary w-100";
+
+	[Parameter]
+	public string? TextAreaCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 p-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-bold m-0 p-0";
+
+	[Parameter]
+	public string? TextPlaceholder { get; set; } = "Note Text";
+
+	[Parameter]
+	public string? TextTitle { get; set; }
+
+	[Parameter]
+	public string? TitlePlaceholder { get; set; } = "Note Title";
+
+	[Parameter]
+	public string? TitleTitle { get; set; }
+
+	private List<string>? Value { get; set; }
+
+	[Parameter]
+	public Func<List<string>>? Expression { get; set; }
+
+	[Parameter]
+	public string? Event { get; set; }
+
+	[Parameter]
+	public bool Multiline { get; set; } = true;
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	protected override Task OnInitializedAsync()
+	{
+		Value = Expression?.Invoke();
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) {
+			await InvokeAsync(() =>
+			{
+				Value = Expression?.Invoke();
+				StateHasChanged();
+			});
+		}
+	}
+
+	private async Task AddLine()
+	{
+		context.Context.MakeHistory(Event??"");
+		var strings = Expression?.Invoke();
+		if (strings is not null) strings.Add("");
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

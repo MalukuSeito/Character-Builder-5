@@ -1,11 +1,16 @@
 ﻿using OGL.Common;
+using OGL.Features;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace OGL.Descriptions
 {
+    [JsonDerivedType(typeof(Description), "Description")]
+    [JsonDerivedType(typeof(ListDescription), "ListDescription")]
+    [JsonDerivedType(typeof(TableDescription), "TableDescription")]
     public class Description: IMatchable, IInfoText
     {
         public string Name { get; set; }

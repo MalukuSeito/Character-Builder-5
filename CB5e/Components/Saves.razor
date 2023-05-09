@@ -1,0 +1,80 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var save in context.Context.Player.GetSaves(context.Level, Scores, Features, Possessions))
+	{
+		var roll = save.Value;
+		<div @key="save.Key" class="@LineCssClass">
+			<span class="@IconCssClass @(saveproficiencies.HasFlag(save.Key)?CheckCssClass:UncheckCssClass)"></span>
+			<span class="@ModCssClass">@(roll >= 0 ? "+" + roll : "" + roll)</span> <span class="@ScoreCssClass">@save.Key</span>
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; }
+
+	[Parameter]
+	public string? IconCssClass { get; set; } = "bi";
+
+	[Parameter]
+	public string? ScoreCssClass { get; set; } = "fs--1";
+
+	[Parameter]
+	public string? ModCssClass { get; set; }
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "bi-check-circle-fill";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "bi-circle";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	private Ability? s;
+	private Ability saveproficiencies
+	{
+		get
+		{
+			if (s is null) s = context.Context.Player.GetSaveProficiencies(Features);
+			return s ?? Ability.None;
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		s = null;
+		base.OnParametersSet();
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				s = null;
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

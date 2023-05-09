@@ -19,12 +19,14 @@ namespace OGL
     {
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
-        XmlArrayItem(Type = typeof(Material))]
-        public List<Keyword> Keywords;
+        XmlArrayItem(Type = typeof(Material)),
+        XmlArrayItem(Type = typeof(Royalty))]
+        public List<Keyword> Keywords { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Spell));
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         public string Name { get; set; }
         public string CastingTime { get; set; }
         public string Range { get; set; }
@@ -36,8 +38,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(TableDescription))]
         public List<Description> Descriptions { get; set; }
         public String Source { get; set; }
-        public List<CantripDamage> CantripDamage;
-        [XmlIgnore]
+        public List<CantripDamage> CantripDamage { get; set; }
+		[XmlIgnore]
         public bool KWChanged = false;
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;

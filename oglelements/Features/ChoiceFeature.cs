@@ -46,7 +46,7 @@ namespace OGL.Features
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Choices;
+        public List<Feature> Choices { get; set; }
         [XmlIgnore]
         private List<List<Feature>> copies = new List<List<Feature>>();
         public ChoiceFeature()

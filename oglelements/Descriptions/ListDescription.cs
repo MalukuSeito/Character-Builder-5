@@ -8,7 +8,7 @@ namespace OGL.Descriptions
     public class ListDescription: Description
     {
         public override string InfoText => (Text?.Trim(new char[] { ' ', '\r', '\n', '\t' }) ?? "") + (Names?.Count > 0 ? "\n" : "") + String.Join("\n", Names?.Where(n => n != null)?.Select(n => String.Join(", ", n.ListOfNames)) ?? new List<String>());
-        public List<Names> Names;
+        public List<Names> Names { get; set; }
         public ListDescription()
         {
             Names = new List<Names>();

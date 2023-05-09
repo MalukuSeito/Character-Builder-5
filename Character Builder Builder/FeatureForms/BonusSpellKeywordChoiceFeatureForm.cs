@@ -21,6 +21,7 @@ namespace Character_Builder_Builder.FeatureForms
             UniqueID.DataBindings.Add("Text", bf, "UniqueID", true, DataSourceUpdateMode.OnPropertyChanged);
             Amount.DataBindings.Add("Value", bf, "Amount", true, DataSourceUpdateMode.OnPropertyChanged);
             keywordControl1.Keywords = bf.KeywordsToAdd;
+            AddToSpellcastingCheckbox.DataBindings.Add("Checked", bf, "AddToAllSpellcastingFeatures");
         }
 
         public BonusSpellKeywordChoiceFeature edit(IHistoryManager history)

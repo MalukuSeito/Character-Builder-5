@@ -69,10 +69,17 @@ namespace CB_5e.iOS
                             Player player = Player.Serializer.Deserialize(s) as Player;
                             BuilderContext Context = new BuilderContext(player);
                             PluginManager manager = new PluginManager();
+                            manager.Add(new OptionalClassFeatures());
                             manager.Add(new SpellPoints());
                             manager.Add(new SingleLanguage());
+                            manager.Add(new PlaneTouchedWings());
                             manager.Add(new CustomBackground());
+                            manager.Add(new BackgroundFeat());
                             manager.Add(new NoFreeEquipment());
+                            manager.Add(new RacialAbilityShift());
+                            manager.Add(new LanguageChoice());
+                            manager.Add(new SkillChoice());
+                            manager.Add(new ToolChoice());
                             Context.Plugins = manager;
 
 

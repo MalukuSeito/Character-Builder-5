@@ -6,7 +6,7 @@ namespace OGL.Features
 {
     public class SkillProficiencyFeature: Feature
     {
-        public List<String> Skills;
+        public List<String> Skills { get; set; }
         public double ProficiencyMultiplier { get; set; }
         public ProficiencyBonus BonusType { get; set; } = ProficiencyBonus.AddOnlyIfNotProficient;
         public SkillProficiencyFeature()

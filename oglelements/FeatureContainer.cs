@@ -12,8 +12,8 @@ namespace OGL
         [XmlIgnore]
         public string FileName { get; set; }
         [XmlIgnore]
-        public string category;
-        [XmlIgnore]
+        public string category { get; set; }
+		[XmlIgnore]
         public string Name { get; set; }
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(FeatureContainer));
@@ -53,8 +53,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
-        public String Source { get; set; }
+        public List<Feature> Features { get; set; }
+		public String Source { get; set; }
         [XmlIgnore]
         public bool ShowSource { get; set; } = false;
         public FeatureContainer()

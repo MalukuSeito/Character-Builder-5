@@ -12,6 +12,69 @@ namespace OGL
 {
     public class OGLImport
     {
+
+        public void Merge(OGLContext context, OGLContext other, bool applyKeywords = false)
+        {
+            foreach (var b in other.Skills.Values) b.Register(context, b.FileName);
+            foreach (var b in other.Languages.Values) b.Register(context, b.FileName);
+            foreach (var b in other.Spells.Values) b.Register(context, b.FileName);
+
+            foreach (var b in other.Items.Values)
+            {
+                if (b.Category != null && !Category.Categories.ContainsKey(b.Category.Path))
+                {
+                    Category.Categories.Add(b.Category.Path, new Category(b.Category.Path, b.Category.CategoryPath, context));
+                }
+                b.Register(context, b.FileName);
+            }
+            foreach (var b in other.Backgrounds.Values) b.Register(context, b.FileName);
+            foreach (var b in other.Races.Values) b.Register(context, b.FileName);
+            foreach (var b in other.SubRaces.Values) b.Register(context, b.FileName);
+            foreach (var b in other.FeatureCategories)
+            {
+                if (!context.FeatureCategories.ContainsKey(b.Key)) context.FeatureCategories.Add(b.Key, new List<Feature>(b.Value));
+                else context.FeatureCategories[b.Key].AddRange(b.Value);
+            }
+            foreach (var b in other.FeatureContainers)
+            {
+                if (!context.FeatureContainers.ContainsKey(b.Key)) context.FeatureContainers.Add(b.Key, new List<FeatureContainer>(b.Value));
+                else context.FeatureContainers[b.Key].AddRange(b.Value);
+            }
+            foreach (var b in other.Boons.Values)
+            {
+                if (context.BoonsSimple.ContainsKey(b.Name))
+                {
+                    context.BoonsSimple[b.Name].ShowSource = true;
+                    b.ShowSource = true;
+                }
+                else context.BoonsSimple.Add(b.Name, b);
+                if (context.Boons.ContainsKey(b.Name + " " + ConfigManager.SourceSeperator + " " + b.Source)) ConfigManager.LogError("Duplicate Boon: " + b.Name + " " + ConfigManager.SourceSeperator + " " + b.Source);
+                else context.Boons[b.Name + " " + ConfigManager.SourceSeperator + " " + b.Source] = b;
+            }
+            foreach (var b in other.Features) context.Features.Add(b);
+            foreach (var b in other.Conditions.Values) b.Register(context, b.FileName);
+            foreach (var b in other.MagicCategories.Values) if (!context.MagicCategories.ContainsKey(b.Name)) context.MagicCategories.Add(b.Name, new MagicCategory(b.Name, b.DisplayName, b.Indent));
+            foreach (var mp in other.Magic.Values)
+            {
+                string cat = mp.Category;
+                context.MagicCategories[cat].Contents.Add(mp);
+                if (context.Magic.ContainsKey(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source))
+                {
+                    throw new Exception("Duplicate Magic Property: " + mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source);
+                }
+                if (context.MagicSimple.ContainsKey(mp.Name))
+                {
+                    context.MagicSimple[mp.Name].ShowSource = true;
+                    mp.ShowSource = true;
+                }
+                context.Magic.Add(mp.Name + " " + ConfigManager.SourceSeperator + " " + mp.Source, mp);
+                context.MagicSimple[mp.Name] = mp;
+            }
+            foreach (var b in other.Classes.Values) b.Register(context, b.FileName, applyKeywords);
+            foreach (var b in other.SubClasses.Values) b.Register(context, b.FileName, applyKeywords);
+            foreach (var b in other.Monsters.Values) b.Register(context, b.FileName);
+        }
+
         public static void Import(Stream reader, String fullpath, String source, String basepath, OGLContext context, bool applyKeywords = false)
         {
             IEnumerable<String> path = GetPath(fullpath, basepath, source, out String type);

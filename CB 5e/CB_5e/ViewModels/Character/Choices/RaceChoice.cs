@@ -23,10 +23,12 @@ namespace CB_5e.ViewModels.Character.Choices
                     if (co.Selected)
                     {
                         Model.Context.Player.RaceName = null;
+                        Model.Context.Player.RemoveChoice("CUSTOM_RACE_NAME");
                     } 
                     else
                     {
                         Model.Context.Player.RaceName = co.NameWithSource;
+                        Model.Context.Player.RemoveChoice("CUSTOM_RACE_NAME");
                     }
                     Model.Save();
                     Model.FirePlayerChanged();

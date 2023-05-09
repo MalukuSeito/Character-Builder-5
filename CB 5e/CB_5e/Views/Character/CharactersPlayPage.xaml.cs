@@ -37,10 +37,17 @@ namespace CB_5e.Views.Character
                 return;
             BuilderContext Context = new BuilderContext(item.Player);
             PluginManager manager = new PluginManager();
+            manager.Add(new OptionalClassFeatures());
+            manager.Add(new RacialAbilityShift());
+            manager.Add(new LanguageChoice());
+            manager.Add(new SkillChoice());
+            manager.Add(new ToolChoice());
             manager.Add(new NoFreeEquipment());
             manager.Add(new CustomBackground());
+            manager.Add(new BackgroundFeat());
             manager.Add(new SpellPoints());
             manager.Add(new SingleLanguage());
+            manager.Add(new PlaneTouchedWings());
             Context.Plugins = manager;
 
             if (App.AutoSaveDuringPlay)

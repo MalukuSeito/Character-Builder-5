@@ -6,10 +6,11 @@ namespace OGL.Items
 {
     public class MagicCategory : IComparable<MagicCategory>
     {
-        public string Name;
-        public string DisplayName;
-        public int Indent;
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
+        public int Indent { get; set; }
         public List<MagicProperty> Contents;
+        public MagicCategory() { }
         public MagicCategory(string name, string display, int indent)
         {
             Name = name;

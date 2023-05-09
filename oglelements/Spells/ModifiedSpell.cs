@@ -9,11 +9,11 @@ namespace OGL.Spells
 {
     public class ModifiedSpell : Spell
     {
-        public List<Keyword> AdditionalKeywords;
-        public Ability differentAbility;
-        public RechargeModifier RechargeModifier;
-        public bool AddAlwaysPreparedToName;
-        public bool displayShort;
+        public List<Keyword> AdditionalKeywords {  get; set; }
+        public Ability differentAbility { get; set; }
+        public RechargeModifier RechargeModifier { get; set; }
+        public bool AddAlwaysPreparedToName { get; set; }
+        public bool displayShort { get; set; }
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -50,18 +50,18 @@ namespace OGL.Spells
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Modifikations;
+        public List<Feature> Modifikations { get; set; }
         [XmlIgnore]
-        public int used;
+        public int used { get; set; }
         [XmlIgnore]
-        public int count;
+        public int count { get; set; }
+		[XmlIgnore]
+        public bool includeResources { get; set; } = true;
         [XmlIgnore]
-        public bool includeResources = true;
+        public bool includeRecharge { get; set; } = true;
         [XmlIgnore]
-        public bool includeRecharge = true;
-        [XmlIgnore]
-        public bool OnlyAsRitual = false;
-        public AttackInfo Info;
+        public bool OnlyAsRitual { get; set; } = false;
+        public AttackInfo Info { get; set; }
         public ModifiedSpell()
         {
             AdditionalKeywords = new List<Keyword>();
@@ -168,7 +168,8 @@ namespace OGL.Spells
             if (Recharge == RechargeModifier.Charges) return "Used with Charges";
             if (Recharge == RechargeModifier.NoRecharge) return "No Recharge";
             if (Recharge == RechargeModifier.Ritual) return "Ritual";
-            return "Other";
+			if (Recharge == RechargeModifier.AtWill) return "At-Will";
+			return "Other";
         }
         public override string ToString() {
             if (displayShort) return Name + ((RechargeModifier == RechargeModifier.Unmodified && Level == 0) || RechargeModifier == RechargeModifier.AtWill ? "" : (includeResources && RechargeModifier != RechargeModifier.Charges ? (": " + (count - used) + "/" + count + " ") : " ") + Recharge(RechargeModifier)) + (OnlyAsRitual ? " (Ritual only)": "");

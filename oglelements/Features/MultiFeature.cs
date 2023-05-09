@@ -44,7 +44,7 @@ namespace OGL.Features
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
+        public List<Feature> Features { get; set; }
 
         public String Condition { get; set; }
 
@@ -52,6 +52,15 @@ namespace OGL.Features
         {
             Action = Base.ActionType.ForceHidden;
             Features = new List<Feature>();
+        }
+        public MultiFeature(string name, string text, Feature feature1, int level = 1, bool hidden = false)
+            : base(name, text, level, hidden)
+        {
+            Action = Base.ActionType.ForceHidden;
+            Features = new List<Feature>
+            {
+                feature1
+            };
         }
         public MultiFeature(string name, string text, Feature feature1, Feature feature2, int level = 1, bool hidden = false)
             : base(name, text, level, hidden)

@@ -15,9 +15,11 @@ namespace OGL
     public delegate void LogEvent(object sender, string message, Exception e);
     public class ConfigManager
     {
-        public static XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
-        public static SourceInvariantComparer SourceInvariantComparer = new SourceInvariantComparer(); 
-        public static Boolean AlwaysShowSource = false;
+        public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(ConfigManager));
+        public static readonly SourceInvariantComparer SourceInvariantComparer = new SourceInvariantComparer();
+		public static readonly SourceAwareComparer SourceAwareComparer = new SourceAwareComparer();
+		public static readonly InvariantComparer InvariantComparer = new InvariantComparer();
+		public static Boolean AlwaysShowSource = false;
 
         public static char SourceSeperator = '\u2014';
         public static string SourceSeperatorString = "\u2014";

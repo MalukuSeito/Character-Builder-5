@@ -18,6 +18,7 @@ namespace OGL
         public static XmlSerializer Serializer = new XmlSerializer(typeof(ClassDefinition));
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         public String Name { get; set; }
         public String Description { get; set; }
         public String Flavour { get; set; }
@@ -61,8 +62,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
-        public List<int> MulticlassingSpellLevels;
+        public List<Feature> Features { get; set; }
+		public List<int> MulticlassingSpellLevels { get; set; }
         [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
@@ -99,8 +100,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> MulticlassingFeatures;
-        [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
+        public List<Feature> MulticlassingFeatures { get; set; }
+		[XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
         XmlArrayItem(Type = typeof(CollectionChoiceFeature)),
@@ -136,11 +137,11 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> FirstClassFeatures;
-        public Ability MulticlassingAbilityScores;
-        public List<string> FeaturesToAddClassKeywordTo;
-        public List<string> SpellsToAddClassKeywordTo;
-        public int HitDie { get; set; }
+        public List<Feature> FirstClassFeatures { get; set; }
+		public Ability MulticlassingAbilityScores { get; set; }
+		public List<string> FeaturesToAddClassKeywordTo { get; set; }
+		public List<string> SpellsToAddClassKeywordTo { get; set; }
+		public int HitDie { get; set; }
         public int HitDieCount { get; set; } = 1;
         public int HPFirstLevel { get; set; }
         public int AverageHPPerLevel { get; set; }

@@ -11,8 +11,8 @@ namespace CB_5e.ViewModels.Character.Choices
 {
     public class BonusSpellKeywordChoice : ChoiceViewModel<BonusSpellKeywordChoiceFeature>
     {
-        public BonusSpellKeywordChoice(PlayerModel model, BonusSpellKeywordChoiceFeature feature) 
-            : base(model, feature.UniqueID, feature.Amount, feature, false)
+        public BonusSpellKeywordChoice(PlayerModel model, IChoiceProvider provider, BonusSpellKeywordChoiceFeature feature) 
+            : base(model, provider, feature.UniqueID, feature.Amount, feature, false)
         {
         }
 

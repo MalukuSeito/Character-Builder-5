@@ -1,0 +1,39 @@
+﻿@inject IJSRuntime JSRuntime;
+@inject ImageService ImageCache;
+<img class="@CssClass" src="@(Blob ?? Placeholder)" alt="@Title"/>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "mw-100 mh-100";
+
+	[Parameter]
+	public string? Placeholder { get; set; } = "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII";
+
+	[Parameter]
+	public string? Title { get; set; }
+
+	[Parameter]
+	public byte[]? Source { get; set; }
+
+	private IJSObjectReference? module;
+
+	private string? Blob { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		if (Source is null) Blob = null;
+		else 
+		{
+			if (ImageCache.Cache.TryGetValue(Source, out string? val))
+			{
+				Blob = val;
+			} 
+			else
+			{
+				if (module is null) module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+				Blob = await module.InvokeAsync<string>("blob", Source);
+				ImageCache.Cache[Source] = Blob;
+			}
+		}
+		await base.OnParametersSetAsync();
+	}
+}

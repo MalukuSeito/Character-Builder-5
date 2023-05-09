@@ -1,0 +1,86 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var skill in context.Context.Player.GetSkills(context.Level, Scores, Features, Possessions))
+	{
+		var roll = skill.Roll;
+		<div @key="skill.Skill" class="@LineCssClass">
+			<span class="@IconCssClass @(skillproficiencies.Contains(skill.Skill)?CheckCssClass:UncheckCssClass)"></span>
+			<span class="@ModCssClass">@(roll >= 0 ? "+" + roll : "" + roll)</span> <span class="@NameCssClass">@skill.Skill.Name&nbsp;<Tag Xml="@skill.Skill" CssClass="@TagCssClass" /><span class="@ScoreCssClass">(@skill.Base.ToString().Substring(0,3))</span></span>
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; }
+
+	[Parameter]
+	public string? IconCssClass { get; set; } = "bi";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fs--1";
+
+	[Parameter]
+	public string? ScoreCssClass { get; set; }
+
+	[Parameter]
+	public string? ModCssClass { get; set; }
+
+	[Parameter]
+	public string? TagCssClass { get; set; }
+
+	[Parameter]
+	public string? CheckCssClass { get; set; } = "bi-check-circle-fill";
+
+	[Parameter]
+	public string? UncheckCssClass { get; set; } = "bi-circle";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	private List<Skill>? s;
+	private List<Skill> skillproficiencies
+	{
+		get
+		{
+			if (s is null) s = context.Context.Player.GetSkillProficiencies(Features).ToList();
+			return s ?? new List<Skill>();
+		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		s = null;
+		base.OnParametersSet();
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				s = null;
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

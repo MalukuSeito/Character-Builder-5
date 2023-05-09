@@ -1,0 +1,54 @@
+﻿@inject IJSRuntime JSRuntime;
+
+<span title="@(Title??Xml?.Name)" class="@Icon @CssClass @AdditionCssClass" @onclick="Display" @onclick:stopPropagation="true"></span>
+@code {
+	[Parameter]
+	public string? Title { get; set; }
+	[Parameter]
+	public IXML? Xml { get; set; }
+	[Parameter]
+	public Func<IXML>? XmlLoader { get; set; }
+	[Parameter]
+	public string Icon { get; set; } = "bi-tag";
+	[Parameter]
+	public string style { get; set; } = "";
+	[Parameter]
+	public string? CssClass { get; set; }
+	private IJSObjectReference? module;
+
+	[Parameter]
+	public string AdditionCssClass { get; set; } = "bi linktag fs--2";
+
+	private async Task Display(MouseEventArgs e)
+	{
+		if (module is null)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		}
+		if (Xml is null) Xml = XmlLoader?.Invoke() ?? throw new Exception("No XML to Display");
+		await module.InvokeVoidAsync("Display", Xml.ToXML(), transform(Xml), e.PageX, e.PageY);
+	}
+
+	private string transform(IXML element) => element switch
+	{
+		Background => "Backgrounds",
+		ClassDefinition => "Classes",
+		Condition => "Conditions",
+		Description => "Descriptions",
+		Feature => "Features",
+		FeatureContainer => "Features",
+		Scroll => "Scroll",
+		Item => "Items",
+		Language => "Languages",
+		MagicProperty => "Magic",
+		Monster => "Monster",
+		Possession => "Possession",
+		DisplayPossession => "Possession",
+		Race => "Races",
+		Skill => "Skills",
+		Spell => "Spells",
+		SubClass => "SubClasses",
+		SubRace => "SubRaces",
+		_ => "Common"
+	};
+}

@@ -6,7 +6,7 @@ namespace OGL.Features
 {
     public class ToolProficiencyFeature: Feature
     {
-        public List<String> Tools;
+        public List<String> Tools { get; set; }
         public ToolProficiencyFeature()
             : base()
         {

@@ -1,0 +1,142 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (FullGold)
+{
+	<div class="@GoldCssClass">
+		<div class="@PPElementCssClass">
+			<div class="@MoneyBorderCssClass"><input type="number" placeholder="PP" class="@InputCssClass" @bind="PP" />
+				<div class="@TitleCssClass">PP</div>
+			</div>
+		</div>
+		<div class="@GPElementCssClass">
+			<div class="@MoneyBorderCssClass"><input type="number" placeholder="GP" class="@InputCssClass" @bind="GP" /><div class="@TitleCssClass">GP</div></div>
+			
+		</div>
+		<div class="@EPElementCssClass">
+			<div class="@MoneyBorderCssClass"><input type="number" placeholder="EP" class="@InputCssClass" @bind="EP" /><div class="@TitleCssClass">EP</div></div>
+			
+		</div>
+		<div class="@SPElementCssClass">
+			<div class="@MoneyBorderCssClass"><input type="number" placeholder="SP" class="@InputCssClass" @bind="SP" /><div class="@TitleCssClass">SP</div></div>
+			
+		</div>
+		<div class="@CPElementCssClass">
+			<div class="@MoneyBorderCssClass"><input type="number" placeholder="CP" class="@InputCssClass" @bind="CP" /><div class="@TitleCssClass">CP</div></div>
+			
+		</div>
+	</div>
+}
+
+<div class="@CssClass">
+	@if (Money is not null) {
+		<span class="@ElementClass" @onclick="()=>FullGold = !FullGold">@Money.ToGold() gp</span>
+	}
+	@foreach(var item in inventory)
+	{
+		<span class="@ElementClass">@item.ToString()<Tag CssClass="@TagClass" Title="@item.ToString()" XmlLoader="()=>new DisplayPossession(item, context.Context.Player)"/></span>
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? GoldCssClass { get; set; } = "row mb-2";
+
+	[Parameter]
+	public string? GPElementCssClass { get; set; } = "col-8";
+
+	[Parameter]
+	public string? PPElementCssClass { get; set; } = "col-4";
+
+	[Parameter]
+	public string? SPElementCssClass { get; set; } = "col-4";
+
+	[Parameter]
+	public string? CPElementCssClass { get; set; } = "col-4";
+
+	[Parameter]
+	public string? EPElementCssClass { get; set; } = "col-4";
+
+	[Parameter]
+	public string? MoneyBorderCssClass { get; set; } = "border rounded-2 border-2 border-primary";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center fs--2 mt-0 border-top border-1 border-secondary";
+
+	[Parameter]
+	public string? ElementClass { get; set; } = "csv";
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public Func<Player, IEnumerable<Possession>>? Expression { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features | ChangeType.Inventory;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Price? Money { get; set; }
+
+	[Parameter]
+	public bool ShowMoney { get; set; } = true;
+
+	private List<Possession> inventory { get; set; } = new();
+
+	[Parameter]
+	public bool FullGold { get; set; } = false;
+
+	private int PP { get => Money?.pp ?? 0; set => SetMoney(value, Money?.gp ?? 0, Money?.ep ?? 0, Money?.sp ?? 0, Money?.cp ?? 0); }
+	private int GP { get => Money?.gp ?? 0; set => SetMoney(Money?.pp ?? 0, value, Money?.ep ?? 0, Money?.sp ?? 0, Money?.cp ?? 0); }
+	private int EP { get => Money?.ep ?? 0; set => SetMoney(Money?.pp ?? 0, Money?.gp ?? 0, value, Money?.sp ?? 0, Money?.cp ?? 0); }
+	private int SP { get => Money?.sp ?? 0; set => SetMoney(Money?.pp ?? 0, Money?.gp ?? 0, Money?.ep ?? 0, value, Money?.cp ?? 0); }
+	private int CP { get => Money?.cp ?? 0; set => SetMoney(Money?.pp ?? 0, Money?.gp ?? 0, Money?.ep ?? 0, Money?.sp ?? 0, value); }
+
+	private async void SetMoney(int pp, int gp, int ep, int sp, int cp)
+	{
+		context.Context.MakeHistory("Money");
+		context.Context.Player.SetMoney(cp, sp, ep, gp, pp);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override void OnParametersSet()
+	{
+		inventory.Clear();
+		inventory.AddRange(Expression?.Invoke(context.Context.Player) ?? new Possession[] { });
+		if (ShowMoney) Money = context.Context.Player.GetMoney(true, Features);
+		base.OnParametersSet();
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		inventory.Clear();
+		inventory.AddRange(Expression?.Invoke(context.Context.Player) ?? new Possession[] { });
+		if (ShowMoney) Money = context.Context.Player.GetMoney(true, Features);
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				inventory.Clear();
+				inventory.AddRange(Expression?.Invoke(context.Context.Player) ?? new Possession[] { });
+				if (ShowMoney) Money = context.Context.Player.GetMoney(true, Features);
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

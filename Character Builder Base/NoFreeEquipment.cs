@@ -11,6 +11,7 @@ namespace Character_Builder
 {
     public class NoFreeEquipment : IPlugin
     {
+        public int ExecutionOrdering { get => 0; }
         public string Name
         {
             get

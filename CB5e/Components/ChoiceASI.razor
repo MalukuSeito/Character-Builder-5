@@ -1,0 +1,191 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (Choices.Count > 0)
+{
+	var nextFree = Choices.Find(c => !c.Assigned);
+	var feats = context.Context.GetFeatureCollection(null);
+	@nextFree?.ToString();
+	<div class="@TitleCssClass">Ability Score Increase
+		@if (Choices.Count > 1)
+		{
+			<span class="text-muted">( @Choices.Count(c=>c.Assigned) / @Choices.Count ) </span>
+		}
+	</div>
+	<ul class="@CssClass">
+		@if (nextFree is not null)
+		{
+			<li class="@LineCssClass bg-primary"><input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput" /></li>
+		}
+		@foreach (var choice in Choices.Where(c => c.Ability1 != Ability.None && c.Ability2 != Ability.None).OrderBy(c => c.Ability1).Where(c => string.IsNullOrWhiteSpace(SearchText) || c.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase)))
+		{
+			<li class="@LineCssClass">
+				<button class="btn btn-primary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Remove(choice)" title="Remove Choice" />
+				<span class="@NameCssClass text-muted">@choice.ToString()</span>
+			</li>
+		}
+		@if (nextFree is not null)
+		{
+			@foreach (var ability in new[] { Ability.Strength, Ability.Dexterity, Ability.Constitution, Ability.Intelligence, Ability.Wisdom, Ability.Charisma }.Where(c => string.IsNullOrWhiteSpace(SearchText) || c.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase)))
+			{
+				<li class="@LineCssClass">
+					<button class="btn btn-primary me-3 py-0 my-0 bi bi-check-circle" @onclick="async () => await Select(nextFree, ability)" title="Select" />
+					<span class="@NameCssClass">
+						@if (nextFree.Ability1 == Ability.None)
+						{
+							@:+1 @ability
+						}
+						else if (nextFree.Ability1 == ability)
+						{
+							@:+2 @ability
+						}
+						else
+						{
+							@:+1 @nextFree.Ability1 and +1 @ability
+						}
+					</span>
+				</li>
+			}
+		}
+		@foreach (var feature in feats.Where(s => string.IsNullOrWhiteSpace(SearchText) || s.Matches(SearchText, false)))
+		{
+			var selected = Choices.Exists(f => ConfigManager.SourceInvariantComparer.Equals(f.Feat, feature.Name));
+			@if (selected || nextFree is not null)
+			{
+				<li class="@LineCssClass">
+					<button class="btn @(selected ? "btn-primary-outline" : "btn-primary") me-3 py-0 my-0 bi @(selected ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(nextFree, feature)" title="Select" />
+					<span class="@NameCssClass @(selected ? "text-muted" : "")" @onclick="()=>Selected = Selected == feature ? null : feature">@feature.Name</span><Tag Xml="feature" />
+					<span class="@SourceCssClass"> (@feature.Source)</span>
+					@if (Selected == feature)
+					{
+						<p class="fst-italic">@feature.Prerequisite</p>
+						<DisplayFeature Feature="feature" ShowName="false" />
+					}
+				</li>
+			}
+		}
+		@foreach (var choice in Choices.Where(c => !string.IsNullOrWhiteSpace(c.Feat) && !feats.Exists(f => ConfigManager.SourceInvariantComparer.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, c.Feat))))
+		{
+			<li class="@LineCssClass text-danger">
+				<button class="btn btn-danger me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Remove(choice)" title="Remove Invalid Choice" />
+				<span class="@NameCssClass text-danger">@SourceInvariantComparer.NoSource(choice.Feat)</span>
+			</li>
+		}
+	</ul>
+}
+
+@code {
+	private string SearchText { get; set; } = "";
+
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold mt-3";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public string? SourceCssClass { get; set; } = "text-muted fs--1";
+
+	[Parameter]
+	public Feature? Selected { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	private List<AbilityFeatChoice> Choices { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildChoices();
+		return Task.CompletedTask;
+	}
+
+	private async Task Remove(AbilityFeatChoice choice)
+	{
+		context.Context.MakeHistory("");
+		choice.Ability1 = Ability.None;
+		choice.Ability2 = Ability.None;
+		choice.Feat = null;
+		await SaveChoices();
+	}
+
+	private async Task Select(AbilityFeatChoice choice, Ability ability)
+	{
+		context.Context.MakeHistory("");
+		if (choice.Ability1 == Ability.None) {
+			choice.Ability1 = ability;
+			choice.Ability2 = Ability.None;
+		}
+		else
+		{
+			choice.Ability2 = ability;
+		}
+		choice.Feat = null;
+		await SaveChoices();
+	}
+
+	private async Task Select(AbilityFeatChoice? choice, Feature feature)
+	{
+		var id = feature.Name + " " + ConfigManager.SourceSeperator + " " + feature.Source;
+		if (Choices.Find(f => ConfigManager.SourceInvariantComparer.Equals(f.Feat, id)) is AbilityFeatChoice existing) await Remove(existing);
+		else if (choice is not null)
+		{
+			choice.Ability1 = Ability.None;
+			choice.Ability2 = Ability.None;
+			choice.Feat = id;
+			await SaveChoices();
+		}		
+	}
+
+	private async Task SaveChoices()
+	{
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		BuildChoices();
+	}
+
+	private void BuildChoices()
+	{
+		var features = context.Context.Player.GetFeatures(context.Level);
+		Choices.Clear();
+		foreach (var feature in features)
+		{
+			if (feature is AbilityScoreFeatFeature asff)
+			{
+				var choice = context.Context.Player.GetAbilityFeatChoice(asff, context.Level);
+				Choices.Add(choice);
+			}
+		}
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				BuildChoices();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

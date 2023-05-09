@@ -1,0 +1,31 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<button disabled="@(context.Context.UndoBuffer.Count == 0)" class="@CssClass" @onclick="DoUndo" title="Undo"></button>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += Update;
+		return Task.CompletedTask;
+	}
+
+	private Task Update(ChangeType t)
+	{
+		StateHasChanged();
+		return Task.CompletedTask;
+	}
+
+	private async Task DoUndo()
+	{
+		context.Context.Undo();
+		await context.NotifyPlayerChange(ChangeType.Full);
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= Update;
+	}
+}

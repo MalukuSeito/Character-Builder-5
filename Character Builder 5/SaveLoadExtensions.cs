@@ -57,6 +57,9 @@ namespace Character_Builder_5
                 foreach (Possession pos in p.Possessions) if (pos.Description != null) pos.Description = pos.Description.Replace("\n", Environment.NewLine);
                 for (int i = 0; i < p.Journal.Count; i++) p.Journal[i] = p.Journal[i].Replace("\n", Environment.NewLine);
                 for (int i = 0; i < p.ComplexJournal.Count; i++) if (p.ComplexJournal[i].Text != null) p.ComplexJournal[i].Text = p.ComplexJournal[i].Text.Replace("\n", Environment.NewLine);
+                for (int i = 0; i < p.ComplexJournal.Count; i++) for (int j = 0; j < p.ComplexJournal[i].Notes.Count; j++)  if (p.ComplexJournal[i].Notes[j] != null) p.ComplexJournal[i].Notes[j] = p.ComplexJournal[i].Notes[j].Replace("\n", Environment.NewLine);
+                for (int i = 0; i < p.ComplexJournal.Count; i++) for (int j = 0; j < p.ComplexJournal[i].Possessions.Count; j++) if (p.ComplexJournal[i].Possessions[j].Description != null) p.ComplexJournal[i].Possessions[j].Description = p.ComplexJournal[i].Possessions[j].Description.Replace("\n", Environment.NewLine);
+                for (int i = 0; i < p.ComplexJournal.Count; i++) for (int j = 0; j < p.ComplexJournal[i].Boons.Count; j++) if (p.ComplexJournal[i].Boons[j].DisplayText != null) p.ComplexJournal[i].Boons[j].DisplayText = p.ComplexJournal[i].Boons[j].DisplayText.Replace("\n", Environment.NewLine);
                 if (p.Portrait == null && p.PortraitLocation != null && File.Exists(p.PortraitLocation)) p.SetPortrait(new Bitmap(p.PortraitLocation));
                 if (p.FactionImage == null && p.FactionImageLocation != null && File.Exists(p.FactionImageLocation)) p.SetFactionImage(new Bitmap(p.FactionImageLocation));
                 p.PortraitLocation = null;
@@ -67,9 +70,9 @@ namespace Character_Builder_5
                 }
                 return p;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -104,8 +107,14 @@ namespace Character_Builder_5
         public static void LoadPluginManager(this BuilderContext context, string path)
         {
             PluginManager plug = new PluginManager();
+            plug.Add(new OptionalClassFeatures());
             plug.Add(new NoFreeEquipment());
+            plug.Add(new BackgroundFeat());
             plug.Add(new CustomBackground());
+            plug.Add(new RacialAbilityShift());
+            plug.Add(new LanguageChoice());
+            plug.Add(new SkillChoice());
+            plug.Add(new ToolChoice());
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {

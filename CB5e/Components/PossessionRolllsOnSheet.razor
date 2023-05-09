@@ -1,0 +1,47 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div @onclick="Toggle" title="Show Rolls in PDF" class="@CssClass @(Possession?.Hightlight == true ? CheckedClass : UnCheckedClass)" />
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "btn m-0 p-0 bi w-100 text-center";
+
+	[Parameter]
+	public string? CheckedClass { get; set; } = "bi-file-earmark-pdf-fill";
+
+	[Parameter]
+	public string? UnCheckedClass { get; set; } = "bi-file-earmark";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task Toggle()
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("PossesionHightlight");
+		Possession.Hightlight = !Possession.Hightlight;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

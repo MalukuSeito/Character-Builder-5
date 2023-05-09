@@ -1,0 +1,60 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (SpellcastingFeature is not null)
+	{
+		var spellcasting = context.Context.Player.GetSpellcasting(SpellcastingFeature.SpellcastingID);
+		var spellfeatures = Features ?? context.Context.Player.GetFeatures().Where(f => f is SpellChoiceFeature || f is ModifySpellChoiceFeature || f is IncreaseSpellChoiceAmountFeature || f is BonusSpellPrepareFeature).ToList();
+		@foreach (var spellchoice in spellfeatures)
+		{
+			@if (spellchoice is SpellChoiceFeature sf && sf.SpellcastingID == (SpellcastingID ?? SpellcastingFeature.SpellcastingID))
+			{
+				<div class="">
+					<SpellChoice TitleCssClass="text-primary fs-4 fw-bold mb-1" Feature="sf" Features="spellfeatures" ClassLevel="context.Context.Player.GetClassLevel(SpellcastingFeature.SpellcastingID, context.Level)" SpellcastingID="@(SpellcastingID ?? SpellcastingFeature.SpellcastingID)" />
+				</div>
+			}
+		}
+		@if (SpellcastingFeature.Preparation == PreparationMode.Spellbook)
+		{
+			<div class="">
+				<SpellbookChoice Feature="SpellcastingFeature" />
+			</div>
+		}
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Spells;
+
+	[Parameter]
+	public SpellcastingFeature? SpellcastingFeature { get; set; }
+
+	[Parameter]
+	public List<Feature>? Features { get; set; }
+
+	[Parameter]
+	public string? SpellcastingID { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,47 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@TitleCssClass">House Rules &amp; Plugins</div>
+<ul class="@CssClass">
+	@foreach (var plugin in context.Context.Plugins.available.Keys.Order())
+	{
+		<li class="@LineCssClass @(context.Context?.Player?.ActiveHouseRules?.Contains(plugin, StringComparer.OrdinalIgnoreCase) == true ? "text-muted":"")" @onclick="async()=>await Select(plugin)">
+			<div class="btn  me-3 py-0 my-0 bi @(context.Context?.Player?.ActiveHouseRules?.Contains(plugin, StringComparer.OrdinalIgnoreCase) == true ? "btn-primary-outline bi-check-circle-fill active": "btn-primary bi-check-circle")" />
+			@plugin
+		</li>
+	}
+</ul>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item cursor-pointer";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold mt-3";
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Full;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change) {
+		if (change.HasAnyFlag(EventType)) await InvokeAsync(() => StateHasChanged());
+	}
+
+	private async Task Select(string plugin)
+	{
+		if (context.Context.Player is null) return;
+		context.Context.MakeHistory(null);
+		if (context.Context.Player.ActiveHouseRules.Contains(plugin, StringComparer.OrdinalIgnoreCase)) context.Context.Player.ActiveHouseRules.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, plugin));
+		else context.Context.Player.ActiveHouseRules.Add(plugin);
+		context.Context.Plugins.Load(context.Context.Player.ActiveHouseRules);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -11,6 +11,7 @@ namespace Character_Builder
 {
     public class CustomBackground : IPlugin, IEqualityComparer<Feature>
     {
+        public int ExecutionOrdering { get => 0; }
         public string Name
         {
             get
@@ -122,41 +123,53 @@ namespace Character_Builder
 
         public List<Feature> FilterBackgroundFeatures(Background b, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context)
         {
-
-            var l = features.Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || CheckMulti(f) || CheckChoiceFeature(f))).ToList();
+            var feats = features.Where(f => IsFeatFeature(f, Context)).SelectMany(f=>f.Collect(level, provider, Context)).ToList();
+            var l = features.Where(f=>!feats.Contains(f)).Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || IsChoiceFeature(f, Context) || IsFeatFeature(f, Context) || CheckMulti(f, Context) || CheckChoiceFeature(f, Context))).ToList();
             l.AddRange(Skills.Collect(level, provider, Context));
             l.AddRange(Backtool1.Collect(level, provider, Context));
             l.AddRange(Backtool2.Collect(level, provider, Context));
-            feature.Choices = Context.Backgrounds.Values.SelectMany(bb => bb.Features.Where(f => typeof(Feature).Equals(f?.GetType()) || IsMulti(f) || IsChoiceFeature(f)).SelectMany(f => f is ChoiceFeature cf ? cf.Choices as IEnumerable<Feature> : new Feature[] { f })).OrderBy(f=>f.Name).Distinct(this).ToList();
+            feature.Choices = Context.Backgrounds.Values.SelectMany(bb => bb.Features.Where(f => typeof(Feature).Equals(f?.GetType()) || IsMulti(f, Context) || IsFeatFeature(f, Context) || IsChoiceFeature(f, Context)).SelectMany(f => f is ChoiceFeature cf ? cf.Choices as IEnumerable<Feature> : new Feature[] { f })).OrderBy(f=>f.Name).Distinct(this).ToList();
             l.AddRange(feature.Collect(level, provider, Context));
             return l;
         }
 
-        private bool IsMulti(Feature ff)
+        private bool IsFeatFeature(Feature ff, OGLContext context)
+        {
+            if (ff is CollectionChoiceFeature ccf)
+            {
+                var options = context.GetFeatureCollection(ccf.Collection);
+                return context.GetFeatureCollection(null).Any(a => options.Contains(a));
+                //Utils.Matches(context, ccf.Collection) context.GetFeatureCollection("Feats");
+                //return ccf.Collection.ToLowerInvariant().Contains("Category = 'Feats'".ToLowerInvariant()) || ccf.Collection.ToLowerInvariant().Contains("Category = \"Feats\"".ToLowerInvariant()); ;
+            }
+            return false;
+        }
+
+        private bool IsMulti(Feature ff, OGLContext Context)
         {
             if (ff is MultiFeature mf)
-                return mf.Features.Where(f => !(typeof(Feature).Equals(f?.GetType()) || IsMulti(f) || IsChoiceFeature(f))).Count() == 0;
+                return mf.Features.Where(f => !(typeof(Feature).Equals(f?.GetType()) || IsMulti(f, Context) || IsFeatFeature(f, Context) || IsChoiceFeature(f, Context))).Count() == 0;
             return false;
         }
 
-        private bool IsChoiceFeature(Feature ff)
+        private bool IsChoiceFeature(Feature ff, OGLContext Context)
         {
             if (ff is ChoiceFeature mf)
-                return mf.Choices.Where(f => !(typeof(Feature).Equals(f?.GetType()) || IsMulti(f) || IsChoiceFeature(f))).Count() == 0;
+                return mf.Choices.Where(f => !(typeof(Feature).Equals(f?.GetType()) || IsMulti(f, Context) || IsFeatFeature(f, Context) || IsChoiceFeature(f, Context))).Count() == 0;
             return false;
         }
 
-        private bool CheckMulti(Feature ff)
+        private bool CheckMulti(Feature ff, OGLContext Context)
         {
             if (ff is MultiFeature mf)
-                return mf.Features.Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || CheckMulti(f) || CheckChoiceFeature(f))).Count() == 0;
+                return mf.Features.Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || IsChoiceFeature(f, Context) || IsFeatFeature(f, Context) || CheckMulti(f, Context) || CheckChoiceFeature(f, Context))).Count() == 0;
             return false;
         }
 
-        private bool CheckChoiceFeature(Feature ff)
+        private bool CheckChoiceFeature(Feature ff, OGLContext Context)
         {
             if (ff is ChoiceFeature mf)
-                return mf.Choices.Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || CheckMulti(f) || CheckChoiceFeature(f))).Count() == 0;
+                return mf.Choices.Where(f => !(f is LanguageProficiencyFeature || f is LanguageChoiceFeature || f is OtherProficiencyFeature || f is SkillProficiencyFeature || f is SkillProficiencyChoiceFeature || f is ToolKWProficiencyFeature || f is ToolProficiencyChoiceConditionFeature || f is ToolProficiencyFeature || typeof(Feature).Equals(f?.GetType()) || IsChoiceFeature(f, Context) || IsFeatFeature(f, Context) || CheckMulti(f, Context) || CheckChoiceFeature(f, Context))).Count() == 0;
             return false;
         }
 

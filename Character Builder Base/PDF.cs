@@ -406,13 +406,31 @@ namespace Character_Builder
                 bool addUsableToTreasure = false;
                 if (trans.ContainsKey("Usable")) p.SetTextAndDescriptions(trans["Usable"], pdf.OnlyFeatureTitles, null, usable);
                 else addUsableToTreasure = usable.Count > 0;
+                var banked = context.Player.GetItemsAndPossessions(true, true).Where(pp => pp is JournalPossession jpp && jpp.Banked).ToList();
+                if (trans.ContainsKey("Banked"))
+                {
+                    p.SetField(trans["Banked"], string.Join(",", banked.Select(ppos => ppos.ToInfo(pdf.EquipmentKeywords, pdf.EquipmentStats))));
+                }
+                if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, banked);
+                if (banked.Count > 0 && !trans.ContainsKey("Banked") && !trans.ContainsKey("BankedDetailed"))
+                {
+                    equip.AddRange(treasure);
+                    equipDetailed2.AddRange(treasureDetailed);
+                    equipDetailed.AddRange(treasure.Select(pos => pos.ToInfo(pdf.EquipmentKeywords, pdf.EquipmentStats)));
+                    treasure.Clear();
+                    treasureDetailed.Clear();
+                    treasure.AddRange(banked);
+                    treasureDetailed.AddRange(banked);
+                    addUsableToTreasure = false;
+                }
                 bool addMoney = false;
+                
                 if (trans.ContainsKey("CP") && trans.ContainsKey("GP") && trans.ContainsKey("SP") && trans.ContainsKey("EP") && trans.ContainsKey("PP"))
                 {
-                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? "\n" : "; ", equipDetailed));
+                    if (trans.ContainsKey("Equipment")) p.SetField(trans["Equipment"], String.Join(pdf.EquipmentKeywords ? ";" : "; ", equipDetailed));
                     if (trans.ContainsKey("EquipmentShort")) p.SetField(trans["EquipmentShort"], String.Join(", ", equip));
                     if (trans.ContainsKey("EquipmentDetailed")) p.SetTextAndDescriptions(trans["EquipmentDetailed"], false, null, equipDetailed2);
-                    if (trans.ContainsKey("Treasure")) p.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join("\n", usable) : ""));
+                    if (trans.ContainsKey("Treasure")) p.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join(",", usable) : ""));
                     p.SetField(trans["CP"], money.cp.ToString());
                     if (trans.ContainsKey("SP")) p.SetField(trans["SP"], money.sp.ToString());
                     if (trans.ContainsKey("EP")) p.SetField(trans["EP"], money.ep.ToString());
@@ -427,7 +445,7 @@ namespace Character_Builder
                     if (trans.ContainsKey("Treasure"))
                     {
                         if (addUsableToTreasure) p.SetTextAndDescriptions(trans["Treasure"], false, String.Join(", ", treasure), usable);
-                        else p.SetField(trans["Treasure"], String.Join(", ", treasure));
+                        else p.SetField(trans["Treasure"], String.Join(", ", treasure) + (addUsableToTreasure ? "\n" + String.Join(",", usable) : ""));
                     }
                     p.SetField(trans["GP"], money.ToGold());
                 }
@@ -613,6 +631,12 @@ namespace Character_Builder
                         int t4tp = 0;
                         int sheetCount = 0;
                         bool advancement = context.Player.Advancement;
+                        bool hasPossesionsInJournal = context.Player.GetItemsAndPossessions(true, true).Count > 0;
+                        int common = 0;
+                        int uncommon = 0;
+                        int consumables = 0;
+                        Dictionary<Guid, JournalPossession> journalPossesions = new Dictionary<Guid, JournalPossession>();
+                        Dictionary<Guid, JournalBoon> journalBoons = new Dictionary<Guid, JournalBoon>();
                         while (entries.Count > 0 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 0))
                         {
                             int counter = 1;
@@ -643,27 +667,17 @@ namespace Character_Builder
                                         xp = context.Levels.ToXP(context.Levels.ToAP(xp) + ap);
                                         ap = 0;
                                     }
+                                    List<string> tp = new List<string>();
+                                    List<string> tpm = new List<string>();
+                                    List<string> tpt = new List<string>();
+                                    List<string> tpv = new List<string>();
+                                    List<string> tpmv = new List<string>();
                                     if (entry.InSheet)
                                     {
                                         if (logtrans.ContainsKey("Title" + counter)) lp.SetField(logtrans["Title" + counter], entry.Title);
                                         if (logtrans.ContainsKey("Session" + counter)) lp.SetField(logtrans["Session" + counter], entry.Session);
                                         if (logtrans.ContainsKey("Date" + counter)) lp.SetField(logtrans["Date" + counter], entry.Added.ToString());
                                         if (logtrans.ContainsKey("DM" + counter)) lp.SetField(logtrans["DM" + counter], entry.DM);
-                                        if (entry.Text != null)
-                                        {
-                                            if (logtrans.ContainsKey("Notes" + counter)) lp.SetField(logtrans["Notes" + counter], entry.Text);
-                                            else if (logtrans.ContainsKey("Notes" + counter + "Line1"))
-                                            {
-                                                int line = 1;
-                                                Queue<string> lines = new Queue<string>(entry.Text.Split('\n'));
-                                                while (lines.Count > 0 && logtrans.ContainsKey("Notes" + counter + "Line" + (line + 1)))
-                                                {
-                                                    lp.SetField(logtrans["Notes" + counter + "Line" + line], lines.Dequeue());
-                                                    line++;
-                                                }
-                                                lp.SetField(logtrans["Notes" + counter + "Line" + line], string.Join(" ", lines));
-                                            }
-                                        }
                                         if (logtrans.ContainsKey("LevelStart" + counter)) lp.SetField(logtrans["LevelStart" + counter], context.Levels.Get(advancement ? (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp): ap) : (ap > 0 ? context.Levels.ToXP(context.Levels.ToAP(xp) + ap) : xp), advancement).ToString());
                                         if (logtrans.ContainsKey("XPStart" + counter)) lp.SetField(logtrans["XPStart" + counter], advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString());
                                         if (logtrans.ContainsKey("APStart" + counter)) lp.SetField(logtrans["APStart" + counter], advancement ? APFormat(context, pdf.APFormat, (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap)) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap));
@@ -672,7 +686,7 @@ namespace Character_Builder
                                         if (logtrans.ContainsKey("GoldStart" + counter)) lp.SetField(logtrans["GoldStart" + counter], gold.ToGold());
                                         if (logtrans.ContainsKey("DowntimeStart" + counter)) lp.SetField(logtrans["DowntimeStart" + counter], downtime.ToString());
                                         if (logtrans.ContainsKey("RenownStart" + counter)) lp.SetField(logtrans["RenownStart" + counter], renown.ToString());
-                                        if (logtrans.ContainsKey("MagicItemsStart" + counter)) lp.SetField(logtrans["MagicItemsStart" + counter], magic.ToString());
+                                        if (logtrans.ContainsKey("MagicItemsStart" + counter)) lp.SetField(logtrans["MagicItemsStart" + counter], hasPossesionsInJournal ? ToString(uncommon, common, consumables) : magic.ToString());
                                         List<string> tps = new List<string>();
                                         if (t1tp != 0) tps.Add(t1tp.ToString() + " T1");
                                         if (t2tp != 0) tps.Add(t2tp.ToString() + " T2");
@@ -706,6 +720,7 @@ namespace Character_Builder
                                         if (t2tp != 0) tpsm.Add(t2tp.ToString() + " T2");
                                         if (t3tp != 0) tpsm.Add(t3tp.ToString() + " T3");
                                         if (t4tp != 0) tpsm.Add(t4tp.ToString() + " T4");
+                                        if (uncommon > 0 || common > 0 || consumables > 0) tpsm.Add(ToString(uncommon, common, consumables));
                                         if (logtrans.ContainsKey("MagicItemTreasurePointsStart" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsStart" + counter], String.Join(", ", tpsm));
                                         if (logtrans.ContainsKey("MagicItemTreasurePointsStartText" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsStartText" + counter], (magic > 0 ? (tps.Count > 0 ? "Starting Magic Items / TP" : "Starting # of Magic Items") : (tps.Count > 0 || advancement ? "Starting Treasure Points" : "Starting # of Magic Items")));
 
@@ -718,11 +733,7 @@ namespace Character_Builder
                                         if (logtrans.ContainsKey("Tier3TreasurePointsStart" + counter)) lp.SetField(logtrans["Tier3TreasurePointsStart" + counter], t3tp.ToString());
                                         if (logtrans.ContainsKey("Tier4TreasurePointsStart" + counter)) lp.SetField(logtrans["Tier4TreasurePointsStart" + counter], t4tp.ToString());
 
-                                        List<string> tp = new List<string>();
-                                        List<string> tpm = new List<string>();
-                                        List<string> tpt = new List<string>();
-                                        List<string> tpv = new List<string>();
-                                        List<string> tpmv = new List<string>();
+
 
                                         if (entry.T1TP != 0)
                                         {
@@ -756,10 +767,6 @@ namespace Character_Builder
                                         }
                                         tpmv.AddRange(tpv);
                                         tpm.AddRange(tp);
-                                        if (logtrans.ContainsKey("MagicItemTreasurePoints" + counter)) lp.SetField(logtrans["MagicItemTreasurePoints" + counter], String.Join(", ", tpm));
-                                        if (logtrans.ContainsKey("MagicItemTreasurePointsText" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsText" + counter], (magic > 0 ? (tp.Count > 0 ? "Magic Items, TP +/-" : "Magic Items +/-") : (tp.Count > 0 || advancement ? "Treasure Points +/-" : "Magic Items +/-")));
-                                        if (logtrans.ContainsKey("MagicItemTreasurePointsValue" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsValue" + counter], String.Join(", ", tpmv));
-                                        if (logtrans.ContainsKey("MagicItemTreasurePoints" + counter)) lp.SetField(logtrans["MagicItemTreasurePoints" + counter], String.Join(", ", tpm));
 
                                         if (logtrans.ContainsKey("XP" + counter)) lp.SetField(logtrans["XP" + counter], entry.XP.ToString());
                                         if (logtrans.ContainsKey("AP" + counter)) lp.SetField(logtrans["AP" + counter], entry.AP.ToString());
@@ -816,8 +823,85 @@ namespace Character_Builder
                                     t2tp += entry.T2TP;
                                     t3tp += entry.T3TP;
                                     t4tp += entry.T4TP;
+                                    List<string> addedItems = new List<string>();
+                                    List<string> removedItems = new List<string>();
+                                    List<string> touchedItems = new List<string>();
+                                    foreach (JournalPossession jp in entry.Possessions)
+                                    {
+                                        jp.Context = context;
+                                        if (jp.Deleted)
+                                        {
+                                            journalPossesions.Remove(jp.Guid);
+                                            removedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+                                        }
+                                        else if (journalPossesions.ContainsKey(jp.Guid))
+                                        {
+                                            journalPossesions[jp.Guid] = jp;
+                                            touchedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+                                        }
+                                        else
+                                        {
+                                            journalPossesions.Add(jp.Guid, jp);
+                                            addedItems.Add(jp.FullName + (jp.Banked ? " [banked]" : ""));
+                                        }
+                                    }
+                                    foreach (JournalBoon jb in entry.Boons)
+                                    {
+                                        if (jb.Deleted)
+                                        {
+                                            journalBoons.Remove(jb.Guid);
+                                            removedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+                                        }
+                                        else if (journalBoons.ContainsKey(jb.Guid))
+                                        {
+                                            journalBoons[jb.Guid] = jb;
+                                            addedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+                                        }
+                                        else
+                                        {
+                                            journalBoons.Add(jb.Guid, jb);
+                                            touchedItems.Add(jb.ToString() + (jb.Banked ? " [banked]" : ""));
+                                        }
+                                    }
+                                    int newcommon = journalPossesions.Values.Where(x => !x.Banked && !x.Consumable && x.Rarity == Rarity.Common).Count();
+                                    int newconsumable = journalPossesions.Values.Where(x => !x.Banked && x.Consumable).Count();
+                                    int newuncommon = journalPossesions.Values.Where(x => !x.Banked && !x.Consumable && x.Rarity >= Rarity.Uncommon).Count();
+                                    if (common != newcommon || consumables != newconsumable || uncommon != newuncommon)
+                                    {
+                                        tpmv.Add(ToString(newuncommon - uncommon, newcommon - common, newconsumable - consumables, true));
+                                        tpm.Add(ToString(newuncommon - uncommon, newcommon - common, newconsumable - consumables, true));
+                                    }
+                                    string text = entry.Text;
+                                    if (entry.Notes.Count > 0)
+                                    {
+                                        text = string.Join(", ", entry.Notes.Select(s=>s.IndexOf('\n') > 0 ? s.Substring(0, s.IndexOf('\n')) : s)) + (text != null ? "\n" + text : "");
+                                    }
+                                    if (removedItems.Count > 0 || addedItems.Count > 0 || touchedItems.Count > 0)
+                                    {
+                                        text = string.Join(", ", addedItems.Select(s => "+" + s).Union(removedItems.Select(s => "-" + s)).Union(touchedItems)) + (text != null ? "\n" + text : "");
+                                    }
+
                                     if (entry.InSheet)
                                     {
+                                        if (text != null)
+                                        {
+                                            if (logtrans.ContainsKey("Notes" + counter)) lp.SetField(logtrans["Notes" + counter], text);
+                                            else if (logtrans.ContainsKey("Notes" + counter + "Line1"))
+                                            {
+                                                int line = 1;
+                                                Queue<string> lines = new Queue<string>(text.Split('\n'));
+                                                while (lines.Count > 0 && logtrans.ContainsKey("Notes" + counter + "Line" + (line + 1)))
+                                                {
+                                                    lp.SetField(logtrans["Notes" + counter + "Line" + line], lines.Dequeue());
+                                                    line++;
+                                                }
+                                                lp.SetField(logtrans["Notes" + counter + "Line" + line], string.Join(" ", lines));
+                                            }
+                                        }
+                                        if (logtrans.ContainsKey("MagicItemTreasurePoints" + counter)) lp.SetField(logtrans["MagicItemTreasurePoints" + counter], String.Join(", ", tpm));
+                                        if (logtrans.ContainsKey("MagicItemTreasurePointsText" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsText" + counter], (magic > 0 ? (tp.Count > 0 ? "Magic Items, TP +/-" : "Magic Items +/-") : (tp.Count > 0 || advancement ? "Treasure Points +/-" : "Magic Items +/-")));
+                                        if (logtrans.ContainsKey("MagicItemTreasurePointsValue" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsValue" + counter], String.Join(", ", tpmv));
+                                        if (logtrans.ContainsKey("MagicItemTreasurePoints" + counter)) lp.SetField(logtrans["MagicItemTreasurePoints" + counter], String.Join(", ", tpm));
                                         if (logtrans.ContainsKey("LevelEnd" + counter)) lp.SetField(logtrans["LevelEnd" + counter], context.Levels.Get(advancement ? (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap) : (ap > 0 ? context.Levels.ToXP(context.Levels.ToAP(xp) + ap) : xp), advancement).ToString());
                                         if (logtrans.ContainsKey("XPEnd" + counter)) lp.SetField(logtrans["XPEnd" + counter], advancement ? (context.Levels.ToXP(ap) + xp).ToString() : xp.ToString());
                                         if (logtrans.ContainsKey("APEnd" + counter)) lp.SetField(logtrans["APEnd" + counter], advancement ? APFormat(context, pdf.APFormat, (xp > 0 ? context.Levels.ToAP(context.Levels.ToXP(ap) + xp) : ap)) : APFormat(context, pdf.APFormat, context.Levels.ToAP(xp) + ap));
@@ -826,7 +910,7 @@ namespace Character_Builder
                                         if (logtrans.ContainsKey("GoldEnd" + counter)) lp.SetField(logtrans["GoldEnd" + counter], gold.ToGold());
                                         if (logtrans.ContainsKey("DowntimeEnd" + counter)) lp.SetField(logtrans["DowntimeEnd" + counter], downtime.ToString());
                                         if (logtrans.ContainsKey("RenownEnd" + counter)) lp.SetField(logtrans["RenownEnd" + counter], renown.ToString());
-                                        if (logtrans.ContainsKey("MagicItemsEnd" + counter)) lp.SetField(logtrans["MagicItemsEnd" + counter], magic.ToString());
+                                        if (logtrans.ContainsKey("MagicItemsEnd" + counter)) lp.SetField(logtrans["MagicItemsEnd" + counter], hasPossesionsInJournal ? ToString(uncommon, common, consumables) : magic.ToString());
                                         if (logtrans.ContainsKey("Tier1TreasurePointsEnd" + counter)) lp.SetField(logtrans["Tier1TreasurePointsEnd" + counter], t1tp.ToString());
                                         if (logtrans.ContainsKey("Tier2TreasurePointsEnd" + counter)) lp.SetField(logtrans["Tier2TreasurePointsEnd" + counter], t2tp.ToString());
                                         if (logtrans.ContainsKey("Tier3TreasurePointsEnd" + counter)) lp.SetField(logtrans["Tier3TreasurePointsEnd" + counter], t3tp.ToString());
@@ -868,11 +952,16 @@ namespace Character_Builder
                                         if (t2tp != 0) tpsm.Add(t2tp.ToString() + " T2");
                                         if (t3tp != 0) tpsm.Add(t3tp.ToString() + " T3");
                                         if (t4tp != 0) tpsm.Add(t4tp.ToString() + " T4");
+                                        if (newuncommon > 0 || newcommon > 0 || newconsumable > 0) tpsm.Add(ToString(newuncommon, newcommon, newconsumable));
                                         if (logtrans.ContainsKey("MagicItemTreasurePointsEnd" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsEnd" + counter], String.Join(", ", tpsm));
                                         if (logtrans.ContainsKey("MagicItemTreasurePointsEndText" + counter)) lp.SetField(logtrans["MagicItemTreasurePointsEndText" + counter], (magic > 0 ? (tps.Count > 0 ? "Magic Items / TP Total" : "Magic Items Total") : (tps.Count > 0 || advancement ? "Treasure Points Total" : "Magic Items Total")));
 
                                         counter++;
                                     }
+                                    common = newcommon;
+                                    consumables = newconsumable;
+                                    uncommon = newuncommon;
+
 
                                 }
                                 if (counter > 1 || (pdf.Duplex && !pdf.DuplexWhite && sheetCount % 2 != 1)) sheet.Add(lp);
@@ -1303,6 +1392,15 @@ namespace Character_Builder
             }
         }
 
+        private string ToString(int uncommon, int common, int consumables, bool relative = false)
+        {
+            string s = "";
+            if (uncommon != 0) s += (relative && uncommon > 0 ? "+" : "") + uncommon + " Uncommon+";
+            if (common != 0) s += (s.Length>0 ? ", " : "") + (relative && common > 0? "+" : "") + common + " Common";
+            if (consumables != 0) s += (s.Length > 0 ? ", " : "") + (relative && consumables > 0 ? "+" : "") + consumables + " Consumable";
+            return s;
+        }
+
         public static string APFormat(BuilderContext context, string format, int ap)
         {
             int level = context.Levels.Get(ap, true);
@@ -1350,8 +1448,9 @@ namespace Character_Builder
         private string GetAndRemoveComponents(List<Keyword> kw)
         {
             List<string> r = new List<string>();
-            bool v = false, s = false, m = false;
+            bool v = false, s = false, m = false, roy = false;
             string mat = "";
+            string price = "";
             for (int i = kw.Count - 1; i >= 0; i--)
             {
                 if (kw[i].Name.Equals("verbal", StringComparison.OrdinalIgnoreCase))
@@ -1370,10 +1469,17 @@ namespace Character_Builder
                     mat = mat == "" ? (kw[i] as Material).Components : mat + "; " + (kw[i] as Material).Components;
                     kw.RemoveAt(i);
                 }
+                else if (kw[i] is Royalty)
+                {
+                    roy = true;
+                    price = price == "" ? (kw[i] as Royalty).Price : price + "; " + (kw[i] as Royalty).Price;
+                    kw.RemoveAt(i);
+                }
             }
             if (v) r.Add("V");
             if (s) r.Add("S");
             if (m) r.Add("M(" + mat + ")");
+            if (roy) r.Add("R(" + price + ")");
             string res = string.Join(", ", r);
             if (res == null || res == "") return "";
             return char.ToUpper(res[0]) + res.Substring(1);
@@ -1424,7 +1530,8 @@ namespace Character_Builder
             int t2tp = 0;
             int t3tp = 0;
             int t4tp = 0;
-            if (trans.ContainsKey("Renown") || trans.ContainsKey("MagicItems") || trans.ContainsKey("Downtime") || trans.ContainsKey("TreasurePoints") || trans.ContainsKey("Tier1TreasurePoints") || trans.ContainsKey("Tier2TreasurePoints") || trans.ContainsKey("Tier3TreasurePoints") || trans.ContainsKey("Tier4TreasurePoints")) 
+            List<IInfoText> journal = new List<IInfoText>(context.Player.Journal.Select(s => ToFeature(s)));
+            if (trans.ContainsKey("Renown") || trans.ContainsKey("MagicItems") || trans.ContainsKey("Downtime") || trans.ContainsKey("TreasurePoints") || trans.ContainsKey("Tier1TreasurePoints") || trans.ContainsKey("Tier2TreasurePoints") || trans.ContainsKey("Tier3TreasurePoints") || trans.ContainsKey("Tier4TreasurePoints") || trans.ContainsKey("Journal") || trans.ContainsKey("Backstory"))
             {
                 foreach (JournalEntry je in context.Player.ComplexJournal)
                 {
@@ -1435,6 +1542,7 @@ namespace Character_Builder
                     t2tp += je.T2TP;
                     t3tp += je.T3TP;
                     t4tp += je.T4TP;
+                    journal.AddRange(je.Notes.Select(s => ToFeature(s)));
                 }
             }
             bool advancement = context.Player.Advancement;
@@ -1464,7 +1572,12 @@ namespace Character_Builder
             if (trans.ContainsKey("Hair")) p.SetField(trans["Hair"], context.Player.Hair.ToString());
             if (trans.ContainsKey("Speed")) p.SetField(trans["Speed"], context.Player.GetSpeed().ToString());
             if (trans.ContainsKey("FactionName")) p.SetField(trans["FactionName"], context.Player.FactionName);
-            if (trans.ContainsKey("Backstory")) p.SetField(trans["Backstory"], context.Player.Backstory);
+            if (trans.ContainsKey("Journal"))
+            {
+                p.SetTextAndDescriptions(trans["Journal"], false, null, journal);
+                if (trans.ContainsKey("Backstory")) p.SetField(trans["Backstory"], context.Player.Backstory);
+            } 
+            else if (trans.ContainsKey("Backstory")) p.SetTextAndDescriptions(trans["Backstory"], false, context.Player.Backstory, journal);
             if (trans.ContainsKey("Allies")) p.SetField(trans["Allies"], context.Player.Allies);
             if (trans.ContainsKey("Strength")) p.SetField(trans["Strength"], !swap ? context.Player.GetStrength().ToString() : PlusMinus(context.Player.GetStrengthMod()));
             if (trans.ContainsKey("Dexterity")) p.SetField(trans["Dexterity"], !swap ? context.Player.GetDexterity().ToString() : PlusMinus(context.Player.GetDexterityMod()));
@@ -1511,6 +1624,13 @@ namespace Character_Builder
             if (trans.ContainsKey("Tier2TreasurePoints")) p.SetField(trans["Tier2TreasurePoints"], t2tp.ToString());
             if (trans.ContainsKey("Tier3TreasurePoints")) p.SetField(trans["Tier3TreasurePoints"], t3tp.ToString());
             if (trans.ContainsKey("Tier4TreasurePoints")) p.SetField(trans["Tier4TreasurePoints"], t4tp.ToString());
+        }
+
+        private IInfoText ToFeature(string s)
+        {
+            var split = s.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(ss => ss.Trim(" \n\r\t".ToCharArray())).ToList();
+            return new Feature(split[0], string.Join(" ", split.Skip(1)));
+            
         }
 
         private string PlusMinus(int value, string zero = "+0")

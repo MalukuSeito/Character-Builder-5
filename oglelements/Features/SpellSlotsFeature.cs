@@ -5,8 +5,10 @@ namespace OGL.Features
 {
     public class SpellSlotsFeature : Feature
     {
-        public List<int> Slots;
+        public List<int> Slots { get; set; }
         public string SpellcastingID { get; set; }
+
+        public bool Add { get; set; } = false;
         public SpellSlotsFeature()
             : base()
         {

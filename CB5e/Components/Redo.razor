@@ -1,0 +1,31 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<button disabled="@(context.Context.RedoBuffer.Count == 0)" class="@CssClass" @onclick="DoRedo" title="Redo"></button>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += Update;
+		return Task.CompletedTask;
+	}
+
+	private Task Update(ChangeType t)
+	{
+		StateHasChanged();
+		return Task.CompletedTask;
+	}
+
+	private async Task DoRedo()
+	{
+		context.Context.Redo();
+		await context.NotifyPlayerChange(ChangeType.Full);
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= Update;
+	}
+}

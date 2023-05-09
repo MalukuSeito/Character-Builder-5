@@ -14,6 +14,7 @@ namespace OGL
         public static XmlSerializer Serializer = new XmlSerializer(typeof(Skill));
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         public String Name { get; set; }
         public String Description { get; set; }
         public Ability Base { get; set; }

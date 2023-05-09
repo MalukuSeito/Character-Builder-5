@@ -13,7 +13,7 @@ namespace OGL.Features
         public ProficiencyBonus BonusType { get; set; } = ProficiencyBonus.AddOnlyIfNotProficient;
         public bool OnlyAlreadyKnownSkills { get; set; }
         public String UniqueID { get; set; }
-        public List<string> Skills;
+        public List<string> Skills { get; set; }
             public SkillProficiencyChoiceFeature()
             : base()
         {

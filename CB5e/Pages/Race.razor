@@ -1,0 +1,230 @@
+﻿@page "/race"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Race</PageTitle>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+<div class="container-xxl pb-3">
+	@if (context.Context.Player is not null)
+	{
+		@if(context.Context.Player.Race is OGL.Race)
+		{
+			var race = context.Context.Player.Race as OGL.Race;
+			var parentraces = context.Context.Player.GetFeatures(context.Level).SelectMany(f => (f as SubRaceFeature)?.Races ?? new string[] { } as IEnumerable<string>).ToList();
+			<ul class="list-group">
+				<li class="list-group-item">
+					<button class="btn btn-secondary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async ()=> await Select(null)" title="Select Race" />
+					<span class="fw-bold text-muted)" @onclick="()=>SelectedRace = SelectedRace == race ? null : race">@race.Name</span><Tag Xml="race" />
+					<span class="text-muted fs--1"> (@race.Source)</span>
+					@if (SelectedRace == race)
+					{
+						<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+							@foreach (var line in race.Description?.Split("\n") ?? new string[] { })
+							{
+								@line<br />
+							}
+						</p>
+						@if (ShowDescriptions)
+						{
+							<Descriptions Items="race.Descriptions" />
+						}
+						<Features Items="race.Features" />
+					}
+				</li>
+			</ul>
+
+			@if (parentraces.Count > 0)
+			{
+				if (context.Context.Player.SubRace is SubRace)
+				{
+					var subrace = context.Context.Player.SubRace as SubRace;
+					<ul class="list-group">
+						<li class="list-group-item">
+							<button class="btn btn-secondary-outline me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async ()=> await SelectSub(null)" title="Select Sub Race" />
+							<span class="fw-bold text-muted)" @onclick="()=>SelectedSubRace = SelectedSubRace == subrace ? null : subrace">@subrace.Name</span><Tag Xml="subrace" />
+							<span class="text-muted fs--1"> (@subrace.Source)</span>
+							@if (SelectedSubRace == subrace)
+							{
+								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+									@foreach (var line in subrace.Description?.Split("\n") ?? new string[] { })
+									{
+										@line<br />
+									}
+								</p>
+								@if (ShowDescriptions)
+								{
+									<Descriptions Items="subrace.Descriptions" />
+								}
+								<Features Items="subrace.Features" />
+							}
+						</li>
+					</ul>
+				}
+				else
+				{
+					<div class="row g-1">
+						<div class="border-primary border border-1 rounded-2 bg-primary col-12 text-center p-1">
+							<input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SubRaceSearchText" @bind:event="oninput" />
+						</div>
+						@foreach (var subrace in context.Context.SubRaceFor(parentraces).Where(r => string.IsNullOrWhiteSpace(SubRaceSearchText) || r.Matches(SubRaceSearchText, false)).OrderBy(r => r.Name).ThenBy(r => r.Source))
+						{
+							<div class="col-xxl-3 col-lg-4 col-md-6">
+								<div class="rounded-2 border-1 border border-secondary">
+									<div class="border-1 border-bottom border-secondary text-center"><span @onclick="()=>SelectedSubRace = SelectedSubRace == subrace ? null : subrace" class="fw-bold">@subrace.Name</span><Tag Xml="subrace" /><br /><span class="text-muted fs--1">@subrace.Source</span></div>
+									<div style="height:200px" class="text-center p-2">
+										<Image Source="subrace.ImageData" Title="@subrace.Name" />
+									</div>
+									@if (SelectedSubRace == subrace)
+									{
+										@if (!string.IsNullOrWhiteSpace(subrace.Flavour))
+										{
+											<p class="fst-italic">@subrace.Flavour</p>
+										}
+										<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+											@foreach (var line in subrace.Description?.Split("\n") ?? new string[] { })
+											{
+												@line<br />
+											}
+										</p>
+										@if (ShowDescriptions)
+										{
+											<Descriptions Items="subrace.Descriptions" />
+										}
+										<Features Items="subrace.Features" />
+									}
+									<div class="border-1 border-top border-secondary text-center">
+										<button class="btn btn-primary py-0 my-1 bi bi-check-circle w-75" @onclick="async ()=> await SelectSub(subrace)" title="Select Sub Race" />
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+				}
+			}
+			@foreach (var desc in race.Descriptions)
+			{
+				@if (desc is TableDescription td && td.Amount > 0 && !string.IsNullOrEmpty(td.UniqueID))
+				{
+					<ChoiceTableDescription CssClass="list-group" TitleCssClass="text-primary fs-4 fw-bold mt-3" ChoiceProvider="context.Context.Player" Table="td" />
+				}
+			}
+			@if (parentraces.Count > 0 && context.Context.Player.SubRace is not null)
+			{
+				@foreach (var desc in context.Context.Player.SubRace.Descriptions)
+				{
+					@if (desc is TableDescription td && td.Amount > 0 && !string.IsNullOrEmpty(td.UniqueID))
+					{
+						<ChoiceTableDescription CssClass="list-group" TitleCssClass="text-primary fs-4 fw-bold mt-3" ChoiceProvider="context.Context.Player" Table="td" />
+					}
+				}
+			}
+		} 
+		else
+		{
+			<div class="row g-1">
+				<div class="border-primary border border-1 rounded-2 bg-primary col-12 text-center p-1">
+					<input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="RaceSearchText" @bind:event="oninput" />
+				</div>
+				@foreach(var race in context.Context.Races.Values.Where(r=>string.IsNullOrWhiteSpace(RaceSearchText) || r.Matches(RaceSearchText, false)).OrderBy(r=>r.Name).ThenBy(r=>r.Source))
+				{
+					<div class="col-xxl-3 col-lg-4 col-md-6">
+						<div class="rounded-2 border-1 border border-secondary">
+							<div class="border-1 border-bottom border-secondary text-center"><span @onclick="()=>SelectedRace = SelectedRace == race ? null : race" class="fw-bold">@race.Name</span><Tag Xml="race" /><br /><span class="text-muted fs--1">@race.Source</span></div>
+							<div style="height:200px" class="text-center p-2">
+								<Image Source="race.ImageData" Title="@race.Name" />
+							</div>
+							@if (SelectedRace == race)
+							{
+								@if (!string.IsNullOrWhiteSpace(race.Flavour))
+								{
+									<p class="fst-italic">@race.Flavour</p>
+								}
+								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+									@foreach (var line in race.Description?.Split("\n") ?? new string[] { })
+									{
+										@line<br />
+									}
+								</p>
+								@if (ShowDescriptions) {
+									<Descriptions Items="race.Descriptions" />
+								}
+								<Features Items="race.Features" />
+							}
+							<div class="border-1 border-top border-secondary text-center">
+								<button class="btn btn-primary py-0 my-1 bi bi-check-circle w-75" @onclick="async ()=> await Select(race)" title="Select Race" />
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+			
+		}
+		<Choices CssClass="mt-3" Features="@context.Context.Player.GetRaceFeatures(context.Level, true)" ChoiceProvider="context.Context.Player"/>
+	}
+</div>
+
+@code {
+	private OGL.Race? SelectedRace { get; set; }
+	private OGL.SubRace? SelectedSubRace { get; set; }
+
+	private bool ShowDescriptions { get; set; } = false;
+
+	private string RaceSearchText { get; set; } = "";
+	private string SubRaceSearchText { get; set; } = "";
+
+	private async Task Select(OGL.Race? race)
+	{
+		context.Context.MakeHistory("");
+		if (race is not null) {
+			context.Context.Player.RaceName = race.Name + " " + ConfigManager.SourceSeperator + " " + race.Source;
+			context.Context.Player.SubRaceName = null;
+		} else
+		{
+			context.Context.Player.RaceName = null;
+			context.Context.Player.SubRaceName = null;
+		}
+		await context.NotifyPlayerChange(ChangeType.Features);
+	}
+
+	private async Task SelectSub(SubRace? subrace)
+	{
+		context.Context.MakeHistory("");
+		if (subrace is not null)
+		{
+			context.Context.Player.SubRaceName = subrace.Name + " " + ConfigManager.SourceSeperator + " " + subrace.Source;
+		}
+		else
+		{
+			context.Context.Player.SubRaceName = null;
+		}
+		await context.NotifyPlayerChange(ChangeType.Features);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

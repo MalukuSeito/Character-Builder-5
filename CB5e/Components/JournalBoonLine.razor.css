@@ -1,0 +1,6 @@
+﻿.bi-handbag:hover::before {
+    content: "\f47d";
+}
+.bi-mailbox:hover::before {
+    content: "\f408";
+}

@@ -1,0 +1,44 @@
+﻿@inject ContextService context;
+<div class="@CssClass">
+	@if (AbilityScores is not null)
+	{
+		@foreach (var ability in new[] { Ability.Strength, Ability.Dexterity, Ability.Constitution, Ability.Intelligence, Ability.Wisdom, Ability.Charisma })
+		{
+			var mod = @AbilityScores.ApplyMod(ability);
+			<div @key="ability" class="@BoxCssClass">
+				<div class="@NameCssClass" @onclick="async () => await (OnClick?.Invoke() ?? Task.CompletedTask)">
+					@ability
+				</div>
+				<span class="@ModCssClass">@(
+			mod > 0 ? "+" + mod : "" + mod
+			)</span>
+				<div class="@ScoreCssClass">
+					@AbilityScores.Apply(ability)
+				</div>
+			</div>
+		}
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? BoxCssClass { get; set; }
+
+	[Parameter]
+	public string? NameCssClass { get; set; }
+
+	[Parameter]
+	public string? ScoreCssClass { get; set; }
+
+	[Parameter]
+	public string? ModCssClass { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? AbilityScores { get; set; }
+
+	[Parameter]
+	public Func<Task>? OnClick { get; set; }
+}

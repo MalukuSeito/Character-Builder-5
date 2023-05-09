@@ -8,6 +8,7 @@ namespace Character_Builder_Plugin
     public interface IPlugin
     {
         string Name { get; }
+        int ExecutionOrdering { get; }
         List<Feature> FilterClassFeatures(ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
         List<Feature> FilterSubClassFeatures(SubClass subcls, ClassDefinition cls, int classlevel, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);
         List<Feature> FilterRaceFeatures(Race race, List<Feature> features, int level, IChoiceProvider provider, OGLContext Context);

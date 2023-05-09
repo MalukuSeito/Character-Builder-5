@@ -1,0 +1,49 @@
+﻿@inject IJSRuntime JSRuntime;
+@implements IAsyncDisposable;
+<textarea @ref="area" rows="1" style="resize: none" class="@CssClass" @bind="Val" placeholder="@Placeholder" title="@Title" />
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "";
+
+	[Parameter]
+	public string? Placeholder { get; set; }
+
+	[Parameter]
+	public string? Title { get; set; }
+
+	private IJSObjectReference? module;
+	private ElementReference area { get; set; }
+
+	[Parameter]
+	public string Value { get; set; } = "";
+
+	public string Val
+	{
+		get => Value;
+		set
+		{
+			if (Value == value) return;
+			Value = value;
+			ValueChanged.InvokeAsync(value);
+		}
+	}
+
+	[Parameter]
+	public EventCallback<string> ValueChanged { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+			await module.InvokeVoidAsync("connect", area);
+		}
+		await base.OnAfterRenderAsync(firstRender);
+		if (module is not null) await module.InvokeVoidAsync("doOnInput", area);
+
+	}
+	public async ValueTask DisposeAsync()
+	{
+		if (module is not null) await module.InvokeVoidAsync("disconnect", area);
+	}
+}

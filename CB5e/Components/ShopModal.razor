@@ -1,0 +1,200 @@
+﻿@inject ContextService context;
+@inject IJSRuntime JSRuntime;
+@implements IDisposable;
+<div class="modal fade" @ref="modal" tabindex="-1">
+	<div class="modal-dialog modal-fullscreen-md-down modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Shop</h5>
+				<button type="button" class="btn-close" data-bs-backdrop="false" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				@if(MagicProperty is not null)
+				{
+					<h6>Choose an item for @MagicProperty.Name</h6>
+				}
+				@if(ShowShop)
+				{
+					<Shop @ref="Shop" OnSelectItem="AddItem" OnSelectMagicProperty="AddMagicProperty" OnSelectBoon="AddBoon" OnSelectSpell="AddScroll" ItemToMatch="ItemToMatch" />
+				}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-backdrop="false" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@code {
+	[Parameter]
+	public Guid Guid { get; set; } = Guid.NewGuid();
+
+	[Parameter]
+	public bool ShowShop { get; set; } = false;
+
+	[Parameter]
+	public JournalEntry? Entry { get; set; } = null;
+
+	[Parameter]
+	public MagicProperty? MagicProperty { get; set; } = null;
+
+	[Parameter]
+	public Possession? ItemToMatch { get; set; } = null;
+
+	private IJSObjectReference? module;
+	private IJSObjectReference? modalRef;
+	private ElementReference? modal;
+
+
+	private Shop? Shop { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.ShopEvent += Open;
+		return Task.CompletedTask;
+	}
+
+	private async Task Open(JournalEntry? entry, Possession? possession)
+	{
+		Entry = entry;
+		ShowShop = true;
+		ItemToMatch = possession;
+		StateHasChanged();
+		if (module is null)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		}
+		if (modalRef is null)
+		{
+			modalRef = await module.InvokeAsync<IJSObjectReference>("createModal", modal);
+			if (Shop is not null)
+			{
+				await module.InvokeVoidAsync("autofocus", modal, Shop.Search);
+			} else
+			{
+				Console.WriteLine("Meh!");
+			}
+		}
+		await modalRef.InvokeVoidAsync("show");
+		StateHasChanged();
+	}
+
+	private async Task AddMagicProperty(MagicProperty property)
+	{
+		ChangeType change = ChangeType.Features;
+		if (ItemToMatch != null)
+		{
+			context.Context.MakeHistory("");
+			context.Context.MakeHistory("");
+			ItemToMatch.MagicProperties.Add(property.Name + " " + ConfigManager.SourceSeperator + " " + property.Source);
+			ChangeType ev = ChangeType.Features;
+			if (ItemToMatch is JournalPossession) ev = ev | ChangeType.Journal;
+			else ev = ev | ChangeType.Inventory;
+			await Close();
+			await context.NotifyPlayerChange(ev);
+			return;
+		}
+		if (string.IsNullOrWhiteSpace(property.Base))
+		{
+			context.Context.MakeHistory("");
+			Possession p = new Possession(context.Context, null, property);
+			if (Entry is not null) {
+				Entry.Possessions.Add(new JournalPossession(p));
+				change |= ChangeType.Journal;
+			} else
+			{
+				context.Context.Player.AddPossession(p);
+			}
+			await Close();
+			await context.NotifyPlayerChange(change);
+		} else
+		{
+			MagicProperty = property;
+			if (Shop is not null) {
+				Shop.MatchProperty(property);
+			}	
+			StateHasChanged();
+		}
+	}
+
+	private async Task AddScroll(Spell spell)
+	{
+		context.Context.MakeHistory("");
+		Possession p = new Possession(context.Context, new Scroll(spell), 1);
+		ChangeType change = ChangeType.FormsCompanions;
+		if (Entry is not null)
+		{
+			Entry.Possessions.Add(new JournalPossession(p));
+			change |= ChangeType.Journal;
+		}
+		else
+		{
+			context.Context.Player.AddPossession(p);
+		}
+		await Close();
+		await context.NotifyPlayerChange(change);
+	}
+
+	private async Task AddBoon(Feature f)
+	{
+		context.Context.MakeHistory("");
+		string boon = f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source;
+		ChangeType change = ChangeType.Features;
+		if (Entry is not null)
+		{
+			Entry.Boons.Add(new JournalBoon(boon));
+			change |= ChangeType.Journal;
+		}
+		else
+		{
+			context.Context.Player.Boons.Add(boon);
+		}
+		await Close();
+		await context.NotifyPlayerChange(change);
+	}
+
+	private async Task AddItem(Item? item)
+	{
+		context.Context.MakeHistory("");
+		Possession p;
+		ChangeType change;
+		if (MagicProperty is not null)
+		{
+			p = new Possession(context.Context, item, MagicProperty);
+			change = ChangeType.Features;
+		} 
+		else
+		{
+			p = new Possession(context.Context, item, 1);
+			change = ChangeType.Inventory;
+		}
+		if (item is null)
+		{
+			p.Name = "(Custom Item)";
+		}
+		if (Entry is not null)
+		{
+			Entry.Possessions.Add(new JournalPossession(p));
+			change |= ChangeType.Journal;
+		} else
+		{
+			context.Context.Player.AddPossession(p);
+		}
+		await Close();
+		await context.NotifyPlayerChange(change);
+	}
+
+	private async Task Close()
+	{
+		Shop?.MatchProperty(null);
+		Entry = null;
+		MagicProperty = null;
+		if (modalRef is not null) await modalRef.InvokeVoidAsync("hide");
+	}
+
+	public void Dispose()
+	{
+		context.ShopEvent -= Open;
+	}
+}

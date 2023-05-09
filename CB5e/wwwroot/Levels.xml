@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Level xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Experience>
+    <int>0</int>
+    <int>300</int>
+    <int>900</int>
+    <int>2700</int>
+    <int>6500</int>
+    <int>14000</int>
+    <int>23000</int>
+    <int>34000</int>
+    <int>48000</int>
+    <int>64000</int>
+    <int>85000</int>
+    <int>100000</int>
+    <int>120000</int>
+    <int>140000</int>
+    <int>165000</int>
+    <int>195000</int>
+    <int>225000</int>
+    <int>265000</int>
+    <int>305000</int>
+    <int>355000</int>
+  </Experience>
+  <Proficiency>
+    <int>2</int>
+    <int>2</int>
+    <int>2</int>
+    <int>2</int>
+    <int>3</int>
+    <int>3</int>
+    <int>3</int>
+    <int>3</int>
+    <int>4</int>
+    <int>4</int>
+    <int>4</int>
+    <int>4</int>
+    <int>5</int>
+    <int>5</int>
+    <int>5</int>
+    <int>5</int>
+    <int>6</int>
+    <int>6</int>
+    <int>6</int>
+    <int>6</int>
+  </Proficiency>
+</Level>

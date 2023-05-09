@@ -1,0 +1,47 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div @onclick="Toggle" title="Attunement" class="@CssClass @(Possession?.Attuned == true ? CheckedClass : UnCheckedClass)" />
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "btn m-0 p-0 bi w-100 text-center";
+
+	[Parameter]
+	public string? CheckedClass { get; set; } = "bi-check-square";
+
+	[Parameter]
+	public string? UnCheckedClass { get; set; } = "bi-square";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Inventory;
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task Toggle()
+	{
+		if (Possession is null) return;
+		context.Context.MakeHistory("PossesionAttunement");
+		Possession.Attuned = !Possession.Attuned;
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

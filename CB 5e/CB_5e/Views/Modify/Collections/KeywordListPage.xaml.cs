@@ -131,6 +131,17 @@ namespace CB_5e.Views.Modify.Collections
                             }
                         })));
                     }
+                    else if (fvm.Value is Royalty)
+                    {
+                        await Navigation.PushAsync(new CustomTextEntryPage("Royalty", new Command((par) =>
+                        {
+                            if (par is string s)
+                            {
+                                entries.Add(new Royalty(s));
+                                Fill();
+                            }
+                        })));
+                    }
                     else if(fvm.Value is Range)
                     {
                         await Navigation.PushAsync(new CustomDualTextEntryPage("Range", new Command((par) =>
@@ -193,6 +204,7 @@ namespace CB_5e.Views.Modify.Collections
                 case KeywordGroup.SPELL:
                     foreach (String s in "Abjuration, Conjuration, Divination, Evocation, Enchantment, Illusion, Necromancy, Transmutation".Split(',')) Examples.Add(new Keyword(s.Trim()));
                     Examples.Add(new Material(""));
+                    Examples.Add(new Royalty(""));
                     foreach (String s in "Somatic, Verbal, Attack".Split(',')) Examples.Add(new Keyword(s.Trim()));
                     Examples.Add(new Save(Ability.None));
                     foreach (String s in "Healing, Cantrip, Ritual, Ranged, Melee, Touch, Self, Cone, Cube, Cylinder, Line, Sphere, Wall, Instantaneous, Concentration".Split(',')) Examples.Add(new Keyword(s.Trim()));

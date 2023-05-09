@@ -1,0 +1,112 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@foreach (var res in resources) {
+		<div class="@Col1CssClass">
+			<div class="@Col1DivCssClass">
+				<span><Tag Title="@res.Title" CssClass="position-tr" XmlLoader="@(()=>res.XmlLoader is string s ? context.Context.Player.GetResourceFeatures(s) : res.ModifiedSpell)" />@res.Title</span>
+			</div>
+		</div>
+		<div class="@Col2CssClass">
+			@if (res.Recharge == RechargeModifier.AtWill) {
+				<div class="@Col2DivCssClass @InfiniteCssClass"></div>
+			} 
+			else
+			{
+				<ResourceCount CssClass="@(Col2DivCssClass + " " + FiniteCssClass)" EventMask="@EventMask" EventType="@LineEventType" InputCssClass="@InputCssClass" ReloadCssClass="@ReloadCssClass" Info="@res"/>
+			}
+		</div>
+		<div class="@Col3CssClass">
+			<div class="@Col3DivCssClass">@ModifiedSpell.RechargeName(res.Recharge)</div>
+		</div>
+	}
+</div>
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "row";
+
+	[Parameter]
+	public string? Col1CssClass { get; set; } = "col-6";
+
+	[Parameter]
+	public string? Col2CssClass { get; set; } = "col-3";
+
+	[Parameter]
+	public string? Col3CssClass { get; set; } = "col-3";
+
+	[Parameter]
+	public string? Col1DivCssClass { get; set; } = "bg-body-secondary position-relative";
+
+	[Parameter]
+	public string? Col2DivCssClass { get; set; } = "bg-body-secondary text-center position-relative";
+
+	[Parameter]
+	public string? Col3DivCssClass { get; set; } = "bg-body-secondary text-end";
+
+	[Parameter]
+	public string? OptionsCssClass { get; set; } = "fs--2";
+
+	[Parameter]
+	public string? TagCssClass { get; set; } = "position-tr";
+	[Parameter]
+	public string? InfiniteCssClass { get; set; } = "bi bi-infinity";
+	[Parameter]
+	public string? FiniteCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit p-0 bg-transparent";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "reset bi bi-bootstrap-reboot position-tl fs--1 btn p-0";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType LineEventType { get; set; } = ChangeType.Resources;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = 0;
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	private List<Info> resources { get; set; } = new List<Info>();
+
+	public record struct Info(string Title, string? XmlLoader, int Count, RechargeModifier Recharge, ResourceInfo? ResInfo, ModifiedSpell? ModifiedSpell);
+
+	private void BuildInfo()
+	{
+		resources.Clear();
+		resources.AddRange(context.Context.Player.GetResourceInfo(false, context.Level, Scores, Features).Select(r => new Info(r.Value.Name, r.Key, r.Value.Max, r.Value.Recharge, r.Value, null)));
+		resources.AddRange(context.Context.Player.GetBonusSpells(false, false, Features).Select(ms => new Info(ms.Name, null, 1, ms.RechargeModifier != RechargeModifier.Unmodified ? ms.RechargeModifier : ms.Level == 0 ? RechargeModifier.AtWill : RechargeModifier.LongRest, null, ms)));
+		resources.Sort((a, b) => string.Compare(a.Title, b.Title, StringComparison.OrdinalIgnoreCase));
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildInfo();
+		return Task.CompletedTask;
+	}
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		BuildInfo();
+		base.OnAfterRender(firstRender);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) await InvokeAsync(() =>
+			{
+				BuildInfo();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

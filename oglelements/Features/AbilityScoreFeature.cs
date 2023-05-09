@@ -35,7 +35,7 @@ namespace OGL.Features
             Charisma = cha;
             Modifier = mod;
         }
-        public AbilityScoreModifikation Modifier;
+        public AbilityScoreModifikation Modifier { get; set; }
         public int Strength { get; set; }
         public int Constitution { get; set; }
         public int Dexterity { get; set; }

@@ -27,6 +27,7 @@ namespace Character_Builder_Builder
             //var e = new Expression(ConfigManager.fixQuotes(s));
             //e.EvaluateParameter += (name, args) => args.Result = (name.ToLowerInvariant() == "name") ? Name.ToLowerInvariant() : "";
             //Console.WriteLine(s + " = " + e.Evaluate());
+            AppContext.SetSwitch("Switch.System.Xml.AllowDefaultResolver", true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ConfigManager.LogEvents += (sender, text, e) => Console.WriteLine((text != null ? text + ": " : "") + e?.StackTrace);
@@ -110,6 +111,7 @@ namespace Character_Builder_Builder
                                 foreach (var e in monster)
                                 {
                                     if (e is JProperty prop) {
+                                        if (prop.Value.ToString() == "[]") continue;
                                         switch (prop.Name.ToLowerInvariant())
                                         {
                                             case "name":
@@ -142,7 +144,7 @@ namespace Character_Builder_Builder
                                                 break;
                                             case "type":
                                                 string type = prop.Value.ToString();
-                                                string[] types = type.Split(',');
+                                                string[] types = prop.Value is JArray ? prop.Values().Select(val => val.ToString()).ToArray() : prop.Value.ToString().Split(',');
                                                 if (types.Length == 1)
                                                 {
                                                     types = new string[] { types[0], "Unknown Source" };
@@ -171,7 +173,7 @@ namespace Character_Builder_Builder
                                                         m.Source = "Storm King's Thunder";
                                                         break;
                                                     case "unknown source":
-                                                        m.Source = "No Source";
+                                                        m.Source = Path.GetFileNameWithoutExtension(file);
                                                         break;
                                                     case "out of the abyss":
                                                         m.Source = "Out of the Abyss";
@@ -305,19 +307,21 @@ namespace Character_Builder_Builder
                                                 }
                                                 break;
                                             case "save":
-                                                string[] saves = prop.Value.ToString().Split(',');
+                                            case "saves":
+                                                string[] saves = prop.Value is JArray ? prop.Values().Select(val=>val.ToString()).ToArray() : prop.Value.ToString().Split(',');
                                                 foreach (string save in saves) monsterSaves.Add(save.Trim());
                                                 break;
+                                            case "spell":
                                             case "spells":
-                                                string[] spells = prop.Value.ToString().Split(',');
+                                                string[] spells = prop.Value is JArray ? prop.Values().Select(val => val.ToString()).ToArray() : prop.Value.ToString().Split(',');
                                                 foreach (string s in spells) m.Spells.Add(s.Trim());
                                                 break;
                                             case "slots":
-                                                string[] slots = prop.Value.ToString().Split(',');
-                                                foreach (string s in slots) m.Slots.Add(int.Parse(s.Trim()));
+                                                string[] slots = prop.Value is JArray ? prop.Values().Select(val => val.ToString()).ToArray() : prop.Value.ToString().Split(',');
+                                                foreach (string s in slots) if (s.Length > 0) m.Slots.Add(int.Parse(s.Trim()));
                                                 break;
                                             case "senses":
-                                                string[] senses = prop.Value.ToString().Split(',');
+                                                string[] senses = prop.Value is JArray ? prop.Values().Select(val => val.ToString()).ToArray() : prop.Value.ToString().Split(',');
                                                 foreach (string s in senses) m.Senses.Add(s.Trim());
                                                 break;
                                             case "legendary":
@@ -406,7 +410,12 @@ namespace Character_Builder_Builder
                                                 string[] vulnerable = prop.Value.ToString().Split(',');
                                                 foreach (string s in vulnerable) m.Vulnerablities.Add(s.Trim());
                                                 break;
-                                            
+                                            case "spellability":
+                                                break;
+                                            case "init":
+                                                break;
+                                            case "environment":
+                                                break;
                                             default:
                                                 throw new Exception("Unexpected property " + prop + " in " + m);
                                         }

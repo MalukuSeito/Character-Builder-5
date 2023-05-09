@@ -14,6 +14,7 @@ namespace OGL
     {
         [XmlIgnore]
         public string FileName { get; set; }
+        public bool ShouldSerializeFileName() => false;
         [XmlIgnore]
         public static XmlSerializer Serializer = new XmlSerializer(typeof(SubClass));
         [XmlArrayItem(Type = typeof(Description)),
@@ -56,8 +57,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> Features;
-        [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
+        public List<Feature> Features { get; set; }
+		[XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
         XmlArrayItem(Type = typeof(CollectionChoiceFeature)),
@@ -93,8 +94,8 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> MulticlassingFeatures;
-        [XmlArrayItem(Type = typeof(AbilityScoreFeature)),
+        public List<Feature> MulticlassingFeatures { get; set; }
+		[XmlArrayItem(Type = typeof(AbilityScoreFeature)),
         XmlArrayItem(Type = typeof(BonusSpellKeywordChoiceFeature)),
         XmlArrayItem(Type = typeof(ChoiceFeature)),
         XmlArrayItem(Type = typeof(CollectionChoiceFeature)),
@@ -130,9 +131,9 @@ namespace OGL
         XmlArrayItem(Type = typeof(ResourceFeature)),
         XmlArrayItem(Type = typeof(SpellModifyFeature)),
         XmlArrayItem(Type = typeof(VisionFeature))]
-        public List<Feature> FirstClassFeatures;
-        public List<int> MulticlassingSpellLevels;
-        public String Source { get; set; }
+        public List<Feature> FirstClassFeatures { get; set; }
+		public List<int> MulticlassingSpellLevels { get; set; }
+		public String Source { get; set; }
         public String Flavour { get; set; }
         public String Name { get; set; }
         public String SheetName { get; set; }

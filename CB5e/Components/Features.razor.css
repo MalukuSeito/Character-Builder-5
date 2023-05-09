@@ -1,0 +1,13 @@
+﻿.bi-file-earmark-pdf-fill:hover::before {
+    content: "\f640";
+}
+.bi-file-earmark-pdf:hover::before {
+    content: "\f63f";
+}
+.hidepdf {
+    position:absolute;
+    right:0px;
+    bottom:-1.3em;
+    z-index:2;
+}
+

@@ -9,6 +9,7 @@ namespace PluginDMG
 {
     public class SingleLanguage : IPlugin
     {
+        public int ExecutionOrdering { get => 0; }
         private static SkillProficiencyChoiceFeature background = new SkillProficiencyChoiceFeature("Skill Proficiency", "", "VARIANT_SKILL_FOR_LANGUAGE", 0, 0, true);
         private static SkillProficiencyChoiceFeature boon = new SkillProficiencyChoiceFeature("Skill Proficiency", "", "VARIANT_SKILL_FOR_LANGUAGE", 0, 0, true);
         private static SkillProficiencyChoiceFeature cls = new SkillProficiencyChoiceFeature("Skill Proficiency", "", "VARIANT_SKILL_FOR_LANGUAGE", 0, 0, true);

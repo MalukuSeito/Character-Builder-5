@@ -1,0 +1,75 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<span class="@LineCssClass">
+		<button @onclick="async ()=>await ToggleDead(1)" class="@ButtonCssClass @(context.Context.Player.FailedDeathSaves >= 1 ? FailedUncheckCssClass : FailedCheckCssClass)" title="Failed Death Save"/>
+		<button @onclick="async ()=>await ToggleDead(2)" class="@ButtonCssClass @(context.Context.Player.FailedDeathSaves >= 2 ? FailedUncheckCssClass : FailedCheckCssClass)" title="Failed Death Save" />
+		<button @onclick="async ()=>await ToggleDead(3)" class="@ButtonCssClass @(context.Context.Player.FailedDeathSaves >= 3 ? FailedUncheckCssClass : FailedCheckCssClass)" title="Failed Death Save" />
+	</span>
+	<span class="@LineCssClass">
+		<button @onclick="async ()=>await ToggleSuccess(1)" class="@ButtonCssClass @(context.Context.Player.SuccessDeathSaves >= 1 ? SucceessUncheckCssClass : SucceessCheckCssClass)" title="Successful Death Save" />
+		<button @onclick="async ()=>await ToggleSuccess(2)" class="@ButtonCssClass @(context.Context.Player.SuccessDeathSaves >= 2 ? SucceessUncheckCssClass : SucceessCheckCssClass)" title="Successful Death Save" />
+		<button @onclick="async ()=>await ToggleSuccess(3)" class="@ButtonCssClass @(context.Context.Player.SuccessDeathSaves >= 3 ? SucceessUncheckCssClass : SucceessCheckCssClass)" title="Successful Death Save" />
+	</span>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "text-nowrap mx-2 my-0 p-0";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "btn bi p-0 m-0";
+
+	[Parameter]
+	public string? FailedCheckCssClass { get; set; } = "bi-dash-circle";
+
+	[Parameter]
+	public string? FailedUncheckCssClass { get; set; } = "bi-dash-circle-fill";
+
+	[Parameter]
+	public string? SucceessCheckCssClass { get; set; } = "bi-plus-circle";
+
+	[Parameter]
+	public string? SucceessUncheckCssClass { get; set; } = "bi-plus-circle-fill";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async Task ToggleDead(int index)
+	{
+		context.Context.MakeHistory("DeathSave");
+		if (context.Context.Player.FailedDeathSaves < index) context.Context.Player.FailedDeathSaves++;
+		else context.Context.Player.FailedDeathSaves--;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task ToggleSuccess(int index)
+	{
+		context.Context.MakeHistory("DeathSave");
+		if (context.Context.Player.SuccessDeathSaves < index) context.Context.Player.SuccessDeathSaves++;
+		else context.Context.Player.SuccessDeathSaves--;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

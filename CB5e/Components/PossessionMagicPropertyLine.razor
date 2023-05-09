@@ -1,0 +1,58 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@if (Property is not null)
+	{
+		<span>@Property.ToString()<Tag Xml="Property" /></span>
+		<div class="@RemoveItemButtonCssClass" @onclick="Delete" title="Remove Property"></div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public MagicProperty? Property { get; set; }
+
+	[Parameter]
+	public Possession? Possession { get; set; }
+
+	[Parameter]
+	public string? CssClass { get; set; } = "postion-relative";
+
+	[Parameter]
+	public string? TagCssClass { get; set; } = "position-tr";
+
+	[Parameter]
+	public string? RemoveItemButtonCssClass { get; set; } = "btn btn-white bi bi-trash3 autohide d-inline";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async Task Delete()
+	{
+		if (Possession is null || Property is null) return;
+		context.Context.MakeHistory("");
+		Possession.MagicProperties.RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, Property.Name));
+		context.Context.Player.AddPossession(Possession);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

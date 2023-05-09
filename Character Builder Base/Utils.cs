@@ -145,7 +145,7 @@ namespace Character_Builder
             return Evaluate(context, f.HitPoints, asa, additionalKeywords, classlevel, level);
         }
 
-        public static int Evaluate(BuilderContext context, String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null, String SpellcastingID = null)
+        public static int Evaluate(BuilderContext context, String expression, AbilityScoreArray asa, List<string> additionalKeywords = null, int classlevel = 0, int level = 0, Item i = null, String SpellcastingID = null, int? proficincyBonus = null)
         {
             if (level == 0) level = context.Player.GetLevel();
             if (classlevel == 0) classlevel = level;
@@ -168,7 +168,7 @@ namespace Character_Builder
                     else if (name == "wismod" || name == "wisdommodifier") args.Result = asa.WisMod;
                     else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
                     else if (name == "chamod" || name == "charismamodifier") args.Result = asa.ChaMod;
-                    else if (name == "proficiencybonus") args.Result = context.Player.GetProficiency(level);
+                    else if (name == "proficiencybonus") args.Result = proficincyBonus ?? context.Player.GetProficiency(level);
                     else if (name == "playerlevel") args.Result = level;
                     else if (name == "race") args.Result = context.Player.RaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.RaceName.ToLowerInvariant());
                     else if (name == "subrace") args.Result = context.Player.SubRaceName == null ? "" : SourceInvariantComparer.NoSource(context.Player.SubRaceName.ToLowerInvariant());
@@ -797,7 +797,7 @@ namespace Character_Builder
                 {
                     name = name.ToLowerInvariant();
                     if (name == "value") args.Result = value;
-                    else if (name == "valuename" || name == "skill" || name == "Save") args.Result = valname;
+                    else if (name == "valuename" || name == "skill" || name == "save") args.Result = valname;
                     else if (name == "str" || name == "strength") args.Result = asa.Strength;
                     else if (name == "dex" || name == "dexterity") args.Result = asa.Dexterity;
                     else if (name == "con" || name == "constitution") args.Result = asa.Constitution;

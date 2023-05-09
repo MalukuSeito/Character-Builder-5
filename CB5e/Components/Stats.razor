@@ -1,0 +1,110 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (Resistances.Count > 0 || Vulnerabilities.Count > 0 || Immunities.Count > 0 || SavingThrowAdvantages.Count > 0)
+{
+	<div class="@CssClass">
+		@if (Resistances.Count > 0)
+		{
+			<div class="@BoxCssClass">
+				@foreach(var item in Resistances)
+				{
+					<span class="csv">@item</span>
+				}
+			</div>
+			<div class="@TitleCssClass">Resistances</div>
+		}
+		@if (Immunities.Count > 0)
+		{
+			<div class="@BoxCssClass">
+				@foreach (var item in Immunities)
+				{
+					<span class="csv">@item</span>
+				}
+			</div>
+			<div class="@TitleCssClass">Immunities</div>
+		}
+		@if (SavingThrowAdvantages.Count > 0)
+		{
+			<div class="@BoxCssClass">
+				@foreach (var item in SavingThrowAdvantages)
+				{
+					<span class="csv">@item</span>
+				}
+			</div>
+			<div class="@TitleCssClass">Advantage on Saves against</div>
+		}
+		@if (Vulnerabilities.Count > 0)
+		{
+			<div class="@BoxCssClass">
+				@foreach (var item in Vulnerabilities)
+				{
+					<span class="csv">@item</span>
+				}
+			</div>
+			<div class="@TitleCssClass">Vulnerabilities</div>
+		}
+	</div>
+}
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center fs--2 mt-0";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	private List<string> Resistances { get; set; } = new();
+	private List<string> Vulnerabilities { get; set; } = new();
+	private List<string> Immunities { get; set; } = new();
+	private List<string> SavingThrowAdvantages { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildConditions();
+		return Task.CompletedTask;
+	}
+
+	protected override void OnParametersSet()
+	{
+		BuildConditions();
+		base.OnParametersSet();
+	}
+	private async Task StateChange(ChangeType change) {
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() => {
+			BuildConditions();
+			StateHasChanged();
+		});
+	}
+
+	private void BuildConditions()
+	{
+		Resistances.Clear();
+		Vulnerabilities.Clear();
+		Immunities.Clear();
+		SavingThrowAdvantages.Clear();
+		if (Features is null)
+		{
+			Features = context.Context.Player.GetFeatureAndAbility(out _, out _, t => true, context.Level);
+		}
+		Resistances.AddRange(context.Context.Player.GetResistances(Features));
+		Vulnerabilities.AddRange(context.Context.Player.GetVulnerabilities(Features));
+		Immunities.AddRange(context.Context.Player.GetImmunities(Features));
+		SavingThrowAdvantages.AddRange(context.Context.Player.GetSavingThrowAdvantages(Features));
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

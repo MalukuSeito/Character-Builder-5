@@ -1,0 +1,53 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	@prof.PlusMinus()
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public List<Possession>? Possessions { get; set; }
+
+	[Parameter]
+	public List<FeatureClass>? Features { get; set; }
+
+	[Parameter]
+	public AbilityScoreArray? Scores { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	private int prof { get; set; } = 0;
+
+	private void CalcProf()
+	{
+		if (Scores is null) Console.WriteLine("Null-Call");
+		prof = context.Context.Player.GetProficiency(context.Level, Features, Scores, Possessions);
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		CalcProf();
+		return Task.CompletedTask;
+	}
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				CalcProf();
+				StateHasChanged();
+			});
+	}
+
+	protected override void OnParametersSet()
+	{
+		CalcProf();
+		base.OnParametersSet();
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

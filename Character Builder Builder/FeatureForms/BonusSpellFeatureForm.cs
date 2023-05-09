@@ -26,6 +26,7 @@ namespace Character_Builder_Builder.FeatureForms
             }
             Spell.DataBindings.Add("Text", bf, "Spell");
             keywordControl1.Keywords = bf.KeywordsToAdd;
+            AddToSpellcastingCheckbox.DataBindings.Add("Checked", bf, "AddToAllSpellcastingFeatures");
         }
 
         public BonusSpellFeature edit(IHistoryManager history)

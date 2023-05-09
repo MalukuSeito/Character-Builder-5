@@ -15,8 +15,9 @@ namespace OGL.Features
         public int Amount { get; set; }
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),
-        XmlArrayItem(Type = typeof(Material))]
-        public List<Keyword> KeywordsToAdd;
+        XmlArrayItem(Type = typeof(Material)),
+        XmlArrayItem(Type = typeof(Royalty))]
+        public List<Keyword> KeywordsToAdd { get; set; }
         public SpellChoiceFeature()
             : base()
         {

@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+	<div class="sidebar">
+		<NavMenu />
+	</div>
+
+	<main>
+		<div class="top-row px-4 auth bg-body-tertiary">
+			<div class="btn-group">
+				<Undo CssClass="btn btn-outline-primary bi bi-arrow-counterclockwise" />
+				<Redo CssClass="btn btn-outline-primary bi bi-arrow-clockwise" />
+			</div>
+			<NewPlayer CssClass="btn btn-primary mx-1 bi bi-person-plus-fill" />
+			<LoadPlayer CssClass="btn btn-primary p20rem" />
+			<SavePlayer CssClass="btn btn-primary mx-1" />
+			<button class="btn btn-outline-primary bi bi-lightbulb" onclick="if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {document.documentElement.setAttribute('data-bs-theme','light')} else {document.documentElement.setAttribute('data-bs-theme','dark')}" />
+		</div>
+
+		<article class="content px-4">
+			@Body
+		</article>
+	</main>
+</div>

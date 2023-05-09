@@ -1,0 +1,50 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass" @onclick="async () => await (OnClick?.Invoke() ?? Task.CompletedTask)">
+	@if(context.Context.Player.Classes.Count == 0)
+	{
+		<span class="@SpanCssClass">--</span>
+	}
+	@foreach (var cls in context.Context.Player.Classes)
+	{
+		var sub = cls.GetSubClass(context.Context);
+		var clz = cls.GetClass(context.Context);
+		<span @key="cls" class="@SpanCssClass">
+			@cls.ToString(context.Context, context.Level)<Tag Xml="@clz" />
+			@if (sub != null)
+			{
+				<Tag Xml="@sub" Icon="bi-tags" />
+			}
+		</span>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "cursor-pointer";
+
+	[Parameter]
+	public string? SpanCssClass { get; set; } = "text-nowrap csv";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public Func<Task>? OnClick { get; set; }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

@@ -1,0 +1,62 @@
+﻿@inject ContextService context;
+@using System.Linq.Expressions;
+@using System.Reflection;
+@implements IDisposable;
+<div class="@CssClass">
+	<input type="number" class="@InputCssClass" @bind="Value" placeholder="@Placeholder" @onblur="Update" title="@Title" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? Placeholder { get; set; }
+
+	[Parameter]
+	public string? Title { get; set; }
+
+	private int? v;
+	private int? Value { get => v; set => v = value; }
+
+	[Parameter]
+	public Expression<Func<Player, int>>? Expression { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	private PropertyInfo? propertyInfo;
+
+	protected override Task OnInitializedAsync()
+	{
+		if (Expression?.Body is MemberExpression me && me.Member is PropertyInfo pi) propertyInfo = pi;
+		else throw new ArgumentException($"{Expression?.ToString()} is not accessing a property");
+		v = pi.GetValue(context.Context.Player) as int?;
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) await InvokeAsync(() =>
+			{
+				v = propertyInfo?.GetValue(context.Context.Player) as int?;
+				StateHasChanged();
+			});
+	}
+
+	private async void Update()
+	{
+		Console.WriteLine("Save");
+		context.Context.MakeHistory(propertyInfo?.Name);
+		propertyInfo?.SetValue(context.Context.Player, Value);
+		await context.NotifyPlayerChange(EventType);
+	}
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

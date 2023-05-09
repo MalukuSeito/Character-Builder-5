@@ -35,7 +35,9 @@ namespace CB_5e.ViewModels.Character
                             svm.Prepared = true;
                             Model.MakeHistory();
                             Spellcasting.GetPreparedList(Model.Context.Player, Model.Context).Add(svm.Name + " " + ConfigManager.SourceSeperator + " " + svm.Source);
-                            Model.Save();
+                            Spellcasting.ModifiedPreparedList(Model.Context.Player.GetLevel());
+
+							Model.Save();
                         }
                     } else
                     {
@@ -43,7 +45,8 @@ namespace CB_5e.ViewModels.Character
                         Model.MakeHistory();
                         string r = svm.Name + " " + ConfigManager.SourceSeperator + " " + svm.Source;
                         Spellcasting.GetPreparedList(Model.Context.Player, Model.Context).RemoveAll(s => ConfigManager.SourceInvariantComparer.Equals(s, r));
-                        Model.Save();
+						Spellcasting.ModifiedPreparedList(Model.Context.Player.GetLevel());
+						Model.Save();
                         if (svm.BadChoice) Spells.Remove(svm);
                         if (svm.BadChoice) spells.Remove(svm);
                     }

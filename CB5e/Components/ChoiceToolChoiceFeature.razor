@@ -1,0 +1,175 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+
+@if (Feature is not null) {
+	var tools = Utils.Filter(context.Context, Feature.Condition);
+	<div class="@TitleCssClass">@Feature.Name
+		@if(Feature.Amount > 1)
+		{
+			<span class="text-muted"> (@Choices.Count / @Feature.Amount)</span>
+		}
+		<Tag Xml="Feature"/>
+	</div>
+	<ul class="@CssClass">
+		@if (Choices.Count < Feature.Amount)
+		{
+			<li class="@LineCssClass bg-primary"><input type="search" class="border-0 rounded-2 w-50 visible-placeholder bg-body" placeholder="Search" @bind="SearchText" @bind:event="oninput"/></li>
+		}
+		@foreach (var tool in tools.Where(s=>string.IsNullOrWhiteSpace(SearchText) || s.Matches(SearchText, false)))
+		{
+			int count = Choices.Count(c => StringComparer.OrdinalIgnoreCase.Equals(c, tool.Name + " " + ConfigManager.SourceSeperator + " " + tool.Source));
+			@for (int c = 1; c <= 1; c++)
+			{
+				var i = c;
+				@if (Choices.Count < Feature.Amount || i <= count)
+				{
+					<li class="@LineCssClass">
+						<button class="btn @(Choices.Count < Feature.Amount ? Taken.Contains(tool.Name, ConfigManager.SourceInvariantComparer) ? "btn-secondary-outline" : "btn-primary" : "btn-primary-outline") me-3 py-0 my-0 bi @(i <= count ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(tool, i)" title="Select" />
+						<span class="@NameCssClass @(Taken.Contains(tool.Name, ConfigManager.SourceInvariantComparer) ? "text-muted" : "")" @onclick="()=>Selected = Selected == tool ? null : tool">@tool.Name</span><Tag Xml="tool" />
+						<span class="@SourceCssClass"> (@tool.Source)</span>
+						@if (Selected == tool)
+						{
+							<p class="fst-italic">@tool.Weight lb</p>
+							<p>
+								@foreach (var line in tool.Description?.Split("\n") ?? new string[] { })
+								{
+									@line
+
+									<br />
+								}
+							</p>
+							<p class="text-end">@tool.Price.ToString()</p>
+						}
+					</li>
+				}
+			}
+		}
+		@foreach (var choice in Choices.Where(c => !tools.Exists(f => StringComparer.OrdinalIgnoreCase.Equals(f.Name + " " + ConfigManager.SourceSeperator + " " + f.Source, c))))
+		{
+			<li class="@LineCssClass text-danger">
+				<button class="btn btn-danger me-3 py-0 my-0 bi bi-check-circle-fill active" @onclick="async () => await Remove(choice)" title="Remove Invalid Choice" />
+				<span class="@NameCssClass text-danger">@SourceInvariantComparer.NoSource(choice)</span>
+			</li>
+		}
+	</ul>
+}
+
+@code {
+	private string SearchText { get; set; } = "";
+
+	[Parameter]
+	public string? CssClass { get; set; } = "list-group mb-3";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "text-primary fs-4 fw-bold";
+
+	[Parameter]
+	public string? LineCssClass { get; set; } = "list-group-item";
+
+	[Parameter]
+	public string? ButtonCssClass { get; set; } = "";
+
+	[Parameter]
+	public string? NameCssClass { get; set; } = "fw-bold";
+
+	[Parameter]
+	public string? TagClass { get; set; }
+
+	[Parameter]
+	public string? SourceCssClass { get; set; } = "text-muted fs--1";
+
+	[Parameter]
+	public ToolProficiencyChoiceConditionFeature? Feature { get; set; }
+
+	[Parameter]
+	public Item? Selected { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.Features;
+
+	[Parameter]
+	public IChoiceProvider? ChoiceProvider { get; set; }
+
+	private List<string> Choices { get; set; } = new();
+
+	private List<string> Taken { get; set; } = new();
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		BuildChoices();
+		return Task.CompletedTask;
+	}
+
+	private async Task Remove(string choice)
+	{
+		Choices.Remove(choice);
+		await SaveChoices();
+	}
+
+	private async Task Select(Item item, int count)
+	{
+		var choice = item.Name + " " + ConfigManager.SourceSeperator + " " + item.Source;
+		if (Choices.Count(c=>ConfigManager.SourceInvariantComparer.Equals(c, choice)) >= count) Choices.RemoveAll(c => ConfigManager.SourceInvariantComparer.Equals(c, choice));
+		else Choices.Add(choice);
+		await SaveChoices();
+	}
+
+	private async Task SaveChoices()
+	{
+		if (Feature is null || ChoiceProvider is null) return;
+		int offset = ChoiceProvider.GetChoiceOffset(Feature, Feature.UniqueID, Feature.Amount);
+		context.Context.MakeHistory("");
+		for (int c = 0; c < Feature.Amount; c++)
+		{
+			var counter = "";
+			if (c + offset > 0) counter = "_" + (c + offset).ToString();
+			if (c < Choices.Count) ChoiceProvider.SetChoice(Feature.UniqueID + counter, Choices[c]);
+			else ChoiceProvider.RemoveChoice(Feature.UniqueID + counter);
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		BuildChoices();
+	}
+
+	private void BuildChoices()
+	{
+		if (Feature is null || ChoiceProvider is null) return;
+		Choices.Clear();
+		Taken.Clear();
+		int offset = ChoiceProvider.GetChoiceOffset(Feature, Feature.UniqueID, Feature.Amount);
+		for (int c = 0; c < ChoiceProvider.GetChoiceTotal(Feature.UniqueID); c++)
+		{
+			var counter = "";
+			if (c > 0) counter = "_" + c.ToString();
+			var cho = ChoiceProvider.GetChoice(Feature.UniqueID + counter);
+			if (cho != null && cho.Value != "") Taken.Add(cho.Value);
+		}
+		for (int c = 0; c < Feature.Amount; c++)
+		{
+			var counter = "";
+			if (c + offset > 0) counter = "_" + (c + offset).ToString();
+			var cho = ChoiceProvider.GetChoice(Feature.UniqueID + counter);
+			if (cho != null && cho.Value != "") Choices.Add(cho.Value);
+		}
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		Console.WriteLine($"{change}, {EventMask}, {EventType}");
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				BuildChoices();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}

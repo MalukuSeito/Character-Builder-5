@@ -2,8 +2,8 @@
 {
     public class UsedResource
     {
-        public string ResourceID;
-        public int Used;
+        public string ResourceID { get; set; }
+        public int Used { get; set; }
         public UsedResource()
         {
             ResourceID = "";

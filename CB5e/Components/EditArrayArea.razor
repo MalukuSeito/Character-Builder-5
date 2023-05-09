@@ -1,0 +1,110 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<input type="text" @bind="TitleText" class="@InputCssClass" placeholder="@TitlePlaceholder" title="@TitleTitle" />
+	<ResizingTextArea CssClass="@TextAreaCssClass" @bind-Value="ValueText" Placeholder="@TextPlaceholder" Title="@TextTitle" />
+	<button class="@RemoveButtonCssClass" @onclick="Remove" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "position-relative";
+
+	[Parameter]
+	public string? TextAreaCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 p-0";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-bold m-0 p-0";
+
+	[Parameter]
+	public string? RemoveButtonCssClass { get; set; } = "bi bi-dash position-tr autohide btn fs--1";
+
+	[Parameter]
+	public string? TextPlaceholder { get; set; }
+
+	[Parameter]
+	public string? TextTitle { get; set; }
+
+	[Parameter]
+	public string? TitlePlaceholder { get; set; }
+
+	[Parameter]
+	public string? TitleTitle { get; set; }
+
+	private string? v;
+	private string ValueText { get => (v?.Contains("\n") ?? false) ? v.Split("\n", 2)[1] : ""; set => Update(string.IsNullOrEmpty(value) ? TitleText : TitleText + "\n" + value); }
+	private string TitleText { get => (v?.Contains("\n") ?? false) ? v.Split("\n", 2)[0] : (v??""); set => Update(string.IsNullOrEmpty(ValueText) ? value : value + "\n" + ValueText); }
+
+	[Parameter]
+	public Func<List<string>>? Expression { get; set; }
+
+	[Parameter]
+	public int? Index { get; set; }
+
+	[Parameter]
+	public string? Event { get; set; }
+
+	[Parameter]
+	public bool Multiline { get; set; } = true;
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayerInfo;
+
+	protected override Task OnInitializedAsync()
+	{
+		var strings = Expression?.Invoke();
+		if(Index is not null && strings is not null)
+		{
+			if (Index is not null && strings is not null && Index < strings.Count) v = strings[Index ?? 0];
+			else v = null;
+		}
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventType, EventMask)) {
+			await InvokeAsync(() =>
+			{
+				var strings = Expression?.Invoke();
+				if (Index is not null && strings is not null && Index < strings.Count) v = strings[Index ?? 0];
+				else v = null;
+				StateHasChanged();
+			});
+		}
+	}
+
+	private async void Remove()
+	{
+		context.Context.MakeHistory(Event ?? "");
+		var strings = Expression?.Invoke();
+		if (Index is not null && strings is not null && strings.Count > Index)
+		{
+			strings.RemoveAt(Index??0);
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async void Update(string? v)
+	{
+		if (!Multiline) this.v = v?.Replace("\n", " ");
+		else this.v = v;
+		context.Context.MakeHistory(Event??"");
+		var strings = Expression?.Invoke();
+		if (Index is not null && strings is not null)
+		{
+			while (strings.Count < Index) strings.Add("");
+			strings[Index ?? 0] = v ??"";
+		}
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+	}
+}

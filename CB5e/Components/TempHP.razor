@@ -1,0 +1,73 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<input class="@InputCssClass @(Value == "0"? ZeroInputCssClass : NonZeroInputCssClass)" @bind="Value" />
+	<button class="@ReloadCssClass" @onclick="Reset" title="Reset" />
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit text-inherit-on-focus";
+
+	[Parameter]
+	public string? ReloadCssClass { get; set; } = "reset bi bi-bootstrap-reboot";
+
+	[Parameter]
+	public string? ZeroInputCssClass { get; set; } = "text-white";
+
+	[Parameter]
+	public string? NonZeroInputCssClass { get; set; } = "";
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.PlayData;
+
+	private string? v;
+	private string? Value { get => v; set => Update(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		v = context.Context.Player.TempHP.ToString();
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async void Reset()
+	{
+		context.Context.MakeHistory("TempHP");
+		context.Context.Player.TempHP = 0;
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask, EventType)) await InvokeAsync(() =>
+			{
+				v = context.Context.Player.TempHP.ToString();
+				StateHasChanged();
+			});
+	}
+
+	private async void Update(string? v)
+	{
+		context.Context.MakeHistory("TempHP");
+		if (string.IsNullOrEmpty(v)) return;
+		int val = 0;
+		if (v.StartsWith("+") && int.TryParse(v.Substring(1), out int added)) val = context.Context.Player.TempHP + added;
+		else if (int.TryParse(v, out int parsed))
+		{
+			if (parsed < 0) val = context.Context.Player.TempHP + parsed;
+			else val = parsed;
+		}
+		else return;
+		context.Context.Player.TempHP = Math.Max(0, val);
+		await context.NotifyPlayerChange(EventType);
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}
