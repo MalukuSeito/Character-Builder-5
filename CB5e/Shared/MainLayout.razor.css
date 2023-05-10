@@ -12,6 +12,7 @@ main {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
     position: sticky;
     top: 0;
+    z-index: 1;
 }
 
 ::deep .p20rem {

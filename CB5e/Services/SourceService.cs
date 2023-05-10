@@ -1,10 +1,12 @@
 ﻿using BlazorDB;
 using Character_Builder;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using OGL;
 using OGL.Features;
 using OGL.Items;
 using System.IO.Compression;
+using System.Web;
 
 namespace CB5e.Services
 {
@@ -12,12 +14,14 @@ namespace CB5e.Services
     {
         public static readonly string Database = "StorageTest";
 		public static readonly string Storage = "Test2";
+        private readonly List<string> DefaultSources = new ();
+        private readonly IJSRuntime Runtime;
 
 		public List<ISource> Sources { get; private set; } = new List<ISource>();
-        public SourceService (IWebAssemblyHostEnvironment hostEnvironment)
+        public SourceService (IWebAssemblyHostEnvironment hostEnvironment, IJSRuntime jSRuntime)
         {
-            //Sources.Add(new UrlSource("Systems Reference Document v5.1", hostEnvironment.BaseAddress + "Systems%20Reference%20Document%20v5.1.zip"));
-        }
+			Runtime = jSRuntime; 
+		}
 
         public async Task FindAsync(IBlazorDbFactory dbFactory)
         {
@@ -27,15 +31,24 @@ namespace CB5e.Services
                 if (e.Failed) Console.WriteLine(e.Message);
             };
             var list = await db.ToArray<SourcePreview>(Storage);
-            if (list is not null)
+            if (list is not null && list.Count > 0)
             {
                 foreach (SourcePreview entry in list)
                 {
-                    Sources.Add(new CachedSource(dbFactory, entry.Name, null));
+                    Sources.Add(new CachedSource(dbFactory, entry.Name ?? "Unkown Source", null));
                 }
             } else
             {
-            }
+                if (DefaultSources.Count == 0)
+                {
+                    var module = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./SourceService.js");
+                    DefaultSources.AddRange(await module.InvokeAsync<List<string>>("datafiles"));
+                }
+                foreach (var source in DefaultSources)
+                {
+                    Sources.Add(new UrlSource(HttpUtility.UrlDecode(Path.GetFileNameWithoutExtension(source)), source));
+                }
+			}
         }
 
     }
@@ -63,12 +76,12 @@ namespace CB5e.Services
 
 	public class SourcePreview
 	{
-		public string Name { get; set; }
+		public string? Name { get; set; }
 	}
 	public class SourceEntry
     {
-        public string Name { get; set; }
-        public OGLContext Context { get; set; }
+        public string? Name { get; set; }
+        public OGLContext? Context { get; set; }
     }
 
     public class CachedSource : ISource
@@ -82,12 +95,13 @@ namespace CB5e.Services
         private OGLContext? cached = null;
         private IBlazorDbFactory dbFactory;
 
-        public CachedSource(IBlazorDbFactory dbFactory)
+        public CachedSource(IBlazorDbFactory dbFactory, string name)
         {
             this.dbFactory = dbFactory;
+            Name = name;
         }
 
-        public CachedSource(IBlazorDbFactory dbFactory, string name, OGLContext cached)
+        public CachedSource(IBlazorDbFactory dbFactory, string name, OGLContext? cached)
         {
             this.dbFactory = dbFactory;
             Name = name;

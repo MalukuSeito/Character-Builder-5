@@ -1,25 +1,27 @@
-﻿.bi-journal-x:hover::before {
-    content: "\f62a";
-}
+﻿@media (hover: hover) {
+    .bi-journal-x:hover::before {
+        content: "\f62a";
+    }
 
-.bi-arrows-expand:hover::before {
-    content: "\f14b";
-}
-.bi-arrows-collapse:hover::before {
-    content: "\f14c";
-}
+    .bi-arrows-expand:hover::before {
+        content: "\f14b";
+    }
 
-.bi-file-earmark-pdf-fill:hover::before {
-    content: "\f640";
-}
-.bi-file-earmark-pdf:hover::before {
-    content: "\f63f";
-}
+    .bi-arrows-collapse:hover::before {
+        content: "\f14c";
+    }
 
+    .bi-file-earmark-pdf-fill:hover::before {
+        content: "\f640";
+    }
+
+    .bi-file-earmark-pdf:hover::before {
+        content: "\f63f";
+    }
+}
 .buttonrow {
-    fill-opacity:1;
-    position:absolute;
-    right:10px;
-    top:-24px;
+    fill-opacity: 1;
+    position: absolute;
+    right: 10px;
+    top: -24px;
 }
-

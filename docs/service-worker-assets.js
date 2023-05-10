@@ -45,7 +45,7 @@
       "url": "Config.xml"
     },
     {
-      "hash": "sha256-FKciih6LbI3ifvPjvhntfmtYqWK+B+5RrbpE0q6TnlM=",
+      "hash": "sha256-0FUdTl8NvtN1Hw8whsV\/kme9NtBmIjZnUoL7uQok7vI=",
       "url": "css\/app.css"
     },
     {
@@ -121,7 +121,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-HDYRJi0KNT72g4GDcrMcpDf0QpA40wJ\/ZOnHTGenSAM=",
+      "hash": "sha256-JY3qQcuWS5cfgFd\/spsyvL6YD0LBLqPojFyDu4oVS9Q=",
       "url": "index.html"
     },
     {
@@ -135,6 +135,10 @@
     {
       "hash": "sha256-yzFf+O\/mlH+Q9klUSqXP2kxGKOUFLPxaww8da8fKhGU=",
       "url": "sample-data\/weather.json"
+    },
+    {
+      "hash": "sha256-5hYoWeLaP3cI0VikZBBhV0Uj\/gOEWdnk26jW2m5SpWE=",
+      "url": "SourceService.js"
     },
     {
       "hash": "sha256-e3vbhG+1Xc35H1t\/YYcy+sZOiCP5Ucysd\/r5IEx6I5w=",
@@ -245,7 +249,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-tVV5+3QHdE6DuJwozon75U2fKNn40RF0pP4TqhkXGQY=",
+      "hash": "sha256-4HUKuLMVFaBfMClgmXyO3O+qOCWNK155vRsEJ5xvQK0=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -253,7 +257,7 @@
       "url": "_framework\/BlazorDB.dll"
     },
     {
-      "hash": "sha256-MXL8oPwlnPt3bcpVmyy0+KQkuTim4paiekygn2iM9lk=",
+      "hash": "sha256-+O7YX6fDHoT2alBQrCnQV0dDqlAt9rEFg\/ELtrKQT+o=",
       "url": "_framework\/CB5e.dll"
     },
     {
@@ -409,7 +413,7 @@
       "url": "_framework\/System.Net.Primitives.dll"
     },
     {
-      "hash": "sha256-cA7yMlUVUe3BTQXgtz5QVl9UHP+WNQrQd+zXLT99Ffw=",
+      "hash": "sha256-NgComJxJGUWIhAJ4AUOmiHc0HxEiz+9zBm8kOalRH7U=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -477,6 +481,10 @@
       "url": "_framework\/System.Threading.Tasks.Extensions.dll"
     },
     {
+      "hash": "sha256-nuucQ6UULznL3JTzEXHdEXei9MvELRDBEmulloYivlo=",
+      "url": "_framework\/System.Web.HttpUtility.dll"
+    },
+    {
       "hash": "sha256-RpID1PqkJl7SIQx7nsK+3tiodKoHOI9JcH6IV6em4PQ=",
       "url": "_framework\/System.Xml.ReaderWriter.dll"
     },
@@ -485,7 +493,7 @@
       "url": "_framework\/System.Xml.XmlSerializer.dll"
     },
     {
-      "hash": "sha256-vE67Sx8XYmGWnKX\/3vzzwKWMv3r0EStFrDWbbAQx928=",
+      "hash": "sha256-uQFVzBnHaSq7Z758SOy0ouOgvtpjugMq0LqC\/P5vwt8=",
       "url": "CB5e.styles.css"
     },
     {
@@ -497,5 +505,5 @@
       "url": "_content\/BlazorIndexedDB\/dexie.min.js"
     }
   ],
-  "version": "BhnekD+5"
+  "version": "Or\/2ZI\/k"
 };

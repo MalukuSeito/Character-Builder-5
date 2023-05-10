@@ -25,7 +25,7 @@
 					<span class="text-muted fs--1"> (@race.Source)</span>
 					@if (SelectedRace == race)
 					{
-						<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+						<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 							@foreach (var line in race.Description?.Split("\n") ?? new string[] { })
 							{
 								@line<br />
@@ -52,7 +52,7 @@
 							<span class="text-muted fs--1"> (@subrace.Source)</span>
 							@if (SelectedSubRace == subrace)
 							{
-								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+								<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 									@foreach (var line in subrace.Description?.Split("\n") ?? new string[] { })
 									{
 										@line<br />
@@ -87,7 +87,7 @@
 										{
 											<p class="fst-italic">@subrace.Flavour</p>
 										}
-										<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+										<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 											@foreach (var line in subrace.Description?.Split("\n") ?? new string[] { })
 											{
 												@line<br />
@@ -146,7 +146,7 @@
 								{
 									<p class="fst-italic">@race.Flavour</p>
 								}
-								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+								<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 									@foreach (var line in race.Description?.Split("\n") ?? new string[] { })
 									{
 										@line<br />

@@ -13,14 +13,19 @@
 }
 
 /* /Components/EditImage.razor.rz.scp.css */
-.autohide[b-hujb04ewkl] {
-    display: none;
-    visibility: hidden
+@media (hover: hover) {
+    .autohide[b-hujb04ewkl] {
+        display: none;
+        visibility: hidden
+    }
+
+    div:hover > .autohide[b-hujb04ewkl], .autohide:hover[b-hujb04ewkl] {
+        display: block;
+        visibility: visible;
+    }
 }
 
-div:hover > .autohide[b-hujb04ewkl], .autohide:hover[b-hujb04ewkl] {
-    display: block;
-    visibility: visible;
+div > .autohide[b-hujb04ewkl] {
     z-index: 1
 }
 
@@ -43,19 +48,22 @@ label[b-hujb04ewkl] {
     cursor: pointer;
 }
 /* /Components/FeatureInfo.razor.rz.scp.css */
-.bi-file-earmark-pdf-fill:hover[b-w0xt3pis6g]::before {
-    content: "\f640";
-}
-.bi-file-earmark-pdf:hover[b-w0xt3pis6g]::before {
-    content: "\f63f";
-}
-.hidepdf[b-w0xt3pis6g] {
-    position:absolute;
-    right:0px;
-    bottom:-1.3em;
-    z-index:2;
+@media (hover: hover) {
+    .bi-file-earmark-pdf-fill:hover[b-w0xt3pis6g]::before {
+        content: "\f640";
+    }
+
+    .bi-file-earmark-pdf:hover[b-w0xt3pis6g]::before {
+        content: "\f63f";
+    }
 }
 
+.hidepdf[b-w0xt3pis6g] {
+    position: absolute;
+    right: 0px;
+    bottom: -1.3em;
+    z-index: 2;
+}
 /* /Components/Features.razor.rz.scp.css */
 .bi-file-earmark-pdf-fill:hover[b-ybuyr32pnu]::before {
     content: "\f640";
@@ -71,44 +79,52 @@ label[b-hujb04ewkl] {
 }
 
 /* /Components/JournalBoonLine.razor.rz.scp.css */
-.bi-handbag:hover[b-1xh4cjd9k5]::before {
-    content: "\f47d";
-}
-.bi-mailbox:hover[b-1xh4cjd9k5]::before {
-    content: "\f408";
+@media (hover: hover) {
+    .bi-handbag:hover[b-1xh4cjd9k5]::before {
+        content: "\f47d";
+    }
+
+    .bi-mailbox:hover[b-1xh4cjd9k5]::before {
+        content: "\f408";
+    }
 }
 /* /Components/JournalEntryBox.razor.rz.scp.css */
-.bi-journal-x:hover[b-kqudo1tlzx]::before {
-    content: "\f62a";
-}
+@media (hover: hover) {
+    .bi-journal-x:hover[b-kqudo1tlzx]::before {
+        content: "\f62a";
+    }
 
-.bi-arrows-expand:hover[b-kqudo1tlzx]::before {
-    content: "\f14b";
-}
-.bi-arrows-collapse:hover[b-kqudo1tlzx]::before {
-    content: "\f14c";
-}
+    .bi-arrows-expand:hover[b-kqudo1tlzx]::before {
+        content: "\f14b";
+    }
 
-.bi-file-earmark-pdf-fill:hover[b-kqudo1tlzx]::before {
-    content: "\f640";
-}
-.bi-file-earmark-pdf:hover[b-kqudo1tlzx]::before {
-    content: "\f63f";
-}
+    .bi-arrows-collapse:hover[b-kqudo1tlzx]::before {
+        content: "\f14c";
+    }
 
+    .bi-file-earmark-pdf-fill:hover[b-kqudo1tlzx]::before {
+        content: "\f640";
+    }
+
+    .bi-file-earmark-pdf:hover[b-kqudo1tlzx]::before {
+        content: "\f63f";
+    }
+}
 .buttonrow[b-kqudo1tlzx] {
-    fill-opacity:1;
-    position:absolute;
-    right:10px;
-    top:-24px;
+    fill-opacity: 1;
+    position: absolute;
+    right: 10px;
+    top: -24px;
 }
-
 /* /Components/JournalItemLine.razor.rz.scp.css */
-.bi-handbag:hover[b-iw8mzhw7s1]::before {
-    content: "\f47d";
-}
-.bi-mailbox:hover[b-iw8mzhw7s1]::before {
-    content: "\f408";
+@media (hover: hover) {
+    .bi-handbag:hover[b-iw8mzhw7s1]::before {
+        content: "\f47d";
+    }
+
+    .bi-mailbox:hover[b-iw8mzhw7s1]::before {
+        content: "\f408";
+    }
 }
 /* /Components/Notes.razor.rz.scp.css */
 /*::deep textarea::first-line {
@@ -119,18 +135,22 @@ label[b-hujb04ewkl] {
     min-height:1rem;
 }
 /* /Components/SpellLine.razor.rz.scp.css */
-.bi-x-circle:hover[b-kli0gtnnni]::before {
-    content: "\f26b";
-}
-.bi-check-circle-fill:hover[b-kli0gtnnni]::before {
-    content: "\f622";
-}
-.bi-file-earmark-pdf-fill:hover[b-kli0gtnnni]::before {
-    content: "\f640";
-}
+@media (hover: hover) {
+    .bi-x-circle:hover[b-kli0gtnnni]::before {
+        content: "\f26b";
+    }
 
-.bi-file-earmark-pdf:hover[b-kli0gtnnni]::before {
-    content: "\f63f";
+    .bi-check-circle-fill:hover[b-kli0gtnnni]::before {
+        content: "\f622";
+    }
+
+    .bi-file-earmark-pdf-fill:hover[b-kli0gtnnni]::before {
+        content: "\f640";
+    }
+
+    .bi-file-earmark-pdf:hover[b-kli0gtnnni]::before {
+        content: "\f63f";
+    }
 }
 /* /Components/Tag.razor.rz.scp.css */
 .linktag[b-91nz0opdti] {
@@ -138,12 +158,15 @@ label[b-hujb04ewkl] {
     vertical-align: top;
 }
 
-.bi-tag:hover[b-91nz0opdti]::before {
-    content: "\f5af";
-}
+@media (hover: hover) {
 
-.bi-tags:hover[b-91nz0opdti]::before {
-    content: "\f5b1";
+    .bi-tag:hover[b-91nz0opdti]::before {
+        content: "\f5af";
+    }
+
+    .bi-tags:hover[b-91nz0opdti]::before {
+        content: "\f5b1";
+    }
 }
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-qqxbtpc2tn] {
@@ -160,6 +183,7 @@ main[b-qqxbtpc2tn] {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
     position: sticky;
     top: 0;
+    z-index: 1;
 }
 
 [b-qqxbtpc2tn] .p20rem {
@@ -255,14 +279,6 @@ main[b-qqxbtpc2tn] {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
 }
-
-    .nav-item:first-of-type[b-wqd5u6a3jr] {
-        padding-top: 1rem;
-    }
-
-    .nav-item:last-of-type[b-wqd5u6a3jr] {
-        padding-bottom: 1rem;
-    }
 
     .nav-item[b-wqd5u6a3jr]  a {
         color: #d7d7d7;

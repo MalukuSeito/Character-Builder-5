@@ -34,22 +34,25 @@ html, body {
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 576px) {
     .cutoff {
-        max-height:50vh;
-        overflow-y:auto;
-        overflow-x:hidden;
+        max-height: 50vh;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
+
     .cutoff25 {
         max-height: 25vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
+
     .cutoff33 {
         max-height: 33vh;
         overflow-y: auto;
         overflow-x: hidden;
     }
+
     .cutoff15 {
         max-height: 15vh;
         overflow-y: auto;

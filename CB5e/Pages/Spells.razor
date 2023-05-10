@@ -21,28 +21,28 @@
 		@foreach (var spellcasting in Values)
 		{
 			<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1 mt-3">
-				<div class="col-lg-4">
+				<div class="col-md-4">
 					<div class="border-bottom border-secondary m-0 fs-1 cursor-pointer" @onclick="async ()=>{if (Sidebar is not null) {Selected = spellcasting; await Sidebar.Open(Sidebar.Title + ':' + ' ' + spellcasting.DisplayName); }}">@spellcasting.DisplayName</div>
-					<div class="p-0 text-lg-center mt-0 fs--2">Spellcasting Class</div>
+					<div class="p-0 text-md-center mt-0 fs--2">Spellcasting Class</div>
 				</div>
-				<div class="col-lg-8 align-self-end">
+				<div class="col-md-8 align-self-end">
 					<div class="row">
 						<div class="col">
 							<div class="border-bottom border-secondary m-0 fs-1 text-center">@spellcasting.SpellcastingAbility</div>
-							<div class="p-0 text-lg-center mt-0 fs--2">Spellcasting Ability</div>
+							<div class="p-0 text-md-center mt-0 fs--2">Spellcasting Ability</div>
 						</div>
 						<div class="col">
 							<div class="border-bottom border-secondary m-0 fs-1 text-center">@context.Context.Player.GetSpellSaveDC(spellcasting.SpellcastingID, spellcasting.SpellcastingAbility)</div>
-							<div class="p-0 text-lg-center mt-0 fs--2">Save DC</div>
+							<div class="p-0 text-md-center mt-0 fs--2">Save DC</div>
 						</div>
 						<div class="col">
 							<div class="border-bottom border-secondary m-0 fs-1 text-center">@context.Context.Player.GetSpellAttack(spellcasting.SpellcastingID, spellcasting.SpellcastingAbility).PlusMinus()</div>
-							<div class="p-0 text-lg-center mt-0 fs--2">Spell Attack Bonus</div>
+							<div class="p-0 text-md-center mt-0 fs--2">Spell Attack Bonus</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<SpellList SpellcastingFeature="@spellcasting" />
+			<SpellList CssClass="row position-relative gy-1" ColumnCssClass="col-sm-6 col-xl-4" LastColumnCssClass="col-sm-12 col-xl-4" LastColumnBoxCssClass="col-12 col-sm-6 col-xl-12" SpellcastingFeature="@spellcasting" />
 		}
 	}
 </div>

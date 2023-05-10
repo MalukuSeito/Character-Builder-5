@@ -8,46 +8,12 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/bootstrap/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="Systems Reference Document v5.1.zip" rel="data" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="CB5e.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
-    <script>
-        window.Display = (data, stylesheet, x, y) => {
-            const xsltProcessor = new XSLTProcessor();
-
-            // Load the xsl file using synchronous (third param is set to false) XMLHttpRequest
-            const myXMLHTTPRequest = new XMLHttpRequest();
-            myXMLHTTPRequest.onload = function () {
-                const xslRef = myXMLHTTPRequest.responseXML;
-
-                // Finally import the .xsl
-                xsltProcessor.importStylesheet(xslRef);
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, "text/xml");
-                const resultDoc = xsltProcessor.transformToDocument(doc);
-                const iframeDoc = window.frames.display.document;
-
-                iframeDoc.open();
-                iframeDoc.write(new XMLSerializer().serializeToString(resultDoc));
-                iframeDoc.close();
-                var popup = document.getElementById("popup");
-                popup.style.display = "block";
-                console.log(x, "->", window.scrollX)
-                console.log(y, "=>", window.scrollY)
-                popup.style.left = "min(" + x + "px, calc(100vw - 410px + " + window.scrollX + "px ))";
-                popup.style.top = "min(" + y + "px, calc(100vh - 51vh + " + window.scrollY + "px))";
-                popup.onclick = window.Hide;
-            }
-            myXMLHTTPRequest.open("GET", "xsl/" + stylesheet + ".xsl", true);
-            myXMLHTTPRequest.send(null);
-        };
-        window.Hide = () => {
-            document.getElementById("popup").style.display = "none";
-        }
-
-    </script>
 </head>
 
 <body>

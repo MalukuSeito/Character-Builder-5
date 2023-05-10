@@ -161,17 +161,7 @@
 												<br />
 											}
 										</p>
-										@foreach (var description in item.Descriptions)
-										{
-											<p>
-												<span class="fw-bold">@(description.Name). </span>
-												@foreach (var line in description.Text?.Split("\n") ?? new string[] { })
-												{
-													@line
-													<br />
-												}
-											</p>
-										}
+										<Descriptions Items="item.Descriptions" />
 									}
 								</li>
 							}

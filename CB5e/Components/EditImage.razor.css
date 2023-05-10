@@ -1,11 +1,16 @@
-﻿.autohide {
-    display: none;
-    visibility: hidden
+﻿@media (hover: hover) {
+    .autohide {
+        display: none;
+        visibility: hidden
+    }
+
+    div:hover > .autohide, .autohide:hover {
+        display: block;
+        visibility: visible;
+    }
 }
 
-div:hover > .autohide, .autohide:hover {
-    display: block;
-    visibility: visible;
+div > .autohide {
     z-index: 1
 }
 

@@ -4,7 +4,7 @@
 @inject IBlazorDbFactory dbFactory;
 @inject IJSRuntime JSRuntime;
 @implements IDisposable;
-<button disabled="@(context.Context.Player == null)" class="@CssClass" @onclick="Export">Export</button>
+<button disabled="@(context.Context.Player == null)" class="@CssClass" @onclick="Export"></button>
 
 @code {
 	[Parameter]

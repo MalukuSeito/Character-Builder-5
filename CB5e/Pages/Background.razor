@@ -24,7 +24,7 @@
 					<span class="text-muted fs--1"> (@background.Source)</span>
 					@if (Selected == background)
 					{
-						<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+						<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 							@foreach (var line in background.Description?.Split("\n") ?? new string[] { })
 							{
 								@line
@@ -68,7 +68,7 @@
 								{
 									<p class="fst-italic">@background.Flavour</p>
 								}
-								<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+								<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 									@foreach (var line in background.Description?.Split("\n") ?? new string[] { })
 									{
 										@line

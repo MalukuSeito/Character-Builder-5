@@ -3,6 +3,7 @@
 @inject ContextService context;
 @inject SourceService sources;
 @inject IBlazorDbFactory dbFactory;
+@inject IJSRuntime jsRuntime;
 @implements IDisposable;
 <PageTitle>Packages</PageTitle>
 @if (context.Loading is not null)
@@ -29,7 +30,7 @@
 						<th>Available for @(string.IsNullOrWhiteSpace(context.Context.Player.Name) ? "Current Character" :context.Context.Player.Name)</th>
 					}
 					<th></th>
-					<th></th>
+					<th class="text-center"><button disabled="@(isLoading || !sources.Sources.Exists(s=>s.Type != "Cache"))" class="bi bi-clock-history btn btn-primary py-0 my-0" @onclick:stopPropagation="true" @onclick="CacheAll" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,8 +49,25 @@
 							</td>
 						}
 						<td class="text-center"><button class="bi bi-trash btn btn-danger py-0 my-0" @onclick:stopPropagation="true" @onclick="()=>DeleteSource(source)" /></td>
-						<td class="text-center"><button disabled="@(source.Type == "Cache")" class="bi bi-clock btn btn-primary py-0 my-0" @onclick:stopPropagation="true" @onclick="async ()=>await Cache(source)" /></td>
+						<td class="text-center"><button disabled="@(isLoading || source.Type == "Cache")" class="bi bi-clock btn btn-primary py-0 my-0" @onclick:stopPropagation="true" @onclick="async ()=>await Cache(source)" /></td>
 					</tr>
+				}
+				@if (isLoading)
+				{
+					@for (int i = 0; i < 3; i++)
+					{
+						<tr>
+							<td><div class="placeholder placeholder-wave w-100 h-100" /></td>
+							<td><div class="placeholder placeholder-wave w-100 h-100" /></td>
+							<td><div class="placeholder placeholder-wave w-100 h-100" /></td>
+							@if (context.Context.Player is not null)
+							{
+								<td><div class="placeholder placeholder-wave w-100 h-100" /></td>
+							}
+							<td><div class="placeholder placeholder-wave bg-danger w-100 h-100" /></td>
+							<td><div class="placeholder placeholder-wave bg-info w-100 h-100" /></td>
+						</tr>
+					}
 				}
 			</tbody>
 		</table>
@@ -68,11 +86,11 @@
 			</div>
 		}
 		<h4 class="mt-5">Add Package files:</h4>
-		<InputFile OnChange="@LoadDataPackage" multiple />
+		<InputFile OnChange="@LoadDataPackage" multiple disabled="@isLoading" />
 
 		<h4 class="mt-5">Add Package Urls (Server must allow CORS):</h4>
 		<textarea class="w-100" @bind="@urls"/><br />
-		<button @onclick="LoadUrls">Load</button>
+		<button disabled="@isLoading" @onclick="LoadUrls">Load</button>
 		<br />
 		@if (isLoading)
 		{
@@ -112,11 +130,14 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		isLoading = true;
+		StateHasChanged();
 		await loadConfig();
 		if (sources.Sources.Count == 0) await sources.FindAsync(dbFactory);
 		urls = string.Join("\n", sources.Sources.Where(s => s is UrlSource).Select(s => s.Name + "|" + (s as UrlSource)?.Url));
 		context.PlayerChange += OnPlayerChange;
 		if (context.Context.Player is not null) excluded.UnionWith(context.Context.Player.ExcludedSources);
+		isLoading = false;
 	}
 
 	private Task OnPlayerChange(ChangeType change)
@@ -133,6 +154,7 @@
 	private async Task LoadDataPackage(InputFileChangeEventArgs e)
 	{
 		isLoading = true;
+		StateHasChanged();
 		foreach (var file in e.GetMultipleFiles(1000))
 		{
 			using (var stream = file.OpenReadStream(100*1024*1024))
@@ -166,13 +188,33 @@
 		if (source is CachedSource cachedSource) await cachedSource.Delete(dbFactory);
 	}
 
+	private async Task CacheAll()
+	{
+		if (config.Config is null) return;
+		var tocache = sources.Sources.Where(s => s.Type != "Cache").ToList();
+		sources.Sources.RemoveAll(s => s.Type != "Cache");
+		isLoading = true;
+		StateHasChanged();
+		foreach (var source in tocache)
+		{
+			CachedSource cachedSource = new CachedSource(dbFactory, source.Name);
+			await cachedSource.Import(source, config.Config);
+			sources.Sources.Add(cachedSource);
+			StateHasChanged();
+		}
+		isLoading = false;
+	}
+
 	private async Task Cache(ISource source)
 	{
 		if (config.Config is null) return;
 		sources.Sources.Remove(source);
-		CachedSource cachedSource = new CachedSource(dbFactory);
+		isLoading = true;
+		StateHasChanged();
+		CachedSource cachedSource = new CachedSource(dbFactory, source.Name);
 		await cachedSource.Import(source, config.Config);
 		sources.Sources.Add(cachedSource);
+		isLoading = false;
 	}
 
 	public void Dispose()

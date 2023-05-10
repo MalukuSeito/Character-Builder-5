@@ -18,11 +18,21 @@
 			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
 		}
 	</div>
-	<div class="@ColumnCssClass">
-		@for (int i = 6; i <= MaxSpellLevel; i++)
-		{
-			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
-		}
+	<div class="@LastColumnCssClass">
+		<div class="row">
+			<div class="@LastColumnBoxCssClass">
+				@for (int i = 6; i <= 7; i++)
+				{
+					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+				}
+			</div>
+			<div class="@LastColumnBoxCssClass">
+				@for (int i = 8; i <= MaxSpellLevel; i++)
+				{
+					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+				}
+			</div>
+		</div>
 	</div>
 	
 </div>
@@ -41,7 +51,13 @@
 	public string? PreparedButtonCheckedCssClass { get; set; } = "position-tr btn btn-white bi bi-p-circle";
 
 	[Parameter]
-	public string? ColumnCssClass { get; set; } = "col-lg-6 col-xl-4 gy-1";
+	public string? ColumnCssClass { get; set; } = "col-lg-6 col-xl-4";
+
+	[Parameter]
+	public string? LastColumnCssClass { get; set; } = "col-lg-12 col-xl-4";
+
+	[Parameter]
+	public string? LastColumnBoxCssClass { get; set; } = "col-12 col-lg-6 col-xl-12";
 
 	[Parameter]
 	public string? BoxCssClass { get; set; } = "border border-2 border-primary rounded mt-1";

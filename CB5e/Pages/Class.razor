@@ -29,7 +29,7 @@
 						<Tag Xml="cls.Class" />
 						@if (SelectedClass == cls.Class && cls.ClassLevel == 1)
 						{
-							<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+							<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 								@foreach (var line in cls.Class.Description?.Split("\n") ?? new string[] { })
 								{
 									@line<br />
@@ -72,7 +72,7 @@
 								{
 									<p class="fst-italic">@clz.Flavour</p>
 								}
-									<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+									<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 										@foreach (var line in clz.Description?.Split("\n") ?? new string[] { })
 										{
 											@line<br />
@@ -113,7 +113,7 @@
 						<span class="text-muted fs--1"> (@subclz.Source)</span>
 						@if (SelectedSubClass == subclz)
 						{
-							<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+							<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 								@foreach (var line in subclz.Description?.Split("\n") ?? new string[] { })
 								{
 									@line
@@ -160,7 +160,7 @@
 									{
 										<p class="fst-italic">@subclass.Flavour</p>
 									}
-									<p @onclick="()=>ShowDescriptions = !ShowDescriptions">
+									<p class="cursor-pointer" @onclick="()=>ShowDescriptions = !ShowDescriptions">
 										@foreach (var line in subclass.Description?.Split("\n") ?? new string[] { })
 										{
 											@line

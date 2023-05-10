@@ -34,7 +34,11 @@
 {
 	<div class="container-xxl">
 		<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1">
-			<div class="col-lg-4">
+			<div class="col-md-4 align-self-end order-md-2">
+				<EditField CssClass="border-bottom border-secondary m-0 fw-bolder text-lg-center" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
+				<div class="p-0 text-lg-center mt-0 fs--2">Name</div>
+			</div>
+			<div class="col-md-4 order-md-1">
 				<ClassesInfo CssClass="border-bottom border-secondary cursor-pointer" OnClick="OpenClasses" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Class and Levels</div>
 				<EditField CssClass="border-bottom border-secondary m-0" Expression="@((p)=>p.Alignment)" Placeholder="Alignment" Title="Alignment"/>
@@ -42,11 +46,8 @@
 				<RaceInfo CssClass="border-bottom border-secondary m-0 cursor-pointer" OnClick="OpenRace" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Race</div>
 			</div>
-			<div class="col-lg-4 align-self-end">
-				<EditField CssClass="border-bottom border-secondary m-0 fw-bolder text-lg-center" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
-				<div class="p-0 text-lg-center mt-0 fs--2">Name</div>
-			</div>
-			<div class="col-lg-4">
+			
+			<div class="col-md-4 order-md-3">
 				<BackgroundInfo CssClass="border-bottom border-secondary m-0 text-lg-end cursor-pointer" OnClick="OpenBackground" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Background</div>
 				<EditField CssClass="border-bottom border-secondary m-0 text-lg-end" Expression="@((p)=>p.PlayerName)" Placeholder="Player Name" Title="Player Name" />
@@ -56,7 +57,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-6 col-xl-4 gy-1">
+			<div class="col-sm-6 col-xl-4 gy-1">
 				<div class="row g-0">
 					<Scores OnClick="OpenScores" AbilityScores="Scores" CssClass="col-5" BoxCssClass="border border-2 border-primary rounded p-0 text-center mb-1" NameCssClass="border-bottom border-2 border-primary p-0 fs--2 cursor-pointer" ModCssClass="fs-1" ScoreCssClass="border-top border-2 border-primary fs-4" />
 					<div class="col-7">
@@ -104,7 +105,7 @@
 					<div class="p-0 text-center mt-0 fs--2">Other Proficiencies & Languages</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-xl-4 gy-1">
+			<div class="col-sm-6 col-xl-4 gy-1">
 				<div class="row">
 					<div class="col-4">
 						<div class="row g-0 border border-2 border-primary rounded text-center aspect-1">
@@ -162,7 +163,7 @@
 					</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<AttacksInfo CssClass="row cutoff-15 gx-1 gy-0" EventMask="ChangeType.Spells" Features="Features" Possessions="Possessions" Scores="Scores"/>
+					<AttacksInfo CssClass="row cutoff15 gx-1 gy-0" EventMask="ChangeType.Spells" Features="Features" Possessions="Possessions" Scores="Scores"/>
 					<div class="p-0 text-center mt-0 fs--2">Attacks &amp; Spellcasting</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
@@ -174,8 +175,8 @@
 					<div class="p-0 text-center mt-0 fs--2">Inventory</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-xl-4 gy-1">
-				<div class="border border-2 border-primary rounded px-1">
+			<div class="col-sm-6 col-xl-4 gy-1">
+				<div class="border border-2 border-primary rounded px-1 pt-1">
 					<div class="border-bottom border-1 border-secondary">
 						<EditArea CssClass="m-0 p-0 lh-1" Expression="(p)=>p.PersonalityTrait" Multiline=false Placeholder="Personality Trait" Title="Personality Trait" />
 						<EditArea CssClass="mt-3 lh-1 mx-0 mb-0  p-0" Expression="(p)=>p.PersonalityTrait2" Multiline=false Placeholder="2nd Personality Trait" Title="Second Personality Trait" />
@@ -199,7 +200,7 @@
 					<div class="p-0 text-center mt-0 fs--2">Class Features</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-xl-4 gy-1">
+			<div class="col-sm-6 col-xl-4 gy-1">
 				<div class="border border-2 border-primary rounded px-1 pt-1 text-center">
 					<EditField CssClass="text-center fs-2" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
 				</div>
@@ -216,7 +217,7 @@
 					<div class="p-0 text-center mt-0 fs--2">Backstory</div>
 				</div>
 			</div>
-			<div class="col-lg-12 col-xl-8 gy-1">
+			<div class="col-sm-12 col-xl-8 gy-1">
 				<div class="border border-2 border-primary rounded px-1 pt-1">
 					<div class="row">
 						<div class="col-4">
@@ -248,10 +249,10 @@
 				<div class="border border-2 border-primary rounded px-1 pt-1 mt-1">
 					<div class="border-bottom border-1 border-secondary">
 						<div class="row">
-							<div class="col-lg-6">
+							<div class="col-sm-6">
 								<EditArea Expression="(p)=>p.Allies" Placeholder="Allies" Title="Allies" />
 							</div>
-							<div class="col-lg-6 text-center" alt="Faction Information">
+							<div class="col-sm-6 text-center" alt="Faction Information">
 								<EditField Expression="(p)=>p.FactionName" Placeholder="Faction Name" Title="Faction Name" />
 								<div class="aspect-1 my-1">
 									<EditImage Expression="(p)=>p.FactionImage" />

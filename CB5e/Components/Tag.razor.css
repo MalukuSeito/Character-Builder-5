@@ -3,10 +3,13 @@
     vertical-align: top;
 }
 
-.bi-tag:hover::before {
-    content: "\f5af";
-}
+@media (hover: hover) {
 
-.bi-tags:hover::before {
-    content: "\f5b1";
+    .bi-tag:hover::before {
+        content: "\f5af";
+    }
+
+    .bi-tags:hover::before {
+        content: "\f5b1";
+    }
 }

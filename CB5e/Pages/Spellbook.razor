@@ -14,7 +14,7 @@
 <div class="container-xxl">
 	@if (context.Context.Player is not null)
 	{
-		<div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 g-4">
+		<div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4">
 			@foreach (var spell in Spells.ToList().OrderBy(s => s.Key.Name).ThenBy(s => s.Key.Source))
 			{
 				var keywords = spell.Key.GetKeywords().ToList();
@@ -64,17 +64,7 @@
 											<br />
 										}
 									</p>
-									@foreach (var description in spell.Key.Descriptions)
-									{
-										<p>
-											<span class="fw-bold">@(description.Name). </span>
-											@foreach (var line in description.Text?.Split("\n") ?? new string[] { })
-											{
-												@line
-												<br />
-											}
-										</p>
-									}
+									<Descriptions Items="spell.Key.Descriptions" />
 									@foreach (var feat in Mods.Where(f => Utils.Matches(context.Context, spell.Key, f.Spells, null)))
 									{
 										<DisplayFeature Feature="feat" CssClass="text-muted"/>

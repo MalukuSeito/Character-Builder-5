@@ -6,24 +6,24 @@
 	</div>
 
 	<main>
-		<div class="top-row px-4 auth bg-body-tertiary">
+		<div class="top-row ps-1 pe-2 auth bg-body-tertiary">
 			<div class="row g-1 w-100">
-				<div class="col order-md-0">
+				<div class="col order-sm-0">
 					<div class="btn-group">
 						<Undo CssClass="btn btn-outline-primary bi bi-arrow-counterclockwise" />
 						<Redo CssClass="btn btn-outline-primary bi bi-arrow-clockwise" />
 					</div>
 				</div>
-				<div class="col-auto order-md-1">
+				<div class="col-auto order-sm-1">
 					<NewPlayer CssClass="btn btn-primary bi bi-person-plus-fill" />
 				</div>
-				<div class="col-auto order-md-3">
-					<SavePlayer CssClass="btn btn-primary" />
+				<div class="col-auto order-sm-3">
+					<SavePlayer CssClass="btn btn-primary bi bi-cloud-download" />
 				</div>
-				<div class="col-auto order-md-4">
+				<div class="col-auto order-sm-4">
 					<button class="btn btn-outline-primary bi bi-lightbulb" onclick="if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {document.documentElement.setAttribute('data-bs-theme','light')} else {document.documentElement.setAttribute('data-bs-theme','dark')}" />
 				</div>
-				<div class="col-12 col-md-auto order-md-2">
+				<div class="col-12 col-sm-auto order-sm-2">
 					<LoadPlayer CssClass="btn btn-primary p20rem w-100" />
 				</div>
 			</div>
