@@ -8,7 +8,7 @@ namespace OGL.Features
     public class ModifySpellChoiceFeature : Feature
     {
         public String AdditionalSpellChoices { get; set; } = "false";
-        public List<string> AdditionalSpells;
+        public List<string> AdditionalSpells { get; set; }
         public string UniqueID { get; set; }
         [XmlArrayItem(Type = typeof(Keyword)),
         XmlArrayItem(Type = typeof(Save)),

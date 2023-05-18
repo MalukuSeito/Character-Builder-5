@@ -40,7 +40,7 @@
 					{
 						<li class="@LineCssClass">
 							<button class="btn @(Choices.Count < Feature.Amount ? Taken.Contains(spell.Name, ConfigManager.SourceInvariantComparer) ? "btn-secondary-outline" : "btn-primary" : "btn-primary-outline") me-3 py-0 my-0 bi @(i <= count ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(spell, i)" title="Select" />
-							<span class="@NameCssClass @(Taken.Contains(spell.Name, ConfigManager.SourceInvariantComparer) ? "text-muted" : "")" @onclick="()=>Selected = Selected == spell ? null : spell">@spell.Name</span><Tag Xml="spell" />
+							<span class="@NameCssClass @(Taken.Contains(spell.Name, ConfigManager.SourceInvariantComparer) ? "text-muted" : "") cursor-pointer" @onclick="()=>Selected = Selected == spell ? null : spell">@spell.Name</span><Tag Xml="spell" />
 							@if (spell.Level > 0)
 							{
 								<span class="text-muted"> Level @spell.Level</span>
@@ -53,6 +53,9 @@
 							@if (Selected == spell)
 							{
 								<p class="fst-italic">@spell.Desc</p>
+								<p class="mb-0"><span class="fw-bold">Casting Time: </span>@spell.CastingTime</p>
+								<p class="mb-0"><span class="fw-bold">Range: </span>@spell.Range</p>
+								<p class="mb-0"><span class="fw-bold">Duration: </span>@spell.Duration</p>
 								<p>
 									@foreach (var line in spell.Description?.Split("\n") ?? new string[] { })
 									{

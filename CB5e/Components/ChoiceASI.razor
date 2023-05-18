@@ -54,7 +54,7 @@
 			{
 				<li class="@LineCssClass">
 					<button class="btn @(selected ? "btn-primary-outline" : "btn-primary") me-3 py-0 my-0 bi @(selected ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(nextFree, feature)" title="Select" />
-					<span class="@NameCssClass @(selected ? "text-muted" : "")" @onclick="()=>Selected = Selected == feature ? null : feature">@feature.Name</span><Tag Xml="feature" />
+					<span class="@NameCssClass @(selected ? "text-muted" : "") cursor-pointer" @onclick="()=>Selected = Selected == feature ? null : feature">@feature.Name</span><Tag Xml="feature" />
 					<span class="@SourceCssClass"> (@feature.Source)</span>
 					@if (Selected == feature)
 					{

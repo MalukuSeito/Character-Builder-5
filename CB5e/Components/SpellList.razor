@@ -1,6 +1,6 @@
 ﻿@inject ContextService context;
 @implements IDisposable;
-<div class="@CssClass">
+<div class="@CssClass spell-list">
 	@if (Prepareable > 0) {
 		<div class="@TopRowCssClass">
 			<button @onclick="ToggleHidePrepared" class="@(HidePrepared is true ? PreparedButtonCheckedCssClass : PreparedButtonCssClass)" title="@(HidePrepared is true ? "Show" :"Hide") Other Preparable Spells" />
@@ -9,13 +9,13 @@
 	}
 	<div class="@ColumnCssClass">
 		@for (int i = 0; i <= 2; i++) {
-			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@Prepared" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i).ToList()" ShowSpell="IsPrepared" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@Prepared" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
 		}
 	</div>
 	<div class="@ColumnCssClass">
 		@for (int i = 3; i <= 5; i++)
 		{
-			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+			<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i).ToList()" ShowSpell="IsPrepared" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
 		}
 	</div>
 	<div class="@LastColumnCssClass">
@@ -23,13 +23,13 @@
 			<div class="@LastColumnBoxCssClass">
 				@for (int i = 6; i <= 7; i++)
 				{
-					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i).ToList()" ShowSpell="IsPrepared" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
 				}
 			</div>
 			<div class="@LastColumnBoxCssClass">
 				@for (int i = 8; i <= MaxSpellLevel; i++)
 				{
-					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i && IsPrepared(s)).ToList()" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
+					<SpellBox CssClass="@BoxCssClass" Spells="@Values.Values.Where(s=>s.Level == i).ToList()" ShowSpell="IsPrepared" Count="@Slots[i]" Used="@UsedSlots[i]" Level="@i" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" ClassLevel="@ClassLevel" Prepared="@Prepared" Prepareable="@Prepareable" PreparedCount="@PreparedCount" EventMask="@EventMask" InPlayEventMask="@InPlayEventMask" />
 				}
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 	public string? CssClass { get; set; } = "row position-relative";
 
 	[Parameter]
-	public string? TopRowCssClass { get; set; } = "autohide";
+	public string? TopRowCssClass { get; set; } = "autohide m-0 p-0";
 
 	[Parameter]
 	public string? PreparedButtonCssClass { get; set; } = "position-tr bi btn btn-white bi-p-circle-fill";
@@ -63,7 +63,7 @@
 	public string? BoxCssClass { get; set; } = "border border-2 border-primary rounded mt-1";
 
 	[Parameter]
-	public string? ReloadCssClass { get; set; } = "bi bi-bootstrap-reboot position-tr btn btn-white position-tl";
+	public string? ReloadCssClass { get; set; } = "bi bi-bootstrap-reboot btn btn-white position-tl";
 
 	[Parameter]
 	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features | ChangeType.Spells;
@@ -228,9 +228,11 @@
 		await context.NotifyPlayerChange(ChangeType.Spells);
 	}
 
-	private bool IsPrepared(Spell s)
+	private bool IsPrepared(Spell? s)
 	{
+		Console.WriteLine($"{s?.Name}: {HidePrepared}");
 		if (!(HidePrepared ?? true) || Prepareable != PreparedCount) return true;
+		if (s is null) return false;
 		if (s is ModifiedSpell ms && ms.AddAlwaysPreparedToName) return true;
 		return Prepared.Contains(s.Name, ConfigManager.SourceInvariantComparer);
 	}

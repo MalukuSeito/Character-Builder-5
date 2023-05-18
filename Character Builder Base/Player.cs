@@ -226,7 +226,7 @@ namespace Character_Builder
                     }
                     else result.Add(p);
                 }
-                foreach (string i in items.Keys) if (items[i] > 0) result.Add(new Possession(Context, i, items[i]));
+                foreach (string i in items.Keys) if (items[i] > 0) result.Add(new Possession(Context, i, items[i], true));
             }
             Dictionary<Guid, JournalPossession> journalPossesions = new Dictionary<Guid, JournalPossession>();
             foreach (JournalEntry entry in ComplexJournal)
@@ -922,7 +922,7 @@ namespace Character_Builder
         {
             foreach (PlayerClass p in Classes) if (ConfigManager.SourceInvariantComparer.Equals(p.ClassName, cd)) p.SetSubClass(null);
         }
-        public IEnumerable<JournalBoon> GetJournalBoons()
+        public IEnumerable<JournalBoon> GetJournalBoons(bool includeBanked = false)
         {
             Dictionary<Guid, JournalBoon> journalBoons = new Dictionary<Guid, JournalBoon>();
             foreach (JournalEntry entry in ComplexJournal)
@@ -943,9 +943,9 @@ namespace Character_Builder
                     }
                 }
             }
-            return journalBoons.Values;
+            return journalBoons.Values.Where(jb=>includeBanked || !jb.Banked);
         }
-        public List<Feature> GetBoons(int level=0, bool reset = false)
+        public List<Feature> GetBoons(int level=0, bool reset = false, bool includeJournal = true)
         {
             //if (reset) ChoiceCounter.Clear();
             if (reset) ResetChoices();
@@ -953,28 +953,30 @@ namespace Character_Builder
             List<Feature> res = new List<Feature>();
             if (level == 0) level = GetLevel();
             List<string> boons = new List<string>(Boons);
-            Dictionary<Guid, JournalBoon> journalBoons = new Dictionary<Guid, JournalBoon>();
-            foreach (JournalEntry entry in ComplexJournal)
+            if (includeJournal)
             {
-                foreach (JournalBoon jp in entry.Boons)
+                Dictionary<Guid, JournalBoon> journalBoons = new Dictionary<Guid, JournalBoon>();
+                foreach (JournalEntry entry in ComplexJournal)
                 {
-                    if (jp.Deleted)
+                    foreach (JournalBoon jp in entry.Boons)
                     {
-                        journalBoons.Remove(jp.Guid);
-                    }
-                    else if (journalBoons.ContainsKey(jp.Guid))
-                    {
-                        journalBoons[jp.Guid] = jp;
-                    }
-                    else
-                    {
-                        journalBoons.Add(jp.Guid, jp);
+                        if (jp.Deleted)
+                        {
+                            journalBoons.Remove(jp.Guid);
+                        }
+                        else if (journalBoons.ContainsKey(jp.Guid))
+                        {
+                            journalBoons[jp.Guid] = jp;
+                        }
+                        else
+                        {
+                            journalBoons.Add(jp.Guid, jp);
+                        }
                     }
                 }
+                foreach (JournalBoon jb in journalBoons.Values) if (!jb.Banked) boons.Add(jb.Name);
             }
-            foreach (JournalBoon jb in journalBoons.Values) if (!jb.Banked) boons.Add(jb.Name);
             foreach (string s in boons.Distinct(ConfigManager.SourceInvariantComparer)) res.AddRange(Context.GetBoon(s, null).Collect(level, this, Context));
-            
             return Context.Plugins.FilterBoons(res, level, this, Context);
         }
         public List<Feature> GetFeats(int level = 0, bool reset = false)

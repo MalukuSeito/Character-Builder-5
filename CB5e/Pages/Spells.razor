@@ -20,7 +20,7 @@
 	{
 		@foreach (var spellcasting in Values)
 		{
-			<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1 mt-3">
+			<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1 mt-3 spell-list-header">
 				<div class="col-md-4">
 					<div class="border-bottom border-secondary m-0 fs-1 cursor-pointer" @onclick="async ()=>{if (Sidebar is not null) {Selected = spellcasting; await Sidebar.Open(Sidebar.Title + ':' + ' ' + spellcasting.DisplayName); }}">@spellcasting.DisplayName</div>
 					<div class="p-0 text-md-center mt-0 fs--2">Spellcasting Class</div>

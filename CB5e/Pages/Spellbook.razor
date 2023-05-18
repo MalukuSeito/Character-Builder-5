@@ -12,73 +12,91 @@
 	</div>
 }
 <div class="container-xxl">
+	<div class="no-print border border-2 rounded-2 text-bg-primary border-primary text-sm-center p-2 mb-3">
+		<input type="search" class="border-0 rounded-2 visible-placeholder bg-body form-control" placeholder="Search" @bind="SearchText" @bind:event="oninput" />
+		<div class="bg-body text-body rounded-2 mt-1 d-inline-block ps-3">
+			@foreach (var status in new SpellStatus[] { SpellStatus.Learned, SpellStatus.Prepared, SpellStatus.Spellbook, SpellStatus.Classlist, SpellStatus.Bonus, SpellStatus.Scroll, SpellStatus.BankedScroll }){
+				<div class="form-check form-switch form-check-inline">
+					<input class="form-check-input @CardBG(status)" type="checkbox" role="switch" id="@("switch"+status.ToString())" @bind:get="@(Filter.HasFlag(status))" @bind:set="(value) => { Filter = (value ? Filter | status : Filter & ~status); }">
+					<label class="form-check-label text-nowrap fs--2" for="@("switch"+status.ToString())">@Info(status)</label>
+				</div>
+			}
+		</div>
+	</div>
+
 	@if (context.Context.Player is not null)
 	{
 		<div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4">
-			@foreach (var spell in Spells.ToList().OrderBy(s => s.Key.Name).ThenBy(s => s.Key.Source))
+			@foreach (var spell in Spells.Where(s=>string.IsNullOrWhiteSpace(SearchText) || s.Key.Matches(SearchText, false)).Where(s=>(s.Value & Filter) != 0).OrderBy(s => s.Key.Name).ThenBy(s => s.Key.Source))
 			{
 				var keywords = spell.Key.GetKeywords().ToList();
 				var school = GetAndRemoveSchool(keywords);
 				var components = GetAndRemoveComponents(keywords);
 				var classes = GetAndRemoveClasses(keywords);
 				<div class="col">
-					<div class="@CardBG(spell.Value) h-100">
+					<div class="card @CardBG(spell.Value) h-100">
 						<div class="card-header">
-							<div class="text-body bg-body rounded-top-3 px-2">@spell.Key.Name <span class="text-muted">, @(spell.Key.Level == 0 ? "" : " " + AddOrdinal(spell.Key.Level) + " Level") @school @(spell.Key.Level == 0 ? " Cantrip" : "")</span></div>
-							<div class="text-center">@classes</div>
+							<div class="text-body bg-body rounded-top-3 px-2 small-line scale">@spell.Key.Name <span class="text-muted">, @(spell.Key.Level == 0 ? "" : " " + AddOrdinal(spell.Key.Level) + " Level") @school @(spell.Key.Level == 0 ? " Cantrip" : "")</span></div>
+							<div class="text-center small-line scale">@classes</div>
 						</div>
 						<div class="card-body fs--1">
 							<div class="d-flex flex-column h-100">
 								<div class="row g-2">
 									<div class="col-6">
 										<div class="h-100 d-flex flex-column">
-											<div class="text-body bg-body rounded-top-2 px-2 flex-fill">@spell.Key.CastingTime</div>
+											<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@spell.Key.CastingTime</div>
 											<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Casting Time</div>
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="h-100 d-flex flex-column">
-											<div class="text-body bg-body rounded-top-2 px-2 flex-fill">@spell.Key.Range</div>
+											<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@spell.Key.Range</div>
 											<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Range</div>
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="h-100 d-flex flex-column">
-											<div class="text-body bg-body rounded-top-2 px-2 flex-fill">@components</div>
+											<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@components</div>
 											<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Components</div>
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="h-100 d-flex flex-column">
-											<div class="text-body bg-body rounded-top-2 px-2 flex-fill">@spell.Key.Duration</div>
+											<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@spell.Key.Duration</div>
 											<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Duration</div>
 										</div>
 									</div>
 								</div>
 								<div class="text-body bg-body rounded-bottom-3 flex-fill mt-3 px-2">
-									<p>
-										@foreach (var line in spell.Key.Description?.Split("\n") ?? new string[] { })
-										{
-											@line
+									<div class="description scale">
+										<p>
+											@foreach (var line in spell.Key.Description?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
+											{
+												@line
 
-											<br />
+												<br />
+											}
+										</p>
+										<Descriptions Items="spell.Key.Descriptions" />
+										@foreach (var feat in Mods.Where(f => Utils.Matches(context.Context, spell.Key, f.Spells, null)))
+										{
+											<DisplayFeature Feature="feat" CssClass="text-muted"/>
 										}
-									</p>
-									<Descriptions Items="spell.Key.Descriptions" />
-									@foreach (var feat in Mods.Where(f => Utils.Matches(context.Context, spell.Key, f.Spells, null)))
-									{
-										<DisplayFeature Feature="feat" CssClass="text-muted"/>
-									}
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-footer">
 							<div class="row">
 								<div class="col-4 fs--1">
-									@Info(spell.Value)
+									<div class=" small-line scale">
+										@Info(spell.Value)
+									</div>
 								</div>
 								<div class="col-8 text-end fs--1">
-									@spell.Key.Source
+									<div class="small-line scale">
+										@spell.Key.Source
+									</div>
 								</div>
 
 							</div>
@@ -94,6 +112,15 @@
 	private Dictionary<Spell, SpellStatus> Spells { get; set; } = new(ConfigManager.SourceAwareComparer);
 	private List<SpellModifyFeature> Mods { get; set; } = new();
 
+	private string SearchText { get; set; } = "";
+	private SpellStatus Filter { get; set; } = SpellStatus.Learned | SpellStatus.Prepared | SpellStatus.Spellbook | SpellStatus.Classlist | SpellStatus.Bonus | SpellStatus.Scroll;
+
+	private Task SetFilter(SpellStatus status, bool value)
+	{
+		Filter &= (value ? status : ~status);
+		return Task.CompletedTask;
+	}
+
 	protected override Task OnInitializedAsync()
 	{
 		context.PlayerChange += StateChange;
@@ -103,29 +130,35 @@
 		return Task.CompletedTask;
 	}
 
-	private string CardBG(SpellStatus status) => status switch
-		{
-			SpellStatus.Learned => "card text-bg-primary",
-			SpellStatus.Prepared => "card bg-primary-subtle",
-			SpellStatus.Spellbook => "card text-bg-secondary",
-			SpellStatus.BankedScroll => "card bg-warning-subtle",
-			SpellStatus.Scroll => "card text-bg-warning",
-			SpellStatus.Classlist => "card bg-secondary-subtle",
-			SpellStatus.Bonus => "card text-bg-info",
-			_ => "card text-bg-danger",
-		};
+	private string CardBG(SpellStatus status)
+	{
+		if ((status & SpellStatus.Learned) != 0) return "text-bg-primary";
+		if ((status & SpellStatus.Prepared) != 0) return "bg-primary-subtle";
+		if ((status & SpellStatus.Spellbook) != 0) return "text-bg-secondary";
+		if ((status & SpellStatus.Classlist) != 0) return "bg-secondary-subtle";
+		if ((status & SpellStatus.Bonus) != 0) return "text-bg-info";
+		if ((status & SpellStatus.Scroll) != 0) return "text-bg-warning";
+		if ((status & SpellStatus.BankedScroll) != 0) return "bg-warning-subtle";
+		return "text-bg-danger";
+	}
 
-	private string Info(SpellStatus status) => status switch
+	private string Info(SpellStatus status)
+	{
+		List<string> info = new();
+		if ((status & SpellStatus.Learned) != 0) info.Add("Learned");
+		if ((status & SpellStatus.Prepared) != 0) info.Add("Prepared");
+		else
 		{
-			SpellStatus.Learned => "Learned",
-			SpellStatus.Prepared => "Prepared",
-			SpellStatus.Spellbook => "Spellbook",
-			SpellStatus.BankedScroll => "Scroll (Banked)",
-			SpellStatus.Scroll => "Scroll",
-			SpellStatus.Classlist => "Class List",
-			SpellStatus.Bonus => "Bonus Spell",
-			_ => "Unknown",
-		};
+			if ((status & SpellStatus.Spellbook) != 0) info.Add("Spellbook");
+			if ((status & SpellStatus.Classlist) != 0) info.Add("Class List");
+		}
+		if ((status & SpellStatus.Bonus) != 0) info.Add("Bonus Spell");
+		if ((status & SpellStatus.Scroll) != 0) info.Add("Scroll");
+		else if ((status & SpellStatus.BankedScroll) != 0) info.Add("Scroll (banked)");
+		if (info.Count == 0) return "Unknown";
+		if (info.Count == 1) return info[0];
+		return string.Join(", ", info.SkipLast(1)) + " and " + info.Last();
+	}
 
 	private void BuildSpells()
 	{
@@ -173,10 +206,14 @@
 		{
 			if (Spells.TryGetValue(s, out SpellStatus existing))
 			{
-				if (existing > status || s is ModifiedSpell)
+				if (s is ModifiedSpell)
 				{
 					Spells.Remove(s);
-					Spells.Add(s, (existing <= status) ? existing : status);
+					Spells.Add(s, existing | status);
+				} 
+				else
+				{
+					Spells[s] = existing | status;
 				}
 			}
 			else Spells.Add(s, status);

@@ -1,0 +1,162 @@
+﻿#print .col-md-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+}
+
+#print .col-md-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+}
+
+#print .col-md-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+#print .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+}
+
+#print .col-md-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+}
+
+#print .col-md-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+#print .col-sm-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+#print .col-md-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+}
+
+#print .col-md-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+}
+
+#print .col-md-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
+
+#print .col-md-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+}
+
+#print .col-md-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+}
+
+#print .col-md-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+#print .order-md-first {
+    order: -1 !important;
+}
+
+#print .order-md-0 {
+    order: 0 !important;
+}
+
+#print .order-md-1 {
+    order: 1 !important;
+}
+
+#print .order-md-2 {
+    order: 2 !important;
+}
+
+#print .order-md-3 {
+    order: 3 !important;
+}
+
+#print .order-md-4 {
+    order: 4 !important;
+}
+
+#print .order-md-5 {
+    order: 5 !important;
+}
+
+#print .order-md-last {
+    order: 6 !important;
+}
+
+#print .col-xl-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+}
+
+#print .first-page {
+    height: 640pt;
+}
+
+#print .second-page {
+    height: 710pt;
+}
+
+#print .col-xl-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+}
+
+#print .sheet-header {
+    height: 70pt;
+}
+
+#print .sheet-line {
+    white-space: nowrap;
+}
+
+#print .element-prof {
+    height: 210pt;
+}
+
+#print div ::deep .element-attacks {
+    height: 230pt;
+}
+
+#print div ::deep .element-resources {
+    height: 110pt;
+}
+
+#print div ::deep .element-allies {
+    height: 170pt;
+}
+
+#print div ::deep .element-bank {
+    height: 118pt;
+}
+
+#print div ::deep .element-racefeats {
+    height: 330pt;
+}
+
+#print div ::deep .element-notes {
+    height: 500pt;
+}
+
+#print div ::deep .element-classfeats {
+    height: 470pt;
+}
+
+#print div ::deep .element-inventory .inline-gold {
+    height: 110pt;
+}
+
+#print div ::deep .element-inventory .full-gold {
+    height: 84pt;
+}

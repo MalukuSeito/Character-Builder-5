@@ -27,8 +27,6 @@
 
 
 @code {
-	[Parameter]
-	public Guid Guid { get; set; } = Guid.NewGuid();
 
 	[Parameter]
 	public bool ShowShop { get; set; } = false;
@@ -86,7 +84,6 @@
 		if (ItemToMatch != null)
 		{
 			context.Context.MakeHistory("");
-			context.Context.MakeHistory("");
 			ItemToMatch.MagicProperties.Add(property.Name + " " + ConfigManager.SourceSeperator + " " + property.Source);
 			ChangeType ev = ChangeType.Features;
 			if (ItemToMatch is JournalPossession) ev = ev | ChangeType.Journal;
@@ -130,6 +127,8 @@
 		}
 		else
 		{
+			change |= ChangeType.Inventory;
+			context.Context.Player.Items.Add(spell.Name + " " + ConfigManager.SourceSeperator + " " + spell.Source);
 			context.Context.Player.AddPossession(p);
 		}
 		await Close();
@@ -179,6 +178,7 @@
 			change |= ChangeType.Journal;
 		} else
 		{
+			if (item is not null) context.Context.Player.Items.Add(item.Name + " " + ConfigManager.SourceSeperator + " " + item.Source);
 			context.Context.Player.AddPossession(p);
 		}
 		await Close();

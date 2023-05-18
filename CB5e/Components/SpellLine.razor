@@ -1,6 +1,6 @@
 ﻿@inject ContextService context;
 @implements IDisposable;
-<div class="@CssClass">
+<div class="@CssClass @(ShowSpell ? "" : "only-print") lh-1">
 	@if(Prepareable > 0) {
 		<button disabled="@(Level == 0 || (PreparedCount == Prepareable && !Prepared) || Spell is ModifiedSpell mss && mss.AddAlwaysPreparedToName)" @onclick="Toggle" 
 			class="@ButtonCssClass @(Level == 0 ? CantripCssClass : Spell is ModifiedSpell ms && ms.AddAlwaysPreparedToName ? AlwaysCheckCssClass : Prepared ? CheckCssClass : (PreparedCount == Prepareable) ? UncheckCssClass : PreparableCssClass)"
@@ -79,6 +79,9 @@
 
 	[Parameter]
 	public bool Prepared { get; set; } = false;
+
+	[Parameter]
+	public bool ShowSpell { get; set; } = true;
 
 	protected override Task OnInitializedAsync()
 	{

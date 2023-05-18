@@ -28,7 +28,7 @@
 	</div>
 }
 
-<div class="@CssClass">
+<div class="@CssClass @(FullGold ? "full-gold":"inline-gold")">
 	@if (Money is not null) {
 		<span class="@ElementClass" @onclick="()=>FullGold = !FullGold">@Money.ToGold() gp</span>
 	}

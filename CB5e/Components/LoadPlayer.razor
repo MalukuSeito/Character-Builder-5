@@ -3,11 +3,32 @@
 @inject ContextService context;
 @inject SourceService sources;
 @inject IBlazorDbFactory dbFactory;
+@inject IJSRuntime JSRuntime;
 <InputFile class="@CssClass" OnChange="@Load" />
 
 @code {
 	[Parameter]
 	public string? CssClass { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+			var self = DotNetObjectReference.Create(this);
+			await module.InvokeVoidAsync("initLaunchQueue", self);
+		}
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	[JSInvokableAttribute("LoadFile")]
+	public async Task LoadFile(string data, string name)
+	{
+		await config.LoadConfig();
+		using TextReader reader = new StringReader(data);
+		var p = Player.Serializer.Deserialize(reader) as Player;
+		await LoadAsync(p, name);
+	}
 
 	private async Task Load(InputFileChangeEventArgs e)
 	{
@@ -17,6 +38,11 @@
 		await stream.CopyToAsync(ms);
 		ms.Seek(0, SeekOrigin.Begin);
 		var p = Player.Serializer.Deserialize(ms) as Player;
+		await LoadAsync(p, e.File.Name);
+	}
+
+	private async Task LoadAsync(Player? p, string path)
+	{
 		if (p is Player)
 		{
 			if (sources.Sources.Count == 0) await sources.FindAsync(dbFactory);
@@ -24,7 +50,7 @@
 			p.Context.Player = p;
 			context.Level = p.GetLevel();
 			foreach (Spellcasting sc in p.Spellcasting) sc.PostLoad(p.GetLevel());
-			p.FilePath = e.File.Name;
+			p.FilePath = path;
 			await context.NotifyPlayerChange(ChangeType.Full);
 		}
 	}

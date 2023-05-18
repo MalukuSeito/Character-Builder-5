@@ -10,17 +10,12 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="row py-3">
         <div class="nav-item px-3 col-12 col-sm-6 col-lg-12">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door px-2" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3 col-12 col-sm-6 col-lg-12">
             <NavLink class="nav-link" href="counter">
                 <span class="bi bi-box-seam px-2" aria-hidden="true"></span> Manage Packages
             </NavLink>
         </div>
         <div class="nav-item px-3 col-12 col-sm-6 col-lg-12">
-            <NavLink class="nav-link" href="character">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-person-lines-fill px-2" aria-hidden="true"></span> Character
             </NavLink>
         </div>
@@ -34,6 +29,11 @@
                 <span class="bi bi-book-half px-2" aria-hidden="true"></span> Spellbook
 			</NavLink>
 		</div>
+        <div class="nav-item px-3 col-12 col-sm-6 col-lg-12">
+            <NavLink class="nav-link" href="inventory">
+                <span class="bi bi-bag px-2" aria-hidden="true"></span> Inventory
+            </NavLink>
+        </div>
         <div class="nav-item px-3 col-12 col-sm-6 col-lg-12">
             <NavLink class="nav-link" href="journal">
                 <span class="bi bi-journals px-2" aria-hidden="true"></span> Journal

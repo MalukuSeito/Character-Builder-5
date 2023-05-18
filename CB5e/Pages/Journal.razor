@@ -40,7 +40,7 @@
 		</div>
 		@foreach (var entry in Entries)
 		{
-			<JournalEntryBox CssClass="row border border-2 border-primary rounded p-3 g-1 mt-3 position-relative" Entry="entry" FinalItems="FinalItems" FinalMagicItemCount="FinalMagicItemCount" />
+			<JournalEntryBox CssClass="journal-entry row border border-2 border-primary rounded p-3 g-1 mt-3 position-relative" Entry="entry" FinalItems="FinalItems" FinalMagicItemCount="FinalMagicItemCount" />
 		}
 		<button class="@(Entries.Count > 0 ? "autohide" :"") btn bi bi-journal-plus btn-outline-secondary w-100 mt-3" @onclick="AddEntry" />
 	}

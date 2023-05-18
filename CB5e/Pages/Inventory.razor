@@ -1,0 +1,506 @@
+﻿@page "/inventory"
+@inject ContextService context;
+@implements IDisposable;
+
+<PageTitle>Inventory</PageTitle>
+<ShopModal />
+<Sidebar @ref="Sidebar" Scroll="true" Backdrop="false">
+	@if (EditPossession is not null)
+	{
+		<PossessionEdit Possession="EditPossession" EventType="ChangeType.Features | ChangeType.Journal | ChangeType.Inventory"/>
+	}
+	else if (EditBoon is not null)
+	{
+		<BoonEdit Boon="EditBoon" />
+	}
+</Sidebar>
+
+@if (context.Loading is not null)
+{
+	<div>
+		<progress max="@context.Steps" value="@context.Loaded" />
+		Loading <span>@context.Loading</span>
+	</div>
+}
+
+<div class="container-xxl">
+	<div class="no-print border border-2 rounded-2 text-bg-primary border-primary text-sm-center p-2 mb-3">
+		<input type="search" class="border-0 rounded-2 visible-placeholder bg-body form-control" placeholder="Search" @bind="SearchText" @bind:event="oninput" />
+		<div class="bg-body text-body rounded-2 mt-1 d-inline-block ps-3">
+			@foreach (var status in new InventoryStatus[] { InventoryStatus.Inventory, InventoryStatus.Journal, InventoryStatus.Banked, InventoryStatus.FreeItem, InventoryStatus.Boon, InventoryStatus.JournalBoon, InventoryStatus.BankedBoon, InventoryStatus.Lost })
+			{
+				<div class="form-check form-switch form-check-inline">
+					<input class="form-check-input @CardBG(status)" type="checkbox" role="switch" id="@("switch"+status.ToString())" @bind:get="@(Filter.HasFlag(status))" @bind:set="(value) => { Filter = (value ? Filter | status : Filter & ~status); }">
+					<label class="form-check-label text-nowrap fs--2" for="@("switch"+status.ToString())">@Info(status)</label>
+				</div>
+			}
+		</div>
+	</div>
+
+	@if (context.Context.Player is not null)
+	{
+		<div class="row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-4">
+			@foreach (var item in Items.Where(s=>string.IsNullOrWhiteSpace(SearchText) || s.Item1.Matches(SearchText, false)).Where(s=>(s.Item2 & Filter) != 0).OrderBy(s => s.Item1.InfoTitle))
+			{
+				Feature? feature = null;
+				if (item.Item1 is Feature f) feature = f;
+				if (item.Item1 is JournalBoon jb) feature = context.Context.GetBoon(jb.Name, null);
+				Possession? pos = item.Item1 as Possession;
+				var posItem = pos?.Item;
+				<div class="col">
+					<div class="card @CardBG(item.Item2) h-100">
+						<div class="card-header">
+							@if (pos is not null)
+							{
+								<div class="text-body bg-body rounded-top-3 px-2 small-line scale">
+									@pos.FullName
+									@if (pos.Attuned || (pos.Equipped != null && !string.Equals(pos.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase))) {
+										<span class="text-muted">@(" (")
+
+											@if (pos.Equipped != null)
+											{
+												if (string.Equals(pos.Equipped, EquipSlot.Armor, StringComparison.OrdinalIgnoreCase))
+												{
+													<span class="csv">worn</span>
+												}
+												else if (string.Equals(pos.Equipped, EquipSlot.MainHand, StringComparison.OrdinalIgnoreCase)) 
+												{
+													<span class="csv">main-hand</span>
+												}
+												else if (string.Equals(pos.Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase))
+												{
+													<span class="csv">off-hand</span>
+												}
+												else if (!string.Equals(pos.Equipped, EquipSlot.None, StringComparison.OrdinalIgnoreCase))
+												{
+													<span class="csv">@pos.Equipped</span>
+												}
+											}
+											@if (pos.Attuned)
+											{
+												<span class="csv">attuned</span>
+											})</span>
+									}
+								</div>
+							} 
+							else {
+								<div class="text-body bg-body rounded-top-3 px-2 small-line scale">@item.Item1.InfoTitle</div>
+							}
+							<div class="text-center small-line scale">
+								@if (pos is not null && pos.Rarity is Rarity r && r != Rarity.None)
+								{
+									@(r == Rarity.VeryRare ? "Very Rare" : r.ToString())
+								}
+								else if (feature is not null) 
+								{
+									<span class="fst-italic">@feature.Prerequisite</span>
+								}
+							</div>
+						</div>
+						<div class="card-body fs--1">
+							<div class="d-flex flex-column h-100">
+								@if (pos is not null)
+								{
+									<div class="row g-2">
+										<div class="col-6">
+											<div class="h-100 d-flex flex-column">
+												<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@pos.Count</div>
+												<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Amount</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="h-100 d-flex flex-column">
+												<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@pos.ChargesUsed</div>
+												<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Charges Used</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="h-100 d-flex flex-column">
+												<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@pos.GetWeight() lbs</div>
+												<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Weight</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="h-100 d-flex flex-column">
+												<div class="text-body bg-body rounded-top-2 px-2 flex-fill small-line scale">@(posItem?.Price?.ToString() ?? "0 gp")</div>
+												<div class="text-body bg-body rounded-bottom-2 fs--2 text-center mt-1 px-2">Value</div>
+											</div>
+										</div>
+									</div>
+								}
+								<div class="text-body bg-body rounded-bottom-3 flex-fill mt-3 px-2 position-relative">
+									<div class="scale @(pos is not null ? "description":"boondescription")">
+										@if (pos is not null)
+										{
+											
+											@if (!string.IsNullOrWhiteSpace(pos.Name) || !string.IsNullOrWhiteSpace(pos.Description))
+											{
+												<p>
+													@if (!string.IsNullOrWhiteSpace(pos.Name))
+													{
+														<span class="fw-bold">@pos.Name</span><br />
+													}
+													@foreach (var line in pos.Description?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
+													{
+														@line
+
+														<br />
+													}
+												</p>
+											}
+											@if (posItem is not null)
+											{
+												<p class="fw-bold m-0">@posItem.Name</p>
+												<p class="m-0">
+													@foreach (var line in posItem.Description?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
+													{
+														@line<br />
+													}
+												</p>
+											}
+											@if (posItem is Weapon weapon)
+											{
+												<p><span class="fst-italic">Base Damage: </span>@weapon.Damage @weapon.DamageType</p>
+											}
+											@if (posItem is Armor armor)
+											{
+												<p><span class="fst-italic">Armor: </span>@armor.BaseAC AC @(armor.StrengthRequired > 0 ? "Req. Str: " + armor.StrengthRequired : "") @(armor.StealthDisadvantage ? "(disadvantage on stealth)" : "")</p>
+											}
+											@if (posItem is Shield shield)
+											{
+												<p><span class="fst-italic">Shield: </span>+@shield.ACBonus AC</p>
+											}
+											@if (posItem is Pack pack)
+											{
+												<p><span class="fst-italic">Contents: </span>@string.Join(", ", pack.Contents.Select(s=>SourceInvariantComparer.NoSource(s)))</p>
+											}
+											@if (posItem is Scroll s)
+											{
+												@if (s.Spell.Level == 0)
+												{
+													<p><span class="fst-italic">Scroll, common</span> Attack Bonus +5, Save DC 13</p>
+												}
+												else if (s.Spell.Level == 1)
+												{
+													<p><span class="fst-italic">Scroll, common</span> Attack Bonus +5, Save DC 13</p>
+												}
+												else if (s.Spell.Level == 2)
+												{
+													<p><span class="fst-italic">Scroll, uncommon</span> Attack Bonus +5, Save DC 13</p>
+												}
+												else if (s.Spell.Level == 3)
+												{
+													<p><span class="fst-italic">Scroll, uncommon</span> Attack Bonus +7, Save DC 15</p>
+												}
+												else if (s.Spell.Level == 4)
+												{
+													<p><span class="fst-italic">Scroll, rare</span> Attack Bonus +7, Save DC 15</p>
+												}
+												else if (s.Spell.Level == 5)
+												{
+													<p><span class="fst-italic">Scroll, rare</span> Attack Bonus +9, Save DC 17</p>
+												}
+												else if (s.Spell.Level == 6)
+												{
+													<p><span class="fst-italic">Scroll, very rare</span> Attack Bonus +9, Save DC 17</p>
+												}
+												else if (s.Spell.Level == 7)
+												{
+													<p><span class="fst-italic">Scroll, very rare</span> Attack Bonus +10, Save DC 18</p>
+												}
+												else if (s.Spell.Level == 8)
+												{
+													<p><span class="fst-italic">Scroll, very rare</span> Attack Bonus +10, Save DC 18</p>
+												}
+												else if (s.Spell.Level == 9)
+												{
+													<p><span class="fst-italic">Scroll, legendary</span> Attack Bonus +11, Save DC 19</p>
+												}
+												else
+												{
+													<p><span class="fst-italic">Scroll, varies</span></p>
+												}
+
+												<p>
+													A spell scroll bears the words of a single spell, written in a mystical cipher. If the spell is on your class's spell list, you can use an action to read the scroll and cast its spell without having to provide any of the spell's components. Otherwise, the scroll is unintelligible.<br/>
+													If the spell is on your class's spell list but of a higher level than you can normally cast, you must make an ability check using your spell casting ability to determine whether you cast it successfully. The DC equals 10 + the spell's level. On a failed check, the spell disappears from the scroll with no other effect.<br />
+													Once the spell is cast, the words on the scroll fade, and the scroll itself crumbles to dust.
+												</p>
+		
+											}
+
+											@foreach (var props in pos.Magic)
+											{
+												<p class="fw-bold m-0">@props.Name</p>
+												<p class="fst-italic m-0">@props.DisplayRequirement</p>
+												<p>
+													@foreach (var line in props.Description?.Split("\n") ?? new string[] { })
+													{
+														@line<br />
+													}
+												</p>
+												@foreach (var mpf in props.AttunementFeatures.Union(props.CarryFeatures).Union(props.EquipFeatures).Union(props.OnUseFeatures).Union(props.AttunedEquipFeatures).Union(props.AttunedOnUseFeatures).Where(f => !string.IsNullOrEmpty(f.Name) && !f.NoDisplay))
+												{
+													<DisplayFeature Feature="mpf" />
+												}
+											}
+										}
+										else if (feature is not null)
+										{
+											@if (item.Item1 is JournalBoon jboon && (!string.IsNullOrWhiteSpace(jboon.DisplayName) || !string.IsNullOrWhiteSpace(jboon.DisplayText)))
+											{
+												<p>
+													@if (!string.IsNullOrWhiteSpace(jboon.DisplayName)) {
+														<span class="fw-bold">@jboon.DisplayName</span><br />
+													}
+													@foreach (var line in jboon.DisplayText?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
+													{
+														@line
+
+														<br />
+													}
+												</p>
+											}
+											<DisplayFeature Feature="feature" />
+										}
+										@if (posItem is not null && !posItem.autogenerated && posItem.Keywords?.Count > 0)
+										{
+											<p class="fst-italic fs--1">
+												@foreach (var kw in posItem.Keywords)
+												{
+													<span class="csv">@kw.ToString()</span>
+												}
+											</p>
+										}
+										else if (feature is not null)
+										{
+
+											@if (feature.Keywords is not null && feature.Keywords.Count > 0)
+											{
+												<p class="fst-italic fs--1">
+													@foreach (var kw in feature.Keywords)
+													{
+														<span class="csv">@kw.ToString()</span>
+													}
+												</p>
+											}
+										}
+										@if (pos is not null) 
+										{
+											<div class="autohide">
+												<div class="row pb-3">
+													<div class="col">
+														<div class="btn d-block bi bi-gear btn btn-outline-primary cursor-pointer" @onclick="async ()=>await Edit(pos)" title="Edit Possesion" />
+													</div>
+													@if (pos is not JournalPossession)
+													{
+														<div class="col">
+															<div class="btn d-block bi bi-trash2 btn btn-outline-danger cursor-pointer" @onclick="async ()=>await Delete(pos)" title="Delete Item" />
+														</div>
+													}
+													@if(pos is not JournalPossession && posItem is Pack)
+													{
+														<div class="col">
+															<div class="btn d-block bi bi-file-zip btn btn-outline-info cursor-pointer" @onclick="async ()=>await Unpack(pos)" title="Unpack" />
+														</div>
+													}
+												</div>
+											</div>
+										}
+										else if (item.Item1 is JournalBoon jbb)
+										{
+											<div class="autohide">
+												<div class="row pb-3">
+													<div class="col">
+														<div class="btn d-block bi bi-gear btn btn-outline-primary cursor-pointer" @onclick="async ()=>await Edit(jbb)" title="Edit Boon" />
+													</div>
+												</div>
+											</div>
+										}
+										else if (feature is not null)
+										{
+											<div class="autohide">
+												<div class="row pb-3">
+													<div class="col">
+														<div class="btn d-block bi bi-trash2 btn btn-outline-danger cursor-pointer" @onclick="async ()=>await Delete(feature)" title="Remove Boon" />
+													</div>
+												</div>
+											</div>
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="row">
+								<div class="col-4 fs--1">
+									<div class=" small-line scale">
+										@Info(item.Item2)
+									</div>
+								</div>
+								<div class="col-8 text-end fs--1">
+									<div class="small-line scale">
+										@if(posItem is not null)
+										{
+											<span class="csv">@posItem.Source</span>
+										}
+										@if (pos is not null)
+										{
+											@foreach (var mp in pos.Magic)
+											{
+												<span class="csv">@mp.Source</span>
+											}
+										}
+										@if (feature is not null)
+										{
+											<span class="csv">@feature.Source</span>
+										}
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<button class="@(Items.Where(s=>string.IsNullOrWhiteSpace(SearchText) || s.Item1.Matches(SearchText, false)).Where(s=>(s.Item2 & Filter) != 0).Count() == 0 ? "autohide" :"") no-print btn bi bi-shop btn-outline-secondary w-100 d-block mt-3" @onclick="async ()=>await context.OpenShop(null, null)" />
+	}
+</div>
+
+@code {
+	private List<(IInfoText, InventoryStatus)> Items { get; set; } = new();
+
+	private Sidebar? Sidebar { get; set; }
+	private Possession? EditPossession { get; set; }
+	private JournalBoon? EditBoon { get; set; }
+
+	private string SearchText { get; set; } = "";
+	private InventoryStatus Filter { get; set; } = InventoryStatus.Inventory | InventoryStatus.FreeItem | InventoryStatus.Journal | InventoryStatus.Boon | InventoryStatus.JournalBoon;
+
+	private Task SetFilter(InventoryStatus status, bool value)
+	{
+		Filter &= (value ? status : ~status);
+		return Task.CompletedTask;
+	}
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		context.LoadEvent += StateHasChanged;
+		BuildItems();
+
+		return Task.CompletedTask;
+	}
+
+	private string CardBG(InventoryStatus status)
+	{
+		if ((status & InventoryStatus.Lost) != 0) return "bg-danger-subtle";
+		if ((status & InventoryStatus.Inventory) != 0) return "text-bg-primary";
+		if ((status & InventoryStatus.FreeItem) != 0) return "bg-primary-subtle";
+		if ((status & InventoryStatus.Journal) != 0) return "text-bg-secondary";
+		if ((status & InventoryStatus.Banked) != 0) return "bg-secondary-subtle";
+		if ((status & InventoryStatus.Boon) != 0) return "text-bg-info";
+		if ((status & InventoryStatus.JournalBoon) != 0) return "text-bg-warning";
+		if ((status & InventoryStatus.BankedBoon) != 0) return "bg-warning-subtle";
+		return "text-bg-danger";
+	}
+
+	private async Task Edit(Possession possession)
+	{
+		EditPossession = possession;
+		EditBoon = null;
+		StateHasChanged();
+		if (Sidebar is not null) await Sidebar.Open("Edit Item");
+	}
+
+	private async Task Edit(JournalBoon boon)
+	{
+		EditPossession = null;
+		EditBoon = boon;
+		StateHasChanged();
+		if (Sidebar is not null) await Sidebar.Open("Edit Boon");
+	}
+
+	private async Task Delete(Possession p)
+	{
+		context.Context.MakeHistory("");
+		context.Context.Player.RemovePossessionAndItems(p);
+		await context.NotifyPlayerChange(ChangeType.Inventory | ChangeType.Features);
+	}
+
+	private async Task Delete(Feature boon)
+	{
+		context.Context.MakeHistory("");
+		context.Context.Player.RemoveBoon(boon);
+		await context.NotifyPlayerChange(ChangeType.Inventory | ChangeType.Features);
+	}
+
+	private async Task Unpack(Possession p)
+	{
+		if (p.BaseItem != null && p.BaseItem != "" && p.Item is Pack)
+		{
+			context.Context.MakeHistory("");
+			for (int i = 0; i < p.Count; i++)
+				context.Context.Player.Items.AddRange(((Pack)p.Item).Contents);
+			context.Context.Player.RemovePossessionAndItems(p);
+			await context.NotifyPlayerChange(ChangeType.Inventory);
+		}
+	}
+
+	private string Info(InventoryStatus status)
+	{
+		List<string> info = new();
+		if ((status & InventoryStatus.Inventory) != 0) info.Add("Inventory");
+		if ((status & InventoryStatus.FreeItem) != 0) info.Add("Class/Background");
+		else
+		{
+			if ((status & InventoryStatus.Journal) != 0) info.Add("Journal");
+			if ((status & InventoryStatus.Banked) != 0) info.Add("Journal (banked)");
+		}
+		if ((status & InventoryStatus.Boon) != 0) info.Add("Boon");
+		if ((status & InventoryStatus.JournalBoon) != 0) info.Add("Boon (Journal)");
+		else if ((status & InventoryStatus.BankedBoon) != 0) info.Add("Boon (banked)");
+		if ((status & InventoryStatus.Lost) != 0) info.Add("Lost");
+		if (info.Count == 0) return "Unknown";
+		if (info.Count == 1) return info[0];
+		return string.Join(", ", info.SkipLast(1)) + " and " + info.Last();
+	}
+
+	private void BuildItems()
+	{
+		if (context?.Context?.Player is Player player)
+		{
+			foreach (var pos in player.GetItemsAndPossessions(includeBanked: true))
+			{
+				Items.Add((pos, pos is JournalPossession jp ? jp.Banked ? InventoryStatus.Banked : InventoryStatus.Journal : pos.Count == 0 ? InventoryStatus.Lost : pos.Free ? InventoryStatus.FreeItem : InventoryStatus.Inventory));
+			}
+			foreach (var feat in player.GetJournalBoons(true))
+			{
+				Items.Add((feat, feat.Banked ? InventoryStatus.BankedBoon : InventoryStatus.JournalBoon));
+				feat.Context = context.Context;
+			}
+			foreach (var feat in player.GetBoons(context.Level, false, false))
+			{
+				Items.Add((feat, InventoryStatus.Boon));
+			}
+		}
+	}
+
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(ChangeType.Full | ChangeType.Features | ChangeType.Inventory | ChangeType.Journal)) await InvokeAsync(() =>
+			{
+				Items.Clear();
+				BuildItems();
+				StateHasChanged();
+			});
+	}
+
+	public void Dispose()
+	{
+		context.PlayerChange -= StateChange;
+		context.LoadEvent -= StateHasChanged;
+	}
+}

@@ -1,8 +1,10 @@
 ﻿@inject ContextService context;
 @implements IDisposable;
 <div class="@CssClass">
-	<input type="text" @bind="TitleText" class="@InputCssClass" placeholder="@TitlePlaceholder" title="@TitleTitle" />
-	<ResizingTextArea CssClass="@TextAreaCssClass" @bind-Value="ValueText" Placeholder="@TextPlaceholder" Title="@TextTitle" />
+	<!--<input type="text" @bind="TitleText" class="@InputCssClass no-print" placeholder="@TitlePlaceholder" title="@TitleTitle" />
+	<div class="@InputCssClass only-print">@TitleText</div>
+	<ResizingTextArea CssClass="@TextAreaCssClass" @bind-Value="ValueText" Placeholder="@TextPlaceholder" Title="@TextTitle" />-->
+	<ResizingTextArea CssClass="@TextAreaCssClass" @bind-Value="Value" Placeholder="@TextPlaceholder" Title="@TextTitle" />
 	<button class="@RemoveButtonCssClass" @onclick="Remove" />
 </div>
 
@@ -32,6 +34,7 @@
 	public string? TitleTitle { get; set; }
 
 	private string? v;
+	private string Value { get => v ?? ""; set => Update(value); }
 	private string ValueText { get => (v?.Contains("\n") ?? false) ? v.Split("\n", 2)[1] : ""; set => Update(string.IsNullOrEmpty(value) ? TitleText : TitleText + "\n" + value); }
 	private string TitleText { get => (v?.Contains("\n") ?? false) ? v.Split("\n", 2)[0] : (v??""); set => Update(string.IsNullOrEmpty(ValueText) ? value : value + "\n" + ValueText); }
 

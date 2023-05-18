@@ -16,10 +16,33 @@
 		{
 			@if (Entry is not null && Entry.Value.Entry.Notes.Count > 0)
 			{
-				@foreach (var note in Entry.Value.Entry.Notes)
-				{
-					<span class="@ItemCssClass">@note.Split(new []{'\n','\r'}, 2)[0]</span>
-				}
+				<div class="no-print">
+				
+					@foreach (var note in Entry.Value.Entry.Notes)
+					{
+						<span class="@ItemCssClass">@note.Split(new []{'\n','\r'}, 2)[0]</span>
+					}
+				</div>
+				<div class="only-print">
+					@foreach (var note in Entry.Value.Entry.Notes)
+					{
+						var first = true;
+						<p class="mb-1 mt-0">
+							@foreach (var line in note.Split("\n").Where(s => !string.IsNullOrWhiteSpace(s)) ?? new string[] { })
+							{
+								if (first)
+								{
+									first = false;
+									<span class="fw-bold">@line</span>
+								} else
+								{
+									@line
+								}
+								<br />
+							}
+						</p>
+					}
+				</div>
 			}
 		}
 	</div>

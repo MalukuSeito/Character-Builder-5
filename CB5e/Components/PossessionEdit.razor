@@ -8,7 +8,7 @@
 			<p class="fw-bold m-0">@Possession?.Item.Name</p>
 			<p class="fst-italic m-0">@Possession?.Item.Weight lb</p>
 			<p class="m-0">
-				@foreach (var line in Possession?.Item.Description?.Split("\n") ?? new string[] { })
+				@foreach (var line in Possession?.Item.Description?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
 				{
 					@line<br />
 				}
@@ -21,7 +21,7 @@
 			<p class="fw-bold m-0">@props.Name</p>
 			<p class="fst-italic m-0">@props.DisplayRequirement</p>
 			<p>
-				@foreach (var line in props.Description?.Split("\n") ?? new string[] { })
+				@foreach (var line in props.Description?.Split("\n").Where(s => !string.IsNullOrEmpty(s)) ?? new string[] { })
 				{
 					@line
 

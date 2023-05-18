@@ -1,0 +1,17 @@
+﻿#print .row-cols-xxl-3 > * {
+    flex: 0 0 auto;
+    width: 33.3333333333%
+}
+
+#print .card {
+    height: 231pt !important;
+    page-break-inside:avoid;
+}
+
+#print .description {
+    height: 133pt;
+}
+
+#print .boondescription {
+    height: 165pt;
+}

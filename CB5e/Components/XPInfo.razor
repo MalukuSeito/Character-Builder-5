@@ -9,8 +9,8 @@
 				<button disabled="@(context.Level == 1)" class="btn btn-secondary bi bi-dash py-0 fs--1" @onclick="async()=>Set(context.Context.Player.Advancement ? context.Context.Levels.GetAP(Math.Max(1, context.Level-1)): context.Context.Levels.GetXP(Math.Max(1, context.Level-1)))" title="Level Down" />
 			</div>
 		</div>
-		<div class="col">
-			<input type="number" @bind="Value" class="border-0 d-block w-100 text-inherit fw-inherit py-0 my-0" min="@context.Context.Player.GetXP(true)" />
+		<div class="col align-self-end text-end scale">
+			<input type="number" @bind="Value" class="border-0 text-inherit fw-inherit py-0 my-0" min="@context.Context.Player.GetXP(true)" />
 		</div>
 	</div>
 	

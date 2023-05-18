@@ -4,11 +4,11 @@
 	@foreach (var feature in features)
 	{
 		bool pdf = PdfState(feature);
-		<p class="@LineCssClass">
+		<p class="@LineCssClass @(pdf? "":"no-print")">
 			
 			<button @onclick="()=>TogglePdf(feature)" class="@ButtonCssClass @(pdf?"bi-file-earmark-pdf-fill":"bi-file-earmark-pdf")">@(pdf?"In PDF":"Hidden")</button>
 			<span class="@NameCssClass">@(feature.Name). </span>
-			@foreach (var line in feature.Text?.Split("\n") ?? new string[] { })
+			@foreach (var line in feature.Text?.Split("\n")?.Where(s=>!string.IsNullOrWhiteSpace(s)) ?? new string[] { })
 			{
 				@line<br />
 			}

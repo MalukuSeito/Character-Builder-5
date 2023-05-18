@@ -15,3 +15,11 @@
         content: "\f63f";
     }
 }
+
+#print .bi-x-circle::before {
+    content: "\f28a";
+}
+
+#print .bi-check-circle-fill::before {
+    content: "\f28a";
+}

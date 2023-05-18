@@ -192,7 +192,10 @@ namespace CB5e.Services
             {
 				foreach (var b in other.Items.Values)
                 {
-					
+					if (b.Category != null && b.Category.Path == null)
+                    {
+                        Console.WriteLine($"Error while importing from {Name} : {b.Name} - {b.Category} Path is null");
+                    }
 					if (b.Category != null && !Category.Categories.ContainsKey(b.Category.Path))
                     {
                         Category.Categories.Add(b.Category.Path, new Category(b.Category.Path, b.Category.CategoryPath, context));

@@ -3,7 +3,8 @@
 @using System.Reflection;
 @implements IDisposable;
 <div class="@CssClass">
-	<input class="@InputCssClass" @bind="Value" placeholder="@Placeholder" title="@Title" />
+	<input class="@InputCssClass no-print" @bind="Value" placeholder="@Placeholder" title="@Title" />
+	<div class="only-print">@Value</div>
 </div>
 
 @code {

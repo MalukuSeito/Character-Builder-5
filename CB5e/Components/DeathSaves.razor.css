@@ -1,0 +1,29 @@
+﻿@media (hover: hover) {
+    .bi-dash-circle-fill:hover::before {
+        content: "\f2e4";
+    }
+
+    .bi-dash-circle:hover::before {
+        content: "\f2e4";
+    }
+    .bi-plus-circle-fill:hover::before {
+        content: "\f4f8";
+    }
+
+    .bi-plus-circle:hover::before {
+        content: "\f4f8";
+    }
+    
+}
+
+#print .bi-dash-circle-fill::before {
+    content: "\f2e6";
+}
+
+#print .bi-plus-circle-fill::before {
+    content: "\f4fa";
+}
+
+#print .fs-5 {
+    font-size:0.9em !important;
+}

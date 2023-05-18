@@ -25,7 +25,7 @@
 				{
 					<li class="@LineCssClass">
 						<button class="btn @(Choices.Count < Feature.Amount ? Taken.Contains(tool.Name, ConfigManager.SourceInvariantComparer) ? "btn-secondary-outline" : "btn-primary" : "btn-primary-outline") me-3 py-0 my-0 bi @(i <= count ? "bi-check-circle-fill active" : "bi-check-circle")" @onclick="async () => await Select(tool, i)" title="Select" />
-						<span class="@NameCssClass @(Taken.Contains(tool.Name, ConfigManager.SourceInvariantComparer) ? "text-muted" : "")" @onclick="()=>Selected = Selected == tool ? null : tool">@tool.Name</span><Tag Xml="tool" />
+						<span class="@NameCssClass @(Taken.Contains(tool.Name, ConfigManager.SourceInvariantComparer) ? "text-muted" : "") cursor-pointer" @onclick="()=>Selected = Selected == tool ? null : tool">@tool.Name</span><Tag Xml="tool" />
 						<span class="@SourceCssClass"> (@tool.Source)</span>
 						@if (Selected == tool)
 						{

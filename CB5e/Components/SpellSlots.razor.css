@@ -1,0 +1,30 @@
+﻿#print .bi-1-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-2-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-3-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-4-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-5-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-6-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-7-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-8-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-9-circle-fill::before {
+    content: "\f28a";
+}
+#print .bi-circle-fill::before {
+    content: "\f28a";
+}

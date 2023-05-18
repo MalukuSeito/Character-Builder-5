@@ -2,12 +2,12 @@
 {
 	public enum SpellStatus
 	{
-		Learned,
-		Prepared,
-		Spellbook,
-		Classlist,
-		Bonus,
-		Scroll,
-		BankedScroll
+		Learned = 1,
+		Prepared = 2,
+		Spellbook = 4,
+		Classlist = 8,
+		Bonus = 16,
+		Scroll = 32,
+		BankedScroll = 64
 	}
 }

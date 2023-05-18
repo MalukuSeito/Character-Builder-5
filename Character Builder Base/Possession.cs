@@ -26,7 +26,11 @@ namespace Character_Builder
         public BuilderContext Context;
         public bool ShouldSerializeContext() => false;
 
-        public String Name { get; set; }
+        [XmlIgnore]
+        public bool Free = false;
+		public bool ShouldSerializeFree() => false;
+
+		public String Name { get; set; }
         public String BaseItem { get; set; }
         public string Equipped { get; set; }
         public bool Attuned { get; set; }
@@ -131,7 +135,7 @@ namespace Character_Builder
             MagicProperties = new List<string>();
             Weight = -1;
         }
-        public Possession(BuilderContext context, string Base, int count)
+        public Possession(BuilderContext context, string Base, int count, bool free = false)
         {
             Context = context;
             Name = "";
@@ -144,6 +148,7 @@ namespace Character_Builder
             Hightlight = false;
             MagicProperties = new List<string>();
             Weight = -1;
+            Free = free;
         }
         public Possession(Possession p)
         {
@@ -423,7 +428,7 @@ namespace Character_Builder
             return name + (keywords != null ? " [" + keywords + "]" : "") + damage;
         }
 
-        public bool Matches(string expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
+		public bool Matches(string expression, List<string> additionalKeywords = null, int classlevel = 0, int level = 0)
         {
             return Context.Player.Matches(expression, additionalKeywords, classlevel, level);
         }
@@ -439,8 +444,26 @@ namespace Character_Builder
         public Rarity GetRarity()
         {
             if (Context == null) return Rarity.None;
-            if (MagicProperties.Count == 0) return Rarity.None;
-            return Magic.Select(mp => mp.Rarity).Max();
+            var scrollRarity = Rarity.None;
+            if (Item is Scroll s)
+            {
+                scrollRarity = s.Spell.Level switch
+                {
+                    0 => Rarity.Common,
+                    1 => Rarity.Common,
+                    2 => Rarity.Uncommon,
+                    3 => Rarity.Uncommon,
+                    4 => Rarity.Rare,
+                    5 => Rarity.Rare,
+                    6 => Rarity.VeryRare,
+                    7 => Rarity.VeryRare,
+                    8 => Rarity.VeryRare,
+                    9 => Rarity.Legendary,
+                    _ => Rarity.None
+                };
+            }
+            if (MagicProperties.Count == 0) return scrollRarity;
+            return Magic.Select(mp => mp.Rarity).Union(new Rarity[] {scrollRarity}).Max();
 
         }
         public bool Consumable { get => ConsumableOverride ?? GetConsumable(); set => ConsumableOverride = value; }

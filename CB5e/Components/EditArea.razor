@@ -2,7 +2,7 @@
 @implements IDisposable;
 @using System.Linq.Expressions;
 @using System.Reflection;
-<div class="@CssClass">
+<div class="@CssClass @(Value == "- None -" ? "hidden-print" : "")">
 	<ResizingTextArea CssClass="@InputCssClass" @bind-Value="Value" Placeholder="@Placeholder" Title="@Title" />
 </div>
 

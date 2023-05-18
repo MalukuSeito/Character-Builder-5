@@ -1,6 +1,12 @@
 ﻿@inject IJSRuntime JSRuntime;
 @implements IAsyncDisposable;
-<textarea @ref="area" rows="1" style="resize: none" class="@CssClass" @bind="Val" placeholder="@Placeholder" title="@Title" />
+<textarea @ref="area" rows="1" style="resize: none" class="@CssClass no-print" @bind="Val" placeholder="@Placeholder" title="@Title" />
+<p class="only-print">
+	@foreach (var line in Val?.Split("\n")?.Where(s => !string.IsNullOrWhiteSpace(s)) ?? new string[] { })
+	{
+		@line<br />
+	}
+</p>
 @code {
 	[Parameter]
 	public string? CssClass { get; set; } = "";

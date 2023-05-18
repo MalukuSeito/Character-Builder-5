@@ -6,6 +6,14 @@
   "background_color": "#ffffff",
   "theme_color": "#03173d",
   "prefer_related_applications": false,
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "text/xml": [ ".cb5" ]
+      }
+    }
+  ],
   "icons": [
     {
       "src": "icon-512.png",

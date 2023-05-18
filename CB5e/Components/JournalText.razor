@@ -4,15 +4,15 @@
 @using System.Reflection;
 <div class="@CssClass">
 	<ResizingTextArea CssClass="@InputCssClass" @bind-Value="Value" Placeholder="@Placeholder" Title="@Title"/>
-	<div class="@TitleCssClass">@Title</div>
 </div>
+<div class="@TitleCssClass">@Title</div>
 
 @code {
 	[Parameter]
-	public string? CssClass { get; set; }
+	public string? CssClass { get; set; } = "border-bottom border-1 border-secondary";
 
 	[Parameter]
-	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 border-bottom border-1 border-secondary lh-1";
+	public string? InputCssClass { get; set; } = "p-0 border-0 w-100 text-inherit fw-inherit m-0 lh-1";
 
 	[Parameter]
 	public string? Placeholder { get; set; }

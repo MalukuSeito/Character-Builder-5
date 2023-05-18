@@ -12,10 +12,10 @@
 			<SpellSlots CssClass="@SlotsCssClass" Count="@Count" Level="@Level" SpellcastingID="@SpellcastingFeature?.SpellcastingID" Used="@Used" EventMask="@EventMask" />
 		}
 	</div>
-	<div class="@SpellsBoxCssClass">
+	<div class="@SpellsBoxCssClass scale @("SpellBox"+ Level)">
 	@foreach (var spell in Spells.OrderBy(s=>s.Name))
 	{
-		<SpellLine CssClass="border-bottom border-1 border-secondary position-relative" Level="@Level" Spell="@spell" ClassLevel="@ClassLevel" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@(Prepared.Contains(spell.Name, ConfigManager.SourceInvariantComparer))" EventMask="@EventMask"/>
+			<SpellLine CssClass="border-bottom border-1 border-secondary position-relative" ShowSpell="ShowSpell?.Invoke(spell) ?? true" Level="@Level" Spell="@spell" ClassLevel="@ClassLevel" Spellcasting="@Spellcasting" SpellcastingFeature="@SpellcastingFeature" Prepareable="@Prepareable" PreparedCount="@PreparedCount" Prepared="@(Prepared.Contains(spell.Name, ConfigManager.SourceInvariantComparer))" EventMask="@EventMask" />
 	}	
 	</div>
 </div>
@@ -38,7 +38,7 @@
 
 	[Parameter]
 	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Features;
-	
+
 	[Parameter]
 	public ChangeType InPlayEventMask { get; set; } = ChangeType.Spellslots | ChangeType.Spells;
 
@@ -71,6 +71,9 @@
 
 	[Parameter]
 	public List<string> Prepared { get; set; } = new List<string>();
+
+	[Parameter]
+	public Func<Spell?, bool>? ShowSpell { get; set; } = null;
 
 	protected override Task OnInitializedAsync()
 	{

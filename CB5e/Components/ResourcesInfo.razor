@@ -3,21 +3,23 @@
 <div class="@CssClass">
 	@foreach (var res in resources) {
 		<div class="@Col1CssClass">
-			<div class="@Col1DivCssClass">
-				<span><Tag Title="@res.Title" CssClass="position-tr" XmlLoader="@(()=>res.XmlLoader is string s ? context.Context.Player.GetResourceFeatures(s) : res.ModifiedSpell)" />@res.Title</span>
+			<div class="@Col1DivCssClass attacks-line lh-1 px-1">
+				<div class="scale h-100">
+					<span><Tag Title="@res.Title" CssClass="position-tr" XmlLoader="@(()=>res.XmlLoader is string s ? context.Context.Player.GetResourceFeatures(s) : res.ModifiedSpell)" />@res.Title</span>
+				</div>
 			</div>
 		</div>
 		<div class="@Col2CssClass">
 			@if (res.Recharge == RechargeModifier.AtWill) {
-				<div class="@Col2DivCssClass @InfiniteCssClass"></div>
+				<div class="@Col2DivCssClass @InfiniteCssClass attacks-line lh-1 px-1"></div>
 			} 
 			else
 			{
-				<ResourceCount CssClass="@(Col2DivCssClass + " " + FiniteCssClass)" EventMask="@EventMask" EventType="@LineEventType" InputCssClass="@InputCssClass" ReloadCssClass="@ReloadCssClass" Info="@res"/>
+				<ResourceCount CssClass="@(Col2DivCssClass + " " + FiniteCssClass + "attacks-line lh-1 px-1")" EventMask="@EventMask" EventType="@LineEventType" InputCssClass="@InputCssClass" ReloadCssClass="@ReloadCssClass" Info="@res" />
 			}
 		</div>
 		<div class="@Col3CssClass">
-			<div class="@Col3DivCssClass">@ModifiedSpell.RechargeName(res.Recharge)</div>
+			<div class="@Col3DivCssClass attacks-line lh-1 px-1">@ModifiedSpell.RechargeName(res.Recharge)</div>
 		</div>
 	}
 </div>

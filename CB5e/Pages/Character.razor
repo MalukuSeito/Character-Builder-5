@@ -1,7 +1,7 @@
-﻿@page "/character"
+﻿@page "/"
 @inject ContextService context;
 @implements IDisposable;
-<PageTitle>Player</PageTitle>
+<PageTitle>@(context?.Context?.Player?.Name ?? "Character")</PageTitle>
 
 <Modal @ref="Modal">
 	@if(ShowClasses)
@@ -33,38 +33,38 @@
 @if(context.Context.Player is not null)
 {
 	<div class="container-xxl">
-		<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1">
+		<div class="row border border-2 border-primary rounded p-3 gx-0 gy-1 sheet-header">
 			<div class="col-md-4 align-self-end order-md-2">
-				<EditField CssClass="border-bottom border-secondary m-0 fw-bolder text-lg-center" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
+				<EditField CssClass="border-bottom border-secondary m-0 fw-bolder text-lg-center scale" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Name</div>
 			</div>
 			<div class="col-md-4 order-md-1">
-				<ClassesInfo CssClass="border-bottom border-secondary cursor-pointer" OnClick="OpenClasses" />
+				<ClassesInfo CssClass="border-bottom border-secondary cursor-pointer scale sheet-line" OnClick="OpenClasses" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Class and Levels</div>
-				<EditField CssClass="border-bottom border-secondary m-0" Expression="@((p)=>p.Alignment)" Placeholder="Alignment" Title="Alignment"/>
+				<EditField CssClass="border-bottom border-secondary m-0 scale sheet-line" Expression="@((p)=>p.Alignment)" Placeholder="Alignment" Title="Alignment" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Alignment</div>
-				<RaceInfo CssClass="border-bottom border-secondary m-0 cursor-pointer" OnClick="OpenRace" />
+				<RaceInfo CssClass="border-bottom border-secondary m-0 cursor-pointer scale sheet-line" OnClick="OpenRace" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Race</div>
 			</div>
 			
 			<div class="col-md-4 order-md-3">
-				<BackgroundInfo CssClass="border-bottom border-secondary m-0 text-lg-end cursor-pointer" OnClick="OpenBackground" />
+				<BackgroundInfo CssClass="border-bottom border-secondary m-0 text-lg-end cursor-pointer scale sheet-line" OnClick="OpenBackground" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Background</div>
-				<EditField CssClass="border-bottom border-secondary m-0 text-lg-end" Expression="@((p)=>p.PlayerName)" Placeholder="Player Name" Title="Player Name" />
+				<EditField CssClass="border-bottom border-secondary m-0 text-lg-end scale sheet-line" Expression="@((p)=>p.PlayerName)" Placeholder="Player Name" Title="Player Name" />
 				<div class="p-0 text-lg-center mt-0 fs--2">Player</div>
-				<XPInfo CssClass="border-bottom border-secondary m-0 text-lg-end" />
+				<XPInfo CssClass="border-bottom border-secondary m-0 text-lg-end sheet-line" />
 				<div class="p-0 text-lg-center mt-0 fs--2">@(context.Context.Player.Advancement ? "AP" : "XP")</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-6 col-xl-4 gy-1">
+			<div class="col-sm-6 col-xl-4 gy-1 first-page">
 				<div class="row g-0">
 					<Scores OnClick="OpenScores" AbilityScores="Scores" CssClass="col-5" BoxCssClass="border border-2 border-primary rounded p-0 text-center mb-1" NameCssClass="border-bottom border-2 border-primary p-0 fs--2 cursor-pointer" ModCssClass="fs-1" ScoreCssClass="border-top border-2 border-primary fs-4" />
 					<div class="col-7">
 						<div class="row g-0">
 							<div class="col-6 g-0">
 								<div class="row g-0 border border-2 border-primary rounded text-center ms-1 aspect-1">
-									<Inspiration CssClass="fs-1 align-self-end" CheckCssClass="bi-check-lg" UncheckCssClass="bi-check-lg text-white" />	
+									<Inspiration CssClass="hidden-print fs-1 align-self-end py-1 border-0" CheckCssClass="bi-check-lg" UncheckCssClass="bi-check-lg text-white" />	
 									<div class="border-top border-2 border-primary align-self-end fs--2" title="Inspiration">
 										Insp.
 									</div>
@@ -72,7 +72,7 @@
 							</div>
 							<div class="col-6 g-0">
 								<div class="row g-0 border border-2 border-primary rounded text-center ms-1 aspect-1">
-									<ProficiencyInfo CssClass="fs-1 align-self-end" Scores="Scores" Features="Features" Possessions="Possessions" EventMask="ChangeType.None"/>
+									<ProficiencyInfo CssClass="fs-1 align-self-end py-1" Scores="Scores" Features="Features" Possessions="Possessions" EventMask="ChangeType.None"/>
 									<div class="border-top border-2 border-primary align-self-end fs--2" title="Proficiency">
 										Prof.
 									</div>
@@ -89,15 +89,15 @@
 							<div class="p-0 text-center fs--2 mt-0">Skills</div>
 						</div>
 						<div class="border border-2 border-primary rounded ms-1 mt-1 fs--1">
-							<Conditions />
+							<Conditions CssClass="element-conditions" />
 							<div class="p-0 text-center fs--2 mt-0">Conditions</div>
 						</div>
 					</div>
 				</div>
 				<PassiveInfo CssClass="border border-2 border-primary rounded mt-1 px-2" Skill="@context.Context.GetSkill("Perception", null)" Scores="Scores" Features="Features" Possessions="Possessions" EventMask="ChangeType.None">Passive Perception</PassiveInfo>
-				<Stats CssClass="border border-2 border-primary rounded mt-1 px-2" Features="Features" EventMask="ChangeType.None"/>
+				<Stats CssClass="border border-2 border-primary rounded mt-1 px-2 scale element-stats" Features="Features" EventMask="ChangeType.None" />
 				<div class="border border-2 border-primary rounded mt-1 px-1">
-					<div class="border-bottom border-1 border-secondary">
+					<div class="border-bottom border-1 border-secondary scale element-prof">
 						<LanguageInfo CssClass="m-0 p-0" Features="Features" EventMask="ChangeType.None"/>
 						<ToolProficiencyInfo CssClass="m-0 p-0" Features="Features" EventMask="ChangeType.None" />
 						<OtherProficiencyInfo CssClass="m-0 p-0" Features="Features" EventMask="ChangeType.None" />
@@ -105,8 +105,8 @@
 					<div class="p-0 text-center mt-0 fs--2">Other Proficiencies & Languages</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-4 gy-1">
-				<div class="row">
+			<div class="col-sm-6 col-xl-4 gy-1 first-page">
+				<div class="row g-1">
 					<div class="col-4">
 						<div class="row g-0 border border-2 border-primary rounded text-center aspect-1">
 							<ACInfo CssClass="fs-1 align-self-end" Scores="Scores" Features="Features" Possessions="Possessions" EventMask="ChangeType.None" />
@@ -134,28 +134,28 @@
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1 row g-0">
 					<div class="row g-0 border-bottom border-1 border-secondary">
-						<HitPoints CssClass="fs-2 text-end col position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tl" Scores="Scores" Features="Features" EventMask="ChangeType.None" />
+						<HitPoints CssClass="hidden-print fs-2 text-end col position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tl" Scores="Scores" Features="Features" EventMask="ChangeType.None" />
 						<div class="col-auto fs-2">/</div>
 						<HitPointsMax CssClass="fs-2 text-start col position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tr" Scores="Scores" Features="Features" EventMask="ChangeType.None" />
 					</div>
 					<div class="p-0 text-center fs--2 mt-0 gy-0">Hitpoints</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<TempHP CssClass="border-bottom border-1 border-secondary fs-2 text-center position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tr" />
-					<div class="p-0 text-center mt-0 fs--2">Temporary Hitpoints</div>
+					<TempHP CssClass="hidden-print fs-2 text-center position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tr" />
+					<div class="p-0 text-center mt-0 fs--2 border-top border-1 border-secondary ">Temporary Hitpoints</div>
 				</div>
 				<div class="row gx-1 gy-0 mt-1">
 					<div class="col-6">
 						<div class="row g-0 border border-2 border-primary rounded text-center">
-							<HitDice CssClass="fs-5 align-self-end" LineCssClass="position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tl" />
+							<HitDice CssClass="fs-5 align-self-end scale no-print" LineCssClass="position-relative" ReloadCssClass="btn reset bi bi-bootstrap-reboot fs--2 position-tl" />
 							<div class="border-top border-2 border-primary align-self-end mt-0 fs--2" title="Hit Dice">
 								Hit Dice
 							</div>
 						</div>
 					</div>
 					<div class="col-6">
-						<div class="row g-0 border border-2 border-primary rounded text-center">
-							<DeathSaves CssClass="align-self-end text-center" ButtonCssClass="btn bi p-0 m-0 fs-5" />
+						<div class="row g-0 border border-2 border-primary rounded text-center ">
+							<DeathSaves CssClass="align-self-end text-center scale sheet-textbox" ButtonCssClass="btn bi p-0 m-0 fs-5" />
 							<div class="border-top border-2 border-primary align-self-end mt-0 fs--2" title="Death Saves">
 								Death Saves
 							</div>
@@ -163,45 +163,49 @@
 					</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<AttacksInfo CssClass="row cutoff15 gx-1 gy-0" EventMask="ChangeType.Spells" Features="Features" Possessions="Possessions" Scores="Scores"/>
+					<div class="element-attacks scale">
+						<AttacksInfo CssClass="row cutoff15 gx-1 gy-1" EventMask="ChangeType.Spells" Features="Features" Possessions="Possessions" Scores="Scores"/>
+					</div>
 					<div class="p-0 text-center mt-0 fs--2">Attacks &amp; Spellcasting</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<ResourcesInfo CssClass="row cutoff15 gx-1 gy-0" EventMask="ChangeType.None" Features="Features" Scores="Scores" />
+					<div class="element-resources scale">
+						<ResourcesInfo CssClass="row cutoff15 gx-1 gy-1" EventMask="ChangeType.None" Features="Features" Scores="Scores" />
+					</div>
 					<div class="p-0 text-center mt-0 fs--2">Resources</div>
 				</div>
-				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<InventoryInfo Expression="(p)=>Possessions" Features="Features" ShowMoney="true" MoneyBorderCssClass="mt-1 text-end" PPElementCssClass="col-2" GPElementCssClass="col-4" SPElementCssClass="col-2" CPElementCssClass="col-2" EPElementCssClass="col-2" />
+				<div class="border border-2 border-primary rounded px-1 mt-1 element-inventory">
+					<InventoryInfo CssClass="scale " Expression="(p)=>Possessions" Features="Features" ShowMoney="true" MoneyBorderCssClass="mt-1 text-end" PPElementCssClass="col-2" GPElementCssClass="col-4" SPElementCssClass="col-2" CPElementCssClass="col-2" EPElementCssClass="col-2" />
 					<div class="p-0 text-center mt-0 fs--2">Inventory</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-4 gy-1">
+			<div class="col-sm-6 col-xl-4 gy-1 first-page">
 				<div class="border border-2 border-primary rounded px-1 pt-1">
 					<div class="border-bottom border-1 border-secondary">
-						<EditArea CssClass="m-0 p-0 lh-1" Expression="(p)=>p.PersonalityTrait" Multiline=false Placeholder="Personality Trait" Title="Personality Trait" />
-						<EditArea CssClass="mt-3 lh-1 mx-0 mb-0  p-0" Expression="(p)=>p.PersonalityTrait2" Multiline=false Placeholder="2nd Personality Trait" Title="Second Personality Trait" />
+						<EditArea CssClass="m-0 p-0 lh-1 sheet-box scale" Expression="(p)=>p.PersonalityTrait" Multiline=false Placeholder="Personality Trait" Title="Personality Trait" />
+						<EditArea CssClass="mt-3 lh-1 mx-0 mb-0  p-0 sheet-box scale" Expression="(p)=>p.PersonalityTrait2" Multiline=false Placeholder="2nd Personality Trait" Title="Second Personality Trait" />
 					</div>
 					<div class="p-0 text-center mt-0 fs--2 mb-3">Personality Trait</div>
-					<div class="border-bottom border-1 border-secondary">
+					<div class="border-bottom border-1 border-secondary sheet-box scale">
 						<EditArea CssClass="m-0 p-0 lh-1" Expression="(p)=>p.Ideal" Multiline=false Placeholder="Ideal" Title="Ideal" />
 					</div>
 					<div class="p-0 text-center mt-0 fs--2 mb-3">Ideal</div>
-					<div class="border-bottom border-1 border-secondary">
+					<div class="border-bottom border-1 border-secondary sheet-box scale">
 						<EditArea CssClass="m-0 p-0 lh-1" Expression="(p)=>p.Bond" Multiline=false Placeholder="Bond" Title="Bond" />
 					</div>
 					<div class="p-0 text-center mt-0 fs--2 mb-3">Bond</div>
-					<div class="border-bottom border-1 border-secondary">
+					<div class="border-bottom border-1 border-secondary sheet-box scale">
 						<EditArea CssClass="m-0 p-0 lh-1" Expression="(p)=>p.Flaw" Multiline=false Placeholder="Flaw" Title="Flaw" />
 					</div>
 					<div class="p-0 text-center mt-0 fs--2">Flaw</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1 pt-1">
-					<FeatureInfo CssClass="border-bottom border-1 border-secondary cutoff lh-1 fs--1" Expression="(p, l)=>p.GetClassFeatures(l).Union(p.GetCommonFeaturesAndFeats(l))" />
+					<FeatureInfo CssClass="border-bottom border-1 border-secondary cutoff lh-1 fs--1 scale element-classfeats" Expression="(p, l)=>p.GetClassFeatures(l).Union(p.GetCommonFeaturesAndFeats(l))" />
 					<div class="p-0 text-center mt-0 fs--2">Class Features</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-4 gy-1">
-				<div class="border border-2 border-primary rounded px-1 pt-1 text-center">
+			<div class="col-sm-6 col-xl-4 gy-1 second-page">
+				<div class="border border-2 border-primary rounded px-1 pt-1 text-center sheet-name scale">
 					<EditField CssClass="text-center fs-2" Expression="@((p)=>p.Name)" Placeholder="Name" Title="Name" />
 				</div>
 				<div class="border border-2 border-primary rounded px-1 pt-1 text-center mt-1 aspect-1">
@@ -209,7 +213,7 @@
 					<div class="p-0 text-center mt-0 fs--2">Portrait</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 pt-1 mt-1">
-					<div class="lh-1 cutoff fs--1">
+					<div class="lh-1 cutoff fs--1 element-notes scale">
 						<EditArea Expression="(p)=>p.Backstory" CssClass="" Placeholder="Backstory" Title="Backstory" />
 						<Notes Expression="()=>context.Context.Player.Journal" Event="SimpleJournal" CssClass="pb-3 notes" LineCssClass="mt-3 position-relative" />
 						<ComplexNotes />
@@ -217,30 +221,30 @@
 					<div class="p-0 text-center mt-0 fs--2">Backstory</div>
 				</div>
 			</div>
-			<div class="col-sm-12 col-xl-8 gy-1">
+			<div class="col-sm-12 col-xl-8 gy-1 second-page">
 				<div class="border border-2 border-primary rounded px-1 pt-1">
 					<div class="row">
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditIntField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Age"/>
 							<div class="p-0 text-center mt-0 fs--2">Age</div>
 						</div>
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Height" />
 							<div class="p-0 text-center mt-0 fs--2">Height</div>
 						</div>
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditIntField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Weight" />
 							<div class="p-0 text-center mt-0 fs--2">Weight</div>
 						</div>
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Eyes" />
 							<div class="p-0 text-center mt-0 fs--2">Eyes</div>
 						</div>
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Skin" />
 							<div class="p-0 text-center mt-0 fs--2">Skin</div>
 						</div>
-						<div class="col-4">
+						<div class="col-4 sheet-box scale">
 							<EditField CssClass="border-bottom border-1 border-secondary" Expression="(p)=>p.Hair" />
 							<div class="p-0 text-center mt-0 fs--2">Hair</div>
 						</div>
@@ -249,31 +253,54 @@
 				<div class="border border-2 border-primary rounded px-1 pt-1 mt-1">
 					<div class="border-bottom border-1 border-secondary">
 						<div class="row">
-							<div class="col-sm-6">
+							<div class="col-sm-6 element-allies scale">
 								<EditArea Expression="(p)=>p.Allies" Placeholder="Allies" Title="Allies" />
 							</div>
 							<div class="col-sm-6 text-center" alt="Faction Information">
-								<EditField Expression="(p)=>p.FactionName" Placeholder="Faction Name" Title="Faction Name" />
+								<div class="sheet-line scale">
+									<EditField Expression="(p)=>p.FactionName" Placeholder="Faction Name" Title="Faction Name" />
+								</div>
 								<div class="aspect-1 my-1">
 									<EditImage Expression="(p)=>p.FactionImage" />
 								</div>
-								<EditField Expression="(p)=>p.FactionRank" Placeholder="Rank" Title="Faction Rank" />
+								<div class="sheet-line scale">
+									<EditField Expression="(p)=>p.FactionRank" Placeholder="Rank" Title="Faction Rank" />
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="p-0 text-center fs--2 mt-0">Allies &amp; Organizations</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 pt-1 mt-1">
-					<FeatureInfo CssClass="border-bottom border-1 border-secondary cutoff33 lh-1 fs--1" Expression="(p, l)=>p.GetOnlyBackgroundFeatures(l).Union(p.GetBoons(l)).Union(p.GetPossessionFeatures(l)).Union(p.GetRaceFeatures(l))" />
+					<FeatureInfo CssClass="border-bottom border-1 border-secondary cutoff33 lh-1 fs--1 element-racefeats scale" Expression="(p, l)=>p.GetOnlyBackgroundFeatures(l).Union(p.GetBoons(l)).Union(p.GetPossessionFeatures(l)).Union(p.GetRaceFeatures(l))" />
 					<div class="p-0 text-center mt-0 fs--2">Additonal Features &amp; Traits</div>
 				</div>
 				<div class="border border-2 border-primary rounded px-1 mt-1">
-					<InventoryInfo Expression="(p)=>p.GetItemsAndPossessions(true, true).Where(p=>p is JournalPossession and {Banked: true})" ShowMoney="false" />
+					<InventoryInfo CssClass="element-bank scale" Expression="(p)=>p.GetItemsAndPossessions(true, true).Where(p=>p is JournalPossession and {Banked: true})" ShowMoney="false" />
 					<div class="p-0 text-center mt-0 fs--2">Banked Treasure</div>
 				</div>
 			</div>
 		</div>
 	</div>
+} 
+else
+{
+	<table class="table">
+		<tr><th>TODO</th></tr>
+		<tr><td>Actions</td></tr>
+		<tr><td>Forms and Summons</td></tr>
+		<tr><td>Suggestions for DM/DCI Alignments Location</td></tr>
+		<tr><td>Reorder and Trim Attacks</td></tr>
+		<tr><td>Group Weapons and Tools in choices</td></tr>
+		<tr><td>Turn off Pictures in Choices</td></tr>
+		<tr><td>Save Darkmode, Player, DCI, to LocalStorage</td></tr>
+		<tr><td>Save current char to session storage</td></tr>
+		<tr><td>Journal QoL: Insert Entry Before, Copy/Paste, Drag to Reorder</td></tr>
+		<tr><td>Export Character as JSON and Transforms</td></tr>
+		<tr><td>Export Import Data Files as JSON</td></tr>
+		<tr><td>Fix Tags on mobile</td></tr>
+		<tr><td>Speed up Spellsheet by caching features (Get Spell Slots does 2 calls for example)</td></tr>
+	</table>
 }
 
 @code {

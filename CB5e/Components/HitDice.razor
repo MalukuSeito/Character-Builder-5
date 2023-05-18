@@ -7,6 +7,12 @@
 	}
 
 </div>
+<div class="only-print sheet-textbox scale">
+	@foreach (var die in Value)
+	{
+		<span class="csv">@die.ToString()</span>
+	}
+</div>
 
 @code {
 	[Parameter]

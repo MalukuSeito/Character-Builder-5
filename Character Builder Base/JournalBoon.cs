@@ -3,6 +3,7 @@ using OGL.Common;
 using OGL.Features;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Xml.Serialization;
 
 namespace Character_Builder
 {
-    public class JournalBoon: IChoiceProvider
+    public class JournalBoon: IChoiceProvider, IInfoText
     {
         [XmlIgnore]
         public Dictionary<Feature, int> ChoiceCounter = new Dictionary<Feature, int>(new ObjectIdentityEqualityComparer());
@@ -18,15 +19,22 @@ namespace Character_Builder
         [XmlIgnore]
         public Dictionary<string, int> ChoiceTotal = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         public bool ShouldSerializeChoiceTotal() => false;
-
-        public Guid Guid { get; set; }
+		[XmlIgnore]
+		public BuilderContext Context;
+		public bool ShouldSerializeContext() => false;
+		public Guid Guid { get; set; }
         public bool Deleted { get; set; }
         public bool Banked { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string DisplayText { get; set; }
         public bool New { get; set; }
-        public List<Choice> Choices = new();
+
+        public string InfoTitle => ToString();
+
+		public string InfoText => ((DisplayName != null ? Name : "") + (Banked ? " (banked)" :"")).Trim();
+
+		public List<Choice> Choices = new();
         public JournalBoon() { }
         public JournalBoon(string boon)
         {
@@ -89,5 +97,20 @@ namespace Character_Builder
         {
             return true;
         }
-    }
+
+		public string ToInfo(bool includeDescription = false)
+		{
+            return InfoName();
+		}
+
+        public bool Matches(string text, bool nameOnly)
+		{
+			CultureInfo Culture = CultureInfo.InvariantCulture;
+            if (nameOnly) return Culture.CompareInfo.IndexOf(DisplayName ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || (Context != null && (Context.GetBoon(Name, null)?.Matches(text, nameOnly) ?? false));
+            return Culture.CompareInfo.IndexOf(DisplayName ?? "", text, CompareOptions.IgnoreCase) >= 0
+                || Culture.CompareInfo.IndexOf(DisplayText ?? "", text, CompareOptions.IgnoreCase) >= 0
+				|| (Context != null && (Context.GetBoon(Name, null)?.Matches(text, nameOnly) ?? false));
+		}
+	}
 }

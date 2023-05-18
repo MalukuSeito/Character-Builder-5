@@ -1,0 +1,68 @@
+﻿#print div ::deep .journal-entry {
+    page-break-inside: avoid;
+}
+
+#print div ::deep .col-xl-1 {
+    flex: 0 0 auto;
+    width: 8.33333333%;
+}
+
+#print div ::deep .col-xl-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+}
+
+#print .col-lg-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+#print div ::deep .col-xl-3 {
+    flex: 0 0 auto;
+    width: 25%;
+}
+
+#print div ::deep .col-xl-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+}
+
+#print div ::deep .col-xl-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+}
+
+#print div ::deep .col-xl-6 {
+    flex: 0 0 auto;
+    width: 50%;
+}
+
+#print div ::deep .col-xl-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+}
+
+#print div ::deep .col-xl-8 {
+    flex: 0 0 auto;
+    width: 66.66666667%;
+}
+
+#print div ::deep .col-xl-9 {
+    flex: 0 0 auto;
+    width: 75%;
+}
+
+#print div ::deep .col-xl-10 {
+    flex: 0 0 auto;
+    width: 83.33333333%;
+}
+
+#print div ::deep .col-xl-11 {
+    flex: 0 0 auto;
+    width: 91.66666667%;
+}
+
+#print div ::deep .col-xl-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}

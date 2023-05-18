@@ -3,19 +3,25 @@
 <div class="@CssClass">
 	@foreach (var attack in attacks) {
 		<div class="@Col1CssClass">
-			<div class="@Col1DivCssClass">
-				<span><Tag CssClass="@TagCssClass" XmlLoader="@attack.Xml" Title="@attack.Title" />@attack.Title</span>
-				@if (attack.Attack.AttackOptions.Count > 0)
-				{
-					<span class="@OptionsCssClass">&nbsp;(@string.Join(", ", attack.Attack.AttackOptions))</span>
-				}
+			<div class="@Col1DivCssClass attacks-line lh-1 px-1">
+				<div class="scale h-100">
+					<span><Tag CssClass="@TagCssClass" XmlLoader="@attack.Xml" Title="@attack.Title" />@attack.Title</span>
+					@if (attack.Attack.AttackOptions.Count > 0)
+					{
+						<span class="@OptionsCssClass">&nbsp;(@string.Join(", ", attack.Attack.AttackOptions))</span>
+					}
+				</div>
 			</div>
 		</div>
 		<div class="@Col2CssClass">
-			<div class="@Col2DivCssClass">@(attack.Attack.SaveDC != "" ? "DC" + attack.Attack.SaveDC : attack.Attack.AttackBonus.PlusMinus())</div>
+			<div class="@Col2DivCssClass attacks-line lh-1 px-1">
+				@(attack.Attack.SaveDC != "" ? "DC" + attack.Attack.SaveDC : attack.Attack.AttackBonus.PlusMinus())
+			</div>
 		</div>
 		<div class="@Col3CssClass">
-			<div class="@Col3DivCssClass">@attack.Attack.Damage @attack.Attack.DamageType</div>
+			<div class="@Col3DivCssClass attacks-line lh-1 px-1">
+				<div class="scale h-100">@attack.Attack.Damage @attack.Attack.DamageType</div>
+			</div>
 		</div>
 	}
 </div>

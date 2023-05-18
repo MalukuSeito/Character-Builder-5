@@ -83,3 +83,26 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+
+@media print {
+    .sidebar, .top-row {
+        display: none;
+    }
+}
+
+#print .print-button {
+    color: var(--bs-btn-active-color);
+    background-color: var(--bs-btn-active-bg);
+    border-color: var(--bs-btn-active-border-color);
+}
+#print .content {
+    width: 511pt;
+}
+
+#print .sidebar {
+    font-size: 16px;
+}
+
+#print .top-row {
+    font-size: 16px;
+}

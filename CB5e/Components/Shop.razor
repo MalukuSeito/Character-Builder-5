@@ -21,7 +21,7 @@
 			{
 				var style = "margin-left: " + (string.IsNullOrEmpty(TextFilter) ? cat.CategoryPath.Count - 1 : 0) +"0px";
 				<div style="@style">
-					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleItem(cat.Path)">
+					<div class="text-capitalize text-primary fs-4 fw-bold cursor-pointer" @onclick="()=>ToggleItem(cat.Path)">
 						@if (string.IsNullOrEmpty(TextFilter))
 						{
 							<span class="bi pe-3 @(ItemsOpened.Contains(cat.Path) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
@@ -43,7 +43,7 @@
 									{
 										<button class="btn @(matches ? "btn-primary" : "btn-outline-light") me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectItem.InvokeAsync(item)" title="@(matches ? "Add" : "Property does not fit item, force add")" />
 									}
-									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									<span class="fs-5 cursor-pointer" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
 									@if (Selected == item)
 									{
 										<p class="fst-italic">@item.Weight lb</p>
@@ -72,7 +72,7 @@
 			if (string.IsNullOrEmpty(TextFilter) || cat.Contents.Where(i => i.Matches(TextFilter, NameOnly)).Any())
 			{
 				<div style="@("margin-left: "+ (string.IsNullOrEmpty(TextFilter) ? cat.Indent : "") + "0px")">
-					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleMagic(cat.Name)">
+					<div class="text-capitalize text-primary fs-4 fw-bold cursor-pointer" @onclick="()=>ToggleMagic(cat.Name)">
 						@if (string.IsNullOrEmpty(TextFilter))
 						{
 							<span class="bi pe-3 @(MagicOpened.Contains(cat.Name) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
@@ -96,7 +96,7 @@
 									{
 										<button class="btn @(matches ? "btn-primary" : "btn-outline-light")  me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectMagicProperty.InvokeAsync(item)" title="@(matches ? "Add" : "Property does not fit item, force add")" />
 									}
-									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									<span class="fs-5 cursor-pointer" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
 									@if (Selected == item)
 									{
 										<p class="fst-italic">@item.DisplayRequirement</p>
@@ -128,7 +128,7 @@
 			if (string.IsNullOrEmpty(TextFilter) || context.Context.Spells.Values.Where(i => i.Level == cat.Item1).Where(i => i.Matches(TextFilter, NameOnly)).Any())
 			{
 				<div style="@(string.IsNullOrEmpty(TextFilter) && cat.Item1 >= 0 ? "margin-left: 10px" :"")">
-					<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>ToggleSpell(cat.Item2)">
+					<div class="text-capitalize text-primary fs-4 fw-bold cursor-pointer" @onclick="()=>ToggleSpell(cat.Item2)">
 						@if (string.IsNullOrEmpty(TextFilter))
 						{
 							<span class="bi pe-3 @(SpellsOpened.Contains(cat.Item2) || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
@@ -149,10 +149,13 @@
 									{
 										<button class="btn @(matches ? "btn-primary" : "btn-outline-light") me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectSpell.InvokeAsync(item)" title="@(matches ? "Add" : "Spell does not fit, override")" />
 									}
-									<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+									<span class="fs-5 cursor-pointer" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
 									@if (Selected == item)
 									{
 										<p class="fst-italic">@item.Desc</p>
+										<p class="mb-0"><span class="fw-bold">Casting Time: </span>@item.CastingTime</p>
+										<p class="mb-0"><span class="fw-bold">Range: </span>@item.Range</p>
+										<p class="mb-0"><span class="fw-bold">Duration: </span>@item.Duration</p>
 										<p>
 											@foreach (var line in item.Description?.Split("\n") ?? new string[] { })
 											{
@@ -176,7 +179,7 @@
 		if (string.IsNullOrEmpty(TextFilter) || context.Context.Boons.Values.Where(i => i.Matches(TextFilter, NameOnly)).Any())
 		{
 			<div>
-				<div class="text-capitalize text-primary fs-4 fw-bold" @onclick="()=>BoonsOpen = !BoonsOpen">
+				<div class="text-capitalize text-primary fs-4 fw-bold cursor-pointer" @onclick="()=>BoonsOpen = !BoonsOpen">
 					@if (string.IsNullOrEmpty(TextFilter))
 					{
 						<span class="bi pe-3 @(BoonsOpen || TextFilter.Length > 2 ? "bi-dash-square":"bi-plus-square")"></span>
@@ -193,7 +196,7 @@
 								{
 									<button class="btn btn-primary me-3 py-0 my-0 bi bi-cart-plus-fill" @onclick="async ()=>await OnSelectBoon.InvokeAsync(item)" />
 								}
-								<span class="fs-5" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
+								<span class="fs-5 cursor-pointer" @onclick="()=>Selected = Selected == item ? null : item">@item.Name</span><Tag Xml="item" /><span class="text-muted"> (@item.Source)</span>
 								@if (Selected == item)
 								{
 									<p class="fst-italic">@item.Prerequisite</p>
