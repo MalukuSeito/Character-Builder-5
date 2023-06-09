@@ -57,7 +57,7 @@ namespace OGL
 
         //Background
         public Dictionary<String, Background> Backgrounds { get; set; } = new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Background> BackgroundsSimple { get; set; } = new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Background> BackgroundsSimple = new Dictionary<string, Background>(StringComparer.OrdinalIgnoreCase);
         public Background GetBackground(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -73,7 +73,7 @@ namespace OGL
 
         //Classes
         public Dictionary<String, ClassDefinition> Classes { get; set; } = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, ClassDefinition> ClassesSimple { get; set; } = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, ClassDefinition> ClassesSimple = new Dictionary<string, ClassDefinition>(StringComparer.OrdinalIgnoreCase);
 
         public ClassDefinition GetClass(String name, string sourcehint)
         {
@@ -99,7 +99,7 @@ namespace OGL
 
         //Conditions
         public Dictionary<String, Condition> Conditions { get; set; } = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Condition> ConditionsSimple { get; set; } = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Condition> ConditionsSimple = new Dictionary<string, Condition>(StringComparer.OrdinalIgnoreCase);
         public Condition GetCondition(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -122,7 +122,7 @@ namespace OGL
         public Dictionary<string, List<FeatureContainer>> FeatureContainers { get; set; } = new Dictionary<string, List<FeatureContainer>>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, List<Feature>> FeatureCategories { get; set; } = new Dictionary<string, List<Feature>>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, Feature> Boons { get; set; } = new Dictionary<string, Feature>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<string, Feature> BoonsSimple { get; set; } = new Dictionary<string, Feature>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, Feature> BoonsSimple = new Dictionary<string, Feature>(StringComparer.OrdinalIgnoreCase);
         public List<Feature> Features { get; set; } = new List<Feature>();
         private List<List<Feature>> copies = new List<List<Feature>>();
         public List<Feature> GetFeatureCollection (string expression, int copy = 0)
@@ -203,7 +203,7 @@ namespace OGL
 
         //Items
         public Dictionary<String, Item> Items { get; set; } = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Item> ItemsSimple { get; set; } = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Item> ItemsSimple = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<String, List<Item>> ItemLists = new Dictionary<string, List<Item>>(StringComparer.OrdinalIgnoreCase);
         public Item GetItem(String name, string sourcehint)
         {
@@ -286,7 +286,7 @@ namespace OGL
 
         //Languages
         public Dictionary<String, Language> Languages { get; set; } = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Language> LanguagesSimple { get; set; } = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Language> LanguagesSimple = new Dictionary<string, Language>(StringComparer.OrdinalIgnoreCase);
         public Language GetLanguage(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -334,7 +334,7 @@ namespace OGL
         //Magic
         public Dictionary<string, MagicCategory> MagicCategories { get; set; } = new Dictionary<string, MagicCategory>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<String, MagicProperty> Magic { get; set; } = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, MagicProperty> MagicSimple { get; set; } = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, MagicProperty> MagicSimple = new Dictionary<string, MagicProperty>(StringComparer.OrdinalIgnoreCase);
 
         public MagicProperty GetMagic(String name, string sourcehint)
         {
@@ -361,7 +361,7 @@ namespace OGL
 
         //Races
         public Dictionary<String, Race> Races { get; set; } = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Race> RacesSimple { get; set; } = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Race> RacesSimple = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
         public Race GetRace(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -381,7 +381,7 @@ namespace OGL
 
         //Skills
         public Dictionary<String, Skill> Skills { get; set; } = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Skill> SkillsSimple { get; set; } = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Skill> SkillsSimple = new Dictionary<string, Skill>(StringComparer.OrdinalIgnoreCase);
         public Skill GetSkill(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -398,7 +398,7 @@ namespace OGL
         //Spells
         public Dictionary<String, Spell> Spells { get; set; } = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<String, List<Spell>> SpellLists = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, Spell> SpellsSimple { get; set; } = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, Spell> SpellsSimple = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
 
         public Spell GetSpell(String name, string sourcehint)
         {
@@ -539,7 +539,7 @@ namespace OGL
 
         //SubClasses
         public Dictionary<String, SubClass> SubClasses { get; set; } = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, SubClass> SubClassesSimple { get; set; } = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, SubClass> SubClassesSimple = new Dictionary<string, SubClass>(StringComparer.OrdinalIgnoreCase);
         public SubClass GetSubClass(String name, string sourcehint)
         {
             if (name.Contains(ConfigManager.SourceSeperatorString))
@@ -563,7 +563,7 @@ namespace OGL
 
         //SubRaces
         public Dictionary<String, SubRace> SubRaces { get; set; } = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<String, SubRace> SubRacesSimple { get; set; } = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<String, SubRace> SubRacesSimple = new Dictionary<string, SubRace>(StringComparer.OrdinalIgnoreCase);
 
         public SubRace GetSubRace(String name, string sourcehint)
         {

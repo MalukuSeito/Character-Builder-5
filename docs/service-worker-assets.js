@@ -141,7 +141,7 @@
       "url": "sample-data\/weather.json"
     },
     {
-      "hash": "sha256-5hYoWeLaP3cI0VikZBBhV0Uj\/gOEWdnk26jW2m5SpWE=",
+      "hash": "sha256-TAL6EpyUzYCCZ8NiKFEfDCL8xqK2u0HQOq\/M367zzTo=",
       "url": "SourceService.js"
     },
     {
@@ -226,7 +226,7 @@
     },
     {
       "hash": "sha256-3l+4ZYRWpGMbBjNqeIqO9T\/65euaOzIvRlVX2SySvFQ=",
-      "url": "_framework\/dotnet.7.0.4.r81cnsj4kx.js"
+      "url": "_framework\/dotnet.7.0.4.c3wd750p8v.js"
     },
     {
       "hash": "sha256-UEt3EzX1Ts6UAzZ8vHZJ3Nb0gAVPqeNmtxuFnUvzxVI=",
@@ -253,7 +253,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-bfKqNDCXLQfBo+lElt5YuIwGnTWL1gJKTmggqO85VRw=",
+      "hash": "sha256-WXkZIan5SUp7EwkE6m8W\/c8OD5Wmtp5WzSbmH\/3\/tSo=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -261,15 +261,15 @@
       "url": "_framework\/BlazorDB.dll"
     },
     {
-      "hash": "sha256-SqXPlCRSsB7wjHsPsLOezcoZmTfaFWlD3AFIFhRvB\/I=",
+      "hash": "sha256-WVcQQIVe1UUZPxKBaXZ\/SKzj9LIc4j07hiLteJlJ8c4=",
       "url": "_framework\/CB5e.dll"
     },
     {
-      "hash": "sha256-YAQY+Dvmz7wrYgDviUxmq2hh\/BhSZw51LZezSbSNDyo=",
+      "hash": "sha256-F35G2C+bqiE\/B9xz7v+06+\/PQpzdGcwLIny48SvbNB8=",
       "url": "_framework\/Character Builder Base.dll"
     },
     {
-      "hash": "sha256-zMrDWYJu508jVGFqp0vCLdoSTcaQw6fjvO7SwDCRJkQ=",
+      "hash": "sha256-ExA8hkN0jiQSDykHl3WzQdmHSQF926rzQCTJCBHHD5c=",
       "url": "_framework\/Character Builder Plugin.dll"
     },
     {
@@ -333,7 +333,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-Euiyl52khABA3euQ4YwiwHUwIRyOYGRzHQzWhneh77I=",
+      "hash": "sha256-4cuQGZ3QCEcog0ub4jJe4wx+6Pvng2s6g\/S\/GVX96as=",
       "url": "_framework\/NCalc2.dll"
     },
     {
@@ -341,11 +341,11 @@
       "url": "_framework\/netstandard.dll"
     },
     {
-      "hash": "sha256-jm5zHMrc\/nVBKdxC8bQ8YqVE0WJCggHUusxYw72G9Ok=",
+      "hash": "sha256-BnS7kiDqvJMH7wew7pOttcU\/UqHAUsMu0HRh3mffY04=",
       "url": "_framework\/OGL Elements.dll"
     },
     {
-      "hash": "sha256-XCXT0cuG2X3jKjHzPaX\/Cf9fxfp4SV35TvJdWCOkUWw=",
+      "hash": "sha256-p5CxZFgXEiBEvdDSTOOvfxv04EA4HP3L6X6WWXdVEDc=",
       "url": "_framework\/PluginDMG.dll"
     },
     {
@@ -441,7 +441,7 @@
       "url": "_framework\/System.Resources.ResourceManager.dll"
     },
     {
-      "hash": "sha256-azeDF5n+nfk5FrB08gRVB80CCB0MCvJ1JRhTVj7sCRE=",
+      "hash": "sha256-BNDeHv79qnefAT3n1Lj0ipsgTbdqHod9vybn9ha6MSU=",
       "url": "_framework\/System.Runtime.dll"
     },
     {
@@ -509,5 +509,5 @@
       "url": "_content\/BlazorIndexedDB\/dexie.min.js"
     }
   ],
-  "version": "nA6jEaZG"
+  "version": "y9+EQgLp"
 };

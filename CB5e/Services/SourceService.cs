@@ -16,8 +16,9 @@ namespace CB5e.Services
 		public static readonly string Storage = "Test2";
         private readonly List<string> DefaultSources = new ();
         private readonly IJSRuntime Runtime;
+        private IJSObjectReference? Module;
 
-		public List<ISource> Sources { get; private set; } = new List<ISource>();
+        public List<ISource> Sources { get; private set; } = new List<ISource>();
         public SourceService (IWebAssemblyHostEnvironment hostEnvironment, IJSRuntime jSRuntime)
         {
 			Runtime = jSRuntime; 
@@ -25,30 +26,51 @@ namespace CB5e.Services
 
         public async Task FindAsync(IBlazorDbFactory dbFactory)
         {
-            var db = await dbFactory.GetDbManager(Database);
-            db.ActionCompleted += (sender, e) =>
-            {
-                if (e.Failed) Console.WriteLine(e.Message);
-            };
-            var list = await db.ToArray<SourcePreview>(Storage);
+
+            if (Module is null) Module = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./SourceService.js");
+            var list = await Module.InvokeAsync<List<string>>("listDB", Database, Storage);
             if (list is not null && list.Count > 0)
             {
-                foreach (SourcePreview entry in list)
+                foreach (string entry in list)
                 {
-                    Sources.Add(new CachedSource(dbFactory, entry.Name ?? "Unkown Source", null));
+                    Sources.Add(new CachedSource(dbFactory, entry ?? "Unkown Source", null));
                 }
-            } else
+            }
+            else
             {
                 if (DefaultSources.Count == 0)
                 {
-                    var module = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./SourceService.js");
-                    DefaultSources.AddRange(await module.InvokeAsync<List<string>>("datafiles"));
+                    DefaultSources.AddRange(await Module.InvokeAsync<List<string>>("datafiles"));
                 }
                 foreach (var source in DefaultSources)
                 {
                     Sources.Add(new UrlSource(HttpUtility.UrlDecode(Path.GetFileNameWithoutExtension(source)), source));
                 }
-			}
+            }
+
+            //var db = await dbFactory.GetDbManager(Database);
+            //db.ActionCompleted += (sender, e) =>
+            //{
+            //    if (e.Failed) Console.WriteLine(e.Message);
+            //};
+            //var list = await db.ToArray<SourcePreview>(Storage);
+            //if (list is not null && list.Count > 0)
+            //{
+            //    foreach (SourcePreview entry in list)
+            //    {
+            //        Sources.Add(new CachedSource(dbFactory, entry.Name ?? "Unkown Source", null));
+            //    }
+            //} else
+            //{
+            //    if (DefaultSources.Count == 0)
+            //    {
+            //        DefaultSources.AddRange(await Module.InvokeAsync<List<string>>("datafiles"));
+            //    }
+            //    foreach (var source in DefaultSources)
+            //    {
+            //        Sources.Add(new UrlSource(HttpUtility.UrlDecode(Path.GetFileNameWithoutExtension(source)), source));
+            //    }
+            //}
         }
 
     }
