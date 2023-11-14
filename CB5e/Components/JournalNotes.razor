@@ -8,7 +8,7 @@
 		@if (ShowMore && Entry is not null) {
 			@for (int i = 0; i < Entry.Value.Entry.Notes.Count; i++)
 			{
-				<EditArrayArea CssClass="@LineCssClass" EventMask="@EventMask" EventType="@EventType" RemoveButtonCssClass="@RemoveButtonCssClass" InputCssClass="@InputCssClass" TextAreaCssClass="@TextAreaCssClass" Expression="()=>Entry.Value.Entry.Notes" Event="" Index="i" TextPlaceholder="@TextPlaceholder" TextTitle="@TextTitle" TitlePlaceholder="@TitlePlaceholder" TitleTitle="@TitleTitle" Multiline="@Multiline" />
+				<EditArrayArea CssClass="@LineCssClass" EventMask="@EventMask" EventType="@(EventType | ChangeType.Journal)" RemoveButtonCssClass="@RemoveButtonCssClass" InputCssClass="@InputCssClass" TextAreaCssClass="@TextAreaCssClass" Expression="()=>Entry.Value.Entry.Notes" Event="" Index="i" TextPlaceholder="@TextPlaceholder" TextTitle="@TextTitle" TitlePlaceholder="@TitlePlaceholder" TitleTitle="@TitleTitle" Multiline="@Multiline" />
 			}
 			<div class="@ButtonCssClass" @onclick="AddLine" />
 		} 

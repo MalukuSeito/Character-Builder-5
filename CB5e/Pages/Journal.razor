@@ -12,6 +12,16 @@
 	</div>
 }
 <ShopModal />
+<Sidebar @ref="Sidebar" Scroll="true" Backdrop="true">
+	@if (EditPossession is not null)
+	{
+		<PossessionEdit Possession="EditPossession" EventType="ChangeType.Features | ChangeType.Journal | ChangeType.Inventory" />
+	}
+	else if (EditBoon is not null)
+	{
+		<BoonEdit Boon="EditBoon" />
+	}
+</Sidebar>
 <div class="container-xxl pb-3">
 
 
@@ -40,7 +50,7 @@
 		</div>
 		@foreach (var entry in Entries)
 		{
-			<JournalEntryBox CssClass="journal-entry row border border-2 border-primary rounded p-3 g-1 mt-3 position-relative" Entry="entry" FinalItems="FinalItems" FinalMagicItemCount="FinalMagicItemCount" />
+			<JournalEntryBox CssClass="journal-entry row border border-2 border-primary rounded p-3 g-1 mt-3 position-relative" Entry="entry" FinalItems="FinalItems" FinalMagicItemCount="FinalMagicItemCount" OpenBoon="Edit" OpenPossession="Edit" />
 		}
 		<button class="@(Entries.Count > 0 ? "autohide" :"") btn bi bi-journal-plus btn-outline-secondary w-100 mt-3" @onclick="AddEntry" />
 	}
@@ -52,6 +62,10 @@
 	public List<Guid> FinalItems { get; set; } = new();
 
 	public int FinalMagicItemCount { get; set; } = 0;
+
+	private Sidebar? Sidebar { get; set; }
+	private Possession? EditPossession { get; set; }
+	private JournalBoon? EditBoon { get; set; }
 
 	protected override Task OnInitializedAsync()
 	{
@@ -253,6 +267,22 @@
 			context.Context?.Player?.ComplexJournal?.Add(new JournalEntry());
 			await context.NotifyPlayerChange(ChangeType.Journal);
 		}
+	}
+
+	private async Task Edit(Possession possession)
+	{
+		EditPossession = possession;
+		EditBoon = null;
+		StateHasChanged();
+		if (Sidebar is not null) await Sidebar.Open("Edit Item");
+	}
+
+	private async Task Edit(JournalBoon boon)
+	{
+		EditPossession = null;
+		EditBoon = boon;
+		StateHasChanged();
+		if (Sidebar is not null) await Sidebar.Open("Edit Boon");
 	}
 
 	public void Dispose()

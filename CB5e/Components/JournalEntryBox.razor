@@ -12,6 +12,10 @@
 				<div class="@ButtonTextCssClass">@DeleteTitle</div>
 			</div>
 			<div class="mx-2 p-0 float-end text-center">
+				<button class="@AddButtonCss" @onclick="AddBefore" title="@AddBeforeTitle" />
+				<div class="@ButtonTextCssClass">@AddBeforeTitle</div>
+			</div>
+			<div class="mx-2 p-0 float-end text-center">
 				<button class="@((Entry?.Entry?.InSheet ?? true)?InSheetButtonCss:NoSheetButtonCss)" @onclick="()=>{if (Entry is not null) {context.Context.MakeHistory();Entry.Value.Entry.InSheet=!Entry.Value.Entry.InSheet;}}" title="@((Entry?.Entry?.InSheet ?? true) ? InSheetTitle : NoSheetTitle)" />
 				<div class="@ButtonTextCssClass">@((Entry?.Entry?.InSheet ?? true) ? InSheetTitle : NoSheetTitle)</div>
 			</div>
@@ -21,7 +25,8 @@
 	@if (@ShowMore) {
 		<JournalEntryName CssClass="col-xl-5 col-sm-10" Entry="@Entry?.Entry" />
 		<JournalEntrySession CssClass="col-xl-1 col-sm-2" Entry="@Entry?.Entry" />
-		<JournalEntryDM CssClass="col-xl-3 col-sm-6" Entry="@Entry?.Entry" />
+		<JournalEntryLocation CssClass="col-xl-1 col-sm-2" Entry="@Entry?.Entry" />
+		<JournalEntryDM CssClass="col-xl-2 col-sm-4" Entry="@Entry?.Entry" />
 		<JournalEntryDate CssClass="col-xl-3 col-sm-6" Entry="@Entry?.Entry" />
 		<JournalLevel CssClass="col-xl-2 col-sm-4 position-relative" Entry="@Entry" />
 		<JournalGold CssClass="col-xl-2 col-sm-4 position-relative" Entry="@Entry" />
@@ -29,7 +34,7 @@
 		<JournalRenown CssClass="col-xl-2 col-sm-4 position-relative" Entry="@Entry" />
 		<JournalTreasure CssClass="col-xl-4 col-sm-8 position-relative" Entry="@Entry" FinalItems="@FinalItems" FinalMagicItemCount="@FinalMagicItemCount" />
 		<JournalNotes CssClass="col-xl-6 col-sm-12 position-relative" Entry="@Entry" />
-		<JournalItems CssClass="col-xl-6 col-sm-12 position-relative" Entry="@Entry" FinalItems="@FinalItems" FinalMagicItemCount="@FinalMagicItemCount"/>
+		<JournalItems CssClass="col-xl-6 col-sm-12 position-relative" Entry="@Entry" FinalItems="@FinalItems" FinalMagicItemCount="@FinalMagicItemCount" OpenBoon="OpenBoon" OpenPossession="OpenPossession"/>
 		<JournalText Entry="@Entry" Placeholder=""/>
 	} else {
 		<div>
@@ -61,6 +66,9 @@
 	public string? DeleteTitle { get; set; } = "Delete";
 
 	[Parameter]
+	public string? AddBeforeTitle { get; set; } = "Add Entry Before";
+
+	[Parameter]
 	public string? TopRowCssClass { get; set; } = "autohide m-0 p-0";
 
 	[Parameter]
@@ -77,6 +85,9 @@
 
 	[Parameter]
 	public string? DeleteButtonCss { get; set; } = "btn bi bi-journal-x m-0 p-0";
+
+	[Parameter]
+	public string? AddButtonCss { get; set; } = "btn bi bi-journal-plus m-0 p-0";
 
 	[Parameter]
 	public string? LessButtonCss { get; set; } = "btn bi bi-arrows-collapse m-0 p-0";
@@ -108,6 +119,12 @@
 	[Parameter]
 	public ChangeType EventType { get; set; } = ChangeType.Journal;
 
+	[Parameter]
+	public Func<JournalPossession, Task>? OpenPossession { get; set; }
+
+	[Parameter]
+	public Func<JournalBoon, Task>? OpenBoon { get; set; }
+
 	protected override Task OnInitializedAsync()
 	{
 		context.PlayerChange += StateChange;
@@ -120,6 +137,18 @@
 			{
 				StateHasChanged();
 			});
+	}
+
+	private async Task AddBefore()
+	{
+		if (Entry is not null)
+		{
+			context.Context.MakeHistory("");
+			int index = context.Context.Player.ComplexJournal.IndexOf(Entry.Value.Entry);
+			if (index < 0) index = 0;
+			context.Context.Player.ComplexJournal.Insert(index, new JournalEntry());
+			await context.NotifyPlayerChange(ChangeType.Full);
+		}
 	}
 
 	private async Task Delete()

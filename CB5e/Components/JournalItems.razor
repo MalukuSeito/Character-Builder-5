@@ -118,6 +118,12 @@
 	[Parameter]
 	public object? OpenedItem { get; set; } = null;
 
+	[Parameter]
+	public Func<JournalPossession, Task>? OpenPossession { get; set; }
+
+	[Parameter]
+	public Func<JournalBoon, Task>? OpenBoon { get; set; }
+
 	private async Task CopyOnOpen(JournalPossession item)
 	{
 		if (Entry is null) return;
@@ -129,14 +135,18 @@
 		}
 		if (Entry.Value.Entry.Possessions.Contains(item)) 
 		{
-			OpenedItem = item;
-			StateHasChanged();
+			if (OpenPossession is not null) await OpenPossession.Invoke(item);
+			else {
+				OpenedItem = item;
+				StateHasChanged();
+			}
 		}
 		else
 		{
 			var nitem = new JournalPossession(item);
 			Entry.Value.Entry.Possessions.Add(nitem);
-			OpenedItem = nitem;
+			if (OpenPossession is not null) await OpenPossession.Invoke(item);
+			else OpenedItem = nitem;
 			await context.NotifyPlayerChange(EventType);
 		}
 	}
@@ -153,15 +163,20 @@
 		}
 		if (Entry.Value.Entry.Boons.Contains(item))
 		{
-			OpenedItem = item;
+			if (OpenBoon is not null) await OpenBoon.Invoke(item);
+			else
+			{
+				OpenedItem = item;
+				StateHasChanged();
+			}
 			StateHasChanged();
 		}
 		else
 		{
 			var nitem = new JournalBoon(item);
 			Entry.Value.Entry.Boons.Add(nitem);
-			OpenedItem = nitem;
-			Console.WriteLine($"Open Copy {nitem}");
+			if (OpenBoon is not null) await OpenBoon.Invoke(nitem);
+			else OpenedItem = nitem;
 			await context.NotifyPlayerChange(EventType);
 		}
 	}

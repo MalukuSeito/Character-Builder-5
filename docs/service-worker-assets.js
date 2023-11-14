@@ -49,7 +49,7 @@
       "url": "Config.xml"
     },
     {
-      "hash": "sha256-pjXMBPy3daKL8zSSuIRcYxflAMC8Cp53zEWL0peuCj8=",
+      "hash": "sha256-2pNVOZMkaxuG5RhvesmgUjY73B+9TZ+b8rup9ny2RsA=",
       "url": "css\/app.css"
     },
     {
@@ -226,7 +226,7 @@
     },
     {
       "hash": "sha256-3l+4ZYRWpGMbBjNqeIqO9T\/65euaOzIvRlVX2SySvFQ=",
-      "url": "_framework\/dotnet.7.0.4.c3wd750p8v.js"
+      "url": "_framework\/dotnet.7.0.4.r81cnsj4kx.js"
     },
     {
       "hash": "sha256-UEt3EzX1Ts6UAzZ8vHZJ3Nb0gAVPqeNmtxuFnUvzxVI=",
@@ -253,7 +253,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-WXkZIan5SUp7EwkE6m8W\/c8OD5Wmtp5WzSbmH\/3\/tSo=",
+      "hash": "sha256-Jv83SVR\/rnjDIBKwXgx3G679I2pqifCkViPnFLIIM3M=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -261,15 +261,15 @@
       "url": "_framework\/BlazorDB.dll"
     },
     {
-      "hash": "sha256-WVcQQIVe1UUZPxKBaXZ\/SKzj9LIc4j07hiLteJlJ8c4=",
+      "hash": "sha256-M0yC+jkr7t2KJ+sSSMASH\/8zjFaOVDoLUg6L1VeseIQ=",
       "url": "_framework\/CB5e.dll"
     },
     {
-      "hash": "sha256-F35G2C+bqiE\/B9xz7v+06+\/PQpzdGcwLIny48SvbNB8=",
+      "hash": "sha256-8ZBh11YkUHOgHohwN1SLzAr8GPBk6ZxV0updz9rpuOY=",
       "url": "_framework\/Character Builder Base.dll"
     },
     {
-      "hash": "sha256-ExA8hkN0jiQSDykHl3WzQdmHSQF926rzQCTJCBHHD5c=",
+      "hash": "sha256-qpvtxm9yMvQajk07RWbAnNQXgI7bVhGe\/\/RIfr6Bzxg=",
       "url": "_framework\/Character Builder Plugin.dll"
     },
     {
@@ -341,11 +341,11 @@
       "url": "_framework\/netstandard.dll"
     },
     {
-      "hash": "sha256-BnS7kiDqvJMH7wew7pOttcU\/UqHAUsMu0HRh3mffY04=",
+      "hash": "sha256-207DY3IdTyK6LIKzEn3EUT+ZdhypAC+BASB2mD613Jw=",
       "url": "_framework\/OGL Elements.dll"
     },
     {
-      "hash": "sha256-p5CxZFgXEiBEvdDSTOOvfxv04EA4HP3L6X6WWXdVEDc=",
+      "hash": "sha256-qtCe8wRqn8C1TsJIlCNTEkxcIaDrKEuE4Xv7iGcg0vs=",
       "url": "_framework\/PluginDMG.dll"
     },
     {
@@ -497,7 +497,7 @@
       "url": "_framework\/System.Xml.XmlSerializer.dll"
     },
     {
-      "hash": "sha256-u+aLhhn9zTuPdbKVtSBogIS6f\/IzRBNdnBNy0fFYD\/I=",
+      "hash": "sha256-hXbP00UmF+fIeY70x5\/Q9RW2DhMIc9+TBkN1fR5VUvg=",
       "url": "CB5e.styles.css"
     },
     {
@@ -509,5 +509,5 @@
       "url": "_content\/BlazorIndexedDB\/dexie.min.js"
     }
   ],
-  "version": "y9+EQgLp"
+  "version": "vybUQkSI"
 };

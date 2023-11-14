@@ -1,0 +1,64 @@
+﻿@inject ContextService context;
+@implements IDisposable;
+<div class="@CssClass">
+	<div class="@BoxCssClass">
+		<input class="@InputCssClass" @bind="Value" placeholder="@Placeholder" title="@Title" />
+	</div>
+	<div class="@TitleCssClass">@Title</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? CssClass { get; set; } = "col-xl-3 col-md-6";
+
+	[Parameter]
+	public string? BoxCssClass { get; set; } = "border-bottom border-1 border-secondary";
+
+	[Parameter]
+	public string? TitleCssClass { get; set; } = "p-0 text-center mt-0 fs--2";
+
+	[Parameter]
+	public string? InputCssClass { get; set; } = "border-0 w-100 text-inherit fw-inherit";
+
+	[Parameter]
+	public string? Placeholder { get; set; } = "Location";
+
+	[Parameter]
+	public string? Title { get; set; } = "Location";
+
+	[Parameter]
+	public JournalEntry? Entry { get; set; }
+
+	[Parameter]
+	public ChangeType EventMask { get; set; } = ChangeType.Full | ChangeType.Journal;
+
+	[Parameter]
+	public ChangeType EventType { get; set; } = ChangeType.None;
+
+	private String Value { get => Entry?.Time ?? ""; set => Set(value); }
+
+	protected override Task OnInitializedAsync()
+	{
+		context.PlayerChange += StateChange;
+		return Task.CompletedTask;
+	}
+
+	private async Task StateChange(ChangeType change)
+	{
+		if (change.HasAnyFlag(EventMask)) await InvokeAsync(() =>
+			{
+				StateHasChanged();
+			});
+	}
+
+	private async void Set(String value)
+	{
+		if (Entry is JournalEntry je)
+		{
+			je.Time = value;
+			if (EventType != ChangeType.None) await context.NotifyPlayerChange(EventType);
+		}
+	}
+
+	public void Dispose() => context.PlayerChange -= StateChange;
+}
