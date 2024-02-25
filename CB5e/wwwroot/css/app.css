@@ -15,13 +15,19 @@ html, body {
         visibility: visible;
         z-index: 1
     }
-    .autohide {
+    .autohide, .autohideinline {
         display: none;
         visibility: hidden
     }
 
     p:hover > .autohide, div:hover > .autohide, .autohide:hover {
         display: block;
+        visibility: visible;
+        z-index: 1
+    }
+
+    p:hover > .autohideinline, div:hover > .autohideinline, .autohideinline:hover {
+        display: inline-block;
         visibility: visible;
         z-index: 1
     }

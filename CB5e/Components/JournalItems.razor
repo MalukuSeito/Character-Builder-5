@@ -31,6 +31,9 @@
 		} 
 		else 
 		{
+			@if (Entry is not null) {
+				<span class="btn btn-outline-primary btn-sm bi bi-plus my-0 me-1 py-0 autohideinline" title="Add New Item" @onclick="async ()=>await context.OpenShop(Entry.Value.Entry, null)" />
+			}
 			@if (Entry is not null && (Entry.Value.Entry.Possessions.Count > 0 || Entry.Value.Entry.Boons.Count > 0))
 			{
 				@foreach (var item in Entry.Value.Entry.Possessions)

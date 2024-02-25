@@ -28,233 +28,243 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.Description = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Prereq = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.Action = new System.Windows.Forms.ComboBox();
-            this.NoPreview = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.Level = new System.Windows.Forms.NumericUpDown();
-            this.Hidden = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.NameTF = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.keywordControl1 = new Character_Builder_Builder.KeywordControl();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Level)).BeginInit();
-            this.SuspendLayout();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            Description = new System.Windows.Forms.TextBox();
+            label5 = new System.Windows.Forms.Label();
+            Prereq = new System.Windows.Forms.TextBox();
+            label4 = new System.Windows.Forms.Label();
+            panel2 = new System.Windows.Forms.Panel();
+            Action = new System.Windows.Forms.ComboBox();
+            NoPreview = new System.Windows.Forms.CheckBox();
+            panel1 = new System.Windows.Forms.Panel();
+            Level = new System.Windows.Forms.NumericUpDown();
+            Hidden = new System.Windows.Forms.CheckBox();
+            label3 = new System.Windows.Forms.Label();
+            NameTF = new System.Windows.Forms.TextBox();
+            label2 = new System.Windows.Forms.Label();
+            keywordControl1 = new KeywordControl();
+            label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Level).BeginInit();
+            SuspendLayout();
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(0, 0);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.Description);
-            this.splitContainer1.Panel1.Controls.Add(this.label5);
-            this.splitContainer1.Panel1.Controls.Add(this.Prereq);
-            this.splitContainer1.Panel1.Controls.Add(this.label4);
-            this.splitContainer1.Panel1.Controls.Add(this.panel2);
-            this.splitContainer1.Panel1.Controls.Add(this.panel1);
-            this.splitContainer1.Panel1.Controls.Add(this.label3);
-            this.splitContainer1.Panel1.Controls.Add(this.NameTF);
-            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            splitContainer1.Panel1.Controls.Add(Description);
+            splitContainer1.Panel1.Controls.Add(label5);
+            splitContainer1.Panel1.Controls.Add(Prereq);
+            splitContainer1.Panel1.Controls.Add(label4);
+            splitContainer1.Panel1.Controls.Add(panel2);
+            splitContainer1.Panel1.Controls.Add(panel1);
+            splitContainer1.Panel1.Controls.Add(label3);
+            splitContainer1.Panel1.Controls.Add(NameTF);
+            splitContainer1.Panel1.Controls.Add(label2);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.keywordControl1);
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(490, 284);
-            this.splitContainer1.SplitterDistance = 268;
-            this.splitContainer1.TabIndex = 0;
+            splitContainer1.Panel2.Controls.Add(keywordControl1);
+            splitContainer1.Panel2.Controls.Add(label1);
+            splitContainer1.Size = new System.Drawing.Size(572, 328);
+            splitContainer1.SplitterDistance = 312;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 0;
             // 
             // Description
             // 
-            this.Description.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Description.Location = new System.Drawing.Point(0, 136);
-            this.Description.Multiline = true;
-            this.Description.Name = "Description";
-            this.Description.Size = new System.Drawing.Size(268, 148);
-            this.Description.TabIndex = 14;
+            Description.Dock = System.Windows.Forms.DockStyle.Fill;
+            Description.Location = new System.Drawing.Point(0, 156);
+            Description.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Description.Multiline = true;
+            Description.Name = "Description";
+            Description.Size = new System.Drawing.Size(312, 172);
+            Description.TabIndex = 14;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(0, 123);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Description:";
+            label5.AutoSize = true;
+            label5.Dock = System.Windows.Forms.DockStyle.Top;
+            label5.Location = new System.Drawing.Point(0, 141);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(70, 15);
+            label5.TabIndex = 13;
+            label5.Text = "Description:";
             // 
             // Prereq
             // 
-            this.Prereq.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Prereq.Location = new System.Drawing.Point(0, 103);
-            this.Prereq.Name = "Prereq";
-            this.Prereq.Size = new System.Drawing.Size(268, 20);
-            this.Prereq.TabIndex = 12;
+            Prereq.Dock = System.Windows.Forms.DockStyle.Top;
+            Prereq.Location = new System.Drawing.Point(0, 118);
+            Prereq.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Prereq.Name = "Prereq";
+            Prereq.Size = new System.Drawing.Size(312, 23);
+            Prereq.TabIndex = 12;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(0, 90);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(171, 13);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Prerequesite: (standalone features)";
+            label4.AutoSize = true;
+            label4.Dock = System.Windows.Forms.DockStyle.Top;
+            label4.Location = new System.Drawing.Point(0, 103);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(189, 15);
+            label4.TabIndex = 11;
+            label4.Text = "Prerequesite: (standalone features)";
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.Action);
-            this.panel2.Controls.Add(this.NoPreview);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 68);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(268, 22);
-            this.panel2.TabIndex = 8;
+            panel2.Controls.Add(Action);
+            panel2.Controls.Add(NoPreview);
+            panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            panel2.Location = new System.Drawing.Point(0, 78);
+            panel2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(312, 25);
+            panel2.TabIndex = 8;
             // 
             // Action
             // 
-            this.Action.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Action.FormattingEnabled = true;
-            this.Action.Location = new System.Drawing.Point(0, 0);
-            this.Action.Name = "Action";
-            this.Action.Size = new System.Drawing.Size(113, 21);
-            this.Action.TabIndex = 1;
+            Action.Dock = System.Windows.Forms.DockStyle.Fill;
+            Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            Action.FormattingEnabled = true;
+            Action.Location = new System.Drawing.Point(0, 0);
+            Action.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Action.Name = "Action";
+            Action.Size = new System.Drawing.Size(141, 23);
+            Action.TabIndex = 1;
             // 
             // NoPreview
             // 
-            this.NoPreview.AutoSize = true;
-            this.NoPreview.Dock = System.Windows.Forms.DockStyle.Right;
-            this.NoPreview.Location = new System.Drawing.Point(113, 0);
-            this.NoPreview.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
-            this.NoPreview.Name = "NoPreview";
-            this.NoPreview.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.NoPreview.Size = new System.Drawing.Size(155, 22);
-            this.NoPreview.TabIndex = 0;
-            this.NoPreview.Text = "Hide feature in preview";
-            this.NoPreview.UseVisualStyleBackColor = true;
+            NoPreview.AutoSize = true;
+            NoPreview.Dock = System.Windows.Forms.DockStyle.Right;
+            NoPreview.Location = new System.Drawing.Point(141, 0);
+            NoPreview.Margin = new System.Windows.Forms.Padding(23, 3, 4, 3);
+            NoPreview.Name = "NoPreview";
+            NoPreview.Padding = new System.Windows.Forms.Padding(23, 0, 0, 0);
+            NoPreview.Size = new System.Drawing.Size(171, 25);
+            NoPreview.TabIndex = 0;
+            NoPreview.Text = "Hide feature in preview";
+            NoPreview.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.Level);
-            this.panel1.Controls.Add(this.Hidden);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 46);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(268, 22);
-            this.panel1.TabIndex = 3;
+            panel1.Controls.Add(Level);
+            panel1.Controls.Add(Hidden);
+            panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            panel1.Location = new System.Drawing.Point(0, 53);
+            panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(312, 25);
+            panel1.TabIndex = 3;
             // 
             // Level
             // 
-            this.Level.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Level.Location = new System.Drawing.Point(0, 0);
-            this.Level.Margin = new System.Windows.Forms.Padding(3, 3, 20, 3);
-            this.Level.Maximum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            0});
-            this.Level.Name = "Level";
-            this.Level.Size = new System.Drawing.Size(113, 20);
-            this.Level.TabIndex = 1;
+            Level.Dock = System.Windows.Forms.DockStyle.Fill;
+            Level.Location = new System.Drawing.Point(0, 0);
+            Level.Margin = new System.Windows.Forms.Padding(4, 3, 23, 3);
+            Level.Maximum = new decimal(new int[] { 32768, 0, 0, 0 });
+            Level.Name = "Level";
+            Level.Size = new System.Drawing.Size(131, 23);
+            Level.TabIndex = 1;
             // 
             // Hidden
             // 
-            this.Hidden.Dock = System.Windows.Forms.DockStyle.Right;
-            this.Hidden.Location = new System.Drawing.Point(113, 0);
-            this.Hidden.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
-            this.Hidden.Name = "Hidden";
-            this.Hidden.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.Hidden.Size = new System.Drawing.Size(155, 22);
-            this.Hidden.TabIndex = 0;
-            this.Hidden.Text = "Hide feature on sheet";
-            this.Hidden.UseVisualStyleBackColor = true;
+            Hidden.Dock = System.Windows.Forms.DockStyle.Right;
+            Hidden.Location = new System.Drawing.Point(131, 0);
+            Hidden.Margin = new System.Windows.Forms.Padding(23, 3, 4, 3);
+            Hidden.Name = "Hidden";
+            Hidden.Padding = new System.Windows.Forms.Padding(23, 0, 0, 0);
+            Hidden.Size = new System.Drawing.Size(181, 25);
+            Hidden.TabIndex = 0;
+            Hidden.Text = "Hide feature on sheet";
+            Hidden.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(0, 33);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Level:";
+            label3.AutoSize = true;
+            label3.Dock = System.Windows.Forms.DockStyle.Top;
+            label3.Location = new System.Drawing.Point(0, 38);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(37, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Level:";
             // 
             // NameTF
             // 
-            this.NameTF.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NameTF.Location = new System.Drawing.Point(0, 13);
-            this.NameTF.Name = "NameTF";
-            this.NameTF.Size = new System.Drawing.Size(268, 20);
-            this.NameTF.TabIndex = 1;
+            NameTF.Dock = System.Windows.Forms.DockStyle.Top;
+            NameTF.Location = new System.Drawing.Point(0, 15);
+            NameTF.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            NameTF.Name = "NameTF";
+            NameTF.Size = new System.Drawing.Size(312, 23);
+            NameTF.TabIndex = 1;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Name:";
+            label2.AutoSize = true;
+            label2.Dock = System.Windows.Forms.DockStyle.Top;
+            label2.Location = new System.Drawing.Point(0, 0);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(42, 15);
+            label2.TabIndex = 0;
+            label2.Text = "Name:";
             // 
             // keywordControl1
             // 
-            this.keywordControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.keywordControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.keywordControl1.Group = Character_Builder_Builder.KeywordControl.KeywordGroup.FEAT;
-            this.keywordControl1.HistoryManager = null;
-            this.keywordControl1.Keywords = null;
-            this.keywordControl1.Location = new System.Drawing.Point(0, 13);
-            this.keywordControl1.Name = "keywordControl1";
-            this.keywordControl1.Size = new System.Drawing.Size(218, 271);
-            this.keywordControl1.TabIndex = 1;
+            keywordControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            keywordControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            keywordControl1.Group = KeywordControl.KeywordGroup.FEAT;
+            keywordControl1.HistoryManager = null;
+            keywordControl1.Keywords = null;
+            keywordControl1.Location = new System.Drawing.Point(0, 15);
+            keywordControl1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            keywordControl1.Name = "keywordControl1";
+            keywordControl1.Size = new System.Drawing.Size(255, 313);
+            keywordControl1.TabIndex = 1;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(158, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Keywords: (standalone features)";
+            label1.AutoSize = true;
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(175, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Keywords: (standalone features)";
             // 
             // BasicFeature
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.Controls.Add(this.splitContainer1);
-            this.Name = "BasicFeature";
-            this.Size = new System.Drawing.Size(490, 284);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Level)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            Controls.Add(splitContainer1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "BasicFeature";
+            Size = new System.Drawing.Size(572, 328);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
+            splitContainer1.Panel2.ResumeLayout(false);
+            splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)Level).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

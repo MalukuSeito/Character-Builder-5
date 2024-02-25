@@ -1,4 +1,6 @@
 using BlazorDB;
+using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using CB5e;
 using CB5e.Services;
 using Microsoft.AspNetCore.Components.Web;
@@ -28,5 +30,9 @@ builder.Services.AddBlazorDB(options =>
         }
     };
 });
+
+builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddBlazoredLocalStorage();
+
 
 await builder.Build().RunAsync();

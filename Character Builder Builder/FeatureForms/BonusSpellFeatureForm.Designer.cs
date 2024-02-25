@@ -28,226 +28,225 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label4 = new System.Windows.Forms.Label();
-            this.Recharge = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.Spell = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.basicFeature1 = new Character_Builder_Builder.FeatureForms.BasicFeature();
-            this.keywordControl1 = new Character_Builder_Builder.KeywordControl();
-            this.AddToSpellcastingCheckbox = new System.Windows.Forms.CheckBox();
-            this.SpellcastingModifier = new System.Windows.Forms.CheckedListBox();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.SuspendLayout();
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
+            basicFeature1 = new BasicFeature();
+            splitContainer2 = new System.Windows.Forms.SplitContainer();
+            SpellcastingModifier = new System.Windows.Forms.CheckedListBox();
+            AddToSpellcastingCheckbox = new System.Windows.Forms.CheckBox();
+            label4 = new System.Windows.Forms.Label();
+            Recharge = new System.Windows.Forms.ComboBox();
+            label3 = new System.Windows.Forms.Label();
+            Spell = new System.Windows.Forms.ComboBox();
+            label2 = new System.Windows.Forms.Label();
+            keywordControl1 = new KeywordControl();
+            label1 = new System.Windows.Forms.Label();
+            button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            SuspendLayout();
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 2);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(3, 2);
+            splitContainer1.Margin = new System.Windows.Forms.Padding(4);
+            splitContainer1.Name = "splitContainer1";
+            splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.basicFeature1);
+            splitContainer1.Panel1.Controls.Add(basicFeature1);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Panel2.Controls.Add(this.button1);
-            this.splitContainer1.Size = new System.Drawing.Size(963, 620);
-            this.splitContainer1.SplitterDistance = 350;
-            this.splitContainer1.SplitterWidth = 5;
-            this.splitContainer1.TabIndex = 20;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.SpellcastingModifier);
-            this.splitContainer2.Panel1.Controls.Add(this.AddToSpellcastingCheckbox);
-            this.splitContainer2.Panel1.Controls.Add(this.label4);
-            this.splitContainer2.Panel1.Controls.Add(this.Recharge);
-            this.splitContainer2.Panel1.Controls.Add(this.label3);
-            this.splitContainer2.Panel1.Controls.Add(this.Spell);
-            this.splitContainer2.Panel1.Controls.Add(this.label2);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.keywordControl1);
-            this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Size = new System.Drawing.Size(963, 234);
-            this.splitContainer2.SplitterDistance = 475;
-            this.splitContainer2.SplitterWidth = 5;
-            this.splitContainer2.TabIndex = 21;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(0, 80);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(123, 16);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Spellcasting Ability:";
-            // 
-            // Recharge
-            // 
-            this.Recharge.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Recharge.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Recharge.FormattingEnabled = true;
-            this.Recharge.Location = new System.Drawing.Point(0, 56);
-            this.Recharge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Recharge.Name = "Recharge";
-            this.Recharge.Size = new System.Drawing.Size(475, 24);
-            this.Recharge.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(0, 40);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 16);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Recharge:";
-            // 
-            // Spell
-            // 
-            this.Spell.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.Spell.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.Spell.Dock = System.Windows.Forms.DockStyle.Top;
-            this.Spell.FormattingEnabled = true;
-            this.Spell.Location = new System.Drawing.Point(0, 16);
-            this.Spell.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Spell.Name = "Spell";
-            this.Spell.Size = new System.Drawing.Size(475, 24);
-            this.Spell.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 16);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Spell:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(176, 16);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Keywords to add to the Spell";
-            // 
-            // button1
-            // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(0, 234);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(963, 31);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Okay";
-            this.button1.UseVisualStyleBackColor = true;
+            splitContainer1.Panel2.Controls.Add(splitContainer2);
+            splitContainer1.Panel2.Controls.Add(button1);
+            splitContainer1.Size = new System.Drawing.Size(842, 581);
+            splitContainer1.SplitterDistance = 327;
+            splitContainer1.SplitterWidth = 5;
+            splitContainer1.TabIndex = 20;
             // 
             // basicFeature1
             // 
-            this.basicFeature1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.basicFeature1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.basicFeature1.Feature = null;
-            this.basicFeature1.Location = new System.Drawing.Point(0, 0);
-            this.basicFeature1.Margin = new System.Windows.Forms.Padding(5);
-            this.basicFeature1.Name = "basicFeature1";
-            this.basicFeature1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.basicFeature1.Size = new System.Drawing.Size(963, 350);
-            this.basicFeature1.TabIndex = 45;
+            basicFeature1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            basicFeature1.Dock = System.Windows.Forms.DockStyle.Fill;
+            basicFeature1.Feature = null;
+            basicFeature1.Location = new System.Drawing.Point(0, 0);
+            basicFeature1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            basicFeature1.Name = "basicFeature1";
+            basicFeature1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            basicFeature1.Size = new System.Drawing.Size(842, 327);
+            basicFeature1.TabIndex = 45;
             // 
-            // keywordControl1
+            // splitContainer2
             // 
-            this.keywordControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.keywordControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.keywordControl1.Group = Character_Builder_Builder.KeywordControl.KeywordGroup.SPELL;
-            this.keywordControl1.HistoryManager = null;
-            this.keywordControl1.Keywords = null;
-            this.keywordControl1.Location = new System.Drawing.Point(0, 16);
-            this.keywordControl1.Margin = new System.Windows.Forms.Padding(5);
-            this.keywordControl1.Name = "keywordControl1";
-            this.keywordControl1.Size = new System.Drawing.Size(483, 218);
-            this.keywordControl1.TabIndex = 1;
+            splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer2.Location = new System.Drawing.Point(0, 0);
+            splitContainer2.Margin = new System.Windows.Forms.Padding(4);
+            splitContainer2.Name = "splitContainer2";
             // 
-            // AddToSpellcastingCheckbox
+            // splitContainer2.Panel1
             // 
-            this.AddToSpellcastingCheckbox.AutoSize = true;
-            this.AddToSpellcastingCheckbox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.AddToSpellcastingCheckbox.Location = new System.Drawing.Point(0, 214);
-            this.AddToSpellcastingCheckbox.Name = "AddToSpellcastingCheckbox";
-            this.AddToSpellcastingCheckbox.Size = new System.Drawing.Size(475, 20);
-            this.AddToSpellcastingCheckbox.TabIndex = 6;
-            this.AddToSpellcastingCheckbox.Text = "Add Spell to All Spellcasting";
-            this.AddToSpellcastingCheckbox.UseVisualStyleBackColor = true;
+            splitContainer2.Panel1.Controls.Add(SpellcastingModifier);
+            splitContainer2.Panel1.Controls.Add(AddToSpellcastingCheckbox);
+            splitContainer2.Panel1.Controls.Add(label4);
+            splitContainer2.Panel1.Controls.Add(Recharge);
+            splitContainer2.Panel1.Controls.Add(label3);
+            splitContainer2.Panel1.Controls.Add(Spell);
+            splitContainer2.Panel1.Controls.Add(label2);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(keywordControl1);
+            splitContainer2.Panel2.Controls.Add(label1);
+            splitContainer2.Size = new System.Drawing.Size(842, 220);
+            splitContainer2.SplitterDistance = 415;
+            splitContainer2.TabIndex = 21;
             // 
             // SpellcastingModifier
             // 
-            this.SpellcastingModifier.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SpellcastingModifier.FormattingEnabled = true;
-            this.SpellcastingModifier.Location = new System.Drawing.Point(0, 96);
-            this.SpellcastingModifier.Margin = new System.Windows.Forms.Padding(4);
-            this.SpellcastingModifier.Name = "SpellcastingModifier";
-            this.SpellcastingModifier.Size = new System.Drawing.Size(475, 118);
-            this.SpellcastingModifier.TabIndex = 7;
+            SpellcastingModifier.Dock = System.Windows.Forms.DockStyle.Fill;
+            SpellcastingModifier.FormattingEnabled = true;
+            SpellcastingModifier.Location = new System.Drawing.Point(0, 91);
+            SpellcastingModifier.Margin = new System.Windows.Forms.Padding(4);
+            SpellcastingModifier.Name = "SpellcastingModifier";
+            SpellcastingModifier.Size = new System.Drawing.Size(415, 110);
+            SpellcastingModifier.TabIndex = 7;
+            SpellcastingModifier.ItemCheck += SpellcastingModifier_ItemCheck;
+            // 
+            // AddToSpellcastingCheckbox
+            // 
+            AddToSpellcastingCheckbox.AutoSize = true;
+            AddToSpellcastingCheckbox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            AddToSpellcastingCheckbox.Location = new System.Drawing.Point(0, 201);
+            AddToSpellcastingCheckbox.Name = "AddToSpellcastingCheckbox";
+            AddToSpellcastingCheckbox.Size = new System.Drawing.Size(415, 19);
+            AddToSpellcastingCheckbox.TabIndex = 6;
+            AddToSpellcastingCheckbox.Text = "Add Spell to All Spellcasting";
+            AddToSpellcastingCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Dock = System.Windows.Forms.DockStyle.Top;
+            label4.Location = new System.Drawing.Point(0, 76);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(110, 15);
+            label4.TabIndex = 4;
+            label4.Text = "Spellcasting Ability:";
+            // 
+            // Recharge
+            // 
+            Recharge.Dock = System.Windows.Forms.DockStyle.Top;
+            Recharge.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            Recharge.FormattingEnabled = true;
+            Recharge.Location = new System.Drawing.Point(0, 53);
+            Recharge.Margin = new System.Windows.Forms.Padding(4);
+            Recharge.Name = "Recharge";
+            Recharge.Size = new System.Drawing.Size(415, 23);
+            Recharge.TabIndex = 3;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Dock = System.Windows.Forms.DockStyle.Top;
+            label3.Location = new System.Drawing.Point(0, 38);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(59, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Recharge:";
+            // 
+            // Spell
+            // 
+            Spell.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            Spell.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            Spell.Dock = System.Windows.Forms.DockStyle.Top;
+            Spell.FormattingEnabled = true;
+            Spell.Location = new System.Drawing.Point(0, 15);
+            Spell.Margin = new System.Windows.Forms.Padding(4);
+            Spell.Name = "Spell";
+            Spell.Size = new System.Drawing.Size(415, 23);
+            Spell.TabIndex = 1;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Dock = System.Windows.Forms.DockStyle.Top;
+            label2.Location = new System.Drawing.Point(0, 0);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(35, 15);
+            label2.TabIndex = 0;
+            label2.Text = "Spell:";
+            // 
+            // keywordControl1
+            // 
+            keywordControl1.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            keywordControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            keywordControl1.Group = KeywordControl.KeywordGroup.SPELL;
+            keywordControl1.HistoryManager = null;
+            keywordControl1.Keywords = null;
+            keywordControl1.Location = new System.Drawing.Point(0, 15);
+            keywordControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            keywordControl1.Name = "keywordControl1";
+            keywordControl1.Size = new System.Drawing.Size(423, 205);
+            keywordControl1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Location = new System.Drawing.Point(0, 0);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(157, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Keywords to add to the Spell";
+            // 
+            // button1
+            // 
+            button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            button1.Location = new System.Drawing.Point(0, 220);
+            button1.Margin = new System.Windows.Forms.Padding(4);
+            button1.Name = "button1";
+            button1.Size = new System.Drawing.Size(842, 29);
+            button1.TabIndex = 20;
+            button1.Text = "Okay";
+            button1.UseVisualStyleBackColor = true;
             // 
             // BonusSpellFeatureForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.CancelButton = this.button1;
-            this.ClientSize = new System.Drawing.Size(969, 624);
-            this.Controls.Add(this.splitContainer1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "BonusSpellFeatureForm";
-            this.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Bonus Spell Feature";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            CancelButton = button1;
+            ClientSize = new System.Drawing.Size(848, 585);
+            Controls.Add(splitContainer1);
+            Margin = new System.Windows.Forms.Padding(4);
+            Name = "BonusSpellFeatureForm";
+            Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Bonus Spell Feature";
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel1.PerformLayout();
+            splitContainer2.Panel2.ResumeLayout(false);
+            splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion

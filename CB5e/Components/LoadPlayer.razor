@@ -4,11 +4,15 @@
 @inject SourceService sources;
 @inject IBlazorDbFactory dbFactory;
 @inject IJSRuntime JSRuntime;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 <InputFile class="@CssClass" OnChange="@Load" />
 
 @code {
 	[Parameter]
 	public string? CssClass { get; set; }
+
+	private byte[]? image;
+	private byte[]? factionImage;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -16,9 +20,57 @@
 		{
 			var module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
 			var self = DotNetObjectReference.Create(this);
-			await module.InvokeVoidAsync("initLaunchQueue", self);
+			if (await sessionStorage.GetItemAsync<byte[]>("AutoSave") is byte[] saved)
+			{
+				try
+				{
+					using MemoryStream mem = new(saved);
+					Player? p = Player.Serializer.Deserialize(mem) as Player;
+					if (p is not null) {
+						p.Portrait = await sessionStorage.GetItemAsync<byte[]>("AutoSavePortrait");
+						p.FactionImage = await sessionStorage.GetItemAsync<byte[]>("AutoSaveFactionImage");
+						await config.LoadConfig();
+						await LoadAsync(p, p.FilePath);
+					}
+				} catch (Exception e)
+				{
+					ConfigManager.LogError(e);
+				}
+			}
+			else
+			{
+				await module.InvokeVoidAsync("initLaunchQueue", self);
+			}
 		}
+		context.PlayerChange += StateChange;
 		await base.OnAfterRenderAsync(firstRender);
+	}
+
+	private Task StateChange(ChangeType change)
+	{
+		if (context?.Context?.Player is Player p)
+		{
+			using MemoryStream mem = new();
+			byte[] port = p.Portrait;
+			byte[] fac = p.FactionImage;
+			p.Portrait = null;
+			p.FactionImage = null;
+			Player.Serializer.Serialize(mem, p);
+			p.Portrait = port;
+			p.FactionImage = fac;
+			sessionStorage.SetItemAsync("AutoSave", mem.ToArray());
+			if (image != p.Portrait)
+			{
+				image = p.Portrait;
+				sessionStorage.SetItemAsync("AutoSavePortrait", image);
+			}
+			if (factionImage != p.FactionImage)
+			{
+				factionImage = p.FactionImage;
+				sessionStorage.SetItemAsync("AutoSaveFactionImage", factionImage);
+			}
+		}
+		return Task.CompletedTask;
 	}
 
 	[JSInvokableAttribute("LoadFile")]
@@ -41,7 +93,7 @@
 		await LoadAsync(p, e.File.Name);
 	}
 
-	private async Task LoadAsync(Player? p, string path)
+	private async Task LoadAsync(Player? p, object path)
 	{
 		if (p is Player)
 		{

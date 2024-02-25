@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace Character_Builder
@@ -20,18 +21,22 @@ namespace Character_Builder
         public static CultureInfo Culture = CultureInfo.InvariantCulture;
 
         [XmlIgnore]
+        [JsonIgnore]
         public BuilderContext Context;
         public bool ShouldSerializeContext() => false;
         
         [XmlIgnore]
-        public Dictionary<Feature, int> ChoiceCounter;
+		[JsonIgnore]
+		public Dictionary<Feature, int> ChoiceCounter;
         public bool ShouldSerializeChoiceCounter() => false;
         [XmlIgnore]
-        public Dictionary<string, int> ChoiceTotal;
+		[JsonIgnore]
+		public Dictionary<string, int> ChoiceTotal;
         public bool ShouldSerializeChoiceTotal() => false;
 
         [XmlIgnore]
-        public object FilePath;
+		[JsonIgnore]
+		public object FilePath;
         public bool ShouldSerializeFilePath() => false;
 
         public List<Spellcasting> Spellcasting { get; set; } = new();
