@@ -484,3 +484,110 @@ a, .btn-link {
     #print .fs-4 {
         font-size: 1.5rem !important;
     }
+
+
+.popover .Source {
+  font-style: italic;
+  margin-top:10px;
+  }
+.popover .Name {
+    display:none;
+    color: #58170D;
+    font-family: Andada SC, Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+.popover .Header {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.popover .Bold {
+    font-weight: bold;
+}
+.popover .Italic {
+    font-style: italic;
+}
+.popover .Features {
+    margin-top: 10px;
+}
+.popover .Feature {
+    margin-top: 6px;
+}
+.popover .Flavour {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+.popover table.Standalone {
+    margin-top: 10px;
+}
+.popover p {
+    margin: 0px;
+}
+    .popover p.morelines {
+        margin-top: 3px;
+    }
+.popover .Properties {
+    margin-top: 10px;
+}
+.popover .Names {
+    margin-top: 10px;
+}
+.popover img {
+    display: block;
+    width: 90%;
+    height: auto
+}
+.popover .Small {
+    font-size: 0.8em;
+}
+.popover hr {
+    color: #58170D;
+    border: none;
+    border-top: #58170D 1px solid;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.popover .Ability {
+    display: inline-block;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 0.75em;
+}
+
+    .popover .Ability .Bold {
+        font-size: 1.333em;
+    }
+
+.popover .Underline {
+    font-variant: small-caps;
+    font-size: 1.2em;
+    border-bottom: #58170D 1px solid;
+    margin-bottom: 4px;
+    margin-top: 14px;
+}
+.popover .MonsterActionTrait {
+    margin-bottom: 7px;
+}
+.popover .StackSize {
+    font-weight: normal;
+}
+
+.popover .Weight {
+    font-weight: normal;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+.popover .Price {
+    text-align: right;
+    font-weight: bold;
+}
+
+.popover-body {
+    max-height: 90vh;
+    overflow: auto;
+    line-height:1;
+}

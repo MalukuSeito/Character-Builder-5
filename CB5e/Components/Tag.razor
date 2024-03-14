@@ -1,6 +1,8 @@
 ﻿@inject IJSRuntime JSRuntime;
 
-<span title="@(Title??Xml?.Name)" class="@Icon @CssClass @AdditionCssClass" @onclick="Display" @onclick:stopPropagation="true"></span>
+<!--<span title="@(Title??Xml?.Name)" class="@Icon @CssClass @AdditionCssClass" @onclick="Display" @onclick:stopPropagation="true"></span>-->
+
+<a @ref="a" tabindex="0" class="@Icon @CssClass @AdditionCssClass" role="button" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="click" title="@(Title??Xml?.Name)" data-bs-title="@(Title??Xml?.Name)" data-bs-content="Loading"></a>
 @code {
 	[Parameter]
 	public string? Title { get; set; }
@@ -15,9 +17,42 @@
 	[Parameter]
 	public string? CssClass { get; set; }
 	private IJSObjectReference? module;
+	private IJSObjectReference? popup;
+
+	public ElementReference a {get; set;}
 
 	[Parameter]
 	public string AdditionCssClass { get; set; } = "bi linktag fs--2";
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await base.OnParametersSetAsync();
+		if (module is null)
+		{
+			module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", $"./Components/{GetType().Name}.razor.js");
+		}
+		popup = await module.InvokeAsync<IJSObjectReference>("bootstrapPopover", a, DotNetObjectReference.Create(this));
+	}
+
+	[JSInvokable]
+	public IJSObjectReference? GetPopup()
+	{
+		return popup;
+	}
+
+	[JSInvokable]
+	public string GetContent()
+	{
+		if (Xml is null) Xml = XmlLoader?.Invoke() ?? throw new Exception("No XML to Display");
+		return Xml.ToXML();
+	}
+
+	[JSInvokable]
+	public string GetStylesheet()
+	{
+		if (Xml is null) Xml = XmlLoader?.Invoke() ?? throw new Exception("No XML to Display");
+		return transform(Xml);
+	}
 
 	private async Task Display(MouseEventArgs e)
 	{
