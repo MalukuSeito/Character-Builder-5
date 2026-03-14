@@ -2,6 +2,7 @@
   "profiles": {
     "CB5e": {
       "commandName": "Project",
+      "workingDirectory": "D:\\Dropbox\\CB5 - Full",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

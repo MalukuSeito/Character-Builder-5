@@ -598,10 +598,10 @@ namespace Character_Builder
             }
             return res;
         }
-        public Dictionary<String, int> GetClassLevelStrings(int level = 0)
+        public Dictionary<string, int> GetClassLevelStrings(int level = 0)
         {
             if (level == 0) level = GetLevel();
-            Dictionary<String, int> classlevels = new Dictionary<String, int>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, int> classlevels = new(ConfigManager.SourceInvariantComparer);
             if (Classes == null) Classes = new List<PlayerClass>();
             foreach (PlayerClass p in Classes)
             {
@@ -1410,8 +1410,15 @@ namespace Character_Builder
         public int GetVisionRange(List<FeatureClass> features = null)
         {
             int range = 0;
-            foreach (Feature f in features?.Select(f=>f.feature) ?? GetFeatures()) if (f is VisionFeature) range += ((VisionFeature)f).Range;
-            return range;
+            int add = 0;
+            foreach (Feature f in features?.Select(f => f.feature) ?? GetFeatures()) {
+                if (f is VisionFeature v)
+                {
+                    if (v.Additive) add += v.Range;
+                    else range = Math.Max(range, v.Range);
+                }
+            }
+            return range + add;
         }
         public List<FeatureClass> GetFeatureAndAbility(out AbilityScoreArray asa, out AbilityScoreArray max, Predicate<Feature> match, int level = 0, IEnumerable<Feature> additional = null, bool reset = false)
         {
@@ -2133,6 +2140,7 @@ namespace Character_Builder
 			{
 				possessions = new List<Possession>();
 				possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
+                foreach (Possession p in Possessions) p.Context = Context;
 				possessions.AddRange(Possessions);
 			}
 			Item armor = GetArmor(possessions);
@@ -2180,7 +2188,8 @@ namespace Character_Builder
             {
                 possessions = new List<Possession>();
                 possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
-                possessions.AddRange(Possessions);
+				foreach (Possession p in Possessions) p.Context = Context;
+				possessions.AddRange(Possessions);
             }
             foreach (Possession p in possessions) if (string.Equals(p.Equipped, EquipSlot.Armor, StringComparison.OrdinalIgnoreCase)) return p.Item;
             return null;
@@ -2191,6 +2200,7 @@ namespace Character_Builder
 			{
 				possessions = new List<Possession>();
 				possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
+				foreach (Possession p in Possessions) p.Context = Context;
 				possessions.AddRange(Possessions);
 			}
 			foreach (Possession p in possessions) if (string.Equals(p.Equipped, EquipSlot.MainHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
@@ -2202,6 +2212,7 @@ namespace Character_Builder
 			{
 				possessions = new List<Possession>();
 				possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
+				foreach (Possession p in Possessions) p.Context = Context;
 				possessions.AddRange(Possessions);
 			}
 			foreach (Possession p in possessions) if (string.Equals(p.Equipped, EquipSlot.OffHand, StringComparison.OrdinalIgnoreCase)) return p.Item;
@@ -2222,6 +2233,7 @@ namespace Character_Builder
 			{
 				possessions = new List<Possession>();
 				possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
+				foreach (Possession pp in Possessions) pp.Context = Context;
 				possessions.AddRange(Possessions);
 			}
 			Item armor = GetArmor(possessions);
@@ -2472,6 +2484,7 @@ namespace Character_Builder
 			{
 				possessions = new List<Possession>();
 				possessions.AddRange(GetItemsAndPossessions(journalOnly: true));
+				foreach (Possession p in Possessions) p.Context = Context;
 				possessions.AddRange(Possessions);
 			}
 			Item armor = GetArmor(possessions);

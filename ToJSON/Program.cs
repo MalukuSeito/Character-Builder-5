@@ -70,6 +70,7 @@ JsonWriterOptions options = new JsonWriterOptions()
 {
     Indented = true
 };
+context.Player.Possessions.ForEach(xx => xx.Context = context);
 context.Player.ComplexJournal.ForEach(x => x.Possessions.ForEach(xx => xx.Context = context));
 JsonSerializer.Serialize<ExportPlayer>(Console.OpenStandardOutput(), new ExportPlayer(context.Player), new JsonSerializerOptions()
 {

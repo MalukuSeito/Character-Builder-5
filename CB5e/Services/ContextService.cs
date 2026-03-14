@@ -136,6 +136,7 @@ namespace CB5e.Services
             manager.Add(new LanguageChoice());
             manager.Add(new SkillChoice());
             manager.Add(new ToolChoice());
+			manager.Add(new OlderBooks());
             context.Plugins = manager;
             context.UndoBuffer = new LinkedList<Player>();
             context.RedoBuffer = new LinkedList<Player>();

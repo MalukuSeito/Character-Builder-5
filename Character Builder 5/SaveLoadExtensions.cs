@@ -115,6 +115,7 @@ namespace Character_Builder_5
             plug.Add(new LanguageChoice());
             plug.Add(new SkillChoice());
             plug.Add(new ToolChoice());
+            plug.Add(new OlderBooks());
             string[] dllFileNames = null;
             if (Directory.Exists(path))
             {
