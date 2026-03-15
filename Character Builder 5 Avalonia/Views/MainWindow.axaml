@@ -3,7 +3,7 @@
         xmlns:vm="using:CharacterBuilder5.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:webview="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.WebView"
+        xmlns:html="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=HtmlRenderer.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CharacterBuilder5.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -153,7 +153,9 @@
             <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,0,0" Margin="5">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top" Text="Details" FontWeight="Bold" Margin="5"/>
-                    <webview:WebView HtmlContent="{Binding CurrentSelectionHTML}" Margin="5"/>
+                    <ScrollViewer>
+                        <HtmlPanel Text="{Binding CurrentSelectionHTML}" Margin="5"/>
+                    </ScrollViewer>
                 </DockPanel>
             </Border>
         </Grid>

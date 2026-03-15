@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CharacterBuilder5.Common;
+using Character_Builder_IO;
 
 namespace CharacterBuilder5.ViewModels;
 

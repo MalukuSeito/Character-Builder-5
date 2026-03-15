@@ -7,8 +7,7 @@ using OGL;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OGL.Common;
 using CharacterBuilder5.Common;
-using Character_Builder_Forms;
-using Character_Builder_Forms;
+using Character_Builder_IO;
 
 namespace CharacterBuilder5.ViewModels;
 
