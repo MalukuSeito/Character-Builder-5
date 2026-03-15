@@ -301,6 +301,7 @@ public partial class MainWindowViewModel : ViewModelBase
         OnPropertyChanged(nameof(Alignment));
         OnPropertyChanged(nameof(PlayerName));
         OnPropertyChanged(nameof(Skills));
+        OnPropertyChanged(nameof(CurrentSelectionHTML));
     }
 
     public MainWindowViewModel()

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
+using System.Xml;   
 using System.Xml.Xsl;
 
 namespace Character_Builder_IO
@@ -60,24 +60,31 @@ namespace Character_Builder_IO
 
         static HTMLExtensions()
         {
-            LoadTransform += (t, o) => { if (o is Background) t.Load(Transform_Backgrounds.FullName); };
-            LoadTransform += (t, o) => { if (o is Feature) t.Load(Transform_Features.FullName); };
-            LoadTransform += (t, o) => { if (o is FeatureContainer) t.Load(Transform_Features.FullName); };
-            LoadTransform += (t, o) => { if (o is ClassDefinition) t.Load(Transform_Classes.FullName); };
-            LoadTransform += (t, o) => { if (o is Condition) t.Load(Transform_Conditions.FullName); };
-            LoadTransform += (t, o) => { if (o is Description) t.Load(Transform_Description.FullName); };
-            LoadTransform += (t, o) => { if (o is DescriptionContainer) t.Load(Transform_Description.FullName); };
-            LoadTransform += (t, o) => { if (o is Item) t.Load(Transform_Items.FullName); };
-            LoadTransform += (t, o) => { if (o is Language) t.Load(Transform_Languages.FullName); };
-            LoadTransform += (t, o) => { if (o is MagicProperty) t.Load(Transform_Magic.FullName); };
-            LoadTransform += (t, o) => { if (o is Race) t.Load(Transform_Races.FullName); };
-            LoadTransform += (t, o) => { if (o is Skill) t.Load(Transform_Skills.FullName); };
-            LoadTransform += (t, o) => { if (o is Spell) t.Load(Transform_Spells.FullName); };
-            LoadTransform += (t, o) => { if (o is SubClass) t.Load(Transform_SubClasses.FullName); };
-            LoadTransform += (t, o) => { if (o is SubRace) t.Load(Transform_SubRaces.FullName); };
-            LoadTransform += (t, o) => { if (o is Monster) t.Load(Transform_Monster.FullName); };
+            LoadTransform += (t, o) => { if (o is Background) LoadXslt(t, Transform_Backgrounds.FullName); };
+            LoadTransform += (t, o) => { if (o is Feature) LoadXslt(t, Transform_Features.FullName); };
+            LoadTransform += (t, o) => { if (o is FeatureContainer) LoadXslt(t, Transform_Features.FullName); };
+            LoadTransform += (t, o) => { if (o is ClassDefinition) LoadXslt(t, Transform_Classes.FullName); };
+            LoadTransform += (t, o) => { if (o is Condition) LoadXslt(t, Transform_Conditions.FullName); };
+            LoadTransform += (t, o) => { if (o is Description) LoadXslt(t, Transform_Description.FullName); };
+            LoadTransform += (t, o) => { if (o is DescriptionContainer) LoadXslt(t, Transform_Description.FullName); };
+            LoadTransform += (t, o) => { if (o is Item) LoadXslt(t, Transform_Items.FullName); };
+            LoadTransform += (t, o) => { if (o is Language) LoadXslt(t, Transform_Languages.FullName); };
+            LoadTransform += (t, o) => { if (o is MagicProperty) LoadXslt(t, Transform_Magic.FullName); };
+            LoadTransform += (t, o) => { if (o is Race) LoadXslt(t, Transform_Races.FullName); };
+            LoadTransform += (t, o) => { if (o is Skill) LoadXslt(t, Transform_Skills.FullName); };
+            LoadTransform += (t, o) => { if (o is Spell) LoadXslt(t, Transform_Spells.FullName); };
+            LoadTransform += (t, o) => { if (o is SubClass) LoadXslt(t, Transform_SubClasses.FullName); };
+            LoadTransform += (t, o) => { if (o is SubRace) LoadXslt(t, Transform_SubRaces.FullName); };
+            LoadTransform += (t, o) => { if (o is Monster) LoadXslt(t, Transform_Monster.FullName); };
         }
 
+        static void LoadXslt(XslCompiledTransform t, string path)
+        {
+            var settings = new XsltSettings(true, true);
+            var resolver = new XmlUrlResolver();
+            t.Load(path, settings, resolver);
+        }
+        
         private static XslCompiledTransform GetTransform(IXML t)
         {
             if (t == null) return null;

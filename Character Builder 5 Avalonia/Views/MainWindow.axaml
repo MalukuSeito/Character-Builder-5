@@ -154,7 +154,7 @@
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top" Text="Details" FontWeight="Bold" Margin="5"/>
                     <ScrollViewer>
-                        <HtmlPanel Text="{Binding CurrentSelectionHTML}" Margin="5"/>
+                        <HtmlPanel x:Name="HtmlPanel" Text="{Binding CurrentSelectionHTML}" Margin="5"/>
                     </ScrollViewer>
                 </DockPanel>
             </Border>
