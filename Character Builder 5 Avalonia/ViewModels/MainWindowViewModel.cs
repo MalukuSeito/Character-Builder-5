@@ -1,0 +1,330 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Character_Builder;
+using OGL;
+using CommunityToolkit.Mvvm.ComponentModel;
+using OGL.Common;
+using CharacterBuilder5.Common;
+
+namespace CharacterBuilder5.ViewModels;
+
+public partial class MainWindowViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private BuilderContext _context;
+
+    [ObservableProperty]
+    private string _title = "Character Builder 5 Avalonia";
+
+    public System.Collections.Generic.List<string> Sources => SourceManager.Sources;
+
+    public System.Collections.Generic.IEnumerable<Race> AvailableRaces => Context.Races.Values.OrderBy(r => r.Name);
+    
+    private System.Collections.Generic.List<SourceItemViewModel>? _sourceViewModels;
+    public System.Collections.Generic.IEnumerable<SourceItemViewModel> SourceItems => 
+        _sourceViewModels ??= SourceManager.Sources.Select(s => new SourceItemViewModel(s, this)).ToList();
+
+    public class SourceItemViewModel : ViewModelBase
+    {
+        private readonly string _name;
+        private readonly MainWindowViewModel _mainViewModel;
+
+        public SourceItemViewModel(string name, MainWindowViewModel mainViewModel)
+        {
+            _name = name;
+            _mainViewModel = mainViewModel;
+        }
+
+        public string Name => _name;
+
+        public bool IsEnabled
+        {
+            get => !_mainViewModel.Context.ExcludedSources.Contains(_name, StringComparer.OrdinalIgnoreCase);
+            set
+            {
+                if (value != IsEnabled)
+                {
+                    _mainViewModel.ToggleSource(_name, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+    }
+
+    public void ToggleSource(string name, bool enable)
+    {
+        Context.MakeHistory("Sources");
+        if (enable)
+        {
+            Context.Player.ExcludedSources.RemoveAll(s => StringComparer.OrdinalIgnoreCase.Equals(s, name));
+        }
+        else
+        {
+            if (!Context.Player.ExcludedSources.Contains(name, StringComparer.OrdinalIgnoreCase))
+            {
+                Context.Player.ExcludedSources.Add(name);
+            }
+        }
+        Context.ExcludedSources.Clear();
+        Context.ExcludedSources.UnionWith(Context.Player.ExcludedSources);
+        
+        // Reload data like Program.ReloadData()
+        InitializeContext();
+        RefreshAll();
+        // OnPropertyChanged(nameof(SourceItems)); // No longer needed as we are updating the existing view models
+        OnPropertyChanged(nameof(AvailableRaces));
+        OnPropertyChanged(nameof(AvailableClasses));
+        OnPropertyChanged(nameof(AvailableBackgrounds));
+    }
+
+    public System.Collections.Generic.IEnumerable<SubRace> AvailableSubRaces
+    {
+        get
+        {
+            if (Context.Player.Race == null) return Enumerable.Empty<SubRace>();
+            return Context.SubRaceFor(new System.Collections.Generic.List<string> { Context.Player.Race.Name }).OrderBy(s => s.Name);
+        }
+    }
+
+    public Race SelectedRace
+    {
+        get => Context.Player.Race;
+        set
+        {
+            if (Context.Player.Race != value)
+            {
+                Context.MakeHistory("");
+                Context.Player.Race = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(AvailableSubRaces));
+                OnPropertyChanged(nameof(SelectedSubRace));
+                OnPropertyChanged(nameof(RaceDescription));
+            }
+        }
+    }
+
+    public SubRace SelectedSubRace
+    {
+        get => Context.Player.SubRace;
+        set
+        {
+            if (Context.Player.SubRace != value)
+            {
+                Context.MakeHistory("");
+                Context.Player.SubRace = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(RaceDescription));
+            }
+        }
+    }
+
+    public string RaceDescription
+    {
+        get
+        {
+            if (SelectedSubRace != null) return SelectedSubRace.Description;
+            if (SelectedRace != null) return SelectedRace.Description;
+            return "Select a race to see its description.";
+        }
+    }
+
+    public System.Collections.Generic.IEnumerable<ClassDefinition> AvailableClasses => Context.Classes.Values.OrderBy(c => c.Name);
+
+    public System.Collections.Generic.List<PlayerClass> PlayerClasses => Context.Player.Classes;
+
+    private ClassDefinition _selectedClassToAdd;
+    public ClassDefinition SelectedClassToAdd
+    {
+        get => _selectedClassToAdd;
+        set
+        {
+            if (SetProperty(ref _selectedClassToAdd, value))
+            {
+                OnPropertyChanged(nameof(ClassDescription));
+            }
+        }
+    }
+
+    public string ClassDescription
+    {
+        get
+        {
+            if (SelectedClassToAdd != null) return SelectedClassToAdd.Description;
+            return "Select a class to see its description.";
+        }
+    }
+
+    public void AddLevel()
+    {
+        if (SelectedClassToAdd != null)
+        {
+            Context.MakeHistory("");
+            Context.Player.AddClass(SelectedClassToAdd, Context.Player.GetLevel() + 1);
+            OnPropertyChanged(nameof(PlayerClasses));
+        }
+    }
+
+    public void RemoveLevel(PlayerClass pc)
+    {
+        if (pc != null)
+        {
+            Context.MakeHistory("");
+            Context.Player.DeleteClass(pc.ClassLevelAtLevel.Last());
+            OnPropertyChanged(nameof(PlayerClasses));
+        }
+    }
+
+    public int BaseStrength
+    {
+        get => Context.Player.BaseStrength;
+        set { Context.Player.BaseStrength = value; OnPropertyChanged(); }
+    }
+    public int BaseDexterity
+    {
+        get => Context.Player.BaseDexterity;
+        set { Context.Player.BaseDexterity = value; OnPropertyChanged(); }
+    }
+    public int BaseConstitution
+    {
+        get => Context.Player.BaseConstitution;
+        set { Context.Player.BaseConstitution = value; OnPropertyChanged(); }
+    }
+    public int BaseIntelligence
+    {
+        get => Context.Player.BaseIntelligence;
+        set { Context.Player.BaseIntelligence = value; OnPropertyChanged(); }
+    }
+    public int BaseWisdom
+    {
+        get => Context.Player.BaseWisdom;
+        set { Context.Player.BaseWisdom = value; OnPropertyChanged(); }
+    }
+    public int BaseCharisma
+    {
+        get => Context.Player.BaseCharisma;
+        set { Context.Player.BaseCharisma = value; OnPropertyChanged(); }
+    }
+
+    public System.Collections.Generic.IEnumerable<Background> AvailableBackgrounds => Context.Backgrounds.Values.OrderBy(b => b.Name);
+
+    public Background SelectedBackground
+    {
+        get => Context.Player.Background;
+        set
+        {
+            if (Context.Player.Background != value)
+            {
+                Context.MakeHistory("");
+                Context.Player.Background = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(BackgroundDescription));
+            }
+        }
+    }
+
+    public string BackgroundDescription
+    {
+        get
+        {
+            if (SelectedBackground != null) return SelectedBackground.Description;
+            return "Select a background to see its description.";
+        }
+    }
+
+    public System.Collections.Generic.IEnumerable<SkillInfo> Skills => Context.Player.GetSkills();
+
+    public string CharacterName
+    {
+        get => Context.Player.Name;
+        set { Context.Player.Name = value; OnPropertyChanged(); }
+    }
+
+    public string Alignment
+    {
+        get => Context.Player.Alignment;
+        set { Context.Player.Alignment = value; OnPropertyChanged(); }
+    }
+
+    public string PlayerName
+    {
+        get => Context.Player.PlayerName;
+        set { Context.Player.PlayerName = value; OnPropertyChanged(); }
+    }
+
+    public async Task NewCharacter()
+    {
+        Context.MakeHistory("");
+        Context.Player = new Player();
+        Context.Player.Context = Context;
+        RefreshAll();
+    }
+
+    public async Task OpenCharacter()
+    {
+        // This would normally use a file picker, but for now just a placeholder
+    }
+
+    public async Task SaveCharacter()
+    {
+        // This would normally use a file picker
+    }
+
+    private void RefreshAll()
+    {
+        OnPropertyChanged(nameof(SelectedRace));
+        OnPropertyChanged(nameof(SelectedSubRace));
+        OnPropertyChanged(nameof(AvailableSubRaces));
+        OnPropertyChanged(nameof(SelectedBackground));
+        OnPropertyChanged(nameof(PlayerClasses));
+        OnPropertyChanged(nameof(BaseStrength));
+        OnPropertyChanged(nameof(BaseDexterity));
+        OnPropertyChanged(nameof(BaseConstitution));
+        OnPropertyChanged(nameof(BaseIntelligence));
+        OnPropertyChanged(nameof(BaseWisdom));
+        OnPropertyChanged(nameof(BaseCharisma));
+        OnPropertyChanged(nameof(CharacterName));
+        OnPropertyChanged(nameof(Alignment));
+        OnPropertyChanged(nameof(PlayerName));
+        OnPropertyChanged(nameof(Skills));
+    }
+
+    public MainWindowViewModel()
+    {
+        _context = new BuilderContext();
+        InitializeContext();
+    }
+
+    private void InitializeContext()
+    {
+        // Equivalent to Program.LoadData()
+        string startupPath = AppContext.BaseDirectory;
+        Config.LoadConfig(Context, startupPath);
+        SourceManager.Init(Context, startupPath, true);
+        
+        Context.LoadLevel(ImportExtensions.Fullpath(startupPath, "Levels.xml"));
+        Context.ImportZips(false);
+        Context.ImportSkills(false);
+        Context.ImportLanguages(false);
+        Context.ImportSpells(false);
+        Context.ImportItems(false);
+        Context.ImportBackgrounds(false);
+        Context.ImportRaces(false);
+        Context.ImportSubRaces(false);
+        Context.ImportStandaloneFeatures(false);
+        Context.ImportConditions(false);
+        Context.ImportMagic(false);
+        Context.ImportClasses(false, true);
+        Context.ImportSubClasses(false, true);
+        
+        foreach (ClassDefinition c in Context.Classes.Values) c.ApplyKeywords(Context);
+        foreach (SubClass c in Context.SubClasses.Values) c.ApplyKeywords(Context);
+        
+        Context.ImportMonsters(false);
+
+        Context.Player.ChoiceCounter.Clear();
+        Context.Player.ChoiceTotal.Clear();
+        Context.Player.Context = Context;
+    }
+}

@@ -1,0 +1,155 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:CharacterBuilder5.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CharacterBuilder5.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding Title}">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" Command="{Binding NewCharacter}"/>
+                <MenuItem Header="_Open" Command="{Binding OpenCharacter}"/>
+                <Separator/>
+                <MenuItem Header="_Save" Command="{Binding SaveCharacter}"/>
+                <MenuItem Header="Save _As" />
+                <Separator/>
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Plugins" />
+            <MenuItem Header="_Settings">
+                <MenuItem Header="Sources" ItemsSource="{Binding SourceItems}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MainWindowViewModel+SourceItemViewModel">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsEnabled, Mode=TwoWay}" Margin="5,0"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <Grid ColumnDefinitions="*">
+            <TabControl Name="MainTab">
+                <TabItem Header="Race">
+                    <Grid ColumnDefinitions="*, 2*">
+                        <DockPanel Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Top" Text="Races" FontWeight="Bold" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableRaces}" SelectedItem="{Binding SelectedRace}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            <TextBlock DockPanel.Dock="Top" Text="SubRaces" FontWeight="Bold" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableSubRaces}" SelectedItem="{Binding SelectedSubRace}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                        </DockPanel>
+                        <ScrollViewer Grid.Column="1" Margin="5">
+                            <TextBlock Text="{Binding RaceDescription}" TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Class">
+                    <Grid ColumnDefinitions="*, 2*">
+                        <DockPanel Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Top" Text="Available Classes" FontWeight="Bold" Margin="5"/>
+                            <Button DockPanel.Dock="Bottom" Content="Add Level" Command="{Binding AddLevel}" HorizontalAlignment="Stretch" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableClasses}" SelectedItem="{Binding SelectedClassToAdd}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            
+                            <TextBlock DockPanel.Dock="Top" Text="Current Classes" FontWeight="Bold" Margin="5"/>
+                            <ItemsControl ItemsSource="{Binding PlayerClasses}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Margin="5">
+                                            <Button DockPanel.Dock="Right" Content="Remove" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).RemoveLevel}" CommandParameter="{Binding}"/>
+                                            <TextBlock Text="{Binding ClassName}" VerticalAlignment="Center"/>
+                                            <TextBlock Text=" (" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding ClassLevelAtLevel.Count}" VerticalAlignment="Center"/>
+                                            <TextBlock Text=")" VerticalAlignment="Center"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
+                        <ScrollViewer Grid.Column="1" Margin="5">
+                            <TextBlock Text="{Binding ClassDescription}" TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Description">
+                    <TextBlock Text="Description placeholder" />
+                </TabItem>
+                <TabItem Header="Abilities">
+                    <StackPanel Margin="10">
+                        <Grid ColumnDefinitions="Auto, 100" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Strength" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding BaseStrength}" Minimum="1" Maximum="30" Margin="5"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Dexterity" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding BaseDexterity}" Minimum="1" Maximum="30" Margin="5"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Constitution" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BaseConstitution}" Minimum="1" Maximum="30" Margin="5"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Intelligence" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BaseIntelligence}" Minimum="1" Maximum="30" Margin="5"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Wisdom" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding BaseWisdom}" Minimum="1" Maximum="30" Margin="5"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Charisma" VerticalAlignment="Center"/>
+                            <NumericUpDown Grid.Row="5" Grid.Column="1" Value="{Binding BaseCharisma}" Minimum="1" Maximum="30" Margin="5"/>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Skills">
+                    <ListBox ItemsSource="{Binding Skills}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock Text="{Binding Skill.Name}" Width="150"/>
+                                    <TextBlock Text="{Binding Roll, StringFormat='{}{0:+0;-0;0}'}" Width="50"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </TabItem>
+                <TabItem Header="Background">
+                    <Grid ColumnDefinitions="*, 2*">
+                        <DockPanel Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Top" Text="Backgrounds" FontWeight="Bold" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableBackgrounds}" SelectedItem="{Binding SelectedBackground}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                        </DockPanel>
+                        <ScrollViewer Grid.Column="1" Margin="5">
+                            <TextBlock Text="{Binding BackgroundDescription}" TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Inventory">
+                    <TextBlock Text="Inventory placeholder" />
+                </TabItem>
+                <TabItem Header="Spells">
+                    <TextBlock Text="Spells placeholder" />
+                </TabItem>
+                <TabItem Header="Journal">
+                    <TextBlock Text="Journal placeholder" />
+                </TabItem>
+                <TabItem Header="Personal">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Character Name" FontWeight="Bold"/>
+                        <TextBox Text="{Binding CharacterName}" Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="Alignment" FontWeight="Bold"/>
+                        <TextBox Text="{Binding Alignment}" Margin="0,0,0,10"/>
+                        
+                        <TextBlock Text="Player Name" FontWeight="Bold"/>
+                        <TextBox Text="{Binding PlayerName}" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
+
+</Window>
