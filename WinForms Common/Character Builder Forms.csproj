@@ -11,9 +11,10 @@
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
-	</ItemGroup>
+ <ItemGroup>
+   <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
+   <ProjectReference Include="..\Character Builder IO\Character Builder IO.csproj" />
+ </ItemGroup>
 
 </Project>
 

@@ -7,6 +7,8 @@ using OGL;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OGL.Common;
 using CharacterBuilder5.Common;
+using Character_Builder_Forms;
+using Character_Builder_Forms;
 
 namespace CharacterBuilder5.ViewModels;
 
@@ -88,6 +90,14 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    [ObservableProperty]
+    private string? _currentSelectionHTML;
+
+    public void UpdateSelectionHTML(IXML? obj)
+    {
+        CurrentSelectionHTML = obj?.ToHTML();
+    }
+
     public Race SelectedRace
     {
         get => Context.Player.Race;
@@ -101,6 +111,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 OnPropertyChanged(nameof(AvailableSubRaces));
                 OnPropertyChanged(nameof(SelectedSubRace));
                 OnPropertyChanged(nameof(RaceDescription));
+                UpdateSelectionHTML(value);
             }
         }
     }
@@ -116,6 +127,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 Context.Player.SubRace = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(RaceDescription));
+                UpdateSelectionHTML(value ?? (IXML?)SelectedRace);
             }
         }
     }
@@ -143,6 +155,7 @@ public partial class MainWindowViewModel : ViewModelBase
             if (SetProperty(ref _selectedClassToAdd, value))
             {
                 OnPropertyChanged(nameof(ClassDescription));
+                UpdateSelectionHTML(value);
             }
         }
     }
@@ -220,6 +233,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 Context.Player.Background = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(BackgroundDescription));
+                UpdateSelectionHTML(value);
             }
         }
     }

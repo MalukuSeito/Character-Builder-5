@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Antlr3.Runtime" Version="3.5.1" />
+    <PackageReference Include="Avalonia.Controls.WebView" Version="11.3.16" />
     <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="System.Text.Json" Version="9.0.4" />
   </ItemGroup>
@@ -23,6 +24,7 @@
     <ProjectReference Include="..\NCalc2\NCalc2.csproj" />
     <ProjectReference Include="..\oglelements\OGL Elements.csproj" />
     <ProjectReference Include="..\PluginDMG\PluginDMG.csproj" />
+    <ProjectReference Include="..\Character Builder IO\Character Builder IO.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />
