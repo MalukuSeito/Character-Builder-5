@@ -9,6 +9,7 @@ using OGL.Common;
 using System.Globalization;
 using System.Linq.Expressions;
 using OGL.Keywords;
+using Character_Builder_IO;
 
 namespace Data_Browser
 {

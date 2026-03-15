@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Character_Builder_IO
 {
-    class LogEntry
+    public class LogEntry
     {
         public string message;
         public Exception e;

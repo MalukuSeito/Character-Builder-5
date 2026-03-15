@@ -19,6 +19,7 @@ using OGL.Base;
 using OGL.Items;
 using OGL.Spells;
 using OGL.Features;
+using Character_Builder_IO;
 
 namespace Character_Builder_5
 {

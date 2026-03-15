@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -51,7 +52,7 @@ namespace Character_Builder_Builder
             ideal.DataSource = new BindingList<TableEntry>(cls.Ideal);
             bond.DataSource = new BindingList<TableEntry>(cls.Bond);
             flaw.DataSource = new BindingList<TableEntry>(cls.Flaw);
-            ImageChanged?.Invoke(this, cls.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(cls));
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());

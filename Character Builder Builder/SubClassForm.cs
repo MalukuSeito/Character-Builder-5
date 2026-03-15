@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -59,7 +60,7 @@ namespace Character_Builder_Builder
             featuresFirstClass.features = cls.FirstClassFeatures;
             featuresMultiClass.features = cls.MulticlassingFeatures;
             decriptions1.descriptions = cls.Descriptions;
-            ImageChanged.Invoke(this, cls.GetImage());
+            ImageChanged.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(cls));
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());

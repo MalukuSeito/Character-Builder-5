@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -71,7 +72,7 @@ namespace Character_Builder_Builder
             description.DataBindings.Clear();
             NewlineFormatter.Add(description.DataBindings, "Text", monster, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
             decriptions1.descriptions = monster.Descriptions;
-            ImageChanged?.Invoke(this, monster.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(monster));
 
             Alignment.DataBindings.Clear();
             Alignment.DataBindings.Add("Text", monster, "Alignment", true, DataSourceUpdateMode.OnPropertyChanged);

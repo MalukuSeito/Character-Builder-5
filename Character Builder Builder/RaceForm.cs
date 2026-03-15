@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -46,7 +47,7 @@ namespace Character_Builder_Builder
             NewlineFormatter.Add(description.DataBindings, "Text", race, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
             features1.features = race.Features;
             decriptions1.descriptions = race.Descriptions;
-            ImageChanged?.Invoke(this, race.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(race));
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(race.ToHTML());

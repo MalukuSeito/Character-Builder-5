@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq.Expressions;
 using OGL.Monsters;
+using Character_Builder_IO;
 
 namespace Data_Browser
 {

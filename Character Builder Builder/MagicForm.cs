@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -70,7 +71,7 @@ namespace Character_Builder_Builder
             OnUse.features = cls.OnUseFeatures;
             AttunedOnUse.features = cls.AttunedOnUseFeatures;
             AttunedEquipped.features = cls.AttunedEquipFeatures;
-            ImageChanged?.Invoke(this, cls.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(cls));
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(cls.ToHTML());

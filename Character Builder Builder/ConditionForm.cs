@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -37,7 +38,7 @@ namespace Character_Builder_Builder
             source.DataBindings.Add("Text", lang, "Source", true, DataSourceUpdateMode.OnPropertyChanged);
             description.DataBindings.Clear();
             NewlineFormatter.Add(description.DataBindings, "Text", lang, "Description", true, DataSourceUpdateMode.OnPropertyChanged);
-            ImageChanged?.Invoke(this, lang.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(lang));
             preview.Navigate("about:blank");
             preview.Document.OpenNew(true);
             preview.Document.Write(lang.ToHTML());

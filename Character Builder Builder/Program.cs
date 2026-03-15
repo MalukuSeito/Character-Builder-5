@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {

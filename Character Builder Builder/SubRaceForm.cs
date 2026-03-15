@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Character_Builder_IO;
 
 namespace Character_Builder_Builder
 {
@@ -54,7 +55,7 @@ namespace Character_Builder_Builder
             preview.Document.Write(race.ToHTML());
             ParentRace.DataBindings.Clear();
             ParentRace.DataBindings.Add("Text", race, "RaceName", true, DataSourceUpdateMode.OnPropertyChanged);
-            ImageChanged?.Invoke(this, race.GetImage());
+            ImageChanged?.Invoke(this, Character_Builder_Forms.ImageExtensions.GetImage(race));
             preview.Refresh();
             source.AutoCompleteCustomSource.Clear();
             source.AutoCompleteCustomSource.AddRange(SourceManager.Sources.ToArray());
