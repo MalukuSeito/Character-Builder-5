@@ -18,9 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _title = "Character Builder 5 Avalonia";
-
-    public System.Collections.Generic.List<string> Sources => SourceManager.Sources;
-
+    
     public System.Collections.Generic.IEnumerable<Race> AvailableRaces => Context.Races.Values.OrderBy(r => r.Name);
     
     private System.Collections.Generic.List<SourceItemViewModel>? _sourceViewModels;
@@ -96,22 +94,23 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         CurrentSelectionHTML = obj?.ToHTML();
     }
-
-    public Race SelectedRace
+    
+    public void UpdateRace()
     {
-        get => Context.Player.Race;
+        OnPropertyChanged();
+        RefreshStats();
+    }
+
+
+    private SubRace? _previewSubRace;
+    public SubRace? PreviewSubRace
+    {
+        get => _previewSubRace;
         set
         {
-            if (Context.Player.Race != value)
+            if (SetProperty(ref _previewSubRace, value))
             {
-                Context.MakeHistory("");
-                Context.Player.Race = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(AvailableSubRaces));
-                OnPropertyChanged(nameof(SelectedSubRace));
-                OnPropertyChanged(nameof(RaceDescription));
-                UpdateSelectionHTML(value ?? (IXML?)SelectedRace);
-                RefreshStats();
+                UpdateSelectionHTML(value);
             }
         }
     }
@@ -126,26 +125,36 @@ public partial class MainWindowViewModel : ViewModelBase
                 Context.MakeHistory("");
                 Context.Player.SubRace = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(RaceDescription));
-                UpdateSelectionHTML(value ?? (IXML?)SelectedRace);
                 RefreshStats();
             }
         }
     }
 
-    public string RaceDescription
+    public void SelectSubRace()
     {
-        get
+        if (PreviewSubRace != null)
         {
-            if (SelectedSubRace != null) return SelectedSubRace.Description;
-            if (SelectedRace != null) return SelectedRace.Description;
-            return "Select a race to see its description.";
+            SelectedSubRace = PreviewSubRace;
         }
     }
-
+    
     public System.Collections.Generic.IEnumerable<ClassDefinition> AvailableClasses => Context.Classes.Values.OrderBy(c => c.Name);
 
     public System.Collections.Generic.List<PlayerClass> PlayerClasses => Context.Player.Classes;
+
+    private ClassDefinition _previewClassToAdd;
+    public ClassDefinition PreviewClassToAdd
+    {
+        get => _previewClassToAdd;
+        set
+        {
+            if (SetProperty(ref _previewClassToAdd, value))
+            {
+                OnPropertyChanged(nameof(ClassDescription));
+                UpdateSelectionHTML(value);
+            }
+        }
+    }
 
     private ClassDefinition _selectedClassToAdd;
     public ClassDefinition SelectedClassToAdd
@@ -156,7 +165,7 @@ public partial class MainWindowViewModel : ViewModelBase
             if (SetProperty(ref _selectedClassToAdd, value))
             {
                 OnPropertyChanged(nameof(ClassDescription));
-                UpdateSelectionHTML(value);
+                // UpdateSelectionHTML(value); // No longer needed here as it's in PreviewClassToAdd
             }
         }
     }
@@ -165,6 +174,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         get
         {
+            if (PreviewClassToAdd != null) return PreviewClassToAdd.Description;
             if (SelectedClassToAdd != null) return SelectedClassToAdd.Description;
             return "Select a class to see its description.";
         }
@@ -172,10 +182,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public void AddLevel()
     {
-        if (SelectedClassToAdd != null)
+        var classToAdd = PreviewClassToAdd;
+        if (classToAdd != null)
         {
             Context.MakeHistory("");
-            Context.Player.AddClass(SelectedClassToAdd, Context.Player.GetLevel() + 1);
+            Context.Player.AddClass(classToAdd, Context.Player.GetLevel() + 1);
             OnPropertyChanged(nameof(PlayerClasses));
             RefreshStats();
         }
@@ -225,6 +236,20 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public System.Collections.Generic.IEnumerable<Background> AvailableBackgrounds => Context.Backgrounds.Values.OrderBy(b => b.Name);
 
+    private Background? _previewBackground;
+    public Background? PreviewBackground
+    {
+        get => _previewBackground;
+        set
+        {
+            if (SetProperty(ref _previewBackground, value))
+            {
+                OnPropertyChanged(nameof(BackgroundDescription));
+                UpdateSelectionHTML(value);
+            }
+        }
+    }
+
     public Background SelectedBackground
     {
         get => Context.Player.Background;
@@ -241,10 +266,19 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public void SelectBackground()
+    {
+        if (PreviewBackground != null)
+        {
+            SelectedBackground = PreviewBackground;
+        }
+    }
+
     public string BackgroundDescription
     {
         get
         {
+            if (PreviewBackground != null) return PreviewBackground.Description;
             if (SelectedBackground != null) return SelectedBackground.Description;
             return "Select a background to see its description.";
         }
@@ -297,7 +331,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void RefreshAll()
     {
-        OnPropertyChanged(nameof(SelectedRace));
         OnPropertyChanged(nameof(SelectedSubRace));
         OnPropertyChanged(nameof(AvailableSubRaces));
         OnPropertyChanged(nameof(SelectedBackground));

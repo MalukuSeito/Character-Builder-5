@@ -85,13 +85,10 @@
                     <Grid ColumnDefinitions="*, 2*">
                         <DockPanel Grid.Column="0">
                             <TextBlock DockPanel.Dock="Top" Text="Races" FontWeight="Bold" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableRaces}" SelectedItem="{Binding SelectedRace}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableRaces}" Tapped="Preview" Margin="5" DoubleTapped="Race_DoubleTapped"/>
                             <TextBlock DockPanel.Dock="Top" Text="SubRaces" FontWeight="Bold" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableSubRaces}" SelectedItem="{Binding SelectedSubRace}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableSubRaces}" SelectedItem="{Binding PreviewSubRace}" Margin="5" DoubleTapped="SubRace_DoubleTapped"/>
                         </DockPanel>
-                        <ScrollViewer Grid.Column="1" Margin="5">
-                            <TextBlock Text="{Binding RaceDescription}" TextWrapping="Wrap" />
-                        </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Class">
@@ -99,7 +96,7 @@
                         <DockPanel Grid.Column="0">
                             <TextBlock DockPanel.Dock="Top" Text="Available Classes" FontWeight="Bold" Margin="5"/>
                             <Button DockPanel.Dock="Bottom" Content="Add Level" Command="{Binding AddLevel}" HorizontalAlignment="Stretch" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableClasses}" SelectedItem="{Binding SelectedClassToAdd}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableClasses}" SelectedItem="{Binding PreviewClassToAdd}" Margin="5" DoubleTapped="Class_DoubleTapped"/>
                             
                             <TextBlock DockPanel.Dock="Top" Text="Current Classes" FontWeight="Bold" Margin="5"/>
                             <ItemsControl ItemsSource="{Binding PlayerClasses}">
@@ -116,9 +113,6 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </DockPanel>
-                        <ScrollViewer Grid.Column="1" Margin="5">
-                            <TextBlock Text="{Binding ClassDescription}" TextWrapping="Wrap" />
-                        </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Description">
@@ -163,11 +157,8 @@
                     <Grid ColumnDefinitions="*, 2*">
                         <DockPanel Grid.Column="0">
                             <TextBlock DockPanel.Dock="Top" Text="Backgrounds" FontWeight="Bold" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableBackgrounds}" SelectedItem="{Binding SelectedBackground}" DisplayMemberBinding="{Binding Name}" Margin="5"/>
+                            <ListBox ItemsSource="{Binding AvailableBackgrounds}" SelectedItem="{Binding PreviewBackground}" DisplayMemberBinding="{Binding Name}" Margin="5" DoubleTapped="Background_DoubleTapped"/>
                         </DockPanel>
-                        <ScrollViewer Grid.Column="1" Margin="5">
-                            <TextBlock Text="{Binding BackgroundDescription}" TextWrapping="Wrap" />
-                        </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Inventory">
@@ -196,7 +187,7 @@
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top" Text="Details" FontWeight="Bold" Margin="5"/>
                     <ScrollViewer>
-                        <HtmlPanel x:Name="HtmlPanel" Text="{Binding CurrentSelectionHTML}" Margin="5"/>
+                        <HtmlPanel x:Name="HtmlPanel" Margin="5"/>
                     </ScrollViewer>
                 </DockPanel>
             </Border>
