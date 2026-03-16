@@ -110,7 +110,8 @@ public partial class MainWindowViewModel : ViewModelBase
                 OnPropertyChanged(nameof(AvailableSubRaces));
                 OnPropertyChanged(nameof(SelectedSubRace));
                 OnPropertyChanged(nameof(RaceDescription));
-                UpdateSelectionHTML(value);
+                UpdateSelectionHTML(value ?? (IXML?)SelectedRace);
+                RefreshStats();
             }
         }
     }
@@ -127,6 +128,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(RaceDescription));
                 UpdateSelectionHTML(value ?? (IXML?)SelectedRace);
+                RefreshStats();
             }
         }
     }
@@ -175,6 +177,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Context.MakeHistory("");
             Context.Player.AddClass(SelectedClassToAdd, Context.Player.GetLevel() + 1);
             OnPropertyChanged(nameof(PlayerClasses));
+            RefreshStats();
         }
     }
 
@@ -185,38 +188,39 @@ public partial class MainWindowViewModel : ViewModelBase
             Context.MakeHistory("");
             Context.Player.DeleteClass(pc.ClassLevelAtLevel.Last());
             OnPropertyChanged(nameof(PlayerClasses));
+            RefreshStats();
         }
     }
 
     public int BaseStrength
     {
         get => Context.Player.BaseStrength;
-        set { Context.Player.BaseStrength = value; OnPropertyChanged(); }
+        set { Context.Player.BaseStrength = value; OnPropertyChanged(); RefreshStats(); }
     }
     public int BaseDexterity
     {
         get => Context.Player.BaseDexterity;
-        set { Context.Player.BaseDexterity = value; OnPropertyChanged(); }
+        set { Context.Player.BaseDexterity = value; OnPropertyChanged(); RefreshStats(); }
     }
     public int BaseConstitution
     {
         get => Context.Player.BaseConstitution;
-        set { Context.Player.BaseConstitution = value; OnPropertyChanged(); }
+        set { Context.Player.BaseConstitution = value; OnPropertyChanged(); RefreshStats(); }
     }
     public int BaseIntelligence
     {
         get => Context.Player.BaseIntelligence;
-        set { Context.Player.BaseIntelligence = value; OnPropertyChanged(); }
+        set { Context.Player.BaseIntelligence = value; OnPropertyChanged(); RefreshStats(); }
     }
     public int BaseWisdom
     {
         get => Context.Player.BaseWisdom;
-        set { Context.Player.BaseWisdom = value; OnPropertyChanged(); }
+        set { Context.Player.BaseWisdom = value; OnPropertyChanged(); RefreshStats(); }
     }
     public int BaseCharisma
     {
         get => Context.Player.BaseCharisma;
-        set { Context.Player.BaseCharisma = value; OnPropertyChanged(); }
+        set { Context.Player.BaseCharisma = value; OnPropertyChanged(); RefreshStats(); }
     }
 
     public System.Collections.Generic.IEnumerable<Background> AvailableBackgrounds => Context.Backgrounds.Values.OrderBy(b => b.Name);
@@ -247,6 +251,13 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     public System.Collections.Generic.IEnumerable<SkillInfo> Skills => Context.Player.GetSkills();
+
+    public int CurrentLevel => Context.Player.GetLevel();
+    public string ClassSummary => string.Join(" | ", Context.Player.GetClassesStrings());
+    public string RaceName => Context.Player.GetRaceSubName() ?? "None";
+    public int AC => Context.Player.GetAC();
+    public int Initiative => Context.Player.GetInitiative();
+    public string Money => Context.Player.GetMoney().ToString();
 
     public string CharacterName
     {
@@ -302,6 +313,17 @@ public partial class MainWindowViewModel : ViewModelBase
         OnPropertyChanged(nameof(PlayerName));
         OnPropertyChanged(nameof(Skills));
         OnPropertyChanged(nameof(CurrentSelectionHTML));
+        RefreshStats();
+    }
+
+    private void RefreshStats()
+    {
+        OnPropertyChanged(nameof(CurrentLevel));
+        OnPropertyChanged(nameof(ClassSummary));
+        OnPropertyChanged(nameof(RaceName));
+        OnPropertyChanged(nameof(AC));
+        OnPropertyChanged(nameof(Initiative));
+        OnPropertyChanged(nameof(Money));
     }
 
     public MainWindowViewModel()

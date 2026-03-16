@@ -13,15 +13,12 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         HtmlPanel.ImageLoad += HtmlPanel_ImageLoad;
-        Console.Out.WriteLine("Init");
     }
     
     private void HtmlPanel_ImageLoad(object? sender, HtmlRendererRoutedEventArgs<HtmlImageLoadEventArgs> e)
     {
-
         if (e.Event.Src.TrimStart().StartsWith("data:image"))
         {
-            Console.Out.WriteLine(e.Event.Src);
             var base64 = e.Event.Src[(e.Event.Src.IndexOf(',') + 1)..];
             var bytes = Convert.FromBase64String(base64);
 

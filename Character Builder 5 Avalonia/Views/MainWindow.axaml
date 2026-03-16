@@ -37,8 +37,50 @@
             </MenuItem>
         </Menu>
 
-        <Grid ColumnDefinitions="*, 300">
-            <TabControl Name="MainTab" Grid.Column="0">
+        <Grid ColumnDefinitions="200, *, 300">
+            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Margin="5">
+                <StackPanel Margin="5" Spacing="10">
+                    <TextBlock Text="Character Stats" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Race" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding RaceName}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Level" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding CurrentLevel}" FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Classes" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding ClassSummary}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <Separator/>
+
+                    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto">
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="AC" FontSize="12" Foreground="Gray"/>
+                            <TextBlock Text="{Binding AC}" FontWeight="SemiBold" FontSize="18"/>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="0" Grid.Column="1">
+                            <TextBlock Text="Initiative" FontSize="12" Foreground="Gray"/>
+                            <TextBlock Text="{Binding Initiative, StringFormat='{}{0:+0;-0;0}'}" FontWeight="SemiBold" FontSize="18"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Separator/>
+
+                    <StackPanel>
+                        <TextBlock Text="Money" FontSize="12" Foreground="Gray"/>
+                        <TextBlock Text="{Binding Money}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <TabControl Name="MainTab" Grid.Column="1">
                 <TabItem Header="Race">
                     <Grid ColumnDefinitions="*, 2*">
                         <DockPanel Grid.Column="0">
@@ -150,7 +192,7 @@
                     </StackPanel>
                 </TabItem>
             </TabControl>
-            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1,0,0,0" Margin="5">
+            <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1,0,0,0" Margin="5">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top" Text="Details" FontWeight="Bold" Margin="5"/>
                     <ScrollViewer>
