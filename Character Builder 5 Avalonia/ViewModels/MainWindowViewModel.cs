@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using OGL.Common;
 using CharacterBuilder5.Common;
 using Character_Builder_IO;
+using OGL.Features;
 
 namespace CharacterBuilder5.ViewModels;
 
@@ -19,7 +21,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private string _title = "Character Builder 5 Avalonia";
     
-    public System.Collections.Generic.IEnumerable<Race> AvailableRaces => Context.Races.Values.OrderBy(r => r.Name);
+    public IEnumerable<Race> AvailableRaces => Context.Player.Race is not null ? new List<Race>() {Context.Player.Race} : Context.Races.Values.OrderBy(r => r.Name);
     
     private System.Collections.Generic.List<SourceItemViewModel>? _sourceViewModels;
     public System.Collections.Generic.IEnumerable<SourceItemViewModel> SourceItems => 
@@ -78,12 +80,25 @@ public partial class MainWindowViewModel : ViewModelBase
         OnPropertyChanged(nameof(AvailableBackgrounds));
     }
 
-    public System.Collections.Generic.IEnumerable<SubRace> AvailableSubRaces
+    public bool RaceSelected => Context.Player.Race is not null;
+    
+    public bool SubRaceSelected => Context.Player.SubRace is not null;
+    
+    public bool SubRaceVisible => AvailableSubRaces.Any();
+
+    public IEnumerable<SubRace> AvailableSubRaces
     {
         get
         {
-            if (Context.Player.Race == null) return Enumerable.Empty<SubRace>();
-            return Context.SubRaceFor(new System.Collections.Generic.List<string> { Context.Player.Race.Name }).OrderBy(s => s.Name);
+            List<string> parentRaces = [];
+            foreach (var f in Context.Player.GetFeatures())
+            {
+                if (f is SubRaceFeature srf) parentRaces.AddRange(srf.Races);
+            }
+            if (parentRaces.Count <= 0) return [];
+            var subrace = Context.Player.SubRace;
+            if (subrace is null) return Context.SubRaceFor(parentRaces).OrderBy(s => s.Name);
+            return new List<SubRace>() { subrace };
         }
     }
 
@@ -97,46 +112,15 @@ public partial class MainWindowViewModel : ViewModelBase
     
     public void UpdateRace()
     {
-        OnPropertyChanged();
+        OnPropertyChanged(nameof(AvailableRaces));
+        OnPropertyChanged(nameof(AvailableSubRaces));
+        OnPropertyChanged(nameof(RaceSelected));
+        OnPropertyChanged(nameof(SubRaceSelected));
+        OnPropertyChanged(nameof(SubRaceVisible));
         RefreshStats();
     }
 
-
-    private SubRace? _previewSubRace;
-    public SubRace? PreviewSubRace
-    {
-        get => _previewSubRace;
-        set
-        {
-            if (SetProperty(ref _previewSubRace, value))
-            {
-                UpdateSelectionHTML(value);
-            }
-        }
-    }
-
-    public SubRace SelectedSubRace
-    {
-        get => Context.Player.SubRace;
-        set
-        {
-            if (Context.Player.SubRace != value)
-            {
-                Context.MakeHistory("");
-                Context.Player.SubRace = value;
-                OnPropertyChanged();
-                RefreshStats();
-            }
-        }
-    }
-
-    public void SelectSubRace()
-    {
-        if (PreviewSubRace != null)
-        {
-            SelectedSubRace = PreviewSubRace;
-        }
-    }
+    
     
     public System.Collections.Generic.IEnumerable<ClassDefinition> AvailableClasses => Context.Classes.Values.OrderBy(c => c.Name);
 
@@ -331,8 +315,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void RefreshAll()
     {
-        OnPropertyChanged(nameof(SelectedSubRace));
-        OnPropertyChanged(nameof(AvailableSubRaces));
+        UpdateRace();
         OnPropertyChanged(nameof(SelectedBackground));
         OnPropertyChanged(nameof(PlayerClasses));
         OnPropertyChanged(nameof(BaseStrength));
@@ -371,7 +354,7 @@ public partial class MainWindowViewModel : ViewModelBase
         string startupPath = AppContext.BaseDirectory;
         Config.LoadConfig(Context, startupPath);
         SourceManager.Init(Context, startupPath, true);
-        
+        Context.LoadPluginManager(Path.Combine(startupPath, Context.Config.Plugins_Directory));
         Context.LoadLevel(ImportExtensions.Fullpath(startupPath, "Levels.xml"));
         Context.ImportZips(false);
         Context.ImportSkills(false);

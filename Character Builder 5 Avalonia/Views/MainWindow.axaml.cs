@@ -31,20 +31,34 @@ public partial class MainWindow : Window
 
     private void Race_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        Console.Out.WriteLine(sender);
-        Console.Out.WriteLine(DataContext);
-        if (sender is ListBox listBox && DataContext is MainWindowViewModel viewModel)
+        if (!(sender is ListBox listBox && DataContext is MainWindowViewModel viewModel)) return;
+        viewModel.Context.MakeHistory("");
+        if (viewModel.Context.Player.Race is not null)
         {
-            Console.Out.WriteLine(listBox.SelectedItem);
-            viewModel.Context.MakeHistory("");
-            viewModel.Context.Player.Race = listBox.SelectedItem as Race;
-            viewModel.UpdateRace();
+            viewModel.Context.Player.Race = null;
         }
+        else
+        {
+            viewModel.Context.Player.Race = listBox.SelectedItem as Race;
+        }
+        viewModel.UpdateRace();
+        listBox.SelectedItem = null;
     }
 
     private void SubRace_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        (DataContext as MainWindowViewModel)?.SelectSubRace();
+        if (!(sender is ListBox listBox && DataContext is MainWindowViewModel viewModel)) return;
+        viewModel.Context.MakeHistory("");
+        if (viewModel.Context.Player.SubRace is not null)
+        {
+            viewModel.Context.Player.SubRace = null;
+        }
+        else
+        {
+            viewModel.Context.Player.SubRace = listBox.SelectedItem as SubRace;
+        }
+        viewModel.UpdateRace();
+        listBox.SelectedItem = null;
     }
 
     private void Class_DoubleTapped(object? sender, TappedEventArgs e)
