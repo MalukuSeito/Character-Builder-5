@@ -28,7 +28,7 @@ public partial class MainWindow : Window
             HtmlPanel.Text = (listBox.SelectedItem as IXML).ToHTML();
         }
     }
-
+    
     private void Race_DoubleTapped(object? sender, TappedEventArgs e)
     {
         if (!(sender is ListBox listBox && DataContext is MainWindowViewModel viewModel)) return;
@@ -44,7 +44,7 @@ public partial class MainWindow : Window
         viewModel.UpdateRace();
         listBox.SelectedItem = null;
     }
-
+    
     private void SubRace_DoubleTapped(object? sender, TappedEventArgs e)
     {
         if (!(sender is ListBox listBox && DataContext is MainWindowViewModel viewModel)) return;
@@ -60,12 +60,12 @@ public partial class MainWindow : Window
         viewModel.UpdateRace();
         listBox.SelectedItem = null;
     }
-
+    
     private void Class_DoubleTapped(object? sender, TappedEventArgs e)
     {
         (DataContext as MainWindowViewModel)?.AddLevel();
     }
-
+    
     private void Background_DoubleTapped(object? sender, TappedEventArgs e)
     {
         (DataContext as MainWindowViewModel)?.SelectBackground();
@@ -77,10 +77,10 @@ public partial class MainWindow : Window
         {
             var base64 = e.Event.Src[(e.Event.Src.IndexOf(',') + 1)..];
             var bytes = Convert.FromBase64String(base64);
-
+    
             using var ms = new MemoryStream(bytes);
             var bitmap = new Bitmap(ms);
-
+    
             e.Event.Callback(bitmap);
         }
     }

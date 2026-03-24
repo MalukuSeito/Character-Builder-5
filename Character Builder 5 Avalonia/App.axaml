@@ -11,5 +11,6 @@
   
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://GroupBox.Avalonia/GroupBox.axaml" />
     </Application.Styles>
 </Application>

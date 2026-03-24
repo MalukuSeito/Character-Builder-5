@@ -1,200 +1,913 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:CharacterBuilder5.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:html="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=HtmlRenderer.Avalonia"
         xmlns:characterBuilder5="clr-namespace:CharacterBuilder5"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="CharacterBuilder5.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="{Binding Title}">
-    <Window.Resources>
-        <characterBuilder5:SelectedHighlighter AccentBrush="{DynamicResource SystemControlHighlightAccentBrush}" DefaultBrush="{DynamicResource SystemControlForegroundBaseHighBrush}" x:Key="SelectedHighlighter"/>
-    </Window.Resources>
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding NewCharacter}"/>
-                <MenuItem Header="_Open" Command="{Binding OpenCharacter}"/>
-                <Separator/>
-                <MenuItem Header="_Save" Command="{Binding SaveCharacter}"/>
-                <MenuItem Header="Save _As" />
-                <Separator/>
-                <MenuItem Header="_Exit" />
-            </MenuItem>
-            <MenuItem Header="_Plugins" />
-            <MenuItem Header="_Settings">
-                <MenuItem Header="Sources" ItemsSource="{Binding SourceItems}">
-                    <MenuItem.ItemTemplate>
-                        <DataTemplate x:DataType="vm:MainWindowViewModel+SourceItemViewModel">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsEnabled, Mode=TwoWay}" Margin="5,0"/>
-                        </DataTemplate>
-                    </MenuItem.ItemTemplate>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-
-        <Grid ColumnDefinitions="200, *, 300">
-            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="0,0,1,0" Margin="5">
-                <StackPanel Margin="5" Spacing="10">
-                    <TextBlock Text="Character Stats" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                    
-                    <StackPanel>
-                        <TextBlock Text="Race" FontSize="12" Foreground="Gray"/>
-                        <TextBlock Text="{Binding RaceName}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                    </StackPanel>
-
-                    <StackPanel>
-                        <TextBlock Text="Level" FontSize="12" Foreground="Gray"/>
-                        <TextBlock Text="{Binding CurrentLevel}" FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <StackPanel>
-                        <TextBlock Text="Classes" FontSize="12" Foreground="Gray"/>
-                        <TextBlock Text="{Binding ClassSummary}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                    </StackPanel>
-
-                    <Separator/>
-
-                    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto">
-                        <StackPanel Grid.Row="0" Grid.Column="0">
-                            <TextBlock Text="AC" FontSize="12" Foreground="Gray"/>
-                            <TextBlock Text="{Binding AC}" FontWeight="SemiBold" FontSize="18"/>
-                        </StackPanel>
-                        
-                        <StackPanel Grid.Row="0" Grid.Column="1">
-                            <TextBlock Text="Initiative" FontSize="12" Foreground="Gray"/>
-                            <TextBlock Text="{Binding Initiative, StringFormat='{}{0:+0;-0;0}'}" FontWeight="SemiBold" FontSize="18"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <Separator/>
-
-                    <StackPanel>
-                        <TextBlock Text="Money" FontSize="12" Foreground="Gray"/>
-                        <TextBlock Text="{Binding Money}" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            
-            <TabControl Name="MainTab" Grid.Column="1">
-                <TabItem Header="Race">
-                    <ScrollViewer>
-                        <StackPanel>
-                            <TextBlock DockPanel.Dock="Top" Text="Races" FontWeight="Bold" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableRaces}" Tapped="Preview" Margin="5" DoubleTapped="Race_DoubleTapped" Foreground="{Binding RaceSelected, Converter={StaticResource SelectedHighlighter}}" />
-                            <TextBlock DockPanel.Dock="Top" Text="SubRaces" FontWeight="Bold" Margin="5" IsVisible="{Binding SubRaceVisible}"/>
-                            <ListBox ItemsSource="{Binding AvailableSubRaces}" IsVisible="{Binding SubRaceVisible}" Foreground="{Binding SubRaceSelected, Converter={StaticResource SelectedHighlighter}}" Tapped="Preview" Margin="5" DoubleTapped="SubRace_DoubleTapped"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                </TabItem>
-                <TabItem Header="Class">
-                    <Grid ColumnDefinitions="*, 2*">
-                        <DockPanel Grid.Column="0">
-                            <TextBlock DockPanel.Dock="Top" Text="Available Classes" FontWeight="Bold" Margin="5"/>
-                            <Button DockPanel.Dock="Bottom" Content="Add Level" Command="{Binding AddLevel}" HorizontalAlignment="Stretch" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableClasses}" SelectedItem="{Binding PreviewClassToAdd}" Margin="5" DoubleTapped="Class_DoubleTapped"/>
-                            
-                            <TextBlock DockPanel.Dock="Top" Text="Current Classes" FontWeight="Bold" Margin="5"/>
-                            <ItemsControl ItemsSource="{Binding PlayerClasses}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel Margin="5">
-                                            <Button DockPanel.Dock="Right" Content="Remove" Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).RemoveLevel}" CommandParameter="{Binding}"/>
-                                            <TextBlock Text="{Binding ClassName}" VerticalAlignment="Center"/>
-                                            <TextBlock Text=" (" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{Binding ClassLevelAtLevel.Count}" VerticalAlignment="Center"/>
-                                            <TextBlock Text=")" VerticalAlignment="Center"/>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </DockPanel>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Description">
-                    <TextBlock Text="Description placeholder" />
-                </TabItem>
-                <TabItem Header="Abilities">
-                    <StackPanel Margin="10">
-                        <Grid ColumnDefinitions="Auto, 100" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Strength" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding BaseStrength}" Minimum="1" Maximum="30" Margin="5"/>
-
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Dexterity" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding BaseDexterity}" Minimum="1" Maximum="30" Margin="5"/>
-
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Constitution" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BaseConstitution}" Minimum="1" Maximum="30" Margin="5"/>
-
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Intelligence" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BaseIntelligence}" Minimum="1" Maximum="30" Margin="5"/>
-
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Wisdom" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding BaseWisdom}" Minimum="1" Maximum="30" Margin="5"/>
-
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="Charisma" VerticalAlignment="Center"/>
-                            <NumericUpDown Grid.Row="5" Grid.Column="1" Value="{Binding BaseCharisma}" Minimum="1" Maximum="30" Margin="5"/>
-                        </Grid>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="Skills">
-                    <ListBox ItemsSource="{Binding Skills}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel>
-                                    <TextBlock Text="{Binding Skill.Name}" Width="150"/>
-                                    <TextBlock Text="{Binding Roll, StringFormat='{}{0:+0;-0;0}'}" Width="50"/>
-                                </DockPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </TabItem>
-                <TabItem Header="Background">
-                    <Grid ColumnDefinitions="*, 2*">
-                        <DockPanel Grid.Column="0">
-                            <TextBlock DockPanel.Dock="Top" Text="Backgrounds" FontWeight="Bold" Margin="5"/>
-                            <ListBox ItemsSource="{Binding AvailableBackgrounds}" SelectedItem="{Binding PreviewBackground}" DisplayMemberBinding="{Binding Name}" Margin="5" DoubleTapped="Background_DoubleTapped"/>
-                        </DockPanel>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Inventory">
-                    <TextBlock Text="Inventory placeholder" />
-                </TabItem>
-                <TabItem Header="Spells">
-                    <TextBlock Text="Spells placeholder" />
-                </TabItem>
-                <TabItem Header="Journal">
-                    <TextBlock Text="Journal placeholder" />
-                </TabItem>
-                <TabItem Header="Personal">
-                    <StackPanel Margin="10">
-                        <TextBlock Text="Character Name" FontWeight="Bold"/>
-                        <TextBox Text="{Binding CharacterName}" Margin="0,0,0,10"/>
-                        
-                        <TextBlock Text="Alignment" FontWeight="Bold"/>
-                        <TextBox Text="{Binding Alignment}" Margin="0,0,0,10"/>
-                        
-                        <TextBlock Text="Player Name" FontWeight="Bold"/>
-                        <TextBox Text="{Binding PlayerName}" Margin="0,0,0,10"/>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
-            <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1,0,0,0" Margin="5">
-                <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="Details" FontWeight="Bold" Margin="5"/>
-                    <ScrollViewer>
-                        <HtmlPanel x:Name="HtmlPanel" Margin="5"/>
-                    </ScrollViewer>
-                </DockPanel>
-            </Border>
+        x:Class="CharacterBuilder5.Views.MainWindow"
+        Title="Character Builder 5"
+        MinWidth="1191" MinHeight="697"
+        Width="1287" Height="660">
+  <Window.Resources>
+    <characterBuilder5:SelectedHighlighter AccentBrush="{DynamicResource SystemControlHighlightAccentBrush}" DefaultBrush="{DynamicResource SystemControlForegroundBaseHighBrush}" x:Key="SelectedHighlighter"/>
+  </Window.Resources>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+  <DockPanel>
+    <!-- Main Menu -->
+    <Menu DockPanel.Dock="Top" x:Name="mainmenu">
+      <MenuItem Header="_File">
+        <MenuItem x:Name="newToolStripMenuItem" Header="_New" InputGesture="Ctrl+N"/>
+        <MenuItem x:Name="openToolStripMenuItem" Header="_Open" InputGesture="Ctrl+O"/>
+        <MenuItem x:Name="saveToolStripMenuItem" Header="_Save" InputGesture="Ctrl+S"/>
+        <MenuItem x:Name="saveAsToolStripMenuItem" Header="Save _as"/>
+        <MenuItem x:Name="exportPDFToolStripMenuItem" Header="Export _PDF" InputGesture="Ctrl+P"/>
+        <MenuItem x:Name="exportXMLToolStripMenuItem" Header="Export JSON"/>
+        <MenuItem x:Name="quitToolStripMenuItem" Header="_Quit"/>
+        <MenuItem x:Name="reladDataToolStripMenuItem" Header="Reload Data"/>
+      </MenuItem>
+      <MenuItem Header="_Edit">
+        <MenuItem x:Name="undoToolStripMenuItem" Header="_Undo" InputGesture="Ctrl+Z" IsEnabled="False"/>
+        <MenuItem x:Name="redoToolStripMenuItem" Header="_Redo" InputGesture="Ctrl+Y" IsEnabled="False"/>
+        <MenuItem x:Name="showErrorsToolStripMenuItem" Header="Show Errors"/>
+      </MenuItem>
+      <MenuItem Header="_Settings">
+        <MenuItem x:Name="configureHouserulesToolStripMenuItem" Header="_Configure Houserules">
+          <MenuItem x:Name="someToolStripMenuItem" Header="Some"/>
+          <MenuItem x:Name="rulesToolStripMenuItem" Header="Rules"/>
+        </MenuItem>
+        <MenuItem x:Name="sourcesToolStrip" Header="Sources">
+          <MenuItem x:Name="noneToolStripMenuItem" Header="None"/>
+        </MenuItem>
+        <MenuItem x:Name="makeDefaultEditorForcb5FilesToolStripMenuItem" Header="_Make default editor for .cb5 files"/>
+        <MenuItem x:Name="showDescriptionToolStripMenuItem" Header="_Show Description">
+          <!-- CheckBox behavior via toggle -->
+        </MenuItem>
+        <MenuItem x:Name="alawaysShowTheSourcebookToolStripMenuItem" Header="_Always Show the Sourcebook"/>
+        <MenuItem x:Name="showAllKnownRitualsToolStripMenuItem" Header="Show All Known Rituals"/>
+        <MenuItem x:Name="advancementCheckpointsInsteadOfXPToolStripMenuItem" Header="Advancement Checkpoints instead of XP"/>
+        <MenuItem x:Name="saveCurrentPlayerDCIAsDefaultToolStripMenuItem" Header="Save Current Player / DCI as Default"/>
+        <MenuItem x:Name="saveCurrentSourcesAsDefaultToolStripMenuItem" Header="Save Current Sources as Default"/>
+        <MenuItem x:Name="hideLostItemsToolStripMenuItem" Header="Hide Lost Items"/>
+      </MenuItem>
+    </Menu>
+    <!-- Main Layout: Sidebar + Content -->
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="105" MinWidth="100"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <!-- Left Sidebar -->
+      <DockPanel Grid.Column="0" Margin="0">
+        <!-- Portrait -->
+        <Image x:Name="sidePortrait"
+               DockPanel.Dock="Top"
+               Height="115"
+               Stretch="Uniform"/>
+        <!-- Character Name -->
+        <TextBlock x:Name="SideName"
+                   DockPanel.Dock="Top"
+                   Text="CharacterName"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   MaxHeight="115"
+                   Padding="6,3"
+                   MinWidth="102"/>
+        <!-- Stats split: Left col (Str/Dex/Con/Speed/AC) | Right col (Int/Wis/Cha/HP/Init) -->
+        <Grid DockPanel.Dock="Top" Height="87">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+          <!-- Left stats -->
+          <StackPanel Grid.Column="0">
+            <TextBlock x:Name="SideStrength"   Text="Str 10" TextAlignment="Right" Padding="2,1"/>
+            <TextBlock x:Name="SideDexterity"  Text="Dex 10" TextAlignment="Right" Padding="2,1"/>
+            <TextBlock x:Name="SideConstitution" Text="Con 10" TextAlignment="Right" Padding="2,1"/>
+            <TextBlock x:Name="SideSpeed"      Text="20 ft."  Padding="2,1"/>
+            <TextBlock x:Name="SideAC"         Text="AC: 10"  Padding="2,1"/>
+          </StackPanel>
+          <!-- Right stats -->
+          <StackPanel Grid.Column="2">
+            <TextBlock x:Name="SideIntelligence" Text="10 Int" Padding="2,1"/>
+            <TextBlock x:Name="SideWisdom"       Text="10 Wis" Padding="2,1"/>
+            <TextBlock x:Name="SideCharisma"     Text="00 Cha" Padding="2,1"/>
+            <TextBlock x:Name="SideMaxHP"        Text="00 HP"  TextAlignment="Right" Padding="2,1"/>
+            <TextBlock x:Name="SideInit"         Text="Init: +00" TextAlignment="Right" Padding="2,1"/>
+          </StackPanel>
         </Grid>
-    </DockPanel>
-
+        <!-- Current Weight -->
+        <TextBlock x:Name="currentweight"
+                   DockPanel.Dock="Top"
+                   Text="0 lb"
+                   TextAlignment="Right"
+                   Padding="4,3"
+                   MinWidth="117"
+                   MaxHeight="115"/>
+        <!-- Money button + Currency panel -->
+        <StackPanel DockPanel.Dock="Top">
+          <Button x:Name="MoneyButton"
+                  Content="0 gp"
+                  HorizontalAlignment="Stretch"
+                  Margin="4,3"/>
+          <!-- Currency inputs (collapsed by default, shown on MoneyButton click) -->
+          <StackPanel x:Name="currencyPanel" IsVisible="False" Margin="0,4">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  Margin="4,2">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Platinum:" TextAlignment="Right" VerticalAlignment="Center"/>
+              <NumericUpDown x:Name="PP" Grid.Row="0" Grid.Column="1" Minimum="-9999999" Maximum="9999999" Margin="2"/>
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Gold:" TextAlignment="Right" VerticalAlignment="Center"/>
+              <NumericUpDown x:Name="GP" Grid.Row="1" Grid.Column="1" Minimum="-9999999" Maximum="9999999" Margin="2"/>
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Electrum:" TextAlignment="Right" VerticalAlignment="Center"/>
+              <NumericUpDown x:Name="EP" Grid.Row="2" Grid.Column="1" Minimum="-9999999" Maximum="9999999" Margin="2"/>
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="Silver:" TextAlignment="Right" VerticalAlignment="Center"/>
+              <NumericUpDown x:Name="SP" Grid.Row="3" Grid.Column="1" Minimum="-9999999" Maximum="9999999" Margin="2"/>
+              <TextBlock Grid.Row="4" Grid.Column="0" Text="Copper:" TextAlignment="Right" VerticalAlignment="Center"/>
+              <NumericUpDown x:Name="CP" Grid.Row="4" Grid.Column="1" Minimum="-9999999" Maximum="9999999" Margin="2"/>
+            </Grid>
+          </StackPanel>
+        </StackPanel>
+      </DockPanel>
+      <!-- Splitter -->
+      <GridSplitter Grid.Column="1" Width="5" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+      <!-- Right area: Tab content + Description panel -->
+      <Grid Grid.Column="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="366"/>
+        </Grid.ColumnDefinitions>
+        <!-- Main TabControl -->
+        <TabControl x:Name="mainTab" Grid.Column="0">
+          <!-- ═══════════════════════════════ RACE TAB ═══════════════════════════════ -->
+          <TabItem Header="Race" x:Name="racetab">
+            <ScrollViewer>
+              <StackPanel Margin="18,17">
+                <TextBlock Text="Choose a Race: (Double click to choose an option)"
+                           Padding="0,0,0,3"/>
+                <ListBox x:Name="racebox" Margin="0,0,0,4" 
+                         ItemsSource="{Binding AvailableRaces}" 
+                         Tapped="Preview" DoubleTapped="Race_DoubleTapped" 
+                         Foreground="{Binding RaceSelected, Converter={StaticResource SelectedHighlighter}}" />
+                <TextBlock x:Name="subracelabel"
+                           Text="Choose a Subrace:"
+                           Padding="0,9,0,3"/>
+                <ListBox x:Name="subracebox"
+                         ItemsSource="{Binding AvailableSubRaces}" 
+                         Tapped="Preview" DoubleTapped="SubRace_DoubleTapped" 
+                         Foreground="{Binding SubRaceSelected, Converter={StaticResource SelectedHighlighter}}" />
+              </StackPanel>
+            </ScrollViewer>
+          </TabItem>
+          <!-- ═══════════════════════════════ CLASS TAB ═══════════════════════════════ -->
+          <TabItem Header="Class" x:Name="classtab">
+            <Grid RowDefinitions="173,5,*">
+              <!-- Top: class selector -->
+              <Grid Grid.Row="0" ColumnDefinitions="220,5,*">
+                <ScrollViewer Grid.Column="0" Padding="18,17">
+                  <ListBox x:Name="classList"/>
+                </ScrollViewer>
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                <DockPanel Grid.Column="2" Margin="18,17">
+                  <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto,Auto" Margin="0,4,0,0">
+                    <TextBlock Grid.Column="1" Text="HitPoints rolled:"
+                               VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,4,0"/>
+                    <NumericUpDown x:Name="hpSpinner" Grid.Column="2" IsEnabled="False" Width="140"/>
+                  </Grid>
+                  <ListBox x:Name="classesBox"/>
+                </DockPanel>
+              </Grid>
+              <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch"/>
+              <!-- Bottom: class features panel -->
+              <ScrollViewer Grid.Row="2" Padding="18,8,18,17">
+                <StackPanel x:Name="ClassPanel"/>
+              </ScrollViewer>
+            </Grid>
+          </TabItem>
+          <!-- ═══════════════════════════════ ABILITY SCORES TAB ═══════════════════════════════ -->
+          <TabItem Header="Ability Scores" x:Name="scoretab">
+            <ScrollViewer Padding="18,17">
+              <Grid RowDefinitions="220,5,*">
+                <!-- Ability score inputs -->
+                <GroupBox Grid.Row="0" Header="Ability Scores" Padding="4,3">
+                  <Grid ColumnDefinitions="261,5,*">
+                    <!-- Score spinners + derived labels -->
+                    <Grid Grid.Column="0">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                      </Grid.RowDefinitions>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="55"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="40"/>
+                      </Grid.ColumnDefinitions>
+                      <!-- Header -->
+                      <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+                                 Text="Final  Modifier  Maximum"
+                                 FontSize="7" Margin="0,0,0,2"/>
+                      <!-- Strength -->
+                      <TextBlock Grid.Row="1" Grid.Column="0" Text="Strength:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Strength" Grid.Row="1" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="StrengthFinal" Grid.Row="1" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="StrengthMod"   Grid.Row="1" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="StrengthMax"   Grid.Row="1" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Dexterity -->
+                      <TextBlock Grid.Row="2" Grid.Column="0" Text="Dexterity:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Dexterity" Grid.Row="2" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="DexterityFinal" Grid.Row="2" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="DexterityMod"   Grid.Row="2" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="DexterityMax"   Grid.Row="2" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Constitution -->
+                      <TextBlock Grid.Row="3" Grid.Column="0" Text="Constitution:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Constitution" Grid.Row="3" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="ConstitutionFinal" Grid.Row="3" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="ConstitutionMod"   Grid.Row="3" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="ConstitutionMax"   Grid.Row="3" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Intelligence -->
+                      <TextBlock Grid.Row="4" Grid.Column="0" Text="Intelligence:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Intelligence" Grid.Row="4" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="IntelligenceFinal" Grid.Row="4" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="IntelligenceMod"   Grid.Row="4" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="IntelligenceMax"   Grid.Row="4" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Wisdom -->
+                      <TextBlock Grid.Row="5" Grid.Column="0" Text="Wisdom:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Wisdom" Grid.Row="5" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="WisdomFinal" Grid.Row="5" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="WisdomMod"   Grid.Row="5" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="WisdomMax"   Grid.Row="5" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Charisma -->
+                      <TextBlock Grid.Row="6" Grid.Column="0" Text="Charisma:" VerticalAlignment="Center" TextAlignment="Right"/>
+                      <NumericUpDown x:Name="Charisma" Grid.Row="6" Grid.Column="1" Minimum="1" Maximum="30" Margin="2"/>
+                      <TextBlock x:Name="CharismaFinal" Grid.Row="6" Grid.Column="2" Text="=10" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="CharismaMod"   Grid.Row="6" Grid.Column="3" Text="(+0)" VerticalAlignment="Center"/>
+                      <TextBlock x:Name="CharismaMax"   Grid.Row="6" Grid.Column="4" Text="| 20" VerticalAlignment="Center"/>
+                      <!-- Point-buy remaining -->
+                      <TextBlock x:Name="PointBuyRemaining" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="5"
+                                 Text="Points Left: 27" TextAlignment="Right"/>
+                    </Grid>
+                    <!-- Standard array list -->
+                    <ScrollViewer Grid.Column="2" Padding="18,17">
+                      <ListBox x:Name="ArrayBox" ToolTip.Tip="Doubleclick to assign an ability score array"/>
+                    </ScrollViewer>
+                  </Grid>
+                </GroupBox>
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch"/>
+                <!-- ASI / Feat choices -->
+                <ScrollViewer Grid.Row="2">
+                  <GroupBox Header="Ability Score Improvements (Choices for feats appear in the Class tab)" Padding="4,3">
+                    <Grid ColumnDefinitions="220,5,*" Margin="4,19,4,3">
+                      <ScrollViewer Grid.Column="0" Padding="18,17">
+                        <ListBox x:Name="AbilityFeatChoiceBox"/>
+                      </ScrollViewer>
+                      <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                      <ScrollViewer Grid.Column="2" Padding="18,17">
+                        <ListBox x:Name="AbilityFeatBox"/>
+                      </ScrollViewer>
+                    </Grid>
+                  </GroupBox>
+                </ScrollViewer>
+              </Grid>
+            </ScrollViewer>
+          </TabItem>
+          <!-- ═══════════════════════════════ BACKGROUND TAB ═══════════════════════════════ -->
+          <TabItem Header="Background" x:Name="backtab">
+            <ScrollViewer Padding="18,17">
+              <StackPanel>
+                <TextBlock x:Name="backgroundLabel" Text="Choose a Background:" Padding="0,0,0,3"/>
+                <ListBox x:Name="background" Height="94" Margin="0,0,0,8"/>
+                <TextBlock x:Name="traitLabel" Text="Choose a Personality Trait:" Padding="0,9,0,3"/>
+                <ListBox x:Name="traits" Height="109" Margin="0,0,0,8"/>
+                <TextBlock x:Name="trait2Label" Text="Choose another Personality Trait:" Padding="0,9,0,3"/>
+                <ListBox x:Name="traits2" Height="109" Margin="0,0,0,8"/>
+                <TextBlock x:Name="ideallabel" Text="Choose an Ideal:" Padding="0,9,0,3"/>
+                <ListBox x:Name="ideals" Height="109" Margin="0,0,0,8"/>
+                <TextBlock x:Name="bondlabel" Text="Choose a Bond:" Padding="0,9,0,3"/>
+                <ListBox x:Name="bonds" Height="109" Margin="0,0,0,8"/>
+                <TextBlock x:Name="flawlabel" Text="Choose a Flaw:" Padding="0,9,0,3"/>
+                <ListBox x:Name="flaws" Height="109"/>
+              </StackPanel>
+            </ScrollViewer>
+          </TabItem>
+          <!-- ═══════════════════════════════ PERSONAL TAB ═══════════════════════════════ -->
+          <TabItem Header="Personal" x:Name="personaltab">
+            <ScrollViewer Padding="18,17">
+              <WrapPanel x:Name="personalFlowLayout">
+                <!-- Basic Information -->
+                <GroupBox Header="Basic Information" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <StackPanel>
+                    <TextBlock Text="Character Name:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="characterName"/>
+                    <TextBlock Text="Alignment:" Padding="8,6,8,3"/>
+                    <ComboBox x:Name="Alignment" HorizontalAlignment="Stretch">
+                      <ComboBoxItem>Lawful good</ComboBoxItem>
+                      <ComboBoxItem>Neutral good</ComboBoxItem>
+                      <ComboBoxItem>Chaotic good</ComboBoxItem>
+                      <ComboBoxItem>Lawful neutral</ComboBoxItem>
+                      <ComboBoxItem>Neutral</ComboBoxItem>
+                      <ComboBoxItem>Chaotic neutral</ComboBoxItem>
+                      <ComboBoxItem>Lawful evil</ComboBoxItem>
+                      <ComboBoxItem>Neutral evil</ComboBoxItem>
+                      <ComboBoxItem>Chaotic evil</ComboBoxItem>
+                    </ComboBox>
+                    <Grid ColumnDefinitions="*,*">
+                      <TextBlock Grid.Column="0" Text="Experience:" Padding="8,6,8,3"/>
+                      <TextBlock Grid.Column="1" Text="Till Next Level:" Padding="8,6,8,3"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                      <NumericUpDown x:Name="XP" Grid.Column="0" Minimum="0" Maximum="35500000"/>
+                      <NumericUpDown x:Name="XPtoUP" Grid.Column="1" IsEnabled="False" IsReadOnly="True" Maximum="355000"/>
+                    </Grid>
+                    <TextBlock Text="Player:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="PlayerName"/>
+                    <TextBlock Text="DCI #" Padding="8,6,8,3"/>
+                    <TextBox x:Name="DCI"/>
+                  </StackPanel>
+                </GroupBox>
+                <!-- Portrait -->
+                <GroupBox Header="Portrait" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <Button x:Name="choosePortrait" DockPanel.Dock="Bottom"
+                            Content="Choose Portrait" HorizontalAlignment="Stretch" Margin="0,2,0,0"/>
+                    <Button x:Name="removePortrait" DockPanel.Dock="Bottom"
+                            Content="Remove (Blank)" HorizontalAlignment="Stretch" Margin="0,2"/>
+                    <Image x:Name="portraitBox" Stretch="Uniform"/>
+                  </DockPanel>
+                </GroupBox>
+                <!-- Additional Information -->
+                <GroupBox Header="Additional Information" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <StackPanel>
+                    <Grid ColumnDefinitions="*,5,*">
+                      <StackPanel Grid.Column="0">
+                        <TextBlock Text="Age (in years):" Padding="8,6,8,3"/>
+                        <NumericUpDown x:Name="Age" Minimum="1" Maximum="1000000"/>
+                      </StackPanel>
+                      <StackPanel Grid.Column="2">
+                        <TextBlock Text="Weight (in lb):" Padding="8,6,8,3"/>
+                        <NumericUpDown x:Name="Weight" Minimum="1" Maximum="1000000"/>
+                      </StackPanel>
+                    </Grid>
+                    <TextBlock Text="Height:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="HeightValue"/>
+                    <TextBlock Text="Eyes:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="Eyes"/>
+                    <TextBlock Text="Skin:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="Skin"/>
+                    <TextBlock Text="Hair:" Padding="8,6,8,3"/>
+                    <TextBox x:Name="Hair"/>
+                  </StackPanel>
+                </GroupBox>
+                <!-- Backstory -->
+                <GroupBox Header="Backstory" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <TextBox x:Name="Backstory" AcceptsReturn="True" AcceptsTab="True"
+                           TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </GroupBox>
+                <!-- Faction -->
+                <GroupBox Header="Faction" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <Button x:Name="FactionChoose" DockPanel.Dock="Bottom"
+                            Content="Choose Insignia" HorizontalAlignment="Stretch" Margin="0,2,0,0"/>
+                    <Button x:Name="FactionBlank" DockPanel.Dock="Bottom"
+                            Content="Remove (Blank)" HorizontalAlignment="Stretch" Margin="0,2"/>
+                    <StackPanel DockPanel.Dock="Top">
+                      <TextBox x:Name="FactionName" Margin="0,0,0,4"/>
+                      <TextBlock Text="Rank / Title:" Padding="8,6,8,3"/>
+                      <TextBox x:Name="factionRank"/>
+                    </StackPanel>
+                    <Image x:Name="FactionInsignia" Stretch="Uniform"/>
+                  </DockPanel>
+                </GroupBox>
+                <!-- Allies -->
+                <GroupBox Header="Allies" Width="268" Height="265" Margin="4,3" Padding="4,3">
+                  <TextBox x:Name="Allies" AcceptsReturn="True" AcceptsTab="True"
+                           TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </GroupBox>
+                <!-- Additional Notes -->
+                <GroupBox Header="Additional Notes" Width="540" Height="265" Margin="4,3" Padding="4,3">
+                  <Grid ColumnDefinitions="*,*">
+                    <DockPanel Grid.Column="0">
+                      <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,4,0,0">
+                        <Button x:Name="newentrybotton" Content="New Entry" Width="126"/>
+                        <Button x:Name="removejournalentry" Content="Remove Entry" Width="126"/>
+                      </StackPanel>
+                      <ListBox x:Name="journalentrybox"/>
+                    </DockPanel>
+                    <TextBox x:Name="journalbox" Grid.Column="1"
+                             AcceptsReturn="True" AcceptsTab="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                  </Grid>
+                </GroupBox>
+              </WrapPanel>
+            </ScrollViewer>
+          </TabItem>
+          <!-- ═══════════════════════════════ SPELLS TAB ═══════════════════════════════ -->
+          <TabItem Header="Spells" x:Name="spelltab">
+            <TabControl x:Name="spellcontrol">
+              <TabItem x:Name="tabPage1" Header="tabPage1"/>
+              <TabItem x:Name="tabPage2" Header="tabPage2"/>
+            </TabControl>
+          </TabItem>
+          <!-- ═══════════════════════════════ FORMS / SUMMONS TAB ═══════════════════════════════ -->
+          <TabItem Header="Forms / Summons" x:Name="formCompanionTab">
+            <Grid RowDefinitions="234,5,*" Margin="4,3">
+              <!-- Available options list -->
+              <ListBox x:Name="FormsCompanionOptions" Grid.Row="0"/>
+              <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch"/>
+              <!-- Selected / Available split -->
+              <Grid Grid.Row="2" ColumnDefinitions="*,5,*">
+                <DockPanel Grid.Column="0">
+                  <TextBlock DockPanel.Dock="Top" x:Name="FormsCompanionsCounter"
+                             Text="Selected: " Padding="8,6,8,3"/>
+                  <ListBox x:Name="FormsCompanionsSelected"/>
+                </DockPanel>
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                <DockPanel Grid.Column="2">
+                  <TextBlock DockPanel.Dock="Top" x:Name="label37"
+                             Text="Available:" Padding="8,6,8,3"/>
+                  <ListBox x:Name="FormsCompanionsAvailable"/>
+                </DockPanel>
+              </Grid>
+            </Grid>
+          </TabItem>
+          <!-- ═══════════════════════════════ JOURNAL TAB ═══════════════════════════════ -->
+          <TabItem Header="Journal" x:Name="journalTab">
+            <DockPanel Margin="4,3">
+              <!-- Bottom: journal entry editor -->
+              <Grid DockPanel.Dock="Bottom" Height="339" ColumnDefinitions="*,323">
+                <!-- Left: title, text, notes -->
+                <DockPanel Grid.Column="0">
+                  <TextBox x:Name="journalTitle" DockPanel.Dock="Top" Margin="4,7,4,4"/>
+                  <Grid DockPanel.Dock="Bottom" ColumnDefinitions="155,*" Height="162">
+                    <DockPanel Grid.Column="0">
+                      <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <Button x:Name="journalNoteAddButton" Content="New" Width="59"/>
+                        <Button x:Name="journalNotesRemoveButton" Content="Remove" Width="80"/>
+                      </StackPanel>
+                      <ListBox x:Name="journalNotesBox"/>
+                    </DockPanel>
+                    <TextBox x:Name="journalNotesText" Grid.Column="1"
+                             AcceptsReturn="True" AcceptsTab="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                  </Grid>
+                  <TextBox x:Name="journalText"
+                           AcceptsReturn="True" AcceptsTab="True"
+                           TextWrapping="Wrap"
+                           ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </DockPanel>
+                <!-- Right: metadata panel -->
+                <ScrollViewer Grid.Column="1">
+                  <StackPanel x:Name="panel3" Margin="4">
+                    <!-- Date -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,4">
+                      <TextBlock Grid.Column="0" Text="Time:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                      <DatePicker x:Name="journalDate" Grid.Column="1"/>
+                    </Grid>
+                    <!-- Session -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Session:" VerticalAlignment="Center"/>
+                      <TextBox x:Name="journalSession" Grid.Column="1" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="Location:" VerticalAlignment="Center"/>
+                      <TextBox x:Name="journalTime" Grid.Column="3" Margin="4,0"/>
+                    </Grid>
+                    <!-- DM -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="DM + DCI:" VerticalAlignment="Center"/>
+                      <TextBox x:Name="journalDM" Grid.Column="1" Margin="4,0"/>
+                    </Grid>
+                    <!-- On sheet -->
+                    <CheckBox x:Name="journalInSheet" Content="On Sheet" Margin="0,4"/>
+                    <!-- XP -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="XP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalXP" Grid.Column="1" Minimum="-1000000000" Maximum="100000000" Margin="4,0"/>
+                      <CheckBox x:Name="Milestone" Grid.Column="2" Content="Milestone"/>
+                    </Grid>
+                    <!-- Adv. ChP -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Adv. ChP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalAP" Grid.Column="1" Minimum="-1000000000" Maximum="100000000" Margin="4,0"/>
+                    </Grid>
+                    <!-- Currency -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="PP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalPP" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="GP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalGP" Grid.Column="3" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="EP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalEP" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="SP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalSP" Grid.Column="3" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="CP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalCP" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <!-- Renown / Magic -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Renown:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalRenown" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="Magic:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalMagic" Grid.Column="3" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <!-- Downtime -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Downtime:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalDowntime" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <!-- Tier TP -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Tier 1 TP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalT1TP" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="Tier 2 TP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalT2TP" Grid.Column="3" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="Auto,*,Auto,*" Margin="0,2">
+                      <TextBlock Grid.Column="0" Text="Tier 3 TP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalT3TP" Grid.Column="1" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                      <TextBlock Grid.Column="2" Text="Tier 4 TP:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="journalT4TP" Grid.Column="3" Minimum="-1000000" Maximum="100000" Margin="4,0"/>
+                    </Grid>
+                  </StackPanel>
+                </ScrollViewer>
+              </Grid>
+              <!-- Top: journal entries list + possessions -->
+              <Grid ColumnDefinitions="*,5,227">
+                <!-- Entries list -->
+                <DockPanel Grid.Column="0">
+                  <Grid DockPanel.Dock="Bottom" Height="48" ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock x:Name="journalTotal" Grid.Column="0" Text="Total:" VerticalAlignment="Center" Margin="4,0"/>
+                    <Button x:Name="removeJournalButton" Grid.Column="1" Content="Remove Entry" Width="107" Margin="4,0"/>
+                    <Button x:Name="newJournalEntry" Grid.Column="2" Content="New Entry" Width="88"/>
+                  </Grid>
+                  <TextBlock x:Name="journalItemStats" DockPanel.Dock="Bottom" Text="Items:" Margin="4,2"/>
+                  <ListBox x:Name="journalEntries"/>
+                </DockPanel>
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                <!-- Possessions checklist -->
+                <DockPanel Grid.Column="2">
+                  <Grid DockPanel.Dock="Bottom" Height="29" ColumnDefinitions="*,Auto">
+                    <CheckBox x:Name="showAllItems" Grid.Column="0" Content="Show all" Margin="5,3"/>
+                    <Button x:Name="removeJournalItem" Grid.Column="1" Content="Remove Entry" Width="100"/>
+                  </Grid>
+                  <ListBox x:Name="journalPossessions"/>
+                </DockPanel>
+              </Grid>
+            </DockPanel>
+          </TabItem>
+          <!-- ═══════════════════════════════ SHOP TAB ═══════════════════════════════ -->
+          <TabItem Header="Shop" x:Name="equiptab">
+            <Grid ColumnDefinitions="175,5,*">
+              <!-- Categories -->
+              <DockPanel Grid.Column="0" Margin="5,3,4,3">
+                <GroupBox Header="Categories" Padding="4,3">
+                  <DockPanel>
+                    <TextBox x:Name="itemsearchbox" DockPanel.Dock="Bottom"
+                             Text="Search" Foreground="LightGray"/>
+                    <ListBox x:Name="itemCategories"/>
+                  </DockPanel>
+                </GroupBox>
+              </DockPanel>
+              <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+              <!-- Items area -->
+              <DockPanel Grid.Column="2" Margin="4,3,9,3">
+                <!-- Action buttons at bottom -->
+                <GroupBox DockPanel.Dock="Bottom" Header="Actions" Height="50" Padding="4,3">
+                  <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Horizontal">
+                      <Button x:Name="addButton" Content="Add" Margin="0,0,2,0"/>
+                      <Button x:Name="buyButton" Content="Buy" Margin="0,0,2,0"/>
+                      <Button x:Name="addScrollButton" Content="Add as scroll" Margin="0,0,2,0"/>
+                      <Button x:Name="addtoItemButton" Content="Add to selected inventory item" Margin="0,0,2,0"/>
+                      <ListBox x:Name="spellbookFeaturesBox" Width="117"/>
+                      <Button x:Name="addspellbookButton" Content="Add to Spellbook" Margin="0,0,2,0"/>
+                      <NumericUpDown x:Name="ItemCounter" Minimum="0" Maximum="1000000" Width="57"/>
+                      <Button x:Name="addToJournalButton" Content="Add To Selected Journal Entry" Margin="0,0,2,0"/>
+                      <ListBox x:Name="journalSendBox" Width="117"/>
+                    </StackPanel>
+                  </ScrollViewer>
+                </GroupBox>
+                <!-- Available / Inventory split -->
+                <Grid RowDefinitions="*,5,*">
+                  <GroupBox Grid.Row="0" Header="Available:" Padding="4,3">
+                    <ListBox x:Name="listItems"/>
+                  </GroupBox>
+                  <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch"/>
+                  <GroupBox Grid.Row="2" Header="Inventory" Padding="4,3">
+                    <ListBox x:Name="inventory2"/>
+                  </GroupBox>
+                </Grid>
+              </DockPanel>
+            </Grid>
+          </TabItem>
+          <!-- ═══════════════════════════════ INVENTORY TAB ═══════════════════════════════ -->
+          <TabItem Header="Inventory" x:Name="inventab">
+            <Grid RowDefinitions="230,5,*">
+              <!-- Inventory list -->
+              <GroupBox Grid.Row="0" Header="Inventory" Padding="4,3" Margin="4,3">
+                <ListBox x:Name="inventory"/>
+              </GroupBox>
+              <GridSplitter Grid.Row="1" ResizeDirection="Rows" HorizontalAlignment="Stretch"/>
+              <!-- Modify panel -->
+              <Grid Grid.Row="2" ColumnDefinitions="*,5,354">
+                <!-- Magic properties -->
+                <GroupBox Grid.Column="0" Header="Magic Properties" Padding="4,3" Margin="4,0,0,0">
+                  <DockPanel>
+                    <Button x:Name="removeprop" DockPanel.Dock="Top"
+                            Content="Remove Property" HorizontalAlignment="Stretch" Margin="0,0,0,4"/>
+                    <ListBox x:Name="magicproperties" DockPanel.Dock="Top" Height="64"/>
+                    <ScrollViewer x:Name="magicpropfeats" Padding="18,8,18,17"/>
+                  </DockPanel>
+                </GroupBox>
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                <!-- Actions + Modify -->
+                <DockPanel Grid.Column="2" Margin="0,0,4,3">
+                  <!-- Actions -->
+                  <GroupBox DockPanel.Dock="Top" Header="Actions" Height="46" Padding="4,3">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                      <Button x:Name="removepossesion" Grid.Column="0" Content="Delete" Width="48"/>
+                      <Button x:Name="unpack" Grid.Column="1" Content="Unpack" Width="61" IsEnabled="False"/>
+                      <NumericUpDown x:Name="poscounter" Grid.Column="3" Minimum="1" Maximum="10000000" Width="55"/>
+                      <Button x:Name="changecount" Grid.Column="4" Content="Change Amount" Width="103"/>
+                      <!-- splitstack omitted for brevity, add same pattern -->
+                    </Grid>
+                  </GroupBox>
+                  <!-- Modify -->
+                  <GroupBox DockPanel.Dock="Top" Header="Modify" Padding="4,3">
+                    <Grid ColumnDefinitions="118,5,*">
+                      <!-- Left: flags and overrides -->
+                      <StackPanel Grid.Column="0">
+                        <TextBlock Text="Equipped:" Padding="0,6,0,3"/>
+                        <ComboBox x:Name="possequip" HorizontalAlignment="Stretch"/>
+                        <CheckBox x:Name="attunedcheck" Content="Attuned to Item" Padding="0,3"/>
+                        <CheckBox x:Name="highlightcheck" Content="Rolls on Sheet" Padding="0,3"/>
+                        <TextBlock x:Name="chargeLabel" Text="Charges Used (if any): " Padding="0,6,0,3"/>
+                        <NumericUpDown x:Name="posscharges"/>
+                        <TextBlock Text="Overwrite Weight:" Padding="0,6,0,3"/>
+                        <NumericUpDown x:Name="possweight" Minimum="-1" Maximum="1000" FormatString="F2"/>
+                        <TextBlock Text="Override Rarity:" Padding="0,6,0,3"/>
+                        <ComboBox x:Name="RarityBox" HorizontalAlignment="Stretch"/>
+                        <CheckBox x:Name="consumableCheckbox" Content="Consumable" Padding="0,3"/>
+                      </StackPanel>
+                      <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+                      <!-- Right: name, description, buttons -->
+                      <DockPanel Grid.Column="2">
+                        <TextBox x:Name="possname" DockPanel.Dock="Top"/>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,4,0,0">
+                          <Button x:Name="updateposs" Content="Update" Width="62"/>
+                          <Button x:Name="newposs" Content="As New" Width="64"/>
+                          <Button x:Name="button1" Content="New In Journal" Width="104"/>
+                        </StackPanel>
+                        <TextBox x:Name="possdescription"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                      </DockPanel>
+                    </Grid>
+                  </GroupBox>
+                </DockPanel>
+              </Grid>
+            </Grid>
+          </TabItem>
+          <!-- ═══════════════════════════════ IN PLAY TAB ═══════════════════════════════ -->
+          <TabItem Header="In Play" x:Name="playtab">
+            <ScrollViewer Padding="18,17">
+              <WrapPanel x:Name="inplayflow">
+                <!-- Statistics -->
+                <GroupBox Header="Statistics" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <ScrollViewer>
+                    <StackPanel>
+                      <!-- Inspiration + Proficiency -->
+                      <CheckBox x:Name="inspiration" Content="Inspiration" Margin="13,4"/>
+                      <Grid ColumnDefinitions="Auto,Auto,Auto">
+                        <TextBlock x:Name="profval" Grid.Column="0" Text="+00" Margin="0,0,4,0"/>
+                        <TextBlock x:Name="ProfLabel" Grid.Column="1" Text="Proficiency"/>
+                      </Grid>
+                      <!-- Column headers -->
+                      <TextBlock Text="Maximum Modifier SavingThrow" FontSize="7" Margin="105,4,0,0"/>
+                      <!-- Ability rows: Score | Label | Max | Modifier | Save -->
+                      <!-- Strength -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="strval"  Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="StrLabel" Grid.Column="1" Text="Strength"/>
+                        <TextBlock x:Name="strmax"  Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="strmod"  Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="strsave" Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <!-- Dexterity -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="dexval"   Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="DexLabel" Grid.Column="1" Text="Dexterity"/>
+                        <TextBlock x:Name="dexmax"   Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="dexmod"   Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="dexsave"  Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <!-- Constitution -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="conval"   Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="ConLabel" Grid.Column="1" Text="Constitution"/>
+                        <TextBlock x:Name="conmax"   Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="conmod"   Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="consave"  Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <!-- Intelligence -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="intval"   Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="IntLabel" Grid.Column="1" Text="Intelligence"/>
+                        <TextBlock x:Name="intmax"   Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="intmod"   Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="intsave"  Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <!-- Wisdom -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="wisval"   Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="WisLabel" Grid.Column="1" Text="Wisdom"/>
+                        <TextBlock x:Name="wismax"   Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="wismod"   Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="wissave"  Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <!-- Charisma -->
+                      <Grid ColumnDefinitions="30,60,30,30,30" Margin="0,2">
+                        <TextBlock x:Name="chaval"   Grid.Column="0" Text="+00"/>
+                        <TextBlock x:Name="ChaLabel" Grid.Column="1" Text="Charisma"/>
+                        <TextBlock x:Name="chamax"   Grid.Column="2" Text="+00"/>
+                        <TextBlock x:Name="chamod"   Grid.Column="3" Text="+00"/>
+                        <TextBlock x:Name="chasave"  Grid.Column="4" Text="+00"/>
+                      </Grid>
+                      <Separator Margin="0,4"/>
+                      <!-- AC / Speed / Weight / Initiative -->
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Armor Class:"/>
+                        <TextBlock x:Name="AC" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Speed in ft:"/>
+                        <TextBlock x:Name="Speed" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Current load in lb:"/>
+                        <TextBlock x:Name="CurWeight" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Maximum load in lb:"/>
+                        <TextBlock x:Name="MaxWeight" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Initiative bonus:"/>
+                        <TextBlock x:Name="Initiative" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Separator Margin="0,4"/>
+                      <!-- HP -->
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Maximum HP:"/>
+                        <TextBlock x:Name="MaxHP" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Bonus max HP:"/>
+                        <NumericUpDown x:Name="bonusMaxHP" Grid.Column="1" Minimum="0" Maximum="1000000"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Current HP:" VerticalAlignment="Center"/>
+                        <NumericUpDown x:Name="CurHP" Grid.Column="1" Minimum="-1000000"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Temporary HP:" VerticalAlignment="Center"/>
+                        <NumericUpDown x:Name="TempHP" Grid.Column="1" Minimum="0" Maximum="1000000"/>
+                      </Grid>
+                      <Separator Margin="0,4"/>
+                      <!-- Hit Dice -->
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Hit Dice:"/>
+                        <TextBlock x:Name="HitDice" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                      <TextBlock Text="Hit Dice available:" Margin="0,2"/>
+                      <ListBox x:Name="HitDiceUsed" Height="94" Margin="0,2"/>
+                      <Button x:Name="hdreset" Content="Reset" Width="88" HorizontalAlignment="Left" Margin="7,4"/>
+                      <Separator Margin="0,4"/>
+                      <!-- Death saves -->
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Death save successes:" VerticalAlignment="Center"/>
+                        <NumericUpDown x:Name="DeathSuccess" Grid.Column="1" Minimum="0" Maximum="3"/>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Death save failures:" VerticalAlignment="Center"/>
+                        <NumericUpDown x:Name="DeathFail" Grid.Column="1" Minimum="0" Maximum="3"/>
+                      </Grid>
+                      <Separator Margin="0,4"/>
+                      <!-- Coinage -->
+                      <Grid ColumnDefinitions="*,*" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="Coinage:"/>
+                        <TextBlock x:Name="Money" Grid.Column="1" Text="0" TextAlignment="Right"/>
+                      </Grid>
+                    </StackPanel>
+                  </ScrollViewer>
+                </GroupBox>
+                <!-- Skills -->
+                <GroupBox Header="Skills" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                      <TextBlock Grid.Column="0" x:Name="label13" Text="Different Base Ability:" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,Auto">
+                      <ComboBox x:Name="skillabilitybox" Grid.Column="0" HorizontalAlignment="Stretch">
+                        <ComboBoxItem>Strength</ComboBoxItem>
+                        <ComboBoxItem>Dexterity</ComboBoxItem>
+                        <ComboBoxItem>Constitution</ComboBoxItem>
+                        <ComboBoxItem>Intelligence</ComboBoxItem>
+                        <ComboBoxItem>Wisdom</ComboBoxItem>
+                        <ComboBoxItem>Charisma</ComboBoxItem>
+                      </ComboBox>
+                      <TextBlock x:Name="skillablityresult" Grid.Column="1" Text="= 0" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                    </Grid>
+                    <ListBox x:Name="skillbox"/>
+                  </DockPanel>
+                </GroupBox>
+                <!-- Resources & Bonus Spells -->
+                <GroupBox Header="Resources &amp; Bonus Spells" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <Grid DockPanel.Dock="Bottom" ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,4,0,0">
+                      <TextBlock Grid.Column="0" Text="Used:" VerticalAlignment="Center"/>
+                      <NumericUpDown x:Name="resourceused" Grid.Column="1" IsEnabled="False" Width="51" Margin="4,0"/>
+                      <Button x:Name="shortrest" Grid.Column="2" Content="Short Rest" HorizontalAlignment="Right" Width="76" Margin="0,0,4,0"/>
+                      <Button x:Name="longrest" Grid.Column="3" Content="Long Rest" Width="76"/>
+                    </Grid>
+                    <ListBox x:Name="ResourcesBox"/>
+                  </DockPanel>
+                </GroupBox>
+                <!-- Proficiencies & Features & Traits -->
+                <GroupBox Header="Proficiencies &amp; Features &amp; Traits" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <CheckBox x:Name="hidefeature" DockPanel.Dock="Bottom"
+                              Content="Hide Feature on Sheet" IsEnabled="False" Margin="0,4,0,0"/>
+                    <ListBox x:Name="Proficiencies" DockPanel.Dock="Top" Height="139" Margin="0,0,0,4"/>
+                    <ListBox x:Name="Features"/>
+                  </DockPanel>
+                </GroupBox>
+                <!-- Conditions -->
+                <GroupBox Header="Conditions" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <StackPanel>
+                    <ListBox x:Name="activeConditions" Height="139" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="conditionadd" Text="Add a condition:" Margin="0,2"/>
+                    <ListBox x:Name="availableConditions"/>
+                  </StackPanel>
+                </GroupBox>
+                <!-- Actions in Combat -->
+                <GroupBox Header="Actions in Combat" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <StackPanel>
+                    <TextBlock x:Name="attacksLabel" Text="Attacks (1 per action):" Margin="0,4,0,2"/>
+                    <ListBox x:Name="attacksBox" Height="124" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="label40" Text="Other Actions:" Margin="0,4,0,2"/>
+                    <ListBox x:Name="actionsBox"/>
+                  </StackPanel>
+                </GroupBox>
+                <!-- Forms / Summons (in-play) -->
+                <GroupBox Header="Forms / Summons" Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <ListBox x:Name="FormsCompanionsBox"/>
+                </GroupBox>
+                <!-- Spellcasting -->
+                <GroupBox x:Name="spellcastingexample" Header="Spellcasting - " Width="268" Height="527" Margin="4,3" Padding="4,3">
+                  <DockPanel>
+                    <TextBlock x:Name="AttackSaveLabel" DockPanel.Dock="Top"
+                               Text="Attack | Save" TextAlignment="Center"/>
+                    <Grid DockPanel.Dock="Bottom" RowDefinitions="Auto,Auto,Auto">
+                      <TextBlock x:Name="SpellOnSheetLabel" Grid.Row="0"
+                                 Text="Spell on Sheet: --"/>
+                      <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+                        <TextBlock Grid.Column="0" x:Name="label18" Text="SpellSlots:" VerticalAlignment="Center"/>
+                        <ListBox x:Name="SpellSlotBox" Grid.Column="1" Height="79"/>
+                      </Grid>
+                      <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto">
+                        <NumericUpDown x:Name="SpellSlotUsed" Grid.Column="0" IsEnabled="False" Width="58"/>
+                        <Button x:Name="ResetSlots" Grid.Column="1" Content="Reset" IsEnabled="False" Width="58"/>
+                      </Grid>
+                    </Grid>
+                    <ListBox x:Name="SpellsBox"/>
+                  </DockPanel>
+                </GroupBox>
+              </WrapPanel>
+            </ScrollViewer>
+          </TabItem>
+        </TabControl>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Stretch"/>
+        <ScrollViewer Grid.Column="2">
+          <HtmlPanel x:Name="HtmlPanel"/>
+        </ScrollViewer>
+      </Grid>
+    </Grid>
+  </DockPanel>
 </Window>
